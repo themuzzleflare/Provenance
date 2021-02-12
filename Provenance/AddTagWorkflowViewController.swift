@@ -1,0 +1,542 @@
+import UIKit
+import Alamofire
+
+class AddTagWorkflowViewController: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+    
+    let fetchingView = UIActivityIndicatorView(style: .medium)
+    let tableViewController = UITableViewController(style: .grouped)
+    lazy var refreshControl: UIRefreshControl = UIRefreshControl()
+    lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
+    
+    var transactions = [TransactionResource]()
+    var transactionsErrorResponse = [ErrorObject]()
+    var transactionsError: String = ""
+    lazy var filteredTransactions: [TransactionResource] = []
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        filteredTransactions = transactions.filter { searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(searchController.searchBar.text!) }
+        tableViewController.tableView.reloadData()
+    }
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        super.addChild(tableViewController)
+        
+        view.backgroundColor = .systemBackground
+        
+        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+        
+        searchController.delegate = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.placeholder = "Search"
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.searchBar.delegate = self
+        searchController.searchResultsUpdater = self
+        definesPresentationContext = true
+        
+        view.backgroundColor = .systemBackground
+        
+        self.title = "Transactions"
+        
+        navigationItem.title = "Loading"
+        navigationItem.setRightBarButton(closeButton, animated: true)
+        navigationItem.backButtonDisplayMode = .minimal
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        
+        tableViewController.clearsSelectionOnViewWillAppear = true
+        tableViewController.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+        
+        setupFetchingView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        listTransactions()
+    }
+    
+    @objc private func refreshTransactions() {
+        listTransactions()
+    }
+    
+    @objc private func closeWorkflow() {
+        dismiss(animated: true)
+    }
+    
+    func setupFetchingView() {
+        view.addSubview(fetchingView)
+        
+        fetchingView.translatesAutoresizingMaskIntoConstraints = false
+        fetchingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        
+        fetchingView.hidesWhenStopped = true
+        
+        fetchingView.startAnimating()
+    }
+    
+    func setupTableView() {
+        view.addSubview(tableViewController.tableView)
+        
+        tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableViewController.tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableViewController.tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tableViewController.tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        tableViewController.tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        
+        tableViewController.tableView.dataSource = self
+        tableViewController.tableView.delegate = self
+        
+        tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "transactionCell")
+        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "fetchingCell")
+        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
+        tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
+    }
+    
+    func listTransactions() {
+        let urlString = "https://api.up.com.au/api/v1/transactions"
+        let parameters: Parameters = ["page[size]":"100"]
+        let headers: HTTPHeaders = [
+            "Accept": "application/json",
+            "Authorization": "Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")"
+        ]
+        AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseJSON { response in
+            self.fetchingView.stopAnimating()
+            self.fetchingView.removeFromSuperview()
+            self.setupTableView()
+            if response.error == nil {
+                if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
+                    print("Transactions JSON Decoding Succeeded!")
+                    self.transactions = decodedResponse.data
+                    self.filteredTransactions = self.transactions.filter { self.searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(self.searchController.searchBar.text!) }
+                    self.transactionsError = ""
+                    self.transactionsErrorResponse = []
+                    self.navigationItem.title = "Select Transaction"
+                    self.tableViewController.tableView.reloadData()
+                    self.refreshControl.endRefreshing()
+                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
+                    print("Transactions Error JSON Decoding Succeeded!")
+                    self.transactionsErrorResponse = decodedResponse.errors
+                    self.transactionsError = ""
+                    self.transactions = []
+                    self.navigationItem.title = "Errors"
+                    self.tableViewController.tableView.reloadData()
+                    self.refreshControl.endRefreshing()
+                } else {
+                    print("Transactions JSON Decoding Failed!")
+                    self.transactionsError = "JSON Decoding Failed!"
+                    self.transactionsErrorResponse = []
+                    self.transactions = []
+                    self.navigationItem.title = "Error"
+                    self.tableViewController.tableView.reloadData()
+                    self.refreshControl.endRefreshing()
+                }
+            } else {
+                print(response.error?.localizedDescription ?? "Unknown Error!")
+                self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
+                self.transactionsErrorResponse = []
+                self.transactions = []
+                self.navigationItem.title = "Error"
+                self.tableViewController.tableView.reloadData()
+                self.refreshControl.endRefreshing()
+            }
+        }
+    }
+}
+
+extension AddTagWorkflowViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
+            return 1
+        } else {
+            if !self.transactionsError.isEmpty {
+                return 1
+            } else if !self.transactionsErrorResponse.isEmpty {
+                return transactionsErrorResponse.count
+            } else {
+                return filteredTransactions.count
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let transactionCell = tableView.dequeueReusableCell(withIdentifier: "transactionCell", for: indexPath) as! SubtitleTableViewCell
+        
+        let fetchingCell = tableView.dequeueReusableCell(withIdentifier: "fetchingCell", for: indexPath)
+        
+        let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
+        
+        let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
+        
+        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
+            fetchingCell.selectionStyle = .none
+            fetchingCell.textLabel?.text = "No Transactions"
+            fetchingCell.backgroundColor = tableView.backgroundColor
+            return fetchingCell
+        } else {
+            if !self.transactionsError.isEmpty {
+                errorStringCell.selectionStyle = .none
+                errorStringCell.textLabel?.numberOfLines = 0
+                errorStringCell.textLabel?.text = transactionsError
+                return errorStringCell
+            } else if !self.transactionsErrorResponse.isEmpty {
+                let error = transactionsErrorResponse[indexPath.row]
+                errorObjectCell.selectionStyle = .none
+                errorObjectCell.textLabel?.textColor = .red
+                errorObjectCell.textLabel?.font = .boldSystemFont(ofSize: 17)
+                errorObjectCell.textLabel?.text = error.title
+                errorObjectCell.detailTextLabel?.numberOfLines = 0
+                errorObjectCell.detailTextLabel?.text = error.detail
+                return errorObjectCell
+            } else {
+                let transaction = filteredTransactions[indexPath.row]
+                transactionCell.accessoryType = .disclosureIndicator
+                transactionCell.textLabel?.font = .boldSystemFont(ofSize: 17)
+                transactionCell.textLabel?.textColor = .label
+                transactionCell.textLabel?.text = transaction.attributes.description
+                transactionCell.detailTextLabel?.textColor = .secondaryLabel
+                transactionCell.detailTextLabel?.text =
+                    "\(transaction.attributes.amount.valueSymbol)\(transaction.attributes.amount.valueString)"
+                return transactionCell
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
+            let vc = AddTagWorkflowTwoViewController()
+            vc.transaction = filteredTransactions[indexPath.row]
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+
+class AddTagWorkflowTwoViewController: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+    var transaction: TransactionResource!
+    let fetchingView = UIActivityIndicatorView(style: .medium)
+    let tableViewController = UITableViewController(style: .grouped)
+    lazy var refreshControl: UIRefreshControl = UIRefreshControl()
+    lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
+    
+    var tags = [TagResource]()
+    var tagsErrorResponse = [ErrorObject]()
+    var tagsError: String = ""
+    lazy var filteredTags: [TagResource] = []
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        filteredTags = tags.filter { searchController.searchBar.text!.isEmpty || $0.id.localizedStandardContains(searchController.searchBar.text!) }
+        tableViewController.tableView.reloadData()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        super.addChild(tableViewController)
+        
+        view.backgroundColor = .systemBackground
+        
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow))
+        
+        searchController.delegate = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.placeholder = "Search"
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.searchBar.delegate = self
+        searchController.searchResultsUpdater = self
+        definesPresentationContext = true
+        
+        self.title = "Tags"
+        
+        navigationItem.title = "Loading"
+        navigationItem.setRightBarButton(addButton, animated: true)
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        
+        tableViewController.clearsSelectionOnViewWillAppear = true
+        tableViewController.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+        
+        setupFetchingView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        listTags()
+    }
+    
+    @objc private func openAddWorkflow() {
+        let ac = UIAlertController(title: "New Tag", message: "Enter the name of the new tag.", preferredStyle: .alert)
+        ac.addTextField()
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        let submitAction = UIAlertAction(title: "Next", style: .default) { [unowned ac] _ in
+            let answer = ac.textFields![0]
+            if answer.text != "" {
+                let vc = AddTagWorkflowThreeViewController(style: .grouped)
+                vc.transaction = self.transaction
+                vc.tag = answer.text
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
+        
+        ac.addAction(cancelAction)
+        ac.addAction(submitAction)
+        
+        present(ac, animated: true)
+    }
+    
+    @objc private func refreshTags() {
+        listTags()
+    }
+    
+    func setupFetchingView() {
+        view.addSubview(fetchingView)
+        
+        fetchingView.translatesAutoresizingMaskIntoConstraints = false
+        fetchingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        
+        fetchingView.hidesWhenStopped = true
+        
+        fetchingView.startAnimating()
+    }
+    
+    func setupTableView() {
+        view.addSubview(tableViewController.tableView)
+        
+        tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableViewController.tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableViewController.tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tableViewController.tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        tableViewController.tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        
+        tableViewController.tableView.dataSource = self
+        tableViewController.tableView.delegate = self
+        
+        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")
+        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "fetchingCell")
+        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
+        tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
+    }
+    
+    func listTags() {
+        let urlString = "https://api.up.com.au/api/v1/tags"
+        let parameters: Parameters = ["page[size]":"200"]
+        let headers: HTTPHeaders = [
+            "Accept": "application/json",
+            "Authorization": "Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")"
+        ]
+        AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseJSON { response in
+            self.fetchingView.stopAnimating()
+            self.fetchingView.removeFromSuperview()
+            self.setupTableView()
+            if response.error == nil {
+                if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: response.data!) {
+                    print("Tags JSON Decoding Succeeded!")
+                    self.tags = decodedResponse.data
+                    self.filteredTags = self.tags.filter { self.searchController.searchBar.text!.isEmpty || $0.id.localizedStandardContains(self.searchController.searchBar.text!) }
+                    self.tagsError = ""
+                    self.tagsErrorResponse = []
+                    self.navigationItem.title = "Select Tag"
+                    self.tableViewController.tableView.reloadData()
+                    self.refreshControl.endRefreshing()
+                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
+                    print("Tags Error JSON Decoding Succeeded!")
+                    self.tagsErrorResponse = decodedResponse.errors
+                    self.tagsError = ""
+                    self.tags = []
+                    self.navigationItem.title = "Errors"
+                    self.tableViewController.tableView.reloadData()
+                    self.refreshControl.endRefreshing()
+                } else {
+                    print("Tags JSON Decoding Failed!")
+                    self.tagsError = "JSON Decoding Failed!"
+                    self.tagsErrorResponse = []
+                    self.tags = []
+                    self.navigationItem.title = "Error"
+                    self.tableViewController.tableView.reloadData()
+                    self.refreshControl.endRefreshing()
+                }
+            } else {
+                print(response.error?.localizedDescription ?? "Unknown Error!")
+                self.tagsError = response.error?.localizedDescription ?? "Unknown Error!"
+                self.tagsErrorResponse = []
+                self.tags = []
+                self.navigationItem.title = "Error"
+                self.tableViewController.tableView.reloadData()
+                self.refreshControl.endRefreshing()
+            }
+        }
+    }
+}
+
+extension AddTagWorkflowTwoViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty {
+            return 1
+        } else {
+            if !self.tagsError.isEmpty {
+                return 1
+            } else if !self.tagsErrorResponse.isEmpty {
+                return tagsErrorResponse.count
+            } else {
+                return filteredTags.count
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let tagCell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath)
+        
+        let fetchingCell = tableView.dequeueReusableCell(withIdentifier: "fetchingCell", for: indexPath)
+        
+        let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
+        
+        let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
+        
+        if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
+            fetchingCell.selectionStyle = .none
+            fetchingCell.textLabel?.text = "No Tags"
+            fetchingCell.backgroundColor = tableView.backgroundColor
+            return fetchingCell
+        } else {
+            if !self.tagsError.isEmpty {
+                errorStringCell.selectionStyle = .none
+                errorStringCell.textLabel?.numberOfLines = 0
+                errorStringCell.textLabel?.text = tagsError
+                return errorStringCell
+            } else if !self.tagsErrorResponse.isEmpty {
+                let error = tagsErrorResponse[indexPath.row]
+                errorObjectCell.selectionStyle = .none
+                errorObjectCell.textLabel?.textColor = .red
+                errorObjectCell.textLabel?.font = .boldSystemFont(ofSize: 17)
+                errorObjectCell.textLabel?.text = error.title
+                errorObjectCell.detailTextLabel?.numberOfLines = 0
+                errorObjectCell.detailTextLabel?.text = error.detail
+                return errorObjectCell
+            } else {
+                let tag = filteredTags[indexPath.row]
+                tagCell.accessoryType = .disclosureIndicator
+                tagCell.textLabel?.text = tag.id
+                return tagCell
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if self.tagsErrorResponse.isEmpty && self.tagsError.isEmpty && !self.filteredTags.isEmpty {
+            let vc = AddTagWorkflowThreeViewController(style: .grouped)
+            vc.transaction = transaction
+            vc.tag = filteredTags[indexPath.row].id
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+
+class AddTagWorkflowThreeViewController: UITableViewController {
+    var transaction: TransactionResource!
+    var tag: String!
+    
+    private func errorAlert(_ statusCode: Int) -> (title: String, content: String) {
+        switch statusCode {
+            case 403: return (title: "Forbidden", content: "Too many tags added to this transaction. Each transaction may have up to 6 tags.")
+            default: return (title: "Failed", content: "The tag was not added to the transaction.")
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let confirmButton = UIBarButtonItem(image: UIImage(systemName: "checkmark"), style: .plain, target: self, action: #selector(addTag))
+        
+        navigationItem.title = "Confirmation"
+        navigationItem.setRightBarButton(confirmButton, animated: true)
+        tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "attributeCell")
+    }
+    
+    @objc private func addTag() {
+        let urlString = "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags"
+        var request = URLRequest(url: URL(string: urlString)!)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
+        
+        let bodyObject: [String : Any] = [
+            "data": [
+                [
+                    "type": "tags",
+                    "id": tag
+                ]
+            ]
+        ]
+        request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+        AF.request(request).responseJSON { response in
+            if response.error == nil {
+                if response.response?.statusCode != 204 {
+                    let ac = UIAlertController(title: self.errorAlert(response.response!.statusCode).title, message: self.errorAlert(response.response!.statusCode).content, preferredStyle: .alert)
+                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                    ac.addAction(dismissAction)
+                    self.present(ac, animated: true)
+                } else {
+                    self.navigationController?.popViewController(animated: true)
+                }
+            } else {
+                let ac = UIAlertController(title: self.errorAlert(response.response!.statusCode).title, message: self.errorAlert(response.response!.statusCode).content, preferredStyle: .alert)
+                let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                ac.addAction(dismissAction)
+                self.present(ac, animated: true)
+            }
+        }
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return "Adding Tag"
+        } else if section == 1 {
+            return "To Transaction"
+        } else {
+            return "Summary"
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == 2 {
+            return "No more than 6 tags may be present on any single transaction. Duplicate tags are silently ignored."
+        } else {
+            return nil
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! SubtitleTableViewCell
+        
+        cell.selectionStyle = .none
+        if indexPath.section == 0 {
+            cell.textLabel?.text = tag
+        } else if indexPath.section == 1 {
+            cell.textLabel?.font = .boldSystemFont(ofSize: 17)
+            cell.textLabel?.text = transaction.attributes.description
+            cell.detailTextLabel?.textColor = .secondaryLabel
+            cell.detailTextLabel?.text = "\(transaction.attributes.amount.valueSymbol)\(transaction.attributes.amount.valueString)"
+        } else {
+            cell.textLabel?.numberOfLines = 0
+            cell.textLabel?.text = "You are adding the tag \"\(tag!)\" to the transaction \"\(transaction.attributes.description)\", which was created on \(transaction.attributes.createdDate)."
+        }
+        
+        return cell
+    }
+}
