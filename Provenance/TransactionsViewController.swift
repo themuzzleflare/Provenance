@@ -16,6 +16,10 @@ class TransactionsViewController: UIViewController, UITableViewDelegate, UISearc
     var categoriesErrorResponse = [ErrorObject]()
     var categoriesError: String = ""
     
+    var accounts = [AccountResource]()
+    var accountsErrorResponse = [ErrorObject]()
+    var accountsError: String = ""
+    
     func updateSearchResults(for searchController: UISearchController) {
         filteredTransactions = transactions.filter { searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(searchController.searchBar.text!) }
         tableViewController.tableView.reloadData()
@@ -46,16 +50,19 @@ class TransactionsViewController: UIViewController, UITableViewDelegate, UISearc
         tableViewController.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
         
-        listCategories()
         setupFetchingView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         listTransactions()
+        listCategories()
+        listAccounts()
     }
     
     @objc private func refreshTransactions() {
         listTransactions()
+        listCategories()
+        listAccounts()
     }
     
     func setupFetchingView() {
@@ -204,6 +211,7 @@ extension TransactionsViewController: UITableViewDataSource {
             let vc = TransactionDetailViewController(style: .grouped)
             vc.transaction = filteredTransactions[indexPath.row]
             vc.categories = self.categories
+            vc.accounts = self.accounts
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -229,6 +237,31 @@ extension TransactionsViewController: UITableViewDataSource {
             } else {
                 print(response.error?.localizedDescription ?? "Unknown Error!")
                 self.categoriesError = response.error?.localizedDescription ?? "Unknown Error!"
+            }
+        }
+    }
+    
+    func listAccounts() {
+        let urlString = "https://api.up.com.au/api/v1/accounts"
+        let headers: HTTPHeaders = [
+            "Accept": "application/json",
+            "Authorization": "Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")"
+        ]
+        AF.request(urlString, method: .get, headers: headers).responseJSON { response in
+            if response.error == nil {
+                if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
+                    print("Accounts JSON Decoding Succeeded!")
+                    self.accounts = decodedResponse.data
+                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
+                    print("Accounts Error JSON Decoding Succeeded!")
+                    self.accountsErrorResponse = decodedResponse.errors
+                } else {
+                    print("Accounts JSON Decoding Failed!")
+                    self.accountsError = "JSON Decoding Failed!"
+                }
+            } else {
+                print(response.error?.localizedDescription ?? "Unknown Error!")
+                self.accountsError = response.error?.localizedDescription ?? "Unknown Error!"
             }
         }
     }

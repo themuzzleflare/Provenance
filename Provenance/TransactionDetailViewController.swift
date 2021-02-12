@@ -3,6 +3,7 @@ import UIKit
 class TransactionDetailViewController: UITableViewController {
     var transaction: TransactionResource!
     var categories: [CategoryResource]!
+    var accounts: [AccountResource]!
     
     private var statusString: String {
         switch transaction?.attributes.isSettled {
@@ -13,10 +14,13 @@ class TransactionDetailViewController: UITableViewController {
     }
     
     private var statusIcon: UIImageView {
-        let settledIcon = UIImageView(image: UIImage(systemName: "checkmark.circle"))
-        let heldIcon = UIImageView(image: UIImage(systemName: "clock"))
-        settledIcon.tintColor = .green
-        heldIcon.tintColor = .yellow
+        let configuration = UIImage.SymbolConfiguration(pointSize: 24)
+        let settledIconImage = UIImage(systemName: "checkmark.circle", withConfiguration: configuration)
+        let heldIconImage = UIImage(systemName: "clock", withConfiguration: configuration)
+        let settledIcon = UIImageView(image: settledIconImage)
+        let heldIcon = UIImageView(image: heldIconImage)
+        settledIcon.tintColor = .systemGreen
+        heldIcon.tintColor = .systemYellow
         switch transaction!.attributes.isSettled {
             case true: return settledIcon
             case false: return heldIcon
@@ -35,8 +39,14 @@ class TransactionDetailViewController: UITableViewController {
         }
     }
     
+    private var accountFilter: [AccountResource]? {
+        accounts?.filter { account in
+            transaction?.relationships.account.data.id == account.id
+        }
+    }
+    
     private var attributes: KeyValuePairs<String, String> {
-        return ["Description": transaction?.attributes.description ?? "", "Raw Text": transaction?.attributes.rawText ?? "", "Message": transaction?.attributes.message ?? "", "Status": statusString, transaction?.attributes.amount.transType ?? "Amount": "\(transaction?.attributes.amount.valueSymbol ?? "")\(transaction?.attributes.amount.valueString ?? "") \(transaction?.attributes.amount.currencyCode ?? "")", "Created Date": transaction?.attributes.createdDate ?? "", "Settled Date": transaction?.attributes.settledDate ?? ""]
+        return ["Description": transaction?.attributes.description ?? "", "Raw Text": transaction?.attributes.rawText ?? "", "Account": accountFilter?.first?.attributes.displayName ?? "", "Message": transaction?.attributes.message ?? "", "Status": statusString, transaction?.attributes.amount.transType ?? "Amount": "\(transaction?.attributes.amount.valueSymbol ?? "")\(transaction?.attributes.amount.valueString ?? "") \(transaction?.attributes.amount.currencyCode ?? "")", "Created Date": transaction?.attributes.createdDate ?? "", "Settled Date": transaction?.attributes.settledDate ?? ""]
     }
     
     private var attributesTwo: KeyValuePairs<String, String> {

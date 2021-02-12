@@ -52,7 +52,6 @@ class TransactionsByAccountViewController: UIViewController, UITableViewDelegate
         refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
         
         setupFetchingView()
-        listCategories()
     }
     
     @objc private func openAccountInfo() {
@@ -63,10 +62,12 @@ class TransactionsByAccountViewController: UIViewController, UITableViewDelegate
     
     override func viewWillAppear(_ animated: Bool) {
         listTransactions()
+        listCategories()
     }
     
     @objc private func refreshTransactions() {
         listTransactions()
+        listCategories()
     }
     
     func setupFetchingView() {
