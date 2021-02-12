@@ -1,16 +1,16 @@
 import UIKit
 import Alamofire
 
-class AddTagWorkflowViewController: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+class AddTagWorkflowVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
-    let fetchingView = UIActivityIndicatorView(style: .medium)
-    let tableViewController = UITableViewController(style: .grouped)
+    let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
+    let tableViewController: UITableViewController = UITableViewController(style: .grouped)
     lazy var refreshControl: UIRefreshControl = UIRefreshControl()
     lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
     
-    var transactions = [TransactionResource]()
-    var transactionsErrorResponse = [ErrorObject]()
-    var transactionsError: String = ""
+    lazy var transactions: [TransactionResource] = []
+    lazy var transactionsErrorResponse: [ErrorObject] = []
+    lazy var transactionsError: String = ""
     lazy var filteredTransactions: [TransactionResource] = []
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -105,9 +105,6 @@ class AddTagWorkflowViewController: UIViewController, UITableViewDelegate, UISea
             "Authorization": "Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")"
         ]
         AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseJSON { response in
-            self.fetchingView.stopAnimating()
-            self.fetchingView.removeFromSuperview()
-            self.setupTableView()
             if response.error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
                     print("Transactions JSON Decoding Succeeded!")
@@ -116,6 +113,9 @@ class AddTagWorkflowViewController: UIViewController, UITableViewDelegate, UISea
                     self.transactionsError = ""
                     self.transactionsErrorResponse = []
                     self.navigationItem.title = "Select Transaction"
+                    self.fetchingView.stopAnimating()
+                    self.fetchingView.removeFromSuperview()
+                    self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
@@ -124,6 +124,9 @@ class AddTagWorkflowViewController: UIViewController, UITableViewDelegate, UISea
                     self.transactionsError = ""
                     self.transactions = []
                     self.navigationItem.title = "Errors"
+                    self.fetchingView.stopAnimating()
+                    self.fetchingView.removeFromSuperview()
+                    self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 } else {
@@ -132,6 +135,9 @@ class AddTagWorkflowViewController: UIViewController, UITableViewDelegate, UISea
                     self.transactionsErrorResponse = []
                     self.transactions = []
                     self.navigationItem.title = "Error"
+                    self.fetchingView.stopAnimating()
+                    self.fetchingView.removeFromSuperview()
+                    self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 }
@@ -141,6 +147,9 @@ class AddTagWorkflowViewController: UIViewController, UITableViewDelegate, UISea
                 self.transactionsErrorResponse = []
                 self.transactions = []
                 self.navigationItem.title = "Error"
+                self.fetchingView.stopAnimating()
+                self.fetchingView.removeFromSuperview()
+                self.setupTableView()
                 self.tableViewController.tableView.reloadData()
                 self.refreshControl.endRefreshing()
             }
@@ -148,7 +157,7 @@ class AddTagWorkflowViewController: UIViewController, UITableViewDelegate, UISea
     }
 }
 
-extension AddTagWorkflowViewController: UITableViewDataSource {
+extension AddTagWorkflowVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
             return 1
@@ -208,23 +217,24 @@ extension AddTagWorkflowViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
-            let vc = AddTagWorkflowTwoViewController()
+            let vc = AddTagWorkflowTwoVC()
             vc.transaction = filteredTransactions[indexPath.row]
             navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
 
-class AddTagWorkflowTwoViewController: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     var transaction: TransactionResource!
-    let fetchingView = UIActivityIndicatorView(style: .medium)
-    let tableViewController = UITableViewController(style: .grouped)
+    
+    let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
+    let tableViewController: UITableViewController = UITableViewController(style: .grouped)
     lazy var refreshControl: UIRefreshControl = UIRefreshControl()
     lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
     
-    var tags = [TagResource]()
-    var tagsErrorResponse = [ErrorObject]()
-    var tagsError: String = ""
+    lazy var tags: [TagResource] = []
+    lazy var tagsErrorResponse: [ErrorObject] = []
+    lazy var tagsError: String = ""
     lazy var filteredTags: [TagResource] = []
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -276,7 +286,7 @@ class AddTagWorkflowTwoViewController: UIViewController, UITableViewDelegate, UI
         let submitAction = UIAlertAction(title: "Next", style: .default) { [unowned ac] _ in
             let answer = ac.textFields![0]
             if answer.text != "" {
-                let vc = AddTagWorkflowThreeViewController(style: .grouped)
+                let vc = AddTagWorkflowThreeVC(style: .grouped)
                 vc.transaction = self.transaction
                 vc.tag = answer.text
                 self.navigationController?.pushViewController(vc, animated: true)
@@ -333,9 +343,6 @@ class AddTagWorkflowTwoViewController: UIViewController, UITableViewDelegate, UI
             "Authorization": "Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")"
         ]
         AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseJSON { response in
-            self.fetchingView.stopAnimating()
-            self.fetchingView.removeFromSuperview()
-            self.setupTableView()
             if response.error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: response.data!) {
                     print("Tags JSON Decoding Succeeded!")
@@ -344,6 +351,9 @@ class AddTagWorkflowTwoViewController: UIViewController, UITableViewDelegate, UI
                     self.tagsError = ""
                     self.tagsErrorResponse = []
                     self.navigationItem.title = "Select Tag"
+                    self.fetchingView.stopAnimating()
+                    self.fetchingView.removeFromSuperview()
+                    self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
@@ -352,6 +362,9 @@ class AddTagWorkflowTwoViewController: UIViewController, UITableViewDelegate, UI
                     self.tagsError = ""
                     self.tags = []
                     self.navigationItem.title = "Errors"
+                    self.fetchingView.stopAnimating()
+                    self.fetchingView.removeFromSuperview()
+                    self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 } else {
@@ -360,6 +373,9 @@ class AddTagWorkflowTwoViewController: UIViewController, UITableViewDelegate, UI
                     self.tagsErrorResponse = []
                     self.tags = []
                     self.navigationItem.title = "Error"
+                    self.fetchingView.stopAnimating()
+                    self.fetchingView.removeFromSuperview()
+                    self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 }
@@ -369,6 +385,9 @@ class AddTagWorkflowTwoViewController: UIViewController, UITableViewDelegate, UI
                 self.tagsErrorResponse = []
                 self.tags = []
                 self.navigationItem.title = "Error"
+                self.fetchingView.stopAnimating()
+                self.fetchingView.removeFromSuperview()
+                self.setupTableView()
                 self.tableViewController.tableView.reloadData()
                 self.refreshControl.endRefreshing()
             }
@@ -376,7 +395,7 @@ class AddTagWorkflowTwoViewController: UIViewController, UITableViewDelegate, UI
     }
 }
 
-extension AddTagWorkflowTwoViewController: UITableViewDataSource {
+extension AddTagWorkflowTwoVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty {
             return 1
@@ -431,7 +450,7 @@ extension AddTagWorkflowTwoViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.tagsErrorResponse.isEmpty && self.tagsError.isEmpty && !self.filteredTags.isEmpty {
-            let vc = AddTagWorkflowThreeViewController(style: .grouped)
+            let vc = AddTagWorkflowThreeVC(style: .grouped)
             vc.transaction = transaction
             vc.tag = filteredTags[indexPath.row].id
             navigationController?.pushViewController(vc, animated: true)
@@ -439,7 +458,7 @@ extension AddTagWorkflowTwoViewController: UITableViewDataSource {
     }
 }
 
-class AddTagWorkflowThreeViewController: UITableViewController {
+class AddTagWorkflowThreeVC: UITableViewController {
     var transaction: TransactionResource!
     var tag: String!
     

@@ -1,6 +1,6 @@
 import UIKit
 
-class SettingsViewController: UITableViewController {
+class SettingsVC: UITableViewController {
     private var apiKeyDisplay: String {
         switch UserDefaults.standard.string(forKey: "apiKey") {
             case nil, "": return "None"

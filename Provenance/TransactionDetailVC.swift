@@ -1,6 +1,6 @@
 import UIKit
 
-class TransactionDetailViewController: UITableViewController {
+class TransactionDetailVC: UITableViewController {
     var transaction: TransactionResource!
     var categories: [CategoryResource]!
     var accounts: [AccountResource]!
@@ -138,12 +138,12 @@ class TransactionDetailViewController: UITableViewController {
             } else {
                 attribute = altAttributesTwo[indexPath.row]
             }
-            let vc = TransactionAttributeDetailViewController()
+            let vc = TransactionAttributeDetailVC()
             vc.attributeKey = attribute.key
             vc.attributeValue = attribute.value
             present(UINavigationController(rootViewController: vc), animated: true)
         } else {
-            let vc = TagsViewController(style: .grouped)
+            let vc = TagsVC(style: .grouped)
             vc.transaction = transaction
             navigationController?.pushViewController(vc, animated: true)
         }

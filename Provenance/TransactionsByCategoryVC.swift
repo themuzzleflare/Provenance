@@ -1,26 +1,26 @@
 import UIKit
 import Alamofire
 
-class TransactionsByTagViewController: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
-    var tag: TagResource!
+class TransactionsByCategoryVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+    var category: CategoryResource!
     
-    let fetchingView = UIActivityIndicatorView(style: .medium)
-    let tableViewController = UITableViewController(style: .grouped)
+    let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
+    let tableViewController: UITableViewController = UITableViewController(style: .grouped)
     lazy var refreshControl: UIRefreshControl = UIRefreshControl()
     lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
     
-    var transactions = [TransactionResource]()
-    var transactionsErrorResponse = [ErrorObject]()
-    var transactionsError: String = ""
+    lazy var transactions: [TransactionResource] = []
+    lazy var transactionsErrorResponse: [ErrorObject] = []
+    lazy var transactionsError: String = ""
     lazy var filteredTransactions: [TransactionResource] = []
     
-    var categories = [CategoryResource]()
-    var categoriesErrorResponse = [ErrorObject]()
-    var categoriesError: String = ""
+    lazy var categories: [CategoryResource] = []
+    lazy var categoriesErrorResponse: [ErrorObject] = []
+    lazy var categoriesError: String = ""
     
-    var accounts = [AccountResource]()
-    var accountsErrorResponse = [ErrorObject]()
-    var accountsError: String = ""
+    lazy var accounts: [AccountResource] = []
+    lazy var accountsErrorResponse: [ErrorObject] = []
+    lazy var accountsError: String = ""
     
     func updateSearchResults(for searchController: UISearchController) {
         filteredTransactions = transactions.filter { searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(searchController.searchBar.text!) }
@@ -42,7 +42,7 @@ class TransactionsByTagViewController: UIViewController, UITableViewDelegate, UI
         searchController.searchResultsUpdater = self
         definesPresentationContext = true
         
-        self.title = "Transactions by Tag"
+        self.title = "Transactions by Category"
         
         navigationItem.title = "Loading"
         navigationItem.searchController = searchController
@@ -101,15 +101,12 @@ class TransactionsByTagViewController: UIViewController, UITableViewDelegate, UI
     
     func listTransactions() {
         let urlString = "https://api.up.com.au/api/v1/transactions"
-        let parameters: Parameters = ["filter[tag]":tag.id, "page[size]":"100"]
+        let parameters: Parameters = ["filter[category]":category.id, "page[size]":"100"]
         let headers: HTTPHeaders = [
             "Accept": "application/json",
             "Authorization": "Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")"
         ]
         AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseJSON { response in
-            self.fetchingView.stopAnimating()
-            self.fetchingView.removeFromSuperview()
-            self.setupTableView()
             if response.error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
                     print("Transactions JSON Decoding Succeeded!")
@@ -117,7 +114,10 @@ class TransactionsByTagViewController: UIViewController, UITableViewDelegate, UI
                     self.filteredTransactions = self.transactions.filter { self.searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(self.searchController.searchBar.text!) }
                     self.transactionsError = ""
                     self.transactionsErrorResponse = []
-                    self.navigationItem.title = self.tag.id
+                    self.navigationItem.title = self.category.attributes.name
+                    self.fetchingView.stopAnimating()
+                    self.fetchingView.removeFromSuperview()
+                    self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
@@ -126,6 +126,9 @@ class TransactionsByTagViewController: UIViewController, UITableViewDelegate, UI
                     self.transactionsError = ""
                     self.transactions = []
                     self.navigationItem.title = "Errors"
+                    self.fetchingView.stopAnimating()
+                    self.fetchingView.removeFromSuperview()
+                    self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 } else {
@@ -134,6 +137,9 @@ class TransactionsByTagViewController: UIViewController, UITableViewDelegate, UI
                     self.transactionsErrorResponse = []
                     self.transactions = []
                     self.navigationItem.title = "Error"
+                    self.fetchingView.stopAnimating()
+                    self.fetchingView.removeFromSuperview()
+                    self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 }
@@ -143,6 +149,9 @@ class TransactionsByTagViewController: UIViewController, UITableViewDelegate, UI
                 self.transactionsErrorResponse = []
                 self.transactions = []
                 self.navigationItem.title = "Error"
+                self.fetchingView.stopAnimating()
+                self.fetchingView.removeFromSuperview()
+                self.setupTableView()
                 self.tableViewController.tableView.reloadData()
                 self.refreshControl.endRefreshing()
             }
@@ -150,7 +159,7 @@ class TransactionsByTagViewController: UIViewController, UITableViewDelegate, UI
     }
 }
 
-extension TransactionsByTagViewController: UITableViewDataSource {
+extension TransactionsByCategoryVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
             return 1
@@ -211,63 +220,11 @@ extension TransactionsByTagViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
-            let vc = TransactionDetailViewController(style: .grouped)
+            let vc = TransactionDetailVC(style: .grouped)
             vc.transaction = filteredTransactions[indexPath.row]
             vc.categories = self.categories
             vc.accounts = self.accounts
             navigationController?.pushViewController(vc, animated: true)
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
-            let transaction = filteredTransactions[indexPath.row]
-            
-            let copy = UIAction(title: "Copy") { _ in
-                UIPasteboard.general.string = transaction.attributes.description
-            }
-            let remove = UIAction(title: "Remove") { _ in
-                let urlString = "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags"
-                var request = URLRequest(url: URL(string: urlString)!)
-                request.httpMethod = "DELETE"
-                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                request.addValue("Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
-                
-                let bodyObject: [String : Any] = [
-                    "data": [
-                        [
-                            "type": "tags",
-                            "id": self.tag.id
-                        ]
-                    ]
-                ]
-                request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
-                AF.request(request).responseJSON { response in
-                    if response.error == nil {
-                        if response.response?.statusCode != 204 {
-                            let ac = UIAlertController(title: "Failed", message: "The tag was not removed from the transaction.", preferredStyle: .alert)
-                            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                            ac.addAction(dismissAction)
-                            self.present(ac, animated: true)
-                        } else {
-                            self.listTransactions()
-                            self.tableViewController.tableView.reloadData()
-                        }
-                    } else {
-                        let ac = UIAlertController(title: "Failed", message: "The tag was not removed from the transaction.", preferredStyle: .alert)
-                        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                        ac.addAction(dismissAction)
-                        self.present(ac, animated: true)
-                    }
-                }
-            }
-            
-            return UIContextMenuConfiguration(identifier: nil,
-                                              previewProvider: nil) { _ in
-                UIMenu(title: "Actions", children: [copy, remove])
-            }
-        } else {
-            return nil
         }
     }
     

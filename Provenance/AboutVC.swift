@@ -1,6 +1,6 @@
 import UIKit
 
-class AboutViewController: UIViewController {
+class AboutVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,12 +39,12 @@ class AboutViewController: UIViewController {
     }
     
     @objc private func openSettings() {
-        let vc = UINavigationController(rootViewController: SettingsViewController(style: .grouped))
+        let vc = UINavigationController(rootViewController: SettingsVC(style: .grouped))
         present(vc, animated: true)
     }
     
     @objc private func openDiagnostics() {
-        let vc = UINavigationController(rootViewController: DiagnosticTableViewController(style: .grouped))
+        let vc = UINavigationController(rootViewController: DiagnosticTableVC(style: .grouped))
         present(vc, animated: true)
     }
 }

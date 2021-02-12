@@ -1,27 +1,22 @@
 import UIKit
 
-class AccountDetailViewController: UITableViewController {
-    var account: AccountResource!
+class DiagnosticTableVC: UITableViewController {
+    
+    let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
+    let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
+    let name = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "Provenance"
+    let copyright = Bundle.main.infoDictionary?["NSHumanReadableCopyright"] as? String ?? "Copyright © 2021 Paul Tavitian"
     
     private var attributes: KeyValuePairs<String, String> {
-        return ["Account Balance": "\(account.attributes.balance.valueSymbol)\(account.attributes.balance.valueString) \(account.attributes.balance.currencyCode)", "Creation Date": account.attributes.createdDate]
-    }
-    
-    private var altAttributes: Array<(key: String, value: String)> {
-        return attributes.filter {
-            $0.value != ""
-        }
+        return ["Version": version, "Build": build]
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
-        
-        clearsSelectionOnViewWillAppear = true
-        navigationItem.title = account.attributes.displayName
+        navigationItem.title = "Diagnostics"
         navigationItem.setRightBarButton(closeButton, animated: true)
-        tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "attributeCell")
+        tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "diagnosticCell")
     }
     
     @objc private func closeWorkflow() {
@@ -33,20 +28,19 @@ class AccountDetailViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return altAttributes.count
+        return attributes.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! RightDetailTableViewCell
+        let attribute = attributes[indexPath.row]
         
-        let attribute = altAttributes[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "diagnosticCell", for: indexPath) as! RightDetailTableViewCell
         
         cell.selectionStyle = .none
         cell.textLabel?.textColor = .secondaryLabel
         cell.textLabel?.text = attribute.key
         cell.detailTextLabel?.textColor = .label
         cell.detailTextLabel?.textAlignment = .right
-        cell.detailTextLabel?.numberOfLines = 0
         cell.detailTextLabel?.text = attribute.value
         
         return cell

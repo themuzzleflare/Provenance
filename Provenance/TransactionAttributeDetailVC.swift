@@ -1,6 +1,6 @@
 import UIKit
 
-class TransactionAttributeDetailViewController: UIViewController {
+class TransactionAttributeDetailVC: UIViewController {
     var attributeKey: String!
     var attributeValue: String!
     

@@ -1,6 +1,6 @@
 import UIKit
 
-class TagsViewController: UITableViewController {
+class TagsVC: UITableViewController {
     var transaction: TransactionResource!
     
     override func viewDidLoad() {
@@ -29,6 +29,7 @@ class TagsViewController: UITableViewController {
         
         cell.selectionStyle = .none
         cell.textLabel?.text = tag.id
+        
         return cell
     }
 }

@@ -1,14 +1,14 @@
 import UIKit
 import Alamofire
 
-class AccountsViewController: UIViewController, UITableViewDelegate, UISearchBarDelegate {
-    let fetchingView = UIActivityIndicatorView(style: .medium)
-    let tableViewController = UITableViewController(style: .grouped)
+class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
+    let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
+    let tableViewController: UITableViewController = UITableViewController(style: .grouped)
     lazy var refreshControl: UIRefreshControl = UIRefreshControl()
     
-    var accounts = [AccountResource]()
-    var accountsErrorResponse = [ErrorObject]()
-    var accountsError: String = ""
+    lazy var accounts: [AccountResource] = []
+    lazy var accountsErrorResponse: [ErrorObject] = []
+    lazy var accountsError: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,9 +75,6 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UISearchBar
             "Authorization": "Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")"
         ]
         AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseJSON { response in
-            self.fetchingView.stopAnimating()
-            self.fetchingView.removeFromSuperview()
-            self.setupTableView()
             if response.error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
                     print("Accounts JSON Decoding Succeeded!")
@@ -85,6 +82,9 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UISearchBar
                     self.accountsError = ""
                     self.accountsErrorResponse = []
                     self.navigationItem.title = "Accounts"
+                    self.fetchingView.stopAnimating()
+                    self.fetchingView.removeFromSuperview()
+                    self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
@@ -93,6 +93,9 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UISearchBar
                     self.accountsError = ""
                     self.accounts = []
                     self.navigationItem.title = "Errors"
+                    self.fetchingView.stopAnimating()
+                    self.fetchingView.removeFromSuperview()
+                    self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 } else {
@@ -101,6 +104,9 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UISearchBar
                     self.accountsErrorResponse = []
                     self.accounts = []
                     self.navigationItem.title = "Error"
+                    self.fetchingView.stopAnimating()
+                    self.fetchingView.removeFromSuperview()
+                    self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 }
@@ -110,6 +116,9 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UISearchBar
                 self.accountsErrorResponse = []
                 self.accounts = []
                 self.navigationItem.title = "Error"
+                self.fetchingView.stopAnimating()
+                self.fetchingView.removeFromSuperview()
+                self.setupTableView()
                 self.tableViewController.tableView.reloadData()
                 self.refreshControl.endRefreshing()
             }
@@ -117,7 +126,7 @@ class AccountsViewController: UIViewController, UITableViewDelegate, UISearchBar
     }
 }
 
-extension AccountsViewController: UITableViewDataSource {
+extension AccountsVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.accounts.isEmpty && self.accountsError.isEmpty && self.accountsErrorResponse.isEmpty {
             return 1
@@ -177,7 +186,7 @@ extension AccountsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.accountsErrorResponse.isEmpty && self.accountsError.isEmpty && !self.accounts.isEmpty {
-            let vc = TransactionsByAccountViewController()
+            let vc = TransactionsByAccountVC()
             vc.account = accounts[indexPath.row]
             navigationController?.pushViewController(vc, animated: true)
         }

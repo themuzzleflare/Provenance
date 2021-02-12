@@ -1,29 +1,27 @@
 import UIKit
 import Alamofire
 
-class TransactionsViewController: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
-    let fetchingView = UIActivityIndicatorView(style: .medium)
-    let tableViewController = UITableViewController(style: .grouped)
-    lazy var refreshControl: UIRefreshControl = UIRefreshControl()
-    lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
-    
-    var transactions = [TransactionResource]()
-    var transactionsErrorResponse = [ErrorObject]()
-    var transactionsError: String = ""
-    lazy var filteredTransactions: [TransactionResource] = []
-    
-    var categories = [CategoryResource]()
-    var categoriesErrorResponse = [ErrorObject]()
-    var categoriesError: String = ""
-    
-    var accounts = [AccountResource]()
-    var accountsErrorResponse = [ErrorObject]()
-    var accountsError: String = ""
+class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+    var account: AccountResource!
     
     func updateSearchResults(for searchController: UISearchController) {
         filteredTransactions = transactions.filter { searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(searchController.searchBar.text!) }
         tableViewController.tableView.reloadData()
     }
+    
+    let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
+    let tableViewController: UITableViewController = UITableViewController(style: .grouped)
+    lazy var refreshControl: UIRefreshControl = UIRefreshControl()
+    lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
+    
+    lazy var transactions: [TransactionResource] = []
+    lazy var transactionsErrorResponse: [ErrorObject] = []
+    lazy var transactionsError: String = ""
+    lazy var filteredTransactions: [TransactionResource] = []
+    
+    lazy var categories: [CategoryResource] = []
+    lazy var categoriesErrorResponse: [ErrorObject] = []
+    lazy var categoriesError: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,9 +38,12 @@ class TransactionsViewController: UIViewController, UITableViewDelegate, UISearc
         searchController.searchResultsUpdater = self
         definesPresentationContext = true
         
-        self.title = "Transactions"
+        let infoButton = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(openAccountInfo))
+        
+        self.title = "Transactions by Account"
         
         navigationItem.title = "Loading"
+        navigationItem.setRightBarButton(infoButton, animated: true)
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         
@@ -53,16 +54,20 @@ class TransactionsViewController: UIViewController, UITableViewDelegate, UISearc
         setupFetchingView()
     }
     
+    @objc private func openAccountInfo() {
+        let vc = AccountDetailVC(style: .grouped)
+        vc.account = account
+        present(UINavigationController(rootViewController: vc), animated: true)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         listTransactions()
         listCategories()
-        listAccounts()
     }
     
     @objc private func refreshTransactions() {
         listTransactions()
         listCategories()
-        listAccounts()
     }
     
     func setupFetchingView() {
@@ -98,24 +103,24 @@ class TransactionsViewController: UIViewController, UITableViewDelegate, UISearc
     }
     
     func listTransactions() {
-        let urlString = "https://api.up.com.au/api/v1/transactions"
+        let urlString = "https://api.up.com.au/api/v1/accounts/\(account.id)/transactions"
         let parameters: Parameters = ["page[size]":"100"]
         let headers: HTTPHeaders = [
             "Accept": "application/json",
             "Authorization": "Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")"
         ]
         AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseJSON { response in
-            self.fetchingView.stopAnimating()
-            self.fetchingView.removeFromSuperview()
-            self.setupTableView()
             if response.error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
                     print("Transactions JSON Decoding Succeeded!")
                     self.transactions = decodedResponse.data
-                    self.transactionsError = ""
                     self.filteredTransactions = self.transactions.filter { self.searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(self.searchController.searchBar.text!) }
+                    self.transactionsError = ""
                     self.transactionsErrorResponse = []
-                    self.navigationItem.title = "Transactions"
+                    self.navigationItem.title = self.account.attributes.displayName
+                    self.fetchingView.stopAnimating()
+                    self.fetchingView.removeFromSuperview()
+                    self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
@@ -124,6 +129,9 @@ class TransactionsViewController: UIViewController, UITableViewDelegate, UISearc
                     self.transactionsError = ""
                     self.transactions = []
                     self.navigationItem.title = "Errors"
+                    self.fetchingView.stopAnimating()
+                    self.fetchingView.removeFromSuperview()
+                    self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 } else {
@@ -132,6 +140,9 @@ class TransactionsViewController: UIViewController, UITableViewDelegate, UISearc
                     self.transactionsErrorResponse = []
                     self.transactions = []
                     self.navigationItem.title = "Error"
+                    self.fetchingView.stopAnimating()
+                    self.fetchingView.removeFromSuperview()
+                    self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 }
@@ -141,6 +152,9 @@ class TransactionsViewController: UIViewController, UITableViewDelegate, UISearc
                 self.transactionsErrorResponse = []
                 self.transactions = []
                 self.navigationItem.title = "Error"
+                self.fetchingView.stopAnimating()
+                self.fetchingView.removeFromSuperview()
+                self.setupTableView()
                 self.tableViewController.tableView.reloadData()
                 self.refreshControl.endRefreshing()
             }
@@ -148,7 +162,7 @@ class TransactionsViewController: UIViewController, UITableViewDelegate, UISearc
     }
 }
 
-extension TransactionsViewController: UITableViewDataSource {
+extension TransactionsByAccountVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
             return 1
@@ -206,12 +220,12 @@ extension TransactionsViewController: UITableViewDataSource {
         }
     }
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
-            let vc = TransactionDetailViewController(style: .grouped)
+            let vc = TransactionDetailVC(style: .grouped)
             vc.transaction = filteredTransactions[indexPath.row]
             vc.categories = self.categories
-            vc.accounts = self.accounts
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -237,31 +251,6 @@ extension TransactionsViewController: UITableViewDataSource {
             } else {
                 print(response.error?.localizedDescription ?? "Unknown Error!")
                 self.categoriesError = response.error?.localizedDescription ?? "Unknown Error!"
-            }
-        }
-    }
-    
-    func listAccounts() {
-        let urlString = "https://api.up.com.au/api/v1/accounts"
-        let headers: HTTPHeaders = [
-            "Accept": "application/json",
-            "Authorization": "Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")"
-        ]
-        AF.request(urlString, method: .get, headers: headers).responseJSON { response in
-            if response.error == nil {
-                if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
-                    print("Accounts JSON Decoding Succeeded!")
-                    self.accounts = decodedResponse.data
-                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
-                    print("Accounts Error JSON Decoding Succeeded!")
-                    self.accountsErrorResponse = decodedResponse.errors
-                } else {
-                    print("Accounts JSON Decoding Failed!")
-                    self.accountsError = "JSON Decoding Failed!"
-                }
-            } else {
-                print(response.error?.localizedDescription ?? "Unknown Error!")
-                self.accountsError = response.error?.localizedDescription ?? "Unknown Error!"
             }
         }
     }
