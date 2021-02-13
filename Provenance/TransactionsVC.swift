@@ -19,7 +19,7 @@ class TransactionsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate
     lazy var accounts: [AccountResource] = []
     lazy var accountsErrorResponse: [ErrorObject] = []
     lazy var accountsError: String = ""
-        
+    
     func updateSearchResults(for searchController: UISearchController) {
         filteredTransactions = transactions.filter { searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(searchController.searchBar.text!) }
         tableViewController.tableView.reloadData()
@@ -193,7 +193,7 @@ extension TransactionsVC: UITableViewDataSource {
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
         
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
-                
+        
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
             fetchingCell.selectionStyle = .none
             fetchingCell.textLabel?.text = "No Transactions"
@@ -224,7 +224,7 @@ extension TransactionsVC: UITableViewDataSource {
                         default: return transaction.attributes.createdDate
                     }
                 }
-                    
+                
                 transactionCell.leftLabel.text = transaction.attributes.description
                 transactionCell.leftSubtitle.text = createdDate
                 transactionCell.rightLabel.text = "\(transaction.attributes.amount.valueSymbol)\(transaction.attributes.amount.valueString)"

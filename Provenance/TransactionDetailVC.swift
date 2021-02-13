@@ -232,7 +232,7 @@ class TransactionDetailVC: UITableViewController {
         
         return cell
     }
-        
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
         let attribute: (key: String, value: String)
@@ -249,7 +249,7 @@ class TransactionDetailVC: UITableViewController {
             attribute = altAttributesFive[indexPath.row]
             
             let vc = TransactionsByCategoryVC()
-
+            
             if attribute.key == "Parent Category" {
                 vc.category = parentCategoryFilter!.first
             } else {

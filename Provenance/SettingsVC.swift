@@ -8,10 +8,6 @@ class SettingsVC: UITableViewController {
         }
     }
     
-    private var attributes: KeyValuePairs<String, String> {
-        return ["API Key": apiKeyDisplay]
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,12 +45,12 @@ class SettingsVC: UITableViewController {
         cell.detailTextLabel?.text = apiKeyDisplay
         
         if UserDefaults.standard.string(forKey: "dateStyle") == "Absolute" || UserDefaults.standard.string(forKey: "dateStyle") == nil {
-        datePickerCell.datePicker.selectedSegmentIndex = 0
+            datePickerCell.datePicker.selectedSegmentIndex = 0
         } else {
-        datePickerCell.datePicker.selectedSegmentIndex = 1
+            datePickerCell.datePicker.selectedSegmentIndex = 1
         }
         datePickerCell.datePicker.addTarget(self, action: #selector(segmentedControlValueChanged), for:.valueChanged)
-
+        
         
         if section == 0 {
             return cell

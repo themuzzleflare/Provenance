@@ -89,6 +89,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7A07979A25D79ACE0013EE82 /* Custom Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7A2837D425D741D9001809E4 /* TransactionCell.swift */,
+				7A2837D525D741D9001809E4 /* TransactionCell.xib */,
+				7A2837DB25D75437001809E4 /* AttributeCell.swift */,
+				7A2837DC25D75437001809E4 /* AttributeCell.xib */,
+				7A2837EE25D78579001809E4 /* DateStylePickerCell.swift */,
+				7A2837EF25D78579001809E4 /* DateStylePickerCell.xib */,
+			);
+			path = "Custom Cells";
+			sourceTree = "<group>";
+		};
 		7AB34D1125C78230000A1E81 = {
 			isa = PBXGroup;
 			children = (
@@ -109,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				7AD5944F25C8B5410018C86E /* Types */,
+				7A07979A25D79ACE0013EE82 /* Custom Cells */,
 				7AB34D1D25C78230000A1E81 /* AppDelegate.swift */,
 				7AB34D5225C7C30E000A1E81 /* TabBarController.swift */,
 				7AB34D2125C78230000A1E81 /* TransactionsVC.swift */,
@@ -130,12 +144,6 @@
 				7AB34D2625C78232000A1E81 /* Assets.xcassets */,
 				7AB34D2825C78232000A1E81 /* LaunchScreen.storyboard */,
 				7AB34D2B25C78232000A1E81 /* Info.plist */,
-				7A2837D425D741D9001809E4 /* TransactionCell.swift */,
-				7A2837D525D741D9001809E4 /* TransactionCell.xib */,
-				7A2837DB25D75437001809E4 /* AttributeCell.swift */,
-				7A2837DC25D75437001809E4 /* AttributeCell.xib */,
-				7A2837EE25D78579001809E4 /* DateStylePickerCell.swift */,
-				7A2837EF25D78579001809E4 /* DateStylePickerCell.xib */,
 			);
 			path = Provenance;
 			sourceTree = "<group>";
@@ -402,7 +410,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.3;
+				MARKETING_VERSION = 3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -422,7 +430,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.3;
+				MARKETING_VERSION = 3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
