@@ -61,6 +61,7 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        tableViewController.tableView.reloadData()
         listTransactions()
         listCategories()
     }
@@ -96,7 +97,7 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
         tableViewController.tableView.dataSource = self
         tableViewController.tableView.delegate = self
         
-        tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "transactionCell")
+        tableViewController.tableView.register(UINib(nibName: "TransactionCell", bundle: nil), forCellReuseIdentifier: "transactionCell")
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "fetchingCell")
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
@@ -178,8 +179,8 @@ extension TransactionsByAccountVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let transactionCell = tableView.dequeueReusableCell(withIdentifier: "transactionCell", for: indexPath) as! SubtitleTableViewCell
-        
+        let transactionCell = tableView.dequeueReusableCell(withIdentifier: "transactionCell", for: indexPath) as! TransactionCell
+
         let fetchingCell = tableView.dequeueReusableCell(withIdentifier: "fetchingCell", for: indexPath)
         
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
@@ -208,13 +209,17 @@ extension TransactionsByAccountVC: UITableViewDataSource {
                 return errorObjectCell
             } else {
                 let transaction = filteredTransactions[indexPath.row]
-                transactionCell.accessoryType = .disclosureIndicator
-                transactionCell.textLabel?.font = .boldSystemFont(ofSize: 17)
-                transactionCell.textLabel?.textColor = .label
-                transactionCell.textLabel?.text = transaction.attributes.description
-                transactionCell.detailTextLabel?.textColor = .secondaryLabel
-                transactionCell.detailTextLabel?.text =
-                    "\(transaction.attributes.amount.valueSymbol)\(transaction.attributes.amount.valueString)"
+                var createdDate: String {
+                    switch UserDefaults.standard.string(forKey: "dateStyle") {
+                        case "Absolute", .none: return transaction.attributes.createdDate
+                        case "Relative": return transaction.attributes.createdDateRelative
+                        default: return transaction.attributes.createdDate
+                    }
+                }
+                
+                transactionCell.leftLabel.text = transaction.attributes.description
+                transactionCell.leftSubtitle.text = createdDate
+                transactionCell.rightLabel.text = "\(transaction.attributes.amount.valueSymbol)\(transaction.attributes.amount.valueString)"
                 return transactionCell
             }
         }

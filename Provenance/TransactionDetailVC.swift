@@ -5,6 +5,22 @@ class TransactionDetailVC: UITableViewController {
     var categories: [CategoryResource]!
     var accounts: [AccountResource]!
     
+    private var createdDate: String {
+        switch UserDefaults.standard.string(forKey: "dateStyle") {
+            case "Absolute", .none: return transaction.attributes.createdDate
+            case "Relative": return transaction.attributes.createdDateRelative
+            default: return transaction.attributes.createdDate
+        }
+    }
+    
+    private var settledDate: String {
+        switch UserDefaults.standard.string(forKey: "dateStyle") {
+            case "Absolute", .none: return transaction.attributes.settledDate ?? ""
+            case "Relative": return transaction.attributes.settledDateRelative ?? ""
+            default: return transaction.attributes.settledDate ?? ""
+        }
+    }
+    
     private var statusString: String {
         switch transaction?.attributes.isSettled {
             case true: return "Settled"
@@ -14,7 +30,7 @@ class TransactionDetailVC: UITableViewController {
     }
     
     private var statusIcon: UIImageView {
-        let configuration = UIImage.SymbolConfiguration(pointSize: 24)
+        let configuration = UIImage.SymbolConfiguration(pointSize: 20)
         let settledIconImage = UIImage(systemName: "checkmark.circle", withConfiguration: configuration)
         let heldIconImage = UIImage(systemName: "clock", withConfiguration: configuration)
         let settledIcon = UIImageView(image: settledIconImage)
@@ -45,15 +61,59 @@ class TransactionDetailVC: UITableViewController {
         }
     }
     
+    private var holdTransValue: String {
+        if transaction.attributes.holdInfo != nil {
+            if transaction.attributes.holdInfo!.amount.value != transaction.attributes.amount.value {
+                return "\(transaction.attributes.holdInfo!.amount.valueSymbol)\(transaction.attributes.holdInfo!.amount.valueString) \(transaction.attributes.holdInfo!.amount.currencyCode)"
+            } else {
+                return ""
+            }
+        } else {
+            return ""
+        }
+    }
+    
+    private var holdForeignTransValue: String {
+        if transaction.attributes.holdInfo?.foreignAmount != nil {
+            if transaction.attributes.holdInfo!.foreignAmount!.value != transaction.attributes.foreignAmount!.value {
+                return "\(transaction.attributes.holdInfo!.foreignAmount!.valueSymbol)\(transaction.attributes.holdInfo!.foreignAmount!.valueString) \(transaction.attributes.holdInfo!.foreignAmount!.currencyCode)"
+            } else {
+                return ""
+            }
+        } else {
+            return ""
+        }
+    }
+    
+    private var foreignTransValue: String {
+        if transaction.attributes.foreignAmount != nil {
+            return "\(transaction.attributes.foreignAmount!.valueSymbol)\(transaction.attributes.foreignAmount!.valueString) \(transaction.attributes.foreignAmount!.currencyCode)"
+        } else {
+            return ""
+        }
+    }
+    
     private var attributes: KeyValuePairs<String, String> {
-        return ["Description": transaction?.attributes.description ?? "", "Raw Text": transaction?.attributes.rawText ?? "", "Account": accountFilter?.first?.attributes.displayName ?? "", "Message": transaction?.attributes.message ?? "", "Status": statusString, transaction?.attributes.amount.transType ?? "Amount": "\(transaction?.attributes.amount.valueSymbol ?? "")\(transaction?.attributes.amount.valueString ?? "") \(transaction?.attributes.amount.currencyCode ?? "")", "Created Date": transaction?.attributes.createdDate ?? "", "Settled Date": transaction?.attributes.settledDate ?? ""]
+        return ["Status": statusString, "Account": accountFilter?.first?.attributes.displayName ?? ""]
     }
     
     private var attributesTwo: KeyValuePairs<String, String> {
-        return ["Parent Category": parentCategoryFilter?.first?.attributes.name ?? "", "Category": categoryFilter?.first?.attributes.name ?? ""]
+        return ["Description": transaction?.attributes.description ?? "", "Raw Text": transaction?.attributes.rawText ?? "", "Message": transaction?.attributes.message ?? ""]
     }
     
     private var attributesThree: KeyValuePairs<String, String> {
+        return ["Hold \(transaction.attributes.holdInfo?.amount.transType ?? "")": holdTransValue, "Hold Foreign \(transaction.attributes.holdInfo?.foreignAmount?.transType ?? "")": holdForeignTransValue, "Foreign \(transaction.attributes.foreignAmount?.transType ?? "")": foreignTransValue, transaction?.attributes.amount.transType ?? "Amount": "\(transaction?.attributes.amount.valueSymbol ?? "")\(transaction?.attributes.amount.valueString ?? "") \(transaction?.attributes.amount.currencyCode ?? "")"]
+    }
+    
+    private var attributesFour: KeyValuePairs<String, String> {
+        return ["Created Date": createdDate, "Settled Date": settledDate]
+    }
+    
+    private var attributesFive: KeyValuePairs<String, String> {
+        return ["Parent Category": parentCategoryFilter?.first?.attributes.name ?? "", "Category": categoryFilter?.first?.attributes.name ?? ""]
+    }
+    
+    private var attributesSix: KeyValuePairs<String, String> {
         return ["Tags": transaction?.relationships.tags.data.count.description ?? ""]
     }
     
@@ -76,6 +136,24 @@ class TransactionDetailVC: UITableViewController {
         }
     }
     
+    private var altAttributesFour: Array<(key: String, value: String)> {
+        return attributesFour.filter {
+            $0.value != ""
+        }
+    }
+    
+    private var altAttributesFive: Array<(key: String, value: String)> {
+        return attributesFive.filter {
+            $0.value != ""
+        }
+    }
+    
+    private var altAttributesSix: Array<(key: String, value: String)> {
+        return attributesSix.filter {
+            $0.value != ""
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -84,14 +162,20 @@ class TransactionDetailVC: UITableViewController {
         clearsSelectionOnViewWillAppear = true
         navigationItem.title = transaction?.attributes.description ?? ""
         navigationItem.setRightBarButton(statusButtonIcon, animated: true)
-        tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "attributeCell")
+        tableView.register(UINib(nibName: "AttributeCell", bundle: nil), forCellReuseIdentifier: "attributeCell")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if transaction?.relationships.tags.data.count == 0 {
-            return 2
+        if transaction?.relationships.tags.data.count == 0 && (transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil) {
+            return 4
+        } else if transaction?.relationships.tags.data.count == 0 || (transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil) {
+            return 5
         } else {
-            return 3
+            return 6
         }
     }
     
@@ -100,49 +184,79 @@ class TransactionDetailVC: UITableViewController {
             return altAttributes.count
         } else if section == 1 {
             return altAttributesTwo.count
-        } else {
+        } else if section == 2 {
             return altAttributesThree.count
+        } else if section == 3 {
+            return altAttributesFour.count
+        } else if section == 4 {
+            return altAttributesFive.count
+        } else {
+            return altAttributesSix.count
         }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! RightDetailTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! AttributeCell
         
         let attribute: (key: String, value: String)
         
-        if indexPath.section == 0 {
+        let section = indexPath.section
+        
+        if section == 0 {
             attribute = altAttributes[indexPath.row]
-        } else if indexPath.section == 1 {
+            
+            if attribute.key == "Account" {
+                cell.selectionStyle = .default
+                cell.accessoryType = .disclosureIndicator
+            }
+        } else if section == 1 {
             attribute = altAttributesTwo[indexPath.row]
-        } else {
+        } else if section == 2 {
             attribute = altAttributesThree[indexPath.row]
+        } else if section == 3 {
+            attribute = altAttributesFour[indexPath.row]
+        } else if section == 4 {
+            attribute = altAttributesFive[indexPath.row]
+            
+            cell.selectionStyle = .default
+            cell.accessoryType = .disclosureIndicator
+        } else {
+            attribute = altAttributesSix[indexPath.row]
+            
+            cell.selectionStyle = .default
+            cell.accessoryType = .disclosureIndicator
         }
         
-        cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.textColor = .secondaryLabel
-        cell.textLabel?.text = attribute.key
-        cell.detailTextLabel?.textColor = .label
-        cell.detailTextLabel?.textAlignment = .right
-        cell.detailTextLabel?.text = attribute.value
+        cell.leftLabel.text = attribute.key
+        cell.rightDetail.text = attribute.value
         
         return cell
     }
-    
+        
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let section = indexPath.section
         let attribute: (key: String, value: String)
         
-        if indexPath.section == 0 || indexPath.section == 1 {
-            tableView.deselectRow(at: indexPath, animated: true)
-            if indexPath.section == 0 {
-                attribute = altAttributes[indexPath.row]
-            } else {
-                attribute = altAttributesTwo[indexPath.row]
+        if section == 0 {
+            attribute = altAttributes[indexPath.row]
+            
+            if attribute.key == "Account" {
+                let vc = TransactionsByAccountVC()
+                vc.account = accountFilter!.first!
+                navigationController?.pushViewController(vc, animated: true)
             }
-            let vc = TransactionAttributeDetailVC()
-            vc.attributeKey = attribute.key
-            vc.attributeValue = attribute.value
-            present(UINavigationController(rootViewController: vc), animated: true)
-        } else {
+        } else if section == 4 {
+            attribute = altAttributesFive[indexPath.row]
+            
+            let vc = TransactionsByCategoryVC()
+
+            if attribute.key == "Parent Category" {
+                vc.category = parentCategoryFilter!.first
+            } else {
+                vc.category = categoryFilter!.first
+            }
+            navigationController?.pushViewController(vc, animated: true)
+        } else if section == 5 {
             let vc = TagsVC(style: .grouped)
             vc.transaction = transaction
             navigationController?.pushViewController(vc, animated: true)

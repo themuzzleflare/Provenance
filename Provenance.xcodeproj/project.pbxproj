@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A2837D625D741D9001809E4 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2837D425D741D9001809E4 /* TransactionCell.swift */; };
+		7A2837D725D741D9001809E4 /* TransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A2837D525D741D9001809E4 /* TransactionCell.xib */; };
+		7A2837DD25D75437001809E4 /* AttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2837DB25D75437001809E4 /* AttributeCell.swift */; };
+		7A2837DE25D75437001809E4 /* AttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A2837DC25D75437001809E4 /* AttributeCell.xib */; };
+		7A2837F025D78579001809E4 /* DateStylePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2837EE25D78579001809E4 /* DateStylePickerCell.swift */; };
+		7A2837F125D78579001809E4 /* DateStylePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A2837EF25D78579001809E4 /* DateStylePickerCell.xib */; };
 		7A56100F25D219530091396E /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56100E25D219530091396E /* Tag.swift */; };
 		7A56101225D219770091396E /* AllTagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101125D219770091396E /* AllTagsVC.swift */; };
 		7A56101625D21BFE0091396E /* TransactionsByTagVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101525D21BFE0091396E /* TransactionsByTagVC.swift */; };
@@ -16,7 +22,6 @@
 		7A8DDC9F25D1388700EF85B9 /* CategoriesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8DDC9E25D1388700EF85B9 /* CategoriesVC.swift */; };
 		7A8DDCA225D138C200EF85B9 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8DDCA125D138C200EF85B9 /* Category.swift */; };
 		7A8DDCA525D1472400EF85B9 /* TagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8DDCA425D1472400EF85B9 /* TagsVC.swift */; };
-		7A9DE25525C8F2F80090DDFF /* TransactionAttributeDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9DE25425C8F2F80090DDFF /* TransactionAttributeDetailVC.swift */; };
 		7AB34D1E25C78230000A1E81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D1D25C78230000A1E81 /* AppDelegate.swift */; };
 		7AB34D2225C78230000A1E81 /* TransactionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D2125C78230000A1E81 /* TransactionsVC.swift */; };
 		7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
@@ -37,6 +42,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7A2837D425D741D9001809E4 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
+		7A2837D525D741D9001809E4 /* TransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionCell.xib; sourceTree = "<group>"; };
+		7A2837DB25D75437001809E4 /* AttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeCell.swift; sourceTree = "<group>"; };
+		7A2837DC25D75437001809E4 /* AttributeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttributeCell.xib; sourceTree = "<group>"; };
+		7A2837EE25D78579001809E4 /* DateStylePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateStylePickerCell.swift; sourceTree = "<group>"; };
+		7A2837EF25D78579001809E4 /* DateStylePickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateStylePickerCell.xib; sourceTree = "<group>"; };
 		7A56100E25D219530091396E /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		7A56101125D219770091396E /* AllTagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTagsVC.swift; sourceTree = "<group>"; };
 		7A56101525D21BFE0091396E /* TransactionsByTagVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByTagVC.swift; sourceTree = "<group>"; };
@@ -46,7 +57,6 @@
 		7A8DDC9E25D1388700EF85B9 /* CategoriesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesVC.swift; sourceTree = "<group>"; };
 		7A8DDCA125D138C200EF85B9 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		7A8DDCA425D1472400EF85B9 /* TagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsVC.swift; sourceTree = "<group>"; };
-		7A9DE25425C8F2F80090DDFF /* TransactionAttributeDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionAttributeDetailVC.swift; sourceTree = "<group>"; };
 		7AB34D1A25C78230000A1E81 /* Provenance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Provenance.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AB34D1D25C78230000A1E81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AB34D2125C78230000A1E81 /* TransactionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsVC.swift; sourceTree = "<group>"; };
@@ -103,7 +113,6 @@
 				7AB34D5225C7C30E000A1E81 /* TabBarController.swift */,
 				7AB34D2125C78230000A1E81 /* TransactionsVC.swift */,
 				7AB34D4C25C7A90E000A1E81 /* TransactionDetailVC.swift */,
-				7A9DE25425C8F2F80090DDFF /* TransactionAttributeDetailVC.swift */,
 				7A8DDCA425D1472400EF85B9 /* TagsVC.swift */,
 				7AFDBEAF25C7FEB0002DB208 /* AccountsVC.swift */,
 				7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */,
@@ -121,6 +130,12 @@
 				7AB34D2625C78232000A1E81 /* Assets.xcassets */,
 				7AB34D2825C78232000A1E81 /* LaunchScreen.storyboard */,
 				7AB34D2B25C78232000A1E81 /* Info.plist */,
+				7A2837D425D741D9001809E4 /* TransactionCell.swift */,
+				7A2837D525D741D9001809E4 /* TransactionCell.xib */,
+				7A2837DB25D75437001809E4 /* AttributeCell.swift */,
+				7A2837DC25D75437001809E4 /* AttributeCell.xib */,
+				7A2837EE25D78579001809E4 /* DateStylePickerCell.swift */,
+				7A2837EF25D78579001809E4 /* DateStylePickerCell.xib */,
 			);
 			path = Provenance;
 			sourceTree = "<group>";
@@ -202,6 +217,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				7AB34D2A25C78232000A1E81 /* LaunchScreen.storyboard in Resources */,
+				7A2837D725D741D9001809E4 /* TransactionCell.xib in Resources */,
+				7A2837DE25D75437001809E4 /* AttributeCell.xib in Resources */,
+				7A2837F125D78579001809E4 /* DateStylePickerCell.xib in Resources */,
 				7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -221,8 +239,8 @@
 				7A8DDCA525D1472400EF85B9 /* TagsVC.swift in Sources */,
 				7AB34D5325C7C30E000A1E81 /* TabBarController.swift in Sources */,
 				7AB34D4025C7858E000A1E81 /* Error.swift in Sources */,
+				7A2837DD25D75437001809E4 /* AttributeCell.swift in Sources */,
 				7A56101225D219770091396E /* AllTagsVC.swift in Sources */,
-				7A9DE25525C8F2F80090DDFF /* TransactionAttributeDetailVC.swift in Sources */,
 				7AB34D5D25C7CDCB000A1E81 /* SettingsVC.swift in Sources */,
 				7AFDBEB025C7FEB0002DB208 /* AccountsVC.swift in Sources */,
 				7AFDBEB325C7FEDB002DB208 /* Account.swift in Sources */,
@@ -232,7 +250,9 @@
 				7AB34D4D25C7A90E000A1E81 /* TransactionDetailVC.swift in Sources */,
 				7AD5944C25C8B3AD0018C86E /* SubtitleTableViewCell.swift in Sources */,
 				7A67980D25D3E15D002AA83A /* DiagnosticTableVC.swift in Sources */,
+				7A2837F025D78579001809E4 /* DateStylePickerCell.swift in Sources */,
 				7A8DDCA225D138C200EF85B9 /* Category.swift in Sources */,
+				7A2837D625D741D9001809E4 /* TransactionCell.swift in Sources */,
 				7A56101A25D22AF10091396E /* AddTagWorkflowVC.swift in Sources */,
 				7AB34D1E25C78230000A1E81 /* AppDelegate.swift in Sources */,
 				7A8DDC9F25D1388700EF85B9 /* CategoriesVC.swift in Sources */,
@@ -382,7 +402,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.2;
+				MARKETING_VERSION = 3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -402,7 +422,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.2;
+				MARKETING_VERSION = 3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

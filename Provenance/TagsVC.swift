@@ -8,6 +8,8 @@ class TagsVC: UITableViewController {
         
         view.backgroundColor = .systemBackground
         
+        clearsSelectionOnViewWillAppear = true
+        
         self.title = "Tags"
         
         navigationItem.title = "Tags"
@@ -27,9 +29,16 @@ class TagsVC: UITableViewController {
         
         let tag = transaction.relationships.tags.data[indexPath.row]
         
-        cell.selectionStyle = .none
+        cell.accessoryType = .disclosureIndicator
         cell.textLabel?.text = tag.id
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let tag = transaction.relationships.tags.data[indexPath.row]
+        let vc = TransactionsByTagVC()
+        vc.tag = TagResource(type: "tags", id: tag.id)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
