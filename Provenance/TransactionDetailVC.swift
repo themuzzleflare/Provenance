@@ -208,6 +208,9 @@ class TransactionDetailVC: UITableViewController {
             if attribute.key == "Account" {
                 cell.selectionStyle = .default
                 cell.accessoryType = .disclosureIndicator
+            } else {
+                cell.selectionStyle = .none
+                cell.accessoryType = .none
             }
         } else if section == 1 {
             attribute = altAttributesTwo[indexPath.row]
