@@ -175,7 +175,7 @@ extension AddTagWorkflowVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let transactionCell = tableView.dequeueReusableCell(withIdentifier: "transactionCell", for: indexPath) as! TransactionCell
-
+        
         let fetchingCell = tableView.dequeueReusableCell(withIdentifier: "fetchingCell", for: indexPath)
         
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
@@ -267,6 +267,7 @@ class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDel
         self.title = "Tags"
         
         navigationItem.title = "Loading"
+        navigationItem.backButtonDisplayMode = .minimal
         navigationItem.setRightBarButton(addButton, animated: true)
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -481,7 +482,9 @@ class AddTagWorkflowThreeVC: UITableViewController {
         
         navigationItem.title = "Confirmation"
         navigationItem.setRightBarButton(confirmButton, animated: true)
+        
         tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "attributeCell")
+        tableView.register(UINib(nibName: "TransactionCell", bundle: nil), forCellReuseIdentifier: "transactionCell")
     }
     
     @objc private func addTag() {
@@ -500,6 +503,7 @@ class AddTagWorkflowThreeVC: UITableViewController {
             ]
         ]
         request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+        
         AF.request(request).responseJSON { response in
             if response.error == nil {
                 if response.response?.statusCode != 204 {
@@ -547,20 +551,26 @@ class AddTagWorkflowThreeVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! SubtitleTableViewCell
+        let transactionCell = tableView.dequeueReusableCell(withIdentifier: "transactionCell", for: indexPath) as! TransactionCell
+        let section = indexPath.section
         
         cell.selectionStyle = .none
-        if indexPath.section == 0 {
+        
+        transactionCell.selectionStyle = .none
+        transactionCell.accessoryType = .none
+        
+        if section == 0 {
             cell.textLabel?.text = tag
-        } else if indexPath.section == 1 {
-            cell.textLabel?.font = .boldSystemFont(ofSize: 17)
-            cell.textLabel?.text = transaction.attributes.description
-            cell.detailTextLabel?.textColor = .secondaryLabel
-            cell.detailTextLabel?.text = "\(transaction.attributes.amount.valueSymbol)\(transaction.attributes.amount.valueString)"
+            return cell
+        } else if section == 1 {
+            transactionCell.leftLabel.text = transaction.attributes.description
+            transactionCell.leftSubtitle.text = transaction.attributes.createdDate
+            transactionCell.rightLabel.text = "\(transaction.attributes.amount.valueSymbol)\(transaction.attributes.amount.valueString)"
+            return transactionCell
         } else {
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = "You are adding the tag \"\(tag!)\" to the transaction \"\(transaction.attributes.description)\", which was created on \(transaction.attributes.createdDate)."
+            return cell
         }
-        
-        return cell
     }
 }

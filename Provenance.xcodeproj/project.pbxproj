@@ -98,6 +98,8 @@
 				7A2837DC25D75437001809E4 /* AttributeCell.xib */,
 				7A2837EE25D78579001809E4 /* DateStylePickerCell.swift */,
 				7A2837EF25D78579001809E4 /* DateStylePickerCell.xib */,
+				7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */,
+				7AB34D4325C79BD0000A1E81 /* RightDetailTableViewCell.swift */,
 			);
 			path = "Custom Cells";
 			sourceTree = "<group>";
@@ -136,8 +138,6 @@
 				7A56101125D219770091396E /* AllTagsVC.swift */,
 				7A56101925D22AF10091396E /* AddTagWorkflowVC.swift */,
 				7A56101525D21BFE0091396E /* TransactionsByTagVC.swift */,
-				7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */,
-				7AB34D4325C79BD0000A1E81 /* RightDetailTableViewCell.swift */,
 				7AB34D5525C7C441000A1E81 /* AboutVC.swift */,
 				7A67980C25D3E15D002AA83A /* DiagnosticTableVC.swift */,
 				7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */,
@@ -410,7 +410,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -430,7 +430,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

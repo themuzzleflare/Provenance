@@ -7,9 +7,9 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
     lazy var refreshControl: UIRefreshControl = UIRefreshControl()
     lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
     
-    var categories = [CategoryResource]()
-    var categoriesErrorResponse = [ErrorObject]()
-    var categoriesError: String = ""
+    lazy var categories: [CategoryResource] = []
+    lazy var categoriesErrorResponse: [ErrorObject] = []
+    lazy var categoriesError: String = ""
     lazy var filteredCategories: [CategoryResource] = []
     
     func updateSearchResults(for searchController: UISearchController) {
