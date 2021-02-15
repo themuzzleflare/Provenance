@@ -13,6 +13,7 @@ class SettingsVC: UITableViewController {
         
         let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         
+        title = "Settings"
         navigationItem.title = "Settings"
         navigationItem.setRightBarButton(closeButton, animated: true)
         tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "settingCell")

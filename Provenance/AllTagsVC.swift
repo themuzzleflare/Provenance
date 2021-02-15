@@ -34,7 +34,7 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
         searchController.searchResultsUpdater = self
         definesPresentationContext = true
         
-        self.title = "Tags"
+        title = "Tags"
         navigationItem.searchController = searchController
         
         navigationItem.title = "Loading"

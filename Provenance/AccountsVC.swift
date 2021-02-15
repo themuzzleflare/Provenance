@@ -16,7 +16,7 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
         
         view.backgroundColor = .systemBackground
         
-        self.title = "Accounts"
+        title = "Accounts"
         
         navigationItem.title = "Loading"
         

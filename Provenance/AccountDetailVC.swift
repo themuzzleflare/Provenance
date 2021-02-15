@@ -19,6 +19,7 @@ class AccountDetailVC: UITableViewController {
         let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         
         clearsSelectionOnViewWillAppear = true
+        title = "Account Details"
         navigationItem.title = account.attributes.displayName
         navigationItem.setRightBarButton(closeButton, animated: true)
         tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "attributeCell")

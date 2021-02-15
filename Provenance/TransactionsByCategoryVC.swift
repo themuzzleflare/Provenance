@@ -42,7 +42,7 @@ class TransactionsByCategoryVC: UIViewController, UITableViewDelegate, UISearchB
         searchController.searchResultsUpdater = self
         definesPresentationContext = true
         
-        self.title = "Transactions by Category"
+        title = "Transactions by Category"
         
         navigationItem.title = "Loading"
         navigationItem.searchController = searchController

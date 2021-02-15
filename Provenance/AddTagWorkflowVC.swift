@@ -38,7 +38,7 @@ class AddTagWorkflowVC: UIViewController, UITableViewDelegate, UISearchBarDelega
         
         view.backgroundColor = .systemBackground
         
-        self.title = "Transactions"
+        title = "Transactions"
         
         navigationItem.title = "Loading"
         navigationItem.setRightBarButton(closeButton, animated: true)
@@ -264,7 +264,7 @@ class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDel
         searchController.searchResultsUpdater = self
         definesPresentationContext = true
         
-        self.title = "Tags"
+        title = "Tags"
         
         navigationItem.title = "Loading"
         navigationItem.backButtonDisplayMode = .minimal
@@ -480,6 +480,7 @@ class AddTagWorkflowThreeVC: UITableViewController {
         
         let confirmButton = UIBarButtonItem(image: UIImage(systemName: "checkmark"), style: .plain, target: self, action: #selector(addTag))
         
+        title = "Confirmation"
         navigationItem.title = "Confirmation"
         navigationItem.setRightBarButton(confirmButton, animated: true)
         

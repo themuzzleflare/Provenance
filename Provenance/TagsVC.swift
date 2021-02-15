@@ -10,7 +10,7 @@ class TagsVC: UITableViewController {
         
         clearsSelectionOnViewWillAppear = true
         
-        self.title = "Tags"
+        title = "Tags"
         
         navigationItem.title = "Tags"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")

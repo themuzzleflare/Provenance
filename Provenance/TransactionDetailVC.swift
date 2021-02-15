@@ -160,6 +160,7 @@ class TransactionDetailVC: UITableViewController {
         let statusButtonIcon = UIBarButtonItem(customView: statusIcon)
         
         clearsSelectionOnViewWillAppear = true
+        title = "Transaction Details"
         navigationItem.title = transaction?.attributes.description ?? ""
         navigationItem.setRightBarButton(statusButtonIcon, animated: true)
         tableView.register(UINib(nibName: "AttributeCell", bundle: nil), forCellReuseIdentifier: "attributeCell")

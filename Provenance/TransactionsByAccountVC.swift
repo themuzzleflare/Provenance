@@ -40,7 +40,7 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
         
         let infoButton = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(openAccountInfo))
         
-        self.title = "Transactions by Account"
+        title = "Transactions by Account"
         
         navigationItem.title = "Loading"
         navigationItem.setRightBarButton(infoButton, animated: true)

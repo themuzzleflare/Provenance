@@ -42,7 +42,7 @@ class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDel
         searchController.searchResultsUpdater = self
         definesPresentationContext = true
         
-        self.title = "Transactions by Tag"
+        title = "Transactions by Tag"
         
         navigationItem.title = "Loading"
         navigationItem.searchController = searchController

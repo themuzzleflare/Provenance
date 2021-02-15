@@ -32,7 +32,7 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
         searchController.searchResultsUpdater = self
         definesPresentationContext = true
         
-        self.title = "Categories"
+        title = "Categories"
         
         navigationItem.title = "Loading"
         navigationItem.searchController = searchController

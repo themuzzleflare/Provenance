@@ -12,7 +12,10 @@ class DiagnosticTableVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+        
+        title = "Diagnostics"
         navigationItem.title = "Diagnostics"
         navigationItem.setRightBarButton(closeButton, animated: true)
         tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "diagnosticCell")

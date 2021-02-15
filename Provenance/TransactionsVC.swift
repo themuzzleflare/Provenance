@@ -42,7 +42,7 @@ class TransactionsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate
         searchController.searchResultsUpdater = self
         definesPresentationContext = true
         
-        self.title = "Transactions"
+        title = "Transactions"
         
         navigationItem.title = "Loading"
         navigationItem.setRightBarButton(dateSwitchButton, animated: true)
