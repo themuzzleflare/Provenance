@@ -40,11 +40,13 @@ class AddTagWorkflowVC: UIViewController, UITableViewDelegate, UISearchBarDelega
         searchController.searchResultsUpdater = self
         
         definesPresentationContext = true
-                
+        
         title = "Transactions"
         navigationItem.title = "Loading"
         navigationItem.rightBarButtonItem = closeButton
-        navigationItem.backButtonTitle = ""
+        if #available(iOS 14.0, *) {
+            navigationItem.backButtonDisplayMode = .minimal
+        }
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         
@@ -262,7 +264,7 @@ class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDel
         super.addChild(tableViewController)
         
         view.backgroundColor = .systemBackground
-            
+        
         searchController.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.searchBarStyle = .minimal
@@ -275,7 +277,9 @@ class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDel
         
         title = "Tags"
         navigationItem.title = "Loading"
-        navigationItem.backButtonTitle = ""
+        if #available(iOS 14.0, *) {
+            navigationItem.backButtonDisplayMode = .minimal
+        }
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         

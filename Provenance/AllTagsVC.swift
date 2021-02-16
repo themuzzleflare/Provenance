@@ -26,7 +26,7 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
         super.addChild(tableViewController)
         
         view.backgroundColor = .systemBackground
-                
+        
         searchController.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.searchBarStyle = .minimal
@@ -155,7 +155,7 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
                 self.refreshControl.endRefreshing()
             }
             self.searchController.searchBar.placeholder = "Search \(self.tags.count.description) \(self.tags.count == 1 ? "Tag" : "Tags")"
-
+            
         }
     }
 }

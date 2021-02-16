@@ -41,4 +41,17 @@ class TagsVC: UITableViewController {
         vc.tag = TagResource(type: "tags", id: tag.id)
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let tag = transaction.relationships.tags.data[indexPath.row]
+        
+        let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+            UIPasteboard.general.string = tag.id
+        }
+        
+        return UIContextMenuConfiguration(identifier: nil,
+                                          previewProvider: nil) { _ in
+            UIMenu(title: "", children: [copy])
+        }
+    }
 }
