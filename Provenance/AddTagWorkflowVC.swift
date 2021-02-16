@@ -44,7 +44,7 @@ class AddTagWorkflowVC: UIViewController, UITableViewDelegate, UISearchBarDelega
         title = "Transactions"
         navigationItem.title = "Loading"
         navigationItem.rightBarButtonItem = closeButton
-        navigationItem.backButtonDisplayMode = .minimal
+        navigationItem.backButtonTitle = ""
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         
@@ -275,7 +275,7 @@ class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDel
         
         title = "Tags"
         navigationItem.title = "Loading"
-        navigationItem.backButtonDisplayMode = .minimal
+        navigationItem.backButtonTitle = ""
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         
