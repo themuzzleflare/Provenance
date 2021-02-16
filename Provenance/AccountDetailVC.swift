@@ -19,10 +19,11 @@ class AccountDetailVC: UITableViewController {
         let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         
         clearsSelectionOnViewWillAppear = true
+        
         title = "Account Details"
         navigationItem.title = account.attributes.displayName
-        navigationItem.setRightBarButton(closeButton, animated: true)
-        tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "attributeCell")
+        navigationItem.rightBarButtonItem = closeButton
+        tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "detailCell")
     }
     
     @objc private func closeWorkflow() {
@@ -38,16 +39,18 @@ class AccountDetailVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! RightDetailTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "detailCell", for: indexPath) as! RightDetailTableViewCell
         
         let attribute = altAttributes[indexPath.row]
         
         cell.selectionStyle = .none
         cell.textLabel?.textColor = .secondaryLabel
+        cell.textLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
         cell.textLabel?.text = attribute.key
         cell.detailTextLabel?.textColor = .label
         cell.detailTextLabel?.textAlignment = .right
         cell.detailTextLabel?.numberOfLines = 0
+        cell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
         cell.detailTextLabel?.text = attribute.value
         
         return cell

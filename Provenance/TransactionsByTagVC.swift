@@ -6,6 +6,10 @@ class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDel
     
     let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
     let tableViewController: UITableViewController = UITableViewController(style: .grouped)
+    
+    let circularStdBook = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)!
+    let circularStdBold = UIFont(name: "CircularStd-Bold", size: UIFont.labelFontSize)!
+    
     lazy var refreshControl: UIRefreshControl = UIRefreshControl()
     lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
     
@@ -15,12 +19,8 @@ class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDel
     lazy var filteredTransactions: [TransactionResource] = []
     
     lazy var categories: [CategoryResource] = []
-    lazy var categoriesErrorResponse: [ErrorObject] = []
-    lazy var categoriesError: String = ""
     
     lazy var accounts: [AccountResource] = []
-    lazy var accountsErrorResponse: [ErrorObject] = []
-    lazy var accountsError: String = ""
     
     func updateSearchResults(for searchController: UISearchController) {
         filteredTransactions = transactions.filter { searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(searchController.searchBar.text!) }
@@ -95,7 +95,7 @@ class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDel
         tableViewController.tableView.delegate = self
         
         tableViewController.tableView.register(UINib(nibName: "TransactionCell", bundle: nil), forCellReuseIdentifier: "transactionCell")
-        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "fetchingCell")
+        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTransactionsCell")
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
     }
@@ -156,6 +156,7 @@ class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDel
                 self.tableViewController.tableView.reloadData()
                 self.refreshControl.endRefreshing()
             }
+            self.searchController.searchBar.placeholder = "Search \(self.transactions.count.description) \(self.transactions.count == 1 ? "Transaction" : "Transactions")"
         }
     }
 }
@@ -178,30 +179,33 @@ extension TransactionsByTagVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let transactionCell = tableView.dequeueReusableCell(withIdentifier: "transactionCell", for: indexPath) as! TransactionCell
         
-        let fetchingCell = tableView.dequeueReusableCell(withIdentifier: "fetchingCell", for: indexPath)
+        let noTransactionsCell = tableView.dequeueReusableCell(withIdentifier: "noTransactionsCell", for: indexPath)
         
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
         
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
-            fetchingCell.selectionStyle = .none
-            fetchingCell.textLabel?.text = "No Transactions"
-            fetchingCell.backgroundColor = tableView.backgroundColor
-            return fetchingCell
+            noTransactionsCell.selectionStyle = .none
+            noTransactionsCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+            noTransactionsCell.textLabel?.text = "No Transactions"
+            noTransactionsCell.backgroundColor = tableView.backgroundColor
+            return noTransactionsCell
         } else {
             if !self.transactionsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
+                errorStringCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
                 errorStringCell.textLabel?.text = transactionsError
                 return errorStringCell
             } else if !self.transactionsErrorResponse.isEmpty {
                 let error = transactionsErrorResponse[indexPath.row]
                 errorObjectCell.selectionStyle = .none
                 errorObjectCell.textLabel?.textColor = .red
-                errorObjectCell.textLabel?.font = .boldSystemFont(ofSize: 17)
+                errorObjectCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBold)
                 errorObjectCell.textLabel?.text = error.title
                 errorObjectCell.detailTextLabel?.numberOfLines = 0
+                errorObjectCell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.smallSystemFontSize)
                 errorObjectCell.detailTextLabel?.text = error.detail
                 return errorObjectCell
             } else {
@@ -237,12 +241,17 @@ extension TransactionsByTagVC: UITableViewDataSource {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
             let transaction = filteredTransactions[indexPath.row]
             
-            let copy = UIAction(title: "Copy") { _ in
+            let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
                 UIPasteboard.general.string = transaction.attributes.description
             }
-            let remove = UIAction(title: "Remove") { _ in
-                let urlString = "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags"
-                var request = URLRequest(url: URL(string: urlString)!)
+            let remove = UIAction(title: "Remove", image: UIImage(systemName: "trash")) { _ in
+                let ac = UIAlertController(title: "Failed", message: "The tag was not removed from the transaction.", preferredStyle: .alert)
+                let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                
+                ac.addAction(dismissAction)
+                
+                var request = URLRequest(url: URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!)
+                
                 request.httpMethod = "DELETE"
                 request.addValue("application/json", forHTTPHeaderField: "Content-Type")
                 request.addValue("Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
@@ -255,22 +264,17 @@ extension TransactionsByTagVC: UITableViewDataSource {
                         ]
                     ]
                 ]
+                
                 request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+                
                 AF.request(request).responseJSON { response in
                     if response.error == nil {
                         if response.response?.statusCode != 204 {
-                            let ac = UIAlertController(title: "Failed", message: "The tag was not removed from the transaction.", preferredStyle: .alert)
-                            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                            ac.addAction(dismissAction)
                             self.present(ac, animated: true)
                         } else {
                             self.listTransactions()
-                            self.tableViewController.tableView.reloadData()
                         }
                     } else {
-                        let ac = UIAlertController(title: "Failed", message: "The tag was not removed from the transaction.", preferredStyle: .alert)
-                        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                        ac.addAction(dismissAction)
                         self.present(ac, animated: true)
                     }
                 }
@@ -278,7 +282,7 @@ extension TransactionsByTagVC: UITableViewDataSource {
             
             return UIContextMenuConfiguration(identifier: nil,
                                               previewProvider: nil) { _ in
-                UIMenu(title: "Actions", children: [copy, remove])
+                UIMenu(title: "", children: [copy, remove])
             }
         } else {
             return nil
@@ -296,16 +300,11 @@ extension TransactionsByTagVC: UITableViewDataSource {
                 if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
                     print("Categories JSON Decoding Succeeded!")
                     self.categories = decodedResponse.data
-                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
-                    print("Categories Error JSON Decoding Succeeded!")
-                    self.categoriesErrorResponse = decodedResponse.errors
                 } else {
                     print("Categories JSON Decoding Failed!")
-                    self.categoriesError = "JSON Decoding Failed!"
                 }
             } else {
                 print(response.error?.localizedDescription ?? "Unknown Error!")
-                self.categoriesError = response.error?.localizedDescription ?? "Unknown Error!"
             }
         }
     }
@@ -321,16 +320,11 @@ extension TransactionsByTagVC: UITableViewDataSource {
                 if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
                     print("Accounts JSON Decoding Succeeded!")
                     self.accounts = decodedResponse.data
-                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
-                    print("Accounts Error JSON Decoding Succeeded!")
-                    self.accountsErrorResponse = decodedResponse.errors
                 } else {
                     print("Accounts JSON Decoding Failed!")
-                    self.accountsError = "JSON Decoding Failed!"
                 }
             } else {
                 print(response.error?.localizedDescription ?? "Unknown Error!")
-                self.accountsError = response.error?.localizedDescription ?? "Unknown Error!"
             }
         }
     }

@@ -31,12 +31,16 @@ class TransactionDetailVC: UITableViewController {
     
     private var statusIcon: UIImageView {
         let configuration = UIImage.SymbolConfiguration(pointSize: 20)
+        
         let settledIconImage = UIImage(systemName: "checkmark.circle", withConfiguration: configuration)
         let heldIconImage = UIImage(systemName: "clock", withConfiguration: configuration)
+        
         let settledIcon = UIImageView(image: settledIconImage)
         let heldIcon = UIImageView(image: heldIconImage)
+        
         settledIcon.tintColor = .systemGreen
         heldIcon.tintColor = .systemYellow
+        
         switch transaction!.attributes.isSettled {
             case true: return settledIcon
             case false: return heldIcon
@@ -160,6 +164,7 @@ class TransactionDetailVC: UITableViewController {
         let statusButtonIcon = UIBarButtonItem(customView: statusIcon)
         
         clearsSelectionOnViewWillAppear = true
+        
         title = "Transaction Details"
         navigationItem.title = transaction?.attributes.description ?? ""
         navigationItem.setRightBarButton(statusButtonIcon, animated: true)
@@ -215,6 +220,10 @@ class TransactionDetailVC: UITableViewController {
             }
         } else if section == 1 {
             attribute = altAttributesTwo[indexPath.row]
+            
+            if attribute.key == "Raw Text" {
+                cell.rightDetail.font = UIFont(name: "SFMono-Regular", size: UIFont.labelFontSize)
+            }
         } else if section == 2 {
             attribute = altAttributesThree[indexPath.row]
         } else if section == 3 {
@@ -264,6 +273,25 @@ class TransactionDetailVC: UITableViewController {
             let vc = TagsVC(style: .grouped)
             vc.transaction = transaction
             navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let section = indexPath.section
+        
+        if section == 1 {
+            let attribute = altAttributesTwo[indexPath.row]
+            
+            let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+                UIPasteboard.general.string = attribute.value
+            }
+            
+            return UIContextMenuConfiguration(identifier: nil,
+                                              previewProvider: nil) { _ in
+                UIMenu(title: "", children: [copy])
+            }
+        } else {
+            return nil
         }
     }
 }

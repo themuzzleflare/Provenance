@@ -11,7 +11,6 @@ class TagsVC: UITableViewController {
         clearsSelectionOnViewWillAppear = true
         
         title = "Tags"
-        
         navigationItem.title = "Tags"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")
     }
@@ -30,6 +29,7 @@ class TagsVC: UITableViewController {
         let tag = transaction.relationships.tags.data[indexPath.row]
         
         cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
         cell.textLabel?.text = tag.id
         
         return cell

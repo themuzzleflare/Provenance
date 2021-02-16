@@ -17,7 +17,7 @@ class DiagnosticTableVC: UITableViewController {
         
         title = "Diagnostics"
         navigationItem.title = "Diagnostics"
-        navigationItem.setRightBarButton(closeButton, animated: true)
+        navigationItem.rightBarButtonItem = closeButton
         tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "diagnosticCell")
     }
     
@@ -40,11 +40,30 @@ class DiagnosticTableVC: UITableViewController {
         
         cell.selectionStyle = .none
         cell.textLabel?.textColor = .secondaryLabel
+        cell.textLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
         cell.textLabel?.text = attribute.key
         cell.detailTextLabel?.textColor = .label
         cell.detailTextLabel?.textAlignment = .right
+        cell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
         cell.detailTextLabel?.text = attribute.value
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let attribute = attributes[indexPath.row]
+        
+        if attribute.value != "Unknown" {
+            let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+                UIPasteboard.general.string = attribute.value
+            }
+            
+            return UIContextMenuConfiguration(identifier: nil,
+                                              previewProvider: nil) { _ in
+                UIMenu(title: "", children: [copy])
+            }
+        } else {
+            return nil
+        }
     }
 }

@@ -4,6 +4,10 @@ import Alamofire
 class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
     let tableViewController: UITableViewController = UITableViewController(style: .grouped)
+    
+    let circularStdBook = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)!
+    let circularStdBold = UIFont(name: "CircularStd-Bold", size: UIFont.labelFontSize)!
+    
     lazy var refreshControl: UIRefreshControl = UIRefreshControl()
     lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
     
@@ -30,10 +34,10 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
         searchController.hidesNavigationBarDuringPresentation = true
         searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
+        
         definesPresentationContext = true
         
         title = "Categories"
-        
         navigationItem.title = "Loading"
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -80,7 +84,7 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
         tableViewController.tableView.delegate = self
         
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "categoryCell")
-        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "fetchingCell")
+        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noCategoriesCell")
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
     }
@@ -140,6 +144,7 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
                 self.tableViewController.tableView.reloadData()
                 self.refreshControl.endRefreshing()
             }
+            self.searchController.searchBar.placeholder = "Search \(self.categories.count.description) \(self.categories.count == 1 ? "Category" : "Categories")"
         }
     }
 }
@@ -162,35 +167,39 @@ extension CategoriesVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let categoryCell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
         
-        let fetchingCell = tableView.dequeueReusableCell(withIdentifier: "fetchingCell", for: indexPath)
+        let noCategoriesCell = tableView.dequeueReusableCell(withIdentifier: "noCategoriesCell", for: indexPath)
         
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
         
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
         if self.filteredCategories.isEmpty && self.categoriesError.isEmpty && self.categoriesErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
-            fetchingCell.selectionStyle = .none
-            fetchingCell.textLabel?.text = "No Categories"
-            fetchingCell.backgroundColor = tableView.backgroundColor
-            return fetchingCell
+            noCategoriesCell.selectionStyle = .none
+            noCategoriesCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+            noCategoriesCell.textLabel?.text = "No Categories"
+            noCategoriesCell.backgroundColor = tableView.backgroundColor
+            return noCategoriesCell
         } else {
             if !self.categoriesError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
+                errorStringCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
                 errorStringCell.textLabel?.text = categoriesError
                 return errorStringCell
             } else if !self.categoriesErrorResponse.isEmpty {
                 let error = categoriesErrorResponse[indexPath.row]
                 errorObjectCell.selectionStyle = .none
                 errorObjectCell.textLabel?.textColor = .red
-                errorObjectCell.textLabel?.font = .boldSystemFont(ofSize: 17)
+                errorObjectCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBold)
                 errorObjectCell.textLabel?.text = error.title
                 errorObjectCell.detailTextLabel?.numberOfLines = 0
+                errorObjectCell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.smallSystemFontSize)
                 errorObjectCell.detailTextLabel?.text = error.detail
                 return errorObjectCell
             } else {
                 let category = filteredCategories[indexPath.row]
                 categoryCell.accessoryType = .disclosureIndicator
+                categoryCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
                 categoryCell.textLabel?.text = category.attributes.name
                 return categoryCell
             }
@@ -202,6 +211,23 @@ extension CategoriesVC: UITableViewDataSource {
             let vc = TransactionsByCategoryVC()
             vc.category = filteredCategories[indexPath.row]
             navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        if self.categoriesErrorResponse.isEmpty && self.categoriesError.isEmpty && !self.filteredCategories.isEmpty {
+            let category = filteredCategories[indexPath.row]
+            
+            let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+                UIPasteboard.general.string = category.attributes.name
+            }
+            
+            return UIContextMenuConfiguration(identifier: nil,
+                                              previewProvider: nil) { _ in
+                UIMenu(title: "", children: [copy])
+            }
+        } else {
+            return nil
         }
     }
 }

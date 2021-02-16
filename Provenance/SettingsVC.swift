@@ -15,8 +15,9 @@ class SettingsVC: UITableViewController {
         
         title = "Settings"
         navigationItem.title = "Settings"
-        navigationItem.setRightBarButton(closeButton, animated: true)
-        tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "settingCell")
+        navigationItem.rightBarButtonItem = closeButton
+        
+        tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "apiKeyCell")
         tableView.register(UINib(nibName: "DateStylePickerCell", bundle: nil), forCellReuseIdentifier: "datePickerCell")
     }
     
@@ -35,32 +36,35 @@ class SettingsVC: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "settingCell", for: indexPath) as! RightDetailTableViewCell
+        let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: "apiKeyCell", for: indexPath) as! RightDetailTableViewCell
         let datePickerCell = tableView.dequeueReusableCell(withIdentifier: "datePickerCell", for: indexPath) as! DateStylePickerCell
         
-        cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.textColor = .secondaryLabel
-        cell.textLabel?.text = "API Key"
-        cell.detailTextLabel?.textColor = .label
-        cell.detailTextLabel?.textAlignment = .right
-        cell.detailTextLabel?.text = apiKeyDisplay
+        apiKeyCell.accessoryType = .disclosureIndicator
+        apiKeyCell.textLabel?.textColor = .secondaryLabel
+        apiKeyCell.textLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
+        apiKeyCell.textLabel?.text = "API Key"
+        apiKeyCell.detailTextLabel?.textColor = .label
+        apiKeyCell.detailTextLabel?.textAlignment = .right
+        apiKeyCell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
+        apiKeyCell.detailTextLabel?.lineBreakMode = .byTruncatingMiddle
+        apiKeyCell.detailTextLabel?.text = apiKeyDisplay
         
         if UserDefaults.standard.string(forKey: "dateStyle") == "Absolute" || UserDefaults.standard.string(forKey: "dateStyle") == nil {
             datePickerCell.datePicker.selectedSegmentIndex = 0
         } else {
             datePickerCell.datePicker.selectedSegmentIndex = 1
         }
-        datePickerCell.datePicker.addTarget(self, action: #selector(segmentedControlValueChanged), for:.valueChanged)
+        datePickerCell.datePicker.addTarget(self, action: #selector(switchDateStyle), for:.valueChanged)
         
         
         if section == 0 {
-            return cell
+            return apiKeyCell
         } else {
             return datePickerCell
         }
     }
     
-    @objc private func segmentedControlValueChanged(segment: UISegmentedControl) {
+    @objc private func switchDateStyle(segment: UISegmentedControl) {
         if segment.selectedSegmentIndex == 0 {
             UserDefaults.standard.setValue("Absolute", forKey: "dateStyle")
         } else {
@@ -75,7 +79,9 @@ class SettingsVC: UITableViewController {
             tableView.deselectRow(at: indexPath, animated: true)
             
             let ac = UIAlertController(title: "New API Key", message: "Enter a new API Key.", preferredStyle: .alert)
-            ac.addTextField()
+            ac.addTextField(configurationHandler: { field in
+                field.text = UserDefaults.standard.string(forKey: "apiKey") ?? nil
+            })
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
             

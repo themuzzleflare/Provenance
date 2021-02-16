@@ -9,8 +9,8 @@ class AboutVC: UIViewController {
         
         title = "About"
         navigationItem.title = "About"
-        navigationItem.setLeftBarButton(diagnosticsButton, animated: true)
-        navigationItem.setRightBarButton(settingsButton, animated: true)
+        navigationItem.leftBarButtonItem = diagnosticsButton
+        navigationItem.rightBarButtonItem = settingsButton
         
         view.backgroundColor = .systemBackground
         
@@ -36,7 +36,7 @@ class AboutVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .label
         label.text = "Provenance"
-        label.font = .boldSystemFont(ofSize: 32)
+        label.font = UIFont(name: "CircularStd-Bold", size: 32)
         label.numberOfLines = 0
         label.textAlignment = .center
         
@@ -44,7 +44,7 @@ class AboutVC: UIViewController {
         subtitle.translatesAutoresizingMaskIntoConstraints = false
         subtitle.textColor = .secondaryLabel
         subtitle.text = "Provenance is a lightweight application that interacts with the Up Banking Developer API to display information about your bank accounts, transactions, categories, tags, and more."
-        subtitle.font = .preferredFont(forTextStyle: .body)
+        subtitle.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
         subtitle.numberOfLines = 0
         subtitle.textAlignment = .left
         

@@ -4,6 +4,10 @@ import Alamofire
 class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
     let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
     let tableViewController: UITableViewController = UITableViewController(style: .grouped)
+    
+    let circularStdBook = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)!
+    let circularStdBold = UIFont(name: "CircularStd-Bold", size: UIFont.labelFontSize)!
+    
     lazy var refreshControl: UIRefreshControl = UIRefreshControl()
     
     lazy var accounts: [AccountResource] = []
@@ -17,7 +21,6 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
         view.backgroundColor = .systemBackground
         
         title = "Accounts"
-        
         navigationItem.title = "Loading"
         
         tableViewController.clearsSelectionOnViewWillAppear = true
@@ -62,12 +65,12 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
         tableViewController.tableView.delegate = self
         
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "accountCell")
-        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "fetchingCell")
+        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noAccountsCell")
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
     }
     
-    func listAccounts() {
+    private func listAccounts() {
         let urlString = "https://api.up.com.au/api/v1/accounts"
         let parameters: Parameters = ["page[size]":"100"]
         let headers: HTTPHeaders = [
@@ -144,39 +147,43 @@ extension AccountsVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let accountCell = tableView.dequeueReusableCell(withIdentifier: "accountCell", for: indexPath) as! SubtitleTableViewCell
         
-        let fetchingCell = tableView.dequeueReusableCell(withIdentifier: "fetchingCell", for: indexPath)
+        let noAccountsCell = tableView.dequeueReusableCell(withIdentifier: "noAccountsCell", for: indexPath)
         
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
         
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
         if self.accounts.isEmpty && self.accountsError.isEmpty && self.accountsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
-            fetchingCell.selectionStyle = .none
-            fetchingCell.textLabel?.text = "No Accounts"
-            fetchingCell.backgroundColor = tableView.backgroundColor
-            return fetchingCell
+            noAccountsCell.selectionStyle = .none
+            noAccountsCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+            noAccountsCell.textLabel?.text = "No Accounts"
+            noAccountsCell.backgroundColor = tableView.backgroundColor
+            return noAccountsCell
         } else {
             if !self.accountsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
+                errorStringCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
                 errorStringCell.textLabel?.text = accountsError
                 return errorStringCell
             } else if !self.accountsErrorResponse.isEmpty {
                 let error = accountsErrorResponse[indexPath.row]
                 errorObjectCell.selectionStyle = .none
                 errorObjectCell.textLabel?.textColor = .red
-                errorObjectCell.textLabel?.font = .boldSystemFont(ofSize: 17)
+                errorObjectCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBold)
                 errorObjectCell.textLabel?.text = error.title
                 errorObjectCell.detailTextLabel?.numberOfLines = 0
+                errorObjectCell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.smallSystemFontSize)
                 errorObjectCell.detailTextLabel?.text = error.detail
                 return errorObjectCell
             } else {
                 let account = accounts[indexPath.row]
                 accountCell.accessoryType = .disclosureIndicator
-                accountCell.textLabel?.font = .boldSystemFont(ofSize: 17)
+                accountCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBold)
                 accountCell.textLabel?.textColor = .label
                 accountCell.textLabel?.text = account.attributes.displayName
                 accountCell.detailTextLabel?.textColor = .secondaryLabel
+                accountCell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.smallSystemFontSize)
                 accountCell.detailTextLabel?.text =
                     "\(account.attributes.balance.valueSymbol)\(account.attributes.balance.valueString)"
                 return accountCell
