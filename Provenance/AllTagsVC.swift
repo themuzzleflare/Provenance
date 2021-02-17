@@ -1,5 +1,4 @@
 import UIKit
-import Alamofire
 
 class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
@@ -94,43 +93,64 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
     }
     
-    func listTags() {
-        let urlString = "https://api.up.com.au/api/v1/tags"
-        let parameters: Parameters = ["page[size]":"200"]
-        let headers: HTTPHeaders = [
-            "Accept": "application/json",
-            "Authorization": "Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")"
-        ]
-        AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseJSON { response in
-            if response.error == nil {
-                if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: response.data!) {
-                    print("Tags JSON Decoding Succeeded!")
-                    self.tags = decodedResponse.data
-                    self.filteredTags = self.tags.filter { self.searchController.searchBar.text!.isEmpty || $0.id.localizedStandardContains(self.searchController.searchBar.text!) }
-                    self.tagsError = ""
-                    self.tagsErrorResponse = []
-                    self.navigationItem.title = "Tags"
-                    self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.openAddWorkflow)), animated: true)
-                    self.fetchingView.stopAnimating()
-                    self.fetchingView.removeFromSuperview()
-                    self.setupTableView()
-                    self.tableViewController.tableView.reloadData()
-                    self.refreshControl.endRefreshing()
-                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
-                    print("Tags Error JSON Decoding Succeeded!")
-                    self.tagsErrorResponse = decodedResponse.errors
-                    self.tagsError = ""
-                    self.tags = []
-                    self.navigationItem.title = "Errors"
-                    self.navigationItem.setRightBarButton(nil, animated: true)
-                    self.fetchingView.stopAnimating()
-                    self.fetchingView.removeFromSuperview()
-                    self.setupTableView()
-                    self.tableViewController.tableView.reloadData()
-                    self.refreshControl.endRefreshing()
+    private func listTags() {
+        var url = URL(string: "https://api.up.com.au/api/v1/tags")!
+        let urlParams = ["page[size]":"200"]
+        url = url.appendingQueryParameters(urlParams)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if error == nil {
+                if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: data!) {
+                    DispatchQueue.main.async {
+                        print("Tags JSON Decoding Succeeded!")
+                        self.tags = decodedResponse.data
+                        self.filteredTags = self.tags.filter { self.searchController.searchBar.text!.isEmpty || $0.id.localizedStandardContains(self.searchController.searchBar.text!) }
+                        self.tagsError = ""
+                        self.tagsErrorResponse = []
+                        self.navigationItem.title = "Tags"
+                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.openAddWorkflow)), animated: true)
+                        self.fetchingView.stopAnimating()
+                        self.fetchingView.removeFromSuperview()
+                        self.setupTableView()
+                        self.tableViewController.tableView.reloadData()
+                        self.refreshControl.endRefreshing()
+                    }
+                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
+                    DispatchQueue.main.async {
+                        print("Tags Error JSON Decoding Succeeded!")
+                        self.tagsErrorResponse = decodedResponse.errors
+                        self.tagsError = ""
+                        self.tags = []
+                        self.navigationItem.title = "Errors"
+                        self.navigationItem.setRightBarButton(nil, animated: true)
+                        self.fetchingView.stopAnimating()
+                        self.fetchingView.removeFromSuperview()
+                        self.setupTableView()
+                        self.tableViewController.tableView.reloadData()
+                        self.refreshControl.endRefreshing()
+                    }
                 } else {
-                    print("Tags JSON Decoding Failed!")
-                    self.tagsError = "JSON Decoding Failed!"
+                    DispatchQueue.main.async {
+                        print("Tags JSON Decoding Failed!")
+                        self.tagsError = "JSON Decoding Failed!"
+                        self.tagsErrorResponse = []
+                        self.tags = []
+                        self.navigationItem.title = "Error"
+                        self.navigationItem.setRightBarButton(nil, animated: true)
+                        self.fetchingView.stopAnimating()
+                        self.fetchingView.removeFromSuperview()
+                        self.setupTableView()
+                        self.tableViewController.tableView.reloadData()
+                        self.refreshControl.endRefreshing()
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    print(error?.localizedDescription ?? "Unknown Error!")
+                    self.tagsError = error?.localizedDescription ?? "Unknown Error!"
                     self.tagsErrorResponse = []
                     self.tags = []
                     self.navigationItem.title = "Error"
@@ -141,22 +161,12 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 }
-            } else {
-                print(response.error?.localizedDescription ?? "Unknown Error!")
-                self.tagsError = response.error?.localizedDescription ?? "Unknown Error!"
-                self.tagsErrorResponse = []
-                self.tags = []
-                self.navigationItem.title = "Error"
-                self.navigationItem.setRightBarButton(nil, animated: true)
-                self.fetchingView.stopAnimating()
-                self.fetchingView.removeFromSuperview()
-                self.setupTableView()
-                self.tableViewController.tableView.reloadData()
-                self.refreshControl.endRefreshing()
             }
-            self.searchController.searchBar.placeholder = "Search \(self.tags.count.description) \(self.tags.count == 1 ? "Tag" : "Tags")"
-            
+            DispatchQueue.main.async {
+                self.searchController.searchBar.placeholder = "Search \(self.tags.count.description) \(self.tags.count == 1 ? "Tag" : "Tags")"
+            }
         }
+        .resume()
     }
 }
 

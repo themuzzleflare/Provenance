@@ -1,5 +1,4 @@
 import UIKit
-import Alamofire
 
 class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
@@ -89,40 +88,59 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
     }
     
-    func listCategories() {
-        let urlString = "https://api.up.com.au/api/v1/categories"
-        let headers: HTTPHeaders = [
-            "Accept": "application/json",
-            "Authorization": "Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")"
-        ]
-        AF.request(urlString, method: .get, headers: headers).responseJSON { response in
-            if response.error == nil {
-                if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
-                    print("Categories JSON Decoding Succeeded!")
-                    self.categories = decodedResponse.data
-                    self.filteredCategories = self.categories.filter { self.searchController.searchBar.text!.isEmpty || $0.attributes.name.localizedStandardContains(self.searchController.searchBar.text!) }
-                    self.categoriesError = ""
-                    self.categoriesErrorResponse = []
-                    self.navigationItem.title = "Categories"
-                    self.fetchingView.stopAnimating()
-                    self.fetchingView.removeFromSuperview()
-                    self.setupTableView()
-                    self.tableViewController.tableView.reloadData()
-                    self.refreshControl.endRefreshing()
-                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
-                    print("Categories Error JSON Decoding Succeeded!")
-                    self.categoriesErrorResponse = decodedResponse.errors
-                    self.categoriesError = ""
-                    self.categories = []
-                    self.navigationItem.title = "Errors"
-                    self.fetchingView.stopAnimating()
-                    self.fetchingView.removeFromSuperview()
-                    self.setupTableView()
-                    self.tableViewController.tableView.reloadData()
-                    self.refreshControl.endRefreshing()
+    private func listCategories() {
+        let url = URL(string: "https://api.up.com.au/api/v1/categories")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if error == nil {
+                if let decodedResponse = try? JSONDecoder().decode(Category.self, from: data!) {
+                    DispatchQueue.main.async {
+                        print("Categories JSON Decoding Succeeded!")
+                        self.categories = decodedResponse.data
+                        self.filteredCategories = self.categories.filter { self.searchController.searchBar.text!.isEmpty || $0.attributes.name.localizedStandardContains(self.searchController.searchBar.text!) }
+                        self.categoriesError = ""
+                        self.categoriesErrorResponse = []
+                        self.navigationItem.title = "Categories"
+                        self.fetchingView.stopAnimating()
+                        self.fetchingView.removeFromSuperview()
+                        self.setupTableView()
+                        self.tableViewController.tableView.reloadData()
+                        self.refreshControl.endRefreshing()
+                    }
+                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
+                    DispatchQueue.main.async {
+                        print("Categories Error JSON Decoding Succeeded!")
+                        self.categoriesErrorResponse = decodedResponse.errors
+                        self.categoriesError = ""
+                        self.categories = []
+                        self.navigationItem.title = "Errors"
+                        self.fetchingView.stopAnimating()
+                        self.fetchingView.removeFromSuperview()
+                        self.setupTableView()
+                        self.tableViewController.tableView.reloadData()
+                        self.refreshControl.endRefreshing()
+                    }
                 } else {
-                    print("Categories JSON Decoding Failed!")
-                    self.categoriesError = "JSON Decoding Failed!"
+                    DispatchQueue.main.async {
+                        print("Categories JSON Decoding Failed!")
+                        self.categoriesError = "JSON Decoding Failed!"
+                        self.categoriesErrorResponse = []
+                        self.categories = []
+                        self.navigationItem.title = "Error"
+                        self.fetchingView.stopAnimating()
+                        self.fetchingView.removeFromSuperview()
+                        self.setupTableView()
+                        self.tableViewController.tableView.reloadData()
+                        self.refreshControl.endRefreshing()
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    print(error?.localizedDescription ?? "Unknown Error!")
+                    self.categoriesError = error?.localizedDescription ?? "Unknown Error!"
                     self.categoriesErrorResponse = []
                     self.categories = []
                     self.navigationItem.title = "Error"
@@ -132,20 +150,12 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 }
-            } else {
-                print(response.error?.localizedDescription ?? "Unknown Error!")
-                self.categoriesError = response.error?.localizedDescription ?? "Unknown Error!"
-                self.categoriesErrorResponse = []
-                self.categories = []
-                self.navigationItem.title = "Error"
-                self.fetchingView.stopAnimating()
-                self.fetchingView.removeFromSuperview()
-                self.setupTableView()
-                self.tableViewController.tableView.reloadData()
-                self.refreshControl.endRefreshing()
             }
-            self.searchController.searchBar.placeholder = "Search \(self.categories.count.description) \(self.categories.count == 1 ? "Category" : "Categories")"
+            DispatchQueue.main.async {
+                self.searchController.searchBar.placeholder = "Search \(self.categories.count.description) \(self.categories.count == 1 ? "Category" : "Categories")"
+            }
         }
+        .resume()
     }
 }
 

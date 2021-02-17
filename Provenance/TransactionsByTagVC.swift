@@ -1,5 +1,4 @@
 import UIKit
-import Alamofire
 
 class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     var tag: TagResource!
@@ -100,41 +99,61 @@ class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDel
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
     }
     
-    func listTransactions() {
-        let urlString = "https://api.up.com.au/api/v1/transactions"
-        let parameters: Parameters = ["filter[tag]":tag.id, "page[size]":"100"]
-        let headers: HTTPHeaders = [
-            "Accept": "application/json",
-            "Authorization": "Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")"
-        ]
-        AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseJSON { response in
-            if response.error == nil {
-                if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
-                    print("Transactions JSON Decoding Succeeded!")
-                    self.transactions = decodedResponse.data
-                    self.filteredTransactions = self.transactions.filter { self.searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(self.searchController.searchBar.text!) }
-                    self.transactionsError = ""
-                    self.transactionsErrorResponse = []
-                    self.navigationItem.title = self.tag.id
-                    self.fetchingView.stopAnimating()
-                    self.fetchingView.removeFromSuperview()
-                    self.setupTableView()
-                    self.tableViewController.tableView.reloadData()
-                    self.refreshControl.endRefreshing()
-                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
-                    print("Transactions Error JSON Decoding Succeeded!")
-                    self.transactionsErrorResponse = decodedResponse.errors
-                    self.transactionsError = ""
-                    self.transactions = []
-                    self.navigationItem.title = "Errors"
-                    self.fetchingView.stopAnimating()
-                    self.fetchingView.removeFromSuperview()
-                    self.setupTableView()
-                    self.tableViewController.tableView.reloadData()
-                    self.refreshControl.endRefreshing()
+    private func listTransactions() {
+        var url = URL(string: "https://api.up.com.au/api/v1/transactions")!
+        let urlParams = ["filter[tag]":tag.id, "page[size]":"100"]
+        url = url.appendingQueryParameters(urlParams)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if error == nil {
+                if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: data!) {
+                    DispatchQueue.main.async {
+                        print("Transactions JSON Decoding Succeeded!")
+                        self.transactions = decodedResponse.data
+                        self.filteredTransactions = self.transactions.filter { self.searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(self.searchController.searchBar.text!) }
+                        self.transactionsError = ""
+                        self.transactionsErrorResponse = []
+                        self.navigationItem.title = self.tag.id
+                        self.fetchingView.stopAnimating()
+                        self.fetchingView.removeFromSuperview()
+                        self.setupTableView()
+                        self.tableViewController.tableView.reloadData()
+                        self.refreshControl.endRefreshing()
+                    }
+                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
+                    DispatchQueue.main.async {
+                        print("Transactions Error JSON Decoding Succeeded!")
+                        self.transactionsErrorResponse = decodedResponse.errors
+                        self.transactionsError = ""
+                        self.transactions = []
+                        self.navigationItem.title = "Errors"
+                        self.fetchingView.stopAnimating()
+                        self.fetchingView.removeFromSuperview()
+                        self.setupTableView()
+                        self.tableViewController.tableView.reloadData()
+                        self.refreshControl.endRefreshing()
+                    }
                 } else {
-                    print("Transactions JSON Decoding Failed!")
-                    self.transactionsError = "JSON Decoding Failed!"
+                    DispatchQueue.main.async {
+                        print("Transactions JSON Decoding Failed!")
+                        self.transactionsError = "JSON Decoding Failed!"
+                        self.transactionsErrorResponse = []
+                        self.transactions = []
+                        self.navigationItem.title = "Error"
+                        self.fetchingView.stopAnimating()
+                        self.fetchingView.removeFromSuperview()
+                        self.setupTableView()
+                        self.tableViewController.tableView.reloadData()
+                        self.refreshControl.endRefreshing()
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    print(error?.localizedDescription ?? "Unknown Error!")
+                    self.transactionsError = error?.localizedDescription ?? "Unknown Error!"
                     self.transactionsErrorResponse = []
                     self.transactions = []
                     self.navigationItem.title = "Error"
@@ -144,20 +163,12 @@ class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDel
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 }
-            } else {
-                print(response.error?.localizedDescription ?? "Unknown Error!")
-                self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
-                self.transactionsErrorResponse = []
-                self.transactions = []
-                self.navigationItem.title = "Error"
-                self.fetchingView.stopAnimating()
-                self.fetchingView.removeFromSuperview()
-                self.setupTableView()
-                self.tableViewController.tableView.reloadData()
-                self.refreshControl.endRefreshing()
             }
-            self.searchController.searchBar.placeholder = "Search \(self.transactions.count.description) \(self.transactions.count == 1 ? "Transaction" : "Transactions")"
+            DispatchQueue.main.async {
+                self.searchController.searchBar.placeholder = "Search \(self.transactions.count.description) \(self.transactions.count == 1 ? "Transaction" : "Transactions")"
+            }
         }
+        .resume()
     }
 }
 
@@ -245,12 +256,8 @@ extension TransactionsByTagVC: UITableViewDataSource {
                 UIPasteboard.general.string = transaction.attributes.description
             }
             let remove = UIAction(title: "Remove", image: UIImage(systemName: "trash")) { _ in
-                let ac = UIAlertController(title: "Failed", message: "The tag was not removed from the transaction.", preferredStyle: .alert)
-                let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                
-                ac.addAction(dismissAction)
-                
-                var request = URLRequest(url: URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!)
+                let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
+                var request = URLRequest(url: url)
                 
                 request.httpMethod = "DELETE"
                 request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -267,17 +274,30 @@ extension TransactionsByTagVC: UITableViewDataSource {
                 
                 request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
                 
-                AF.request(request).responseJSON { response in
-                    if response.error == nil {
-                        if response.response?.statusCode != 204 {
-                            self.present(ac, animated: true)
+                URLSession.shared.dataTask(with: request) { data, response, error in
+                    let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "The tag was not removed from the transaction.", preferredStyle: .alert)
+                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                    
+                    ac.addAction(dismissAction)
+                    
+                    if error == nil {
+                        let statusCode = (response as! HTTPURLResponse).statusCode
+                        if statusCode != 204 {
+                            DispatchQueue.main.async {
+                                self.present(ac, animated: true)
+                            }
                         } else {
-                            self.listTransactions()
+                            DispatchQueue.main.async {
+                                self.listTransactions()
+                            }
                         }
                     } else {
-                        self.present(ac, animated: true)
+                        DispatchQueue.main.async {
+                            self.present(ac, animated: true)
+                        }
                     }
                 }
+                .resume()
             }
             
             return UIContextMenuConfiguration(identifier: nil,
@@ -289,43 +309,57 @@ extension TransactionsByTagVC: UITableViewDataSource {
         }
     }
     
-    func listCategories() {
-        let urlString = "https://api.up.com.au/api/v1/categories"
-        let headers: HTTPHeaders = [
-            "Accept": "application/json",
-            "Authorization": "Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")"
-        ]
-        AF.request(urlString, method: .get, headers: headers).responseJSON { response in
-            if response.error == nil {
-                if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
-                    print("Categories JSON Decoding Succeeded!")
-                    self.categories = decodedResponse.data
+    private func listCategories() {
+        let url = URL(string: "https://api.up.com.au/api/v1/categories")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if error == nil {
+                if let decodedResponse = try? JSONDecoder().decode(Category.self, from: data!) {
+                    DispatchQueue.main.async {
+                        print("Categories JSON Decoding Succeeded!")
+                        self.categories = decodedResponse.data
+                    }
                 } else {
-                    print("Categories JSON Decoding Failed!")
+                    DispatchQueue.main.async {
+                        print("Categories JSON Decoding Failed!")
+                    }
                 }
             } else {
-                print(response.error?.localizedDescription ?? "Unknown Error!")
+                DispatchQueue.main.async {
+                    print(error?.localizedDescription ?? "Unknown Error!")
+                }
             }
         }
+        .resume()
     }
     
-    func listAccounts() {
-        let urlString = "https://api.up.com.au/api/v1/accounts"
-        let headers: HTTPHeaders = [
-            "Accept": "application/json",
-            "Authorization": "Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")"
-        ]
-        AF.request(urlString, method: .get, headers: headers).responseJSON { response in
-            if response.error == nil {
-                if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
-                    print("Accounts JSON Decoding Succeeded!")
-                    self.accounts = decodedResponse.data
+    private func listAccounts() {
+        let url = URL(string: "https://api.up.com.au/api/v1/accounts")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if error == nil {
+                if let decodedResponse = try? JSONDecoder().decode(Account.self, from: data!) {
+                    DispatchQueue.main.async {
+                        print("Accounts JSON Decoding Succeeded!")
+                        self.accounts = decodedResponse.data
+                    }
                 } else {
-                    print("Accounts JSON Decoding Failed!")
+                    DispatchQueue.main.async {
+                        print("Accounts JSON Decoding Failed!")
+                    }
                 }
             } else {
-                print(response.error?.localizedDescription ?? "Unknown Error!")
+                DispatchQueue.main.async {
+                    print(error?.localizedDescription ?? "Unknown Error!")
+                }
             }
         }
+        .resume()
     }
 }

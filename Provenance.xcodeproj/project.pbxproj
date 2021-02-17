@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		7A2837DE25D75437001809E4 /* AttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A2837DC25D75437001809E4 /* AttributeCell.xib */; };
 		7A2837F025D78579001809E4 /* DateStylePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2837EE25D78579001809E4 /* DateStylePickerCell.swift */; };
 		7A2837F125D78579001809E4 /* DateStylePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A2837EF25D78579001809E4 /* DateStylePickerCell.xib */; };
+		7A2E6D0025DCA06B00BA2AB6 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2E6CFF25DCA06B00BA2AB6 /* ModelData.swift */; };
 		7A56100F25D219530091396E /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56100E25D219530091396E /* Tag.swift */; };
 		7A56101225D219770091396E /* AllTagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101125D219770091396E /* AllTagsVC.swift */; };
 		7A56101625D21BFE0091396E /* TransactionsByTagVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101525D21BFE0091396E /* TransactionsByTagVC.swift */; };
@@ -26,7 +27,6 @@
 		7AB34D2225C78230000A1E81 /* TransactionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D2125C78230000A1E81 /* TransactionsVC.swift */; };
 		7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
 		7AB34D2A25C78232000A1E81 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2825C78232000A1E81 /* LaunchScreen.storyboard */; };
-		7AB34D3A25C78571000A1E81 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7AB34D3925C78571000A1E81 /* Alamofire */; };
 		7AB34D3D25C78588000A1E81 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D3C25C78588000A1E81 /* Transaction.swift */; };
 		7AB34D4025C7858E000A1E81 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D3F25C7858E000A1E81 /* Error.swift */; };
 		7AB34D4525C79BD0000A1E81 /* RightDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D4325C79BD0000A1E81 /* RightDetailTableViewCell.swift */; };
@@ -54,6 +54,7 @@
 		7A2837DC25D75437001809E4 /* AttributeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttributeCell.xib; sourceTree = "<group>"; };
 		7A2837EE25D78579001809E4 /* DateStylePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateStylePickerCell.swift; sourceTree = "<group>"; };
 		7A2837EF25D78579001809E4 /* DateStylePickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateStylePickerCell.xib; sourceTree = "<group>"; };
+		7A2E6CFF25DCA06B00BA2AB6 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
 		7A56100E25D219530091396E /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		7A56101125D219770091396E /* AllTagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTagsVC.swift; sourceTree = "<group>"; };
 		7A56101525D21BFE0091396E /* TransactionsByTagVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByTagVC.swift; sourceTree = "<group>"; };
@@ -94,7 +95,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7AB34D3A25C78571000A1E81 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +140,7 @@
 				7AF4C35425DB3668009CF391 /* Fonts */,
 				7AD5944F25C8B5410018C86E /* Types */,
 				7A07979A25D79ACE0013EE82 /* Custom Cells */,
+				7A2E6CFF25DCA06B00BA2AB6 /* ModelData.swift */,
 				7AB34D1D25C78230000A1E81 /* AppDelegate.swift */,
 				7AB34D5225C7C30E000A1E81 /* TabBarController.swift */,
 				7AB34D2125C78230000A1E81 /* TransactionsVC.swift */,
@@ -203,7 +204,6 @@
 			);
 			name = Provenance;
 			packageProductDependencies = (
-				7AB34D3925C78571000A1E81 /* Alamofire */,
 			);
 			productName = Sample;
 			productReference = 7AB34D1A25C78230000A1E81 /* Provenance.app */;
@@ -234,7 +234,6 @@
 			);
 			mainGroup = 7AB34D1125C78230000A1E81;
 			packageReferences = (
-				7AB34D3825C78571000A1E81 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 7AB34D1B25C78230000A1E81 /* Products */;
 			projectDirPath = "";
@@ -283,6 +282,7 @@
 				7A56101225D219770091396E /* AllTagsVC.swift in Sources */,
 				7AB34D5D25C7CDCB000A1E81 /* SettingsVC.swift in Sources */,
 				7AFDBEB025C7FEB0002DB208 /* AccountsVC.swift in Sources */,
+				7A2E6D0025DCA06B00BA2AB6 /* ModelData.swift in Sources */,
 				7AFDBEB325C7FEDB002DB208 /* Account.swift in Sources */,
 				7A56101625D21BFE0091396E /* TransactionsByTagVC.swift in Sources */,
 				7AB34D5625C7C441000A1E81 /* AboutVC.swift in Sources */,
@@ -443,7 +443,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = 4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -464,7 +464,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = 4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -494,25 +494,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		7AB34D3825C78571000A1E81 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.4.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		7AB34D3925C78571000A1E81 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7AB34D3825C78571000A1E81 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7AB34D1225C78230000A1E81 /* Project object */;
 }

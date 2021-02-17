@@ -1,5 +1,4 @@
 import UIKit
-import Alamofire
 
 class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
     let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
@@ -71,39 +70,59 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
     }
     
     private func listAccounts() {
-        let urlString = "https://api.up.com.au/api/v1/accounts"
-        let parameters: Parameters = ["page[size]":"100"]
-        let headers: HTTPHeaders = [
-            "Accept": "application/json",
-            "Authorization": "Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")"
-        ]
-        AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseJSON { response in
-            if response.error == nil {
-                if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
-                    print("Accounts JSON Decoding Succeeded!")
-                    self.accounts = decodedResponse.data
-                    self.accountsError = ""
-                    self.accountsErrorResponse = []
-                    self.navigationItem.title = "Accounts"
-                    self.fetchingView.stopAnimating()
-                    self.fetchingView.removeFromSuperview()
-                    self.setupTableView()
-                    self.tableViewController.tableView.reloadData()
-                    self.refreshControl.endRefreshing()
-                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
-                    print("Accounts Error JSON Decoding Succeeded!")
-                    self.accountsErrorResponse = decodedResponse.errors
-                    self.accountsError = ""
-                    self.accounts = []
-                    self.navigationItem.title = "Errors"
-                    self.fetchingView.stopAnimating()
-                    self.fetchingView.removeFromSuperview()
-                    self.setupTableView()
-                    self.tableViewController.tableView.reloadData()
-                    self.refreshControl.endRefreshing()
+        var url = URL(string: "https://api.up.com.au/api/v1/accounts")!
+        let urlParams = ["page[size]":"100"]
+        url = url.appendingQueryParameters(urlParams)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if error == nil {
+                if let decodedResponse = try? JSONDecoder().decode(Account.self, from: data!) {
+                    DispatchQueue.main.async {
+                        print("Accounts JSON Decoding Succeeded!")
+                        self.accounts = decodedResponse.data
+                        self.accountsError = ""
+                        self.accountsErrorResponse = []
+                        self.navigationItem.title = "Accounts"
+                        self.fetchingView.stopAnimating()
+                        self.fetchingView.removeFromSuperview()
+                        self.setupTableView()
+                        self.tableViewController.tableView.reloadData()
+                        self.refreshControl.endRefreshing()
+                    }
+                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
+                    DispatchQueue.main.async {
+                        print("Accounts Error JSON Decoding Succeeded!")
+                        self.accountsErrorResponse = decodedResponse.errors
+                        self.accountsError = ""
+                        self.accounts = []
+                        self.navigationItem.title = "Errors"
+                        self.fetchingView.stopAnimating()
+                        self.fetchingView.removeFromSuperview()
+                        self.setupTableView()
+                        self.tableViewController.tableView.reloadData()
+                        self.refreshControl.endRefreshing()
+                    }
                 } else {
-                    print("Accounts JSON Decoding Failed!")
-                    self.accountsError = "JSON Decoding Failed!"
+                    DispatchQueue.main.async {
+                        print("Accounts JSON Decoding Failed!")
+                        self.accountsError = "JSON Decoding Failed!"
+                        self.accountsErrorResponse = []
+                        self.accounts = []
+                        self.navigationItem.title = "Error"
+                        self.fetchingView.stopAnimating()
+                        self.fetchingView.removeFromSuperview()
+                        self.setupTableView()
+                        self.tableViewController.tableView.reloadData()
+                        self.refreshControl.endRefreshing()
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    print(error?.localizedDescription ?? "Unknown Error!")
+                    self.accountsError = error?.localizedDescription ?? "Unknown Error!"
                     self.accountsErrorResponse = []
                     self.accounts = []
                     self.navigationItem.title = "Error"
@@ -113,19 +132,9 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 }
-            } else {
-                print(response.error?.localizedDescription ?? "Unknown Error!")
-                self.accountsError = response.error?.localizedDescription ?? "Unknown Error!"
-                self.accountsErrorResponse = []
-                self.accounts = []
-                self.navigationItem.title = "Error"
-                self.fetchingView.stopAnimating()
-                self.fetchingView.removeFromSuperview()
-                self.setupTableView()
-                self.tableViewController.tableView.reloadData()
-                self.refreshControl.endRefreshing()
             }
         }
+        .resume()
     }
 }
 
