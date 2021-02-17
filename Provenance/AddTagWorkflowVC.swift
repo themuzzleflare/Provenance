@@ -247,7 +247,7 @@ extension AddTagWorkflowVC: UITableViewDataSource {
     }
 }
 
-class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UITextFieldDelegate {
     var transaction: TransactionResource!
     
     let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
@@ -304,9 +304,23 @@ class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDel
         listTags()
     }
     
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = textField.text ?? ""
+        
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        return updatedText.count <= 30
+    }
+    
     @objc private func openAddWorkflow() {
         let ac = UIAlertController(title: "New Tag", message: "Enter the name of the new tag.", preferredStyle: .alert)
-        ac.addTextField()
+        ac.addTextField(configurationHandler: { field in
+            field.delegate = self
+            field.autocapitalizationType = .none
+            field.autocorrectionType = .no
+        })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         

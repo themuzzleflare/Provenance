@@ -80,6 +80,8 @@ class SettingsVC: UITableViewController {
             
             let ac = UIAlertController(title: "New API Key", message: "Enter a new API Key.", preferredStyle: .alert)
             ac.addTextField(configurationHandler: { field in
+                field.autocapitalizationType = .none
+                field.autocorrectionType = .no
                 field.text = UserDefaults.standard.string(forKey: "apiKey") ?? nil
             })
             
