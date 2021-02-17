@@ -223,6 +223,9 @@ class TransactionDetailVC: UITableViewController {
             
             if attribute.key == "Raw Text" {
                 cell.rightDetail.font = UIFont(name: "SFMono-Regular", size: UIFont.labelFontSize)
+            } else {
+                cell.selectionStyle = .none
+                cell.accessoryType = .none
             }
         } else if section == 2 {
             attribute = altAttributesThree[indexPath.row]
