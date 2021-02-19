@@ -1,4 +1,5 @@
 import UIKit
+import NotificationBannerSwift
 
 class AddTagWorkflowVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
@@ -570,22 +571,25 @@ class AddTagWorkflowThreeVC: UITableViewController {
                 let statusCode = (response as! HTTPURLResponse).statusCode
                 if statusCode != 204 {
                     DispatchQueue.main.async {
-                        let ac = UIAlertController(title: self.errorAlert(statusCode).title, message: self.errorAlert(statusCode).content, preferredStyle: .alert)
-                        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                        ac.addAction(dismissAction)
-                        self.present(ac, animated: true)
+                        let banner = NotificationBanner(title: self.errorAlert(statusCode).title, subtitle: self.errorAlert(statusCode).content, leftView: nil, rightView: nil, style: .danger, colors: nil)
+                        banner.duration = 3
+                        banner.show()
+                        self.navigationController?.popViewController(animated: true)
                     }
                 } else {
                     DispatchQueue.main.async {
+                        let banner = NotificationBanner(title: "Success", subtitle: "\(self.tag!) was successfully added to \(self.transaction.attributes.description).", leftView: nil, rightView: nil, style: .success, colors: nil)
+                        banner.duration = 3
+                        banner.show()
                         self.navigationController?.popViewController(animated: true)
                     }
                 }
             } else {
                 DispatchQueue.main.async {
-                    let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "The tag was not added to the transaction.", preferredStyle: .alert)
-                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                    ac.addAction(dismissAction)
-                    self.present(ac, animated: true)
+                    let banner = NotificationBanner(title: "Failed", subtitle: "\(self.tag!) was not added to \(self.transaction.attributes.description).", leftView: nil, rightView: nil, style: .danger, colors: nil)
+                    banner.duration = 3
+                    banner.show()
+                    self.navigationController?.popViewController(animated: true)
                 }
             }
         }

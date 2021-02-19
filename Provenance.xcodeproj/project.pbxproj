@@ -3,12 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		78296065B05F8C367A05BFA2 /* Pods_Provenance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 049D95A397F1FB66EDFDDCEC /* Pods_Provenance.framework */; };
-		7A23787E25DF255200F2E789 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A23787D25DF255100F2E789 /* GoogleService-Info.plist */; };
 		7A2837D625D741D9001809E4 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2837D425D741D9001809E4 /* TransactionCell.swift */; };
 		7A2837D725D741D9001809E4 /* TransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A2837D525D741D9001809E4 /* TransactionCell.xib */; };
 		7A2837DD25D75437001809E4 /* AttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2837DB25D75437001809E4 /* AttributeCell.swift */; };
@@ -39,6 +38,8 @@
 		7AD295F425D358B200B8A765 /* TransactionsByAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */; };
 		7AD295F825D3599A00B8A765 /* AccountDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */; };
 		7AD5944C25C8B3AD0018C86E /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */; };
+		7AE5B3E225DF4B0900FB1759 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7AE5B3E125DF4B0900FB1759 /* GoogleService-Info.plist */; };
+		7AE5B3EA25DF558000FB1759 /* NotificationBannerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7AE5B3E925DF558000FB1759 /* NotificationBannerSwift */; };
 		7AF4C34F25DB2949009CF391 /* SettledOnlyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF4C34D25DB2948009CF391 /* SettledOnlyCell.swift */; };
 		7AF4C35025DB2949009CF391 /* SettledOnlyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AF4C34E25DB2949009CF391 /* SettledOnlyCell.xib */; };
 		7AF4C35925DB3674009CF391 /* CircularStd-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7AF4C35525DB3673009CF391 /* CircularStd-Book.otf */; };
@@ -52,7 +53,6 @@
 /* Begin PBXFileReference section */
 		049D95A397F1FB66EDFDDCEC /* Pods_Provenance.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Provenance.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		429C704F50B73B46AAEC4CE9 /* Pods-Provenance.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Provenance.debug.xcconfig"; path = "Target Support Files/Pods-Provenance/Pods-Provenance.debug.xcconfig"; sourceTree = "<group>"; };
-		7A23787D25DF255100F2E789 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7A2837D425D741D9001809E4 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		7A2837D525D741D9001809E4 /* TransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionCell.xib; sourceTree = "<group>"; };
 		7A2837DB25D75437001809E4 /* AttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeCell.swift; sourceTree = "<group>"; };
@@ -86,6 +86,7 @@
 		7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByAccountVC.swift; sourceTree = "<group>"; };
 		7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailVC.swift; sourceTree = "<group>"; };
 		7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
+		7AE5B3E125DF4B0900FB1759 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7AF4C34D25DB2948009CF391 /* SettledOnlyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettledOnlyCell.swift; sourceTree = "<group>"; };
 		7AF4C34E25DB2949009CF391 /* SettledOnlyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettledOnlyCell.xib; sourceTree = "<group>"; };
 		7AF4C35525DB3673009CF391 /* CircularStd-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CircularStd-Book.otf"; sourceTree = "<group>"; };
@@ -102,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7AE5B3EA25DF558000FB1759 /* NotificationBannerSwift in Frameworks */,
 				78296065B05F8C367A05BFA2 /* Pods_Provenance.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -180,7 +182,7 @@
 				7AB34D2625C78232000A1E81 /* Assets.xcassets */,
 				7AB34D2825C78232000A1E81 /* LaunchScreen.storyboard */,
 				7AB34D2B25C78232000A1E81 /* Info.plist */,
-				7A23787D25DF255100F2E789 /* GoogleService-Info.plist */,
+				7AE5B3E125DF4B0900FB1759 /* GoogleService-Info.plist */,
 			);
 			path = Provenance;
 			sourceTree = "<group>";
@@ -235,6 +237,9 @@
 			dependencies = (
 			);
 			name = Provenance;
+			packageProductDependencies = (
+				7AE5B3E925DF558000FB1759 /* NotificationBannerSwift */,
+			);
 			productName = Sample;
 			productReference = 7AB34D1A25C78230000A1E81 /* Provenance.app */;
 			productType = "com.apple.product-type.application";
@@ -263,6 +268,9 @@
 				Base,
 			);
 			mainGroup = 7AB34D1125C78230000A1E81;
+			packageReferences = (
+				7AE5B3E825DF558000FB1759 /* XCRemoteSwiftPackageReference "NotificationBanner" */,
+			);
 			productRefGroup = 7AB34D1B25C78230000A1E81 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -285,7 +293,7 @@
 				7AF4C35C25DB3674009CF391 /* CircularStd-Bold.otf in Resources */,
 				7A2837DE25D75437001809E4 /* AttributeCell.xib in Resources */,
 				7A2837F125D78579001809E4 /* DateStylePickerCell.xib in Resources */,
-				7A23787E25DF255200F2E789 /* GoogleService-Info.plist in Resources */,
+				7AE5B3E225DF4B0900FB1759 /* GoogleService-Info.plist in Resources */,
 				7AF4C35B25DB3674009CF391 /* SF-Mono-Regular.otf in Resources */,
 				7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */,
 			);
@@ -536,7 +544,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4;
+				MARKETING_VERSION = 4.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -559,7 +567,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4;
+				MARKETING_VERSION = 4.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -589,6 +597,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7AE5B3E825DF558000FB1759 /* XCRemoteSwiftPackageReference "NotificationBanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Daltron/NotificationBanner.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7AE5B3E925DF558000FB1759 /* NotificationBannerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7AE5B3E825DF558000FB1759 /* XCRemoteSwiftPackageReference "NotificationBanner" */;
+			productName = NotificationBannerSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7AB34D1225C78230000A1E81 /* Project object */;
 }

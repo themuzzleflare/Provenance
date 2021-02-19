@@ -1,4 +1,5 @@
 import UIKit
+import NotificationBannerSwift
 
 class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     var tag: TagResource!
@@ -275,25 +276,28 @@ extension TransactionsByTagVC: UITableViewDataSource {
                 request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
                 
                 URLSession.shared.dataTask(with: request) { data, response, error in
-                    let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "The tag was not removed from the transaction.", preferredStyle: .alert)
-                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                    
-                    ac.addAction(dismissAction)
-                    
                     if error == nil {
                         let statusCode = (response as! HTTPURLResponse).statusCode
                         if statusCode != 204 {
                             DispatchQueue.main.async {
-                                self.present(ac, animated: true)
+                                let banner = NotificationBanner(title: "Failed", subtitle: "\(self.tag.id) was not removed from \(transaction.attributes.description).", leftView: nil, rightView: nil, style: .danger, colors: nil)
+                                banner.duration = 3
+                                banner.show()
+                                
                             }
                         } else {
                             DispatchQueue.main.async {
+                                let banner = NotificationBanner(title: "Success", subtitle: "\(self.tag.id) was successfully removed from \(transaction.attributes.description).", leftView: nil, rightView: nil, style: .success, colors: nil)
+                                banner.duration = 3
+                                banner.show()
                                 self.listTransactions()
                             }
                         }
                     } else {
                         DispatchQueue.main.async {
-                            self.present(ac, animated: true)
+                            let banner = NotificationBanner(title: "Failed", subtitle: "\(self.tag.id) was not removed from \(transaction.attributes.description).", leftView: nil, rightView: nil, style: .danger, colors: nil)
+                            banner.duration = 3
+                            banner.show()
                         }
                     }
                 }
