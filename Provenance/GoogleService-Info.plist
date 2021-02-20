@@ -19,7 +19,7 @@
 	<key>STORAGE_BUCKET</key>
 	<string>firm-progress-305022.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<true/>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
 	<true/>
 	<key>IS_APPINVITE_ENABLED</key>
