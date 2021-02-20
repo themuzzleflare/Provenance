@@ -572,14 +572,14 @@ class AddTagWorkflowThreeVC: UITableViewController {
                 if statusCode != 204 {
                     DispatchQueue.main.async {
                         let banner = NotificationBanner(title: self.errorAlert(statusCode).title, subtitle: self.errorAlert(statusCode).content, leftView: nil, rightView: nil, style: .danger, colors: nil)
-                        banner.duration = 3
+                        banner.duration = 2
                         banner.show()
                         self.navigationController?.popViewController(animated: true)
                     }
                 } else {
                     DispatchQueue.main.async {
                         let banner = NotificationBanner(title: "Success", subtitle: "\(self.tag!) was successfully added to \(self.transaction.attributes.description).", leftView: nil, rightView: nil, style: .success, colors: nil)
-                        banner.duration = 3
+                        banner.duration = 2
                         banner.show()
                         self.navigationController?.popViewController(animated: true)
                     }
@@ -587,7 +587,7 @@ class AddTagWorkflowThreeVC: UITableViewController {
             } else {
                 DispatchQueue.main.async {
                     let banner = NotificationBanner(title: "Failed", subtitle: "\(self.tag!) was not added to \(self.transaction.attributes.description).", leftView: nil, rightView: nil, style: .danger, colors: nil)
-                    banner.duration = 3
+                    banner.duration = 2
                     banner.show()
                     self.navigationController?.popViewController(animated: true)
                 }

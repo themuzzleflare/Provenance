@@ -281,14 +281,14 @@ extension TransactionsByTagVC: UITableViewDataSource {
                         if statusCode != 204 {
                             DispatchQueue.main.async {
                                 let banner = NotificationBanner(title: "Failed", subtitle: "\(self.tag.id) was not removed from \(transaction.attributes.description).", leftView: nil, rightView: nil, style: .danger, colors: nil)
-                                banner.duration = 3
+                                banner.duration = 2
                                 banner.show()
                                 
                             }
                         } else {
                             DispatchQueue.main.async {
                                 let banner = NotificationBanner(title: "Success", subtitle: "\(self.tag.id) was successfully removed from \(transaction.attributes.description).", leftView: nil, rightView: nil, style: .success, colors: nil)
-                                banner.duration = 3
+                                banner.duration = 2
                                 banner.show()
                                 self.listTransactions()
                             }
@@ -296,7 +296,7 @@ extension TransactionsByTagVC: UITableViewDataSource {
                     } else {
                         DispatchQueue.main.async {
                             let banner = NotificationBanner(title: "Failed", subtitle: "\(self.tag.id) was not removed from \(transaction.attributes.description).", leftView: nil, rightView: nil, style: .danger, colors: nil)
-                            banner.duration = 3
+                            banner.duration = 2
                             banner.show()
                         }
                     }
