@@ -17,7 +17,7 @@ class SettingsVC: UITableViewController {
         navigationItem.title = "Settings"
         navigationItem.rightBarButtonItem = closeButton
         
-        tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "apiKeyCell")
+        tableView.register(UINib(nibName: "APIKeyCell", bundle: nil), forCellReuseIdentifier: "apiKeyCell")
         tableView.register(UINib(nibName: "DateStylePickerCell", bundle: nil), forCellReuseIdentifier: "datePickerCell")
     }
     
@@ -36,18 +36,10 @@ class SettingsVC: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
         
-        let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: "apiKeyCell", for: indexPath) as! RightDetailTableViewCell
+        let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: "apiKeyCell", for: indexPath) as! APIKeyCell
         let datePickerCell = tableView.dequeueReusableCell(withIdentifier: "datePickerCell", for: indexPath) as! DateStylePickerCell
         
-        apiKeyCell.accessoryType = .disclosureIndicator
-        apiKeyCell.textLabel?.textColor = .secondaryLabel
-        apiKeyCell.textLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
-        apiKeyCell.textLabel?.text = "API Key"
-        apiKeyCell.detailTextLabel?.textColor = .label
-        apiKeyCell.detailTextLabel?.textAlignment = .right
-        apiKeyCell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
-        apiKeyCell.detailTextLabel?.lineBreakMode = .byTruncatingMiddle
-        apiKeyCell.detailTextLabel?.text = apiKeyDisplay
+        apiKeyCell.rightDetail.text = apiKeyDisplay
         
         if UserDefaults.standard.string(forKey: "dateStyle") == "Absolute" || UserDefaults.standard.string(forKey: "dateStyle") == nil {
             datePickerCell.datePicker.selectedSegmentIndex = 0
@@ -55,7 +47,6 @@ class SettingsVC: UITableViewController {
             datePickerCell.datePicker.selectedSegmentIndex = 1
         }
         datePickerCell.datePicker.addTarget(self, action: #selector(switchDateStyle), for:.valueChanged)
-        
         
         if section == 0 {
             return apiKeyCell

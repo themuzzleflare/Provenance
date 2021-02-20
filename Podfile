@@ -8,5 +8,7 @@ target 'Provenance' do
   pod 'Firebase/Messaging'
   pod 'Firebase/Crashlytics'
   pod 'Firebase/Performance'
+  pod 'MarqueeLabel'
+  pod 'NotificationBannerSwift', '~> 3.0.0'
   
 end
