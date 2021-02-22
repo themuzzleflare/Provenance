@@ -30,7 +30,7 @@ class TransactionDetailVC: UITableViewController {
     }
     
     private var statusIcon: UIImageView {
-        let configuration = UIImage.SymbolConfiguration(pointSize: 20)
+        let configuration = UIImage.SymbolConfiguration(pointSize: 22)
         
         let settledIconImage = UIImage(systemName: "checkmark.circle", withConfiguration: configuration)
         let heldIconImage = UIImage(systemName: "clock", withConfiguration: configuration)

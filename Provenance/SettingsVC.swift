@@ -1,6 +1,9 @@
 import UIKit
+import NotificationBannerSwift
 
 class SettingsVC: UITableViewController {
+    var appearingBanner: NotificationBanner?
+    
     private var apiKeyDisplay: String {
         switch UserDefaults.standard.string(forKey: "apiKey") {
             case nil, "": return "None"
@@ -21,6 +24,15 @@ class SettingsVC: UITableViewController {
         tableView.register(UINib(nibName: "DateStylePickerCell", bundle: nil), forCellReuseIdentifier: "datePickerCell")
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        if let banner = appearingBanner {
+            banner.show()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                self.appearingBanner = nil
+            }
+        }
+    }
+    
     @objc private func closeWorkflow() {
         dismiss(animated: true)
     }
@@ -38,6 +50,12 @@ class SettingsVC: UITableViewController {
         
         let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: "apiKeyCell", for: indexPath) as! APIKeyCell
         let datePickerCell = tableView.dequeueReusableCell(withIdentifier: "datePickerCell", for: indexPath) as! DateStylePickerCell
+        
+        if UserDefaults.standard.string(forKey: "apiKey") != "" && UserDefaults.standard.string(forKey: "apiKey") != nil {
+            apiKeyCell.leftImage.tintColor = .systemGreen
+        } else {
+            apiKeyCell.leftImage.tintColor = .secondaryLabel
+        }
         
         apiKeyCell.rightDetail.text = apiKeyDisplay
         
@@ -80,9 +98,43 @@ class SettingsVC: UITableViewController {
             
             let submitAction = UIAlertAction(title: "Save", style: .default) { [unowned ac] _ in
                 let answer = ac.textFields![0]
-                if answer.text != "" && answer.text != UserDefaults.standard.string(forKey: "apiKey") {
-                    UserDefaults.standard.set(answer.text!, forKey: "apiKey")
-                    tableView.reloadData()
+                if (answer.text != "" && answer.text != nil) && answer.text != UserDefaults.standard.string(forKey: "apiKey") {
+                    let url = URL(string: "https://api.up.com.au/api/v1/util/ping")!
+                    var request = URLRequest(url: url)
+                    request.httpMethod = "GET"
+                    request.addValue("application/json", forHTTPHeaderField: "Accept")
+                    request.addValue("Bearer \(answer.text!)", forHTTPHeaderField: "Authorization")
+                    URLSession.shared.dataTask(with: request) { data, response, error in
+                        if error == nil {
+                            let statusCode = (response as! HTTPURLResponse).statusCode
+                            if statusCode == 200 {
+                                DispatchQueue.main.async {
+                                    let banner = NotificationBanner(title: "Success", subtitle: "The API Key was verified and set.", leftView: nil, rightView: nil, style: .success, colors: nil)
+                                    banner.duration = 2
+                                    banner.show()
+                                    UserDefaults.standard.set(answer.text!, forKey: "apiKey")
+                                    tableView.reloadData()
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    let banner = NotificationBanner(title: "Failed", subtitle: "The API Key could not be verified.", leftView: nil, rightView: nil, style: .danger, colors: nil)
+                                    banner.duration = 2
+                                    banner.show()
+                                }
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                let banner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "The API Key could not be verified.", leftView: nil, rightView: nil, style: .danger, colors: nil)
+                                banner.duration = 2
+                                banner.show()
+                            }
+                        }
+                    }
+                    .resume()
+                } else {
+                    let banner = NotificationBanner(title: "Failed", subtitle: "The provided API Key was either empty, or the same as the current one.", leftView: nil, rightView: nil, style: .danger, colors: nil)
+                    banner.duration = 2
+                    banner.show()
                 }
             }
             

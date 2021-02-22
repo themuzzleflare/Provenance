@@ -43,9 +43,6 @@ class AddTagWorkflowVC: UIViewController, UITableViewDelegate, UISearchBarDelega
         title = "Transactions"
         navigationItem.title = "Loading"
         navigationItem.rightBarButtonItem = closeButton
-        if #available(iOS 14.0, *) {
-            navigationItem.backButtonDisplayMode = .minimal
-        }
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         
@@ -288,9 +285,6 @@ class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDel
         
         title = "Tags"
         navigationItem.title = "Loading"
-        if #available(iOS 14.0, *) {
-            navigationItem.backButtonDisplayMode = .minimal
-        }
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         
@@ -586,10 +580,10 @@ class AddTagWorkflowThreeVC: UITableViewController {
                 }
             } else {
                 DispatchQueue.main.async {
-                    let banner = NotificationBanner(title: "Failed", subtitle: "\(self.tag!) was not added to \(self.transaction.attributes.description).", leftView: nil, rightView: nil, style: .danger, colors: nil)
+                    let banner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(self.tag!) was not added to \(self.transaction.attributes.description).", leftView: nil, rightView: nil, style: .danger, colors: nil)
                     banner.duration = 2
                     banner.show()
-                    self.navigationController?.popViewController(animated: true)
+                    self.navigationController?.popToRootViewController(animated: true)
                 }
             }
         }
@@ -651,8 +645,16 @@ class AddTagWorkflowThreeVC: UITableViewController {
             transactionCell.rightLabel.text = "\(transaction.attributes.amount.valueSymbol)\(transaction.attributes.amount.valueString)"
             return transactionCell
         } else {
+            var createdDate: String {
+                switch UserDefaults.standard.string(forKey: "dateStyle") {
+                    case "Absolute", .none: return "on \(transaction.attributes.createdDate)"
+                    case "Relative": return transaction.attributes.createdDateRelative
+                    default: return "on \(transaction.attributes.createdDate)"
+                }
+            }
+            
             cell.textLabel?.numberOfLines = 0
-            cell.textLabel?.text = "You are adding the tag \"\(tag!)\" to the transaction \"\(transaction.attributes.description)\", which was created on \(transaction.attributes.createdDate)."
+            cell.textLabel?.text = "You are adding the tag \"\(tag!)\" to the transaction \"\(transaction.attributes.description)\", which was created \(createdDate)."
             return cell
         }
     }
