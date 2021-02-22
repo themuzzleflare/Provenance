@@ -27,9 +27,7 @@ class SettingsVC: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         if let banner = appearingBanner {
             banner.show()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                self.appearingBanner = nil
-            }
+            self.appearingBanner = nil
         }
     }
     

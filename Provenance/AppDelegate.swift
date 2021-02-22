@@ -59,10 +59,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                             let statusCode = (response as! HTTPURLResponse).statusCode
                             if statusCode == 200 {
                                 DispatchQueue.main.async {
+                                    UserDefaults.standard.set(answer.text!, forKey: "apiKey")
                                     let banner = NotificationBanner(title: "Success", subtitle: "The API Key was verified and set.", leftView: nil, rightView: nil, style: .success, colors: nil)
                                     banner.duration = 2
-                                    banner.show()
-                                    UserDefaults.standard.set(answer.text!, forKey: "apiKey")
+                                    settingsController.appearingBanner = banner
+                                    self.window?.rootViewController?.present(UINavigationController(rootViewController: settingsController), animated: true)
                                 }
                             } else {
                                 DispatchQueue.main.async {

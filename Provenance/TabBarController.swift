@@ -15,7 +15,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         tabOne.tabBarItem = tabOneBarItem
         
         let tabTwo = UINavigationController(rootViewController: AccountsVC())
-        let tabTwoBarItem = UITabBarItem(title: "Accounts", image: UIImage(systemName: "wallet.pass"), selectedImage: UIImage(systemName: "wallet.pass.fill"))
+        let tabTwoBarItem = UITabBarItem(title: "Accounts", image: UIImage(named: "wallet.pass"), selectedImage: UIImage(named: "wallet.pass.fill"))
         
         tabTwo.tabBarItem = tabTwoBarItem
         
