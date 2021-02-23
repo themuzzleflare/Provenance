@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		78296065B05F8C367A05BFA2 /* Pods_Provenance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 049D95A397F1FB66EDFDDCEC /* Pods_Provenance.framework */; };
+		78296065B05F8C367A05BFA2 /* Pods_Provenance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 049D95A397F1FB66EDFDDCEC /* Pods_Provenance.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		7A2837D625D741D9001809E4 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2837D425D741D9001809E4 /* TransactionCell.swift */; };
 		7A2837D725D741D9001809E4 /* TransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A2837D525D741D9001809E4 /* TransactionCell.xib */; };
 		7A2837DD25D75437001809E4 /* AttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2837DB25D75437001809E4 /* AttributeCell.swift */; };
@@ -40,7 +40,6 @@
 		7AD295F425D358B200B8A765 /* TransactionsByAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */; };
 		7AD295F825D3599A00B8A765 /* AccountDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */; };
 		7AD5944C25C8B3AD0018C86E /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */; };
-		7AE5B3E225DF4B0900FB1759 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7AE5B3E125DF4B0900FB1759 /* GoogleService-Info.plist */; };
 		7AF4C34F25DB2949009CF391 /* SettledOnlyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF4C34D25DB2948009CF391 /* SettledOnlyCell.swift */; };
 		7AF4C35025DB2949009CF391 /* SettledOnlyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AF4C34E25DB2949009CF391 /* SettledOnlyCell.xib */; };
 		7AF4C35925DB3674009CF391 /* CircularStd-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7AF4C35525DB3673009CF391 /* CircularStd-Book.otf */; };
@@ -91,7 +90,6 @@
 		7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByAccountVC.swift; sourceTree = "<group>"; };
 		7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailVC.swift; sourceTree = "<group>"; };
 		7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
-		7AE5B3E125DF4B0900FB1759 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7AF4C34D25DB2948009CF391 /* SettledOnlyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettledOnlyCell.swift; sourceTree = "<group>"; };
 		7AF4C34E25DB2949009CF391 /* SettledOnlyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettledOnlyCell.xib; sourceTree = "<group>"; };
 		7AF4C35525DB3673009CF391 /* CircularStd-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CircularStd-Book.otf"; sourceTree = "<group>"; };
@@ -192,7 +190,6 @@
 				7AB34D2625C78232000A1E81 /* Assets.xcassets */,
 				7AB34D2825C78232000A1E81 /* LaunchScreen.storyboard */,
 				7AB34D2B25C78232000A1E81 /* Info.plist */,
-				7AE5B3E125DF4B0900FB1759 /* GoogleService-Info.plist */,
 			);
 			path = Provenance;
 			sourceTree = "<group>";
@@ -240,7 +237,6 @@
 				7AB34D1725C78230000A1E81 /* Frameworks */,
 				7AB34D1825C78230000A1E81 /* Resources */,
 				722287965D3B5DB17985869C /* [CP] Embed Pods Frameworks */,
-				7A23787A25DF1F8200F2E789 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -301,7 +297,6 @@
 				7AF4C35C25DB3674009CF391 /* CircularStd-Bold.otf in Resources */,
 				7A2837DE25D75437001809E4 /* AttributeCell.xib in Resources */,
 				7A2837F125D78579001809E4 /* DateStylePickerCell.xib in Resources */,
-				7AE5B3E225DF4B0900FB1759 /* GoogleService-Info.plist in Resources */,
 				7AF4C35B25DB3674009CF391 /* SF-Mono-Regular.otf in Resources */,
 				7A50FBA125E0CDB800176C10 /* APIKeyCell.xib in Resources */,
 				7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */,
@@ -327,25 +322,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Provenance/Pods-Provenance-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		7A23787A25DF1F8200F2E789 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
-				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
 		E2039547D977BFBC0F14F816 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -550,17 +526,19 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				INFOPLIST_FILE = Provenance/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0;
+				MARKETING_VERSION = 5.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -573,17 +551,19 @@
 				CODE_SIGN_ENTITLEMENTS = Provenance/Provenance.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				INFOPLIST_FILE = Provenance/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0;
+				MARKETING_VERSION = 5.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
