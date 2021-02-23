@@ -1,7 +1,4 @@
 import UIKit
-#if !targetEnvironment(macCatalyst)
-import NotificationBannerSwift
-#endif
 
 class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     var tag: TagResource!
@@ -282,40 +279,23 @@ extension TransactionsByTagVC: UITableViewDataSource {
                         let statusCode = (response as! HTTPURLResponse).statusCode
                         if statusCode != 204 {
                             DispatchQueue.main.async {
-                                #if !targetEnvironment(macCatalyst)
-                                let banner = NotificationBanner(title: "Failed", subtitle: "\(self.tag.id) was not removed from \(transaction.attributes.description).", leftView: nil, rightView: nil, style: .danger, colors: nil)
-                                banner.duration = 2
-                                banner.show()
-                                #else
                                 let ac = UIAlertController(title: "Failed", message: "\(self.tag.id) was not removed from \(transaction.attributes.description).", preferredStyle: .alert)
                                 let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
                                 ac.addAction(dismissAction)
                                 self.present(ac, animated: true)
-                                #endif
                                 
                             }
                         } else {
                             DispatchQueue.main.async {
-                                #if !targetEnvironment(macCatalyst)
-                                let banner = NotificationBanner(title: "Success", subtitle: "\(self.tag.id) was successfully removed from \(transaction.attributes.description).", leftView: nil, rightView: nil, style: .success, colors: nil)
-                                banner.duration = 2
-                                banner.show()
-                                #endif
                                 self.listTransactions()
                             }
                         }
                     } else {
                         DispatchQueue.main.async {
-                            #if !targetEnvironment(macCatalyst)
-                            let banner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", leftView: nil, rightView: nil, style: .danger, colors: nil)
-                            banner.duration = 2
-                            banner.show()
-                            #else
                             let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", preferredStyle: .alert)
                             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
                             ac.addAction(dismissAction)
                             self.present(ac, animated: true)
-                            #endif
                         }
                     }
                 }

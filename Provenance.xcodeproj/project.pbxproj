@@ -3,11 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		78296065B05F8C367A05BFA2 /* Pods_Provenance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 049D95A397F1FB66EDFDDCEC /* Pods_Provenance.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		7143DD91BFAE7F99AE9A2B81 /* Pods_Provenance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E8AB3886563257C39F757D /* Pods_Provenance.framework */; };
 		7A2837D625D741D9001809E4 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2837D425D741D9001809E4 /* TransactionCell.swift */; };
 		7A2837D725D741D9001809E4 /* TransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A2837D525D741D9001809E4 /* TransactionCell.xib */; };
 		7A2837DD25D75437001809E4 /* AttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2837DB25D75437001809E4 /* AttributeCell.swift */; };
@@ -53,8 +53,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		049D95A397F1FB66EDFDDCEC /* Pods_Provenance.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Provenance.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		429C704F50B73B46AAEC4CE9 /* Pods-Provenance.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Provenance.debug.xcconfig"; path = "Target Support Files/Pods-Provenance/Pods-Provenance.debug.xcconfig"; sourceTree = "<group>"; };
+		0D092E02E7CA483DD8D5DE38 /* Pods-Provenance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Provenance.release.xcconfig"; path = "Target Support Files/Pods-Provenance/Pods-Provenance.release.xcconfig"; sourceTree = "<group>"; };
+		54E8AB3886563257C39F757D /* Pods_Provenance.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Provenance.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A2837D425D741D9001809E4 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		7A2837D525D741D9001809E4 /* TransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionCell.xib; sourceTree = "<group>"; };
 		7A2837DB25D75437001809E4 /* AttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeCell.swift; sourceTree = "<group>"; };
@@ -100,7 +100,7 @@
 		7AF85B9E25E09CFD00D64417 /* GIFImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFImage.swift; sourceTree = "<group>"; };
 		7AFDBEAF25C7FEB0002DB208 /* AccountsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsVC.swift; sourceTree = "<group>"; };
 		7AFDBEB225C7FEDB002DB208 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
-		BE1B1CB3315CC9EEEC96F375 /* Pods-Provenance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Provenance.release.xcconfig"; path = "Target Support Files/Pods-Provenance/Pods-Provenance.release.xcconfig"; sourceTree = "<group>"; };
+		807F847AFD560FFD17AA96DA /* Pods-Provenance.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Provenance.debug.xcconfig"; path = "Target Support Files/Pods-Provenance/Pods-Provenance.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,22 +108,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				78296065B05F8C367A05BFA2 /* Pods_Provenance.framework in Frameworks */,
+				7143DD91BFAE7F99AE9A2B81 /* Pods_Provenance.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		65B58D4FB9037E2880C4BC45 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				429C704F50B73B46AAEC4CE9 /* Pods-Provenance.debug.xcconfig */,
-				BE1B1CB3315CC9EEEC96F375 /* Pods-Provenance.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		7A07979A25D79ACE0013EE82 /* Custom Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -148,8 +139,8 @@
 			children = (
 				7AB34D1C25C78230000A1E81 /* Provenance */,
 				7AB34D1B25C78230000A1E81 /* Products */,
-				65B58D4FB9037E2880C4BC45 /* Pods */,
-				7D47C281EBA794C4847B5F96 /* Frameworks */,
+				D3A54786F5922BD1BB89FF35 /* Pods */,
+				EAF805222779581B0B1EB216 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -217,10 +208,20 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
-		7D47C281EBA794C4847B5F96 /* Frameworks */ = {
+		D3A54786F5922BD1BB89FF35 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				049D95A397F1FB66EDFDDCEC /* Pods_Provenance.framework */,
+				807F847AFD560FFD17AA96DA /* Pods-Provenance.debug.xcconfig */,
+				0D092E02E7CA483DD8D5DE38 /* Pods-Provenance.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		EAF805222779581B0B1EB216 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				54E8AB3886563257C39F757D /* Pods_Provenance.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -232,19 +233,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7AB34D2E25C78232000A1E81 /* Build configuration list for PBXNativeTarget "Provenance" */;
 			buildPhases = (
-				E2039547D977BFBC0F14F816 /* [CP] Check Pods Manifest.lock */,
+				AB3D8A48423395E602E12979 /* [CP] Check Pods Manifest.lock */,
 				7AB34D1625C78230000A1E81 /* Sources */,
 				7AB34D1725C78230000A1E81 /* Frameworks */,
 				7AB34D1825C78230000A1E81 /* Resources */,
-				722287965D3B5DB17985869C /* [CP] Embed Pods Frameworks */,
+				9798B0B11892F97E0F40FEF6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Provenance;
-			packageProductDependencies = (
-			);
 			productName = Sample;
 			productReference = 7AB34D1A25C78230000A1E81 /* Provenance.app */;
 			productType = "com.apple.product-type.application";
@@ -273,8 +272,6 @@
 				Base,
 			);
 			mainGroup = 7AB34D1125C78230000A1E81;
-			packageReferences = (
-			);
 			productRefGroup = 7AB34D1B25C78230000A1E81 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -306,7 +303,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		722287965D3B5DB17985869C /* [CP] Embed Pods Frameworks */ = {
+		9798B0B11892F97E0F40FEF6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -323,7 +320,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Provenance/Pods-Provenance-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E2039547D977BFBC0F14F816 /* [CP] Check Pods Manifest.lock */ = {
+		AB3D8A48423395E602E12979 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -518,11 +515,12 @@
 		};
 		7AB34D2F25C78232000A1E81 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 429C704F50B73B46AAEC4CE9 /* Pods-Provenance.debug.xcconfig */;
+			baseConfigurationReference = 807F847AFD560FFD17AA96DA /* Pods-Provenance.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Provenance/Provenance.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
@@ -533,7 +531,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
@@ -544,11 +542,12 @@
 		};
 		7AB34D3025C78232000A1E81 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BE1B1CB3315CC9EEEC96F375 /* Pods-Provenance.release.xcconfig */;
+			baseConfigurationReference = 0D092E02E7CA483DD8D5DE38 /* Pods-Provenance.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Provenance/Provenance.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
@@ -558,7 +557,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;

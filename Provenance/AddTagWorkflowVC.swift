@@ -1,7 +1,4 @@
 import UIKit
-#if !targetEnvironment(macCatalyst)
-import NotificationBannerSwift
-#endif
 
 class AddTagWorkflowVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
@@ -567,45 +564,26 @@ class AddTagWorkflowThreeVC: UITableViewController {
                 let statusCode = (response as! HTTPURLResponse).statusCode
                 if statusCode != 204 {
                     DispatchQueue.main.async {
-                        #if !targetEnvironment(macCatalyst)
-                        let banner = NotificationBanner(title: self.errorAlert(statusCode).title, subtitle: self.errorAlert(statusCode).content, leftView: nil, rightView: nil, style: .danger, colors: nil)
-                        banner.duration = 2
-                        banner.show()
-                        self.navigationController?.popViewController(animated: true)
-                        #else
                         let ac = UIAlertController(title: self.errorAlert(statusCode).title, message: self.errorAlert(statusCode).content, preferredStyle: .alert)
                         let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                             self.navigationController?.popViewController(animated: true)
                         })
                         ac.addAction(dismissAction)
                         self.present(ac, animated: true)
-                        #endif
                     }
                 } else {
                     DispatchQueue.main.async {
-                        #if !targetEnvironment(macCatalyst)
-                        let banner = NotificationBanner(title: "Success", subtitle: "\(self.tag!) was successfully added to \(self.transaction.attributes.description).", leftView: nil, rightView: nil, style: .success, colors: nil)
-                        banner.duration = 2
-                        banner.show()
-                        #endif
                         self.navigationController?.popViewController(animated: true)
                     }
                 }
             } else {
                 DispatchQueue.main.async {
-                    #if !targetEnvironment(macCatalyst)
-                    let banner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(self.tag!) was not added to \(self.transaction.attributes.description).", leftView: nil, rightView: nil, style: .danger, colors: nil)
-                    banner.duration = 2
-                    banner.show()
-                    self.navigationController?.popToRootViewController(animated: true)
-                    #else
                     let ac = UIAlertController(title: "Failed", message:error?.localizedDescription ?? "\(self.tag!) was not added to \(self.transaction.attributes.description).", preferredStyle: .alert)
                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                         self.navigationController?.popToRootViewController(animated: true)
                     })
                     ac.addAction(dismissAction)
                     self.present(ac, animated: true)
-                    #endif
                 }
             }
         }

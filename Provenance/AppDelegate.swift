@@ -1,7 +1,4 @@
 import UIKit
-#if !targetEnvironment(macCatalyst)
-import NotificationBannerSwift
-#endif
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -42,42 +39,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             if statusCode == 200 {
                                 DispatchQueue.main.async {
                                     UserDefaults.standard.set(answer.text!, forKey: "apiKey")
-                                    #if !targetEnvironment(macCatalyst)
-                                    let banner = NotificationBanner(title: "Success", subtitle: "The API Key was verified and set.", leftView: nil, rightView: nil, style: .success, colors: nil)
-                                    banner.duration = 2
-                                    settingsController.appearingBanner = banner
-                                    #endif
                                     self.window?.rootViewController?.present(UINavigationController(rootViewController: settingsController), animated: true)
                                 }
                             } else {
                                 DispatchQueue.main.async {
-                                    #if !targetEnvironment(macCatalyst)
-                                    let banner = NotificationBanner(title: "Failed", subtitle: "The API Key could not be verified.", leftView: nil, rightView: nil, style: .danger, colors: nil)
-                                    banner.duration = 2
-                                    settingsController.appearingBanner = banner
-                                    #endif
-                                    self.window?.rootViewController?.present(UINavigationController(rootViewController: settingsController), animated: true)
+                                    let ac = UIAlertController(title: "Failed", message: "The API Key could not be verified.", preferredStyle: .alert)
+                                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
+                                        self.window?.rootViewController?.present(UINavigationController(rootViewController: settingsController), animated: true)
+                                    })
+                                    ac.addAction(dismissAction)
+                                    self.window?.rootViewController?.present(ac, animated: true)
                                 }
                             }
                         } else {
                             DispatchQueue.main.async {
-                                #if !targetEnvironment(macCatalyst)
-                                let banner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "The API Key could not be verified.", leftView: nil, rightView: nil, style: .danger, colors: nil)
-                                banner.duration = 2
-                                settingsController.appearingBanner = banner
-                                #endif
-                                self.window?.rootViewController?.present(UINavigationController(rootViewController: settingsController), animated: true)
+                                let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "The API Key could not be verified.", preferredStyle: .alert)
+                                let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
+                                    self.window?.rootViewController?.present(UINavigationController(rootViewController: settingsController), animated: true)
+                                })
+                                ac.addAction(dismissAction)
+                                self.window?.rootViewController?.present(ac, animated: true)
                             }
                         }
                     }
                     .resume()
                 } else {
-                    #if !targetEnvironment(macCatalyst)
-                    let banner = NotificationBanner(title: "Failed", subtitle: "The provided API Key was either empty, or the same as the current one.", leftView: nil, rightView: nil, style: .danger, colors: nil)
-                    banner.duration = 2
-                    settingsController.appearingBanner = banner
-                    #endif
-                    self.window?.rootViewController?.present(UINavigationController(rootViewController: settingsController), animated: true)
+                    let ac = UIAlertController(title: "Failed", message: "The provided API Key was either empty, or the same as the current one.", preferredStyle: .alert)
+                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
+                        self.window?.rootViewController?.present(UINavigationController(rootViewController: settingsController), animated: true)
+                    })
+                    ac.addAction(dismissAction)
+                    self.window?.rootViewController?.present(ac, animated: true)
                 }
             }
             
