@@ -37,23 +37,11 @@
                         <fontDescription key="fontDescription" name="CircularStd-Book" family="Circular Std" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="number" keyPath="leadingBuffer">
-                                <real key="value" value="20"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="number" keyPath="scrollRate">
-                                <real key="value" value="65"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="number" keyPath="fadeLength">
-                                <real key="value" value="20"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
                     </label>
                     <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="APo-pG-JNb">
-                        <rect key="frame" x="18" y="6.6666666666666661" width="20" height="30.333333333333332"/>
+                        <rect key="frame" x="20.333333333333332" y="10.333333333333336" width="15.333333333333334" height="23"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <imageReference key="image" image="key" catalog="system" symbolScale="default"/>
-                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="22"/>
                     </imageView>
                 </subviews>
             </tableViewCellContentView>

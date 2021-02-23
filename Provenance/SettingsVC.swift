@@ -1,4 +1,5 @@
 import UIKit
+import MarqueeLabel
 
 class SettingsVC: UITableViewController {
     
@@ -46,6 +47,9 @@ class SettingsVC: UITableViewController {
             apiKeyCell.leftImage.tintColor = .secondaryLabel
         }
         
+        apiKeyCell.rightDetail.speed = .rate(65)
+        apiKeyCell.rightDetail.leadingBuffer = 20
+        apiKeyCell.rightDetail.fadeLength = 20
         apiKeyCell.rightDetail.text = apiKeyDisplay
         
         if UserDefaults.standard.string(forKey: "dateStyle") == "Absolute" || UserDefaults.standard.string(forKey: "dateStyle") == nil {

@@ -6,8 +6,6 @@ class TagsVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
-        
         clearsSelectionOnViewWillAppear = true
         
         title = "Tags"

@@ -256,6 +256,59 @@ extension TransactionsByTagVC: UITableViewDataSource {
                 UIPasteboard.general.string = transaction.attributes.description
             }
             let remove = UIAction(title: "Remove", image: UIImage(systemName: "trash")) { _ in
+                #if !targetEnvironment(macCatalyst)
+                let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
+                    let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
+                    var request = URLRequest(url: url)
+                    
+                    request.httpMethod = "DELETE"
+                    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                    request.addValue("Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
+                    
+                    let bodyObject: [String : Any] = [
+                        "data": [
+                            [
+                                "type": "tags",
+                                "id": self.tag.id
+                            ]
+                        ]
+                    ]
+                    
+                    request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+                    
+                    URLSession.shared.dataTask(with: request) { data, response, error in
+                        if error == nil {
+                            let statusCode = (response as! HTTPURLResponse).statusCode
+                            if statusCode != 204 {
+                                DispatchQueue.main.async {
+                                    let ac = UIAlertController(title: "Failed", message: "\(self.tag.id) was not removed from \(transaction.attributes.description).", preferredStyle: .alert)
+                                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                                    ac.addAction(dismissAction)
+                                    self.present(ac, animated: true)
+                                    
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    self.listTransactions()
+                                }
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", preferredStyle: .alert)
+                                let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                                ac.addAction(dismissAction)
+                                self.present(ac, animated: true)
+                            }
+                        }
+                    }
+                    .resume()
+                })
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                ac.addAction(confirmAction)
+                ac.addAction(cancelAction)
+                self.present(ac, animated: true)
+                #else
                 let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
                 var request = URLRequest(url: url)
                 
@@ -300,6 +353,7 @@ extension TransactionsByTagVC: UITableViewDataSource {
                     }
                 }
                 .resume()
+                #endif
             }
             
             return UIContextMenuConfiguration(identifier: nil,
