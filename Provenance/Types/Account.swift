@@ -23,6 +23,10 @@ struct AccountAttribute: Hashable, Codable {
         return formatDate(dateString: createdAt)
     }
     
+    var createdDateRelative: String {
+        return formatDateRelative(dateString: createdAt)
+    }
+    
     enum AccountTypeEnum: String, CaseIterable, Codable, Hashable, Identifiable {
         case saver = "SAVER"
         case transactional = "TRANSACTIONAL"

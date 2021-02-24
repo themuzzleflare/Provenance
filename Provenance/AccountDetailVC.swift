@@ -2,9 +2,18 @@ import UIKit
 
 class AccountDetailVC: UITableViewController {
     var account: AccountResource!
+    var transaction: TransactionResource!
+    
+    private var createdDate: String {
+        switch UserDefaults.standard.string(forKey: "dateStyle") {
+            case "Absolute", .none: return account.attributes.createdDate
+            case "Relative": return account.attributes.createdDateRelative
+            default: return account.attributes.createdDate
+        }
+    }
     
     private var attributes: KeyValuePairs<String, String> {
-        return ["Account Balance": "\(account.attributes.balance.valueSymbol)\(account.attributes.balance.valueString) \(account.attributes.balance.currencyCode)", "Creation Date": account.attributes.createdDate]
+        return ["Account Balance": "\(account.attributes.balance.valueSymbol)\(account.attributes.balance.valueString) \(account.attributes.balance.currencyCode)", "Latest Transaction": transaction?.attributes.description ?? "", "Account ID": account.id, "Creation Date": createdDate]
     }
     
     private var altAttributes: Array<(key: String, value: String)> {
@@ -23,7 +32,7 @@ class AccountDetailVC: UITableViewController {
         title = "Account Details"
         navigationItem.title = account.attributes.displayName
         navigationItem.rightBarButtonItem = closeButton
-        tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "detailCell")
+        tableView.register(UINib(nibName: "AttributeCell", bundle: nil), forCellReuseIdentifier: "attributeCell")
     }
     
     @objc private func closeWorkflow() {
@@ -39,20 +48,26 @@ class AccountDetailVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "detailCell", for: indexPath) as! RightDetailTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! AttributeCell
         
         let attribute = altAttributes[indexPath.row]
         
-        cell.selectionStyle = .none
-        cell.textLabel?.textColor = .secondaryLabel
-        cell.textLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
-        cell.textLabel?.text = attribute.key
-        cell.detailTextLabel?.textColor = .label
-        cell.detailTextLabel?.textAlignment = .right
-        cell.detailTextLabel?.numberOfLines = 0
-        cell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
-        cell.detailTextLabel?.text = attribute.value
+        cell.leftLabel.text = attribute.key
+        cell.rightDetail.text = attribute.value
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let attribute = altAttributes[indexPath.row]
+        
+        let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+            UIPasteboard.general.string = attribute.value
+        }
+        
+        return UIContextMenuConfiguration(identifier: nil,
+                                          previewProvider: nil) { _ in
+            UIMenu(title: "", children: [copy])
+        }
     }
 }

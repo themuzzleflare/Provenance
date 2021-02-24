@@ -58,6 +58,7 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
     @objc private func openAccountInfo() {
         let vc = AccountDetailVC(style: .grouped)
         vc.account = account
+        vc.transaction = transactions.first
         present(UINavigationController(rootViewController: vc), animated: true)
     }
     
