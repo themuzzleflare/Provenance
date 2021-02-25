@@ -48,6 +48,10 @@ class TransactionsByCategoryVC: UIViewController, UITableViewDelegate, UISearchB
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.largeTitleDisplayMode = .never
         
+        #if targetEnvironment(macCatalyst)
+        navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
+        #endif
+        
         tableViewController.clearsSelectionOnViewWillAppear = true
         tableViewController.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
@@ -63,9 +67,16 @@ class TransactionsByCategoryVC: UIViewController, UITableViewDelegate, UISearchB
     }
     
     @objc private func refreshTransactions() {
-        listTransactions()
-        listCategories()
-        listAccounts()
+        #if targetEnvironment(macCatalyst)
+        let loadingView = UIActivityIndicatorView(style: .medium)
+        loadingView.startAnimating()
+        navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
+        #endif
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.listTransactions()
+            self.listCategories()
+            self.listAccounts()
+        }
     }
     
     func setupFetchingView() {
@@ -118,6 +129,9 @@ class TransactionsByCategoryVC: UIViewController, UITableViewDelegate, UISearchB
                         self.transactionsError = ""
                         self.transactionsErrorResponse = []
                         self.navigationItem.title = self.category.attributes.name
+                        #if targetEnvironment(macCatalyst)
+                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
+                        #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
@@ -131,6 +145,9 @@ class TransactionsByCategoryVC: UIViewController, UITableViewDelegate, UISearchB
                         self.transactionsError = ""
                         self.transactions = []
                         self.navigationItem.title = "Errors"
+                        #if targetEnvironment(macCatalyst)
+                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
+                        #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
@@ -144,6 +161,9 @@ class TransactionsByCategoryVC: UIViewController, UITableViewDelegate, UISearchB
                         self.transactionsErrorResponse = []
                         self.transactions = []
                         self.navigationItem.title = "Error"
+                        #if targetEnvironment(macCatalyst)
+                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
+                        #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
@@ -158,6 +178,9 @@ class TransactionsByCategoryVC: UIViewController, UITableViewDelegate, UISearchB
                     self.transactionsErrorResponse = []
                     self.transactions = []
                     self.navigationItem.title = "Error"
+                    #if targetEnvironment(macCatalyst)
+                    self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
+                    #endif
                     self.fetchingView.stopAnimating()
                     self.fetchingView.removeFromSuperview()
                     self.setupTableView()

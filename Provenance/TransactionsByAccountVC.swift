@@ -44,9 +44,16 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
         
         title = "Transactions by Account"
         navigationItem.title = "Loading"
-        navigationItem.setRightBarButton(infoButton, animated: true)
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
+        
+        navigationItem.largeTitleDisplayMode = .always
+        
+        #if targetEnvironment(macCatalyst)
+        navigationItem.setRightBarButtonItems([infoButton, UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions))], animated: true)
+        #else
+        navigationItem.setRightBarButton(infoButton, animated: true)
+        #endif
         
         tableViewController.clearsSelectionOnViewWillAppear = true
         tableViewController.refreshControl = refreshControl
@@ -69,8 +76,15 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
     }
     
     @objc private func refreshTransactions() {
-        listTransactions()
-        listCategories()
+        #if targetEnvironment(macCatalyst)
+        let loadingView = UIActivityIndicatorView(style: .medium)
+        loadingView.startAnimating()
+        navigationItem.setRightBarButtonItems([UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(customView: loadingView)], animated: true)
+        #endif
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.listTransactions()
+            self.listCategories()
+        }
     }
     
     func setupFetchingView() {
@@ -123,6 +137,9 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
                         self.transactionsError = ""
                         self.transactionsErrorResponse = []
                         self.navigationItem.title = self.account.attributes.displayName
+                        #if targetEnvironment(macCatalyst)
+                        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
+                        #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
@@ -136,6 +153,9 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
                         self.transactionsError = ""
                         self.transactions = []
                         self.navigationItem.title = "Errors"
+                        #if targetEnvironment(macCatalyst)
+                        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
+                        #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
@@ -149,6 +169,9 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
                         self.transactionsErrorResponse = []
                         self.transactions = []
                         self.navigationItem.title = "Error"
+                        #if targetEnvironment(macCatalyst)
+                        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
+                        #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
@@ -163,6 +186,9 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
                     self.transactionsErrorResponse = []
                     self.transactions = []
                     self.navigationItem.title = "Error"
+                    #if targetEnvironment(macCatalyst)
+                    self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
+                    #endif
                     self.fetchingView.stopAnimating()
                     self.fetchingView.removeFromSuperview()
                     self.setupTableView()

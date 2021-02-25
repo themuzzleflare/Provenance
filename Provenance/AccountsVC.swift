@@ -24,6 +24,10 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
         
         navigationController?.navigationBar.prefersLargeTitles = true
         
+        #if targetEnvironment(macCatalyst)
+        navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshAccounts)), animated: true)
+        #endif
+        
         tableViewController.clearsSelectionOnViewWillAppear = true
         tableViewController.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refreshAccounts), for: .valueChanged)
@@ -36,6 +40,11 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
     }
     
     @objc private func refreshAccounts() {
+        #if targetEnvironment(macCatalyst)
+        let loadingView = UIActivityIndicatorView(style: .medium)
+        loadingView.startAnimating()
+        navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
+        #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.listAccounts()
         }
@@ -90,6 +99,9 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
                         self.accountsError = ""
                         self.accountsErrorResponse = []
                         self.navigationItem.title = "Accounts"
+                        #if targetEnvironment(macCatalyst)
+                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshAccounts)), animated: true)
+                        #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
@@ -103,6 +115,9 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
                         self.accountsError = ""
                         self.accounts = []
                         self.navigationItem.title = "Errors"
+                        #if targetEnvironment(macCatalyst)
+                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshAccounts)), animated: true)
+                        #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
@@ -116,6 +131,9 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
                         self.accountsErrorResponse = []
                         self.accounts = []
                         self.navigationItem.title = "Error"
+                        #if targetEnvironment(macCatalyst)
+                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshAccounts)), animated: true)
+                        #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
@@ -130,6 +148,9 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
                     self.accountsErrorResponse = []
                     self.accounts = []
                     self.navigationItem.title = "Error"
+                    #if targetEnvironment(macCatalyst)
+                    self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshAccounts)), animated: true)
+                    #endif
                     self.fetchingView.stopAnimating()
                     self.fetchingView.removeFromSuperview()
                     self.setupTableView()

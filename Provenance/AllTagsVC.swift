@@ -43,6 +43,10 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
         
         navigationController?.navigationBar.prefersLargeTitles = true
         
+        #if targetEnvironment(macCatalyst)
+        navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTags)), animated: true)
+        #endif
+        
         tableViewController.clearsSelectionOnViewWillAppear = true
         tableViewController.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
@@ -60,6 +64,11 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
     }
     
     @objc private func refreshTags() {
+        #if targetEnvironment(macCatalyst)
+        let loadingView = UIActivityIndicatorView(style: .medium)
+        loadingView.startAnimating()
+        navigationItem.setLeftBarButton(UIBarButtonItem(customView: loadingView), animated: true)
+        #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.listTags()
         }
@@ -116,6 +125,9 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
                         self.tagsErrorResponse = []
                         self.navigationItem.title = "Tags"
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.openAddWorkflow)), animated: true)
+                        #if targetEnvironment(macCatalyst)
+                        self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
+                        #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
@@ -130,6 +142,9 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
                         self.tags = []
                         self.navigationItem.title = "Errors"
                         self.navigationItem.setRightBarButton(nil, animated: true)
+                        #if targetEnvironment(macCatalyst)
+                        self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
+                        #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
@@ -144,6 +159,9 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
                         self.tags = []
                         self.navigationItem.title = "Error"
                         self.navigationItem.setRightBarButton(nil, animated: true)
+                        #if targetEnvironment(macCatalyst)
+                        self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
+                        #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
@@ -159,6 +177,9 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
                     self.tags = []
                     self.navigationItem.title = "Error"
                     self.navigationItem.setRightBarButton(nil, animated: true)
+                    #if targetEnvironment(macCatalyst)
+                    self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
+                    #endif
                     self.fetchingView.stopAnimating()
                     self.fetchingView.removeFromSuperview()
                     self.setupTableView()

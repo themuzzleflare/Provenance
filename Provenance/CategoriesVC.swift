@@ -43,6 +43,10 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
         
         navigationController?.navigationBar.prefersLargeTitles = true
         
+        #if targetEnvironment(macCatalyst)
+        navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshCategories)), animated: true)
+        #endif
+        
         tableViewController.clearsSelectionOnViewWillAppear = true
         tableViewController.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refreshCategories), for: .valueChanged)
@@ -55,6 +59,11 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
     }
     
     @objc private func refreshCategories() {
+        #if targetEnvironment(macCatalyst)
+        let loadingView = UIActivityIndicatorView(style: .medium)
+        loadingView.startAnimating()
+        navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
+        #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.listCategories()
         }
@@ -108,6 +117,9 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
                         self.categoriesError = ""
                         self.categoriesErrorResponse = []
                         self.navigationItem.title = "Categories"
+                        #if targetEnvironment(macCatalyst)
+                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshCategories)), animated: true)
+                        #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
@@ -121,6 +133,9 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
                         self.categoriesError = ""
                         self.categories = []
                         self.navigationItem.title = "Errors"
+                        #if targetEnvironment(macCatalyst)
+                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshCategories)), animated: true)
+                        #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
@@ -134,6 +149,9 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
                         self.categoriesErrorResponse = []
                         self.categories = []
                         self.navigationItem.title = "Error"
+                        #if targetEnvironment(macCatalyst)
+                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshCategories)), animated: true)
+                        #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
@@ -148,6 +166,9 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
                     self.categoriesErrorResponse = []
                     self.categories = []
                     self.navigationItem.title = "Error"
+                    #if targetEnvironment(macCatalyst)
+                    self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshCategories)), animated: true)
+                    #endif
                     self.fetchingView.stopAnimating()
                     self.fetchingView.removeFromSuperview()
                     self.setupTableView()
