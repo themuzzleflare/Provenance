@@ -2,20 +2,29 @@ import Cocoa
 
 class TransactionsVC: NSViewController {
     @IBOutlet var tableView: NSTableView!
-    @IBOutlet var bsView: NSScrollView!
+    @IBOutlet var stackView: NSStackView!
+    @IBOutlet var searchField: NSSearchField!
     
     lazy var transactions: [TransactionResource] = []
     lazy var accounts: [AccountResource] = []
     lazy var categories: [CategoryResource] = []
     
+    lazy var filteredTransactions: [TransactionResource] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bsView.translatesAutoresizingMaskIntoConstraints = false
-        bsView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        bsView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        bsView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        bsView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        stackView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        stackView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        
+        searchField.translatesAutoresizingMaskIntoConstraints = false
+        searchField.leftAnchor.constraint(equalTo: stackView.leftAnchor, constant: 16).isActive = true
+        searchField.rightAnchor.constraint(equalTo: stackView.rightAnchor, constant: -16).isActive = true
+        
+        searchField.delegate = self
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -43,6 +52,7 @@ class TransactionsVC: NSViewController {
                     DispatchQueue.main.async {
                         print("Transactions JSON Decoding Succeeded!")
                         self.transactions = decodedResponse.data
+                        self.filteredTransactions = self.transactions.filter({self.searchField.stringValue.isEmpty || $0.attributes.description.localizedStandardContains(self.searchField.stringValue)})
                         self.tableView.reloadData()
                     }
                 } else {
@@ -118,15 +128,25 @@ class TransactionsVC: NSViewController {
     }
 }
 
+extension TransactionsVC: NSSearchFieldDelegate {
+    func controlTextDidChange(_ obj: Notification) {
+        let text = searchField.stringValue
+        
+        filteredTransactions = self.transactions.filter({text.isEmpty || $0.attributes.description.localizedStandardContains(text)})
+        
+        self.tableView.reloadData()
+    }
+}
+
 extension TransactionsVC: NSTableViewDataSource {
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return transactions.count
+        return filteredTransactions.count
     }
 }
 
 extension TransactionsVC: NSTableViewDelegate {
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let transaction = transactions[row]
+        let transaction = filteredTransactions[row]
         
         if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "descriptionColumn") {
             let cellIdentifier = NSUserInterfaceItemIdentifier(rawValue: "descriptionCell")
@@ -156,9 +176,7 @@ extension TransactionsVC: NSTableViewDelegate {
     }
     
     func tableViewSelectionDidChange(_ notification: Notification) {
-        let table = notification.object as! NSTableView
-        
-        let transaction = transactions[table.selectedRow]
+        let transaction = filteredTransactions[tableView.selectedRow]
         
         let vc = storyboard?.instantiateController(withIdentifier: "transDetail") as! TransactionDetailVC
         
@@ -166,6 +184,6 @@ extension TransactionsVC: NSTableViewDelegate {
         vc.accounts = accounts
         vc.categories = categories
         
-        self.present(vc, asPopoverRelativeTo: .infinite, of: table.rowView(atRow: table.selectedRow, makeIfNecessary: false) ?? self.view, preferredEdge: .maxX, behavior: .transient)
+        self.present(vc, asPopoverRelativeTo: .infinite, of: tableView.rowView(atRow: tableView.selectedRow, makeIfNecessary: false) ?? self.view, preferredEdge: .maxX, behavior: .transient)
     }
 }

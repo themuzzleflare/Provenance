@@ -56,6 +56,7 @@
 		7AB34D5325C7C30E000A1E81 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D5225C7C30E000A1E81 /* TabBarController.swift */; };
 		7AB34D5625C7C441000A1E81 /* AboutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D5525C7C441000A1E81 /* AboutVC.swift */; };
 		7AB34D5D25C7CDCB000A1E81 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */; };
+		7AC3769025E7254F00D4CB92 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC3768F25E7254F00D4CB92 /* WindowController.swift */; };
 		7AD295F425D358B200B8A765 /* TransactionsByAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */; };
 		7AD295F825D3599A00B8A765 /* AccountDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */; };
 		7AD5944C25C8B3AD0018C86E /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */; };
@@ -116,6 +117,7 @@
 		7AB34D5225C7C30E000A1E81 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		7AB34D5525C7C441000A1E81 /* AboutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutVC.swift; sourceTree = "<group>"; };
 		7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
+		7AC3768F25E7254F00D4CB92 /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 		7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByAccountVC.swift; sourceTree = "<group>"; };
 		7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailVC.swift; sourceTree = "<group>"; };
 		7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				7A92FF2625E5C8C500CE4159 /* AppDelegate.swift */,
+				7AC3768F25E7254F00D4CB92 /* WindowController.swift */,
 				7A92FF2825E5C8C500CE4159 /* TransactionsVC.swift */,
 				7A28BB5125E5EA8800357DFE /* TransactionDetailVC.swift */,
 				7A373B0E25E5D55D003549DC /* AccountsVC.swift */,
@@ -439,6 +442,7 @@
 				7A373B0F25E5D55D003549DC /* AccountsVC.swift in Sources */,
 				7A92FF2925E5C8C500CE4159 /* TransactionsVC.swift in Sources */,
 				7A92FF3B25E5CC0B00CE4159 /* ModelData.swift in Sources */,
+				7AC3769025E7254F00D4CB92 /* WindowController.swift in Sources */,
 				7A373AFC25E5D2B3003549DC /* Tag.swift in Sources */,
 				7A373B0225E5D30E003549DC /* GIFImage.swift in Sources */,
 				7A92FF2725E5C8C500CE4159 /* AppDelegate.swift in Sources */,
