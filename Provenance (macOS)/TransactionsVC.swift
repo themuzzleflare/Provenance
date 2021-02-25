@@ -5,6 +5,7 @@ class TransactionsVC: NSViewController {
     @IBOutlet var bsView: NSScrollView!
     
     lazy var transactions: [TransactionResource] = []
+    lazy var accounts: [AccountResource] = []
     lazy var categories: [CategoryResource] = []
     
     override func viewDidLoad() {
@@ -20,6 +21,7 @@ class TransactionsVC: NSViewController {
         tableView.dataSource = self
         
         listTransactions()
+        listAccounts()
         listCategories()
     }
     
@@ -46,6 +48,36 @@ class TransactionsVC: NSViewController {
                 } else {
                     DispatchQueue.main.async {
                         print("Transactions JSON Decoding Failed!")
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    print(error?.localizedDescription ?? "Unknown Error!")
+                }
+            }
+        }
+        .resume()
+    }
+    
+    private func listAccounts() {
+        var url = URL(string: "https://api.up.com.au/api/v1/accounts")!
+        let urlParams = ["page[size]":"100"]
+        url = url.appendingQueryParameters(urlParams)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("Bearer up:yeah:okHM67Kh3ibpXihwYHgtd2CRVvtv6J2TnvbZG6DVQYYKCrrYr49nHEOZ1WKRkSVLz8aayTVVNDlj9Q6alPxyEJGcXRW0kf3OgTEghgEMhA6iUNcIqOzKqRhmS3LE6Pj5", forHTTPHeaderField: "Authorization")
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if error == nil {
+                if let decodedResponse = try? JSONDecoder().decode(Account.self, from: data!) {
+                    DispatchQueue.main.async {
+                        print("Accounts JSON Decoding Succeeded!")
+                        self.accounts = decodedResponse.data
+                        self.tableView.reloadData()
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        print("Accounts JSON Decoding Failed!")
                     }
                 }
             } else {
@@ -131,6 +163,7 @@ extension TransactionsVC: NSTableViewDelegate {
         let vc = storyboard?.instantiateController(withIdentifier: "transDetail") as! TransactionDetailVC
         
         vc.transaction = transaction
+        vc.accounts = accounts
         vc.categories = categories
         
         self.present(vc, asPopoverRelativeTo: .infinite, of: table.rowView(atRow: table.selectedRow, makeIfNecessary: false) ?? self.view, preferredEdge: .maxX, behavior: .transient)

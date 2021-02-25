@@ -2,10 +2,13 @@ import Cocoa
 
 class TransactionDetailVC: NSViewController {
     var transaction: TransactionResource!
+    var accounts: [AccountResource]!
     var categories: [CategoryResource]!
     
     @IBOutlet var statusImage: NSImageView!
     @IBOutlet var statusValue: NSTextField!
+    
+    @IBOutlet var accountValue: NSTextField!
     
     @IBOutlet var messageValue: NSTextField!
     
@@ -57,12 +60,20 @@ class TransactionDetailVC: NSViewController {
         }
     }
     
+    private var accountFilter: [AccountResource]? {
+        accounts?.filter { account in
+            transaction?.relationships.account.data.id == account.id
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         statusImage.image = statusIcon
         statusImage.contentTintColor = statusColor
         statusValue.stringValue = statusString
+        
+        accountValue.stringValue = accountFilter?.first?.attributes.displayName ?? ""
         
         messageValue.stringValue = transaction?.attributes.message ?? ""
         

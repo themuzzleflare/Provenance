@@ -209,7 +209,6 @@
 		7AB34D1C25C78230000A1E81 /* Provenance */ = {
 			isa = PBXGroup;
 			children = (
-				7A9DE23C25DE35AB00175697 /* Provenance.entitlements */,
 				7AF4C35425DB3668009CF391 /* Fonts */,
 				7AD5944F25C8B5410018C86E /* Types */,
 				7A07979A25D79ACE0013EE82 /* Custom Cells */,
@@ -235,6 +234,7 @@
 				7AB34D2625C78232000A1E81 /* Assets.xcassets */,
 				7AB34D2825C78232000A1E81 /* LaunchScreen.storyboard */,
 				7AB34D2B25C78232000A1E81 /* Info.plist */,
+				7A9DE23C25DE35AB00175697 /* Provenance.entitlements */,
 			);
 			path = Provenance;
 			sourceTree = "<group>";
@@ -529,6 +529,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -552,6 +553,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -695,7 +697,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.4;
+				MARKETING_VERSION = 5.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
@@ -721,7 +723,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.4;
+				MARKETING_VERSION = 5.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
