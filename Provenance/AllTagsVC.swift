@@ -41,6 +41,8 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
         navigationItem.title = "Loading"
         navigationItem.hidesSearchBarWhenScrolling = false
         
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
         tableViewController.clearsSelectionOnViewWillAppear = true
         tableViewController.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
@@ -58,7 +60,9 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
     }
     
     @objc private func refreshTags() {
-        listTags()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.listTags()
+        }
     }
     
     func setupFetchingView() {

@@ -22,6 +22,8 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
         title = "Accounts"
         navigationItem.title = "Loading"
         
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
         tableViewController.clearsSelectionOnViewWillAppear = true
         tableViewController.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refreshAccounts), for: .valueChanged)
@@ -34,7 +36,9 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
     }
     
     @objc private func refreshAccounts() {
-        listAccounts()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.listAccounts()
+        }
     }
     
     func setupFetchingView() {

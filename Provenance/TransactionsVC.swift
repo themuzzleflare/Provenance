@@ -1,6 +1,6 @@
 import UIKit
 
-class TransactionsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+class TransactionsVC: UIViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
     let tableViewController: UITableViewController = UITableViewController(style: .grouped)
     
@@ -47,6 +47,8 @@ class TransactionsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate
         navigationItem.title = "Loading"
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
+       
+        navigationController?.navigationBar.prefersLargeTitles = true
         
         tableViewController.clearsSelectionOnViewWillAppear = true
         tableViewController.refreshControl = refreshControl
@@ -74,9 +76,11 @@ class TransactionsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate
     }
     
     @objc private func refreshTransactions() {
-        listTransactions()
-        listCategories()
-        listAccounts()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.listTransactions()
+            self.listCategories()
+            self.listAccounts()
+        }
     }
     
     func setupFetchingView() {
@@ -190,7 +194,7 @@ class TransactionsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate
     }
 }
 
-extension TransactionsVC: UITableViewDataSource {
+extension TransactionsVC: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }

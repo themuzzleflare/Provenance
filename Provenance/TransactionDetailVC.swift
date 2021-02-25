@@ -168,6 +168,9 @@ class TransactionDetailVC: UITableViewController {
         title = "Transaction Details"
         navigationItem.title = transaction?.attributes.description ?? ""
         navigationItem.setRightBarButton(statusButtonIcon, animated: true)
+        
+        navigationItem.largeTitleDisplayMode = .never
+        
         tableView.register(UINib(nibName: "AttributeCell", bundle: nil), forCellReuseIdentifier: "attributeCell")
     }
     

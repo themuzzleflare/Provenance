@@ -41,6 +41,8 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
         tableViewController.clearsSelectionOnViewWillAppear = true
         tableViewController.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refreshCategories), for: .valueChanged)
@@ -53,7 +55,9 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
     }
     
     @objc private func refreshCategories() {
-        listCategories()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.listCategories()
+        }
     }
     
     func setupFetchingView() {

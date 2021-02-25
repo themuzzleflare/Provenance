@@ -46,6 +46,7 @@ class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDel
         navigationItem.title = "Loading"
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.largeTitleDisplayMode = .never
         
         tableViewController.clearsSelectionOnViewWillAppear = true
         tableViewController.refreshControl = refreshControl
