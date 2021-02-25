@@ -2,18 +2,26 @@ import Cocoa
 
 class AllTagsVC: NSViewController {
     @IBOutlet var tableView: NSTableView!
-    @IBOutlet var bsView: NSScrollView!
+    @IBOutlet var stackView: NSStackView!
+    @IBOutlet var searchField: NSSearchField!
     
     lazy var tags: [TagResource] = []
+    lazy var filteredTags: [TagResource] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bsView.translatesAutoresizingMaskIntoConstraints = false
-        bsView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        bsView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        bsView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        bsView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        stackView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        stackView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        
+        searchField.translatesAutoresizingMaskIntoConstraints = false
+        searchField.leftAnchor.constraint(equalTo: stackView.leftAnchor, constant: 16).isActive = true
+        searchField.rightAnchor.constraint(equalTo: stackView.rightAnchor, constant: -16).isActive = true
+        
+        searchField.delegate = self
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -39,6 +47,7 @@ class AllTagsVC: NSViewController {
                     DispatchQueue.main.async {
                         print("Tags JSON Decoding Succeeded!")
                         self.tags = decodedResponse.data
+                        self.filteredTags = self.tags.filter({self.searchField.stringValue.isEmpty || $0.id.localizedStandardContains(self.searchField.stringValue)})
                         self.tableView.reloadData()
                     }
                 } else {
@@ -51,20 +60,35 @@ class AllTagsVC: NSViewController {
                     print(error?.localizedDescription ?? "Unknown Error!")
                 }
             }
+            DispatchQueue.main.async {
+                self.searchField.placeholderString = "Search \(self.tags.count.description) \(self.tags.count == 1 ? "Tag" : "Tags")"
+            }
         }
         .resume()
     }
 }
 
+extension AllTagsVC: NSSearchFieldDelegate {
+    func controlTextDidChange(_ obj: Notification) {
+        let searchObject = obj.object as! NSSearchField
+        
+        let text = searchObject.stringValue
+        
+        filteredTags = self.tags.filter({text.isEmpty || $0.id.localizedStandardContains(text)})
+        
+        self.tableView.reloadData()
+    }
+}
+
 extension AllTagsVC: NSTableViewDataSource {
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return tags.count
+        return filteredTags.count
     }
 }
 
 extension AllTagsVC: NSTableViewDelegate {
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let tag = tags[row]
+        let tag = filteredTags[row]
         
         let cellIdentifier = NSUserInterfaceItemIdentifier(rawValue: "nameCell")
         

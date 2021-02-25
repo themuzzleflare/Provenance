@@ -19,6 +19,9 @@ class TransactionDetailVC: NSViewController {
     
     @IBOutlet var descriptionValue: NSTextField!
     
+    @IBOutlet var creationDateValue: NSTextField!
+    @IBOutlet var settlementDateValue: NSTextField!
+    
     @IBOutlet var pCategoryValue: NSTextField!
     
     @IBOutlet var categoryValue: NSTextField!
@@ -83,6 +86,9 @@ class TransactionDetailVC: NSViewController {
         amountValue.stringValue = "\(transaction?.attributes.amount.valueSymbol ?? "")\(transaction?.attributes.amount.valueString ?? "") \(transaction?.attributes.amount.currencyCode ?? "")"
         
         descriptionValue.stringValue = transaction?.attributes.description ?? ""
+        
+        creationDateValue.stringValue = transaction?.attributes.createdDate ?? ""
+        settlementDateValue.stringValue = transaction?.attributes.settledDate ?? ""
         
         pCategoryValue.stringValue = parentCategoryFilter?.first?.attributes.name ?? ""
         

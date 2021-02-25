@@ -2,18 +2,26 @@ import Cocoa
 
 class CategoriesVC: NSViewController {
     @IBOutlet var tableView: NSTableView!
-    @IBOutlet var bsView: NSScrollView!
+    @IBOutlet var stackView: NSStackView!
+    @IBOutlet var searchField: NSSearchField!
     
     lazy var categories: [CategoryResource] = []
+    lazy var filteredCategories: [CategoryResource] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bsView.translatesAutoresizingMaskIntoConstraints = false
-        bsView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        bsView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        bsView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        bsView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        stackView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        stackView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        
+        searchField.translatesAutoresizingMaskIntoConstraints = false
+        searchField.leftAnchor.constraint(equalTo: stackView.leftAnchor, constant: 16).isActive = true
+        searchField.rightAnchor.constraint(equalTo: stackView.rightAnchor, constant: -16).isActive = true
+        
+        searchField.delegate = self
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -37,6 +45,7 @@ class CategoriesVC: NSViewController {
                     DispatchQueue.main.async {
                         print("Categories JSON Decoding Succeeded!")
                         self.categories = decodedResponse.data
+                        self.filteredCategories = self.categories.filter({self.searchField.stringValue.isEmpty || $0.attributes.name.localizedStandardContains(self.searchField.stringValue)})
                         self.tableView.reloadData()
                     }
                 } else {
@@ -49,20 +58,35 @@ class CategoriesVC: NSViewController {
                     print(error?.localizedDescription ?? "Unknown Error!")
                 }
             }
+            DispatchQueue.main.async {
+                self.searchField.placeholderString = "Search \(self.categories.count.description) \(self.categories.count == 1 ? "Category" : "Categories")"
+            }
         }
         .resume()
     }
 }
 
+extension CategoriesVC: NSSearchFieldDelegate {
+    func controlTextDidChange(_ obj: Notification) {
+        let searchObject = obj.object as! NSSearchField
+        
+        let text = searchObject.stringValue
+        
+        filteredCategories = self.categories.filter({text.isEmpty || $0.attributes.name.localizedStandardContains(text)})
+        
+        self.tableView.reloadData()
+    }
+}
+
 extension CategoriesVC: NSTableViewDataSource {
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return categories.count
+        return filteredCategories.count
     }
 }
 
 extension CategoriesVC: NSTableViewDelegate {
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let category = categories[row]
+        let category = filteredCategories[row]
         
         let cellIdentifier = NSUserInterfaceItemIdentifier(rawValue: "nameCell")
         

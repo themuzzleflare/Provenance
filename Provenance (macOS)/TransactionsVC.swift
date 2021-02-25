@@ -6,10 +6,9 @@ class TransactionsVC: NSViewController {
     @IBOutlet var searchField: NSSearchField!
     
     lazy var transactions: [TransactionResource] = []
+    lazy var filteredTransactions: [TransactionResource] = []
     lazy var accounts: [AccountResource] = []
     lazy var categories: [CategoryResource] = []
-    
-    lazy var filteredTransactions: [TransactionResource] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,6 +63,9 @@ class TransactionsVC: NSViewController {
                 DispatchQueue.main.async {
                     print(error?.localizedDescription ?? "Unknown Error!")
                 }
+            }
+            DispatchQueue.main.async {
+                self.searchField.placeholderString = "Search \(self.transactions.count.description) \(self.transactions.count == 1 ? "Transaction" : "Transactions")"
             }
         }
         .resume()
@@ -130,7 +132,9 @@ class TransactionsVC: NSViewController {
 
 extension TransactionsVC: NSSearchFieldDelegate {
     func controlTextDidChange(_ obj: Notification) {
-        let text = searchField.stringValue
+        let searchObject = obj.object as! NSSearchField
+        
+        let text = searchObject.stringValue
         
         filteredTransactions = self.transactions.filter({text.isEmpty || $0.attributes.description.localizedStandardContains(text)})
         
@@ -176,7 +180,9 @@ extension TransactionsVC: NSTableViewDelegate {
     }
     
     func tableViewSelectionDidChange(_ notification: Notification) {
-        let transaction = filteredTransactions[tableView.selectedRow]
+        let tableObject = notification.object as! NSTableView
+        
+        let transaction = filteredTransactions[tableObject.selectedRow]
         
         let vc = storyboard?.instantiateController(withIdentifier: "transDetail") as! TransactionDetailVC
         
@@ -184,6 +190,6 @@ extension TransactionsVC: NSTableViewDelegate {
         vc.accounts = accounts
         vc.categories = categories
         
-        self.present(vc, asPopoverRelativeTo: .infinite, of: tableView.rowView(atRow: tableView.selectedRow, makeIfNecessary: false) ?? self.view, preferredEdge: .maxX, behavior: .transient)
+        self.present(vc, asPopoverRelativeTo: .infinite, of: tableObject.rowView(atRow: tableObject.selectedRow, makeIfNecessary: false) ?? self.view, preferredEdge: .maxX, behavior: .transient)
     }
 }
