@@ -51,7 +51,7 @@ class TransactionsVC: UIViewController, UISearchBarDelegate, UISearchControllerD
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
         #endif
-       
+        
         navigationController?.navigationBar.prefersLargeTitles = true
         
         tableViewController.clearsSelectionOnViewWillAppear = true
@@ -144,7 +144,9 @@ class TransactionsVC: UIViewController, UISearchBarDelegate, UISearchControllerD
                             (self.searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(self.searchController.searchBar.text!)) }
                         self.transactionsErrorResponse = []
                         self.navigationItem.title = "Transactions"
-                        self.navigationItem.setLeftBarButton(UIBarButtonItem(image: UIImage(systemName: "arrow.up.arrow.down"), style: .plain, target: self, action: #selector(self.switchDateStyle)), animated: true)
+                        if self.navigationItem.leftBarButtonItem == nil {
+                            self.navigationItem.setLeftBarButton(UIBarButtonItem(image: UIImage(systemName: "arrow.up.arrow.down"), style: .plain, target: self, action: #selector(self.switchDateStyle)), animated: true)
+                        }
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif

@@ -52,7 +52,7 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButtonItems([infoButton, UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions))], animated: true)
         #else
-        navigationItem.setRightBarButton(infoButton, animated: true)
+        navigationItem.rightBarButtonItem = infoButton
         #endif
         
         tableViewController.clearsSelectionOnViewWillAppear = true

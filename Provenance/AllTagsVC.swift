@@ -124,7 +124,9 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
                         self.tagsError = ""
                         self.tagsErrorResponse = []
                         self.navigationItem.title = "Tags"
-                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.openAddWorkflow)), animated: true)
+                        if self.navigationItem.rightBarButtonItem == nil {
+                            self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.openAddWorkflow)), animated: true)
+                        }
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                         #endif

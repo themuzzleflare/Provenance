@@ -2,7 +2,6 @@ import UIKit
 import SwiftUI
 
 class AboutVC: UIViewController {
-    
     let vc = UIHostingController(rootView: AboutView())
     
     override func viewDidLoad() {

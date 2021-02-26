@@ -58,7 +58,9 @@ class AddTagWorkflowVC: UIViewController, UITableViewDelegate, UISearchBarDelega
     }
     
     @objc private func refreshTransactions() {
-        listTransactions()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.listTransactions()
+        }
     }
     
     @objc private func closeWorkflow() {
@@ -335,7 +337,9 @@ class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDel
     }
     
     @objc private func refreshTags() {
-        listTags()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.listTags()
+        }
     }
     
     func setupFetchingView() {
@@ -388,7 +392,9 @@ class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDel
                         self.tagsError = ""
                         self.tagsErrorResponse = []
                         self.navigationItem.title = "Select Tag"
-                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.openAddWorkflow)), animated: true)
+                        if self.navigationItem.rightBarButtonItem == nil {
+                            self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.openAddWorkflow)), animated: true)
+                        }
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
