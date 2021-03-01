@@ -198,7 +198,11 @@ class TransactionDetailVC: UITableViewController {
         } else if section == 3 {
             return altAttributesFour.count
         } else if section == 4 {
-            return altAttributesFive.count
+            if transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil {
+                return altAttributesSix.count
+            } else {
+                return altAttributesFive.count
+            }
         } else {
             return altAttributesSix.count
         }
@@ -213,37 +217,34 @@ class TransactionDetailVC: UITableViewController {
         
         if section == 0 {
             attribute = altAttributes[indexPath.row]
-            
-            if attribute.key == "Account" {
-                cell.selectionStyle = .default
-                cell.accessoryType = .disclosureIndicator
-            } else {
-                cell.selectionStyle = .none
-                cell.accessoryType = .none
-            }
         } else if section == 1 {
             attribute = altAttributesTwo[indexPath.row]
-            
-            if attribute.key == "Raw Text" {
-                cell.rightDetail.font = UIFont(name: "SFMono-Regular", size: UIFont.labelFontSize)
-            } else {
-                cell.selectionStyle = .none
-                cell.accessoryType = .none
-            }
         } else if section == 2 {
             attribute = altAttributesThree[indexPath.row]
         } else if section == 3 {
             attribute = altAttributesFour[indexPath.row]
         } else if section == 4 {
-            attribute = altAttributesFive[indexPath.row]
-            
+            if transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil {
+                attribute = altAttributesSix[indexPath.row]
+            } else {
+                attribute = altAttributesFive[indexPath.row]
+            }
+        } else {
+            attribute = altAttributesSix[indexPath.row]
+        }
+        
+        if attribute.key == "Account" || attribute.key == "Parent Category" || attribute.key == "Category" || attribute.key == "Tags" {
             cell.selectionStyle = .default
             cell.accessoryType = .disclosureIndicator
         } else {
-            attribute = altAttributesSix[indexPath.row]
-            
-            cell.selectionStyle = .default
-            cell.accessoryType = .disclosureIndicator
+            cell.selectionStyle = .none
+            cell.accessoryType = .none
+        }
+        
+        if attribute.key == "Raw Text" {
+            cell.rightDetail.font = UIFont(name: "SFMono-Regular", size: UIFont.labelFontSize)
+        } else {
+            cell.rightDetail.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
         }
         
         cell.leftLabel.text = attribute.key
@@ -265,16 +266,22 @@ class TransactionDetailVC: UITableViewController {
                 navigationController?.pushViewController(vc, animated: true)
             }
         } else if section == 4 {
-            attribute = altAttributesFive[indexPath.row]
-            
-            let vc = TransactionsByCategoryVC()
-            
-            if attribute.key == "Parent Category" {
-                vc.category = parentCategoryFilter!.first
+            if transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil {
+                let vc = TagsVC(style: .grouped)
+                vc.transaction = transaction
+                navigationController?.pushViewController(vc, animated: true)
             } else {
-                vc.category = categoryFilter!.first
+                attribute = altAttributesFive[indexPath.row]
+                
+                let vc = TransactionsByCategoryVC()
+                
+                if attribute.key == "Parent Category" {
+                    vc.category = parentCategoryFilter!.first
+                } else {
+                    vc.category = categoryFilter!.first
+                }
+                navigationController?.pushViewController(vc, animated: true)
             }
-            navigationController?.pushViewController(vc, animated: true)
         } else if section == 5 {
             let vc = TagsVC(style: .grouped)
             vc.transaction = transaction
@@ -294,7 +301,7 @@ class TransactionDetailVC: UITableViewController {
             
             return UIContextMenuConfiguration(identifier: nil,
                                               previewProvider: nil) { _ in
-                UIMenu(title: "", children: [copy])
+                UIMenu(children: [copy])
             }
         } else {
             return nil
