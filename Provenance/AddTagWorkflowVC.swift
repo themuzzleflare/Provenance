@@ -20,7 +20,6 @@ class AddTagWorkflowVC: UIViewController, UITableViewDelegate, UISearchBarDelega
         tableViewController.tableView.reloadData()
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         super.addChild(tableViewController)
@@ -263,6 +262,9 @@ class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDel
     lazy var tagsError: String = ""
     lazy var filteredTags: [TagResource] = []
     
+    weak var submitActionProxy: UIAlertAction?
+    private var textDidChangeObserver: NSObjectProtocol!
+    
     func updateSearchResults(for searchController: UISearchController) {
         filteredTags = tags.filter { searchController.searchBar.text!.isEmpty || $0.id.localizedStandardContains(searchController.searchBar.text!) }
         tableViewController.tableView.reloadData()
@@ -312,15 +314,28 @@ class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDel
     
     @objc private func openAddWorkflow() {
         let ac = UIAlertController(title: "New Tag", message: "Enter the name of the new tag.", preferredStyle: .alert)
-        ac.addTextField(configurationHandler: { field in
-            field.delegate = self
-            field.autocapitalizationType = .none
-            field.autocorrectionType = .no
-        })
+        ac.addTextField { textField in
+            textField.delegate = self
+            textField.autocapitalizationType = .none
+            textField.autocorrectionType = .no
+            
+            self.textDidChangeObserver = NotificationCenter.default.addObserver(
+                forName: UITextField.textDidChangeNotification,
+                object: textField,
+                queue: OperationQueue.main) { (notification) in
+                if let textField = notification.object as? UITextField {
+                    if let text = textField.text {
+                        self.submitActionProxy!.isEnabled = text.count >= 1
+                    } else {
+                        self.submitActionProxy!.isEnabled = false
+                    }
+                }
+            }
+        }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         
-        let submitAction = UIAlertAction(title: "Next", style: .default) { [unowned ac] _ in
+        let submitAction = UIAlertAction(title: "Next", style: .default) { _ in
             let answer = ac.textFields![0]
             if answer.text != "" {
                 let vc = AddTagWorkflowThreeVC(style: .grouped)
@@ -329,6 +344,8 @@ class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDel
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }
+        submitAction.isEnabled = false
+        submitActionProxy = submitAction
         
         ac.addAction(cancelAction)
         ac.addAction(submitAction)

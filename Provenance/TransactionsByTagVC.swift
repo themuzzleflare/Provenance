@@ -279,7 +279,7 @@ extension TransactionsByTagVC: UITableViewDataSource {
             let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
                 UIPasteboard.general.string = transaction.attributes.description
             }
-            let remove = UIAction(title: "Remove", image: UIImage(systemName: "trash")) { _ in
+            let remove = UIAction(title: "Remove", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
                 #if !targetEnvironment(macCatalyst)
                 let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
