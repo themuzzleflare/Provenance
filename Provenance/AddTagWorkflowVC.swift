@@ -13,10 +13,14 @@ class AddTagWorkflowVC: UIViewController, UITableViewDelegate, UISearchBarDelega
     lazy var transactions: [TransactionResource] = []
     lazy var transactionsErrorResponse: [ErrorObject] = []
     lazy var transactionsError: String = ""
-    lazy var filteredTransactions: [TransactionResource] = []
+    
+    private var filteredTransactions: [TransactionResource] {
+        transactions.filter { transaction in
+            searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
+        }
+    }
     
     func updateSearchResults(for searchController: UISearchController) {
-        filteredTransactions = transactions.filter { searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(searchController.searchBar.text!) }
         tableViewController.tableView.reloadData()
     }
     
@@ -43,6 +47,7 @@ class AddTagWorkflowVC: UIViewController, UITableViewDelegate, UISearchBarDelega
         navigationItem.rightBarButtonItem = closeButton
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.backButtonDisplayMode = .minimal
         
         tableViewController.clearsSelectionOnViewWillAppear = true
         tableViewController.refreshControl = refreshControl
@@ -112,7 +117,6 @@ class AddTagWorkflowVC: UIViewController, UITableViewDelegate, UISearchBarDelega
                     DispatchQueue.main.async {
                         print("Transactions JSON Decoding Succeeded!")
                         self.transactions = decodedResponse.data
-                        self.filteredTransactions = self.transactions.filter { self.searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(self.searchController.searchBar.text!) }
                         self.transactionsError = ""
                         self.transactionsErrorResponse = []
                         self.navigationItem.title = "Select Transaction"
@@ -196,12 +200,15 @@ extension AddTagWorkflowVC: UITableViewDataSource {
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
+            tableView.separatorStyle = .none
             noTransactionsCell.selectionStyle = .none
             noTransactionsCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+            noTransactionsCell.textLabel?.textAlignment = .center
             noTransactionsCell.textLabel?.text = "No Transactions"
             noTransactionsCell.backgroundColor = tableView.backgroundColor
             return noTransactionsCell
         } else {
+            tableView.separatorStyle = .singleLine
             if !self.transactionsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
@@ -260,13 +267,17 @@ class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDel
     lazy var tags: [TagResource] = []
     lazy var tagsErrorResponse: [ErrorObject] = []
     lazy var tagsError: String = ""
-    lazy var filteredTags: [TagResource] = []
+    
+    private var filteredTags: [TagResource] {
+        tags.filter { tag in
+            searchController.searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchController.searchBar.text!)
+        }
+    }
     
     weak var submitActionProxy: UIAlertAction?
     private var textDidChangeObserver: NSObjectProtocol!
     
     func updateSearchResults(for searchController: UISearchController) {
-        filteredTags = tags.filter { searchController.searchBar.text!.isEmpty || $0.id.localizedStandardContains(searchController.searchBar.text!) }
         tableViewController.tableView.reloadData()
     }
     
@@ -290,6 +301,7 @@ class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDel
         navigationItem.title = "Loading"
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.backButtonDisplayMode = .minimal
         
         tableViewController.clearsSelectionOnViewWillAppear = true
         tableViewController.refreshControl = refreshControl
@@ -405,7 +417,6 @@ class AddTagWorkflowTwoVC: UIViewController, UITableViewDelegate, UISearchBarDel
                     DispatchQueue.main.async {
                         print("Tags JSON Decoding Succeeded!")
                         self.tags = decodedResponse.data
-                        self.filteredTags = self.tags.filter { self.searchController.searchBar.text!.isEmpty || $0.id.localizedStandardContains(self.searchController.searchBar.text!) }
                         self.tagsError = ""
                         self.tagsErrorResponse = []
                         self.navigationItem.title = "Select Tag"
@@ -495,12 +506,15 @@ extension AddTagWorkflowTwoVC: UITableViewDataSource {
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
         if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
+            tableView.separatorStyle = .none
             noTagsCell.selectionStyle = .none
+            noTagsCell.textLabel?.textAlignment = .center
             noTagsCell.textLabel?.text = "No Tags"
             noTagsCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
             noTagsCell.backgroundColor = tableView.backgroundColor
             return noTagsCell
         } else {
+            tableView.separatorStyle = .singleLine
             if !self.tagsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0

@@ -13,10 +13,14 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
     lazy var categories: [CategoryResource] = []
     lazy var categoriesErrorResponse: [ErrorObject] = []
     lazy var categoriesError: String = ""
-    lazy var filteredCategories: [CategoryResource] = []
+    
+    private var filteredCategories: [CategoryResource] {
+        categories.filter { category in
+            searchController.searchBar.text!.isEmpty || category.attributes.name.localizedStandardContains(searchController.searchBar.text!)
+        }
+    }
     
     func updateSearchResults(for searchController: UISearchController) {
-        filteredCategories = categories.filter { searchController.searchBar.text!.isEmpty || $0.attributes.name.localizedStandardContains(searchController.searchBar.text!) }
         tableViewController.tableView.reloadData()
     }
     
@@ -113,7 +117,6 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
                     DispatchQueue.main.async {
                         print("Categories JSON Decoding Succeeded!")
                         self.categories = decodedResponse.data
-                        self.filteredCategories = self.categories.filter { self.searchController.searchBar.text!.isEmpty || $0.attributes.name.localizedStandardContains(self.searchController.searchBar.text!) }
                         self.categoriesError = ""
                         self.categoriesErrorResponse = []
                         self.navigationItem.title = "Categories"
@@ -209,12 +212,15 @@ extension CategoriesVC: UITableViewDataSource {
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
         if self.filteredCategories.isEmpty && self.categoriesError.isEmpty && self.categoriesErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
+            tableView.separatorStyle = .none
             noCategoriesCell.selectionStyle = .none
             noCategoriesCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+            noCategoriesCell.textLabel?.textAlignment = .center
             noCategoriesCell.textLabel?.text = "No Categories"
             noCategoriesCell.backgroundColor = tableView.backgroundColor
             return noCategoriesCell
         } else {
+            tableView.separatorStyle = .singleLine
             if !self.categoriesError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0

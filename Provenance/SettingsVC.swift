@@ -1,7 +1,8 @@
 import UIKit
-import MarqueeLabel
 
 class SettingsVC: UITableViewController {
+    weak var submitActionProxy: UIAlertAction?
+    private var textDidChangeObserver: NSObjectProtocol!
     
     private var apiKeyDisplay: String {
         switch UserDefaults.standard.string(forKey: "apiKey") {
@@ -81,15 +82,28 @@ class SettingsVC: UITableViewController {
             tableView.deselectRow(at: indexPath, animated: true)
             
             let ac = UIAlertController(title: "New API Key", message: "Enter a new API Key.", preferredStyle: .alert)
-            ac.addTextField(configurationHandler: { field in
-                field.autocapitalizationType = .none
-                field.autocorrectionType = .no
-                field.text = UserDefaults.standard.string(forKey: "apiKey") ?? nil
+            ac.addTextField(configurationHandler: { textField in
+                textField.autocapitalizationType = .none
+                textField.autocorrectionType = .no
+                textField.text = UserDefaults.standard.string(forKey: "apiKey") ?? nil
+                
+                self.textDidChangeObserver = NotificationCenter.default.addObserver(
+                    forName: UITextField.textDidChangeNotification,
+                    object: textField,
+                    queue: OperationQueue.main) { (notification) in
+                    if let textField = notification.object as? UITextField {
+                        if let text = textField.text {
+                            self.submitActionProxy!.isEnabled = text.count >= 1 && text != UserDefaults.standard.string(forKey: "apiKey")
+                        } else {
+                            self.submitActionProxy!.isEnabled = false
+                        }
+                    }
+                }
             })
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
             
-            let submitAction = UIAlertAction(title: "Save", style: .default) { [unowned ac] _ in
+            let submitAction = UIAlertAction(title: "Save", style: .default) { _ in
                 let answer = ac.textFields![0]
                 if (answer.text != "" && answer.text != nil) && answer.text != UserDefaults.standard.string(forKey: "apiKey") {
                     let url = URL(string: "https://api.up.com.au/api/v1/util/ping")!
@@ -124,17 +138,41 @@ class SettingsVC: UITableViewController {
                     }
                     .resume()
                 } else {
-                    let ac = UIAlertController(title: "Failed", message: "The provided API Key was either empty, or the same as the current one.", preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Failed", message: "The provided API Key was the same as the current one.", preferredStyle: .alert)
                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
                     ac.addAction(dismissAction)
                     self.present(ac, animated: true)
                 }
             }
             
+            submitAction.isEnabled = false
+            submitActionProxy = submitAction
+            
             ac.addAction(cancelAction)
             ac.addAction(submitAction)
             
             present(ac, animated: true)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let section = indexPath.section
+        
+        let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+            UIPasteboard.general.string = UserDefaults.standard.string(forKey: "apiKey")
+        }
+        
+        if section == 0 {
+            if UserDefaults.standard.string(forKey: "apiKey") != nil {
+                return UIContextMenuConfiguration(identifier: nil,
+                                                  previewProvider: nil) { _ in
+                    UIMenu(title: "", children: [copy])
+                }
+            } else {
+                return nil
+            }
+        } else {
+            return nil
         }
     }
 }

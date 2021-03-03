@@ -280,7 +280,7 @@ class TransactionsVC: UIViewController, UISearchBarDelegate, UISearchControllerD
                         self.transactionsError = ""
                         self.transactions = []
                         self.navigationItem.title = "Errors"
-                        self.navigationItem.setLeftBarButton(nil, animated: true)
+                        self.navigationItem.setLeftBarButtonItems(nil, animated: true)
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
@@ -297,7 +297,7 @@ class TransactionsVC: UIViewController, UISearchBarDelegate, UISearchControllerD
                         self.transactionsErrorResponse = []
                         self.transactions = []
                         self.navigationItem.title = "Error"
-                        self.navigationItem.setLeftBarButton(nil, animated: true)
+                        self.navigationItem.setLeftBarButtonItems(nil, animated: true)
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
@@ -315,7 +315,7 @@ class TransactionsVC: UIViewController, UISearchBarDelegate, UISearchControllerD
                     self.transactionsErrorResponse = []
                     self.transactions = []
                     self.navigationItem.title = "Error"
-                    self.navigationItem.setLeftBarButton(nil, animated: true)
+                    self.navigationItem.setLeftBarButtonItems(nil, animated: true)
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                     #endif
@@ -363,12 +363,15 @@ extension TransactionsVC: UITableViewDataSource, UITableViewDelegate {
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
+            tableView.separatorStyle = .none
             noTransactionsCell.selectionStyle = .none
             noTransactionsCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+            noTransactionsCell.textLabel?.textAlignment = .center
             noTransactionsCell.textLabel?.text = "No Transactions"
             noTransactionsCell.backgroundColor = tableView.backgroundColor
             return noTransactionsCell
         } else {
+            tableView.separatorStyle = .singleLine
             if !self.transactionsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0

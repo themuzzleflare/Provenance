@@ -29,15 +29,7 @@ struct AboutView: View {
                         Button(action: {
                             UIPasteboard.general.string = appVersion
                         }) {
-                            if #available(iOS 14.0, *) {
-                                Label("Copy", systemImage: "doc.on.clipboard")
-                            } else {
-                                HStack(alignment: .center, spacing: 0) {
-                                    Text("Copy")
-                                    Spacer()
-                                    Image(systemName: "doc.on.clipboard")
-                                }
-                            }
+                            Label("Copy", systemImage: "doc.on.clipboard")
                         }
                     }
                 }
@@ -55,41 +47,19 @@ struct AboutView: View {
                         Button(action: {
                             UIPasteboard.general.string = appBuild
                         }) {
-                            if #available(iOS 14.0, *) {
-                                Label("Copy", systemImage: "doc.on.clipboard")
-                            } else {
-                                HStack(alignment: .center, spacing: 0) {
-                                    Text("Copy")
-                                    Spacer()
-                                    Image(systemName: "doc.on.clipboard")
-                                }
-                            }
+                            Label("Copy", systemImage: "doc.on.clipboard")
                         }
                     }
                 }
             }
             Section(footer: Text(appCopyright)) {
-                if #available(iOS 14.0, *) {
-                    Link(destination: URL(string: "mailto:feedback@tavitian.cloud?subject=Feedback%20for%20Provenance")!) {
-                        HStack(alignment: .center, spacing: 5) {
-                            Image(systemName: "square.and.pencil")
-                                .resizable()
-                                .frame(width: 25, height: 25)
-                            Text("Contact Developer")
-                                .font(.custom("CircularStd-Book", size: 17))
-                        }
-                    }
-                } else {
-                    Button(action: {
-                        UIApplication.shared.open(URL(string: "mailto:feedback@tavitian.cloud?subject=Feedback%20for%20Provenance")!)
-                    }) {
-                        HStack(alignment: .center, spacing: 5) {
-                            Image(systemName: "square.and.pencil")
-                                .resizable()
-                                .frame(width: 25, height: 25)
-                            Text("Contact Developer")
-                                .font(.custom("CircularStd-Book", size: 17))
-                        }
+                Link(destination: URL(string: "mailto:feedback@tavitian.cloud?subject=Feedback%20for%20Provenance")!) {
+                    HStack(alignment: .center, spacing: 5) {
+                        Image(systemName: "square.and.pencil")
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                        Text("Contact Developer")
+                            .font(.custom("CircularStd-Book", size: 17))
                     }
                 }
             }

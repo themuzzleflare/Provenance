@@ -13,10 +13,14 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
     lazy var tags: [TagResource] = []
     lazy var tagsErrorResponse: [ErrorObject] = []
     lazy var tagsError: String = ""
-    lazy var filteredTags: [TagResource] = []
+    
+    private var filteredTags: [TagResource] {
+        tags.filter { tag in
+            searchController.searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchController.searchBar.text!)
+        }
+    }
     
     func updateSearchResults(for searchController: UISearchController) {
-        filteredTags = tags.filter { searchController.searchBar.text!.isEmpty || $0.id.localizedStandardContains(searchController.searchBar.text!) }
         tableViewController.tableView.reloadData()
     }
     
@@ -120,7 +124,6 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
                     DispatchQueue.main.async {
                         print("Tags JSON Decoding Succeeded!")
                         self.tags = decodedResponse.data
-                        self.filteredTags = self.tags.filter { self.searchController.searchBar.text!.isEmpty || $0.id.localizedStandardContains(self.searchController.searchBar.text!) }
                         self.tagsError = ""
                         self.tagsErrorResponse = []
                         self.navigationItem.title = "Tags"
@@ -222,12 +225,15 @@ extension AllTagsVC: UITableViewDataSource {
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
         if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
+            tableView.separatorStyle = .none
             noTagsCell.selectionStyle = .none
+            noTagsCell.textLabel?.textAlignment = .center
             noTagsCell.textLabel?.text = "No Tags"
             noTagsCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
             noTagsCell.backgroundColor = tableView.backgroundColor
             return noTagsCell
         } else {
+            tableView.separatorStyle = .singleLine
             if !self.tagsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0

@@ -4,7 +4,6 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
     var account: AccountResource!
     
     func updateSearchResults(for searchController: UISearchController) {
-        filteredTransactions = transactions.filter { searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(searchController.searchBar.text!) }
         tableViewController.tableView.reloadData()
     }
     
@@ -20,7 +19,12 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
     lazy var transactions: [TransactionResource] = []
     lazy var transactionsErrorResponse: [ErrorObject] = []
     lazy var transactionsError: String = ""
-    lazy var filteredTransactions: [TransactionResource] = []
+    
+    private var filteredTransactions: [TransactionResource] {
+        transactions.filter { transaction in
+            searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
+        }
+    }
     
     lazy var categories: [CategoryResource] = []
     
@@ -133,7 +137,6 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
                     DispatchQueue.main.async {
                         print("Transactions JSON Decoding Succeeded!")
                         self.transactions = decodedResponse.data
-                        self.filteredTransactions = self.transactions.filter { self.searchController.searchBar.text!.isEmpty || $0.attributes.description.localizedStandardContains(self.searchController.searchBar.text!) }
                         self.transactionsError = ""
                         self.transactionsErrorResponse = []
                         self.navigationItem.title = self.account.attributes.displayName
@@ -229,12 +232,15 @@ extension TransactionsByAccountVC: UITableViewDataSource {
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
+            tableView.separatorStyle = .none
             noTransactionsCell.selectionStyle = .none
             noTransactionsCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+            noTransactionsCell.textLabel?.textAlignment = .center
             noTransactionsCell.textLabel?.text = "No Transactions"
             noTransactionsCell.backgroundColor = tableView.backgroundColor
             return noTransactionsCell
         } else {
+            tableView.separatorStyle = .singleLine
             if !self.transactionsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
