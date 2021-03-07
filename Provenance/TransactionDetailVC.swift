@@ -22,10 +22,9 @@ class TransactionDetailVC: UITableViewController {
     }
     
     private var statusString: String {
-        switch transaction?.attributes.isSettled {
+        switch transaction.attributes.isSettled {
             case true: return "Settled"
             case false: return "Held"
-            default: return ""
         }
     }
     
@@ -41,7 +40,7 @@ class TransactionDetailVC: UITableViewController {
         settledIcon.tintColor = .systemGreen
         heldIcon.tintColor = .systemYellow
         
-        switch transaction!.attributes.isSettled {
+        switch transaction.attributes.isSettled {
             case true: return settledIcon
             case false: return heldIcon
         }
@@ -189,65 +188,61 @@ class TransactionDetailVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return altAttributes.count
-        } else if section == 1 {
-            return altAttributesTwo.count
-        } else if section == 2 {
-            return altAttributesThree.count
-        } else if section == 3 {
-            return altAttributesFour.count
-        } else if section == 4 {
-            if transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil {
-                return altAttributesSix.count
-            } else {
-                return altAttributesFive.count
-            }
-        } else {
-            return altAttributesSix.count
+        switch section {
+            case 0: return altAttributes.count
+            case 1: return altAttributesTwo.count
+            case 2: return altAttributesThree.count
+            case 3: return altAttributesFour.count
+            case 4: return transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil ? altAttributesSix.count : altAttributesFive.count
+            case 5: return altAttributesSix.count
+            default: fatalError("Unknown number of sections")
         }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! AttributeCell
         
-        let attribute: (key: String, value: String)
-        
         let section = indexPath.section
         
-        if section == 0 {
-            attribute = altAttributes[indexPath.row]
-        } else if section == 1 {
-            attribute = altAttributesTwo[indexPath.row]
-        } else if section == 2 {
-            attribute = altAttributesThree[indexPath.row]
-        } else if section == 3 {
-            attribute = altAttributesFour[indexPath.row]
-        } else if section == 4 {
-            if transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil {
-                attribute = altAttributesSix[indexPath.row]
-            } else {
-                attribute = altAttributesFive[indexPath.row]
+        var attribute: (key: String, value: String) {
+            switch section {
+                case 0: return altAttributes[indexPath.row]
+                case 1: return altAttributesTwo[indexPath.row]
+                case 2: return altAttributesThree[indexPath.row]
+                case 3: return altAttributesFour[indexPath.row]
+                case 4: return transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil ? altAttributesSix[indexPath.row] : altAttributesFive[indexPath.row]
+                case 5: return altAttributesSix[indexPath.row]
+                default: fatalError("Unknown attribute")
             }
-        } else {
-            attribute = altAttributesSix[indexPath.row]
         }
         
-        if attribute.key == "Account" || attribute.key == "Parent Category" || attribute.key == "Category" || attribute.key == "Tags" {
-            cell.selectionStyle = .default
-            cell.accessoryType = .disclosureIndicator
-        } else {
-            cell.selectionStyle = .none
-            cell.accessoryType = .none
+        var cellSelectionStyle: UITableViewCell.SelectionStyle {
+            switch attribute.key {
+                case "Account", "Parent Category", "Category", "Tags": return .default
+                default: return .none
+            }
         }
         
-        if attribute.key == "Raw Text" {
-            cell.rightDetail.font = UIFont(name: "SFMono-Regular", size: UIFont.labelFontSize)
-        } else {
-            cell.rightDetail.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
+        var cellAccessoryType: UITableViewCell.AccessoryType {
+            switch attribute.key {
+                case "Account", "Parent Category", "Category", "Tags": return .disclosureIndicator
+                default: return .none
+            }
         }
+        
+        var cellRightDetailFont: UIFont {
+            switch attribute.key {
+                case "Raw Text": return UIFont(name: "SFMono-Regular", size: UIFont.labelFontSize)!
+                default: return UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)!
+            }
+        }
+        
+        cell.selectionStyle = cellSelectionStyle
+        cell.accessoryType = cellAccessoryType
         
         cell.leftLabel.text = attribute.key
+        
+        cell.rightDetail.font = cellRightDetailFont
         cell.rightDetail.text = attribute.value
         
         return cell
