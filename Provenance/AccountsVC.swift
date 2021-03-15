@@ -210,6 +210,11 @@ extension AccountsVC: UITableViewDataSource {
                 return errorObjectCell
             } else {
                 let account = accounts[indexPath.row]
+                
+                let bgView = UIView()
+                bgView.backgroundColor = R.color.accentColor()
+                accountCell.selectedBackgroundView = bgView
+                
                 accountCell.accessoryType = .disclosureIndicator
                 accountCell.textLabel?.font = circularStdBold
                 accountCell.textLabel?.textColor = .black

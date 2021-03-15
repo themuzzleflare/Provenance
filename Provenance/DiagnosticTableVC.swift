@@ -8,12 +8,10 @@ class DiagnosticTableVC: TableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
-        
+                
         self.title = "Diagnostics"
         self.navigationItem.title = "Diagnostics"
-        self.navigationItem.rightBarButtonItem = closeButton
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         self.tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "diagnosticCell")
     }
     
@@ -50,13 +48,12 @@ class DiagnosticTableVC: TableViewController {
         let attribute = attributes[indexPath.row]
         
         if attribute.value != "Unknown" {
-            let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+            let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
                 UIPasteboard.general.string = attribute.value
             }
             
-            return UIContextMenuConfiguration(identifier: nil,
-                                              previewProvider: nil) { _ in
-                UIMenu(title: "", children: [copy])
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(children: [copy])
             }
         } else {
             return nil

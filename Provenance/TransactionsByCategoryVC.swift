@@ -10,7 +10,7 @@ class TransactionsByCategoryVC: ViewController, UITableViewDelegate, UISearchBar
     let circularStdBook = R.font.circularStdBook(size: UIFont.labelFontSize)
     let circularStdBold = R.font.circularStdBold(size: UIFont.labelFontSize)
     
-    lazy var refreshControl = RefreshControl(frame: .zero)
+    let refreshControl = RefreshControl(frame: .zero)
     lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
     
     lazy var transactions: [TransactionResource] = []
@@ -56,7 +56,7 @@ class TransactionsByCategoryVC: ViewController, UITableViewDelegate, UISearchBar
         
         self.definesPresentationContext = true
         
-        title = "Transactions by Category"
+        self.title = "Transactions by Category"
         
         self.navigationItem.title = "Loading"
         self.navigationItem.searchController = searchController
@@ -75,10 +75,10 @@ class TransactionsByCategoryVC: ViewController, UITableViewDelegate, UISearchBar
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tableViewController.tableView.reloadData()
-        listTransactions()
-        listCategories()
-        listAccounts()
+        self.tableViewController.tableView.reloadData()
+        self.listTransactions()
+        self.listCategories()
+        self.listAccounts()
     }
     
     @objc private func refreshTransactions() {
@@ -259,8 +259,19 @@ extension TransactionsByCategoryVC: UITableViewDataSource {
             } else {
                 let transaction = filteredTransactions[indexPath.row]
                 
+                let bgView = UIView()
+                bgView.backgroundColor = R.color.accentColor()
+                transactionCell.selectedBackgroundView = bgView
+                
                 transactionCell.leftLabel.text = transaction.attributes.description
                 transactionCell.leftSubtitle.text = transaction.attributes.creationDate
+                
+                if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
+                    transactionCell.rightLabel.textColor = .black
+                } else {
+                    transactionCell.rightLabel.textColor = R.color.greenColour()
+                }
+                
                 transactionCell.rightLabel.text = transaction.attributes.amount.valueShort
                 return transactionCell
             }
@@ -270,11 +281,11 @@ extension TransactionsByCategoryVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
-            let vc = TransactionDetailVC(style: .grouped)
+            let vc = TransactionDetailVC(style: .insetGrouped)
             vc.transaction = filteredTransactions[indexPath.row]
             vc.categories = self.categories
             vc.accounts = self.accounts
-            navigationController?.pushViewController(vc, animated: true)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -282,13 +293,12 @@ extension TransactionsByCategoryVC: UITableViewDataSource {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
             let transaction = filteredTransactions[indexPath.row]
             
-            let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+            let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
                 UIPasteboard.general.string = transaction.attributes.description
             }
             
-            return UIContextMenuConfiguration(identifier: nil,
-                                              previewProvider: nil) { _ in
-                UIMenu(title: "", children: [copy])
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(children: [copy])
             }
         } else {
             return nil

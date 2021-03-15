@@ -17,19 +17,17 @@ class AccountDetailVC: TableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
-        
+                
         self.clearsSelectionOnViewWillAppear = true
         
         self.title = "Account Details"
         self.navigationItem.title = account.attributes.displayName
-        self.navigationItem.rightBarButtonItem = closeButton
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         self.tableView.register(R.nib.attributeCell)
     }
     
     @objc private func closeWorkflow() {
-        dismiss(animated: true)
+        self.dismiss(animated: true)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -54,13 +52,12 @@ class AccountDetailVC: TableViewController {
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let attribute = altAttributes[indexPath.row]
         
-        let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+        let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
             UIPasteboard.general.string = attribute.value
         }
         
-        return UIContextMenuConfiguration(identifier: nil,
-                                          previewProvider: nil) { _ in
-            UIMenu(title: "", children: [copy])
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            UIMenu(children: [copy])
         }
     }
 }

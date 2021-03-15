@@ -1,5 +1,4 @@
 import UIKit
-import Rswift
 
 class TransactionCell: UITableViewCell {
     @IBOutlet var leftLabel: UILabel!

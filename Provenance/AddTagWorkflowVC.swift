@@ -41,21 +41,19 @@ class AddTagWorkflowVC: ViewController, UITableViewDelegate, UISearchBarDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         super.addChild(tableViewController)
-            
-        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         
-        searchController.delegate = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.placeholder = "Search"
-        searchController.hidesNavigationBarDuringPresentation = true
-        searchController.searchBar.delegate = self
+        self.searchController.delegate = self
+        self.searchController.obscuresBackgroundDuringPresentation = false
+        self.searchController.searchBar.searchBarStyle = .minimal
+        self.searchController.searchBar.placeholder = "Search"
+        self.searchController.hidesNavigationBarDuringPresentation = true
+        self.searchController.searchBar.delegate = self
         
         self.definesPresentationContext = true
         
         self.title = "Transactions"
         self.navigationItem.title = "Loading"
-        self.navigationItem.rightBarButtonItem = closeButton
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         self.navigationItem.searchController = searchController
         self.navigationItem.hidesSearchBarWhenScrolling = false
         self.navigationItem.backButtonDisplayMode = .minimal
@@ -83,7 +81,7 @@ class AddTagWorkflowVC: ViewController, UITableViewDelegate, UISearchBarDelegate
     }
     
     func setupFetchingView() {
-        view.addSubview(fetchingView)
+        self.view.addSubview(fetchingView)
         
         self.fetchingView.translatesAutoresizingMaskIntoConstraints = false
         self.fetchingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -93,7 +91,7 @@ class AddTagWorkflowVC: ViewController, UITableViewDelegate, UISearchBarDelegate
     }
     
     func setupTableView() {
-        view.addSubview(tableViewController.tableView)
+        self.view.addSubview(tableViewController.tableView)
         
         self.tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableViewController.tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -236,8 +234,19 @@ extension AddTagWorkflowVC: UITableViewDataSource {
             } else {
                 let transaction = filteredTransactions[indexPath.row]
                 
+                let bgView = UIView()
+                bgView.backgroundColor = R.color.accentColor()
+                transactionCell.selectedBackgroundView = bgView
+                
                 transactionCell.leftLabel.text = transaction.attributes.description
                 transactionCell.leftSubtitle.text = transaction.attributes.creationDate
+                
+                if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
+                    transactionCell.rightLabel.textColor = .black
+                } else {
+                    transactionCell.rightLabel.textColor = R.color.greenColour()
+                }
+                
                 transactionCell.rightLabel.text = transaction.attributes.amount.valueShort
                 return transactionCell
             }
@@ -248,7 +257,7 @@ extension AddTagWorkflowVC: UITableViewDataSource {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
             let vc = AddTagWorkflowTwoVC()
             vc.transaction = filteredTransactions[indexPath.row]
-            navigationController?.pushViewController(vc, animated: true)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
@@ -263,7 +272,7 @@ class AddTagWorkflowTwoVC: ViewController, UITableViewDelegate, UISearchBarDeleg
     let circularStdBold = R.font.circularStdBold(size: UIFont.labelFontSize)
     
     private var prevFilteredTags: [TagResource] = []
-
+    
     let refreshControl = RefreshControl(frame: .zero)
     lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
     
@@ -298,7 +307,7 @@ class AddTagWorkflowTwoVC: ViewController, UITableViewDelegate, UISearchBarDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         super.addChild(tableViewController)
-                
+        
         self.searchController.delegate = self
         self.searchController.obscuresBackgroundDuringPresentation = false
         self.searchController.searchBar.searchBarStyle = .minimal
@@ -336,10 +345,20 @@ class AddTagWorkflowTwoVC: ViewController, UITableViewDelegate, UISearchBarDeleg
     }
     
     @objc private func openAddWorkflow() {
-        let ac = UIAlertController(title: "New Tag", message: "Enter the name of the new tag.", preferredStyle: .alert)
+        let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+        
+        let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+        let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+        
+        let titleAttrString = NSMutableAttributedString(string: "New Tag", attributes: titleFont)
+        let messageAttrString = NSMutableAttributedString(string: "Enter the name of the new tag.", attributes: messageFont)
+        
+        ac.setValue(titleAttrString, forKey: "attributedTitle")
+        ac.setValue(messageAttrString, forKey: "attributedMessage")
         ac.addTextField { textField in
             textField.delegate = self
             textField.autocapitalizationType = .none
+            textField.tintColor = R.color.accentColor()
             textField.autocorrectionType = .no
             
             self.textDidChangeObserver = NotificationCenter.default.addObserver(
@@ -357,6 +376,7 @@ class AddTagWorkflowTwoVC: ViewController, UITableViewDelegate, UISearchBarDeleg
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
         
         let submitAction = UIAlertAction(title: "Next", style: .default) { _ in
             let answer = ac.textFields![0]
@@ -367,6 +387,7 @@ class AddTagWorkflowTwoVC: ViewController, UITableViewDelegate, UISearchBarDeleg
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }
+        submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
         submitAction.isEnabled = false
         submitActionProxy = submitAction
         
@@ -541,6 +562,11 @@ extension AddTagWorkflowTwoVC: UITableViewDataSource {
                 return errorObjectCell
             } else {
                 let tag = filteredTags[indexPath.row]
+                
+                let bgView = UIView()
+                bgView.backgroundColor = R.color.accentColor()
+                tagCell.selectedBackgroundView = bgView
+                
                 tagCell.accessoryType = .disclosureIndicator
                 tagCell.textLabel?.font = circularStdBook
                 tagCell.textLabel?.adjustsFontForContentSizeCategory = true
@@ -552,10 +578,10 @@ extension AddTagWorkflowTwoVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.tagsErrorResponse.isEmpty && self.tagsError.isEmpty && !self.filteredTags.isEmpty {
-            let vc = AddTagWorkflowThreeVC(style: .grouped)
+            let vc = AddTagWorkflowThreeVC(style: .insetGrouped)
             vc.transaction = transaction
             vc.tag = filteredTags[indexPath.row].id
-            navigationController?.pushViewController(vc, animated: true)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
@@ -577,11 +603,9 @@ class AddTagWorkflowThreeVC: TableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let confirmButton = UIBarButtonItem(image: R.image.checkmark(), style: .plain, target: self, action: #selector(addTag))
-        
         self.title = "Confirmation"
         self.navigationItem.title = "Confirmation"
-        self.navigationItem.rightBarButtonItem = confirmButton
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.checkmark(), style: .plain, target: self, action: #selector(addTag))
         
         self.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "attributeCell")
         self.tableView.register(R.nib.transactionCell)
@@ -609,10 +633,21 @@ class AddTagWorkflowThreeVC: TableViewController {
                 let statusCode = (response as! HTTPURLResponse).statusCode
                 if statusCode != 204 {
                     DispatchQueue.main.async {
-                        let ac = UIAlertController(title: self.errorAlert(statusCode).title, message: self.errorAlert(statusCode).content, preferredStyle: .alert)
+                        let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                        
+                        let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+                        let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+                        
+                        let titleAttrString = NSMutableAttributedString(string: self.errorAlert(statusCode).title, attributes: titleFont)
+                        let messageAttrString = NSMutableAttributedString(string: self.errorAlert(statusCode).content, attributes: messageFont)
+                        
+                        ac.setValue(titleAttrString, forKey: "attributedTitle")
+                        ac.setValue(messageAttrString, forKey: "attributedMessage")
+                        
                         let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                             self.navigationController?.popViewController(animated: true)
                         })
+                        dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                         ac.addAction(dismissAction)
                         self.present(ac, animated: true)
                     }
@@ -623,10 +658,21 @@ class AddTagWorkflowThreeVC: TableViewController {
                 }
             } else {
                 DispatchQueue.main.async {
-                    let ac = UIAlertController(title: "Failed", message:error?.localizedDescription ?? "\(self.tag!) was not added to \(self.transaction.attributes.description).", preferredStyle: .alert)
+                    let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                    
+                    let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+                    let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+                    
+                    let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
+                    let messageAttrString = NSMutableAttributedString(string: error?.localizedDescription ?? "\(self.tag!) was not added to \(self.transaction.attributes.description).", attributes: messageFont)
+                    
+                    ac.setValue(titleAttrString, forKey: "attributedTitle")
+                    ac.setValue(messageAttrString, forKey: "attributedMessage")
+                    
                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                         self.navigationController?.popToRootViewController(animated: true)
                     })
+                    dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                     ac.addAction(dismissAction)
                     self.present(ac, animated: true)
                 }
@@ -664,7 +710,7 @@ class AddTagWorkflowThreeVC: TableViewController {
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
             headerView.textLabel?.textColor = .lightGray
-            headerView.textLabel?.font = R.font.circularStdBook(size: 12)
+            headerView.textLabel?.font = R.font.circularStdBook(size: 13)
         }
     }
     
@@ -691,9 +737,15 @@ class AddTagWorkflowThreeVC: TableViewController {
             cell.textLabel?.text = tag
             return cell
         } else if section == 1 {
-            
             transactionCell.leftLabel.text = transaction.attributes.description
             transactionCell.leftSubtitle.text = transaction.attributes.creationDate
+            
+            if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
+                transactionCell.rightLabel.textColor = .black
+            } else {
+                transactionCell.rightLabel.textColor = R.color.greenColour()
+            }
+            
             transactionCell.rightLabel.text = transaction.attributes.amount.valueShort
             return transactionCell
         } else {

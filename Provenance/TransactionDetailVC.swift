@@ -121,19 +121,17 @@ class TransactionDetailVC: TableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let statusButtonIcon = UIBarButtonItem(customView: transaction.attributes.statusIconView)
-        
         self.clearsSelectionOnViewWillAppear = true
         
         self.title = "Transaction Details"
         self.navigationItem.title = transaction?.attributes.description ?? ""
-        self.navigationItem.setRightBarButton(statusButtonIcon, animated: true)
+        self.navigationItem.setRightBarButton(UIBarButtonItem(customView: transaction.attributes.statusIconView), animated: true)
         self.navigationItem.largeTitleDisplayMode = .never
         self.tableView.register(R.nib.attributeCell)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tableView.reloadData()
+        self.tableView.reloadData()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -196,6 +194,10 @@ class TransactionDetailVC: TableViewController {
             }
         }
         
+        let bgView = UIView()
+        bgView.backgroundColor = R.color.accentColor()
+        cell.selectedBackgroundView = bgView
+        
         cell.selectionStyle = cellSelectionStyle
         cell.accessoryType = cellAccessoryType
         
@@ -217,13 +219,13 @@ class TransactionDetailVC: TableViewController {
             if attribute.key == "Account" {
                 let vc = TransactionsByAccountVC()
                 vc.account = accountFilter!.first!
-                navigationController?.pushViewController(vc, animated: true)
+                self.navigationController?.pushViewController(vc, animated: true)
             }
         } else if section == 4 {
             if transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil {
-                let vc = TagsVC(style: .grouped)
+                let vc = TagsVC(style: .insetGrouped)
                 vc.transaction = transaction
-                navigationController?.pushViewController(vc, animated: true)
+                self.navigationController?.pushViewController(vc, animated: true)
             } else {
                 attribute = altAttributesFive[indexPath.row]
                 
@@ -234,12 +236,12 @@ class TransactionDetailVC: TableViewController {
                 } else {
                     vc.category = categoryFilter!.first
                 }
-                navigationController?.pushViewController(vc, animated: true)
+                self.navigationController?.pushViewController(vc, animated: true)
             }
         } else if section == 5 {
-            let vc = TagsVC(style: .grouped)
+            let vc = TagsVC(style: .insetGrouped)
             vc.transaction = transaction
-            navigationController?.pushViewController(vc, animated: true)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -249,12 +251,11 @@ class TransactionDetailVC: TableViewController {
         if section == 1 {
             let attribute = altAttributesTwo[indexPath.row]
             
-            let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+            let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
                 UIPasteboard.general.string = attribute.value
             }
             
-            return UIContextMenuConfiguration(identifier: nil,
-                                              previewProvider: nil) { _ in
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                 UIMenu(children: [copy])
             }
         } else {

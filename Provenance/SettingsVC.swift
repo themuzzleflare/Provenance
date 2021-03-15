@@ -5,28 +5,19 @@ class SettingsVC: TableViewController {
     weak var submitActionProxy: UIAlertAction?
     private var textDidChangeObserver: NSObjectProtocol!
     
-    private var apiKeyDisplay: String {
-        switch UserDefaults.standard.string(forKey: "apiKey") {
-            case nil, "": return "None"
-            default: return UserDefaults.standard.string(forKey: "apiKey")!
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
-        
         self.title = "Settings"
         self.navigationItem.title = "Settings"
-        self.navigationItem.rightBarButtonItem = closeButton
-
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+        
         self.tableView.register(R.nib.apiKeyCell)
         self.tableView.register(R.nib.dateStylePickerCell)
     }
     
     @objc private func closeWorkflow() {
-        dismiss(animated: true)
+        self.dismiss(animated: true)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -43,6 +34,10 @@ class SettingsVC: TableViewController {
         let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.apiKeyCell, for: indexPath)!
         let datePickerCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.datePickerCell, for: indexPath)!
         
+        let bgView = UIView()
+        bgView.backgroundColor = R.color.accentColor()
+        apiKeyCell.selectedBackgroundView = bgView
+        
         if UserDefaults.standard.string(forKey: "apiKey") != "" && UserDefaults.standard.string(forKey: "apiKey") != nil {
             apiKeyCell.leftImage.tintColor = .systemGreen
         } else {
@@ -52,6 +47,7 @@ class SettingsVC: TableViewController {
         apiKeyCell.rightDetail.speed = .rate(65)
         apiKeyCell.rightDetail.leadingBuffer = 20
         apiKeyCell.rightDetail.fadeLength = 20
+        
         apiKeyCell.rightDetail.text = apiKeyDisplay
         
         datePickerCell.datePicker.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: R.font.circularStdBook(size: 14)!], for: .normal)
@@ -132,7 +128,7 @@ class SettingsVC: TableViewController {
                             if statusCode == 200 {
                                 DispatchQueue.main.async {
                                     UserDefaults.standard.set(answer.text!, forKey: "apiKey")
-                                    tableView.reloadData()
+                                    self.tableView.reloadData()
                                 }
                             } else {
                                 DispatchQueue.main.async {
@@ -206,21 +202,35 @@ class SettingsVC: TableViewController {
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let section = indexPath.section
         
-        let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+        let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
             UIPasteboard.general.string = UserDefaults.standard.string(forKey: "apiKey")
         }
         
         if section == 0 {
             if UserDefaults.standard.string(forKey: "apiKey") != nil {
-                return UIContextMenuConfiguration(identifier: nil,
-                                                  previewProvider: nil) { _ in
-                    UIMenu(title: "", children: [copy])
+                return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                    UIMenu(children: [copy])
                 }
             } else {
                 return nil
             }
         } else {
             return nil
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == 0 {
+            return "The personal access token used to communicate with the Up Banking Developer API."
+        } else {
+            return "The styling of dates displayed thoughout the application."
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        if let footerView = view as? UITableViewHeaderFooterView {
+            footerView.textLabel?.textColor = .lightGray
+            footerView.textLabel?.font = R.font.circularStdBook(size: 12)
         }
     }
 }

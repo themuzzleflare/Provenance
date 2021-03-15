@@ -1,9 +1,7 @@
 import UIKit
 import Rswift
-import TinyConstraints
 
 class AboutViewController: UITableViewController {
-    @IBOutlet var stackView: UIStackView!
     @IBOutlet var appNameValue: UILabel!
     @IBOutlet var versionValue: UILabel!
     @IBOutlet var buildValue: UILabel!
@@ -16,25 +14,22 @@ class AboutViewController: UITableViewController {
         self.versionValue.text = appVersion
         self.buildValue.text = appBuild
         
-        let settingsButton = UIBarButtonItem(image: R.image.gear(), style: .plain, target: self, action: #selector(openSettings))
-        let diagnosticsButton = UIBarButtonItem(image: R.image.chevronLeftSlashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
-        
         self.title = "About"
         self.navigationItem.title = "About"
-        self.navigationItem.leftBarButtonItem = diagnosticsButton
-        self.navigationItem.rightBarButtonItem = settingsButton
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftSlashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.gear(), style: .plain, target: self, action: #selector(openSettings))
         
         self.navigationItem.largeTitleDisplayMode = .never
     }
     
     @objc private func openSettings() {
         let vc = NavigationController(rootViewController: SettingsVC(style: .insetGrouped))
-        present(vc, animated: true)
+        self.present(vc, animated: true)
     }
     
     @objc private func openDiagnostics() {
         let vc = NavigationController(rootViewController: DiagnosticTableVC(style: .insetGrouped))
-        present(vc, animated: true)
+        self.present(vc, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -46,7 +41,9 @@ class AboutViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 {
+        let section = indexPath.section
+        
+        if section == 1 {
             self.tableView.deselectRow(at: indexPath, animated: true)
             UIApplication.shared.open(URL(string: "mailto:feedback@tavitian.cloud?subject=Feedback%20for%20Provenance")!)
         }

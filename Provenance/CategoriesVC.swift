@@ -64,11 +64,12 @@ class CategoriesVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UI
         self.tableViewController.clearsSelectionOnViewWillAppear = true
         self.tableViewController.refreshControl = refreshControl
         self.refreshControl.addTarget(self, action: #selector(refreshCategories), for: .valueChanged)
+        
         self.setupFetchingView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        listCategories()
+        self.listCategories()
     }
     
     @objc private func refreshCategories() {
@@ -244,6 +245,11 @@ extension CategoriesVC: UITableViewDataSource {
                 return errorObjectCell
             } else {
                 let category = filteredCategories[indexPath.row]
+                
+                let bgView = UIView()
+                bgView.backgroundColor = R.color.accentColor()
+                categoryCell.selectedBackgroundView = bgView
+                
                 categoryCell.accessoryType = .disclosureIndicator
                 categoryCell.textLabel?.font = circularStdBook
                 categoryCell.textLabel?.text = category.attributes.name
@@ -256,7 +262,7 @@ extension CategoriesVC: UITableViewDataSource {
         if self.categoriesErrorResponse.isEmpty && self.categoriesError.isEmpty && !self.filteredCategories.isEmpty {
             let vc = TransactionsByCategoryVC()
             vc.category = filteredCategories[indexPath.row]
-            navigationController?.pushViewController(vc, animated: true)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -264,13 +270,12 @@ extension CategoriesVC: UITableViewDataSource {
         if self.categoriesErrorResponse.isEmpty && self.categoriesError.isEmpty && !self.filteredCategories.isEmpty {
             let category = filteredCategories[indexPath.row]
             
-            let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+            let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
                 UIPasteboard.general.string = category.attributes.name
             }
             
-            return UIContextMenuConfiguration(identifier: nil,
-                                              previewProvider: nil) { _ in
-                UIMenu(title: "", children: [copy])
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(children: [copy])
             }
         } else {
             return nil

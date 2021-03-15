@@ -1,12 +1,16 @@
 import Foundation
-#if canImport(UIKit)
-import UIKit
-#endif
 
 let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
 let appBuild = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
 let appName = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "Provenance"
 let appCopyright = Bundle.main.infoDictionary?["NSHumanReadableCopyright"] as? String ?? "Copyright © 2021 Paul Tavitian"
+
+var apiKeyDisplay: String {
+    switch UserDefaults.standard.string(forKey: "apiKey") {
+        case nil, "": return "None"
+        default: return UserDefaults.standard.string(forKey: "apiKey")!
+    }
+}
 
 protocol URLQueryParameterStringConvertible {
     var queryParameters: String {
@@ -53,16 +57,3 @@ func formatDateRelative(dateString: String) -> String {
         return dateString
     }
 }
-
-#if os(iOS) || targetEnvironment(macCatalyst)
-let up1 = R.image.upLogoSequence.first()!
-let up2 = R.image.upLogoSequence.second()!
-let up3 = R.image.upLogoSequence.third()!
-let up4 = R.image.upLogoSequence.fourth()!
-let up5 = R.image.upLogoSequence.fifth()!
-let up6 = R.image.upLogoSequence.sixth()!
-let up7 = R.image.upLogoSequence.seventh()!
-let up8 = R.image.upLogoSequence.eigth()!
-let upImages: [UIImage] = [up1, up2, up3, up4, up5, up6, up7, up8]
-let upAnimation: UIImage =  UIImage.animatedImage(with: upImages, duration: 0.65)!
-#endif

@@ -18,14 +18,14 @@ class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDel
     lazy var transactionsErrorResponse: [ErrorObject] = []
     lazy var transactionsError: String = ""
     
-    var preFilteredTransactions: [TransactionResource] {
+    private var preFilteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             (!showSettledOnly || transaction.attributes.isSettled)
                 && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
         }
     }
     
-    var filteredTransactions: [TransactionResource] {
+    private var filteredTransactions: [TransactionResource] {
         preFilteredTransactions.filter { transaction in
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
         }
@@ -100,7 +100,7 @@ class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDel
         }
     }
     
-    func categoryNameTransformed(_ category: FilterCategory) -> String {
+    private func categoryNameTransformed(_ category: FilterCategory) -> String {
         switch category {
             case .gamesAndSoftware: return "Apps, Games & Software"
             case .carInsuranceAndMaintenance: return "Car Insurance, Rego & Maintenance"
@@ -110,10 +110,6 @@ class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDel
     }
     
     private var showSettledOnly: Bool = false
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        tableViewController.tableView.reloadData()
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -204,20 +200,19 @@ class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDel
         } else if UserDefaults.standard.string(forKey: "dateStyle") == "Relative" {
             UserDefaults.standard.setValue("Absolute", forKey: "dateStyle")
         }
-        tableViewController.tableView.reloadData()
+        self.tableViewController.tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tableViewController.tableView.reloadData()
-        listTransactions()
-        listCategories()
-        listAccounts()
+        self.tableViewController.tableView.reloadData()
+        self.listTransactions()
+        self.listCategories()
+        self.listAccounts()
     }
     
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
-        let loadingView = UIActivityIndicatorView(style: .medium)
-        loadingView.startAnimating()
+        let loadingView = ActivityIndicator(style: .medium)
         navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -273,7 +268,7 @@ class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDel
                         self.transactionsErrorResponse = []
                         self.navigationItem.title = "Transactions"
                         if self.navigationItem.leftBarButtonItems == nil {
-                            self.navigationItem.setLeftBarButtonItems([UIBarButtonItem(image: UIImage(systemName: "arrow.up.arrow.down"), style: .plain, target: self, action: #selector(self.switchDateStyle)), self.filterButton], animated: true)
+                            self.navigationItem.setLeftBarButtonItems([UIBarButtonItem(image: R.image.arrowUpArrowDown(), style: .plain, target: self, action: #selector(self.switchDateStyle)), self.filterButton], animated: true)
                         }
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
@@ -409,7 +404,15 @@ extension TransactionsVC: UITableViewDataSource, UITableViewDelegate {
                 
                 transactionCell.leftLabel.text = transaction.attributes.description
                 transactionCell.leftSubtitle.text = transaction.attributes.creationDate
+                
+                if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
+                    transactionCell.rightLabel.textColor = .black
+                } else {
+                    transactionCell.rightLabel.textColor = R.color.greenColour()
+                }
+                
                 transactionCell.rightLabel.text = transaction.attributes.amount.valueShort
+                
                 return transactionCell
             }
         }
@@ -417,7 +420,7 @@ extension TransactionsVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
-            let vc = TransactionDetailVC(style: .grouped)
+            let vc = TransactionDetailVC(style: .insetGrouped)
             vc.transaction = filteredTransactions[indexPath.row]
             vc.categories = self.categories
             vc.accounts = self.accounts
@@ -429,13 +432,12 @@ extension TransactionsVC: UITableViewDataSource, UITableViewDelegate {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
             let transaction = filteredTransactions[indexPath.row]
             
-            let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+            let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
                 UIPasteboard.general.string = transaction.attributes.description
             }
             
-            return UIContextMenuConfiguration(identifier: nil,
-                                              previewProvider: nil) { _ in
-                UIMenu(title: "", children: [copy])
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(children: [copy])
             }
         } else {
             return nil
@@ -452,17 +454,17 @@ extension TransactionsVC: UITableViewDataSource, UITableViewDelegate {
             if error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Category.self, from: data!) {
                     DispatchQueue.main.async {
-                        print("Categories JSON Decoding Succeeded!")
+                        print("Categories JSON Decoding succeeded")
                         self.categories = decodedResponse.data
                     }
                 } else {
                     DispatchQueue.main.async {
-                        print("Categories JSON Decoding Failed!")
+                        print("Categories JSON Decoding failed")
                     }
                 }
             } else {
                 DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown Error!")
+                    print(error?.localizedDescription ?? "Unknown error")
                 }
             }
         }
@@ -479,17 +481,17 @@ extension TransactionsVC: UITableViewDataSource, UITableViewDelegate {
             if error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Account.self, from: data!) {
                     DispatchQueue.main.async {
-                        print("Accounts JSON Decoding Succeeded!")
+                        print("Accounts JSON Decoding succeeded")
                         self.accounts = decodedResponse.data
                     }
                 } else {
                     DispatchQueue.main.async {
-                        print("Accounts JSON Decoding Failed!")
+                        print("Accounts JSON Decoding failed")
                     }
                 }
             } else {
                 DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown Error!")
+                    print(error?.localizedDescription ?? "Unknown error")
                 }
             }
         }

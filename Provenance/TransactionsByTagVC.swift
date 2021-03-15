@@ -44,52 +44,47 @@ class TransactionsByTagVC: ViewController, UITableViewDelegate, UISearchBarDeleg
     
     lazy var accounts: [AccountResource] = []
     
-    func updateSearchResults(for searchController: UISearchController) {
-        tableViewController.tableView.reloadData()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         super.addChild(tableViewController)
         
-        searchController.delegate = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.placeholder = "Search"
-        searchController.hidesNavigationBarDuringPresentation = true
-        searchController.searchBar.delegate = self
+        self.searchController.delegate = self
+        self.searchController.obscuresBackgroundDuringPresentation = false
+        self.searchController.searchBar.searchBarStyle = .minimal
+        self.searchController.searchBar.placeholder = "Search"
+        self.searchController.hidesNavigationBarDuringPresentation = true
+        self.searchController.searchBar.delegate = self
         
         self.definesPresentationContext = true
         
-        title = "Transactions by Tag"
+        self.title = "Transactions by Tag"
         
-        navigationItem.title = "Loading"
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-        navigationItem.largeTitleDisplayMode = .never
+        self.navigationItem.title = "Loading"
+        self.navigationItem.searchController = searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        self.navigationItem.largeTitleDisplayMode = .never
         
         #if targetEnvironment(macCatalyst)
-        navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
+        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
         #endif
         
-        tableViewController.clearsSelectionOnViewWillAppear = true
-        tableViewController.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+        self.tableViewController.clearsSelectionOnViewWillAppear = true
+        self.tableViewController.refreshControl = refreshControl
+        self.refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
         
-        setupFetchingView()
+        self.setupFetchingView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tableViewController.tableView.reloadData()
-        listTransactions()
-        listCategories()
-        listAccounts()
+        self.tableViewController.tableView.reloadData()
+        self.listTransactions()
+        self.listCategories()
+        self.listAccounts()
     }
     
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
-        let loadingView = UIActivityIndicatorView(style: .medium)
-        loadingView.startAnimating()
+        let loadingView = ActivityIndicator(style: .medium)
         navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -264,8 +259,20 @@ extension TransactionsByTagVC: UITableViewDataSource {
                 return errorObjectCell
             } else {
                 let transaction = filteredTransactions[indexPath.row]
+                
+                let bgView = UIView()
+                bgView.backgroundColor = R.color.accentColor()
+                transactionCell.selectedBackgroundView = bgView
+                
                 transactionCell.leftLabel.text = transaction.attributes.description
                 transactionCell.leftSubtitle.text = transaction.attributes.creationDate
+                
+                if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
+                    transactionCell.rightLabel.textColor = .black
+                } else {
+                    transactionCell.rightLabel.textColor = R.color.greenColour()
+                }
+                
                 transactionCell.rightLabel.text = transaction.attributes.amount.valueShort
                 return transactionCell
             }
@@ -275,11 +282,11 @@ extension TransactionsByTagVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
-            let vc = TransactionDetailVC(style: .grouped)
+            let vc = TransactionDetailVC(style: .insetGrouped)
             vc.transaction = filteredTransactions[indexPath.row]
             vc.categories = self.categories
             vc.accounts = self.accounts
-            navigationController?.pushViewController(vc, animated: true)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -287,10 +294,10 @@ extension TransactionsByTagVC: UITableViewDataSource {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
             let transaction = filteredTransactions[indexPath.row]
             
-            let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+            let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
                 UIPasteboard.general.string = transaction.attributes.description
             }
-            let remove = UIAction(title: "Remove", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+            let remove = UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { _ in
                 #if !targetEnvironment(macCatalyst)
                 let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
@@ -317,8 +324,19 @@ extension TransactionsByTagVC: UITableViewDataSource {
                             let statusCode = (response as! HTTPURLResponse).statusCode
                             if statusCode != 204 {
                                 DispatchQueue.main.async {
-                                    let ac = UIAlertController(title: "Failed", message: "\(self.tag.id) was not removed from \(transaction.attributes.description).", preferredStyle: .alert)
+                                    let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                                    
+                                    let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+                                    let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+                                    
+                                    let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
+                                    let messageAttrString = NSMutableAttributedString(string: "\(self.tag.id) was not removed from \(transaction.attributes.description).", attributes: messageFont)
+                                    
+                                    ac.setValue(titleAttrString, forKey: "attributedTitle")
+                                    ac.setValue(messageAttrString, forKey: "attributedMessage")
+                                    
                                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                                    dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                                     ac.addAction(dismissAction)
                                     self.present(ac, animated: true)
                                     
@@ -330,8 +348,19 @@ extension TransactionsByTagVC: UITableViewDataSource {
                             }
                         } else {
                             DispatchQueue.main.async {
-                                let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", preferredStyle: .alert)
+                                let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                                
+                                let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+                                let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+                                
+                                let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
+                                let messageAttrString = NSMutableAttributedString(string: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", attributes: messageFont)
+                                
+                                ac.setValue(titleAttrString, forKey: "attributedTitle")
+                                ac.setValue(messageAttrString, forKey: "attributedMessage")
+                                
                                 let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                                dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                                 ac.addAction(dismissAction)
                                 self.present(ac, animated: true)
                             }
@@ -340,6 +369,7 @@ extension TransactionsByTagVC: UITableViewDataSource {
                     .resume()
                 })
                 let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                 ac.addAction(confirmAction)
                 ac.addAction(cancelAction)
                 self.present(ac, animated: true)
@@ -367,8 +397,19 @@ extension TransactionsByTagVC: UITableViewDataSource {
                         let statusCode = (response as! HTTPURLResponse).statusCode
                         if statusCode != 204 {
                             DispatchQueue.main.async {
-                                let ac = UIAlertController(title: "Failed", message: "\(self.tag.id) was not removed from \(transaction.attributes.description).", preferredStyle: .alert)
+                                let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                                
+                                let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+                                let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+                                
+                                let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
+                                let messageAttrString = NSMutableAttributedString(string: "\(self.tag.id) was not removed from \(transaction.attributes.description).", attributes: messageFont)
+                                
+                                ac.setValue(titleAttrString, forKey: "attributedTitle")
+                                ac.setValue(messageAttrString, forKey: "attributedMessage")
+                                
                                 let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                                dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                                 ac.addAction(dismissAction)
                                 self.present(ac, animated: true)
                                 
@@ -380,8 +421,19 @@ extension TransactionsByTagVC: UITableViewDataSource {
                         }
                     } else {
                         DispatchQueue.main.async {
-                            let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", preferredStyle: .alert)
+                            let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                            
+                            let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+                            let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+                            
+                            let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
+                            let messageAttrString = NSMutableAttributedString(string: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", attributes: messageFont)
+                            
+                            ac.setValue(titleAttrString, forKey: "attributedTitle")
+                            ac.setValue(messageAttrString, forKey: "attributedMessage")
+                            
                             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                            dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                             ac.addAction(dismissAction)
                             self.present(ac, animated: true)
                         }
@@ -391,9 +443,8 @@ extension TransactionsByTagVC: UITableViewDataSource {
                 #endif
             }
             
-            return UIContextMenuConfiguration(identifier: nil,
-                                              previewProvider: nil) { _ in
-                UIMenu(title: "", children: [copy, remove])
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(children: [copy, remove])
             }
         } else {
             return nil

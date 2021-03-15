@@ -53,9 +53,7 @@ class TransactionsByAccountVC: ViewController, UITableViewDelegate, UISearchBarD
         self.searchController.searchBar.delegate = self
         
         self.definesPresentationContext = true
-        
-        let infoButton = UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo))
-        
+                
         self.title = "Transactions by Account"
         self.navigationItem.title = "Loading"
         self.navigationItem.searchController = searchController
@@ -64,35 +62,35 @@ class TransactionsByAccountVC: ViewController, UITableViewDelegate, UISearchBarD
         self.navigationItem.largeTitleDisplayMode = .always
         
         #if targetEnvironment(macCatalyst)
-        self.navigationItem.setRightBarButtonItems([infoButton, UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions))], animated: true)
+        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions))], animated: true)
         #else
-        navigationItem.rightBarButtonItem = infoButton
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo))
         #endif
         
-        tableViewController.clearsSelectionOnViewWillAppear = true
-        tableViewController.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+        self.tableViewController.clearsSelectionOnViewWillAppear = true
+        self.tableViewController.refreshControl = refreshControl
+        self.refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
         
-        setupFetchingView()
+        self.setupFetchingView()
     }
     
     @objc private func openAccountInfo() {
         let vc = AccountDetailVC(style: .insetGrouped)
         vc.account = account
         vc.transaction = transactions.first
-        present(NavigationController(rootViewController: vc), animated: true)
+        self.present(NavigationController(rootViewController: vc), animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tableViewController.tableView.reloadData()
-        listTransactions()
-        listCategories()
+        self.tableViewController.tableView.reloadData()
+        self.listTransactions()
+        self.listCategories()
     }
     
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
         let loadingView = ActivityIndicator(style: .medium)
-        navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(customView: loadingView)], animated: true)
+        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(customView: loadingView)], animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.listTransactions()
@@ -266,8 +264,19 @@ extension TransactionsByAccountVC: UITableViewDataSource {
             } else {
                 let transaction = filteredTransactions[indexPath.row]
                 
+                let bgView = UIView()
+                bgView.backgroundColor = R.color.accentColor()
+                transactionCell.selectedBackgroundView = bgView
+                
                 transactionCell.leftLabel.text = transaction.attributes.description
                 transactionCell.leftSubtitle.text = transaction.attributes.creationDate
+                
+                if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
+                    transactionCell.rightLabel.textColor = .black
+                } else {
+                    transactionCell.rightLabel.textColor = R.color.greenColour()
+                }
+                
                 transactionCell.rightLabel.text = transaction.attributes.amount.valueShort
                 return transactionCell
             }
@@ -277,10 +286,10 @@ extension TransactionsByAccountVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
-            let vc = TransactionDetailVC(style: .grouped)
+            let vc = TransactionDetailVC(style: .insetGrouped)
             vc.transaction = filteredTransactions[indexPath.row]
             vc.categories = self.categories
-            navigationController?.pushViewController(vc, animated: true)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -288,13 +297,12 @@ extension TransactionsByAccountVC: UITableViewDataSource {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
             let transaction = filteredTransactions[indexPath.row]
             
-            let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+            let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
                 UIPasteboard.general.string = transaction.attributes.description
             }
             
-            return UIContextMenuConfiguration(identifier: nil,
-                                              previewProvider: nil) { _ in
-                UIMenu(title: "", children: [copy])
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(children: [copy])
             }
         } else {
             return nil

@@ -74,7 +74,7 @@ class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISea
     
     @objc private func openAddWorkflow() {
         let vc = NavigationController(rootViewController: AddTagWorkflowVC())
-        present(vc, animated: true)
+        self.present(vc, animated: true)
     }
     
     @objc private func refreshTags() {
@@ -258,6 +258,11 @@ extension AllTagsVC: UITableViewDataSource {
                 return errorObjectCell
             } else {                
                 let tag = filteredTags[indexPath.row]
+                
+                let bgView = UIView()
+                bgView.backgroundColor = R.color.accentColor()
+                tagCell.selectedBackgroundView = bgView
+                
                 tagCell.accessoryType = .disclosureIndicator
                 tagCell.textLabel?.font = circularStdBook
                 tagCell.textLabel?.adjustsFontForContentSizeCategory = true
@@ -271,7 +276,7 @@ extension AllTagsVC: UITableViewDataSource {
         if self.tagsErrorResponse.isEmpty && self.tagsError.isEmpty && !self.filteredTags.isEmpty {
             let vc = TransactionsByTagVC()
             vc.tag = filteredTags[indexPath.row]
-            navigationController?.pushViewController(vc, animated: true)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -279,13 +284,12 @@ extension AllTagsVC: UITableViewDataSource {
         if self.tagsErrorResponse.isEmpty && self.tagsError.isEmpty && !self.filteredTags.isEmpty {
             let tag = filteredTags[indexPath.row]
             
-            let copy = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.clipboard")) { _ in
+            let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
                 UIPasteboard.general.string = tag.id
             }
             
-            return UIContextMenuConfiguration(identifier: nil,
-                                              previewProvider: nil) { _ in
-                UIMenu(title: "", children: [copy])
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(children: [copy])
             }
         } else {
             return nil
