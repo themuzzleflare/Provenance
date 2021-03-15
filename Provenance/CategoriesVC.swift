@@ -73,7 +73,7 @@ class CategoriesVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UI
     
     @objc private func refreshCategories() {
         #if targetEnvironment(macCatalyst)
-        let loadingView = ActivityIndicator()
+        let loadingView = ActivityIndicator(style: .medium)
         navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {

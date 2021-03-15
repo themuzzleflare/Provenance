@@ -40,7 +40,7 @@ class AccountsVC: ViewController, UITableViewDelegate {
     
     @objc private func refreshAccounts() {
         #if targetEnvironment(macCatalyst)
-        let loadingView = ActivityIndicator()
+        let loadingView = ActivityIndicator(style: .medium)
         navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {

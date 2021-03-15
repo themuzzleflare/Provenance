@@ -83,7 +83,7 @@ class TransactionsByCategoryVC: ViewController, UITableViewDelegate, UISearchBar
     
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
-        let loadingView = ActivityIndicator()
+        let loadingView = ActivityIndicator(style: .medium)
         navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {

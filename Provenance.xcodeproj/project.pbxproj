@@ -746,6 +746,7 @@
 				CODE_SIGN_ENTITLEMENTS = Provenance/Provenance.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
@@ -773,6 +774,7 @@
 				CODE_SIGN_ENTITLEMENTS = Provenance/Provenance.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				INFOPLIST_FILE = Provenance/Info.plist;

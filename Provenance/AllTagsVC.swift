@@ -79,7 +79,7 @@ class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISea
     
     @objc private func refreshTags() {
         #if targetEnvironment(macCatalyst)
-        let loadingView = ActivityIndicator()
+        let loadingView = ActivityIndicator(style: .medium)
         navigationItem.setLeftBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {

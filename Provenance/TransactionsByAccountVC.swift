@@ -91,7 +91,7 @@ class TransactionsByAccountVC: ViewController, UITableViewDelegate, UISearchBarD
     
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
-        let loadingView = ActivityIndicator()
+        let loadingView = ActivityIndicator(style: .medium)
         navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(customView: loadingView)], animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
