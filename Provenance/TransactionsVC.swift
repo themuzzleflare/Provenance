@@ -213,7 +213,7 @@ class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDel
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
         let loadingView = ActivityIndicator(style: .medium)
-        navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
+        self.navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.listTransactions()
@@ -223,31 +223,31 @@ class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDel
     }
     
     func setupFetchingView() {
-        view.addSubview(fetchingView)
+        self.view.addSubview(fetchingView)
         
-        fetchingView.translatesAutoresizingMaskIntoConstraints = false
-        fetchingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true        
+        self.fetchingView.translatesAutoresizingMaskIntoConstraints = false
+        self.fetchingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        self.fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        self.fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        self.fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
     
     func setupTableView() {
-        view.addSubview(tableViewController.tableView)
+        self.view.addSubview(tableViewController.tableView)
         
-        tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableViewController.tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        tableViewController.tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        tableViewController.tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        tableViewController.tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        self.tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
+        self.tableViewController.tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        self.tableViewController.tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        self.tableViewController.tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        self.tableViewController.tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         
-        tableViewController.tableView.dataSource = self
-        tableViewController.tableView.delegate = self
+        self.tableViewController.tableView.dataSource = self
+        self.tableViewController.tableView.delegate = self
         
-        tableViewController.tableView.register(R.nib.transactionCell)
-        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTransactionsCell")
-        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
-        tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
+        self.tableViewController.tableView.register(R.nib.transactionCell)
+        self.tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTransactionsCell")
+        self.tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
+        self.tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
     }
     
     private func listTransactions() {

@@ -8,6 +8,7 @@ class NavigationController: UINavigationController, UINavigationControllerDelega
         self.delegate = self
         self.navigationBar.barStyle = .black
         self.navigationBar.barTintColor = R.color.bgColour()
+        self.navigationBar.tintColor = R.color.accentColor()
         self.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: R.font.circularStdBook(size: 17)!]
     }
 }
