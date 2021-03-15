@@ -7,5 +7,7 @@ target 'Provenance' do
 
   # Pods for Provenance
   pod 'MarqueeLabel'
+  pod 'TinyConstraints'
+  pod 'R.swift'
 
 end

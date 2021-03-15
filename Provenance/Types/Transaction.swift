@@ -1,4 +1,6 @@
 import Foundation
+import UIKit
+import Rswift
 
 struct Transaction: Hashable, Codable {
     var data: [TransactionResource]
@@ -6,7 +8,7 @@ struct Transaction: Hashable, Codable {
 }
 
 struct TransactionResource: Hashable, Codable, Identifiable {
-    var type: String
+    private var type: String
     var id: String
     var attributes: Attribute
     var relationships: Relationship
@@ -15,6 +17,47 @@ struct TransactionResource: Hashable, Codable, Identifiable {
 
 struct Attribute: Hashable, Codable {
     private var status: TransactionStatusEnum
+    private enum TransactionStatusEnum: String, CaseIterable, Codable, Hashable, Identifiable {
+        case held = "HELD"
+        case settled = "SETTLED"
+        
+        var id: TransactionStatusEnum {
+            return self
+        }
+    }
+    var isSettled: Bool {
+        switch status {
+            case .settled: return true
+            case .held: return false
+        }
+    }
+    var statusIcon: UIImage {
+        let configuration = UIImage.SymbolConfiguration(pointSize: 21)
+        switch isSettled {
+            case true: return R.image.checkmarkCircle()!.withConfiguration(configuration)
+            case false: return R.image.clock()!.withConfiguration(configuration)
+        }
+    }
+    
+    var statusIconView: UIImageView {
+        let imageView = UIImageView(image: statusIcon)
+        imageView.tintColor = isSettled ? .systemGreen : .systemYellow
+        return imageView
+    }
+    
+    var statusIconColor: UIColor {
+        switch isSettled {
+            case true: return .systemGreen
+            case false: return .systemYellow
+        }
+    }
+    var statusString: String {
+        switch isSettled {
+            case true: return "Settled"
+            case false: return "Held"
+        }
+    }
+    
     var rawText: String?
     var description: String
     var message: String?
@@ -24,45 +67,45 @@ struct Attribute: Hashable, Codable {
     var amount: MoneyObject
     var foreignAmount: MoneyObject?
     
-    var isSettled: Bool {
-        switch status {
-            case .settled: return true
-            case .held: return false
-        }
-    }
-    
     private var settledAt: String?
-    var settledDate: String? {
+    private var settledDateAbsolute: String? {
         if settledAt != nil {
             return formatDate(dateString: settledAt!)
         } else {
             return nil
         }
     }
-    
-    var settledDateRelative: String? {
+    private var settledDateRelative: String? {
         if settledAt != nil {
             return formatDateRelative(dateString: settledAt!)
         } else {
             return nil
         }
     }
+    var settlementDate: String? {
+        if settledAt != nil {
+            switch UserDefaults.standard.string(forKey: "dateStyle") {
+                case "Absolute", .none: return settledDateAbsolute
+                case "Relative": return settledDateRelative
+                default: return settledDateAbsolute
+            }
+        } else {
+            return nil
+        }
+    }
     
     private var createdAt: String
-    var createdDate: String {
+    private var createdDateAbsolute: String {
         return formatDate(dateString: createdAt)
     }
-    
-    var createdDateRelative: String {
+    private var createdDateRelative: String {
         return formatDateRelative(dateString: createdAt)
     }
-    
-    private enum TransactionStatusEnum: String, CaseIterable, Codable, Hashable, Identifiable {
-        case held = "HELD"
-        case settled = "SETTLED"
-        
-        var id: TransactionStatusEnum {
-            return self
+    var creationDate: String {
+        switch UserDefaults.standard.string(forKey: "dateStyle") {
+            case "Absolute", .none: return createdDateAbsolute
+            case "Relative": return createdDateRelative
+            default: return createdDateAbsolute
         }
     }
 }
@@ -83,11 +126,11 @@ struct CashbackObject: Hashable, Codable {
 }
 
 struct MoneyObject: Hashable, Codable {
-    var currencyCode: String
+    private var currencyCode: String
     var value: String
     var valueInBaseUnits: Int64
     
-    var transType: String {
+    var transactionType: String {
         if valueInBaseUnits.signum() == -1 {
             return "Debit"
         } else {
@@ -95,7 +138,7 @@ struct MoneyObject: Hashable, Codable {
         }
     }
     
-    var valueSymbol: String {
+    private var valueSymbol: String {
         if valueInBaseUnits.signum() == -1 {
             return "-$"
         } else {
@@ -103,12 +146,19 @@ struct MoneyObject: Hashable, Codable {
         }
     }
     
-    var valueString: String {
+    private var valueString: String {
         if valueInBaseUnits.signum() == -1 {
             return value.replacingOccurrences(of: "-", with: "")
         } else {
             return value
         }
+    }
+    
+    var valueShort: String {
+        return "\(valueSymbol)\(valueString)"
+    }
+    var valueLong: String {
+        return "\(valueSymbol)\(valueString) \(currencyCode)"
     }
 }
 

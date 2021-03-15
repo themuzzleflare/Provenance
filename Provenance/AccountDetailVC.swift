@@ -1,19 +1,12 @@
 import UIKit
+import Rswift
 
-class AccountDetailVC: UITableViewController {
+class AccountDetailVC: TableViewController {
     var account: AccountResource!
     var transaction: TransactionResource!
     
-    private var createdDate: String {
-        switch UserDefaults.standard.string(forKey: "dateStyle") {
-            case "Absolute", .none: return account.attributes.createdDate
-            case "Relative": return account.attributes.createdDateRelative
-            default: return account.attributes.createdDate
-        }
-    }
-    
     private var attributes: KeyValuePairs<String, String> {
-        return ["Account Balance": "\(account.attributes.balance.valueSymbol)\(account.attributes.balance.valueString) \(account.attributes.balance.currencyCode)", "Latest Transaction": transaction?.attributes.description ?? "", "Account ID": account.id, "Creation Date": createdDate]
+        return ["Account Balance": account.attributes.balance.valueLong, "Latest Transaction": transaction?.attributes.description ?? "", "Account ID": account.id, "Creation Date": account.attributes.creationDate]
     }
     
     private var altAttributes: Array<(key: String, value: String)> {
@@ -27,12 +20,12 @@ class AccountDetailVC: UITableViewController {
         
         let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         
-        clearsSelectionOnViewWillAppear = true
+        self.clearsSelectionOnViewWillAppear = true
         
-        title = "Account Details"
-        navigationItem.title = account.attributes.displayName
-        navigationItem.rightBarButtonItem = closeButton
-        tableView.register(UINib(nibName: "AttributeCell", bundle: nil), forCellReuseIdentifier: "attributeCell")
+        self.title = "Account Details"
+        self.navigationItem.title = account.attributes.displayName
+        self.navigationItem.rightBarButtonItem = closeButton
+        self.tableView.register(R.nib.attributeCell)
     }
     
     @objc private func closeWorkflow() {
@@ -48,7 +41,7 @@ class AccountDetailVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! AttributeCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.attributeCell, for: indexPath)!
         
         let attribute = altAttributes[indexPath.row]
         

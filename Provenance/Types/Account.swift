@@ -6,7 +6,7 @@ struct Account: Hashable, Codable {
 }
 
 struct AccountResource: Hashable, Codable, Identifiable {
-    var type: String
+    private var type: String
     var id: String
     var attributes: AccountAttribute
     var relationships: AccountRelationship
@@ -15,24 +15,31 @@ struct AccountResource: Hashable, Codable, Identifiable {
 
 struct AccountAttribute: Hashable, Codable {
     var displayName: String
+    
     var accountType: AccountTypeEnum
-    var balance: MoneyObject
-    
-    private var createdAt: String
-    var createdDate: String {
-        return formatDate(dateString: createdAt)
-    }
-    
-    var createdDateRelative: String {
-        return formatDateRelative(dateString: createdAt)
-    }
-    
     enum AccountTypeEnum: String, CaseIterable, Codable, Hashable, Identifiable {
         case saver = "SAVER"
         case transactional = "TRANSACTIONAL"
         
         var id: AccountTypeEnum {
             return self
+        }
+    }
+    
+    var balance: MoneyObject
+    
+    private var createdAt: String
+    private var creationDateAbsolute: String {
+        return formatDate(dateString: createdAt)
+    }
+    private var creationDateRelative: String {
+        return formatDateRelative(dateString: createdAt)
+    }
+    var creationDate: String {
+        switch UserDefaults.standard.string(forKey: "dateStyle") {
+            case "Absolute", .none: return creationDateAbsolute
+            case "Relative": return creationDateRelative
+            default: return creationDateAbsolute
         }
     }
 }

@@ -1,50 +1,11 @@
 import UIKit
+import Rswift
 
-class TransactionDetailVC: UITableViewController {
+class TransactionDetailVC: TableViewController {
     var transaction: TransactionResource!
     var categories: [CategoryResource]!
     var accounts: [AccountResource]!
     
-    private var createdDate: String {
-        switch UserDefaults.standard.string(forKey: "dateStyle") {
-            case "Absolute", .none: return transaction.attributes.createdDate
-            case "Relative": return transaction.attributes.createdDateRelative
-            default: return transaction.attributes.createdDate
-        }
-    }
-    
-    private var settledDate: String {
-        switch UserDefaults.standard.string(forKey: "dateStyle") {
-            case "Absolute", .none: return transaction.attributes.settledDate ?? ""
-            case "Relative": return transaction.attributes.settledDateRelative ?? ""
-            default: return transaction.attributes.settledDate ?? ""
-        }
-    }
-    
-    private var statusString: String {
-        switch transaction.attributes.isSettled {
-            case true: return "Settled"
-            case false: return "Held"
-        }
-    }
-    
-    private var statusIcon: UIImageView {
-        let configuration = UIImage.SymbolConfiguration(pointSize: 22)
-        
-        let settledIconImage = UIImage(systemName: "checkmark.circle", withConfiguration: configuration)
-        let heldIconImage = UIImage(systemName: "clock", withConfiguration: configuration)
-        
-        let settledIcon = UIImageView(image: settledIconImage)
-        let heldIcon = UIImageView(image: heldIconImage)
-        
-        settledIcon.tintColor = .systemGreen
-        heldIcon.tintColor = .systemYellow
-        
-        switch transaction.attributes.isSettled {
-            case true: return settledIcon
-            case false: return heldIcon
-        }
-    }
     
     private var categoryFilter: [CategoryResource]? {
         categories?.filter { category in
@@ -67,7 +28,7 @@ class TransactionDetailVC: UITableViewController {
     private var holdTransValue: String {
         if transaction.attributes.holdInfo != nil {
             if transaction.attributes.holdInfo!.amount.value != transaction.attributes.amount.value {
-                return "\(transaction.attributes.holdInfo!.amount.valueSymbol)\(transaction.attributes.holdInfo!.amount.valueString) \(transaction.attributes.holdInfo!.amount.currencyCode)"
+                return transaction.attributes.holdInfo!.amount.valueLong
             } else {
                 return ""
             }
@@ -79,7 +40,7 @@ class TransactionDetailVC: UITableViewController {
     private var holdForeignTransValue: String {
         if transaction.attributes.holdInfo?.foreignAmount != nil {
             if transaction.attributes.holdInfo!.foreignAmount!.value != transaction.attributes.foreignAmount!.value {
-                return "\(transaction.attributes.holdInfo!.foreignAmount!.valueSymbol)\(transaction.attributes.holdInfo!.foreignAmount!.valueString) \(transaction.attributes.holdInfo!.foreignAmount!.currencyCode)"
+                return transaction.attributes.holdInfo!.foreignAmount!.valueLong
             } else {
                 return ""
             }
@@ -90,14 +51,14 @@ class TransactionDetailVC: UITableViewController {
     
     private var foreignTransValue: String {
         if transaction.attributes.foreignAmount != nil {
-            return "\(transaction.attributes.foreignAmount!.valueSymbol)\(transaction.attributes.foreignAmount!.valueString) \(transaction.attributes.foreignAmount!.currencyCode)"
+            return transaction.attributes.foreignAmount!.valueLong
         } else {
             return ""
         }
     }
     
     private var attributes: KeyValuePairs<String, String> {
-        return ["Status": statusString, "Account": accountFilter?.first?.attributes.displayName ?? ""]
+        return ["Status": transaction.attributes.statusString, "Account": accountFilter?.first?.attributes.displayName ?? ""]
     }
     
     private var attributesTwo: KeyValuePairs<String, String> {
@@ -105,11 +66,11 @@ class TransactionDetailVC: UITableViewController {
     }
     
     private var attributesThree: KeyValuePairs<String, String> {
-        return ["Hold \(transaction.attributes.holdInfo?.amount.transType ?? "")": holdTransValue, "Hold Foreign \(transaction.attributes.holdInfo?.foreignAmount?.transType ?? "")": holdForeignTransValue, "Foreign \(transaction.attributes.foreignAmount?.transType ?? "")": foreignTransValue, transaction?.attributes.amount.transType ?? "Amount": "\(transaction?.attributes.amount.valueSymbol ?? "")\(transaction?.attributes.amount.valueString ?? "") \(transaction?.attributes.amount.currencyCode ?? "")"]
+        return ["Hold \(transaction.attributes.holdInfo?.amount.transactionType ?? "")": holdTransValue, "Hold Foreign \(transaction.attributes.holdInfo?.foreignAmount?.transactionType ?? "")": holdForeignTransValue, "Foreign \(transaction.attributes.foreignAmount?.transactionType ?? "")": foreignTransValue, transaction?.attributes.amount.transactionType ?? "Amount": transaction.attributes.amount.valueLong]
     }
     
     private var attributesFour: KeyValuePairs<String, String> {
-        return ["Created Date": createdDate, "Settled Date": settledDate]
+        return ["Created Date": transaction.attributes.creationDate, "Settled Date": transaction.attributes.settlementDate ?? ""]
     }
     
     private var attributesFive: KeyValuePairs<String, String> {
@@ -160,17 +121,15 @@ class TransactionDetailVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let statusButtonIcon = UIBarButtonItem(customView: statusIcon)
+        let statusButtonIcon = UIBarButtonItem(customView: transaction.attributes.statusIconView)
         
-        clearsSelectionOnViewWillAppear = true
+        self.clearsSelectionOnViewWillAppear = true
         
-        title = "Transaction Details"
-        navigationItem.title = transaction?.attributes.description ?? ""
-        navigationItem.setRightBarButton(statusButtonIcon, animated: true)
-        
-        navigationItem.largeTitleDisplayMode = .never
-        
-        tableView.register(UINib(nibName: "AttributeCell", bundle: nil), forCellReuseIdentifier: "attributeCell")
+        self.title = "Transaction Details"
+        self.navigationItem.title = transaction?.attributes.description ?? ""
+        self.navigationItem.setRightBarButton(statusButtonIcon, animated: true)
+        self.navigationItem.largeTitleDisplayMode = .never
+        self.tableView.register(R.nib.attributeCell)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -200,7 +159,7 @@ class TransactionDetailVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! AttributeCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.attributeCell, for: indexPath)!
         
         let section = indexPath.section
         
@@ -232,8 +191,8 @@ class TransactionDetailVC: UITableViewController {
         
         var cellRightDetailFont: UIFont {
             switch attribute.key {
-                case "Raw Text": return UIFont(name: "SFMono-Regular", size: UIFont.labelFontSize)!
-                default: return UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)!
+                case "Raw Text": return R.font.sfMonoRegular(size: UIFont.labelFontSize)!
+                default: return R.font.circularStdBook(size: UIFont.labelFontSize)!
             }
         }
         

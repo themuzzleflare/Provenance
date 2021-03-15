@@ -1,16 +1,17 @@
 import UIKit
+import Rswift
 
-class TagsVC: UITableViewController {
+class TagsVC: TableViewController {
     var transaction: TransactionResource!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        clearsSelectionOnViewWillAppear = true
+        self.clearsSelectionOnViewWillAppear = true
         
-        title = "Tags"
-        navigationItem.title = "Tags"
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")
+        self.title = "Tags"
+        self.navigationItem.title = "Tags"
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -27,7 +28,7 @@ class TagsVC: UITableViewController {
         let tag = transaction.relationships.tags.data[indexPath.row]
         
         cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
+        cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         cell.textLabel?.text = tag.id
         
         return cell

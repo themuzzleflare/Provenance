@@ -34,11 +34,11 @@ extension URL {
 
 func formatDate(dateString: String) -> String {
     if let date = ISO8601DateFormatter().date(from: dateString) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy hh:mm:ss a"
-        dateFormatter.amSymbol = "AM"
-        dateFormatter.pmSymbol = "PM"
-        return dateFormatter.string(from: date)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy hh:mm:ss a"
+        formatter.amSymbol = "AM"
+        formatter.pmSymbol = "PM"
+        return formatter.string(from: date)
     } else {
         return dateString
     }
@@ -46,25 +46,23 @@ func formatDate(dateString: String) -> String {
 
 func formatDateRelative(dateString: String) -> String {
     if let date = ISO8601DateFormatter().date(from: dateString) {
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .short
-        formatter.allowedUnits = [.year, .month, .weekOfMonth, .day, .hour, .minute]
-        formatter.zeroFormattingBehavior = .dropAll
-        return "\(formatter.string(from: date.timeIntervalSinceNow)!.replacingOccurrences(of: "-", with: "")) ago"
+        let formatter = RelativeDateTimeFormatter()
+        formatter.dateTimeStyle = .numeric
+        return formatter.string(for: date)!
     } else {
         return dateString
     }
 }
 
 #if os(iOS) || targetEnvironment(macCatalyst)
-let up1: UIImage = UIImage(named: "UpLogoSequence/1")!
-let up2: UIImage = UIImage(named: "UpLogoSequence/2")!
-let up3: UIImage = UIImage(named: "UpLogoSequence/3")!
-let up4: UIImage = UIImage(named: "UpLogoSequence/4")!
-let up5: UIImage = UIImage(named: "UpLogoSequence/5")!
-let up6: UIImage = UIImage(named: "UpLogoSequence/6")!
-let up7: UIImage = UIImage(named: "UpLogoSequence/7")!
-let up8: UIImage = UIImage(named: "UpLogoSequence/8")!
+let up1 = R.image.upLogoSequence.first()!
+let up2 = R.image.upLogoSequence.second()!
+let up3 = R.image.upLogoSequence.third()!
+let up4 = R.image.upLogoSequence.fourth()!
+let up5 = R.image.upLogoSequence.fifth()!
+let up6 = R.image.upLogoSequence.sixth()!
+let up7 = R.image.upLogoSequence.seventh()!
+let up8 = R.image.upLogoSequence.eigth()!
 let upImages: [UIImage] = [up1, up2, up3, up4, up5, up6, up7, up8]
 let upAnimation: UIImage =  UIImage.animatedImage(with: upImages, duration: 0.65)!
 #endif

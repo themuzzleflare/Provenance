@@ -1,15 +1,18 @@
 import UIKit
+import Rswift
 
-class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+class TransactionsByTagVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate {
     var tag: TagResource!
     
-    let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
-    let tableViewController: UITableViewController = UITableViewController(style: .grouped)
+    private var prevFilteredTransactions: [TransactionResource] = []
     
-    let circularStdBook = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)!
-    let circularStdBold = UIFont(name: "CircularStd-Bold", size: UIFont.labelFontSize)!
+    let fetchingView = ActivityIndicator(style: .medium)
+    let tableViewController = TableViewController(style: .insetGrouped)
     
-    lazy var refreshControl: UIRefreshControl = UIRefreshControl()
+    let circularStdBook = R.font.circularStdBook(size: UIFont.labelFontSize)
+    let circularStdBold = R.font.circularStdBold(size: UIFont.labelFontSize)
+    
+    let refreshControl = RefreshControl(frame: .zero)
     lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
     
     lazy var transactions: [TransactionResource] = []
@@ -19,6 +22,21 @@ class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDel
     private var filteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
+        }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if self.filteredTransactions != self.prevFilteredTransactions {
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        }
+        self.prevFilteredTransactions = self.filteredTransactions
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        if searchBar.text != "" {
+            searchBar.text = ""
+            self.prevFilteredTransactions = self.filteredTransactions
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
     }
     
@@ -34,16 +52,14 @@ class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDel
         super.viewDidLoad()
         super.addChild(tableViewController)
         
-        view.backgroundColor = .systemBackground
-        
         searchController.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.placeholder = "Search"
         searchController.hidesNavigationBarDuringPresentation = true
         searchController.searchBar.delegate = self
-        searchController.searchResultsUpdater = self
-        definesPresentationContext = true
+        
+        self.definesPresentationContext = true
         
         title = "Transactions by Tag"
         
@@ -91,10 +107,6 @@ class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDel
         fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        
-        fetchingView.hidesWhenStopped = true
-        
-        fetchingView.startAnimating()
     }
     
     func setupTableView() {
@@ -109,7 +121,7 @@ class TransactionsByTagVC: UIViewController, UITableViewDelegate, UISearchBarDel
         tableViewController.tableView.dataSource = self
         tableViewController.tableView.delegate = self
         
-        tableViewController.tableView.register(UINib(nibName: "TransactionCell", bundle: nil), forCellReuseIdentifier: "transactionCell")
+        tableViewController.tableView.register(R.nib.transactionCell)
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTransactionsCell")
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
@@ -215,7 +227,7 @@ extension TransactionsByTagVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let transactionCell = tableView.dequeueReusableCell(withIdentifier: "transactionCell", for: indexPath) as! TransactionCell
+        let transactionCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.transactionCell, for: indexPath)!
         
         let noTransactionsCell = tableView.dequeueReusableCell(withIdentifier: "noTransactionsCell", for: indexPath)
         
@@ -226,42 +238,35 @@ extension TransactionsByTagVC: UITableViewDataSource {
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
             tableView.separatorStyle = .none
             noTransactionsCell.selectionStyle = .none
-            noTransactionsCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+            noTransactionsCell.textLabel?.font = circularStdBook
+            noTransactionsCell.textLabel?.textColor = .white
             noTransactionsCell.textLabel?.textAlignment = .center
             noTransactionsCell.textLabel?.text = "No Transactions"
-            noTransactionsCell.backgroundColor = tableView.backgroundColor
+            noTransactionsCell.backgroundColor = .clear
             return noTransactionsCell
         } else {
             tableView.separatorStyle = .singleLine
             if !self.transactionsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
-                errorStringCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+                errorStringCell.textLabel?.font = circularStdBook
                 errorStringCell.textLabel?.text = transactionsError
                 return errorStringCell
             } else if !self.transactionsErrorResponse.isEmpty {
                 let error = transactionsErrorResponse[indexPath.row]
                 errorObjectCell.selectionStyle = .none
                 errorObjectCell.textLabel?.textColor = .red
-                errorObjectCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBold)
+                errorObjectCell.textLabel?.font = circularStdBold
                 errorObjectCell.textLabel?.text = error.title
                 errorObjectCell.detailTextLabel?.numberOfLines = 0
-                errorObjectCell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.smallSystemFontSize)
+                errorObjectCell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
                 errorObjectCell.detailTextLabel?.text = error.detail
                 return errorObjectCell
             } else {
                 let transaction = filteredTransactions[indexPath.row]
-                var createdDate: String {
-                    switch UserDefaults.standard.string(forKey: "dateStyle") {
-                        case "Absolute", .none: return transaction.attributes.createdDate
-                        case "Relative": return transaction.attributes.createdDateRelative
-                        default: return transaction.attributes.createdDate
-                    }
-                }
-                
                 transactionCell.leftLabel.text = transaction.attributes.description
-                transactionCell.leftSubtitle.text = createdDate
-                transactionCell.rightLabel.text = "\(transaction.attributes.amount.valueSymbol)\(transaction.attributes.amount.valueString)"
+                transactionCell.leftSubtitle.text = transaction.attributes.creationDate
+                transactionCell.rightLabel.text = transaction.attributes.amount.valueShort
                 return transactionCell
             }
         }

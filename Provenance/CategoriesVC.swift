@@ -1,61 +1,70 @@
 import UIKit
+import Rswift
 
-class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
-    let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
-    let tableViewController: UITableViewController = UITableViewController(style: .grouped)
+class CategoriesVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate {
+    let fetchingView = ActivityIndicator(style: .medium)
+    let tableViewController = TableViewController(style: .insetGrouped)
     
-    let circularStdBook = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)!
-    let circularStdBold = UIFont(name: "CircularStd-Bold", size: UIFont.labelFontSize)!
+    let circularStdBook = R.font.circularStdBook(size: UIFont.labelFontSize)
+    let circularStdBold = R.font.circularStdBold(size: UIFont.labelFontSize)
     
-    lazy var refreshControl: UIRefreshControl = UIRefreshControl()
+    let refreshControl = RefreshControl(frame: .zero)
     lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
     
     lazy var categories: [CategoryResource] = []
     lazy var categoriesErrorResponse: [ErrorObject] = []
     lazy var categoriesError: String = ""
     
+    private var prevFilteredCategories: [CategoryResource] = []
     private var filteredCategories: [CategoryResource] {
         categories.filter { category in
             searchController.searchBar.text!.isEmpty || category.attributes.name.localizedStandardContains(searchController.searchBar.text!)
         }
     }
     
-    func updateSearchResults(for searchController: UISearchController) {
-        tableViewController.tableView.reloadData()
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if self.filteredCategories != self.prevFilteredCategories {
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        }
+        self.prevFilteredCategories = self.filteredCategories
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        if searchBar.text != "" {
+            searchBar.text = ""
+            self.prevFilteredCategories = self.filteredCategories
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         super.addChild(tableViewController)
+                
+        self.searchController.delegate = self
+        self.searchController.obscuresBackgroundDuringPresentation = false
+        self.searchController.searchBar.searchBarStyle = .minimal
+        self.searchController.searchBar.placeholder = "Search"
+        self.searchController.hidesNavigationBarDuringPresentation = true
+        self.searchController.searchBar.delegate = self
         
-        view.backgroundColor = .systemBackground
+        self.definesPresentationContext = true
         
-        searchController.delegate = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.placeholder = "Search"
-        searchController.hidesNavigationBarDuringPresentation = true
-        searchController.searchBar.delegate = self
-        searchController.searchResultsUpdater = self
+        self.title = "Categories"
+        self.navigationItem.title = "Loading"
+        self.navigationItem.searchController = searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
         
-        definesPresentationContext = true
-        
-        title = "Categories"
-        navigationItem.title = "Loading"
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-        
-        navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         
         #if targetEnvironment(macCatalyst)
-        navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshCategories)), animated: true)
+        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshCategories)), animated: true)
         #endif
         
-        tableViewController.clearsSelectionOnViewWillAppear = true
-        tableViewController.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(refreshCategories), for: .valueChanged)
-        
-        setupFetchingView()
+        self.tableViewController.clearsSelectionOnViewWillAppear = true
+        self.tableViewController.refreshControl = refreshControl
+        self.refreshControl.addTarget(self, action: #selector(refreshCategories), for: .valueChanged)
+        self.setupFetchingView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,8 +73,7 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
     
     @objc private func refreshCategories() {
         #if targetEnvironment(macCatalyst)
-        let loadingView = UIActivityIndicatorView(style: .medium)
-        loadingView.startAnimating()
+        let loadingView = ActivityIndicator()
         navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -81,10 +89,6 @@ class CategoriesVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, 
         fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        
-        fetchingView.hidesWhenStopped = true
-        
-        fetchingView.startAnimating()
     }
     
     func setupTableView() {
@@ -214,33 +218,34 @@ extension CategoriesVC: UITableViewDataSource {
         if self.filteredCategories.isEmpty && self.categoriesError.isEmpty && self.categoriesErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
             tableView.separatorStyle = .none
             noCategoriesCell.selectionStyle = .none
-            noCategoriesCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+            noCategoriesCell.textLabel?.font = circularStdBook
+            noCategoriesCell.textLabel?.textColor = .white
             noCategoriesCell.textLabel?.textAlignment = .center
             noCategoriesCell.textLabel?.text = "No Categories"
-            noCategoriesCell.backgroundColor = tableView.backgroundColor
+            noCategoriesCell.backgroundColor = .clear
             return noCategoriesCell
         } else {
             tableView.separatorStyle = .singleLine
             if !self.categoriesError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
-                errorStringCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+                errorStringCell.textLabel?.font = circularStdBook
                 errorStringCell.textLabel?.text = categoriesError
                 return errorStringCell
             } else if !self.categoriesErrorResponse.isEmpty {
                 let error = categoriesErrorResponse[indexPath.row]
                 errorObjectCell.selectionStyle = .none
                 errorObjectCell.textLabel?.textColor = .red
-                errorObjectCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBold)
+                errorObjectCell.textLabel?.font = circularStdBold
                 errorObjectCell.textLabel?.text = error.title
                 errorObjectCell.detailTextLabel?.numberOfLines = 0
-                errorObjectCell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.smallSystemFontSize)
+                errorObjectCell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
                 errorObjectCell.detailTextLabel?.text = error.detail
                 return errorObjectCell
             } else {
                 let category = filteredCategories[indexPath.row]
                 categoryCell.accessoryType = .disclosureIndicator
-                categoryCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+                categoryCell.textLabel?.font = circularStdBook
                 categoryCell.textLabel?.text = category.attributes.name
                 return categoryCell
             }

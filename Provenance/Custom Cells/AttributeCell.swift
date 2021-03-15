@@ -5,7 +5,7 @@ class AttributeCell: UITableViewCell {
     @IBOutlet var rightDetail: UILabel!
     
     override func awakeFromNib() {
-        super.awakeFromNib()
+        super.awakeFromNib()        
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

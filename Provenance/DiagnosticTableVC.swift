@@ -1,6 +1,7 @@
 import UIKit
+import Rswift
 
-class DiagnosticTableVC: UITableViewController {
+class DiagnosticTableVC: TableViewController {
     private var attributes: KeyValuePairs<String, String> {
         return ["Version": appVersion, "Build": appBuild]
     }
@@ -10,14 +11,14 @@ class DiagnosticTableVC: UITableViewController {
         
         let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         
-        title = "Diagnostics"
-        navigationItem.title = "Diagnostics"
-        navigationItem.rightBarButtonItem = closeButton
-        tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "diagnosticCell")
+        self.title = "Diagnostics"
+        self.navigationItem.title = "Diagnostics"
+        self.navigationItem.rightBarButtonItem = closeButton
+        self.tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "diagnosticCell")
     }
     
     @objc private func closeWorkflow() {
-        dismiss(animated: true)
+        self.dismiss(animated: true)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -34,12 +35,12 @@ class DiagnosticTableVC: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "diagnosticCell", for: indexPath) as! RightDetailTableViewCell
         
         cell.selectionStyle = .none
-        cell.textLabel?.textColor = .secondaryLabel
-        cell.textLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
+        cell.textLabel?.textColor = .darkGray
+        cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         cell.textLabel?.text = attribute.key
-        cell.detailTextLabel?.textColor = .label
+        cell.detailTextLabel?.textColor = .black
         cell.detailTextLabel?.textAlignment = .right
-        cell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
+        cell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         cell.detailTextLabel?.text = attribute.value
         
         return cell

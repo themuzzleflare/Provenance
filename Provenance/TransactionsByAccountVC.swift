@@ -1,28 +1,41 @@
 import UIKit
+import Rswift
 
-class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+class TransactionsByAccountVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate {
     var account: AccountResource!
     
-    func updateSearchResults(for searchController: UISearchController) {
-        tableViewController.tableView.reloadData()
-    }
+    let fetchingView = ActivityIndicator(style: .medium)
+    let tableViewController = TableViewController(style: .insetGrouped)
     
-    let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
-    let tableViewController: UITableViewController = UITableViewController(style: .grouped)
+    let circularStdBook = R.font.circularStdBook(size: UIFont.labelFontSize)
+    let circularStdBold = R.font.circularStdBook(size: UIFont.labelFontSize)
     
-    let circularStdBook = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)!
-    let circularStdBold = UIFont(name: "CircularStd-Bold", size: UIFont.labelFontSize)!
-    
-    lazy var refreshControl: UIRefreshControl = UIRefreshControl()
+    let refreshControl = RefreshControl(frame: .zero)
     lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
     
     lazy var transactions: [TransactionResource] = []
     lazy var transactionsErrorResponse: [ErrorObject] = []
     lazy var transactionsError: String = ""
     
+    private var prevFilteredTransactions: [TransactionResource] = []
     private var filteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
+        }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if self.filteredTransactions != self.prevFilteredTransactions {
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        }
+        self.prevFilteredTransactions = self.filteredTransactions
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        if searchBar.text != "" {
+            searchBar.text = ""
+            self.prevFilteredTransactions = self.filteredTransactions
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
     }
     
@@ -31,30 +44,27 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
     override func viewDidLoad() {
         super.viewDidLoad()
         super.addChild(tableViewController)
+                
+        self.searchController.delegate = self
+        self.searchController.obscuresBackgroundDuringPresentation = false
+        self.searchController.searchBar.searchBarStyle = .minimal
+        self.searchController.searchBar.placeholder = "Search"
+        self.searchController.hidesNavigationBarDuringPresentation = true
+        self.searchController.searchBar.delegate = self
         
-        view.backgroundColor = .systemBackground
+        self.definesPresentationContext = true
         
-        searchController.delegate = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.placeholder = "Search"
-        searchController.hidesNavigationBarDuringPresentation = true
-        searchController.searchBar.delegate = self
-        searchController.searchResultsUpdater = self
+        let infoButton = UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo))
         
-        definesPresentationContext = true
+        self.title = "Transactions by Account"
+        self.navigationItem.title = "Loading"
+        self.navigationItem.searchController = searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
         
-        let infoButton = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(openAccountInfo))
-        
-        title = "Transactions by Account"
-        navigationItem.title = "Loading"
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-        
-        navigationItem.largeTitleDisplayMode = .always
+        self.navigationItem.largeTitleDisplayMode = .always
         
         #if targetEnvironment(macCatalyst)
-        navigationItem.setRightBarButtonItems([infoButton, UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions))], animated: true)
+        self.navigationItem.setRightBarButtonItems([infoButton, UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions))], animated: true)
         #else
         navigationItem.rightBarButtonItem = infoButton
         #endif
@@ -67,10 +77,10 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
     }
     
     @objc private func openAccountInfo() {
-        let vc = AccountDetailVC(style: .grouped)
+        let vc = AccountDetailVC(style: .insetGrouped)
         vc.account = account
         vc.transaction = transactions.first
-        present(UINavigationController(rootViewController: vc), animated: true)
+        present(NavigationController(rootViewController: vc), animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,9 +91,8 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
     
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
-        let loadingView = UIActivityIndicatorView(style: .medium)
-        loadingView.startAnimating()
-        navigationItem.setRightBarButtonItems([UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(customView: loadingView)], animated: true)
+        let loadingView = ActivityIndicator()
+        navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(customView: loadingView)], animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.listTransactions()
@@ -99,10 +108,6 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
         fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        
-        fetchingView.hidesWhenStopped = true
-        
-        fetchingView.startAnimating()
     }
     
     func setupTableView() {
@@ -117,7 +122,7 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
         tableViewController.tableView.dataSource = self
         tableViewController.tableView.delegate = self
         
-        tableViewController.tableView.register(UINib(nibName: "TransactionCell", bundle: nil), forCellReuseIdentifier: "transactionCell")
+        tableViewController.tableView.register(R.nib.transactionCell)
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTransactionsCell")
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
@@ -141,7 +146,7 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
                         self.transactionsErrorResponse = []
                         self.navigationItem.title = self.account.attributes.displayName
                         #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
+                        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
                         #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
@@ -157,7 +162,7 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
                         self.transactions = []
                         self.navigationItem.title = "Errors"
                         #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
+                        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
                         #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
@@ -173,7 +178,7 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
                         self.transactions = []
                         self.navigationItem.title = "Error"
                         #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
+                        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
                         #endif
                         self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
@@ -190,7 +195,7 @@ class TransactionsByAccountVC: UIViewController, UITableViewDelegate, UISearchBa
                     self.transactions = []
                     self.navigationItem.title = "Error"
                     #if targetEnvironment(macCatalyst)
-                    self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
+                    self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
                     #endif
                     self.fetchingView.stopAnimating()
                     self.fetchingView.removeFromSuperview()
@@ -223,7 +228,7 @@ extension TransactionsByAccountVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let transactionCell = tableView.dequeueReusableCell(withIdentifier: "transactionCell", for: indexPath) as! TransactionCell
+        let transactionCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.transactionCell, for: indexPath)!
         
         let noTransactionsCell = tableView.dequeueReusableCell(withIdentifier: "noTransactionsCell", for: indexPath)
         
@@ -234,42 +239,36 @@ extension TransactionsByAccountVC: UITableViewDataSource {
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
             tableView.separatorStyle = .none
             noTransactionsCell.selectionStyle = .none
-            noTransactionsCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+            noTransactionsCell.textLabel?.font = circularStdBook
+            noTransactionsCell.textLabel?.textColor = .white
             noTransactionsCell.textLabel?.textAlignment = .center
             noTransactionsCell.textLabel?.text = "No Transactions"
-            noTransactionsCell.backgroundColor = tableView.backgroundColor
+            noTransactionsCell.backgroundColor = .clear
             return noTransactionsCell
         } else {
             tableView.separatorStyle = .singleLine
             if !self.transactionsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
-                errorStringCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+                errorStringCell.textLabel?.font = circularStdBook
                 errorStringCell.textLabel?.text = transactionsError
                 return errorStringCell
             } else if !self.transactionsErrorResponse.isEmpty {
                 let error = transactionsErrorResponse[indexPath.row]
                 errorObjectCell.selectionStyle = .none
                 errorObjectCell.textLabel?.textColor = .red
-                errorObjectCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBold)
+                errorObjectCell.textLabel?.font = circularStdBold
                 errorObjectCell.textLabel?.text = error.title
                 errorObjectCell.detailTextLabel?.numberOfLines = 0
-                errorObjectCell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.smallSystemFontSize)
+                errorObjectCell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
                 errorObjectCell.detailTextLabel?.text = error.detail
                 return errorObjectCell
             } else {
                 let transaction = filteredTransactions[indexPath.row]
-                var createdDate: String {
-                    switch UserDefaults.standard.string(forKey: "dateStyle") {
-                        case "Absolute", .none: return transaction.attributes.createdDate
-                        case "Relative": return transaction.attributes.createdDateRelative
-                        default: return transaction.attributes.createdDate
-                    }
-                }
                 
                 transactionCell.leftLabel.text = transaction.attributes.description
-                transactionCell.leftSubtitle.text = createdDate
-                transactionCell.rightLabel.text = "\(transaction.attributes.amount.valueSymbol)\(transaction.attributes.amount.valueString)"
+                transactionCell.leftSubtitle.text = transaction.attributes.creationDate
+                transactionCell.rightLabel.text = transaction.attributes.amount.valueShort
                 return transactionCell
             }
         }

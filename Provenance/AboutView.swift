@@ -12,13 +12,13 @@ struct AboutView: View {
                         .font(.custom("CircularStd-Bold", size: 34))
                     Text("Provenance is a lightweight application that interacts with the Up Banking Developer API to display information about your bank accounts, transactions, categories, tags, and more.")
                         .font(.custom("CircularStd-Book", size: 17))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Color(UIColor.darkGray))
                 }
                 .padding(.vertical)
                 HStack(alignment: .center, spacing: 0) {
                     Text("Version")
                         .font(.custom("CircularStd-Book", size: 17))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Color(UIColor.darkGray))
                     Spacer()
                     Text(appVersion)
                         .font(.custom("CircularStd-Book", size: 17))
@@ -36,7 +36,7 @@ struct AboutView: View {
                 HStack(alignment: .center, spacing: 0) {
                     Text("Build")
                         .font(.custom("CircularStd-Book", size: 17))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Color(UIColor.darkGray))
                     Spacer()
                     Text(appBuild)
                         .font(.custom("CircularStd-Book", size: 17))
@@ -64,6 +64,6 @@ struct AboutView: View {
                 }
             }
         }
-        .listStyle(GroupedListStyle())
+        .listStyle(InsetGroupedListStyle())
     }
 }

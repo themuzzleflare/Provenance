@@ -1,4 +1,5 @@
 import UIKit
+import Rswift
 
 class TabBarController: UITabBarController, UITabBarControllerDelegate {
     override func viewDidLoad() {
@@ -9,28 +10,31 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let tabOne = UINavigationController(rootViewController: TransactionsVC())
-        let tabOneBarItem = UITabBarItem(title: "Transactions", image: UIImage(systemName: "dollarsign.circle"), selectedImage: UIImage(systemName: "dollarsign.circle.fill"))
+        self.tabBar.barStyle = .black
+        self.tabBar.barTintColor = R.color.bgColour()
+        
+        let tabOne = NavigationController(rootViewController: TransactionsVC())
+        let tabOneBarItem = UITabBarItem(title: "Transactions", image: R.image.dollarsignCircle(), selectedImage: R.image.dollarsignCircleFill())
         
         tabOne.tabBarItem = tabOneBarItem
         
-        let tabTwo = UINavigationController(rootViewController: AccountsVC())
-        let tabTwoBarItem = UITabBarItem(title: "Accounts", image: UIImage(systemName: "wallet.pass"), selectedImage: UIImage(systemName: "wallet.pass.fill"))
+        let tabTwo = NavigationController(rootViewController: AccountsVC())
+        let tabTwoBarItem = UITabBarItem(title: "Accounts", image: R.image.walletPass(), selectedImage: R.image.walletPassFill())
         
         tabTwo.tabBarItem = tabTwoBarItem
         
-        let tabThree = UINavigationController(rootViewController: AllTagsVC())
-        let tabThreeBarItem = UITabBarItem(title: "Tags", image: UIImage(systemName: "tag"), selectedImage: UIImage(systemName: "tag.fill"))
+        let tabThree = NavigationController(rootViewController: AllTagsVC())
+        let tabThreeBarItem = UITabBarItem(title: "Tags", image: R.image.tag(), selectedImage: R.image.tagFill())
         
         tabThree.tabBarItem = tabThreeBarItem
         
-        let tabFour = UINavigationController(rootViewController: CategoriesVC())
-        let tabFourBarItem = UITabBarItem(title: "Categories", image: UIImage(systemName: "arrow.up.arrow.down.circle"), selectedImage: UIImage(systemName: "arrow.up.arrow.down.circle.fill"))
+        let tabFour = NavigationController(rootViewController: CategoriesVC())
+        let tabFourBarItem = UITabBarItem(title: "Categories", image: R.image.arrowUpArrowDownCircle(), selectedImage: R.image.arrowUpArrowDownCircleFill())
         
         tabFour.tabBarItem = tabFourBarItem
         
-        let tabFive = UINavigationController(rootViewController: AboutVC())
-        let tabFiveBarItem = UITabBarItem(title: "About", image: UIImage(systemName: "info.circle"), selectedImage: UIImage(systemName: "info.circle.fill"))
+        let tabFive = NavigationController(rootViewController: R.storyboard.aboutViewController.aboutVC()!)
+        let tabFiveBarItem = UITabBarItem(title: "About", image: R.image.infoCircle(), selectedImage: R.image.infoCircleFill())
         
         tabFive.tabBarItem = tabFiveBarItem
         

@@ -1,76 +1,85 @@
 import UIKit
+import Rswift
 
-class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
-    let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
-    let tableViewController: UITableViewController = UITableViewController(style: .grouped)
+class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate {
+    let fetchingView = ActivityIndicator(style: .medium)
+    let tableViewController = TableViewController(style: .insetGrouped)
     
-    let circularStdBook = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)!
-    let circularStdBold = UIFont(name: "CircularStd-Bold", size: UIFont.labelFontSize)!
+    let circularStdBook = R.font.circularStdBook(size: UIFont.labelFontSize)
+    let circularStdBold = R.font.circularStdBold(size: UIFont.labelFontSize)
     
-    lazy var refreshControl: UIRefreshControl = UIRefreshControl()
+    let refreshControl = RefreshControl(frame: .zero)
     lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
     
     lazy var tags: [TagResource] = []
     lazy var tagsErrorResponse: [ErrorObject] = []
     lazy var tagsError: String = ""
     
+    private var prevFilteredTags: [TagResource] = []
     private var filteredTags: [TagResource] {
         tags.filter { tag in
             searchController.searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchController.searchBar.text!)
         }
     }
     
-    func updateSearchResults(for searchController: UISearchController) {
-        tableViewController.tableView.reloadData()
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if self.filteredTags != self.prevFilteredTags {
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        }
+        self.prevFilteredTags = self.filteredTags
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        if searchBar.text != "" {
+            searchBar.text = ""
+            self.prevFilteredTags = self.filteredTags
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         super.addChild(tableViewController)
+                
+        self.searchController.delegate = self
+        self.searchController.obscuresBackgroundDuringPresentation = false
+        self.searchController.searchBar.searchBarStyle = .minimal
+        self.searchController.searchBar.placeholder = "Search"
+        self.searchController.hidesNavigationBarDuringPresentation = true
+        self.searchController.searchBar.delegate = self
         
-        view.backgroundColor = .systemBackground
+        self.definesPresentationContext = true
         
-        searchController.delegate = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.placeholder = "Search"
-        searchController.hidesNavigationBarDuringPresentation = true
-        searchController.searchBar.delegate = self
-        searchController.searchResultsUpdater = self
+        self.title = "Tags"
+        self.navigationItem.searchController = searchController
+        self.navigationItem.title = "Loading"
+        self.navigationItem.hidesSearchBarWhenScrolling = false
         
-        definesPresentationContext = true
-        
-        title = "Tags"
-        navigationItem.searchController = searchController
-        navigationItem.title = "Loading"
-        navigationItem.hidesSearchBarWhenScrolling = false
-        
-        navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         
         #if targetEnvironment(macCatalyst)
-        navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTags)), animated: true)
+        self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTags)), animated: true)
         #endif
         
-        tableViewController.clearsSelectionOnViewWillAppear = true
-        tableViewController.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+        self.tableViewController.clearsSelectionOnViewWillAppear = true
+        self.tableViewController.refreshControl = refreshControl
+        self.refreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
         
-        setupFetchingView()
+        self.setupFetchingView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        listTags()
+        self.listTags()
     }
     
     @objc private func openAddWorkflow() {
-        let vc = UINavigationController(rootViewController: AddTagWorkflowVC())
+        let vc = NavigationController(rootViewController: AddTagWorkflowVC())
         present(vc, animated: true)
     }
     
     @objc private func refreshTags() {
         #if targetEnvironment(macCatalyst)
-        let loadingView = UIActivityIndicatorView(style: .medium)
-        loadingView.startAnimating()
+        let loadingView = ActivityIndicator()
         navigationItem.setLeftBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -86,10 +95,6 @@ class AllTagsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate, UIS
         fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        
-        fetchingView.hidesWhenStopped = true
-        
-        fetchingView.startAnimating()
     }
     
     func setupTableView() {
@@ -228,32 +233,33 @@ extension AllTagsVC: UITableViewDataSource {
             tableView.separatorStyle = .none
             noTagsCell.selectionStyle = .none
             noTagsCell.textLabel?.textAlignment = .center
+            noTagsCell.textLabel?.textColor = .white
             noTagsCell.textLabel?.text = "No Tags"
-            noTagsCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
-            noTagsCell.backgroundColor = tableView.backgroundColor
+            noTagsCell.textLabel?.font = circularStdBook
+            noTagsCell.backgroundColor = .clear
             return noTagsCell
         } else {
             tableView.separatorStyle = .singleLine
             if !self.tagsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
-                errorStringCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+                errorStringCell.textLabel?.font = circularStdBook
                 errorStringCell.textLabel?.text = tagsError
                 return errorStringCell
             } else if !self.tagsErrorResponse.isEmpty {
                 let error = tagsErrorResponse[indexPath.row]
                 errorObjectCell.selectionStyle = .none
                 errorObjectCell.textLabel?.textColor = .red
-                errorObjectCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBold)
+                errorObjectCell.textLabel?.font = circularStdBold
                 errorObjectCell.textLabel?.text = error.title
                 errorObjectCell.detailTextLabel?.numberOfLines = 0
-                errorObjectCell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.smallSystemFontSize)
+                errorObjectCell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
                 errorObjectCell.detailTextLabel?.text = error.detail
                 return errorObjectCell
             } else {                
                 let tag = filteredTags[indexPath.row]
                 tagCell.accessoryType = .disclosureIndicator
-                tagCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+                tagCell.textLabel?.font = circularStdBook
                 tagCell.textLabel?.adjustsFontForContentSizeCategory = true
                 tagCell.textLabel?.text = tag.id
                 return tagCell

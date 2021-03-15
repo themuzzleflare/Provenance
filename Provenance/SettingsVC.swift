@@ -1,6 +1,7 @@
 import UIKit
+import Rswift
 
-class SettingsVC: UITableViewController {
+class SettingsVC: TableViewController {
     weak var submitActionProxy: UIAlertAction?
     private var textDidChangeObserver: NSObjectProtocol!
     
@@ -16,12 +17,12 @@ class SettingsVC: UITableViewController {
         
         let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         
-        title = "Settings"
-        navigationItem.title = "Settings"
-        navigationItem.rightBarButtonItem = closeButton
-        
-        tableView.register(UINib(nibName: "APIKeyCell", bundle: nil), forCellReuseIdentifier: "apiKeyCell")
-        tableView.register(UINib(nibName: "DateStylePickerCell", bundle: nil), forCellReuseIdentifier: "datePickerCell")
+        self.title = "Settings"
+        self.navigationItem.title = "Settings"
+        self.navigationItem.rightBarButtonItem = closeButton
+
+        self.tableView.register(R.nib.apiKeyCell)
+        self.tableView.register(R.nib.dateStylePickerCell)
     }
     
     @objc private func closeWorkflow() {
@@ -39,19 +40,21 @@ class SettingsVC: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
         
-        let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: "apiKeyCell", for: indexPath) as! APIKeyCell
-        let datePickerCell = tableView.dequeueReusableCell(withIdentifier: "datePickerCell", for: indexPath) as! DateStylePickerCell
+        let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.apiKeyCell, for: indexPath)!
+        let datePickerCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.datePickerCell, for: indexPath)!
         
         if UserDefaults.standard.string(forKey: "apiKey") != "" && UserDefaults.standard.string(forKey: "apiKey") != nil {
             apiKeyCell.leftImage.tintColor = .systemGreen
         } else {
-            apiKeyCell.leftImage.tintColor = .secondaryLabel
+            apiKeyCell.leftImage.tintColor = .darkGray
         }
         
         apiKeyCell.rightDetail.speed = .rate(65)
         apiKeyCell.rightDetail.leadingBuffer = 20
         apiKeyCell.rightDetail.fadeLength = 20
         apiKeyCell.rightDetail.text = apiKeyDisplay
+        
+        datePickerCell.datePicker.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: R.font.circularStdBook(size: 14)!], for: .normal)
         
         if UserDefaults.standard.string(forKey: "dateStyle") == "Absolute" || UserDefaults.standard.string(forKey: "dateStyle") == nil {
             datePickerCell.datePicker.selectedSegmentIndex = 0
@@ -81,10 +84,21 @@ class SettingsVC: UITableViewController {
         if section == 0 {
             tableView.deselectRow(at: indexPath, animated: true)
             
-            let ac = UIAlertController(title: "New API Key", message: "Enter a new API Key.", preferredStyle: .alert)
+            let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+            
+            let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+            let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+            
+            let titleAttrString = NSMutableAttributedString(string: "API Key", attributes: titleFont)
+            let messageAttrString = NSMutableAttributedString(string: "Enter a new API Key.", attributes: messageFont)
+            
+            ac.setValue(titleAttrString, forKey: "attributedTitle")
+            ac.setValue(messageAttrString, forKey: "attributedMessage")
+            
             ac.addTextField(configurationHandler: { textField in
                 textField.autocapitalizationType = .none
                 textField.autocorrectionType = .no
+                textField.tintColor = R.color.accentColor()
                 textField.text = UserDefaults.standard.string(forKey: "apiKey") ?? nil
                 
                 self.textDidChangeObserver = NotificationCenter.default.addObserver(
@@ -102,6 +116,7 @@ class SettingsVC: UITableViewController {
             })
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
             
             let submitAction = UIAlertAction(title: "Save", style: .default) { _ in
                 let answer = ac.textFields![0]
@@ -121,16 +136,38 @@ class SettingsVC: UITableViewController {
                                 }
                             } else {
                                 DispatchQueue.main.async {
-                                    let ac = UIAlertController(title: "Failed", message: "The API Key could not be verified.", preferredStyle: .alert)
+                                    let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                                    
+                                    let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+                                    let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+                                    
+                                    let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
+                                    let messageAttrString = NSMutableAttributedString(string: "The API Key could not be verified.", attributes: messageFont)
+                                    
+                                    ac.setValue(titleAttrString, forKey: "attributedTitle")
+                                    ac.setValue(messageAttrString, forKey: "attributedMessage")
+                                    
                                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                                    dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                                     ac.addAction(dismissAction)
                                     self.present(ac, animated: true)
                                 }
                             }
                         } else {
                             DispatchQueue.main.async {
-                                let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "The API Key could not be verified.", preferredStyle: .alert)
+                                let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                                
+                                let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+                                let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+                                
+                                let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
+                                let messageAttrString = NSMutableAttributedString(string: error?.localizedDescription ?? "The API Key could not be verified.", attributes: messageFont)
+                                
+                                ac.setValue(titleAttrString, forKey: "attributedTitle")
+                                ac.setValue(messageAttrString, forKey: "attributedMessage")
+                                
                                 let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                                dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                                 ac.addAction(dismissAction)
                                 self.present(ac, animated: true)
                             }
@@ -138,20 +175,31 @@ class SettingsVC: UITableViewController {
                     }
                     .resume()
                 } else {
-                    let ac = UIAlertController(title: "Failed", message: "The provided API Key was the same as the current one.", preferredStyle: .alert)
+                    let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                    
+                    let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+                    let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+                    
+                    let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
+                    let messageAttrString = NSMutableAttributedString(string: "The provided API Key was the same as the current one.", attributes: messageFont)
+                    
+                    ac.setValue(titleAttrString, forKey: "attributedTitle")
+                    ac.setValue(messageAttrString, forKey: "attributedMessage")
+                    
                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                    dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                     ac.addAction(dismissAction)
                     self.present(ac, animated: true)
                 }
             }
-            
+            submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
             submitAction.isEnabled = false
             submitActionProxy = submitAction
             
             ac.addAction(cancelAction)
             ac.addAction(submitAction)
             
-            present(ac, animated: true)
+            self.present(ac, animated: true)
         }
     }
     

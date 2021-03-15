@@ -1,13 +1,14 @@
 import UIKit
+import Rswift
 
-class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
-    let fetchingView: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
-    let tableViewController: UITableViewController = UITableViewController(style: .grouped)
+class AccountsVC: ViewController, UITableViewDelegate {
+    let fetchingView = ActivityIndicator(style: .medium)
+    let tableViewController = TableViewController(style: .insetGrouped)
     
-    let circularStdBook = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)!
-    let circularStdBold = UIFont(name: "CircularStd-Bold", size: UIFont.labelFontSize)!
+    let circularStdBook = R.font.circularStdBook(size: UIFont.labelFontSize)
+    let circularStdBold = R.font.circularStdBold(size: UIFont.labelFontSize)
     
-    lazy var refreshControl: UIRefreshControl = UIRefreshControl()
+    let refreshControl = RefreshControl(frame: .zero)
     
     lazy var accounts: [AccountResource] = []
     lazy var accountsErrorResponse: [ErrorObject] = []
@@ -17,32 +18,29 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
         super.viewDidLoad()
         super.addChild(tableViewController)
         
-        view.backgroundColor = .systemBackground
+        self.title = "Accounts"
+        self.navigationItem.title = "Loading"
         
-        title = "Accounts"
-        navigationItem.title = "Loading"
-        
-        navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         
         #if targetEnvironment(macCatalyst)
-        navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshAccounts)), animated: true)
+        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshAccounts)), animated: true)
         #endif
         
-        tableViewController.clearsSelectionOnViewWillAppear = true
-        tableViewController.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(refreshAccounts), for: .valueChanged)
+        self.tableViewController.clearsSelectionOnViewWillAppear = true
+        self.tableViewController.refreshControl = refreshControl
+        self.refreshControl.addTarget(self, action: #selector(refreshAccounts), for: .valueChanged)
         
-        setupFetchingView()
+        self.setupFetchingView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        listAccounts()
+        self.listAccounts()
     }
     
     @objc private func refreshAccounts() {
         #if targetEnvironment(macCatalyst)
-        let loadingView = UIActivityIndicatorView(style: .medium)
-        loadingView.startAnimating()
+        let loadingView = ActivityIndicator()
         navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -58,10 +56,6 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
         fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        
-        fetchingView.hidesWhenStopped = true
-        
-        fetchingView.startAnimating()
     }
     
     func setupTableView() {
@@ -143,8 +137,8 @@ class AccountsVC: UIViewController, UITableViewDelegate, UISearchBarDelegate {
                 }
             } else {
                 DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown Error!")
-                    self.accountsError = error?.localizedDescription ?? "Unknown Error!"
+                    print(error?.localizedDescription ?? "Unknown error")
+                    self.accountsError = error?.localizedDescription ?? "Unknown error"
                     self.accountsErrorResponse = []
                     self.accounts = []
                     self.navigationItem.title = "Error"
@@ -188,38 +182,41 @@ extension AccountsVC: UITableViewDataSource {
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
         if self.accounts.isEmpty && self.accountsError.isEmpty && self.accountsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
+            tableView.separatorStyle = .none
             noAccountsCell.selectionStyle = .none
-            noAccountsCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+            noAccountsCell.textLabel?.font = circularStdBook
+            noAccountsCell.textLabel?.textColor = .white
+            noAccountsCell.textLabel?.textAlignment = .center
             noAccountsCell.textLabel?.text = "No Accounts"
-            noAccountsCell.backgroundColor = tableView.backgroundColor
+            noAccountsCell.backgroundColor = .clear
             return noAccountsCell
         } else {
+            tableView.separatorStyle = .singleLine
             if !self.accountsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
-                errorStringCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBook)
+                errorStringCell.textLabel?.font = circularStdBook
                 errorStringCell.textLabel?.text = accountsError
                 return errorStringCell
             } else if !self.accountsErrorResponse.isEmpty {
                 let error = accountsErrorResponse[indexPath.row]
                 errorObjectCell.selectionStyle = .none
                 errorObjectCell.textLabel?.textColor = .red
-                errorObjectCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBold)
+                errorObjectCell.textLabel?.font = circularStdBold
                 errorObjectCell.textLabel?.text = error.title
                 errorObjectCell.detailTextLabel?.numberOfLines = 0
-                errorObjectCell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.smallSystemFontSize)
+                errorObjectCell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
                 errorObjectCell.detailTextLabel?.text = error.detail
                 return errorObjectCell
             } else {
                 let account = accounts[indexPath.row]
                 accountCell.accessoryType = .disclosureIndicator
-                accountCell.textLabel?.font = UIFontMetrics.default.scaledFont(for: circularStdBold)
-                accountCell.textLabel?.textColor = .label
+                accountCell.textLabel?.font = circularStdBold
+                accountCell.textLabel?.textColor = .black
                 accountCell.textLabel?.text = account.attributes.displayName
-                accountCell.detailTextLabel?.textColor = .secondaryLabel
-                accountCell.detailTextLabel?.font = UIFont(name: "CircularStd-Book", size: UIFont.smallSystemFontSize)
-                accountCell.detailTextLabel?.text =
-                    "\(account.attributes.balance.valueSymbol)\(account.attributes.balance.valueString)"
+                accountCell.detailTextLabel?.textColor = .darkGray
+                accountCell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
+                accountCell.detailTextLabel?.text = account.attributes.balance.valueShort
                 return accountCell
             }
         }
