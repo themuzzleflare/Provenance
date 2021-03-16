@@ -1,7 +1,7 @@
 import UIKit
 import Rswift
 
-class AboutViewController: UITableViewController {
+class AboutViewController: TableViewController {
     @IBOutlet var appNameValue: UILabel!
     @IBOutlet var versionValue: UILabel!
     @IBOutlet var buildValue: UILabel!
