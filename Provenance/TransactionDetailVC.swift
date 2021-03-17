@@ -6,25 +6,21 @@ class TransactionDetailVC: TableViewController {
     var categories: [CategoryResource]!
     var accounts: [AccountResource]!
     
-    
     private var categoryFilter: [CategoryResource]? {
         categories?.filter { category in
             transaction?.relationships.category.data?.id == category.id
         }
     }
-    
     private var parentCategoryFilter: [CategoryResource]? {
         categories?.filter { pcategory in
             transaction?.relationships.parentCategory.data?.id == pcategory.id
         }
     }
-    
     private var accountFilter: [AccountResource]? {
         accounts?.filter { account in
             transaction?.relationships.account.data.id == account.id
         }
     }
-    
     private var holdTransValue: String {
         if transaction.attributes.holdInfo != nil {
             if transaction.attributes.holdInfo!.amount.value != transaction.attributes.amount.value {
@@ -36,7 +32,6 @@ class TransactionDetailVC: TableViewController {
             return ""
         }
     }
-    
     private var holdForeignTransValue: String {
         if transaction.attributes.holdInfo?.foreignAmount != nil {
             if transaction.attributes.holdInfo!.foreignAmount!.value != transaction.attributes.foreignAmount!.value {
@@ -48,7 +43,6 @@ class TransactionDetailVC: TableViewController {
             return ""
         }
     }
-    
     private var foreignTransValue: String {
         if transaction.attributes.foreignAmount != nil {
             return transaction.attributes.foreignAmount!.valueLong
@@ -56,62 +50,49 @@ class TransactionDetailVC: TableViewController {
             return ""
         }
     }
-    
     private var attributes: KeyValuePairs<String, String> {
         return ["Status": transaction.attributes.statusString, "Account": accountFilter?.first?.attributes.displayName ?? ""]
     }
-    
     private var attributesTwo: KeyValuePairs<String, String> {
         return ["Description": transaction?.attributes.description ?? "", "Raw Text": transaction?.attributes.rawText ?? "", "Message": transaction?.attributes.message ?? ""]
     }
-    
     private var attributesThree: KeyValuePairs<String, String> {
         return ["Hold \(transaction.attributes.holdInfo?.amount.transactionType ?? "")": holdTransValue, "Hold Foreign \(transaction.attributes.holdInfo?.foreignAmount?.transactionType ?? "")": holdForeignTransValue, "Foreign \(transaction.attributes.foreignAmount?.transactionType ?? "")": foreignTransValue, transaction?.attributes.amount.transactionType ?? "Amount": transaction.attributes.amount.valueLong]
     }
-    
     private var attributesFour: KeyValuePairs<String, String> {
         return ["Created Date": transaction.attributes.creationDate, "Settled Date": transaction.attributes.settlementDate ?? ""]
     }
-    
     private var attributesFive: KeyValuePairs<String, String> {
         return ["Parent Category": parentCategoryFilter?.first?.attributes.name ?? "", "Category": categoryFilter?.first?.attributes.name ?? ""]
     }
-    
     private var attributesSix: KeyValuePairs<String, String> {
         return ["Tags": transaction?.relationships.tags.data.count.description ?? ""]
     }
-    
-    
     private var altAttributes: Array<(key: String, value: String)> {
         return attributes.filter {
             $0.value != ""
         }
     }
-    
     private var altAttributesTwo: Array<(key: String, value: String)> {
         return attributesTwo.filter {
             $0.value != ""
         }
     }
-    
     private var altAttributesThree: Array<(key: String, value: String)> {
         return attributesThree.filter {
             $0.value != ""
         }
     }
-    
     private var altAttributesFour: Array<(key: String, value: String)> {
         return attributesFour.filter {
             $0.value != ""
         }
     }
-    
     private var altAttributesFive: Array<(key: String, value: String)> {
         return attributesFive.filter {
             $0.value != ""
         }
     }
-    
     private var altAttributesSix: Array<(key: String, value: String)> {
         return attributesSix.filter {
             $0.value != ""
@@ -121,17 +102,27 @@ class TransactionDetailVC: TableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.clearsSelectionOnViewWillAppear = true
-        
-        self.title = "Transaction Details"
-        self.navigationItem.title = transaction?.attributes.description ?? ""
-        self.navigationItem.setRightBarButton(UIBarButtonItem(customView: transaction.attributes.statusIconView), animated: true)
-        self.navigationItem.largeTitleDisplayMode = .never
-        self.tableView.register(R.nib.attributeCell)
+        setProperties()
+        setupNavigation()
+        setupTableView()
+    }
+    
+    private func setProperties() {
+        title = "Transaction Details"
+    }
+    
+    private func setupNavigation() {
+        navigationItem.title = transaction.attributes.description
+        navigationItem.setRightBarButton(UIBarButtonItem(customView: transaction.attributes.statusIconView), animated: true)
+        navigationItem.largeTitleDisplayMode = .never
+    }
+    
+    private func setupTableView() {
+        tableView.register(R.nib.attributeCell)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -152,7 +143,7 @@ class TransactionDetailVC: TableViewController {
             case 3: return altAttributesFour.count
             case 4: return transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil ? altAttributesSix.count : altAttributesFive.count
             case 5: return altAttributesSix.count
-            default: fatalError("Unknown number of sections")
+            default: fatalError("Unknown section")
         }
     }
     
@@ -194,9 +185,7 @@ class TransactionDetailVC: TableViewController {
             }
         }
         
-        let bgView = UIView()
-        bgView.backgroundColor = R.color.accentColor()
-        cell.selectedBackgroundView = bgView
+        cell.selectedBackgroundView = bgCellView
         
         cell.selectionStyle = cellSelectionStyle
         cell.accessoryType = cellAccessoryType
@@ -218,13 +207,17 @@ class TransactionDetailVC: TableViewController {
             
             if attribute.key == "Account" {
                 let vc = TransactionsByAccountVC()
+                
                 vc.account = accountFilter!.first!
+                
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         } else if section == 4 {
             if transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil {
                 let vc = TagsVC(style: .insetGrouped)
+                
                 vc.transaction = transaction
+                
                 self.navigationController?.pushViewController(vc, animated: true)
             } else {
                 attribute = altAttributesFive[indexPath.row]
@@ -236,23 +229,22 @@ class TransactionDetailVC: TableViewController {
                 } else {
                     vc.category = categoryFilter!.first
                 }
+                
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         } else if section == 5 {
             let vc = TagsVC(style: .insetGrouped)
+            
             vc.transaction = transaction
+            
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let section = indexPath.section
-        
-        if section == 1 {
-            let attribute = altAttributesTwo[indexPath.row]
-            
+        if indexPath.section == 1 {
             let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                UIPasteboard.general.string = attribute.value
+                UIPasteboard.general.string = self.altAttributesTwo[indexPath.row].value
             }
             
             return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in

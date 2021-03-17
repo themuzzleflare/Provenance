@@ -8,12 +8,23 @@ class SettingsVC: TableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Settings"
-        self.navigationItem.title = "Settings"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
-        
-        self.tableView.register(R.nib.apiKeyCell)
-        self.tableView.register(R.nib.dateStylePickerCell)
+        setProperties()
+        setupNavigation()
+        setupTableView()
+    }
+    
+    private func setProperties() {
+        title = "Settings"
+    }
+    
+    private func setupNavigation() {
+        navigationItem.title = "Settings"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+    }
+    
+    private func setupTableView() {
+        tableView.register(R.nib.apiKeyCell)
+        tableView.register(R.nib.dateStylePickerCell)
     }
     
     @objc private func closeWorkflow() {
@@ -34,9 +45,7 @@ class SettingsVC: TableViewController {
         let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.apiKeyCell, for: indexPath)!
         let datePickerCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.datePickerCell, for: indexPath)!
         
-        let bgView = UIView()
-        bgView.backgroundColor = R.color.accentColor()
-        apiKeyCell.selectedBackgroundView = bgView
+        apiKeyCell.selectedBackgroundView = bgCellView
         
         if UserDefaults.standard.string(forKey: "apiKey") != "" && UserDefaults.standard.string(forKey: "apiKey") != nil {
             apiKeyCell.leftImage.tintColor = .systemGreen
@@ -200,13 +209,11 @@ class SettingsVC: TableViewController {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let section = indexPath.section
-        
         let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
             UIPasteboard.general.string = UserDefaults.standard.string(forKey: "apiKey")
         }
         
-        if section == 0 {
+        if indexPath.section == 0 {
             if UserDefaults.standard.string(forKey: "apiKey") != nil {
                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                     UIMenu(children: [copy])

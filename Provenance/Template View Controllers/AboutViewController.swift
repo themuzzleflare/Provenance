@@ -10,16 +10,23 @@ class AboutViewController: TableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.appNameValue.text = appName
-        self.versionValue.text = appVersion
-        self.buildValue.text = appBuild
+        setProperties()
+        setupNavigation()
+    }
+    
+    private func setProperties() {
+        title = "About"
         
-        self.title = "About"
-        self.navigationItem.title = "About"
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftSlashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.gear(), style: .plain, target: self, action: #selector(openSettings))
-        
-        self.navigationItem.largeTitleDisplayMode = .never
+        appNameValue.text = appName
+        versionValue.text = appVersion
+        buildValue.text = appBuild
+    }
+    
+    private func setupNavigation() {
+        navigationItem.title = "About"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftSlashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.gear(), style: .plain, target: self, action: #selector(openSettings))
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     @objc private func openSettings() {
@@ -41,9 +48,7 @@ class AboutViewController: TableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let section = indexPath.section
-        
-        if section == 1 {
+        if indexPath.section == 1 {
             self.tableView.deselectRow(at: indexPath, animated: true)
             UIApplication.shared.open(URL(string: "mailto:feedback@tavitian.cloud?subject=Feedback%20for%20Provenance")!)
         }

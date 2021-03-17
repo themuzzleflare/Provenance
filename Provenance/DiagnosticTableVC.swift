@@ -8,11 +8,23 @@ class DiagnosticTableVC: TableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
-        self.title = "Diagnostics"
-        self.navigationItem.title = "Diagnostics"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
-        self.tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "diagnosticCell")
+        
+        setProperties()
+        setupNavigation()
+        setupTableView()
+    }
+    
+    private func setProperties() {
+        title = "Diagnostics"
+    }
+    
+    private func setupNavigation() {
+        navigationItem.title = "Diagnostics"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+    }
+    
+    private func setupTableView() {
+        tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "diagnosticCell")
     }
     
     @objc private func closeWorkflow() {

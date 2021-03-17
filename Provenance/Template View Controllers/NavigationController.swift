@@ -5,10 +5,18 @@ class NavigationController: UINavigationController, UINavigationControllerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.delegate = self
-        self.navigationBar.barStyle = .black
-        self.navigationBar.barTintColor = R.color.bgColour()
-        self.navigationBar.tintColor = R.color.accentColor()
-        self.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: R.font.circularStdBook(size: 17)!]
+        setProperties()
+        setupNavigationStyle()
+    }
+    
+    private func setProperties() {
+        delegate = self
+    }
+    
+    private func setupNavigationStyle() {
+        navigationBar.barStyle = .black
+        navigationBar.barTintColor = R.color.bgColour()
+        navigationBar.tintColor = R.color.accentColor()
+        navigationBar.titleTextAttributes = [NSAttributedString.Key.font: R.font.circularStdBook(size: 17)!]
     }
 }

@@ -1,20 +1,15 @@
 import UIKit
 import Rswift
 
-class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate {
+class AllTagsVC: ViewController {
     let fetchingView = ActivityIndicator(style: .medium)
     let tableViewController = TableViewController(style: .insetGrouped)
-    
-    let circularStdBook = R.font.circularStdBook(size: UIFont.labelFontSize)
-    let circularStdBold = R.font.circularStdBold(size: UIFont.labelFontSize)
-    
     let refreshControl = RefreshControl(frame: .zero)
-    lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
+    let searchController = UISearchController(searchResultsController: nil)
     
-    lazy var tags: [TagResource] = []
-    lazy var tagsErrorResponse: [ErrorObject] = []
-    lazy var tagsError: String = ""
-    
+    private var tags: [TagResource] = []
+    private var tagsErrorResponse: [ErrorObject] = []
+    private var tagsError: String = ""
     private var prevFilteredTags: [TagResource] = []
     private var filteredTags: [TagResource] {
         tags.filter { tag in
@@ -22,54 +17,49 @@ class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISea
         }
     }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if self.filteredTags != self.prevFilteredTags {
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-        }
-        self.prevFilteredTags = self.filteredTags
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if searchBar.text != "" {
-            searchBar.text = ""
-            self.prevFilteredTags = self.filteredTags
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        super.addChild(tableViewController)
-                
-        self.searchController.delegate = self
-        self.searchController.obscuresBackgroundDuringPresentation = false
-        self.searchController.searchBar.searchBarStyle = .minimal
-        self.searchController.searchBar.placeholder = "Search"
-        self.searchController.hidesNavigationBarDuringPresentation = true
-        self.searchController.searchBar.delegate = self
         
-        self.definesPresentationContext = true
-        
-        self.title = "Tags"
-        self.navigationItem.searchController = searchController
-        self.navigationItem.title = "Loading"
-        self.navigationItem.hidesSearchBarWhenScrolling = false
-        
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        
+        setProperties()
+        setupNavigation()
+        setupSearch()
+        setupRefreshControl()
+        setupFetchingView()
+    }
+    
+    private func setProperties() {
+        title = "Tags"
+    }
+    
+    private func setupNavigation() {
+        navigationItem.title = "Loading"
+        navigationController?.navigationBar.prefersLargeTitles = true
         #if targetEnvironment(macCatalyst)
-        self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTags)), animated: true)
+        navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTags)), animated: true)
         #endif
+    }
+    
+    private func setupSearch() {
+        searchController.delegate = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.placeholder = "Search"
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.searchBar.delegate = self
         
-        self.tableViewController.clearsSelectionOnViewWillAppear = true
-        self.tableViewController.refreshControl = refreshControl
-        self.refreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+        definesPresentationContext = true
         
-        self.setupFetchingView()
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    private func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+        tableViewController.refreshControl = refreshControl
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.listTags()
+        listTags()
     }
     
     @objc private func openAddWorkflow() {
@@ -87,7 +77,7 @@ class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISea
         }
     }
     
-    func setupFetchingView() {
+    private func setupFetchingView() {
         view.addSubview(fetchingView)
         
         fetchingView.translatesAutoresizingMaskIntoConstraints = false
@@ -97,7 +87,8 @@ class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISea
         fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
     
-    func setupTableView() {
+    private func setupTableView() {
+        super.addChild(tableViewController)
         view.addSubview(tableViewController.tableView)
         
         tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -127,7 +118,7 @@ class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISea
             if error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: data!) {
                     DispatchQueue.main.async {
-                        print("Tags JSON Decoding Succeeded!")
+                        print("Tags JSON decoding succeeded")
                         self.tags = decodedResponse.data
                         self.tagsError = ""
                         self.tagsErrorResponse = []
@@ -138,7 +129,6 @@ class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISea
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                         #endif
-                        self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
@@ -146,7 +136,7 @@ class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISea
                     }
                 } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
                     DispatchQueue.main.async {
-                        print("Tags Error JSON Decoding Succeeded!")
+                        print("Tags Error JSON decoding succeeded")
                         self.tagsErrorResponse = decodedResponse.errors
                         self.tagsError = ""
                         self.tags = []
@@ -155,7 +145,6 @@ class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISea
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                         #endif
-                        self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
@@ -163,7 +152,7 @@ class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISea
                     }
                 } else {
                     DispatchQueue.main.async {
-                        print("Tags JSON Decoding Failed!")
+                        print("Tags JSON decoding failed")
                         self.tagsError = "JSON Decoding Failed!"
                         self.tagsErrorResponse = []
                         self.tags = []
@@ -172,7 +161,6 @@ class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISea
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                         #endif
-                        self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
@@ -181,7 +169,7 @@ class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISea
                 }
             } else {
                 DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown Error!")
+                    print(error?.localizedDescription ?? "Unknown error")
                     self.tagsError = error?.localizedDescription ?? "Unknown Error!"
                     self.tagsErrorResponse = []
                     self.tags = []
@@ -190,7 +178,6 @@ class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISea
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                     #endif
-                    self.fetchingView.stopAnimating()
                     self.fetchingView.removeFromSuperview()
                     self.setupTableView()
                     self.tableViewController.tableView.reloadData()
@@ -205,7 +192,7 @@ class AllTagsVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISea
     }
 }
 
-extension AllTagsVC: UITableViewDataSource {
+extension AllTagsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty {
             return 1
@@ -231,12 +218,14 @@ extension AllTagsVC: UITableViewDataSource {
         
         if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
             tableView.separatorStyle = .none
+            
             noTagsCell.selectionStyle = .none
             noTagsCell.textLabel?.textAlignment = .center
             noTagsCell.textLabel?.textColor = .white
             noTagsCell.textLabel?.text = "No Tags"
             noTagsCell.textLabel?.font = circularStdBook
             noTagsCell.backgroundColor = .clear
+            
             return noTagsCell
         } else {
             tableView.separatorStyle = .singleLine
@@ -245,9 +234,11 @@ extension AllTagsVC: UITableViewDataSource {
                 errorStringCell.textLabel?.numberOfLines = 0
                 errorStringCell.textLabel?.font = circularStdBook
                 errorStringCell.textLabel?.text = tagsError
+                
                 return errorStringCell
             } else if !self.tagsErrorResponse.isEmpty {
                 let error = tagsErrorResponse[indexPath.row]
+                
                 errorObjectCell.selectionStyle = .none
                 errorObjectCell.textLabel?.textColor = .red
                 errorObjectCell.textLabel?.font = circularStdBold
@@ -255,18 +246,17 @@ extension AllTagsVC: UITableViewDataSource {
                 errorObjectCell.detailTextLabel?.numberOfLines = 0
                 errorObjectCell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
                 errorObjectCell.detailTextLabel?.text = error.detail
+                
                 return errorObjectCell
             } else {                
                 let tag = filteredTags[indexPath.row]
                 
-                let bgView = UIView()
-                bgView.backgroundColor = R.color.accentColor()
-                tagCell.selectedBackgroundView = bgView
-                
+                tagCell.selectedBackgroundView = bgCellView
                 tagCell.accessoryType = .disclosureIndicator
                 tagCell.textLabel?.font = circularStdBook
                 tagCell.textLabel?.adjustsFontForContentSizeCategory = true
                 tagCell.textLabel?.text = tag.id
+                
                 return tagCell
             }
         }
@@ -275,17 +265,17 @@ extension AllTagsVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.tagsErrorResponse.isEmpty && self.tagsError.isEmpty && !self.filteredTags.isEmpty {
             let vc = TransactionsByTagVC()
+            
             vc.tag = filteredTags[indexPath.row]
+            
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         if self.tagsErrorResponse.isEmpty && self.tagsError.isEmpty && !self.filteredTags.isEmpty {
-            let tag = filteredTags[indexPath.row]
-            
             let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                UIPasteboard.general.string = tag.id
+                UIPasteboard.general.string = self.filteredTags[indexPath.row].id
             }
             
             return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
@@ -293,6 +283,23 @@ extension AllTagsVC: UITableViewDataSource {
             }
         } else {
             return nil
+        }
+    }
+}
+
+extension AllTagsVC: UISearchControllerDelegate, UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if self.filteredTags != self.prevFilteredTags {
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        }
+        self.prevFilteredTags = self.filteredTags
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        if searchBar.text != "" {
+            searchBar.text = ""
+            self.prevFilteredTags = self.filteredTags
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
     }
 }

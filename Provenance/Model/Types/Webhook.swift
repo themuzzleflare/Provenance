@@ -17,11 +17,18 @@ struct WebhooksResponse: Codable, Hashable {
             var secretKey: String?
             
             private var createdAt: String
-            var createdDate: String {
+            private var creationDateAbsolute: String {
                 return formatDate(dateString: createdAt)
             }
-            var createdDateRelative: String {
+            private var creationDateRelative: String {
                 return formatDateRelative(dateString: createdAt)
+            }
+            var creationDate: String {
+                switch UserDefaults.standard.string(forKey: "dateStyle") {
+                    case "Absolute", .none: return creationDateAbsolute
+                    case "Relative": return creationDateRelative
+                    default: return creationDateAbsolute
+                }
             }
         }
         

@@ -31,6 +31,7 @@ struct Attribute: Hashable, Codable {
             case .held: return false
         }
     }
+    
     var statusIcon: UIImage {
         let configuration = UIImage.SymbolConfiguration(pointSize: 21)
         switch isSettled {
@@ -38,13 +39,11 @@ struct Attribute: Hashable, Codable {
             case false: return R.image.clock()!.withConfiguration(configuration)
         }
     }
-    
     var statusIconView: UIImageView {
         let imageView = UIImageView(image: statusIcon)
         imageView.tintColor = isSettled ? .systemGreen : .systemYellow
         return imageView
     }
-    
     var statusIconColor: UIColor {
         switch isSettled {
             case true: return .systemGreen
@@ -137,7 +136,6 @@ struct MoneyObject: Hashable, Codable {
             return "Credit"
         }
     }
-    
     private var valueSymbol: String {
         if valueInBaseUnits.signum() == -1 {
             return "-$"
@@ -145,7 +143,6 @@ struct MoneyObject: Hashable, Codable {
             return "$"
         }
     }
-    
     private var valueString: String {
         if valueInBaseUnits.signum() == -1 {
             return value.replacingOccurrences(of: "-", with: "")
@@ -153,7 +150,6 @@ struct MoneyObject: Hashable, Codable {
             return value
         }
     }
-    
     var valueShort: String {
         return "\(valueSymbol)\(valueString)"
     }

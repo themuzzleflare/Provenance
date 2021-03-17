@@ -1,58 +1,38 @@
 import UIKit
 import Rswift
 
-class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDelegate {
+class TransactionsVC: ViewController {
     let fetchingView = ActivityIndicator(style: .medium)
     let tableViewController = TableViewController(style: .insetGrouped)
-    
-    let circularStdBook = R.font.circularStdBook(size: UIFont.labelFontSize)
-    let circularStdBold = R.font.circularStdBold(size: UIFont.labelFontSize)
     
     private var filterButton: UIBarButtonItem!
     
     let refreshControl = RefreshControl(frame: .zero)
-    lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    private var transactionList = Transaction(data: [], links: .init(prev: nil, next: nil))
+    private var transactions: [TransactionResource] = []
+    private var transactionsErrorResponse: [ErrorObject] = []
+    private var transactionsError: String = ""
     private var prevFilteredTransactions: [TransactionResource] = []
-    
-    lazy var transactions: [TransactionResource] = []
-    lazy var transactionsErrorResponse: [ErrorObject] = []
-    lazy var transactionsError: String = ""
-    
     private var preFilteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             (!showSettledOnly || transaction.attributes.isSettled)
                 && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
         }
     }
-    
     private var filteredTransactions: [TransactionResource] {
         preFilteredTransactions.filter { transaction in
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if self.filteredTransactions != self.prevFilteredTransactions {
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-        }
-        self.prevFilteredTransactions = self.filteredTransactions
+    private var filteredTransactionList: Transaction {
+        return Transaction(data: filteredTransactions, links: transactionList.links)
     }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if searchBar.text != "" {
-            searchBar.text = ""
-            self.prevFilteredTransactions = self.filteredTransactions
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-        }
-    }
-    
-    lazy var categories: [CategoryResource] = []
-    
-    lazy var accounts: [AccountResource] = []
-    
+    private var categories: [CategoryResource] = []
+    private var accounts: [AccountResource] = []
     private var filter: FilterCategory = .all
-    
-    enum FilterCategory: String, CaseIterable, Identifiable {
+    private enum FilterCategory: String, CaseIterable, Identifiable {
         case all = "All"
         case gamesAndSoftware = "games-and-software"
         case carInsuranceAndMaintenance = "car-insurance-and-maintenance"
@@ -108,42 +88,116 @@ class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDel
             default: return category.rawValue.replacingOccurrences(of: "and", with: "&").replacingOccurrences(of: "-", with: " ").capitalized
         }
     }
-    
     private var showSettledOnly: Bool = false
+    private lazy var dataSource = transactionsDataSource()
+    private enum Section: CaseIterable {
+        case transactions
+    }
+    
+    private func transactionsDataSource() -> UITableViewDiffableDataSource<Section, TransactionResource> {
+        return UITableViewDiffableDataSource(
+            tableView: tableViewController.tableView,
+            cellProvider: {  tableView, indexPath, transaction in
+                let cell = tableView.dequeueReusableCell(
+                    withIdentifier: R.reuseIdentifier.transactionCell,
+                    for: indexPath
+                )!
+                self.tableViewController.tableView.separatorStyle = .singleLine
+                
+                cell.selectedBackgroundView = bgCellView
+                
+                cell.leftLabel.text = transaction.attributes.description
+                cell.leftSubtitle.text = transaction.attributes.creationDate
+                
+                if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
+                    cell.rightLabel.textColor = .black
+                } else {
+                    cell.rightLabel.textColor = R.color.greenColour()
+                }
+                
+                cell.rightLabel.text = transaction.attributes.amount.valueShort
+                
+                return cell
+            }
+        )
+    }
+    private func update(with list: Transaction, animate: Bool = false) {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>()
+        snapshot.appendSections(Section.allCases)
+        
+        snapshot.appendItems(list.data, toSection: .transactions)
+        
+        if snapshot.itemIdentifiers.isEmpty {
+            self.tableViewController.tableView.dataSource = self
+        } else {
+            self.tableViewController.tableView.dataSource = dataSource
+        }
+        dataSource.apply(snapshot, animatingDifferences: animate)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        super.addChild(tableViewController)
         
-        self.searchController.delegate = self
-        self.searchController.obscuresBackgroundDuringPresentation = false
-        self.searchController.searchBar.searchBarStyle = .minimal
-        self.searchController.searchBar.placeholder = "Search"
-        self.searchController.hidesNavigationBarDuringPresentation = true
-        self.searchController.searchBar.delegate = self
+        setProperties()
+        setupFetchingView()
+        setupSearch()
+        setupNavigation()
+        setupRefreshControl()
+        setupFilterButton()
+    }
+    
+    private func setProperties() {
+        title = "Transactions"
+    }
+    
+    private func setupSearch() {
+        searchController.delegate = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.placeholder = "Search"
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.searchBar.delegate = self
         
-        self.definesPresentationContext = true
+        definesPresentationContext = true
         
-        self.title = "Transactions"
-        self.navigationItem.title = "Loading"
-        self.navigationItem.searchController = searchController
-        self.navigationItem.hidesSearchBarWhenScrolling = false
-        
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    private func setupNavigation() {
+        navigationItem.title = "Loading"
+        navigationController?.navigationBar.prefersLargeTitles = true
         #if targetEnvironment(macCatalyst)
-        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
+        navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
         #endif
+    }
+    
+    private func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+        tableViewController.refreshControl = refreshControl
+    }
+    
+    private func setupTableView() {
+        super.addChild(tableViewController)
+        view.addSubview(tableViewController.tableView)
         
-        self.navigationController?.navigationBar.prefersLargeTitles = true
+        tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableViewController.tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableViewController.tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tableViewController.tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        tableViewController.tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         
-        self.tableViewController.clearsSelectionOnViewWillAppear = true
+        tableViewController.tableView.delegate = self
         
-        self.tableViewController.refreshControl = refreshControl
-        self.refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
-        
-        self.filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), style: .plain, target: self, action: nil)
-        self.filterButton.menu = filterMenu()
-        
-        self.setupFetchingView()
+        tableViewController.tableView.register(R.nib.transactionCell)
+        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTransactionsCell")
+        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
+        tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
+    }
+    
+    private func setupFilterButton() {
+        filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), style: .plain, target: self, action: nil)
+        filterButton.menu = filterMenu()
     }
     
     private func filterMenu() -> UIMenu {
@@ -165,7 +219,7 @@ class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDel
                         self.navigationItem.prompt = nil
                     }
                 }
-                self.tableViewController.tableView.reloadData()
+                self.update(with: self.filteredTransactionList)
             }
         }
         
@@ -188,7 +242,7 @@ class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDel
                     self.navigationItem.prompt = nil
                 }
             }
-            self.tableViewController.tableView.reloadData()
+            self.update(with: self.filteredTransactionList)
         }
         
         return UIMenu(image: R.image.sliderHorizontal3(), options: .displayInline, children: [categoriesMenu, settledOnlyFilter])
@@ -200,14 +254,15 @@ class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDel
         } else if UserDefaults.standard.string(forKey: "dateStyle") == "Relative" {
             UserDefaults.standard.setValue("Absolute", forKey: "dateStyle")
         }
-        self.tableViewController.tableView.reloadData()
+        self.update(with: self.filteredTransactionList)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.tableViewController.tableView.reloadData()
-        self.listTransactions()
-        self.listCategories()
-        self.listAccounts()
+        update(with: filteredTransactionList)
+        
+        listTransactions()
+        listAccounts()
+        listCategories()
     }
     
     @objc private func refreshTransactions() {
@@ -222,32 +277,14 @@ class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDel
         }
     }
     
-    func setupFetchingView() {
-        self.view.addSubview(fetchingView)
+    private func setupFetchingView() {
+        view.addSubview(fetchingView)
         
-        self.fetchingView.translatesAutoresizingMaskIntoConstraints = false
-        self.fetchingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        self.fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        self.fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        self.fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-    }
-    
-    func setupTableView() {
-        self.view.addSubview(tableViewController.tableView)
-        
-        self.tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
-        self.tableViewController.tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        self.tableViewController.tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        self.tableViewController.tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        self.tableViewController.tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        
-        self.tableViewController.tableView.dataSource = self
-        self.tableViewController.tableView.delegate = self
-        
-        self.tableViewController.tableView.register(R.nib.transactionCell)
-        self.tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTransactionsCell")
-        self.tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
-        self.tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
+        fetchingView.translatesAutoresizingMaskIntoConstraints = false
+        fetchingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
     
     private func listTransactions() {
@@ -262,7 +299,8 @@ class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDel
             if error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: data!) {
                     DispatchQueue.main.async {
-                        print("Transactions JSON Decoding Succeeded!")
+                        print("Transactions JSON decoding succeeded")
+                        self.transactionList = decodedResponse
                         self.transactions = decodedResponse.data
                         self.transactionsError = ""
                         self.transactionsErrorResponse = []
@@ -273,62 +311,61 @@ class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDel
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
-                        self.tableViewController.tableView.reloadData()
+                        self.update(with: self.filteredTransactionList)
                         self.refreshControl.endRefreshing()
                     }
                 } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
                     DispatchQueue.main.async {
-                        print("Transactions Error JSON Decoding Succeeded!")
+                        print("Transactions Error JSON decoding succeeded")
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
                         self.transactions = []
+                        self.transactionList = .init(data: [], links: .init(prev: nil, next: nil))
                         self.navigationItem.title = "Errors"
                         self.navigationItem.setLeftBarButtonItems(nil, animated: true)
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
-                        self.tableViewController.tableView.reloadData()
+                        self.update(with: self.filteredTransactionList)
                         self.refreshControl.endRefreshing()
                     }
                 } else {
                     DispatchQueue.main.async {
-                        print("Transactions JSON Decoding Failed!")
+                        print("Transactions JSON decoding failed")
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
                         self.transactions = []
+                        self.transactionList = .init(data: [], links: .init(prev: nil, next: nil))
                         self.navigationItem.title = "Error"
                         self.navigationItem.setLeftBarButtonItems(nil, animated: true)
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
-                        self.tableViewController.tableView.reloadData()
+                        self.update(with: self.filteredTransactionList)
                         self.refreshControl.endRefreshing()
                     }
                 }
             } else {
                 DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown Error!")
+                    print(error?.localizedDescription ?? "Unknown error")
                     self.transactionsError = error?.localizedDescription ?? "Unknown Error!"
                     self.transactionsErrorResponse = []
                     self.transactions = []
+                    self.transactionList = .init(data: [], links: .init(prev: nil, next: nil))
                     self.navigationItem.title = "Error"
                     self.navigationItem.setLeftBarButtonItems(nil, animated: true)
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                     #endif
-                    self.fetchingView.stopAnimating()
                     self.fetchingView.removeFromSuperview()
                     self.setupTableView()
-                    self.tableViewController.tableView.reloadData()
+                    self.update(with: self.filteredTransactionList)
                     self.refreshControl.endRefreshing()
                 }
             }
@@ -337,111 +374,6 @@ class TransactionsVC: ViewController, UISearchBarDelegate, UISearchControllerDel
             }
         }
         .resume()
-    }
-}
-
-extension TransactionsVC: UITableViewDataSource, UITableViewDelegate {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
-            return 1
-        } else {
-            if !self.transactionsError.isEmpty {
-                return 1
-            } else if !self.transactionsErrorResponse.isEmpty {
-                return transactionsErrorResponse.count
-            } else {
-                return filteredTransactions.count
-            }
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let transactionCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.transactionCell, for: indexPath)!
-        
-        let noTransactionsCell = tableView.dequeueReusableCell(withIdentifier: "noTransactionsCell", for: indexPath)
-        
-        let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
-        
-        let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
-        
-        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
-            tableView.separatorStyle = .none
-            noTransactionsCell.selectionStyle = .none
-            noTransactionsCell.textLabel?.font = circularStdBook
-            noTransactionsCell.textLabel?.textAlignment = .center
-            noTransactionsCell.textLabel?.textColor = .white
-            noTransactionsCell.textLabel?.text = "No Transactions"
-            noTransactionsCell.backgroundColor = .clear
-            return noTransactionsCell
-        } else {
-            tableView.separatorStyle = .singleLine
-            if !self.transactionsError.isEmpty {
-                errorStringCell.selectionStyle = .none
-                errorStringCell.textLabel?.numberOfLines = 0
-                errorStringCell.textLabel?.font = circularStdBook
-                errorStringCell.textLabel?.text = transactionsError
-                return errorStringCell
-            } else if !self.transactionsErrorResponse.isEmpty {
-                let error = transactionsErrorResponse[indexPath.row]
-                errorObjectCell.selectionStyle = .none
-                errorObjectCell.textLabel?.textColor = .red
-                errorObjectCell.textLabel?.font = circularStdBold
-                errorObjectCell.textLabel?.text = error.title
-                errorObjectCell.detailTextLabel?.numberOfLines = 0
-                errorObjectCell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
-                errorObjectCell.detailTextLabel?.text = error.detail
-                return errorObjectCell
-            } else {
-                let transaction = filteredTransactions[indexPath.row]
-                
-                let bgView = UIView()
-                bgView.backgroundColor = R.color.accentColor()
-                transactionCell.selectedBackgroundView = bgView
-                
-                transactionCell.leftLabel.text = transaction.attributes.description
-                transactionCell.leftSubtitle.text = transaction.attributes.creationDate
-                
-                if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
-                    transactionCell.rightLabel.textColor = .black
-                } else {
-                    transactionCell.rightLabel.textColor = R.color.greenColour()
-                }
-                
-                transactionCell.rightLabel.text = transaction.attributes.amount.valueShort
-                
-                return transactionCell
-            }
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
-            let vc = TransactionDetailVC(style: .insetGrouped)
-            vc.transaction = filteredTransactions[indexPath.row]
-            vc.categories = self.categories
-            vc.accounts = self.accounts
-            navigationController?.pushViewController(vc, animated: true)
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
-            let transaction = filteredTransactions[indexPath.row]
-            
-            let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                UIPasteboard.general.string = transaction.attributes.description
-            }
-            
-            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                UIMenu(children: [copy])
-            }
-        } else {
-            return nil
-        }
     }
     
     private func listCategories() {
@@ -454,12 +386,12 @@ extension TransactionsVC: UITableViewDataSource, UITableViewDelegate {
             if error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Category.self, from: data!) {
                     DispatchQueue.main.async {
-                        print("Categories JSON Decoding succeeded")
+                        print("Categories JSON decoding succeeded")
                         self.categories = decodedResponse.data
                     }
                 } else {
                     DispatchQueue.main.async {
-                        print("Categories JSON Decoding failed")
+                        print("Categories JSON decoding failed")
                     }
                 }
             } else {
@@ -481,12 +413,12 @@ extension TransactionsVC: UITableViewDataSource, UITableViewDelegate {
             if error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Account.self, from: data!) {
                     DispatchQueue.main.async {
-                        print("Accounts JSON Decoding succeeded")
+                        print("Accounts JSON decoding succeeded")
                         self.accounts = decodedResponse.data
                     }
                 } else {
                     DispatchQueue.main.async {
-                        print("Accounts JSON Decoding failed")
+                        print("Accounts JSON decoding failed")
                     }
                 }
             } else {
@@ -496,5 +428,112 @@ extension TransactionsVC: UITableViewDataSource, UITableViewDelegate {
             }
         }
         .resume()
+    }
+}
+
+extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
+            return 1
+        } else {
+            if !self.transactionsError.isEmpty {
+                return 1
+            } else if !self.transactionsErrorResponse.isEmpty {
+                return transactionsErrorResponse.count
+            } else {
+                return filteredTransactions.count
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let noTransactionsCell = tableView.dequeueReusableCell(withIdentifier: "noTransactionsCell", for: indexPath)
+        
+        let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
+        
+        let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
+        
+        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
+            tableView.separatorStyle = .none
+            
+            noTransactionsCell.selectionStyle = .none
+            noTransactionsCell.textLabel?.font = circularStdBook
+            noTransactionsCell.textLabel?.textAlignment = .center
+            noTransactionsCell.textLabel?.textColor = .white
+            noTransactionsCell.textLabel?.text = "No Transactions"
+            noTransactionsCell.backgroundColor = .clear
+            
+            return noTransactionsCell
+        } else {
+            tableView.separatorStyle = .singleLine
+            
+            if !self.transactionsError.isEmpty {
+                errorStringCell.selectionStyle = .none
+                errorStringCell.textLabel?.numberOfLines = 0
+                errorStringCell.textLabel?.font = circularStdBook
+                errorStringCell.textLabel?.text = transactionsError
+                
+                return errorStringCell
+            } else {
+                let error = transactionsErrorResponse[indexPath.row]
+                
+                errorObjectCell.selectionStyle = .none
+                errorObjectCell.textLabel?.textColor = .red
+                errorObjectCell.textLabel?.font = circularStdBold
+                errorObjectCell.textLabel?.text = error.title
+                errorObjectCell.detailTextLabel?.numberOfLines = 0
+                errorObjectCell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
+                errorObjectCell.detailTextLabel?.text = error.detail
+                
+                return errorObjectCell
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
+            let vc = TransactionDetailVC(style: .insetGrouped)
+            
+            vc.transaction = filteredTransactions[indexPath.row]
+            vc.categories = self.categories
+            vc.accounts = self.accounts
+            
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
+            let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
+                UIPasteboard.general.string = self.filteredTransactions[indexPath.row].attributes.description
+            }
+            
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(children: [copy])
+            }
+        } else {
+            return nil
+        }
+    }
+}
+
+extension TransactionsVC: UISearchControllerDelegate, UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if self.filteredTransactions != self.prevFilteredTransactions {
+            self.update(with: self.filteredTransactionList)
+        }
+        self.prevFilteredTransactions = self.filteredTransactions
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        if searchBar.text != "" {
+            searchBar.text = ""
+            self.prevFilteredTransactions = self.filteredTransactions
+            self.update(with: self.filteredTransactionList)
+        }
     }
 }

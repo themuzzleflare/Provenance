@@ -1,85 +1,74 @@
 import UIKit
 import Rswift
 
-class TransactionsByTagVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate {
+class TransactionsByTagVC: ViewController {
     var tag: TagResource!
     
     private var prevFilteredTransactions: [TransactionResource] = []
     
     let fetchingView = ActivityIndicator(style: .medium)
     let tableViewController = TableViewController(style: .insetGrouped)
-    
-    let circularStdBook = R.font.circularStdBook(size: UIFont.labelFontSize)
-    let circularStdBold = R.font.circularStdBold(size: UIFont.labelFontSize)
-    
     let refreshControl = RefreshControl(frame: .zero)
-    lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
+    let searchController = UISearchController(searchResultsController: nil)
     
-    lazy var transactions: [TransactionResource] = []
-    lazy var transactionsErrorResponse: [ErrorObject] = []
-    lazy var transactionsError: String = ""
-    
+    private var transactions: [TransactionResource] = []
+    private var transactionsErrorResponse: [ErrorObject] = []
+    private var transactionsError: String = ""
     private var filteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if self.filteredTransactions != self.prevFilteredTransactions {
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-        }
-        self.prevFilteredTransactions = self.filteredTransactions
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if searchBar.text != "" {
-            searchBar.text = ""
-            self.prevFilteredTransactions = self.filteredTransactions
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-        }
-    }
-    
-    lazy var categories: [CategoryResource] = []
-    
-    lazy var accounts: [AccountResource] = []
+    private var categories: [CategoryResource] = []
+    private var accounts: [AccountResource] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        super.addChild(tableViewController)
         
-        self.searchController.delegate = self
-        self.searchController.obscuresBackgroundDuringPresentation = false
-        self.searchController.searchBar.searchBarStyle = .minimal
-        self.searchController.searchBar.placeholder = "Search"
-        self.searchController.hidesNavigationBarDuringPresentation = true
-        self.searchController.searchBar.delegate = self
-        
-        self.definesPresentationContext = true
-        
-        self.title = "Transactions by Tag"
-        
-        self.navigationItem.title = "Loading"
-        self.navigationItem.searchController = searchController
-        self.navigationItem.hidesSearchBarWhenScrolling = false
-        self.navigationItem.largeTitleDisplayMode = .never
-        
+        setProperties()
+        setupNavigation()
+        setupSearch()
+        setupRefreshControl()
+        setupFetchingView()
+    }
+    
+    private func setProperties() {
+        title = "Transactions by Tag"
+    }
+    
+    private func setupNavigation() {
+        navigationItem.title = "Loading"
+        navigationItem.largeTitleDisplayMode = .never
         #if targetEnvironment(macCatalyst)
-        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
+        navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
         #endif
+    }
+    
+    private func setupSearch() {
+        searchController.delegate = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.placeholder = "Search"
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.searchBar.delegate = self
         
-        self.tableViewController.clearsSelectionOnViewWillAppear = true
-        self.tableViewController.refreshControl = refreshControl
-        self.refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+        definesPresentationContext = true
         
-        self.setupFetchingView()
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    private func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+        tableViewController.refreshControl = refreshControl
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.tableViewController.tableView.reloadData()
-        self.listTransactions()
-        self.listCategories()
-        self.listAccounts()
+        tableViewController.tableView.reloadData()
+        
+        listTransactions()
+        listCategories()
+        listAccounts()
     }
     
     @objc private func refreshTransactions() {
@@ -94,7 +83,7 @@ class TransactionsByTagVC: ViewController, UITableViewDelegate, UISearchBarDeleg
         }
     }
     
-    func setupFetchingView() {
+    private func setupFetchingView() {
         view.addSubview(fetchingView)
         
         fetchingView.translatesAutoresizingMaskIntoConstraints = false
@@ -104,7 +93,8 @@ class TransactionsByTagVC: ViewController, UITableViewDelegate, UISearchBarDeleg
         fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
     
-    func setupTableView() {
+    private func setupTableView() {
+        super.addChild(tableViewController)
         view.addSubview(tableViewController.tableView)
         
         tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -134,7 +124,7 @@ class TransactionsByTagVC: ViewController, UITableViewDelegate, UISearchBarDeleg
             if error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: data!) {
                     DispatchQueue.main.async {
-                        print("Transactions JSON Decoding Succeeded!")
+                        print("Transactions JSON decoding succeeded")
                         self.transactions = decodedResponse.data
                         self.transactionsError = ""
                         self.transactionsErrorResponse = []
@@ -142,7 +132,6 @@ class TransactionsByTagVC: ViewController, UITableViewDelegate, UISearchBarDeleg
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
@@ -150,7 +139,7 @@ class TransactionsByTagVC: ViewController, UITableViewDelegate, UISearchBarDeleg
                     }
                 } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
                     DispatchQueue.main.async {
-                        print("Transactions Error JSON Decoding Succeeded!")
+                        print("Transactions Error JSON decoding succeeded")
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
                         self.transactions = []
@@ -158,7 +147,6 @@ class TransactionsByTagVC: ViewController, UITableViewDelegate, UISearchBarDeleg
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
@@ -166,7 +154,7 @@ class TransactionsByTagVC: ViewController, UITableViewDelegate, UISearchBarDeleg
                     }
                 } else {
                     DispatchQueue.main.async {
-                        print("Transactions JSON Decoding Failed!")
+                        print("Transactions JSON decoding failed")
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
                         self.transactions = []
@@ -174,7 +162,6 @@ class TransactionsByTagVC: ViewController, UITableViewDelegate, UISearchBarDeleg
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
@@ -183,7 +170,7 @@ class TransactionsByTagVC: ViewController, UITableViewDelegate, UISearchBarDeleg
                 }
             } else {
                 DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown Error!")
+                    print(error?.localizedDescription ?? "Unknown error")
                     self.transactionsError = error?.localizedDescription ?? "Unknown Error!"
                     self.transactionsErrorResponse = []
                     self.transactions = []
@@ -191,7 +178,6 @@ class TransactionsByTagVC: ViewController, UITableViewDelegate, UISearchBarDeleg
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                     #endif
-                    self.fetchingView.stopAnimating()
                     self.fetchingView.removeFromSuperview()
                     self.setupTableView()
                     self.tableViewController.tableView.reloadData()
@@ -204,9 +190,63 @@ class TransactionsByTagVC: ViewController, UITableViewDelegate, UISearchBarDeleg
         }
         .resume()
     }
+    
+    private func listCategories() {
+        let url = URL(string: "https://api.up.com.au/api/v1/categories")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if error == nil {
+                if let decodedResponse = try? JSONDecoder().decode(Category.self, from: data!) {
+                    DispatchQueue.main.async {
+                        print("Categories JSON decoding succeeded")
+                        self.categories = decodedResponse.data
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        print("Categories JSON decoding failed")
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    print(error?.localizedDescription ?? "Unknown error")
+                }
+            }
+        }
+        .resume()
+    }
+    
+    private func listAccounts() {
+        let url = URL(string: "https://api.up.com.au/api/v1/accounts")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if error == nil {
+                if let decodedResponse = try? JSONDecoder().decode(Account.self, from: data!) {
+                    DispatchQueue.main.async {
+                        print("Accounts JSON decoding succeeded")
+                        self.accounts = decodedResponse.data
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        print("Accounts JSON decoding failed")
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    print(error?.localizedDescription ?? "Unknown error")
+                }
+            }
+        }
+        .resume()
+    }
 }
 
-extension TransactionsByTagVC: UITableViewDataSource {
+extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
             return 1
@@ -232,23 +272,28 @@ extension TransactionsByTagVC: UITableViewDataSource {
         
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
             tableView.separatorStyle = .none
+            
             noTransactionsCell.selectionStyle = .none
             noTransactionsCell.textLabel?.font = circularStdBook
             noTransactionsCell.textLabel?.textColor = .white
             noTransactionsCell.textLabel?.textAlignment = .center
             noTransactionsCell.textLabel?.text = "No Transactions"
             noTransactionsCell.backgroundColor = .clear
+            
             return noTransactionsCell
         } else {
             tableView.separatorStyle = .singleLine
+            
             if !self.transactionsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
                 errorStringCell.textLabel?.font = circularStdBook
                 errorStringCell.textLabel?.text = transactionsError
+                
                 return errorStringCell
             } else if !self.transactionsErrorResponse.isEmpty {
                 let error = transactionsErrorResponse[indexPath.row]
+                
                 errorObjectCell.selectionStyle = .none
                 errorObjectCell.textLabel?.textColor = .red
                 errorObjectCell.textLabel?.font = circularStdBold
@@ -256,13 +301,12 @@ extension TransactionsByTagVC: UITableViewDataSource {
                 errorObjectCell.detailTextLabel?.numberOfLines = 0
                 errorObjectCell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
                 errorObjectCell.detailTextLabel?.text = error.detail
+                
                 return errorObjectCell
             } else {
                 let transaction = filteredTransactions[indexPath.row]
                 
-                let bgView = UIView()
-                bgView.backgroundColor = R.color.accentColor()
-                transactionCell.selectedBackgroundView = bgView
+                transactionCell.selectedBackgroundView = bgCellView
                 
                 transactionCell.leftLabel.text = transaction.attributes.description
                 transactionCell.leftSubtitle.text = transaction.attributes.creationDate
@@ -274,6 +318,7 @@ extension TransactionsByTagVC: UITableViewDataSource {
                 }
                 
                 transactionCell.rightLabel.text = transaction.attributes.amount.valueShort
+                
                 return transactionCell
             }
         }
@@ -283,9 +328,11 @@ extension TransactionsByTagVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
             let vc = TransactionDetailVC(style: .insetGrouped)
+            
             vc.transaction = filteredTransactions[indexPath.row]
             vc.categories = self.categories
             vc.accounts = self.accounts
+            
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -450,58 +497,21 @@ extension TransactionsByTagVC: UITableViewDataSource {
             return nil
         }
     }
-    
-    private func listCategories() {
-        let url = URL(string: "https://api.up.com.au/api/v1/categories")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if error == nil {
-                if let decodedResponse = try? JSONDecoder().decode(Category.self, from: data!) {
-                    DispatchQueue.main.async {
-                        print("Categories JSON Decoding Succeeded!")
-                        self.categories = decodedResponse.data
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        print("Categories JSON Decoding Failed!")
-                    }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown Error!")
-                }
-            }
+}
+
+extension TransactionsByTagVC: UISearchControllerDelegate, UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if self.filteredTransactions != self.prevFilteredTransactions {
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
-        .resume()
+        self.prevFilteredTransactions = self.filteredTransactions
     }
     
-    private func listAccounts() {
-        let url = URL(string: "https://api.up.com.au/api/v1/accounts")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("Bearer \(UserDefaults.standard.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if error == nil {
-                if let decodedResponse = try? JSONDecoder().decode(Account.self, from: data!) {
-                    DispatchQueue.main.async {
-                        print("Accounts JSON Decoding Succeeded!")
-                        self.accounts = decodedResponse.data
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        print("Accounts JSON Decoding Failed!")
-                    }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown Error!")
-                }
-            }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        if searchBar.text != "" {
+            searchBar.text = ""
+            self.prevFilteredTransactions = self.filteredTransactions
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
-        .resume()
     }
 }

@@ -8,7 +8,6 @@ class AccountDetailVC: TableViewController {
     private var attributes: KeyValuePairs<String, String> {
         return ["Account Balance": account.attributes.balance.valueLong, "Latest Transaction": transaction?.attributes.description ?? "", "Account ID": account.id, "Creation Date": account.attributes.creationDate]
     }
-    
     private var altAttributes: Array<(key: String, value: String)> {
         return attributes.filter {
             $0.value != ""
@@ -17,13 +16,23 @@ class AccountDetailVC: TableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
-        self.clearsSelectionOnViewWillAppear = true
         
-        self.title = "Account Details"
-        self.navigationItem.title = account.attributes.displayName
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
-        self.tableView.register(R.nib.attributeCell)
+        setProperties()
+        setupNavigation()
+        setupTableView()
+    }
+    
+    private func setProperties() {
+        title = "Account Details"
+    }
+    
+    private func setupNavigation() {
+        navigationItem.title = account.attributes.displayName
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+    }
+    
+    private func setupTableView() {
+        tableView.register(R.nib.attributeCell)
     }
     
     @objc private func closeWorkflow() {
@@ -50,10 +59,8 @@ class AccountDetailVC: TableViewController {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let attribute = altAttributes[indexPath.row]
-        
         let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-            UIPasteboard.general.string = attribute.value
+            UIPasteboard.general.string = self.altAttributes[indexPath.row].value
         }
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in

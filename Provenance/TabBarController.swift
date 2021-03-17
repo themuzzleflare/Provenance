@@ -4,15 +4,22 @@ import Rswift
 class TabBarController: UITabBarController, UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.delegate = self
+        
+        setProperties()
+        setupTabBarStyle()
+        setupTabBarItems()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.tabBar.barStyle = .black
-        self.tabBar.barTintColor = R.color.bgColour()
-        
+    private func setProperties() {
+        delegate = self
+    }
+    
+    private func setupTabBarStyle() {
+        tabBar.barStyle = .black
+        tabBar.barTintColor = R.color.bgColour()
+    }
+    
+    private func setupTabBarItems() {
         let tabOne = NavigationController(rootViewController: TransactionsVC())
         let tabOneBarItem = UITabBarItem(title: "Transactions", image: R.image.dollarsignCircle(), selectedImage: R.image.dollarsignCircleFill())
         
@@ -38,6 +45,6 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         
         tabFive.tabBarItem = tabFiveBarItem
         
-        self.viewControllers = [tabOne, tabTwo, tabThree, tabFour, tabFive]
+        viewControllers = [tabOne, tabTwo, tabThree, tabFour, tabFive]
     }
 }

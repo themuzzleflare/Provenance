@@ -7,11 +7,21 @@ class TagsVC: TableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.clearsSelectionOnViewWillAppear = true
-        
-        self.title = "Tags"
-        self.navigationItem.title = "Tags"
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")
+        setProperties()
+        setupNavigation()
+        setupTableView()
+    }
+    
+    private func setProperties() {
+        title = "Tags"
+    }
+    
+    private func setupNavigation() {
+        navigationItem.title = "Tags"
+    }
+    
+    private func setupTableView() {
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -26,10 +36,8 @@ class TagsVC: TableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath)
         
         let tag = transaction.relationships.tags.data[indexPath.row]
-        
-        let bgView = UIView()
-        bgView.backgroundColor = R.color.accentColor()
-        cell.selectedBackgroundView = bgView
+
+        cell.selectedBackgroundView = bgCellView
         
         cell.accessoryType = .disclosureIndicator
         cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)

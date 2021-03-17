@@ -13,14 +13,17 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.backgroundColor = R.color.bgColour()
-        self.tableView.separatorColor = R.color.bgColour()
-        self.tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        
-        self.tableView.indicatorStyle = .white
-        self.tableView.showsHorizontalScrollIndicator = false
+        setupTableViewStyle()
+    }
+    
+    private func setupTableViewStyle() {
+        tableView.backgroundColor = R.color.bgColour()
+        tableView.separatorColor = R.color.bgColour()
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        tableView.indicatorStyle = .white
+        tableView.showsHorizontalScrollIndicator = false
         #if !targetEnvironment(macCatalyst)
-        self.tableView.showsVerticalScrollIndicator = false
+        tableView.showsVerticalScrollIndicator = false
         #endif
     }
 }

@@ -1,73 +1,65 @@
 import UIKit
 import Rswift
 
-class AddTagWorkflowVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate {
+class AddTagWorkflowVC: ViewController {
     let fetchingView = ActivityIndicator(style: .medium)
     let tableViewController = TableViewController(style: .insetGrouped)
-    
-    let circularStdBook = R.font.circularStdBook(size: UIFont.labelFontSize)
-    let circularStdBold = R.font.circularStdBold(size: UIFont.labelFontSize)
-    
     let refreshControl = RefreshControl(frame: .zero)
-    lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
+    let searchController = UISearchController(searchResultsController: nil)
     
     private var prevFilteredTransactions: [TransactionResource] = []
-    
-    lazy var transactions: [TransactionResource] = []
-    lazy var transactionsErrorResponse: [ErrorObject] = []
-    lazy var transactionsError: String = ""
-    
+    private var transactions: [TransactionResource] = []
+    private var transactionsErrorResponse: [ErrorObject] = []
+    private var transactionsError: String = ""
     private var filteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
         }
     }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if self.filteredTransactions != self.prevFilteredTransactions {
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-        }
-        self.prevFilteredTransactions = self.filteredTransactions
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if searchBar.text != "" {
-            searchBar.text = ""
-            self.prevFilteredTransactions = self.filteredTransactions
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        super.addChild(tableViewController)
         
-        self.searchController.delegate = self
-        self.searchController.obscuresBackgroundDuringPresentation = false
-        self.searchController.searchBar.searchBarStyle = .minimal
-        self.searchController.searchBar.placeholder = "Search"
-        self.searchController.hidesNavigationBarDuringPresentation = true
-        self.searchController.searchBar.delegate = self
+        setProperties()
+        setupNavigation()
+        setupSearch()
+        setupRefreshControl()
+        setupFetchingView()
+    }
+    
+    private func setProperties() {
+        title = "Transactions"
+    }
+    
+    private func setupSearch() {
+        searchController.delegate = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.placeholder = "Search"
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.searchBar.delegate = self
         
-        self.definesPresentationContext = true
+        definesPresentationContext = true
         
-        self.title = "Transactions"
-        self.navigationItem.title = "Loading"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
-        self.navigationItem.searchController = searchController
-        self.navigationItem.hidesSearchBarWhenScrolling = false
-        self.navigationItem.backButtonDisplayMode = .minimal
-        
-        self.tableViewController.clearsSelectionOnViewWillAppear = true
-        self.tableViewController.refreshControl = refreshControl
-        self.refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
-        
-        self.setupFetchingView()
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    private func setupNavigation() {
+        navigationItem.title = "Loading"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+        navigationItem.backButtonDisplayMode = .minimal
+    }
+    
+    private func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+        tableViewController.refreshControl = refreshControl
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.tableViewController.tableView.reloadData()
-        self.listTransactions()
+        tableViewController.tableView.reloadData()
+        
+        listTransactions()
     }
     
     @objc private func refreshTransactions() {
@@ -80,32 +72,33 @@ class AddTagWorkflowVC: ViewController, UITableViewDelegate, UISearchBarDelegate
         self.dismiss(animated: true)
     }
     
-    func setupFetchingView() {
-        self.view.addSubview(fetchingView)
+    private func setupFetchingView() {
+        view.addSubview(fetchingView)
         
-        self.fetchingView.translatesAutoresizingMaskIntoConstraints = false
-        self.fetchingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        self.fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        self.fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        self.fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        fetchingView.translatesAutoresizingMaskIntoConstraints = false
+        fetchingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
     
-    func setupTableView() {
-        self.view.addSubview(tableViewController.tableView)
+    private func setupTableView() {
+        super.addChild(tableViewController)
+        view.addSubview(tableViewController.tableView)
         
-        self.tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
-        self.tableViewController.tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        self.tableViewController.tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        self.tableViewController.tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        self.tableViewController.tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableViewController.tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableViewController.tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tableViewController.tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        tableViewController.tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         
-        self.tableViewController.tableView.dataSource = self
-        self.tableViewController.tableView.delegate = self
+        tableViewController.tableView.dataSource = self
+        tableViewController.tableView.delegate = self
         
-        self.tableViewController.tableView.register(R.nib.transactionCell)
-        self.tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTransactionsCell")
-        self.tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
-        self.tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
+        tableViewController.tableView.register(R.nib.transactionCell)
+        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTransactionsCell")
+        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
+        tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
     }
     
     private func listTransactions() {
@@ -120,12 +113,11 @@ class AddTagWorkflowVC: ViewController, UITableViewDelegate, UISearchBarDelegate
             if error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: data!) {
                     DispatchQueue.main.async {
-                        print("Transactions JSON Decoding Succeeded!")
+                        print("Transactions JSON decoding succeeded")
                         self.transactions = decodedResponse.data
                         self.transactionsError = ""
                         self.transactionsErrorResponse = []
                         self.navigationItem.title = "Select Transaction"
-                        self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
@@ -133,12 +125,11 @@ class AddTagWorkflowVC: ViewController, UITableViewDelegate, UISearchBarDelegate
                     }
                 } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
                     DispatchQueue.main.async {
-                        print("Transactions Error JSON Decoding Succeeded!")
+                        print("Transactions Error JSON decoding succeeded")
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
                         self.transactions = []
                         self.navigationItem.title = "Errors"
-                        self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
@@ -146,12 +137,11 @@ class AddTagWorkflowVC: ViewController, UITableViewDelegate, UISearchBarDelegate
                     }
                 } else {
                     DispatchQueue.main.async {
-                        print("Transactions JSON Decoding Failed!")
+                        print("Transactions JSON decoding failed")
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
                         self.transactions = []
                         self.navigationItem.title = "Error"
-                        self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
@@ -160,12 +150,11 @@ class AddTagWorkflowVC: ViewController, UITableViewDelegate, UISearchBarDelegate
                 }
             } else {
                 DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown Error!")
+                    print(error?.localizedDescription ?? "Unknown error")
                     self.transactionsError = error?.localizedDescription ?? "Unknown Error!"
                     self.transactionsErrorResponse = []
                     self.transactions = []
                     self.navigationItem.title = "Error"
-                    self.fetchingView.stopAnimating()
                     self.fetchingView.removeFromSuperview()
                     self.setupTableView()
                     self.tableViewController.tableView.reloadData()
@@ -180,7 +169,7 @@ class AddTagWorkflowVC: ViewController, UITableViewDelegate, UISearchBarDelegate
     }
 }
 
-extension AddTagWorkflowVC: UITableViewDataSource {
+extension AddTagWorkflowVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
             return 1
@@ -206,23 +195,28 @@ extension AddTagWorkflowVC: UITableViewDataSource {
         
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
             tableView.separatorStyle = .none
+            
             noTransactionsCell.selectionStyle = .none
             noTransactionsCell.textLabel?.font = circularStdBook
             noTransactionsCell.textLabel?.textColor = .white
             noTransactionsCell.textLabel?.textAlignment = .center
             noTransactionsCell.textLabel?.text = "No Transactions"
             noTransactionsCell.backgroundColor = .clear
+            
             return noTransactionsCell
         } else {
             tableView.separatorStyle = .singleLine
+            
             if !self.transactionsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
                 errorStringCell.textLabel?.font = circularStdBook
                 errorStringCell.textLabel?.text = transactionsError
+                
                 return errorStringCell
             } else if !self.transactionsErrorResponse.isEmpty {
                 let error = transactionsErrorResponse[indexPath.row]
+                
                 errorObjectCell.selectionStyle = .none
                 errorObjectCell.textLabel?.textColor = .red
                 errorObjectCell.textLabel?.font = circularStdBold
@@ -230,14 +224,12 @@ extension AddTagWorkflowVC: UITableViewDataSource {
                 errorObjectCell.detailTextLabel?.numberOfLines = 0
                 errorObjectCell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
                 errorObjectCell.detailTextLabel?.text = error.detail
+                
                 return errorObjectCell
             } else {
                 let transaction = filteredTransactions[indexPath.row]
                 
-                let bgView = UIView()
-                bgView.backgroundColor = R.color.accentColor()
-                transactionCell.selectedBackgroundView = bgView
-                
+                transactionCell.selectedBackgroundView = bgCellView
                 transactionCell.leftLabel.text = transaction.attributes.description
                 transactionCell.leftSubtitle.text = transaction.attributes.creationDate
                 
@@ -248,6 +240,7 @@ extension AddTagWorkflowVC: UITableViewDataSource {
                 }
                 
                 transactionCell.rightLabel.text = transaction.attributes.amount.valueShort
+                
                 return transactionCell
             }
         }
@@ -256,92 +249,94 @@ extension AddTagWorkflowVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
             let vc = AddTagWorkflowTwoVC()
+            
             vc.transaction = filteredTransactions[indexPath.row]
+            
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
 
-class AddTagWorkflowTwoVC: ViewController, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate, UITextFieldDelegate {
+extension AddTagWorkflowVC: UISearchControllerDelegate, UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if self.filteredTransactions != self.prevFilteredTransactions {
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        }
+        self.prevFilteredTransactions = self.filteredTransactions
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        if searchBar.text != "" {
+            searchBar.text = ""
+            self.prevFilteredTransactions = self.filteredTransactions
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        }
+    }
+}
+
+class AddTagWorkflowTwoVC: ViewController {
     var transaction: TransactionResource!
+    
+    weak var submitActionProxy: UIAlertAction?
+    private var textDidChangeObserver: NSObjectProtocol!
     
     let fetchingView = ActivityIndicator(style: .medium)
     let tableViewController = TableViewController(style: .insetGrouped)
     
-    let circularStdBook = R.font.circularStdBook(size: UIFont.labelFontSize)
-    let circularStdBold = R.font.circularStdBold(size: UIFont.labelFontSize)
-    
     private var prevFilteredTags: [TagResource] = []
     
     let refreshControl = RefreshControl(frame: .zero)
-    lazy var searchController: UISearchController = UISearchController(searchResultsController: nil)
+    let searchController = UISearchController(searchResultsController: nil)
     
-    lazy var tags: [TagResource] = []
-    lazy var tagsErrorResponse: [ErrorObject] = []
-    lazy var tagsError: String = ""
-    
+    private var tags: [TagResource] = []
+    private var tagsErrorResponse: [ErrorObject] = []
+    private var tagsError: String = ""
     private var filteredTags: [TagResource] {
         tags.filter { tag in
             searchController.searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchController.searchBar.text!)
         }
     }
     
-    weak var submitActionProxy: UIAlertAction?
-    private var textDidChangeObserver: NSObjectProtocol!
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if self.filteredTags != self.prevFilteredTags {
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-        }
-        self.prevFilteredTags = self.filteredTags
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if searchBar.text != "" {
-            searchBar.text = ""
-            self.prevFilteredTags = self.filteredTags
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        super.addChild(tableViewController)
         
-        self.searchController.delegate = self
-        self.searchController.obscuresBackgroundDuringPresentation = false
-        self.searchController.searchBar.searchBarStyle = .minimal
-        self.searchController.searchBar.placeholder = "Search"
-        self.searchController.hidesNavigationBarDuringPresentation = true
-        self.searchController.searchBar.delegate = self
+        setProperties()
+        setupNavigation()
+        setupSearch()
+        setupRefreshControl()
+        setupFetchingView()
+    }
+    
+    private func setProperties() {
+        title = "Tags"
+    }
+    
+    private func setupNavigation() {
+        navigationItem.title = "Loading"
+        navigationItem.backButtonDisplayMode = .minimal
+    }
+    
+    private func setupSearch() {
+        searchController.delegate = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.placeholder = "Search"
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.searchBar.delegate = self
         
-        self.definesPresentationContext = true
+        definesPresentationContext = true
         
-        self.title = "Tags"
-        self.navigationItem.title = "Loading"
-        self.navigationItem.searchController = searchController
-        self.navigationItem.hidesSearchBarWhenScrolling = false
-        self.navigationItem.backButtonDisplayMode = .minimal
-        
-        self.tableViewController.clearsSelectionOnViewWillAppear = true
-        self.tableViewController.refreshControl = refreshControl
-        self.refreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
-        
-        self.setupFetchingView()
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    private func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+        tableViewController.refreshControl = refreshControl
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.listTags()
-    }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let currentText = textField.text ?? ""
-        
-        guard let stringRange = Range(range, in: currentText) else { return false }
-        
-        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-        
-        return updatedText.count <= 30
+        listTags()
     }
     
     @objc private func openAddWorkflow() {
@@ -403,7 +398,7 @@ class AddTagWorkflowTwoVC: ViewController, UITableViewDelegate, UISearchBarDeleg
         }
     }
     
-    func setupFetchingView() {
+    private func setupFetchingView() {
         view.addSubview(fetchingView)
         
         fetchingView.translatesAutoresizingMaskIntoConstraints = false
@@ -413,7 +408,8 @@ class AddTagWorkflowTwoVC: ViewController, UITableViewDelegate, UISearchBarDeleg
         fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
     
-    func setupTableView() {
+    private func setupTableView() {
+        super.addChild(tableViewController)
         view.addSubview(tableViewController.tableView)
         
         tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -443,7 +439,7 @@ class AddTagWorkflowTwoVC: ViewController, UITableViewDelegate, UISearchBarDeleg
             if error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: data!) {
                     DispatchQueue.main.async {
-                        print("Tags JSON Decoding Succeeded!")
+                        print("Tags JSON decoding succeeded")
                         self.tags = decodedResponse.data
                         self.tagsError = ""
                         self.tagsErrorResponse = []
@@ -451,7 +447,6 @@ class AddTagWorkflowTwoVC: ViewController, UITableViewDelegate, UISearchBarDeleg
                         if self.navigationItem.rightBarButtonItem == nil {
                             self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.openAddWorkflow)), animated: true)
                         }
-                        self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
@@ -459,13 +454,12 @@ class AddTagWorkflowTwoVC: ViewController, UITableViewDelegate, UISearchBarDeleg
                     }
                 } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
                     DispatchQueue.main.async {
-                        print("Tags Error JSON Decoding Succeeded!")
+                        print("Tags Error JSON decoding succeeded")
                         self.tagsErrorResponse = decodedResponse.errors
                         self.tagsError = ""
                         self.tags = []
                         self.navigationItem.title = "Errors"
                         self.navigationItem.setRightBarButton(nil, animated: true)
-                        self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
@@ -473,13 +467,12 @@ class AddTagWorkflowTwoVC: ViewController, UITableViewDelegate, UISearchBarDeleg
                     }
                 } else {
                     DispatchQueue.main.async {
-                        print("Tags JSON Decoding Failed!")
+                        print("Tags JSON decoding failed")
                         self.tagsError = "JSON Decoding Failed!"
                         self.tagsErrorResponse = []
                         self.tags = []
                         self.navigationItem.title = "Error"
                         self.navigationItem.setRightBarButton(nil, animated: true)
-                        self.fetchingView.stopAnimating()
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
@@ -488,13 +481,12 @@ class AddTagWorkflowTwoVC: ViewController, UITableViewDelegate, UISearchBarDeleg
                 }
             } else {
                 DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown Error!")
+                    print(error?.localizedDescription ?? "Unknown error")
                     self.tagsError = error?.localizedDescription ?? "Unknown Error!"
                     self.tagsErrorResponse = []
                     self.tags = []
                     self.navigationItem.title = "Error"
                     self.navigationItem.setRightBarButton(nil, animated: true)
-                    self.fetchingView.stopAnimating()
                     self.fetchingView.removeFromSuperview()
                     self.setupTableView()
                     self.tableViewController.tableView.reloadData()
@@ -509,7 +501,7 @@ class AddTagWorkflowTwoVC: ViewController, UITableViewDelegate, UISearchBarDeleg
     }
 }
 
-extension AddTagWorkflowTwoVC: UITableViewDataSource {
+extension AddTagWorkflowTwoVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty {
             return 1
@@ -535,23 +527,28 @@ extension AddTagWorkflowTwoVC: UITableViewDataSource {
         
         if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
             tableView.separatorStyle = .none
+            
             noTagsCell.selectionStyle = .none
             noTagsCell.textLabel?.textAlignment = .center
             noTagsCell.textLabel?.textColor = .white
             noTagsCell.textLabel?.text = "No Tags"
             noTagsCell.textLabel?.font = circularStdBook
             noTagsCell.backgroundColor = .clear
+            
             return noTagsCell
         } else {
             tableView.separatorStyle = .singleLine
+            
             if !self.tagsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
                 errorStringCell.textLabel?.font = circularStdBook
                 errorStringCell.textLabel?.text = tagsError
+                
                 return errorStringCell
             } else if !self.tagsErrorResponse.isEmpty {
                 let error = tagsErrorResponse[indexPath.row]
+                
                 errorObjectCell.selectionStyle = .none
                 errorObjectCell.textLabel?.textColor = .red
                 errorObjectCell.textLabel?.font = circularStdBold
@@ -559,18 +556,17 @@ extension AddTagWorkflowTwoVC: UITableViewDataSource {
                 errorObjectCell.detailTextLabel?.numberOfLines = 0
                 errorObjectCell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
                 errorObjectCell.detailTextLabel?.text = error.detail
+                
                 return errorObjectCell
             } else {
                 let tag = filteredTags[indexPath.row]
                 
-                let bgView = UIView()
-                bgView.backgroundColor = R.color.accentColor()
-                tagCell.selectedBackgroundView = bgView
-                
+                tagCell.selectedBackgroundView = bgCellView
                 tagCell.accessoryType = .disclosureIndicator
                 tagCell.textLabel?.font = circularStdBook
                 tagCell.textLabel?.adjustsFontForContentSizeCategory = true
                 tagCell.textLabel?.text = tag.id
+                
                 return tagCell
             }
         }
@@ -579,9 +575,40 @@ extension AddTagWorkflowTwoVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.tagsErrorResponse.isEmpty && self.tagsError.isEmpty && !self.filteredTags.isEmpty {
             let vc = AddTagWorkflowThreeVC(style: .insetGrouped)
+            
             vc.transaction = transaction
             vc.tag = filteredTags[indexPath.row].id
+            
             self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+
+extension AddTagWorkflowTwoVC: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = textField.text ?? ""
+        
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        return updatedText.count <= 30
+    }
+}
+
+extension AddTagWorkflowTwoVC: UISearchControllerDelegate, UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if self.filteredTags != self.prevFilteredTags {
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        }
+        self.prevFilteredTags = self.filteredTags
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        if searchBar.text != "" {
+            searchBar.text = ""
+            self.prevFilteredTags = self.filteredTags
+            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
     }
 }
@@ -597,18 +624,26 @@ class AddTagWorkflowThreeVC: TableViewController {
         }
     }
     
-    let circularStdBook = R.font.circularStdBook(size: UIFont.labelFontSize)
-    let circularStdBold = R.font.circularStdBold(size: UIFont.labelFontSize)
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Confirmation"
-        self.navigationItem.title = "Confirmation"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.checkmark(), style: .plain, target: self, action: #selector(addTag))
-        
-        self.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "attributeCell")
-        self.tableView.register(R.nib.transactionCell)
+        setProperties()
+        setupNavigation()
+        setupTableView()
+    }
+    
+    private func setProperties() {
+        title = "Confirmation"
+    }
+    
+    private func setupNavigation() {
+        navigationItem.title = "Confirmation"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.checkmark(), style: .plain, target: self, action: #selector(addTag))
+    }
+    
+    private func setupTableView() {
+        tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "attributeCell")
+        tableView.register(R.nib.transactionCell)
     }
     
     @objc private func addTag() {
@@ -735,6 +770,7 @@ class AddTagWorkflowThreeVC: TableViewController {
         
         if section == 0 {
             cell.textLabel?.text = tag
+            
             return cell
         } else if section == 1 {
             transactionCell.leftLabel.text = transaction.attributes.description
@@ -747,11 +783,12 @@ class AddTagWorkflowThreeVC: TableViewController {
             }
             
             transactionCell.rightLabel.text = transaction.attributes.amount.valueShort
+            
             return transactionCell
         } else {
-            
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = "You are adding the tag \"\(tag!)\" to the transaction \"\(transaction.attributes.description)\", which was created \(transaction.attributes.creationDate)."
+            
             return cell
         }
     }
