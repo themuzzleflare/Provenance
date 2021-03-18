@@ -10,6 +10,16 @@ class AccountsVC: ViewController {
     private var accountsErrorResponse: [ErrorObject] = []
     private var accountsError: String = ""
     
+    @objc private func refreshAccounts() {
+        #if targetEnvironment(macCatalyst)
+        let loadingView = ActivityIndicator(style: .medium)
+        navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
+        #endif
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.listAccounts()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -17,6 +27,10 @@ class AccountsVC: ViewController {
         setupNavigation()
         setupRefreshControl()
         setupFetchingView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        listAccounts()
     }
     
     private func setProperties() {
@@ -36,6 +50,16 @@ class AccountsVC: ViewController {
         tableViewController.refreshControl = refreshControl
     }
     
+    private func setupFetchingView() {
+        view.addSubview(fetchingView)
+        
+        fetchingView.translatesAutoresizingMaskIntoConstraints = false
+        fetchingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+    }
+    
     private func setupTableView() {
         super.addChild(tableViewController)
         view.addSubview(tableViewController.tableView)
@@ -53,30 +77,6 @@ class AccountsVC: ViewController {
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noAccountsCell")
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        listAccounts()
-    }
-    
-    @objc private func refreshAccounts() {
-        #if targetEnvironment(macCatalyst)
-        let loadingView = ActivityIndicator(style: .medium)
-        navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
-        #endif
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.listAccounts()
-        }
-    }
-    
-    private func setupFetchingView() {
-        view.addSubview(fetchingView)
-        
-        fetchingView.translatesAutoresizingMaskIntoConstraints = false
-        fetchingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
     
     private func listAccounts() {
@@ -138,7 +138,7 @@ class AccountsVC: ViewController {
             } else {
                 DispatchQueue.main.async {
                     print(error?.localizedDescription ?? "Unknown error")
-                    self.accountsError = error?.localizedDescription ?? "Unknown error"
+                    self.accountsError = error?.localizedDescription ?? "Unknown Error!"
                     self.accountsErrorResponse = []
                     self.accounts = []
                     self.navigationItem.title = "Error"

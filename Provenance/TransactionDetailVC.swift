@@ -107,6 +107,10 @@ class TransactionDetailVC: TableViewController {
         setupTableView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
+    
     private func setProperties() {
         title = "Transaction Details"
     }
@@ -119,10 +123,6 @@ class TransactionDetailVC: TableViewController {
     
     private func setupTableView() {
         tableView.register(R.nib.attributeCell)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        tableView.reloadData()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -186,7 +186,6 @@ class TransactionDetailVC: TableViewController {
         }
         
         cell.selectedBackgroundView = bgCellView
-        
         cell.selectionStyle = cellSelectionStyle
         cell.accessoryType = cellAccessoryType
         
@@ -210,7 +209,7 @@ class TransactionDetailVC: TableViewController {
                 
                 vc.account = accountFilter!.first!
                 
-                self.navigationController?.pushViewController(vc, animated: true)
+                navigationController?.pushViewController(vc, animated: true)
             }
         } else if section == 4 {
             if transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil {
@@ -218,7 +217,7 @@ class TransactionDetailVC: TableViewController {
                 
                 vc.transaction = transaction
                 
-                self.navigationController?.pushViewController(vc, animated: true)
+                navigationController?.pushViewController(vc, animated: true)
             } else {
                 attribute = altAttributesFive[indexPath.row]
                 
@@ -230,14 +229,14 @@ class TransactionDetailVC: TableViewController {
                     vc.category = categoryFilter!.first
                 }
                 
-                self.navigationController?.pushViewController(vc, animated: true)
+                navigationController?.pushViewController(vc, animated: true)
             }
         } else if section == 5 {
             let vc = TagsVC(style: .insetGrouped)
             
             vc.transaction = transaction
             
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     

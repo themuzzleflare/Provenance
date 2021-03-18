@@ -6,18 +6,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     weak var submitActionProxy: UIAlertAction?
+    
     private var textDidChangeObserver: NSObjectProtocol!
     
+    let viewController = TabBarController()
+    let settingsController = SettingsVC(style: .insetGrouped)
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:[UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        setupWindow()
+        initialSetup()
+        
+        return true
+    }
+    
+    private func setupWindow() {
         window = UIWindow(frame: UIScreen.main.bounds)
-        
-        let viewController = TabBarController()
-        let settingsController = SettingsVC(style: .insetGrouped)
-        
         window?.rootViewController = viewController
-        
         window?.makeKeyAndVisible()
-        
+    }
+    
+    private func initialSetup() {
         if UserDefaults.standard.string(forKey: "dateStyle") == nil {
             UserDefaults.standard.setValue("Absolute", forKey: "dateStyle")
         }
@@ -71,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             if statusCode == 200 {
                                 DispatchQueue.main.async {
                                     UserDefaults.standard.set(answer.text!, forKey: "apiKey")
-                                    self.window?.rootViewController?.present(NavigationController(rootViewController: settingsController), animated: true)
+                                    self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
                                 }
                             } else {
                                 DispatchQueue.main.async {
@@ -87,7 +95,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                     ac.setValue(messageAttrString, forKey: "attributedMessage")
                                     
                                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
-                                        self.window?.rootViewController?.present(NavigationController(rootViewController: settingsController), animated: true)
+                                        self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
                                     })
                                     dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                                     ac.addAction(dismissAction)
@@ -108,7 +116,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 ac.setValue(messageAttrString, forKey: "attributedMessage")
                                 
                                 let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
-                                    self.window?.rootViewController?.present(NavigationController(rootViewController: settingsController), animated: true)
+                                    self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
                                 })
                                 dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                                 ac.addAction(dismissAction)
@@ -130,7 +138,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     ac.setValue(messageAttrString, forKey: "attributedMessage")
                     
                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
-                        self.window?.rootViewController?.present(NavigationController(rootViewController: settingsController), animated: true)
+                        self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
                     })
                     dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                     ac.addAction(dismissAction)
@@ -146,7 +154,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             window?.rootViewController?.present(ac, animated: true)
         }
-        
-        return true
     }
 }

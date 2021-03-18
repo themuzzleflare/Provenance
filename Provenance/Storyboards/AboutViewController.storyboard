@@ -146,7 +146,6 @@
                     <connections>
                         <outlet property="appNameValue" destination="0p0-RM-AcW" id="cMk-mv-yu2"/>
                         <outlet property="buildValue" destination="lu6-aP-ZgE" id="YKU-Ev-Zfc"/>
-                        <outlet property="contactCell" destination="B4n-TB-qeC" id="TMz-D3-z7R"/>
                         <outlet property="versionValue" destination="YmN-uG-Vff" id="xWg-DL-aqK"/>
                     </connections>
                 </tableViewController>

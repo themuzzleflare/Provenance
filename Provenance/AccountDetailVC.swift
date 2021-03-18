@@ -14,6 +14,10 @@ class AccountDetailVC: TableViewController {
         }
     }
     
+    @objc private func closeWorkflow() {
+        dismiss(animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -33,10 +37,6 @@ class AccountDetailVC: TableViewController {
     
     private func setupTableView() {
         tableView.register(R.nib.attributeCell)
-    }
-    
-    @objc private func closeWorkflow() {
-        self.dismiss(animated: true)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

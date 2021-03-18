@@ -6,6 +6,10 @@ class DiagnosticTableVC: TableViewController {
         return ["Version": appVersion, "Build": appBuild]
     }
     
+    @objc private func closeWorkflow() {
+        dismiss(animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,10 +29,6 @@ class DiagnosticTableVC: TableViewController {
     
     private func setupTableView() {
         tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "diagnosticCell")
-    }
-    
-    @objc private func closeWorkflow() {
-        self.dismiss(animated: true)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

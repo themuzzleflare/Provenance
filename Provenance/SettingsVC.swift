@@ -3,7 +3,19 @@ import Rswift
 
 class SettingsVC: TableViewController {
     weak var submitActionProxy: UIAlertAction?
+    
     private var textDidChangeObserver: NSObjectProtocol!
+    
+    @objc private func switchDateStyle(segment: UISegmentedControl) {
+        if segment.selectedSegmentIndex == 0 {
+            UserDefaults.standard.setValue("Absolute", forKey: "dateStyle")
+        } else {
+            UserDefaults.standard.setValue("Relative", forKey: "dateStyle")
+        }
+    }
+    @objc private func closeWorkflow() {
+        dismiss(animated: true)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,10 +37,6 @@ class SettingsVC: TableViewController {
     private func setupTableView() {
         tableView.register(R.nib.apiKeyCell)
         tableView.register(R.nib.dateStylePickerCell)
-    }
-    
-    @objc private func closeWorkflow() {
-        self.dismiss(animated: true)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -72,14 +80,6 @@ class SettingsVC: TableViewController {
             return apiKeyCell
         } else {
             return datePickerCell
-        }
-    }
-    
-    @objc private func switchDateStyle(segment: UISegmentedControl) {
-        if segment.selectedSegmentIndex == 0 {
-            UserDefaults.standard.setValue("Absolute", forKey: "dateStyle")
-        } else {
-            UserDefaults.standard.setValue("Relative", forKey: "dateStyle")
         }
     }
     

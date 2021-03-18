@@ -1,16 +1,21 @@
 import UIKit
 import Rswift
 
-class AllTagsVC: ViewController {
+class AddTagWorkflowTwoVC: ViewController {
+    var transaction: TransactionResource!
+    
+    weak var submitActionProxy: UIAlertAction?
+    
     let fetchingView = ActivityIndicator(style: .medium)
     let tableViewController = TableViewController(style: .insetGrouped)
     let refreshControl = RefreshControl(frame: .zero)
     let searchController = UISearchController(searchResultsController: nil)
     
+    private var textDidChangeObserver: NSObjectProtocol!
+    private var prevFilteredTags: [TagResource] = []
     private var tags: [TagResource] = []
     private var tagsErrorResponse: [ErrorObject] = []
     private var tagsError: String = ""
-    private var prevFilteredTags: [TagResource] = []
     private var filteredTags: [TagResource] {
         tags.filter { tag in
             searchController.searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchController.searchBar.text!)
@@ -18,21 +23,61 @@ class AllTagsVC: ViewController {
     }
     
     @objc private func openAddWorkflow() {
-        let vc = R.storyboard.addTagWorkflowVC.addTagWorkflowNavigation()!
-        present(vc, animated: true)
+        let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+        
+        let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+        let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+        
+        let titleAttrString = NSMutableAttributedString(string: "New Tag", attributes: titleFont)
+        let messageAttrString = NSMutableAttributedString(string: "Enter the name of the new tag.", attributes: messageFont)
+        
+        ac.setValue(titleAttrString, forKey: "attributedTitle")
+        ac.setValue(messageAttrString, forKey: "attributedMessage")
+        ac.addTextField { textField in
+            textField.delegate = self
+            textField.autocapitalizationType = .none
+            textField.tintColor = R.color.accentColor()
+            textField.autocorrectionType = .no
+            
+            self.textDidChangeObserver = NotificationCenter.default.addObserver(
+                forName: UITextField.textDidChangeNotification,
+                object: textField,
+                queue: OperationQueue.main) { (notification) in
+                if let textField = notification.object as? UITextField {
+                    if let text = textField.text {
+                        self.submitActionProxy!.isEnabled = text.count >= 1
+                    } else {
+                        self.submitActionProxy!.isEnabled = false
+                    }
+                }
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+        
+        let submitAction = UIAlertAction(title: "Next", style: .default) { _ in
+            let answer = ac.textFields![0]
+            if answer.text != "" {
+                let vc = AddTagWorkflowThreeVC(style: .insetGrouped)
+                vc.transaction = self.transaction
+                vc.tag = answer.text
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
+        submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+        submitAction.isEnabled = false
+        submitActionProxy = submitAction
+        
+        ac.addAction(cancelAction)
+        ac.addAction(submitAction)
+        
+        present(ac, animated: true)
     }
     @objc private func refreshTags() {
-        #if targetEnvironment(macCatalyst)
-        let loadingView = ActivityIndicator(style: .medium)
-        navigationItem.setLeftBarButton(UIBarButtonItem(customView: loadingView), animated: true)
-        #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.listTags()
         }
-    }
-    
-    @IBAction func workflowClosed(unwindSegue: UIStoryboardSegue) {
-        listTags()
     }
     
     override func viewDidLoad() {
@@ -55,10 +100,7 @@ class AllTagsVC: ViewController {
     
     private func setupNavigation() {
         navigationItem.title = "Loading"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        #if targetEnvironment(macCatalyst)
-        navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTags)), animated: true)
-        #endif
+        navigationItem.backButtonDisplayMode = .minimal
     }
     
     private func setupSearch() {
@@ -125,13 +167,10 @@ class AllTagsVC: ViewController {
                         self.tags = decodedResponse.data
                         self.tagsError = ""
                         self.tagsErrorResponse = []
-                        self.navigationItem.title = "Tags"
+                        self.navigationItem.title = "Select Tag"
                         if self.navigationItem.rightBarButtonItem == nil {
                             self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.openAddWorkflow)), animated: true)
                         }
-                        #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
-                        #endif
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
@@ -145,9 +184,6 @@ class AllTagsVC: ViewController {
                         self.tags = []
                         self.navigationItem.title = "Errors"
                         self.navigationItem.setRightBarButton(nil, animated: true)
-                        #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
-                        #endif
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
@@ -161,9 +197,6 @@ class AllTagsVC: ViewController {
                         self.tags = []
                         self.navigationItem.title = "Error"
                         self.navigationItem.setRightBarButton(nil, animated: true)
-                        #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
-                        #endif
                         self.fetchingView.removeFromSuperview()
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
@@ -178,9 +211,6 @@ class AllTagsVC: ViewController {
                     self.tags = []
                     self.navigationItem.title = "Error"
                     self.navigationItem.setRightBarButton(nil, animated: true)
-                    #if targetEnvironment(macCatalyst)
-                    self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
-                    #endif
                     self.fetchingView.removeFromSuperview()
                     self.setupTableView()
                     self.tableViewController.tableView.reloadData()
@@ -195,7 +225,7 @@ class AllTagsVC: ViewController {
     }
 }
 
-extension AllTagsVC: UITableViewDelegate, UITableViewDataSource {
+extension AddTagWorkflowTwoVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty {
             return 1
@@ -252,7 +282,7 @@ extension AllTagsVC: UITableViewDelegate, UITableViewDataSource {
                 errorObjectCell.detailTextLabel?.text = error.detail
                 
                 return errorObjectCell
-            } else {                
+            } else {
                 let tag = filteredTags[indexPath.row]
                 
                 tagCell.selectedBackgroundView = bgCellView
@@ -268,30 +298,29 @@ extension AllTagsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.tagsErrorResponse.isEmpty && self.tagsError.isEmpty && !self.filteredTags.isEmpty {
-            let vc = TransactionsByTagVC()
+            let vc = AddTagWorkflowThreeVC(style: .insetGrouped)
             
-            vc.tag = filteredTags[indexPath.row]
+            vc.transaction = transaction
+            vc.tag = filteredTags[indexPath.row].id
             
             navigationController?.pushViewController(vc, animated: true)
         }
     }
-    
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        if self.tagsErrorResponse.isEmpty && self.tagsError.isEmpty && !self.filteredTags.isEmpty {
-            let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                UIPasteboard.general.string = self.filteredTags[indexPath.row].id
-            }
-            
-            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                UIMenu(children: [copy])
-            }
-        } else {
-            return nil
-        }
+}
+
+extension AddTagWorkflowTwoVC: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = textField.text ?? ""
+        
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        return updatedText.count <= 30
     }
 }
 
-extension AllTagsVC: UISearchControllerDelegate, UISearchBarDelegate {
+extension AddTagWorkflowTwoVC: UISearchControllerDelegate, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if self.filteredTags != self.prevFilteredTags {
             self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)

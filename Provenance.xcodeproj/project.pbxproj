@@ -37,6 +37,9 @@
 		7AB34D4D25C7A90E000A1E81 /* TransactionDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D4C25C7A90E000A1E81 /* TransactionDetailVC.swift */; };
 		7AB34D5325C7C30E000A1E81 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D5225C7C30E000A1E81 /* TabBarController.swift */; };
 		7AB34D5D25C7CDCB000A1E81 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */; };
+		7AB609AA2602C79B0038B85B /* AddTagWorkflowVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7AB609A92602C79B0038B85B /* AddTagWorkflowVC.storyboard */; };
+		7AB609B02603F0D80038B85B /* AddTagWorkflowTwoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */; };
+		7AB609B32603F1130038B85B /* AddTagWorkflowThreeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */; };
 		7AD295F425D358B200B8A765 /* TransactionsByAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */; };
 		7AD295F825D3599A00B8A765 /* AccountDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */; };
 		7AD5944C25C8B3AD0018C86E /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */; };
@@ -91,6 +94,9 @@
 		7AB34D4C25C7A90E000A1E81 /* TransactionDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailVC.swift; sourceTree = "<group>"; };
 		7AB34D5225C7C30E000A1E81 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
+		7AB609A92602C79B0038B85B /* AddTagWorkflowVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AddTagWorkflowVC.storyboard; sourceTree = "<group>"; };
+		7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagWorkflowTwoVC.swift; sourceTree = "<group>"; };
+		7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagWorkflowThreeVC.swift; sourceTree = "<group>"; };
 		7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByAccountVC.swift; sourceTree = "<group>"; };
 		7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailVC.swift; sourceTree = "<group>"; };
 		7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
@@ -157,8 +163,6 @@
 				7AE75E3E25FF1FEE00C16AF6 /* RefreshControl.swift */,
 				7AE75E4225FF21D500C16AF6 /* TableViewController.swift */,
 				7AE75E4625FF225900C16AF6 /* ViewController.swift */,
-				7AE75E4A25FF58B800C16AF6 /* AboutViewController.swift */,
-				7AE75E5225FF5B1D00C16AF6 /* AboutViewController.storyboard */,
 			);
 			path = "Template View Controllers";
 			sourceTree = "<group>";
@@ -188,6 +192,7 @@
 				7AF4C35425DB3668009CF391 /* Fonts */,
 				7A22F7E625FFF8860014BDC8 /* Model */,
 				7A07979A25D79ACE0013EE82 /* Custom Cells */,
+				7AB609AC2602CAD80038B85B /* Storyboards */,
 				7A22F7E925FFF90E0014BDC8 /* Template View Controllers */,
 				7AB34D1D25C78230000A1E81 /* AppDelegate.swift */,
 				7AB34D5225C7C30E000A1E81 /* TabBarController.swift */,
@@ -201,7 +206,10 @@
 				7A56101C25D25B600091396E /* TransactionsByCategoryVC.swift */,
 				7A56101125D219770091396E /* AllTagsVC.swift */,
 				7A56101925D22AF10091396E /* AddTagWorkflowVC.swift */,
+				7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */,
+				7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */,
 				7A56101525D21BFE0091396E /* TransactionsByTagVC.swift */,
+				7AE75E4A25FF58B800C16AF6 /* AboutViewController.swift */,
 				7A67980C25D3E15D002AA83A /* DiagnosticTableVC.swift */,
 				7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */,
 				7AB34D2625C78232000A1E81 /* Assets.xcassets */,
@@ -210,6 +218,15 @@
 				7A9DE23C25DE35AB00175697 /* Provenance.entitlements */,
 			);
 			path = Provenance;
+			sourceTree = "<group>";
+		};
+		7AB609AC2602CAD80038B85B /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				7AB609A92602C79B0038B85B /* AddTagWorkflowVC.storyboard */,
+				7AE75E5225FF5B1D00C16AF6 /* AboutViewController.storyboard */,
+			);
+			path = Storyboards;
 			sourceTree = "<group>";
 		};
 		7AD5944F25C8B5410018C86E /* Types */ = {
@@ -325,6 +342,7 @@
 				7AF4C35B25DB3674009CF391 /* SF-Mono-Regular.otf in Resources */,
 				7A50FBA125E0CDB800176C10 /* APIKeyCell.xib in Resources */,
 				7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */,
+				7AB609AA2602C79B0038B85B /* AddTagWorkflowVC.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,6 +417,7 @@
 				7A56101D25D25B600091396E /* TransactionsByCategoryVC.swift in Sources */,
 				7A56100F25D219530091396E /* Tag.swift in Sources */,
 				7AD295F425D358B200B8A765 /* TransactionsByAccountVC.swift in Sources */,
+				7AB609B32603F1130038B85B /* AddTagWorkflowThreeVC.swift in Sources */,
 				7AD295F825D3599A00B8A765 /* AccountDetailVC.swift in Sources */,
 				7AB34D4525C79BD0000A1E81 /* RightDetailTableViewCell.swift in Sources */,
 				7A50FBA025E0CDB800176C10 /* APIKeyCell.swift in Sources */,
@@ -423,6 +442,7 @@
 				7A11D69025F59D0C0080293C /* Webhook.swift in Sources */,
 				7AE75E3325FF15EB00C16AF6 /* R.generated.swift in Sources */,
 				7A67980D25D3E15D002AA83A /* DiagnosticTableVC.swift in Sources */,
+				7AB609B02603F0D80038B85B /* AddTagWorkflowTwoVC.swift in Sources */,
 				7A2837F025D78579001809E4 /* DateStylePickerCell.swift in Sources */,
 				7A8DDCA225D138C200EF85B9 /* Category.swift in Sources */,
 				7A2837D625D741D9001809E4 /* TransactionCell.swift in Sources */,
@@ -573,6 +593,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Provenance/Provenance.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -585,7 +606,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.7;
+				MARKETING_VERSION = 6.8;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -603,6 +624,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Provenance/Provenance.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -614,7 +636,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.7;
+				MARKETING_VERSION = 6.8;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

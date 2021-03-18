@@ -36,9 +36,8 @@ class TagsVC: TableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath)
         
         let tag = transaction.relationships.tags.data[indexPath.row]
-
-        cell.selectedBackgroundView = bgCellView
         
+        cell.selectedBackgroundView = bgCellView
         cell.accessoryType = .disclosureIndicator
         cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         cell.textLabel?.text = tag.id
@@ -49,15 +48,15 @@ class TagsVC: TableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let tag = transaction.relationships.tags.data[indexPath.row]
         let vc = TransactionsByTagVC()
+        
         vc.tag = TagResource(type: "tags", id: tag.id)
-        self.navigationController?.pushViewController(vc, animated: true)
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let tag = transaction.relationships.tags.data[indexPath.row]
-        
         let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-            UIPasteboard.general.string = tag.id
+            UIPasteboard.general.string = self.transaction.relationships.tags.data[indexPath.row].id
         }
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in

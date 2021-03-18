@@ -5,7 +5,15 @@ class AboutViewController: TableViewController {
     @IBOutlet var appNameValue: UILabel!
     @IBOutlet var versionValue: UILabel!
     @IBOutlet var buildValue: UILabel!
-    @IBOutlet var contactCell: UITableViewCell!
+    
+    @objc private func openSettings() {
+        let vc = NavigationController(rootViewController: SettingsVC(style: .insetGrouped))
+        present(vc, animated: true)
+    }
+    @objc private func openDiagnostics() {
+        let vc = NavigationController(rootViewController: DiagnosticTableVC(style: .insetGrouped))
+        present(vc, animated: true)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,16 +35,6 @@ class AboutViewController: TableViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftSlashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.gear(), style: .plain, target: self, action: #selector(openSettings))
         navigationItem.largeTitleDisplayMode = .never
-    }
-    
-    @objc private func openSettings() {
-        let vc = NavigationController(rootViewController: SettingsVC(style: .insetGrouped))
-        self.present(vc, animated: true)
-    }
-    
-    @objc private func openDiagnostics() {
-        let vc = NavigationController(rootViewController: DiagnosticTableVC(style: .insetGrouped))
-        self.present(vc, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {

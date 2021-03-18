@@ -13,21 +13,47 @@ class TransactionsByAccountVC: ViewController {
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
     private var prevFilteredTransactions: [TransactionResource] = []
+    private var categories: [CategoryResource] = []
     private var filteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    private var categories: [CategoryResource] = []
+    
+    @objc private func openAccountInfo() {
+        let vc = AccountDetailVC(style: .insetGrouped)
+        
+        vc.account = account
+        vc.transaction = transactions.first
+        
+        present(NavigationController(rootViewController: vc), animated: true)
+    }
+    @objc private func refreshTransactions() {
+        #if targetEnvironment(macCatalyst)
+        let loadingView = ActivityIndicator(style: .medium)
+        navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(customView: loadingView)], animated: true)
+        #endif
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.listTransactions()
+            self.listCategories()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setProperties()
-        setupFetchingView()
-        setupSearch()
         setupNavigation()
+        setupSearch()
         setupRefreshControl()
+        setupFetchingView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableViewController.tableView.reloadData()
+        
+        listTransactions()
+        listCategories()
     }
     
     private func setProperties() {
@@ -61,33 +87,6 @@ class TransactionsByAccountVC: ViewController {
     private func setupRefreshControl() {
         refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
         tableViewController.refreshControl = refreshControl
-    }
-    
-    @objc private func openAccountInfo() {
-        let vc = AccountDetailVC(style: .insetGrouped)
-        
-        vc.account = account
-        vc.transaction = transactions.first
-        
-        self.present(NavigationController(rootViewController: vc), animated: true)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        tableViewController.tableView.reloadData()
-        
-        listTransactions()
-        listCategories()
-    }
-    
-    @objc private func refreshTransactions() {
-        #if targetEnvironment(macCatalyst)
-        let loadingView = ActivityIndicator(style: .medium)
-        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(customView: loadingView)], animated: true)
-        #endif
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.listTransactions()
-            self.listCategories()
-        }
     }
     
     private func setupFetchingView() {
@@ -212,14 +211,10 @@ class TransactionsByAccountVC: ViewController {
                         self.categories = decodedResponse.data
                     }
                 } else {
-                    DispatchQueue.main.async {
-                        print("Categories JSON decoding failed")
-                    }
+                    print("Categories JSON decoding failed")
                 }
             } else {
-                DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown error")
-                }
+                print(error?.localizedDescription ?? "Unknown error")
             }
         }
         .resume()
@@ -287,7 +282,6 @@ extension TransactionsByAccountVC: UITableViewDelegate, UITableViewDataSource {
                 let transaction = filteredTransactions[indexPath.row]
                 
                 transactionCell.selectedBackgroundView = bgCellView
-                
                 transactionCell.leftLabel.text = transaction.attributes.description
                 transactionCell.leftSubtitle.text = transaction.attributes.creationDate
                 
@@ -312,7 +306,7 @@ extension TransactionsByAccountVC: UITableViewDelegate, UITableViewDataSource {
             vc.transaction = filteredTransactions[indexPath.row]
             vc.categories = self.categories
             
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     

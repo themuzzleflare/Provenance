@@ -4,7 +4,6 @@ import Rswift
 class CategoriesVC: ViewController {
     let fetchingView = ActivityIndicator(style: .medium)
     let tableViewController = TableViewController(style: .insetGrouped)
-    
     let refreshControl = RefreshControl(frame: .zero)
     let searchController = UISearchController(searchResultsController: nil)
     
@@ -18,13 +17,23 @@ class CategoriesVC: ViewController {
         }
     }
     
+    @objc private func refreshCategories() {
+        #if targetEnvironment(macCatalyst)
+        let loadingView = ActivityIndicator(style: .medium)
+        navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
+        #endif
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.listCategories()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setProperties()
         setupNavigation()
-        setupRefreshControl()
         setupSearch()
+        setupRefreshControl()
         setupFetchingView()
     }
     
@@ -44,11 +53,6 @@ class CategoriesVC: ViewController {
         #endif
     }
     
-    private func setupRefreshControl() {
-        refreshControl.addTarget(self, action: #selector(refreshCategories), for: .valueChanged)
-        tableViewController.refreshControl = refreshControl
-    }
-    
     private func setupSearch() {
         searchController.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -63,14 +67,9 @@ class CategoriesVC: ViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
-    @objc private func refreshCategories() {
-        #if targetEnvironment(macCatalyst)
-        let loadingView = ActivityIndicator(style: .medium)
-        navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
-        #endif
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.listCategories()
-        }
+    private func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(refreshCategories), for: .valueChanged)
+        tableViewController.refreshControl = refreshControl
     }
     
     private func setupFetchingView() {
@@ -256,7 +255,7 @@ extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
             
             vc.category = filteredCategories[indexPath.row]
             
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     

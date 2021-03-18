@@ -6,11 +6,12 @@ class TransactionsByCategoryVC: ViewController {
     
     let fetchingView = ActivityIndicator(style: .medium)
     let tableViewController = TableViewController(style: .insetGrouped)
-    
     let refreshControl = RefreshControl(frame: .zero)
     let searchController = UISearchController(searchResultsController: nil)
     
     private var transactions: [TransactionResource] = []
+    private var categories: [CategoryResource] = []
+    private var accounts: [AccountResource] = []
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
     private var prevFilteredTransactions: [TransactionResource] = []
@@ -19,12 +20,22 @@ class TransactionsByCategoryVC: ViewController {
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    private var categories: [CategoryResource] = []
-    private var accounts: [AccountResource] = []
+    
+    @objc private func refreshTransactions() {
+        #if targetEnvironment(macCatalyst)
+        let loadingView = ActivityIndicator(style: .medium)
+        navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
+        #endif
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.listTransactions()
+            self.listCategories()
+            self.listAccounts()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         setProperties()
         setupNavigation()
         setupSearch()
@@ -32,8 +43,24 @@ class TransactionsByCategoryVC: ViewController {
         setupFetchingView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        tableViewController.tableView.reloadData()
+        
+        listTransactions()
+        listCategories()
+        listAccounts()
+    }
+    
     private func setProperties() {
         title = "Transactions by Category"
+    }
+    
+    private func setupNavigation() {
+        navigationItem.title = "Loading"
+        navigationItem.largeTitleDisplayMode = .never
+        #if targetEnvironment(macCatalyst)
+        navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
+        #endif
     }
     
     private func setupSearch() {
@@ -50,37 +77,9 @@ class TransactionsByCategoryVC: ViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
-    private func setupNavigation() {
-        navigationItem.title = "Loading"
-        navigationItem.largeTitleDisplayMode = .never
-        #if targetEnvironment(macCatalyst)
-        navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
-        #endif
-    }
-    
     private func setupRefreshControl() {
         refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
         tableViewController.refreshControl = refreshControl
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        tableViewController.tableView.reloadData()
-        
-        listTransactions()
-        listCategories()
-        listAccounts()
-    }
-    
-    @objc private func refreshTransactions() {
-        #if targetEnvironment(macCatalyst)
-        let loadingView = ActivityIndicator(style: .medium)
-        navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
-        #endif
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.listTransactions()
-            self.listCategories()
-            self.listAccounts()
-        }
     }
     
     private func setupFetchingView() {
@@ -305,7 +304,7 @@ extension TransactionsByCategoryVC: UITableViewDelegate, UITableViewDataSource {
                 return errorObjectCell
             } else {
                 let transaction = filteredTransactions[indexPath.row]
-     
+                
                 transactionCell.selectedBackgroundView = bgCellView
                 transactionCell.leftLabel.text = transaction.attributes.description
                 transactionCell.leftSubtitle.text = transaction.attributes.creationDate
@@ -332,7 +331,7 @@ extension TransactionsByCategoryVC: UITableViewDelegate, UITableViewDataSource {
             vc.categories = self.categories
             vc.accounts = self.accounts
             
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     
