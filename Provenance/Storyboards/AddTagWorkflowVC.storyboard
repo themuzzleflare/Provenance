@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oTm-WU-Ygt">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,14 +13,15 @@
             <objects>
                 <viewController id="Wfe-JN-t50" customClass="AddTagWorkflowVC" customModule="Provenance" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="oFa-3H-7TA">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="4zw-ZL-DxB"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <viewLayoutGuide key="safeArea" id="2Sk-Nd-STj"/>
+                        <color key="backgroundColor" name="bgColour"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="61T-2k-nmA">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="Ymz-75-oyI">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="Ymz-75-oyI">
+                            <color key="tintColor" name="AccentColor"/>
                             <connections>
                                 <segue destination="IoW-uX-pER" kind="unwind" identifier="closeWorkflow" unwindAction="workflowClosedWithUnwindSegue:" id="Id3-tk-dpP"/>
                             </connections>
@@ -37,9 +38,10 @@
             <objects>
                 <navigationController storyboardIdentifier="addTagWorkflowNavigation" automaticallyAdjustsScrollViewInsets="NO" id="oTm-WU-Ygt" customClass="NavigationController" customModule="Provenance" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lYu-Qh-pBk">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="lYu-Qh-pBk">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" name="bgColour"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -52,9 +54,13 @@
             <point key="canvasLocation" x="266.66666666666669" y="159.375"/>
         </scene>
     </scenes>
+    <color key="tintColor" name="AccentColor"/>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <namedColor name="AccentColor">
+            <color red="0.89803921568627454" green="0.44705882352941179" blue="0.37647058823529411" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="bgColour">
+            <color red="0.14100000262260437" green="0.14100000262260437" blue="0.18799999356269836" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

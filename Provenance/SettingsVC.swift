@@ -48,8 +48,6 @@ class SettingsVC: TableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = indexPath.section
-        
         let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.apiKeyCell, for: indexPath)!
         let datePickerCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.datePickerCell, for: indexPath)!
         
@@ -76,7 +74,7 @@ class SettingsVC: TableViewController {
         }
         datePickerCell.datePicker.addTarget(self, action: #selector(switchDateStyle), for:.valueChanged)
         
-        if section == 0 {
+        if indexPath.section == 0 {
             return apiKeyCell
         } else {
             return datePickerCell
@@ -84,9 +82,7 @@ class SettingsVC: TableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let section = indexPath.section
-        
-        if section == 0 {
+        if indexPath.section == 0 {
             tableView.deselectRow(at: indexPath, animated: true)
             
             let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)

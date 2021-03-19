@@ -1,4 +1,5 @@
 import UIKit
+import TinyConstraints
 import Rswift
 
 class TransactionsVC: ViewController {
@@ -258,22 +259,14 @@ class TransactionsVC: ViewController {
     private func setupFetchingView() {
         view.addSubview(fetchingView)
         
-        fetchingView.translatesAutoresizingMaskIntoConstraints = false
-        fetchingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        fetchingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        fetchingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        fetchingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        fetchingView.edgesToSuperview()
     }
     
     private func setupTableView() {
         super.addChild(tableViewController)
         view.addSubview(tableViewController.tableView)
         
-        tableViewController.tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableViewController.tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        tableViewController.tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        tableViewController.tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        tableViewController.tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        tableViewController.tableView.edgesToSuperview()
         
         tableViewController.tableView.delegate = self
         
@@ -386,14 +379,10 @@ class TransactionsVC: ViewController {
                         self.categories = decodedResponse.data
                     }
                 } else {
-                    DispatchQueue.main.async {
-                        print("Categories JSON decoding failed")
-                    }
+                    print("Categories JSON decoding failed")
                 }
             } else {
-                DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown error")
-                }
+                print(error?.localizedDescription ?? "Unknown error")
             }
         }
         .resume()
@@ -413,14 +402,10 @@ class TransactionsVC: ViewController {
                         self.accounts = decodedResponse.data
                     }
                 } else {
-                    DispatchQueue.main.async {
-                        print("Accounts JSON decoding failed")
-                    }
+                    print("Accounts JSON decoding failed")
                 }
             } else {
-                DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown error")
-                }
+                print(error?.localizedDescription ?? "Unknown error")
             }
         }
         .resume()
