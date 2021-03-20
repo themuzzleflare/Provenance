@@ -9,6 +9,21 @@
 			<key>orderHint</key>
 			<integer>6</integer>
 		</dict>
+		<key>Provenance Stickers.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
+		<key>Provenance Widgets.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
+		<key>Provenance WidgetsExtension.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 		<key>Provenance.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>

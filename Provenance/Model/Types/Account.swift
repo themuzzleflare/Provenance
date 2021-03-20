@@ -36,7 +36,7 @@ struct AccountAttribute: Hashable, Codable {
         return formatDateRelative(dateString: createdAt)
     }
     var creationDate: String {
-        switch UserDefaults.standard.string(forKey: "dateStyle") {
+        switch appDefaults.string(forKey: "dateStyle") {
             case "Absolute", .none: return creationDateAbsolute
             case "Relative": return creationDateRelative
             default: return creationDateAbsolute

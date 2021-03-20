@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -27,6 +27,8 @@
 		7A8DDC9F25D1388700EF85B9 /* CategoriesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8DDC9E25D1388700EF85B9 /* CategoriesVC.swift */; };
 		7A8DDCA225D138C200EF85B9 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8DDCA125D138C200EF85B9 /* Category.swift */; };
 		7A8DDCA525D1472400EF85B9 /* TagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8DDCA425D1472400EF85B9 /* TagsVC.swift */; };
+		7A8E41EE2604831E003D0E6A /* LatestTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD1276A2604553C00A39272 /* LatestTransaction.swift */; };
+		7A8E41F126048320003D0E6A /* ProvenanceWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD1279A2604702600A39272 /* ProvenanceWidgets.swift */; };
 		7AB34D1E25C78230000A1E81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D1D25C78230000A1E81 /* AppDelegate.swift */; };
 		7AB34D2225C78230000A1E81 /* TransactionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D2125C78230000A1E81 /* TransactionsVC.swift */; };
 		7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
@@ -40,9 +42,22 @@
 		7AB609AA2602C79B0038B85B /* AddTagWorkflowVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7AB609A92602C79B0038B85B /* AddTagWorkflowVC.storyboard */; };
 		7AB609B02603F0D80038B85B /* AddTagWorkflowTwoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */; };
 		7AB609B32603F1130038B85B /* AddTagWorkflowThreeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */; };
+		7AD127DC2604735800A39272 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AD317952604412000B4E008 /* WidgetKit.framework */; };
+		7AD127DD2604735800A39272 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AD317972604412000B4E008 /* SwiftUI.framework */; };
+		7AD127E92604735B00A39272 /* Provenance Widgets.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7AD127DB2604735800A39272 /* Provenance Widgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7AD127F42604739600A39272 /* CircularStd-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7AF4C35525DB3673009CF391 /* CircularStd-Book.otf */; };
+		7AD127F52604739600A39272 /* CircularStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7AF4C35825DB3674009CF391 /* CircularStd-Bold.otf */; };
+		7AD127F62604739600A39272 /* CircularStd-BookItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AF4C35625DB3673009CF391 /* CircularStd-BookItalic.ttf */; };
+		7AD127F72604739600A39272 /* SF-Mono-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7AF4C35725DB3674009CF391 /* SF-Mono-Regular.otf */; };
+		7AD127FA2604739B00A39272 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D3F25C7858E000A1E81 /* Error.swift */; };
+		7AD127FD260473A400A39272 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
+		7AD12803260473FB00A39272 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD12781260455E100A39272 /* Transaction.swift */; };
+		7AD12805260473FB00A39272 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD1277A260455B800A39272 /* ModelData.swift */; };
 		7AD295F425D358B200B8A765 /* TransactionsByAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */; };
 		7AD295F825D3599A00B8A765 /* AccountDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */; };
 		7AD5944C25C8B3AD0018C86E /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */; };
+		7AD6ED962604A9180051A235 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AD6ED952604A9180051A235 /* Stickers.xcassets */; };
+		7AD6ED9A2604A9180051A235 /* Provenance Stickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7AD6ED932604A9150051A235 /* Provenance Stickers.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7AE75E3325FF15EB00C16AF6 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE75E3225FF15EB00C16AF6 /* R.generated.swift */; };
 		7AE75E3725FF1C3B00C16AF6 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE75E3625FF1C3B00C16AF6 /* NavigationController.swift */; };
 		7AE75E3B25FF1EF200C16AF6 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE75E3A25FF1EF200C16AF6 /* ActivityIndicator.swift */; };
@@ -59,9 +74,42 @@
 		7AFDBEB325C7FEDB002DB208 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFDBEB225C7FEDB002DB208 /* Account.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7AD127E72604735B00A39272 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7AB34D1225C78230000A1E81 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7AD127DA2604735800A39272;
+			remoteInfo = "Provenance WidgetsExtension";
+		};
+		7AD6ED982604A9180051A235 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7AB34D1225C78230000A1E81 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7AD6ED922604A9150051A235;
+			remoteInfo = "Provenance Stickers";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7AD317A92604412200B4E008 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				7AD6ED9A2604A9180051A235 /* Provenance Stickers.appex in Embed App Extensions */,
+				7AD127E92604735B00A39272 /* Provenance Widgets.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0D092E02E7CA483DD8D5DE38 /* Pods-Provenance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Provenance.release.xcconfig"; path = "Target Support Files/Pods-Provenance/Pods-Provenance.release.xcconfig"; sourceTree = "<group>"; };
 		54E8AB3886563257C39F757D /* Pods_Provenance.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Provenance.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A0557D42604A0170080D2CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A11D68F25F59D0C0080293C /* Webhook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Webhook.swift; sourceTree = "<group>"; };
 		7A2837D425D741D9001809E4 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		7A2837D525D741D9001809E4 /* TransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionCell.xib; sourceTree = "<group>"; };
@@ -97,9 +145,22 @@
 		7AB609A92602C79B0038B85B /* AddTagWorkflowVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AddTagWorkflowVC.storyboard; sourceTree = "<group>"; };
 		7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagWorkflowTwoVC.swift; sourceTree = "<group>"; };
 		7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagWorkflowThreeVC.swift; sourceTree = "<group>"; };
+		7AD1276A2604553C00A39272 /* LatestTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestTransaction.swift; sourceTree = "<group>"; };
+		7AD1277A260455B800A39272 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
+		7AD12781260455E100A39272 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		7AD1279A2604702600A39272 /* ProvenanceWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvenanceWidgets.swift; sourceTree = "<group>"; };
+		7AD127AB260472A400A39272 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		7AD127B6260472A400A39272 /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
+		7AD127DB2604735800A39272 /* Provenance Widgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance Widgets.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7AD127EA2604735B00A39272 /* Widgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Widgets.entitlements; sourceTree = "<group>"; };
 		7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByAccountVC.swift; sourceTree = "<group>"; };
 		7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailVC.swift; sourceTree = "<group>"; };
+		7AD317952604412000B4E008 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		7AD317972604412000B4E008 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
+		7AD6ED932604A9150051A235 /* Provenance Stickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance Stickers.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7AD6ED952604A9180051A235 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
+		7AD6ED972604A9180051A235 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7AE75E3225FF15EB00C16AF6 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		7AE75E3625FF1C3B00C16AF6 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		7AE75E3A25FF1EF200C16AF6 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -126,9 +187,53 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7AD127D82604735800A39272 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7AD127DD2604735800A39272 /* SwiftUI.framework in Frameworks */,
+				7AD127DC2604735800A39272 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7A0557D72604A0A30080D2CD /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7AB34D5225C7C30E000A1E81 /* TabBarController.swift */,
+				7AB34D2125C78230000A1E81 /* TransactionsVC.swift */,
+				7AB34D4C25C7A90E000A1E81 /* TransactionDetailVC.swift */,
+				7A8DDCA425D1472400EF85B9 /* TagsVC.swift */,
+				7AFDBEAF25C7FEB0002DB208 /* AccountsVC.swift */,
+				7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */,
+				7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */,
+				7A8DDC9E25D1388700EF85B9 /* CategoriesVC.swift */,
+				7A56101C25D25B600091396E /* TransactionsByCategoryVC.swift */,
+				7A56101125D219770091396E /* AllTagsVC.swift */,
+				7A56101925D22AF10091396E /* AddTagWorkflowVC.swift */,
+				7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */,
+				7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */,
+				7A56101525D21BFE0091396E /* TransactionsByTagVC.swift */,
+				7AE75E4A25FF58B800C16AF6 /* AboutViewController.swift */,
+				7A67980C25D3E15D002AA83A /* DiagnosticTableVC.swift */,
+				7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		7A0557E12604A0D20080D2CD /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				7AB34D1D25C78230000A1E81 /* AppDelegate.swift */,
+				7AB34D2625C78232000A1E81 /* Assets.xcassets */,
+				7AB34D2B25C78232000A1E81 /* Info.plist */,
+				7A9DE23C25DE35AB00175697 /* Provenance.entitlements */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
 		7A07979A25D79ACE0013EE82 /* Custom Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -167,11 +272,30 @@
 			path = "Template View Controllers";
 			sourceTree = "<group>";
 		};
+		7A8E41D52604816B003D0E6A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7A8E41D626048171003D0E6A /* Types */,
+				7AD1277A260455B800A39272 /* ModelData.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		7A8E41D626048171003D0E6A /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				7AD12781260455E100A39272 /* Transaction.swift */,
+			);
+			path = Types;
+			sourceTree = "<group>";
+		};
 		7AB34D1125C78230000A1E81 = {
 			isa = PBXGroup;
 			children = (
 				7AE75E3225FF15EB00C16AF6 /* R.generated.swift */,
 				7AB34D1C25C78230000A1E81 /* Provenance */,
+				7AD127DE2604735800A39272 /* Widgets */,
+				7AD6ED942604A9150051A235 /* Stickers */,
 				7AB34D1B25C78230000A1E81 /* Products */,
 				D3A54786F5922BD1BB89FF35 /* Pods */,
 				EAF805222779581B0B1EB216 /* Frameworks */,
@@ -182,6 +306,8 @@
 			isa = PBXGroup;
 			children = (
 				7AB34D1A25C78230000A1E81 /* Provenance.app */,
+				7AD127DB2604735800A39272 /* Provenance Widgets.appex */,
+				7AD6ED932604A9150051A235 /* Provenance Stickers.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -193,29 +319,9 @@
 				7A22F7E625FFF8860014BDC8 /* Model */,
 				7A07979A25D79ACE0013EE82 /* Custom Cells */,
 				7AB609AC2602CAD80038B85B /* Storyboards */,
+				7A0557E12604A0D20080D2CD /* Application */,
 				7A22F7E925FFF90E0014BDC8 /* Template View Controllers */,
-				7AB34D1D25C78230000A1E81 /* AppDelegate.swift */,
-				7AB34D5225C7C30E000A1E81 /* TabBarController.swift */,
-				7AB34D2125C78230000A1E81 /* TransactionsVC.swift */,
-				7AB34D4C25C7A90E000A1E81 /* TransactionDetailVC.swift */,
-				7A8DDCA425D1472400EF85B9 /* TagsVC.swift */,
-				7AFDBEAF25C7FEB0002DB208 /* AccountsVC.swift */,
-				7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */,
-				7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */,
-				7A8DDC9E25D1388700EF85B9 /* CategoriesVC.swift */,
-				7A56101C25D25B600091396E /* TransactionsByCategoryVC.swift */,
-				7A56101125D219770091396E /* AllTagsVC.swift */,
-				7A56101925D22AF10091396E /* AddTagWorkflowVC.swift */,
-				7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */,
-				7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */,
-				7A56101525D21BFE0091396E /* TransactionsByTagVC.swift */,
-				7AE75E4A25FF58B800C16AF6 /* AboutViewController.swift */,
-				7A67980C25D3E15D002AA83A /* DiagnosticTableVC.swift */,
-				7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */,
-				7AB34D2625C78232000A1E81 /* Assets.xcassets */,
-				7AB34D2825C78232000A1E81 /* LaunchScreen.storyboard */,
-				7AB34D2B25C78232000A1E81 /* Info.plist */,
-				7A9DE23C25DE35AB00175697 /* Provenance.entitlements */,
+				7A0557D72604A0A30080D2CD /* View Controllers */,
 			);
 			path = Provenance;
 			sourceTree = "<group>";
@@ -223,10 +329,23 @@
 		7AB609AC2602CAD80038B85B /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				7AB34D2825C78232000A1E81 /* LaunchScreen.storyboard */,
 				7AB609A92602C79B0038B85B /* AddTagWorkflowVC.storyboard */,
 				7AE75E5225FF5B1D00C16AF6 /* AboutViewController.storyboard */,
 			);
 			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		7AD127DE2604735800A39272 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				7A8E41D52604816B003D0E6A /* Model */,
+				7AD1279A2604702600A39272 /* ProvenanceWidgets.swift */,
+				7AD1276A2604553C00A39272 /* LatestTransaction.swift */,
+				7A0557D42604A0170080D2CD /* Info.plist */,
+				7AD127EA2604735B00A39272 /* Widgets.entitlements */,
+			);
+			path = Widgets;
 			sourceTree = "<group>";
 		};
 		7AD5944F25C8B5410018C86E /* Types */ = {
@@ -240,6 +359,15 @@
 				7A11D68F25F59D0C0080293C /* Webhook.swift */,
 			);
 			path = Types;
+			sourceTree = "<group>";
+		};
+		7AD6ED942604A9150051A235 /* Stickers */ = {
+			isa = PBXGroup;
+			children = (
+				7AD6ED952604A9180051A235 /* Stickers.xcassets */,
+				7AD6ED972604A9180051A235 /* Info.plist */,
+			);
+			path = Stickers;
 			sourceTree = "<group>";
 		};
 		7AF4C35425DB3668009CF391 /* Fonts */ = {
@@ -266,6 +394,10 @@
 			isa = PBXGroup;
 			children = (
 				54E8AB3886563257C39F757D /* Pods_Provenance.framework */,
+				7AD317952604412000B4E008 /* WidgetKit.framework */,
+				7AD317972604412000B4E008 /* SwiftUI.framework */,
+				7AD127AB260472A400A39272 /* Intents.framework */,
+				7AD127B6260472A400A39272 /* IntentsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -283,15 +415,50 @@
 				7AB34D1725C78230000A1E81 /* Frameworks */,
 				7AB34D1825C78230000A1E81 /* Resources */,
 				9798B0B11892F97E0F40FEF6 /* [CP] Embed Pods Frameworks */,
+				7AD317A92604412200B4E008 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				7AD127E82604735B00A39272 /* PBXTargetDependency */,
+				7AD6ED992604A9180051A235 /* PBXTargetDependency */,
 			);
 			name = Provenance;
 			productName = Sample;
 			productReference = 7AB34D1A25C78230000A1E81 /* Provenance.app */;
 			productType = "com.apple.product-type.application";
+		};
+		7AD127DA2604735800A39272 /* Provenance Widgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7AD127EB2604735B00A39272 /* Build configuration list for PBXNativeTarget "Provenance Widgets" */;
+			buildPhases = (
+				7AD127D72604735800A39272 /* Sources */,
+				7AD127D82604735800A39272 /* Frameworks */,
+				7AD127D92604735800A39272 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Provenance Widgets";
+			productName = "Provenance WidgetsExtension";
+			productReference = 7AD127DB2604735800A39272 /* Provenance Widgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		7AD6ED922604A9150051A235 /* Provenance Stickers */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7AD6ED9B2604A9180051A235 /* Build configuration list for PBXNativeTarget "Provenance Stickers" */;
+			buildPhases = (
+				7AD6ED912604A9150051A235 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Provenance Stickers";
+			productName = "Provenance Stickers";
+			productReference = 7AD6ED932604A9150051A235 /* Provenance Stickers.appex */;
+			productType = "com.apple.product-type.app-extension.messages-sticker-pack";
 		};
 /* End PBXNativeTarget section */
 
@@ -304,6 +471,12 @@
 				ORGANIZATIONNAME = "Tavitian Cloud";
 				TargetAttributes = {
 					7AB34D1925C78230000A1E81 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+					7AD127DA2604735800A39272 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+					7AD6ED922604A9150051A235 = {
 						CreatedOnToolsVersion = 12.4;
 					};
 				};
@@ -322,6 +495,8 @@
 			projectRoot = "";
 			targets = (
 				7AB34D1925C78230000A1E81 /* Provenance */,
+				7AD127DA2604735800A39272 /* Provenance Widgets */,
+				7AD6ED922604A9150051A235 /* Provenance Stickers */,
 			);
 		};
 /* End PBXProject section */
@@ -343,6 +518,26 @@
 				7A50FBA125E0CDB800176C10 /* APIKeyCell.xib in Resources */,
 				7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */,
 				7AB609AA2602C79B0038B85B /* AddTagWorkflowVC.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7AD127D92604735800A39272 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7AD127F72604739600A39272 /* SF-Mono-Regular.otf in Resources */,
+				7AD127F42604739600A39272 /* CircularStd-Book.otf in Resources */,
+				7AD127F52604739600A39272 /* CircularStd-Bold.otf in Resources */,
+				7AD127F62604739600A39272 /* CircularStd-BookItalic.ttf in Resources */,
+				7AD127FD260473A400A39272 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7AD6ED912604A9150051A235 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7AD6ED962604A9180051A235 /* Stickers.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,7 +649,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7AD127D72604735800A39272 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7AD127FA2604739B00A39272 /* Error.swift in Sources */,
+				7A8E41F126048320003D0E6A /* ProvenanceWidgets.swift in Sources */,
+				7A8E41EE2604831E003D0E6A /* LatestTransaction.swift in Sources */,
+				7AD12803260473FB00A39272 /* Transaction.swift in Sources */,
+				7AD12805260473FB00A39272 /* ModelData.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7AD127E82604735B00A39272 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7AD127DA2604735800A39272 /* Provenance Widgets */;
+			targetProxy = 7AD127E72604735B00A39272 /* PBXContainerItemProxy */;
+		};
+		7AD6ED992604A9180051A235 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7AD6ED922604A9150051A235 /* Provenance Stickers */;
+			targetProxy = 7AD6ED982604A9180051A235 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		7AB34D2825C78232000A1E81 /* LaunchScreen.storyboard */ = {
@@ -590,23 +810,24 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 807F847AFD560FFD17AA96DA /* Pods-Provenance.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Provenance/Provenance.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Provenance/Application/Provenance.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
-				INFOPLIST_FILE = Provenance/Info.plist;
+				INFOPLIST_FILE = Provenance/Application/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.9;
+				MARKETING_VERSION = 7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -621,28 +842,131 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0D092E02E7CA483DD8D5DE38 /* Pods-Provenance.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Provenance/Provenance.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Provenance/Application/Provenance.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
-				INFOPLIST_FILE = Provenance/Info.plist;
+				INFOPLIST_FILE = Provenance/Application/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.9;
+				MARKETING_VERSION = 7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		7AD127EC2604735B00A39272 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = Widgets/Widgets.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = Widgets/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7AD127ED2604735B00A39272 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = Widgets/Widgets.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = Widgets/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		7AD6ED9C2604A9180051A235 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = Stickers/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MARKETING_VERSION = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7AD6ED9D2604A9180051A235 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = Stickers/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MARKETING_VERSION = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -664,6 +988,24 @@
 			buildConfigurations = (
 				7AB34D2F25C78232000A1E81 /* Debug */,
 				7AB34D3025C78232000A1E81 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7AD127EB2604735B00A39272 /* Build configuration list for PBXNativeTarget "Provenance Widgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7AD127EC2604735B00A39272 /* Debug */,
+				7AD127ED2604735B00A39272 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7AD6ED9B2604A9180051A235 /* Build configuration list for PBXNativeTarget "Provenance Stickers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7AD6ED9C2604A9180051A235 /* Debug */,
+				7AD6ED9D2604A9180051A235 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

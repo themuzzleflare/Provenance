@@ -1,0 +1,35 @@
+{
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "grid-size" : "regular"
+  },
+  "stickers" : [
+    {
+      "filename" : "UP_STICKERS_LOGO-TEST2-300.sticker"
+    },
+    {
+      "filename" : "UP_STICKERS_SPINCOIN-300.sticker"
+    },
+    {
+      "filename" : "UP_STICKERS_spining$-300.sticker"
+    },
+    {
+      "filename" : "UP_STICKERS_upyeah-300.sticker"
+    },
+    {
+      "filename" : "UP_STICKERS_ZAPCHILL-300.sticker"
+    },
+    {
+      "filename" : "UP_STICKERS_ZAPCOINTRICKS-300.sticker"
+    },
+    {
+      "filename" : "UP_STICKERS_ZAPEASY-300v2.sticker"
+    },
+    {
+      "filename" : "UP_STICKERS_ZAPNOTE-300.sticker"
+    }
+  ]
+}

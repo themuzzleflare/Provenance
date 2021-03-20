@@ -1,28 +1,6 @@
 import Foundation
-import Rswift
 
 let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
-
-let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
-let appBuild = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
-let appName = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "Provenance"
-let appCopyright = Bundle.main.infoDictionary?["NSHumanReadableCopyright"] as? String ?? "Copyright © 2021 Paul Tavitian"
-
-let circularStdBook = R.font.circularStdBook(size: UIFont.labelFontSize)
-let circularStdBold = R.font.circularStdBold(size: UIFont.labelFontSize)
-
-var apiKeyDisplay: String {
-    switch appDefaults.string(forKey: "apiKey") {
-        case nil, "": return "None"
-        default: return appDefaults.string(forKey: "apiKey")!
-    }
-}
-
-var bgCellView: UIView {
-    let bgView = UIView()
-    bgView.backgroundColor = R.color.accentColor()
-    return bgView
-}
 
 protocol URLQueryParameterStringConvertible {
     var queryParameters: String {

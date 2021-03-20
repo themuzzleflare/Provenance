@@ -135,6 +135,44 @@
                                             <outlet property="selectedBackgroundView" destination="xyI-tq-idd" id="UgZ-DG-fqM"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="3IK-Dp-3y9">
+                                        <rect key="frame" x="20" y="534.5" width="374" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3IK-Dp-3y9" id="RmY-Dk-rgl">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Mz9-8Z-tnS">
+                                                    <rect key="frame" x="16" y="13.000000000000002" width="342" height="17.666666666666671"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="github" translatesAutoresizingMaskIntoConstraints="NO" id="O4c-Ud-Na6">
+                                                            <rect key="frame" x="0.0" y="1" width="32" height="16"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="16" id="EhX-ka-abB"/>
+                                                                <constraint firstAttribute="width" constant="32" id="zld-PL-y8d"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GitHub" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HhQ-VC-24S">
+                                                            <rect key="frame" x="42" y="0.0" width="300" height="17.666666666666668"/>
+                                                            <fontDescription key="fontDescription" name="CircularStd-Book" family="Circular Std" pointSize="17"/>
+                                                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Mz9-8Z-tnS" firstAttribute="leading" secondItem="RmY-Dk-rgl" secondAttribute="leading" constant="16" id="64f-zi-6Sb"/>
+                                                <constraint firstAttribute="trailing" secondItem="Mz9-8Z-tnS" secondAttribute="trailing" constant="16" id="9ha-hf-c1G"/>
+                                                <constraint firstItem="Mz9-8Z-tnS" firstAttribute="top" secondItem="RmY-Dk-rgl" secondAttribute="top" constant="13" id="HaL-JB-VDb"/>
+                                                <constraint firstAttribute="bottom" secondItem="Mz9-8Z-tnS" secondAttribute="bottom" constant="13" id="dm0-7S-lQe"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="tintColor" name="AccentColor"/>
+                                        <connections>
+                                            <outlet property="selectedBackgroundView" destination="xyI-tq-idd" id="awQ-Fa-fAa"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -163,6 +201,7 @@
     <color key="tintColor" name="AccentColor"/>
     <resources>
         <image name="UpLogoRounded" width="218" height="218"/>
+        <image name="github" width="512" height="512"/>
         <image name="square.and.pencil" catalog="system" width="128" height="115"/>
         <namedColor name="AccentColor">
             <color red="0.89803921568627454" green="0.44705882352941179" blue="0.37647058823529411" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

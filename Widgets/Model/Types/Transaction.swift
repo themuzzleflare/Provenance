@@ -1,13 +1,12 @@
 import Foundation
-import UIKit
-import Rswift
+import SwiftUI
 
-struct Transaction: Hashable, Codable {
+struct Transaction: Hashable, Decodable {
     var data: [TransactionResource]
     var links: Pagination
 }
 
-struct TransactionResource: Hashable, Codable, Identifiable {
+struct TransactionResource: Hashable, Identifiable, Decodable {
     private var type: String
     var id: String
     var attributes: Attribute
@@ -32,22 +31,17 @@ struct Attribute: Hashable, Codable {
         }
     }
     
-    var statusIcon: UIImage {
-        let configuration = UIImage.SymbolConfiguration(pointSize: 21)
+    var statusIcon: Image {
         switch isSettled {
-            case true: return R.image.checkmarkCircle()!.withConfiguration(configuration)
-            case false: return R.image.clock()!.withConfiguration(configuration)
+            case true: return Image("checkmark.circle")
+            case false: return Image("clock")
         }
     }
-    var statusIconView: UIImageView {
-        let imageView = UIImageView(image: statusIcon)
-        imageView.tintColor = isSettled ? .systemGreen : .systemYellow
-        return imageView
-    }
-    var statusIconColor: UIColor {
+    
+    var statusIconColor: Color {
         switch isSettled {
-            case true: return .systemGreen
-            case false: return .systemYellow
+            case true: return .green
+            case false: return .yellow
         }
     }
     var statusString: String {
