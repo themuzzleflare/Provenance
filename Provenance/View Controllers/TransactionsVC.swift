@@ -189,7 +189,7 @@ class TransactionsVC: ViewController {
             appDefaults.setValue("Absolute", forKey: "dateStyle")
         }
         self.update(with: self.filteredTransactionList)
-        WidgetCenter.shared.reloadTimelines(ofKind: "LatestTransaction")
+        WidgetCenter.shared.reloadAllTimelines()
     }
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
@@ -306,7 +306,7 @@ class TransactionsVC: ViewController {
                         self.setupTableView()
                         self.update(with: self.filteredTransactionList)
                         self.refreshControl.endRefreshing()
-                        WidgetCenter.shared.reloadTimelines(ofKind: "LatestTransaction")
+                        WidgetCenter.shared.reloadAllTimelines()
                     }
                 } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
                     DispatchQueue.main.async {
@@ -324,7 +324,7 @@ class TransactionsVC: ViewController {
                         self.setupTableView()
                         self.update(with: self.filteredTransactionList)
                         self.refreshControl.endRefreshing()
-                        WidgetCenter.shared.reloadTimelines(ofKind: "LatestTransaction")
+                        WidgetCenter.shared.reloadAllTimelines()
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -342,7 +342,7 @@ class TransactionsVC: ViewController {
                         self.setupTableView()
                         self.update(with: self.filteredTransactionList)
                         self.refreshControl.endRefreshing()
-                        WidgetCenter.shared.reloadTimelines(ofKind: "LatestTransaction")
+                        WidgetCenter.shared.reloadAllTimelines()
                     }
                 }
             } else {
@@ -361,7 +361,7 @@ class TransactionsVC: ViewController {
                     self.setupTableView()
                     self.update(with: self.filteredTransactionList)
                     self.refreshControl.endRefreshing()
-                    WidgetCenter.shared.reloadTimelines(ofKind: "LatestTransaction")
+                    WidgetCenter.shared.reloadAllTimelines()
                 }
             }
             DispatchQueue.main.async {

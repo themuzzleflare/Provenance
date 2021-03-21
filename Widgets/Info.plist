@@ -2,13 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIAppFonts</key>
-	<array>
-		<string>CircularStd-Book.otf</string>
-		<string>CircularStd-BookItalic.ttf</string>
-		<string>SF-Mono-Regular.otf</string>
-		<string>CircularStd-Bold.otf</string>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -32,5 +25,12 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.widgetkit-extension</string>
 	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>CircularStd-Book.otf</string>
+		<string>CircularStd-BookItalic.ttf</string>
+		<string>SF-Mono-Regular.otf</string>
+		<string>CircularStd-Bold.otf</string>
+	</array>
 </dict>
 </plist>

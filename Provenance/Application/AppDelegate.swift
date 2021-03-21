@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 DispatchQueue.main.async {
                                     appDefaults.set(answer.text!, forKey: "apiKey")
                                     self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
-                                    WidgetCenter.shared.reloadTimelines(ofKind: "LatestTransaction")
+                                    WidgetCenter.shared.reloadAllTimelines()
                                 }
                             } else {
                                 DispatchQueue.main.async {
@@ -102,7 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                     dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                                     ac.addAction(dismissAction)
                                     self.window?.rootViewController?.present(ac, animated: true)
-                                    WidgetCenter.shared.reloadTimelines(ofKind: "LatestTransaction")
+                                    WidgetCenter.shared.reloadAllTimelines()
                                 }
                             }
                         } else {
@@ -124,7 +124,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                                 ac.addAction(dismissAction)
                                 self.window?.rootViewController?.present(ac, animated: true)
-                                WidgetCenter.shared.reloadTimelines(ofKind: "LatestTransaction")
+                                WidgetCenter.shared.reloadAllTimelines()
                             }
                         }
                     }
@@ -147,7 +147,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                     ac.addAction(dismissAction)
                     self.window?.rootViewController?.present(ac, animated: true)
-                    WidgetCenter.shared.reloadTimelines(ofKind: "LatestTransaction")
+                    WidgetCenter.shared.reloadAllTimelines()
                 }
             }
             submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")

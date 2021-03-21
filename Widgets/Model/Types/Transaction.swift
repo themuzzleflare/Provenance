@@ -30,14 +30,12 @@ struct Attribute: Hashable, Codable {
             case .held: return false
         }
     }
-    
     var statusIcon: Image {
         switch isSettled {
             case true: return Image("checkmark.circle")
             case false: return Image("clock")
         }
     }
-    
     var statusIconColor: Color {
         switch isSettled {
             case true: return .green
@@ -88,10 +86,10 @@ struct Attribute: Hashable, Codable {
     }
     
     private var createdAt: String
-    private var createdDateAbsolute: String {
+    var createdDateAbsolute: String {
         return formatDate(dateString: createdAt)
     }
-    private var createdDateRelative: String {
+    var createdDateRelative: String {
         return formatDateRelative(dateString: createdAt)
     }
     var creationDate: String {

@@ -13,7 +13,7 @@ class SettingsVC: TableViewController {
         } else {
             appDefaults.setValue("Relative", forKey: "dateStyle")
         }
-        WidgetCenter.shared.reloadTimelines(ofKind: "LatestTransaction")
+        WidgetCenter.shared.reloadAllTimelines()
     }
     @objc private func closeWorkflow() {
         dismiss(animated: true)
@@ -136,7 +136,7 @@ class SettingsVC: TableViewController {
                                 DispatchQueue.main.async {
                                     appDefaults.set(answer.text!, forKey: "apiKey")
                                     self.tableView.reloadData()
-                                    WidgetCenter.shared.reloadTimelines(ofKind: "LatestTransaction")
+                                    WidgetCenter.shared.reloadAllTimelines()
                                 }
                             } else {
                                 DispatchQueue.main.async {
@@ -155,7 +155,7 @@ class SettingsVC: TableViewController {
                                     dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                                     ac.addAction(dismissAction)
                                     self.present(ac, animated: true)
-                                    WidgetCenter.shared.reloadTimelines(ofKind: "LatestTransaction")
+                                    WidgetCenter.shared.reloadAllTimelines()
                                 }
                             }
                         } else {
@@ -175,7 +175,7 @@ class SettingsVC: TableViewController {
                                 dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                                 ac.addAction(dismissAction)
                                 self.present(ac, animated: true)
-                                WidgetCenter.shared.reloadTimelines(ofKind: "LatestTransaction")
+                                WidgetCenter.shared.reloadAllTimelines()
                             }
                         }
                     }
@@ -196,7 +196,7 @@ class SettingsVC: TableViewController {
                     dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                     ac.addAction(dismissAction)
                     self.present(ac, animated: true)
-                    WidgetCenter.shared.reloadTimelines(ofKind: "LatestTransaction")
+                    WidgetCenter.shared.reloadAllTimelines()
                 }
             }
             submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
