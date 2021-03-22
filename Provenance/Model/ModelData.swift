@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import Rswift
 
 let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
@@ -24,6 +25,18 @@ var bgCellView: UIView {
     return bgView
 }
 
+let up1 = R.image.upLogoSequence.first()!
+let up2 = R.image.upLogoSequence.second()!
+let up3 = R.image.upLogoSequence.third()!
+let up4 = R.image.upLogoSequence.fourth()!
+let up5 = R.image.upLogoSequence.fifth()!
+let up6 = R.image.upLogoSequence.sixth()!
+let up7 = R.image.upLogoSequence.seventh()!
+let up8 = R.image.upLogoSequence.eighth()!
+let upImages = [up1, up2, up3, up4, up5, up6, up7, up8]
+let upAnimation = UIImage.animatedImage(with: upImages, duration: 0.65)!
+
+// MARK: - URLSession Extensions for Query Parameter Support
 protocol URLQueryParameterStringConvertible {
     var queryParameters: String {
         get
@@ -48,6 +61,7 @@ extension URL {
     }
 }
 
+// MARK: - Date Formatters
 func formatDate(dateString: String) -> String {
     if let date = ISO8601DateFormatter().date(from: dateString) {
         let formatter = DateFormatter()

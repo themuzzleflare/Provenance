@@ -47,6 +47,7 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="leftLabel" destination="sA0-Uz-HUA" id="5PY-X8-goa"/>
                 <outlet property="rightDetail" destination="ftS-LQ-5oQ" id="vsw-lC-mCt"/>

@@ -2,6 +2,7 @@ import UIKit
 import Rswift
 
 class AboutViewController: TableViewController {
+    @IBOutlet var appImage: UIImageView!
     @IBOutlet var appNameValue: UILabel!
     @IBOutlet var versionValue: UILabel!
     @IBOutlet var buildValue: UILabel!
@@ -25,6 +26,7 @@ class AboutViewController: TableViewController {
     private func setProperties() {
         title = "About"
         
+        appImage.image = upAnimation
         appNameValue.text = appName
         versionValue.text = appVersion
         buildValue.text = appBuild
@@ -35,6 +37,42 @@ class AboutViewController: TableViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftSlashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.gear(), style: .plain, target: self, action: #selector(openSettings))
         navigationItem.largeTitleDisplayMode = .never
+    }
+    
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let row = indexPath.row
+        
+        if indexPath.section == 0 {
+            if row == 1 {
+                if appVersion != "Unknown" {
+                    let copyVersion = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
+                        UIPasteboard.general.string = appVersion
+                    }
+                    
+                    return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                        UIMenu(children: [copyVersion])
+                    }
+                } else {
+                    return nil
+                }
+            } else if row == 2 {
+                if appBuild != "Unknown" {
+                    let copyBuild = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
+                        UIPasteboard.general.string = appBuild
+                    }
+                    
+                    return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                        UIMenu(children: [copyBuild])
+                    }
+                } else {
+                    return nil
+                }
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -48,11 +86,11 @@ class AboutViewController: TableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 {
             self.tableView.deselectRow(at: indexPath, animated: true)
+            
             if indexPath.row == 0 {
                 UIApplication.shared.open(URL(string: "mailto:feedback@tavitian.cloud?subject=Feedback%20for%20Provenance")!)
             } else {
                 UIApplication.shared.open(URL(string: "https://github.com/themuzzleflare/Provenance")!)
-                
             }
         }
     }

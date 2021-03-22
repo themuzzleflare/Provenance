@@ -29,36 +29,50 @@
                         <sections>
                             <tableViewSection id="1E9-UD-mVa">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="350" id="IQi-LR-7oC">
-                                        <rect key="frame" x="20" y="18" width="374" height="350"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="300" id="IQi-LR-7oC">
+                                        <rect key="frame" x="20" y="18" width="374" height="300"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="IQi-LR-7oC" id="tbw-tT-llJ">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="350"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="300"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xG2-g9-dlW">
-                                                    <rect key="frame" x="78" y="43.333333333333343" width="218" height="263.66666666666663"/>
+                                                    <rect key="frame" x="16" y="13" width="342" height="274"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="UpLogoRounded" translatesAutoresizingMaskIntoConstraints="NO" id="0Oa-vX-0zt">
-                                                            <rect key="frame" x="0.0" y="0.0" width="218" height="218"/>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="UpLogoSequence/first" translatesAutoresizingMaskIntoConstraints="NO" id="0Oa-vX-0zt">
+                                                            <rect key="frame" x="121" y="0.0" width="100" height="100"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                    <integer key="value" value="20"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Provenance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0p0-RM-AcW">
-                                                            <rect key="frame" x="22" y="222.99999999999997" width="174.33333333333334" height="40.666666666666657"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Provenance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0p0-RM-AcW">
+                                                            <rect key="frame" x="84.000000000000014" y="105" width="174.33333333333337" height="40.666666666666657"/>
                                                             <fontDescription key="fontDescription" name="CircularStd-Bold" family="Circular Std" pointSize="32"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nix-dV-NE2">
+                                                            <rect key="frame" x="0.0" y="150.66666666666666" width="342" height="123.33333333333334"/>
+                                                            <string key="text">Provenance is a lightweight application that interacts with the Up Banking Developer API to display information about your bank accounts, transactions, categories, tags, and more.</string>
+                                                            <fontDescription key="fontDescription" name="CircularStd-Book" family="Circular Std" pointSize="17"/>
+                                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
                                                 </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="xG2-g9-dlW" firstAttribute="centerX" secondItem="tbw-tT-llJ" secondAttribute="centerX" id="SWv-0N-lGg"/>
-                                                <constraint firstItem="xG2-g9-dlW" firstAttribute="centerY" secondItem="tbw-tT-llJ" secondAttribute="centerY" id="ntG-MP-KW3"/>
+                                                <constraint firstAttribute="trailing" secondItem="xG2-g9-dlW" secondAttribute="trailing" constant="16" id="7Ky-VG-YaW"/>
+                                                <constraint firstItem="xG2-g9-dlW" firstAttribute="leading" secondItem="tbw-tT-llJ" secondAttribute="leading" constant="16" id="7P2-EG-iwd"/>
+                                                <constraint firstItem="xG2-g9-dlW" firstAttribute="top" secondItem="tbw-tT-llJ" secondAttribute="top" constant="13" id="mEh-RC-bvk"/>
+                                                <constraint firstAttribute="bottom" secondItem="xG2-g9-dlW" secondAttribute="bottom" constant="13" id="oZy-w0-PMJ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="Sg3-Iv-y8x" detailTextLabel="YmN-uG-Vff" style="IBUITableViewCellStyleValue1" id="bM9-xT-CMR">
-                                        <rect key="frame" x="20" y="368" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="318" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bM9-xT-CMR" id="Ac5-rx-DIo">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
@@ -82,7 +96,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="rch-r1-fvm" detailTextLabel="lu6-aP-ZgE" style="IBUITableViewCellStyleValue1" id="t4t-80-5is">
-                                        <rect key="frame" x="20" y="411.5" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="361.5" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="t4t-80-5is" id="SZd-ec-ZSl">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
@@ -110,7 +124,7 @@
                             <tableViewSection footerTitle="Copyright © 2021 Paul Tavitian" id="sAL-Ea-hiv">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="GtL-0E-uGs" imageView="xgZ-c9-Ppd" style="IBUITableViewCellStyleDefault" id="B4n-TB-qeC">
-                                        <rect key="frame" x="20" y="491" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="441" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="B4n-TB-qeC" id="HDb-jq-aHE">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
@@ -136,7 +150,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="3IK-Dp-3y9">
-                                        <rect key="frame" x="20" y="534.5" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="484.5" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3IK-Dp-3y9" id="RmY-Dk-rgl">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
@@ -182,8 +196,9 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="appImage" destination="0Oa-vX-0zt" id="6Wq-uf-bBV"/>
                         <outlet property="appNameValue" destination="0p0-RM-AcW" id="cMk-mv-yu2"/>
-                        <outlet property="buildValue" destination="lu6-aP-ZgE" id="YKU-Ev-Zfc"/>
+                        <outlet property="buildValue" destination="lu6-aP-ZgE" id="TIz-av-Dgw"/>
                         <outlet property="versionValue" destination="YmN-uG-Vff" id="xWg-DL-aqK"/>
                     </connections>
                 </tableViewController>
@@ -200,14 +215,14 @@
     </scenes>
     <color key="tintColor" name="AccentColor"/>
     <resources>
-        <image name="UpLogoRounded" width="218" height="218"/>
+        <image name="UpLogoSequence/first" width="100" height="100"/>
         <image name="github" width="512" height="512"/>
         <image name="square.and.pencil" catalog="system" width="128" height="115"/>
         <namedColor name="AccentColor">
             <color red="0.89803921568627454" green="0.44705882352941179" blue="0.37647058823529411" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="bgColour">
-            <color red="0.14100000262260437" green="0.14100000262260437" blue="0.18799999356269836" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.13725490196078433" green="0.13725490196078433" blue="0.18431372549019609" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

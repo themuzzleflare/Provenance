@@ -16,7 +16,7 @@ struct LatestTransactionProvider: IntentTimelineProvider {
         var entries: [LatestTransactionModel] = []
         
         var url = URL(string: "https://api.up.com.au/api/v1/transactions")!
-        let urlParams = ["page[size]":"100"]
+        let urlParams = ["page[size]":"1"]
         url = url.appendingQueryParameters(urlParams)
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -74,7 +74,7 @@ struct LatestTransactionModel: TimelineEntry {
 
 struct LatestTransactionEntryView: View {
     @Environment(\.widgetFamily) private var family
-
+    
     var entry: LatestTransactionModel
     
     var body: some View {

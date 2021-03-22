@@ -2,6 +2,7 @@ import Foundation
 
 let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
 
+// MARK: - URLSession Extensions for Query Parameter Support
 protocol URLQueryParameterStringConvertible {
     var queryParameters: String {
         get
@@ -26,6 +27,7 @@ extension URL {
     }
 }
 
+// MARK: - Date Formatters
 func formatDate(dateString: String) -> String {
     if let date = ISO8601DateFormatter().date(from: dateString) {
         let formatter = DateFormatter()

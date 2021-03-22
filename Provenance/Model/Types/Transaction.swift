@@ -31,7 +31,6 @@ struct Attribute: Hashable, Codable {
             case .held: return false
         }
     }
-    
     var statusIcon: UIImage {
         let configuration = UIImage.SymbolConfiguration(pointSize: 21)
         switch isSettled {
