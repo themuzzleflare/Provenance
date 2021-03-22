@@ -249,7 +249,7 @@ extension AllTagsVC: UITableViewDelegate, UITableViewDataSource {
                 let tag = filteredTags[indexPath.row]
                 
                 tagCell.selectedBackgroundView = bgCellView
-                tagCell.accessoryType = .disclosureIndicator
+                tagCell.accessoryType = .none
                 tagCell.textLabel?.font = circularStdBook
                 tagCell.textLabel?.adjustsFontForContentSizeCategory = true
                 tagCell.textLabel?.text = tag.id

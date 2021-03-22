@@ -233,7 +233,7 @@ extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
                 let category = filteredCategories[indexPath.row]
                 
                 categoryCell.selectedBackgroundView = bgCellView
-                categoryCell.accessoryType = .disclosureIndicator
+                categoryCell.accessoryType = .none
                 categoryCell.textLabel?.font = circularStdBook
                 categoryCell.textLabel?.text = category.attributes.name
                 

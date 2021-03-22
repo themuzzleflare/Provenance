@@ -173,6 +173,9 @@
 		7AE75E4A25FF58B800C16AF6 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		7AE75E5225FF5B1D00C16AF6 /* AboutViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AboutViewController.storyboard; sourceTree = "<group>"; };
 		7AF17A212608290900EE1747 /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
+		7AF17A652608419300EE1747 /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
+		7AF17A6A260841A300EE1747 /* ErrorStringCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorStringCell.swift; sourceTree = "<group>"; };
+		7AF17A6F260841B000EE1747 /* ErrorObjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorObjectCell.swift; sourceTree = "<group>"; };
 		7AF4C35525DB3673009CF391 /* CircularStd-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CircularStd-Book.otf"; sourceTree = "<group>"; };
 		7AF4C35625DB3673009CF391 /* CircularStd-BookItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CircularStd-BookItalic.ttf"; sourceTree = "<group>"; };
 		7AF4C35725DB3674009CF391 /* SF-Mono-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Mono-Regular.otf"; sourceTree = "<group>"; };
@@ -242,16 +245,15 @@
 			isa = PBXGroup;
 			children = (
 				7A2837D425D741D9001809E4 /* TransactionCell.swift */,
-				7A2837D525D741D9001809E4 /* TransactionCell.xib */,
 				7A2837DB25D75437001809E4 /* AttributeCell.swift */,
-				7A2837DC25D75437001809E4 /* AttributeCell.xib */,
 				7A2837EE25D78579001809E4 /* DateStylePickerCell.swift */,
-				7A2837EF25D78579001809E4 /* DateStylePickerCell.xib */,
 				7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */,
 				7AB34D4325C79BD0000A1E81 /* RightDetailTableViewCell.swift */,
 				7A50FB9E25E0CDB800176C10 /* APIKeyCell.swift */,
-				7A50FB9F25E0CDB800176C10 /* APIKeyCell.xib */,
 				7AF17A212608290900EE1747 /* AccountCell.swift */,
+				7AF17A652608419300EE1747 /* LoadingCell.swift */,
+				7AF17A6A260841A300EE1747 /* ErrorStringCell.swift */,
+				7AF17A6F260841B000EE1747 /* ErrorObjectCell.swift */,
 			);
 			path = "Custom Cells";
 			sourceTree = "<group>";
@@ -333,6 +335,7 @@
 				7A22F7E625FFF8860014BDC8 /* Model */,
 				7A07979A25D79ACE0013EE82 /* Custom Cells */,
 				7AB609AC2602CAD80038B85B /* Storyboards */,
+				7AF17A49260839BF00EE1747 /* XIBs */,
 				7A0557E12604A0D20080D2CD /* Application */,
 				7A22F7E925FFF90E0014BDC8 /* Template View Controllers */,
 				7A0557D72604A0A30080D2CD /* View Controllers */,
@@ -383,6 +386,17 @@
 				7AD6ED972604A9180051A235 /* Info.plist */,
 			);
 			path = Stickers;
+			sourceTree = "<group>";
+		};
+		7AF17A49260839BF00EE1747 /* XIBs */ = {
+			isa = PBXGroup;
+			children = (
+				7A2837D525D741D9001809E4 /* TransactionCell.xib */,
+				7A2837DC25D75437001809E4 /* AttributeCell.xib */,
+				7A50FB9F25E0CDB800176C10 /* APIKeyCell.xib */,
+				7A2837EF25D78579001809E4 /* DateStylePickerCell.xib */,
+			);
+			path = XIBs;
 			sourceTree = "<group>";
 		};
 		7AF4C35425DB3668009CF391 /* Fonts */ = {
@@ -843,7 +857,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 7.2;
+				MARKETING_VERSION = 7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -874,7 +888,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 7.2;
+				MARKETING_VERSION = 7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -904,7 +918,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 7.2;
+				MARKETING_VERSION = 7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -934,7 +948,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 7.2;
+				MARKETING_VERSION = 7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -958,7 +972,7 @@
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 7.2;
+				MARKETING_VERSION = 7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -978,7 +992,7 @@
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 7.2;
+				MARKETING_VERSION = 7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

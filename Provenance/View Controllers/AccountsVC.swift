@@ -210,7 +210,7 @@ extension AccountsVC: UITableViewDelegate, UITableViewDataSource {
                 let account = accounts[indexPath.row]
                 
                 accountCell.selectedBackgroundView = bgCellView
-                accountCell.accessoryType = .disclosureIndicator
+                accountCell.accessoryType = .none
                 accountCell.textLabel?.font = circularStdBold
                 accountCell.textLabel?.textColor = .black
                 accountCell.textLabel?.text = account.attributes.displayName
