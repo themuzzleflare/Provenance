@@ -8,7 +8,7 @@ protocol URLQueryParameterStringConvertible {
         get
     }
 }
-extension Dictionary : URLQueryParameterStringConvertible {
+extension Dictionary: URLQueryParameterStringConvertible {
     var queryParameters: String {
         var parts: [String] = []
         for (key, value) in self {
@@ -22,7 +22,7 @@ extension Dictionary : URLQueryParameterStringConvertible {
 }
 extension URL {
     func appendingQueryParameters(_ parametersDictionary : Dictionary<String, String>) -> URL {
-        let URLString : String = String(format: "%@?%@", self.absoluteString, parametersDictionary.queryParameters)
+        let URLString: String = String(format: "%@?%@", self.absoluteString, parametersDictionary.queryParameters)
         return URL(string: URLString)!
     }
 }

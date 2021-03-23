@@ -40,6 +40,7 @@ class AccountsVC: ViewController {
     
     private func setupNavigation() {
         navigationItem.title = "Loading"
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.walletPass(), style: .plain, target: self, action: nil)
         navigationController?.navigationBar.prefersLargeTitles = true
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshAccounts)), animated: true)

@@ -48,6 +48,7 @@ class CategoriesVC: ViewController {
     
     private func setupNavigation() {
         navigationItem.title = "Loading"
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.arrowUpArrowDownCircle(), style: .plain, target: self, action: nil)
         navigationController?.navigationBar.prefersLargeTitles = true
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshCategories)), animated: true)

@@ -18,6 +18,7 @@ class TagsVC: TableViewController {
     
     private func setupNavigation() {
         navigationItem.title = "Tags"
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
     }
     
     private func setupTableView() {

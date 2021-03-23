@@ -36,7 +36,7 @@
         <!--Navigation Controller-->
         <scene sceneID="u0X-aX-6t5">
             <objects>
-                <navigationController storyboardIdentifier="addTagWorkflowNavigation" automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="flipHorizontal" modalPresentationStyle="fullScreen" id="oTm-WU-Ygt" customClass="NavigationController" customModule="Provenance" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="addTagWorkflowNavigation" automaticallyAdjustsScrollViewInsets="NO" id="oTm-WU-Ygt" customClass="NavigationController" customModule="Provenance" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="lYu-Qh-pBk">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>

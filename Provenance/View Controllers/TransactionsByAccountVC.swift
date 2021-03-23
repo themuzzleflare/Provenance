@@ -63,6 +63,7 @@ class TransactionsByAccountVC: ViewController {
     
     private func setupNavigation() {
         navigationItem.title = "Loading"
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
         navigationItem.largeTitleDisplayMode = .always
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions))], animated: true)

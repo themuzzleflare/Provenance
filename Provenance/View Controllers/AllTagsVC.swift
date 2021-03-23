@@ -56,6 +56,7 @@ class AllTagsVC: ViewController {
     
     private func setupNavigation() {
         navigationItem.title = "Loading"
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
         navigationController?.navigationBar.prefersLargeTitles = true
         #if targetEnvironment(macCatalyst)
         navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTags)), animated: true)

@@ -1,4 +1,5 @@
 import UIKit
+import MarqueeLabel
 import Rswift
 
 class TransactionDetailVC: TableViewController {
@@ -6,19 +7,21 @@ class TransactionDetailVC: TableViewController {
     var categories: [CategoryResource]!
     var accounts: [AccountResource]!
     
+    let scrollingTitle = MarqueeLabel(frame: .infinite, rate: 65, fadeLength: 20)
+    
     private var categoryFilter: [CategoryResource]? {
         categories?.filter { category in
-            transaction?.relationships.category.data?.id == category.id
+            transaction.relationships.category.data?.id == category.id
         }
     }
     private var parentCategoryFilter: [CategoryResource]? {
         categories?.filter { pcategory in
-            transaction?.relationships.parentCategory.data?.id == pcategory.id
+            transaction.relationships.parentCategory.data?.id == pcategory.id
         }
     }
     private var accountFilter: [AccountResource]? {
         accounts?.filter { account in
-            transaction?.relationships.account.data.id == account.id
+            transaction.relationships.account.data.id == account.id
         }
     }
     private var holdTransValue: String {
@@ -54,10 +57,10 @@ class TransactionDetailVC: TableViewController {
         return ["Status": transaction.attributes.statusString, "Account": accountFilter?.first?.attributes.displayName ?? ""]
     }
     private var attributesTwo: KeyValuePairs<String, String> {
-        return ["Description": transaction?.attributes.description ?? "", "Raw Text": transaction?.attributes.rawText ?? "", "Message": transaction?.attributes.message ?? ""]
+        return ["Description": transaction.attributes.description, "Raw Text": transaction.attributes.rawText ?? "", "Message": transaction.attributes.message ?? ""]
     }
     private var attributesThree: KeyValuePairs<String, String> {
-        return ["Hold \(transaction.attributes.holdInfo?.amount.transactionType ?? "")": holdTransValue, "Hold Foreign \(transaction.attributes.holdInfo?.foreignAmount?.transactionType ?? "")": holdForeignTransValue, "Foreign \(transaction.attributes.foreignAmount?.transactionType ?? "")": foreignTransValue, transaction?.attributes.amount.transactionType ?? "Amount": transaction.attributes.amount.valueLong]
+        return ["Hold \(transaction.attributes.holdInfo?.amount.transactionType ?? "")": holdTransValue, "Hold Foreign \(transaction.attributes.holdInfo?.foreignAmount?.transactionType ?? "")": holdForeignTransValue, "Foreign \(transaction.attributes.foreignAmount?.transactionType ?? "")": foreignTransValue, transaction.attributes.amount.transactionType: transaction.attributes.amount.valueLong]
     }
     private var attributesFour: KeyValuePairs<String, String> {
         return ["Created Date": transaction.attributes.creationDate, "Settled Date": transaction.attributes.settlementDate ?? ""]
@@ -66,7 +69,7 @@ class TransactionDetailVC: TableViewController {
         return ["Parent Category": parentCategoryFilter?.first?.attributes.name ?? "", "Category": categoryFilter?.first?.attributes.name ?? ""]
     }
     private var attributesSix: KeyValuePairs<String, String> {
-        return ["Tags": transaction?.relationships.tags.data.count.description ?? ""]
+        return ["Tags": transaction.relationships.tags.data.count.description]
     }
     private var altAttributes: Array<(key: String, value: String)> {
         return attributes.filter {
@@ -103,6 +106,7 @@ class TransactionDetailVC: TableViewController {
         super.viewDidLoad()
         
         setProperties()
+        setupMarqueeLabel()
         setupNavigation()
         setupTableView()
     }
@@ -115,8 +119,14 @@ class TransactionDetailVC: TableViewController {
         title = "Transaction Details"
     }
     
+    private func setupMarqueeLabel() {
+        scrollingTitle.font = R.font.circularStdBook(size: 17)
+        scrollingTitle.textAlignment = .center
+        scrollingTitle.text = transaction.attributes.description
+    }
+    
     private func setupNavigation() {
-        navigationItem.title = transaction.attributes.description
+        navigationItem.titleView = scrollingTitle
         navigationItem.setRightBarButton(UIBarButtonItem(customView: transaction.attributes.statusIconView), animated: true)
         navigationItem.largeTitleDisplayMode = .never
     }
@@ -126,9 +136,9 @@ class TransactionDetailVC: TableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if transaction?.relationships.tags.data.count == 0 && (transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil) {
+        if transaction.relationships.tags.data.count == 0 && (transaction.relationships.parentCategory.data == nil && transaction.relationships.category.data == nil) {
             return 4
-        } else if transaction?.relationships.tags.data.count == 0 || (transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil) {
+        } else if transaction.relationships.tags.data.count == 0 || (transaction.relationships.parentCategory.data == nil && transaction.relationships.category.data == nil) {
             return 5
         } else {
             return 6
@@ -141,7 +151,7 @@ class TransactionDetailVC: TableViewController {
             case 1: return altAttributesTwo.count
             case 2: return altAttributesThree.count
             case 3: return altAttributesFour.count
-            case 4: return transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil ? altAttributesSix.count : altAttributesFive.count
+            case 4: return transaction.relationships.parentCategory.data == nil && transaction.relationships.category.data == nil ? altAttributesSix.count : altAttributesFive.count
             case 5: return altAttributesSix.count
             default: fatalError("Unknown section")
         }
@@ -150,15 +160,13 @@ class TransactionDetailVC: TableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.attributeCell, for: indexPath)!
         
-        let section = indexPath.section
-        
         var attribute: (key: String, value: String) {
-            switch section {
+            switch indexPath.section {
                 case 0: return altAttributes[indexPath.row]
                 case 1: return altAttributesTwo[indexPath.row]
                 case 2: return altAttributesThree[indexPath.row]
                 case 3: return altAttributesFour[indexPath.row]
-                case 4: return transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil ? altAttributesSix[indexPath.row] : altAttributesFive[indexPath.row]
+                case 4: return transaction.relationships.parentCategory.data == nil && transaction.relationships.category.data == nil ? altAttributesSix[indexPath.row] : altAttributesFive[indexPath.row]
                 case 5: return altAttributesSix[indexPath.row]
                 default: fatalError("Unknown attribute")
             }
@@ -212,7 +220,7 @@ class TransactionDetailVC: TableViewController {
                 navigationController?.pushViewController(vc, animated: true)
             }
         } else if section == 4 {
-            if transaction?.relationships.parentCategory.data == nil && transaction?.relationships.category.data == nil {
+            if transaction.relationships.parentCategory.data == nil && transaction.relationships.category.data == nil {
                 let vc = TagsVC(style: .insetGrouped)
                 
                 vc.transaction = transaction
