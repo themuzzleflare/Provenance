@@ -6,5 +6,6 @@ target 'Provenance' do
   pod 'MarqueeLabel'
   pod 'TinyConstraints'
   pod 'R.swift'
+  pod 'Alamofire', '~> 5.2'
 
 end

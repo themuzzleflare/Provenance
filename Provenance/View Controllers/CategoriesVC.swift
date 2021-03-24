@@ -1,4 +1,5 @@
 import UIKit
+import Alamofire
 import TinyConstraints
 import Rswift
 
@@ -24,7 +25,7 @@ class CategoriesVC: ViewController {
         navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.listCategories()
+            self.fetchCategories()
         }
     }
     
@@ -39,7 +40,7 @@ class CategoriesVC: ViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        listCategories()
+        fetchCategories()
     }
     
     private func setProperties() {
@@ -95,16 +96,12 @@ class CategoriesVC: ViewController {
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
     }
     
-    private func listCategories() {
-        let url = URL(string: "https://api.up.com.au/api/v1/categories")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("Bearer \(appDefaults.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if error == nil {
-                if let decodedResponse = try? JSONDecoder().decode(Category.self, from: data!) {
-                    DispatchQueue.main.async {
+    private func fetchCategories() {
+        let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
+        AF.request(UpApi.Categories().listCategories, method: .get, headers: headers).responseJSON { response in
+            switch response.result {
+                case .success:
+                    if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
                         print("Categories JSON decoding succeeded")
                         self.categories = decodedResponse.data
                         self.categoriesError = ""
@@ -117,9 +114,7 @@ class CategoriesVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
-                    }
-                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
-                    DispatchQueue.main.async {
+                    } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Categories Error JSON decoding succeeded")
                         self.categoriesErrorResponse = decodedResponse.errors
                         self.categoriesError = ""
@@ -132,9 +127,7 @@ class CategoriesVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
-                    }
-                } else {
-                    DispatchQueue.main.async {
+                    } else {
                         print("Categories JSON decoding failed")
                         self.categoriesError = "JSON Decoding Failed!"
                         self.categoriesErrorResponse = []
@@ -148,11 +141,9 @@ class CategoriesVC: ViewController {
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown error")
-                    self.categoriesError = error?.localizedDescription ?? "Unknown Error!"
+                case .failure:
+                    print(response.error?.localizedDescription ?? "Unknown error")
+                    self.categoriesError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.categoriesErrorResponse = []
                     self.categories = []
                     self.navigationItem.title = "Error"
@@ -163,13 +154,9 @@ class CategoriesVC: ViewController {
                     self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
-                }
             }
-            DispatchQueue.main.async {
-                self.searchController.searchBar.placeholder = "Search \(self.categories.count.description) \(self.categories.count == 1 ? "Category" : "Categories")"
-            }
+            self.searchController.searchBar.placeholder = "Search \(self.categories.count.description) \(self.categories.count == 1 ? "Category" : "Categories")"
         }
-        .resume()
     }
 }
 

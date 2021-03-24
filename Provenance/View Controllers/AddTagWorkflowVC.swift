@@ -1,4 +1,5 @@
 import UIKit
+import Alamofire
 import TinyConstraints
 import Rswift
 
@@ -20,7 +21,7 @@ class AddTagWorkflowVC: ViewController {
     
     @objc private func refreshTransactions() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.listTransactions()
+            self.fetchTransactions()
         }
     }
     @objc private func closeWorkflow() {
@@ -40,7 +41,7 @@ class AddTagWorkflowVC: ViewController {
     override func viewWillAppear(_ animated: Bool) {
         tableViewController.tableView.reloadData()
         
-        listTransactions()
+        fetchTransactions()
     }
     
     private func setProperties() {
@@ -93,18 +94,12 @@ class AddTagWorkflowVC: ViewController {
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
     }
     
-    private func listTransactions() {
-        var url = URL(string: "https://api.up.com.au/api/v1/transactions")!
-        let urlParams = ["page[size]":"100"]
-        url = url.appendingQueryParameters(urlParams)
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("Bearer \(appDefaults.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if error == nil {
-                if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: data!) {
-                    DispatchQueue.main.async {
+    private func fetchTransactions() {
+        let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
+        AF.request(UpApi.Transactions().listTransactions, method: .get, parameters: pageSize100Param, headers: headers).responseJSON { response in
+            switch response.result {
+                case .success:
+                    if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
                         print("Transactions JSON decoding succeeded")
                         self.transactions = decodedResponse.data
                         self.transactionsError = ""
@@ -114,9 +109,7 @@ class AddTagWorkflowVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
-                    }
-                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
-                    DispatchQueue.main.async {
+                    } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Transactions Error JSON decoding succeeded")
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
@@ -126,9 +119,7 @@ class AddTagWorkflowVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
-                    }
-                } else {
-                    DispatchQueue.main.async {
+                    } else {
                         print("Transactions JSON decoding failed")
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
@@ -139,11 +130,9 @@ class AddTagWorkflowVC: ViewController {
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown error")
-                    self.transactionsError = error?.localizedDescription ?? "Unknown Error!"
+                case .failure:
+                    print(response.error?.localizedDescription ?? "Unknown error")
+                    self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.transactionsErrorResponse = []
                     self.transactions = []
                     self.navigationItem.title = "Error"
@@ -151,13 +140,9 @@ class AddTagWorkflowVC: ViewController {
                     self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
-                }
             }
-            DispatchQueue.main.async {
-                self.searchController.searchBar.placeholder = "Search \(self.transactions.count.description) \(self.transactions.count == 1 ? "Transaction" : "Transactions")"
-            }
+            self.searchController.searchBar.placeholder = "Search \(self.transactions.count.description) \(self.transactions.count == 1 ? "Transaction" : "Transactions")"
         }
-        .resume()
     }
 }
 

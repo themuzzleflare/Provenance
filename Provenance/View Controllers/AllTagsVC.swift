@@ -1,4 +1,5 @@
 import UIKit
+import Alamofire
 import TinyConstraints
 import Rswift
 
@@ -28,12 +29,12 @@ class AllTagsVC: ViewController {
         navigationItem.setLeftBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.listTags()
+            self.fetchTags()
         }
     }
     
     @IBAction func workflowClosed(unwindSegue: UIStoryboardSegue) {
-        listTags()
+        fetchTags()
     }
     
     override func viewDidLoad() {
@@ -47,7 +48,7 @@ class AllTagsVC: ViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        listTags()
+        fetchTags()
     }
     
     private func setProperties() {
@@ -103,18 +104,12 @@ class AllTagsVC: ViewController {
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
     }
     
-    private func listTags() {
-        var url = URL(string: "https://api.up.com.au/api/v1/tags")!
-        let urlParams = ["page[size]":"200"]
-        url = url.appendingQueryParameters(urlParams)
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("Bearer \(appDefaults.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if error == nil {
-                if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: data!) {
-                    DispatchQueue.main.async {
+    private func fetchTags() {
+        let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
+        AF.request(UpApi.Tags().listTags, method: .get, parameters: pageSize200Param, headers: headers).responseJSON { response in
+            switch response.result {
+                case .success:
+                    if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: response.data!) {
                         print("Tags JSON decoding succeeded")
                         self.tags = decodedResponse.data
                         self.tagsError = ""
@@ -130,9 +125,7 @@ class AllTagsVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
-                    }
-                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
-                    DispatchQueue.main.async {
+                    } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Tags Error JSON decoding succeeded")
                         self.tagsErrorResponse = decodedResponse.errors
                         self.tagsError = ""
@@ -146,9 +139,7 @@ class AllTagsVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
-                    }
-                } else {
-                    DispatchQueue.main.async {
+                    } else {
                         print("Tags JSON decoding failed")
                         self.tagsError = "JSON Decoding Failed!"
                         self.tagsErrorResponse = []
@@ -163,11 +154,9 @@ class AllTagsVC: ViewController {
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown error")
-                    self.tagsError = error?.localizedDescription ?? "Unknown Error!"
+                case .failure:
+                    print(response.error?.localizedDescription ?? "Unknown error")
+                    self.tagsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.tagsErrorResponse = []
                     self.tags = []
                     self.navigationItem.title = "Error"
@@ -179,13 +168,9 @@ class AllTagsVC: ViewController {
                     self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
-                }
             }
-            DispatchQueue.main.async {
-                self.searchController.searchBar.placeholder = "Search \(self.tags.count.description) \(self.tags.count == 1 ? "Tag" : "Tags")"
-            }
+            self.searchController.searchBar.placeholder = "Search \(self.tags.count.description) \(self.tags.count == 1 ? "Tag" : "Tags")"
         }
-        .resume()
     }
 }
 

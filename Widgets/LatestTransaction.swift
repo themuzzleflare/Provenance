@@ -91,9 +91,10 @@ struct LatestTransactionEntryView: View {
                         VStack(alignment: .leading, spacing: 0) {
                             Text(entry.transactionDescription)
                                 .font(.custom("CircularStd-Bold", size: 17))
+                                .foregroundColor(.white)
                             Text(entry.transactionDate)
                                 .font(.custom("CircularStd-Book", size: 12))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(Color(UIColor.lightGray))
                         }
                         Spacer()
                         Text(entry.transactionAmount)
@@ -112,7 +113,7 @@ struct LatestTransactionEntryView: View {
                     Spacer()
                     Text(entry.transactionDate)
                         .font(.custom("CircularStd-Book", size: 12))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Color(UIColor.lightGray))
                 }
             }
             .padding()
@@ -122,6 +123,7 @@ struct LatestTransactionEntryView: View {
                 .padding()
                 .fixedSize(horizontal: false, vertical: true)
                 .font(.custom("CircularStd-Book", size: 17))
+                .foregroundColor(.white)
         })
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color("WidgetBackground"))

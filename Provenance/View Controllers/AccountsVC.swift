@@ -1,4 +1,5 @@
 import UIKit
+import Alamofire
 import TinyConstraints
 import Rswift
 
@@ -17,7 +18,7 @@ class AccountsVC: ViewController {
         navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.listAccounts()
+            self.fetchAccounts()
         }
     }
     
@@ -31,7 +32,7 @@ class AccountsVC: ViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        listAccounts()
+        fetchAccounts()
     }
     
     private func setProperties() {
@@ -73,18 +74,12 @@ class AccountsVC: ViewController {
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
     }
     
-    private func listAccounts() {
-        var url = URL(string: "https://api.up.com.au/api/v1/accounts")!
-        let urlParams = ["page[size]":"100"]
-        url = url.appendingQueryParameters(urlParams)
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("Bearer \(appDefaults.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if error == nil {
-                if let decodedResponse = try? JSONDecoder().decode(Account.self, from: data!) {
-                    DispatchQueue.main.async {
+    private func fetchAccounts() {
+        let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
+        AF.request(UpApi.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: headers).responseJSON { response in
+            switch response.result {
+                case .success:
+                    if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
                         print("Accounts JSON decoding succeeded")
                         self.accounts = decodedResponse.data
                         self.accountsError = ""
@@ -97,9 +92,7 @@ class AccountsVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
-                    }
-                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
-                    DispatchQueue.main.async {
+                    } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Accounts Error JSON decoding succeeded")
                         self.accountsErrorResponse = decodedResponse.errors
                         self.accountsError = ""
@@ -112,9 +105,7 @@ class AccountsVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
-                    }
-                } else {
-                    DispatchQueue.main.async {
+                    } else {
                         print("Accounts JSON decoding failed")
                         self.accountsError = "JSON Decoding Failed!"
                         self.accountsErrorResponse = []
@@ -128,11 +119,9 @@ class AccountsVC: ViewController {
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    print(error?.localizedDescription ?? "Unknown error")
-                    self.accountsError = error?.localizedDescription ?? "Unknown Error!"
+                case .failure:
+                    print(response.error?.localizedDescription ?? "Unknown error")
+                    self.accountsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.accountsErrorResponse = []
                     self.accounts = []
                     self.navigationItem.title = "Error"
@@ -143,10 +132,8 @@ class AccountsVC: ViewController {
                     self.setupTableView()
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
-                }
             }
         }
-        .resume()
     }
 }
 
