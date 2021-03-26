@@ -18,6 +18,7 @@
 		7A2E6D0025DCA06B00BA2AB6 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2E6CFF25DCA06B00BA2AB6 /* ModelData.swift */; };
 		7A455CA22607FBFE00A7F2B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
 		7A455CD526080F1300A7F2B8 /* LatestTransaction.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7A7DAC6926071702001349FD /* LatestTransaction.intentdefinition */; };
+		7A501AD0260AEF1A001B0F00 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFDBEB225C7FEDB002DB208 /* Account.swift */; };
 		7A50FBA025E0CDB800176C10 /* APIKeyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A50FB9E25E0CDB800176C10 /* APIKeyCell.swift */; };
 		7A50FBA125E0CDB800176C10 /* APIKeyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A50FB9F25E0CDB800176C10 /* APIKeyCell.xib */; };
 		7A56100F25D219530091396E /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56100E25D219530091396E /* Tag.swift */; };
@@ -696,6 +697,7 @@
 				7AD12805260473FB00A39272 /* ModelData.swift in Sources */,
 				7A7DAC8E2607180E001349FD /* LatestTransaction.intentdefinition in Sources */,
 				7A7DAC82260717A2001349FD /* LatestTransaction.swift in Sources */,
+				7A501AD0260AEF1A001B0F00 /* Account.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -865,7 +867,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 7.5;
+				MARKETING_VERSION = 7.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -896,7 +898,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 7.5;
+				MARKETING_VERSION = 7.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -926,7 +928,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 7.5;
+				MARKETING_VERSION = 7.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -956,7 +958,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 7.5;
+				MARKETING_VERSION = 7.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -980,7 +982,7 @@
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 7.5;
+				MARKETING_VERSION = 7.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1000,7 +1002,7 @@
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 7.5;
+				MARKETING_VERSION = 7.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

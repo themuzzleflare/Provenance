@@ -6,6 +6,7 @@ import Rswift
 class TransactionsByAccountVC: ViewController {
     var account: AccountResource!
     
+    let accountHeaderView = UIView()
     let fetchingView = ActivityIndicator(style: .medium)
     let tableViewController = TableViewController(style: .insetGrouped)
     let refreshControl = RefreshControl(frame: .zero)
@@ -14,7 +15,7 @@ class TransactionsByAccountVC: ViewController {
     private var transactions: [TransactionResource] = []
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
-    private var prevFilteredTransactions: [TransactionResource] = []
+    private var prevFilteredTransactions: [TransactionResource]? = nil
     private var categories: [CategoryResource] = []
     private var filteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
@@ -49,6 +50,7 @@ class TransactionsByAccountVC: ViewController {
         setupSearch()
         setupRefreshControl()
         setupFetchingView()
+        setupAccountHeaderView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,6 +82,7 @@ class TransactionsByAccountVC: ViewController {
         searchController.searchBar.placeholder = "Search"
         searchController.hidesNavigationBarDuringPresentation = true
         searchController.searchBar.delegate = self
+        searchController.searchResultsUpdater = self
         
         definesPresentationContext = true
         
@@ -96,6 +99,30 @@ class TransactionsByAccountVC: ViewController {
         view.addSubview(fetchingView)
         
         fetchingView.edgesToSuperview()
+    }
+    
+    private func setupAccountHeaderView() {
+        let balanceLabel = UILabel()
+        balanceLabel.font = R.font.circularStdBold(size: 32)
+        balanceLabel.textColor = R.color.accentColor()
+        balanceLabel.textAlignment = .center
+        balanceLabel.text = account.attributes.balance.valueShort
+        
+        let availableLabel = UILabel()
+        availableLabel.font = R.font.circularStdBook(size: 14)
+        availableLabel.textColor = .lightGray
+        availableLabel.textAlignment = .center
+        availableLabel.text = "Available"
+        
+        let stackView = UIStackView(arrangedSubviews: [balanceLabel, availableLabel])
+        
+        accountHeaderView.addSubview(stackView)
+        
+        stackView.edges(to: accountHeaderView, insets: .vertical(25), relation: .equal, isActive: true)
+        
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
     }
     
     private func setupTableView() {
@@ -271,6 +298,13 @@ extension TransactionsByAccountVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if !self.searchController.isActive {
+            return accountHeaderView
+        } else {
+            return nil
+        }
+    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
@@ -298,19 +332,16 @@ extension TransactionsByAccountVC: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension TransactionsByAccountVC: UISearchControllerDelegate, UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if self.filteredTransactions != self.prevFilteredTransactions {
+extension TransactionsByAccountVC: UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        if self.searchController.isBeingPresented || self.searchController.isBeingDismissed {
             self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-        }
-        self.prevFilteredTransactions = self.filteredTransactions
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if searchBar.text != "" {
-            searchBar.text = ""
             self.prevFilteredTransactions = self.filteredTransactions
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        } else {
+            if self.filteredTransactions != self.prevFilteredTransactions {
+                self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+            }
+            self.prevFilteredTransactions = self.filteredTransactions
         }
     }
 }
