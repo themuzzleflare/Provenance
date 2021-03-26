@@ -124,6 +124,9 @@ class TransactionsByCategoryVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
+                        if self.searchController.isActive && self.searchController.searchBar.text == "" {
+                            self.prevFilteredTransactions = self.transactions
+                        }
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Transactions Error JSON decoding succeeded")
                         self.transactionsErrorResponse = decodedResponse.errors
@@ -229,7 +232,7 @@ extension TransactionsByCategoryVC: UITableViewDelegate, UITableViewDataSource {
         
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
-        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
+        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
             tableView.separatorStyle = .none
             
             noTransactionsCell.textLabel?.textAlignment = .center
@@ -311,6 +314,12 @@ extension TransactionsByCategoryVC: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension TransactionsByCategoryVC: UISearchControllerDelegate, UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        if self.prevFilteredTransactions != self.filteredTransactions {
+            self.prevFilteredTransactions = self.filteredTransactions
+        }
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if self.filteredTransactions != self.prevFilteredTransactions {
             self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)

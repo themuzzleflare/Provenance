@@ -302,6 +302,9 @@ class TransactionsVC: ViewController {
                         self.setupTableView()
                         self.update(with: self.filteredTransactionList)
                         self.refreshControl.endRefreshing()
+                        if self.searchController.isActive && self.searchController.searchBar.text == "" {
+                            self.prevFilteredTransactions = self.preFilteredTransactions
+                        }
                         WidgetCenter.shared.reloadAllTimelines()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Transactions Error JSON decoding succeeded")
@@ -411,6 +414,14 @@ extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20
+    }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let noTransactionsCell = tableView.dequeueReusableCell(withIdentifier: "noTransactionsCell", for: indexPath)
         
@@ -420,7 +431,7 @@ extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
         
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
             tableView.separatorStyle = .none
-            
+                        
             noTransactionsCell.selectionStyle = .none
             noTransactionsCell.textLabel?.font = circularStdBook
             noTransactionsCell.textLabel?.textAlignment = .center
@@ -483,6 +494,12 @@ extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension TransactionsVC: UISearchControllerDelegate, UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        if self.prevFilteredTransactions != self.filteredTransactions {
+            self.prevFilteredTransactions = self.filteredTransactions
+        }
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if self.filteredTransactions != self.prevFilteredTransactions {
             self.update(with: self.filteredTransactionList)

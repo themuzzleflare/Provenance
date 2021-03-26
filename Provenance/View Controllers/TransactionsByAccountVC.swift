@@ -158,6 +158,9 @@ class TransactionsByAccountVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
+                        if self.searchController.isActive && self.searchController.searchBar.text == "" {
+                            self.prevFilteredTransactions = self.transactions
+                        }
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Transactions Error JSON decoding succeeded")
                         self.transactionsErrorResponse = decodedResponse.errors
@@ -245,7 +248,7 @@ extension TransactionsByAccountVC: UITableViewDelegate, UITableViewDataSource {
         
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
-        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
+        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
             tableView.separatorStyle = .none
             
             noTransactionsCell.selectionStyle = .none

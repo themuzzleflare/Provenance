@@ -125,6 +125,9 @@ class AllTagsVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
+                        if self.searchController.isActive && self.searchController.searchBar.text == "" {
+                            self.prevFilteredTags = self.tags
+                        }
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Tags Error JSON decoding succeeded")
                         self.tagsErrorResponse = decodedResponse.errors
@@ -189,6 +192,14 @@ extension AllTagsVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let tagCell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath)
         
@@ -198,7 +209,7 @@ extension AllTagsVC: UITableViewDelegate, UITableViewDataSource {
         
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
-        if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
+        if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty {
             tableView.separatorStyle = .none
             
             noTagsCell.selectionStyle = .none
@@ -271,6 +282,12 @@ extension AllTagsVC: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension AllTagsVC: UISearchControllerDelegate, UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        if self.prevFilteredTags != self.filteredTags {
+            self.prevFilteredTags = self.filteredTags
+        }
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if self.filteredTags != self.prevFilteredTags {
             self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)

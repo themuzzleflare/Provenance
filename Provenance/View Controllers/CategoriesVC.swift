@@ -114,6 +114,9 @@ class CategoriesVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
+                        if self.searchController.isActive && self.searchController.searchBar.text == "" {
+                            self.prevFilteredCategories = self.categories
+                        }
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Categories Error JSON decoding succeeded")
                         self.categoriesErrorResponse = decodedResponse.errors
@@ -175,6 +178,14 @@ extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let categoryCell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
         
@@ -184,7 +195,7 @@ extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
         
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
-        if self.filteredCategories.isEmpty && self.categoriesError.isEmpty && self.categoriesErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
+        if self.filteredCategories.isEmpty && self.categoriesError.isEmpty && self.categoriesErrorResponse.isEmpty {
             tableView.separatorStyle = .none
             
             noCategoriesCell.selectionStyle = .none
@@ -256,6 +267,12 @@ extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension CategoriesVC: UISearchControllerDelegate, UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        if self.prevFilteredCategories != self.filteredCategories {
+            self.prevFilteredCategories = self.filteredCategories
+        }
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if self.filteredCategories != self.prevFilteredCategories {
             self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)

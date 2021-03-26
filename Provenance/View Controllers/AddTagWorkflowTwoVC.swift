@@ -163,6 +163,9 @@ class AddTagWorkflowTwoVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
+                        if self.searchController.isActive && self.searchController.searchBar.text == "" {
+                            self.prevFilteredTags = self.tags
+                        }
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Tags Error JSON decoding succeeded")
                         self.tagsErrorResponse = decodedResponse.errors
@@ -227,7 +230,7 @@ extension AddTagWorkflowTwoVC: UITableViewDelegate, UITableViewDataSource {
         
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
-        if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty && !self.refreshControl.isRefreshing {
+        if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty {
             tableView.separatorStyle = .none
             
             noTagsCell.selectionStyle = .none
@@ -266,7 +269,6 @@ extension AddTagWorkflowTwoVC: UITableViewDelegate, UITableViewDataSource {
                 tagCell.selectedBackgroundView = bgCellView
                 tagCell.accessoryType = .none
                 tagCell.textLabel?.font = circularStdBook
-                tagCell.textLabel?.adjustsFontForContentSizeCategory = true
                 tagCell.textLabel?.text = tag.id
                 
                 return tagCell
@@ -299,6 +301,12 @@ extension AddTagWorkflowTwoVC: UITextFieldDelegate {
 }
 
 extension AddTagWorkflowTwoVC: UISearchControllerDelegate, UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        if self.prevFilteredTags != self.filteredTags {
+            self.prevFilteredTags = self.filteredTags
+        }
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if self.filteredTags != self.prevFilteredTags {
             self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
