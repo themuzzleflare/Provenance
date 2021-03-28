@@ -118,11 +118,10 @@ class TransactionsByAccountVC: ViewController {
         
         accountHeaderView.addSubview(stackView)
         
-        stackView.edges(to: accountHeaderView, insets: .vertical(25), relation: .equal, isActive: true)
+        stackView.edges(to: accountHeaderView, insets: .vertical(25))
         
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.distribution = .equalSpacing
     }
     
     private func setupTableView() {
