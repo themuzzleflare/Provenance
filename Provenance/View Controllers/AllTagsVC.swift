@@ -125,8 +125,8 @@ class AllTagsVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
-                        if self.searchController.isActive && self.searchController.searchBar.text == "" {
-                            self.prevFilteredTags = self.tags
+                        if self.searchController.isActive {
+                            self.prevFilteredTags = self.filteredTags
                         }
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Tags Error JSON decoding succeeded")
@@ -248,7 +248,6 @@ extension AllTagsVC: UITableViewDelegate, UITableViewDataSource {
                 tagCell.selectedBackgroundView = bgCellView
                 tagCell.accessoryType = .none
                 tagCell.textLabel?.font = circularStdBook
-                tagCell.textLabel?.adjustsFontForContentSizeCategory = true
                 tagCell.textLabel?.text = tag.id
                 
                 return tagCell

@@ -132,6 +132,7 @@ class AddTagWorkflowTwoVC: ViewController {
     
     private func setupTableView() {
         super.addChild(tableViewController)
+        
         view.addSubview(tableViewController.tableView)
         
         tableViewController.tableView.edgesToSuperview()
@@ -163,8 +164,8 @@ class AddTagWorkflowTwoVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
-                        if self.searchController.isActive && self.searchController.searchBar.text == "" {
-                            self.prevFilteredTags = self.tags
+                        if self.searchController.isActive {
+                            self.prevFilteredTags = self.filteredTags
                         }
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Tags Error JSON decoding succeeded")

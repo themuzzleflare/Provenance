@@ -298,12 +298,16 @@ class TransactionsVC: ViewController {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.update(with: self.filteredTransactionList)
                         self.refreshControl.endRefreshing()
-                        if self.searchController.isActive && self.searchController.searchBar.text == "" {
-                            self.prevFilteredTransactions = self.preFilteredTransactions
+                        if self.searchController.isActive {
+                            self.prevFilteredTransactions = self.filteredTransactions
                         }
                         WidgetCenter.shared.reloadAllTimelines()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
@@ -317,8 +321,12 @@ class TransactionsVC: ViewController {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.update(with: self.filteredTransactionList)
                         self.refreshControl.endRefreshing()
                         WidgetCenter.shared.reloadAllTimelines()
@@ -333,8 +341,12 @@ class TransactionsVC: ViewController {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.update(with: self.filteredTransactionList)
                         self.refreshControl.endRefreshing()
                         WidgetCenter.shared.reloadAllTimelines()
@@ -350,8 +362,12 @@ class TransactionsVC: ViewController {
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                     #endif
-                    self.fetchingView.removeFromSuperview()
-                    self.setupTableView()
+                    if self.fetchingView.isDescendant(of: self.view) {
+                        self.fetchingView.removeFromSuperview()
+                    }
+                    if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                        self.setupTableView()
+                    }
                     self.update(with: self.filteredTransactionList)
                     self.refreshControl.endRefreshing()
                     WidgetCenter.shared.reloadAllTimelines()
@@ -421,7 +437,7 @@ extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 20
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let noTransactionsCell = tableView.dequeueReusableCell(withIdentifier: "noTransactionsCell", for: indexPath)
         
@@ -431,7 +447,7 @@ extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
         
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
             tableView.separatorStyle = .none
-                        
+            
             noTransactionsCell.selectionStyle = .none
             noTransactionsCell.textLabel?.font = circularStdBook
             noTransactionsCell.textLabel?.textAlignment = .center

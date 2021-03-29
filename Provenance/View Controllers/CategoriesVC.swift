@@ -114,8 +114,8 @@ class CategoriesVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
-                        if self.searchController.isActive && self.searchController.searchBar.text == "" {
-                            self.prevFilteredCategories = self.categories
+                        if self.searchController.isActive {
+                            self.prevFilteredCategories = self.filteredCategories
                         }
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Categories Error JSON decoding succeeded")

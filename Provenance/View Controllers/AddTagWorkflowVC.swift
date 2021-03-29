@@ -109,8 +109,8 @@ class AddTagWorkflowVC: ViewController {
                         self.setupTableView()
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
-                        if self.searchController.isActive && self.searchController.searchBar.text == "" {
-                            self.prevFilteredTransactions = self.transactions
+                        if self.searchController.isActive {
+                            self.prevFilteredTransactions = self.filteredTransactions
                         }
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Transactions Error JSON decoding succeeded")

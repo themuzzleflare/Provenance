@@ -8,13 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		7143DD91BFAE7F99AE9A2B81 /* Pods_Provenance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E8AB3886563257C39F757D /* Pods_Provenance.framework */; };
-		7A11D69025F59D0C0080293C /* Webhook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A11D68F25F59D0C0080293C /* Webhook.swift */; };
 		7A2837D625D741D9001809E4 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2837D425D741D9001809E4 /* TransactionCell.swift */; };
 		7A2837D725D741D9001809E4 /* TransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A2837D525D741D9001809E4 /* TransactionCell.xib */; };
 		7A2837DD25D75437001809E4 /* AttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2837DB25D75437001809E4 /* AttributeCell.swift */; };
 		7A2837DE25D75437001809E4 /* AttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A2837DC25D75437001809E4 /* AttributeCell.xib */; };
 		7A2837F025D78579001809E4 /* DateStylePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2837EE25D78579001809E4 /* DateStylePickerCell.swift */; };
 		7A2837F125D78579001809E4 /* DateStylePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A2837EF25D78579001809E4 /* DateStylePickerCell.xib */; };
+		7A2A1E862611A11D001E642F /* TransactionsByAccount.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A1E852611A11D001E642F /* TransactionsByAccount.storyboard */; };
+		7A2A1E932611B5B9001E642F /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A1E922611B5B9001E642F /* LoadingTableViewCell.swift */; };
 		7A2E6D0025DCA06B00BA2AB6 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2E6CFF25DCA06B00BA2AB6 /* ModelData.swift */; };
 		7A455CA22607FBFE00A7F2B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
 		7A455CD526080F1300A7F2B8 /* LatestTransaction.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7A7DAC6926071702001349FD /* LatestTransaction.intentdefinition */; };
@@ -60,6 +61,7 @@
 		7AD295F825D3599A00B8A765 /* AccountDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */; };
 		7AD5944C25C8B3AD0018C86E /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */; };
 		7AD6ED9A2604A9180051A235 /* Provenance Stickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7AD6ED932604A9150051A235 /* Provenance Stickers.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7AE54D082611671D005D38A5 /* AccountBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE54D072611671D005D38A5 /* AccountBalance.swift */; };
 		7AE75E3325FF15EB00C16AF6 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE75E3225FF15EB00C16AF6 /* R.generated.swift */; };
 		7AE75E3725FF1C3B00C16AF6 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE75E3625FF1C3B00C16AF6 /* NavigationController.swift */; };
 		7AE75E3B25FF1EF200C16AF6 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE75E3A25FF1EF200C16AF6 /* ActivityIndicator.swift */; };
@@ -119,6 +121,8 @@
 		7A2837DC25D75437001809E4 /* AttributeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttributeCell.xib; sourceTree = "<group>"; };
 		7A2837EE25D78579001809E4 /* DateStylePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateStylePickerCell.swift; sourceTree = "<group>"; };
 		7A2837EF25D78579001809E4 /* DateStylePickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateStylePickerCell.xib; sourceTree = "<group>"; };
+		7A2A1E852611A11D001E642F /* TransactionsByAccount.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TransactionsByAccount.storyboard; sourceTree = "<group>"; };
+		7A2A1E922611B5B9001E642F /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
 		7A2E6CFF25DCA06B00BA2AB6 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
 		7A455CE32608147A00A7F2B8 /* GIFImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFImage.swift; sourceTree = "<group>"; };
 		7A455CF5260822CC00A7F2B8 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
@@ -154,8 +158,6 @@
 		7AD1277A260455B800A39272 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
 		7AD12781260455E100A39272 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		7AD1279A2604702600A39272 /* ProvenanceWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvenanceWidgets.swift; sourceTree = "<group>"; };
-		7AD127AB260472A400A39272 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
-		7AD127B6260472A400A39272 /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
 		7AD127DB2604735800A39272 /* Provenance Widgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance Widgets.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AD127EA2604735B00A39272 /* Widgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Widgets.entitlements; sourceTree = "<group>"; };
 		7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByAccountVC.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 		7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
 		7AD6ED932604A9150051A235 /* Provenance Stickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance Stickers.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AD6ED972604A9180051A235 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7AE54D072611671D005D38A5 /* AccountBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountBalance.swift; sourceTree = "<group>"; };
 		7AE75E3225FF15EB00C16AF6 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		7AE75E3625FF1C3B00C16AF6 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		7AE75E3A25FF1EF200C16AF6 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -258,6 +261,7 @@
 				7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */,
 				7AB34D4325C79BD0000A1E81 /* RightDetailTableViewCell.swift */,
 				7A50FB9E25E0CDB800176C10 /* APIKeyCell.swift */,
+				7A2A1E922611B5B9001E642F /* LoadingTableViewCell.swift */,
 				7AF17A212608290900EE1747 /* AccountCell.swift */,
 				7AF17A652608419300EE1747 /* LoadingCell.swift */,
 				7AF17A6A260841A300EE1747 /* ErrorStringCell.swift */,
@@ -356,6 +360,7 @@
 			isa = PBXGroup;
 			children = (
 				7AB34D2825C78232000A1E81 /* LaunchScreen.storyboard */,
+				7A2A1E852611A11D001E642F /* TransactionsByAccount.storyboard */,
 				7AB609A92602C79B0038B85B /* AddTagWorkflowVC.storyboard */,
 				7AE75E5225FF5B1D00C16AF6 /* AboutViewController.storyboard */,
 			);
@@ -367,6 +372,7 @@
 			children = (
 				7A8E41D52604816B003D0E6A /* Model */,
 				7AD1279A2604702600A39272 /* ProvenanceWidgets.swift */,
+				7AE54D072611671D005D38A5 /* AccountBalance.swift */,
 				7A7DAC6726071702001349FD /* LatestTransaction.swift */,
 				7A7DAC6926071702001349FD /* LatestTransaction.intentdefinition */,
 				7A0557D42604A0170080D2CD /* Info.plist */,
@@ -433,8 +439,6 @@
 				54E8AB3886563257C39F757D /* Pods_Provenance.framework */,
 				7AD317952604412000B4E008 /* WidgetKit.framework */,
 				7AD317972604412000B4E008 /* SwiftUI.framework */,
-				7AD127AB260472A400A39272 /* Intents.framework */,
-				7AD127B6260472A400A39272 /* IntentsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -550,6 +554,7 @@
 				7AF4C35A25DB3674009CF391 /* CircularStd-BookItalic.ttf in Resources */,
 				7AF4C35C25DB3674009CF391 /* CircularStd-Bold.otf in Resources */,
 				7A2837DE25D75437001809E4 /* AttributeCell.xib in Resources */,
+				7A2A1E862611A11D001E642F /* TransactionsByAccount.storyboard in Resources */,
 				7AE75E5325FF5B1D00C16AF6 /* AboutViewController.storyboard in Resources */,
 				7A2837F125D78579001809E4 /* DateStylePickerCell.xib in Resources */,
 				7AF4C35B25DB3674009CF391 /* SF-Mono-Regular.otf in Resources */,
@@ -646,6 +651,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A2A1E932611B5B9001E642F /* LoadingTableViewCell.swift in Sources */,
 				7A56101D25D25B600091396E /* TransactionsByCategoryVC.swift in Sources */,
 				7A56100F25D219530091396E /* Tag.swift in Sources */,
 				7AD295F425D358B200B8A765 /* TransactionsByAccountVC.swift in Sources */,
@@ -672,7 +678,6 @@
 				7AB34D4D25C7A90E000A1E81 /* TransactionDetailVC.swift in Sources */,
 				7AD5944C25C8B3AD0018C86E /* SubtitleTableViewCell.swift in Sources */,
 				7AE75E3F25FF1FEE00C16AF6 /* RefreshControl.swift in Sources */,
-				7A11D69025F59D0C0080293C /* Webhook.swift in Sources */,
 				7AE75E3325FF15EB00C16AF6 /* R.generated.swift in Sources */,
 				7A67980D25D3E15D002AA83A /* DiagnosticTableVC.swift in Sources */,
 				7AB609B02603F0D80038B85B /* AddTagWorkflowTwoVC.swift in Sources */,
@@ -693,6 +698,7 @@
 			files = (
 				7AD127FA2604739B00A39272 /* Error.swift in Sources */,
 				7A8E41F126048320003D0E6A /* ProvenanceWidgets.swift in Sources */,
+				7AE54D082611671D005D38A5 /* AccountBalance.swift in Sources */,
 				7AD12803260473FB00A39272 /* Transaction.swift in Sources */,
 				7AD12805260473FB00A39272 /* ModelData.swift in Sources */,
 				7A7DAC8E2607180E001349FD /* LatestTransaction.intentdefinition in Sources */,
@@ -867,7 +873,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 7.8;
+				MARKETING_VERSION = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -898,7 +904,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 7.8;
+				MARKETING_VERSION = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -928,7 +934,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 7.8;
+				MARKETING_VERSION = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -958,7 +964,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 7.8;
+				MARKETING_VERSION = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -982,7 +988,7 @@
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 7.8;
+				MARKETING_VERSION = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1002,7 +1008,7 @@
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 7.8;
+				MARKETING_VERSION = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

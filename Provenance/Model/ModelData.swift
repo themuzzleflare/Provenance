@@ -55,12 +55,14 @@ struct UpApi {
     }
 }
 
-let acceptJsonHeader: HTTPHeader = .accept("application/json")
 var authorisationHeader: HTTPHeader {
     return .authorization(bearerToken: appDefaults.string(forKey: "apiKey") ?? "")
 }
+
+let acceptJsonHeader: HTTPHeader = .accept("application/json")
 let pageSize100Param: [String: Any] = ["page[size]": "100"]
 let pageSize200Param: [String: Any] = ["page[size]": "200"]
+
 func filterCategoryParam(categoryId: String) -> [String: Any] {
     return ["filter[category]": categoryId]
 }

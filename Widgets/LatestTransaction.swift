@@ -79,7 +79,7 @@ struct LatestTransactionEntryView: View {
     
     var body: some View {
         ZStack {
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .center, spacing: 0) {
                 if entry.error.isEmpty && family != .systemSmall {
                     Text("Latest Transaction")
                         .font(.custom("CircularStd-Bold", size: 23))
@@ -132,10 +132,7 @@ struct LatestTransactionEntryView: View {
 
 struct LatestTransaction: Widget {
     var body: some WidgetConfiguration {
-        IntentConfiguration(kind: "cloud.tavitian.provenance.widgets.latest-transaction",
-                            intent: DateStyleConfigurationIntent.self,
-                            provider: LatestTransactionProvider()
-        ) { entry in
+        IntentConfiguration(kind: "cloud.tavitian.provenance.widgets.latest-transaction", intent: DateStyleConfigurationIntent.self, provider: LatestTransactionProvider()) { entry in
             LatestTransactionEntryView(entry: entry)
         }
         .supportedFamilies([.systemSmall, .systemMedium])

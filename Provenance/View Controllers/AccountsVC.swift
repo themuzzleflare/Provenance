@@ -221,7 +221,7 @@ extension AccountsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.accountsErrorResponse.isEmpty && self.accountsError.isEmpty && !self.accounts.isEmpty {
-            let vc = TransactionsByAccountVC()
+            let vc = R.storyboard.transactionsByAccount.transactionsByAccountController()!
             
             vc.account = accounts[indexPath.row]
             

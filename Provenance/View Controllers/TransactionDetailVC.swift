@@ -213,7 +213,7 @@ class TransactionDetailVC: TableViewController {
             attribute = altAttributes[indexPath.row]
             
             if attribute.key == "Account" {
-                let vc = TransactionsByAccountVC()
+                let vc = TransactionsByAccountVC(style: .insetGrouped)
                 
                 vc.account = accountFilter!.first!
                 
