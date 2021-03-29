@@ -110,8 +110,12 @@ class CategoriesVC: ViewController {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshCategories)), animated: true)
                         #endif
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                         if self.searchController.isActive {
@@ -126,8 +130,12 @@ class CategoriesVC: ViewController {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshCategories)), animated: true)
                         #endif
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     } else {
@@ -139,8 +147,12 @@ class CategoriesVC: ViewController {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshCategories)), animated: true)
                         #endif
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     }
@@ -153,8 +165,12 @@ class CategoriesVC: ViewController {
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshCategories)), animated: true)
                     #endif
-                    self.fetchingView.removeFromSuperview()
-                    self.setupTableView()
+                    if self.fetchingView.isDescendant(of: self.view) {
+                        self.fetchingView.removeFromSuperview()
+                    }
+                    if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                        self.setupTableView()
+                    }
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
             }

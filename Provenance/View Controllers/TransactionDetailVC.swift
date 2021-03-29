@@ -213,7 +213,7 @@ class TransactionDetailVC: TableViewController {
             attribute = altAttributes[indexPath.row]
             
             if attribute.key == "Account" {
-                let vc = TransactionsByAccountVC(style: .insetGrouped)
+                let vc = R.storyboard.transactionsByAccount.transactionsByAccountController()!
                 
                 vc.account = accountFilter!.first!
                 

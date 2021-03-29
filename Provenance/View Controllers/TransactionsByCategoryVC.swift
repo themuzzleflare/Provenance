@@ -121,8 +121,12 @@ class TransactionsByCategoryVC: ViewController {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                         if self.searchController.isActive {
@@ -137,8 +141,12 @@ class TransactionsByCategoryVC: ViewController {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     } else {
@@ -150,8 +158,12 @@ class TransactionsByCategoryVC: ViewController {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     }
@@ -165,8 +177,12 @@ class TransactionsByCategoryVC: ViewController {
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                     #endif
-                    self.fetchingView.removeFromSuperview()
-                    self.setupTableView()
+                    if self.fetchingView.isDescendant(of: self.view) {
+                        self.fetchingView.removeFromSuperview()
+                    }
+                    if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                        self.setupTableView()
+                    }
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
             }

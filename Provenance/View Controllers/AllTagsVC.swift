@@ -121,8 +121,12 @@ class AllTagsVC: ViewController {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                         #endif
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                         if self.searchController.isActive {
@@ -138,8 +142,12 @@ class AllTagsVC: ViewController {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                         #endif
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     } else {
@@ -152,8 +160,12 @@ class AllTagsVC: ViewController {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                         #endif
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     }
@@ -167,8 +179,12 @@ class AllTagsVC: ViewController {
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                     #endif
-                    self.fetchingView.removeFromSuperview()
-                    self.setupTableView()
+                    if self.fetchingView.isDescendant(of: self.view) {
+                        self.fetchingView.removeFromSuperview()
+                    }
+                    if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                        self.setupTableView()
+                    }
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
             }

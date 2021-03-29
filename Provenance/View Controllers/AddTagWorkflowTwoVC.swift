@@ -160,8 +160,12 @@ class AddTagWorkflowTwoVC: ViewController {
                         if self.navigationItem.rightBarButtonItem == nil {
                             self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.openAddWorkflow)), animated: true)
                         }
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                         if self.searchController.isActive {
@@ -174,8 +178,12 @@ class AddTagWorkflowTwoVC: ViewController {
                         self.tags = []
                         self.navigationItem.title = "Errors"
                         self.navigationItem.setRightBarButton(nil, animated: true)
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     } else {
@@ -185,8 +193,12 @@ class AddTagWorkflowTwoVC: ViewController {
                         self.tags = []
                         self.navigationItem.title = "Error"
                         self.navigationItem.setRightBarButton(nil, animated: true)
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     }
@@ -197,8 +209,12 @@ class AddTagWorkflowTwoVC: ViewController {
                     self.tags = []
                     self.navigationItem.title = "Error"
                     self.navigationItem.setRightBarButton(nil, animated: true)
-                    self.fetchingView.removeFromSuperview()
-                    self.setupTableView()
+                    if self.fetchingView.isDescendant(of: self.view) {
+                        self.fetchingView.removeFromSuperview()
+                    }
+                    if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                        self.setupTableView()
+                    }
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
             }

@@ -105,8 +105,12 @@ class AddTagWorkflowVC: ViewController {
                         self.transactionsError = ""
                         self.transactionsErrorResponse = []
                         self.navigationItem.title = "Select Transaction"
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                         if self.searchController.isActive {
@@ -118,8 +122,12 @@ class AddTagWorkflowVC: ViewController {
                         self.transactionsError = ""
                         self.transactions = []
                         self.navigationItem.title = "Errors"
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     } else {
@@ -128,8 +136,12 @@ class AddTagWorkflowVC: ViewController {
                         self.transactionsErrorResponse = []
                         self.transactions = []
                         self.navigationItem.title = "Error"
-                        self.fetchingView.removeFromSuperview()
-                        self.setupTableView()
+                        if self.fetchingView.isDescendant(of: self.view) {
+                            self.fetchingView.removeFromSuperview()
+                        }
+                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                            self.setupTableView()
+                        }
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     }
@@ -139,8 +151,12 @@ class AddTagWorkflowVC: ViewController {
                     self.transactionsErrorResponse = []
                     self.transactions = []
                     self.navigationItem.title = "Error"
-                    self.fetchingView.removeFromSuperview()
-                    self.setupTableView()
+                    if self.fetchingView.isDescendant(of: self.view) {
+                        self.fetchingView.removeFromSuperview()
+                    }
+                    if !self.tableViewController.tableView.isDescendant(of: self.view) {
+                        self.setupTableView()
+                    }
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
             }
