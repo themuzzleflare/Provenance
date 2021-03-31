@@ -13,6 +13,7 @@ class SettingsVC: TableViewController {
         } else {
             appDefaults.setValue("Relative", forKey: "dateStyle")
         }
+        
         WidgetCenter.shared.reloadAllTimelines()
     }
     @objc private func closeWorkflow() {
@@ -74,6 +75,7 @@ class SettingsVC: TableViewController {
         } else {
             datePickerCell.datePicker.selectedSegmentIndex = 1
         }
+        
         datePickerCell.datePicker.addTarget(self, action: #selector(switchDateStyle), for:.valueChanged)
         
         if indexPath.section == 0 {
@@ -119,23 +121,31 @@ class SettingsVC: TableViewController {
             })
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            
             cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
             
             let submitAction = UIAlertAction(title: "Save", style: .default) { _ in
                 let answer = ac.textFields![0]
+                
                 if (answer.text != "" && answer.text != nil) && answer.text != appDefaults.string(forKey: "apiKey") {
                     let url = URL(string: "https://api.up.com.au/api/v1/util/ping")!
+                    
                     var request = URLRequest(url: url)
+                    
                     request.httpMethod = "GET"
                     request.addValue("application/json", forHTTPHeaderField: "Accept")
                     request.addValue("Bearer \(answer.text!)", forHTTPHeaderField: "Authorization")
+                    
                     URLSession.shared.dataTask(with: request) { data, response, error in
                         if error == nil {
                             let statusCode = (response as! HTTPURLResponse).statusCode
+                            
                             if statusCode == 200 {
                                 DispatchQueue.main.async {
                                     appDefaults.set(answer.text!, forKey: "apiKey")
+                                    
                                     self.tableView.reloadData()
+                                    
                                     WidgetCenter.shared.reloadAllTimelines()
                                 }
                             } else {
@@ -152,9 +162,13 @@ class SettingsVC: TableViewController {
                                     ac.setValue(messageAttrString, forKey: "attributedMessage")
                                     
                                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                                    
                                     dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                    
                                     ac.addAction(dismissAction)
+                                    
                                     self.present(ac, animated: true)
+                                    
                                     WidgetCenter.shared.reloadAllTimelines()
                                 }
                             }
@@ -172,9 +186,13 @@ class SettingsVC: TableViewController {
                                 ac.setValue(messageAttrString, forKey: "attributedMessage")
                                 
                                 let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                                
                                 dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                
                                 ac.addAction(dismissAction)
+                                
                                 self.present(ac, animated: true)
+                                
                                 WidgetCenter.shared.reloadAllTimelines()
                             }
                         }
@@ -193,14 +211,19 @@ class SettingsVC: TableViewController {
                     ac.setValue(messageAttrString, forKey: "attributedMessage")
                     
                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                    
                     dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                    
                     ac.addAction(dismissAction)
+                    
                     self.present(ac, animated: true)
+                    
                     WidgetCenter.shared.reloadAllTimelines()
                 }
             }
             submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
             submitAction.isEnabled = false
+            
             submitActionProxy = submitAction
             
             ac.addAction(cancelAction)

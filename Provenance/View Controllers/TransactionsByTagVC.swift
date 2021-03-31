@@ -26,8 +26,10 @@ class TransactionsByTagVC: ViewController {
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
         let loadingView = ActivityIndicator(style: .medium)
+        
         navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchTransactions()
             self.fetchCategories()
@@ -59,8 +61,9 @@ class TransactionsByTagVC: ViewController {
     
     private func setupNavigation() {
         navigationItem.title = "Loading"
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
         navigationItem.largeTitleDisplayMode = .never
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
+        
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
         #endif
@@ -68,11 +71,14 @@ class TransactionsByTagVC: ViewController {
     
     private func setupSearch() {
         searchController.delegate = self
+        
         searchController.obscuresBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = true
+        
+        searchController.searchBar.delegate = self
+        
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.placeholder = "Search"
-        searchController.hidesNavigationBarDuringPresentation = true
-        searchController.searchBar.delegate = self
         
         definesPresentationContext = true
         
@@ -82,6 +88,7 @@ class TransactionsByTagVC: ViewController {
     
     private func setupRefreshControl() {
         refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+        
         tableViewController.refreshControl = refreshControl
     }
     
@@ -93,12 +100,13 @@ class TransactionsByTagVC: ViewController {
     
     private func setupTableView() {
         super.addChild(tableViewController)
+        
         view.addSubview(tableViewController.tableView)
         
         tableViewController.tableView.edgesToSuperview()
         
-        tableViewController.tableView.dataSource = self
         tableViewController.tableView.delegate = self
+        tableViewController.tableView.dataSource = self
         
         tableViewController.tableView.register(R.nib.transactionCell)
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTransactionsCell")
@@ -108,79 +116,107 @@ class TransactionsByTagVC: ViewController {
     
     private func fetchTransactions() {
         let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
+        
         AF.request(UpApi.Transactions().listTransactions, method: .get, parameters: filterTagAndPageSize100Params(tagId: tag.id), headers: headers).responseJSON { response in
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
                         print("Transactions JSON decoding succeeded")
+                        
                         self.transactions = decodedResponse.data
                         self.transactionsError = ""
                         self.transactionsErrorResponse = []
+                        
                         self.navigationItem.title = self.tag.id
+                        
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
+                        
                         if self.fetchingView.isDescendant(of: self.view) {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
                             self.setupTableView()
                         }
+                        
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
+                        
                         if self.searchController.isActive {
                             self.prevFilteredTransactions = self.filteredTransactions
                         }
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Transactions Error JSON decoding succeeded")
+                        
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
                         self.transactions = []
-                        self.navigationItem.title = "Errors"
+                        
+                        if self.navigationItem.title != "Errors" {
+                            self.navigationItem.title = "Errors"
+                        }
+                        
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
+                        
                         if self.fetchingView.isDescendant(of: self.view) {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
                             self.setupTableView()
                         }
+                        
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     } else {
                         print("Transactions JSON decoding failed")
+                        
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
                         self.transactions = []
-                        self.navigationItem.title = "Error"
+                        
+                        if self.navigationItem.title != "Error" {
+                            self.navigationItem.title = "Error"
+                        }
+                        
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
+                        
                         if self.fetchingView.isDescendant(of: self.view) {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
                             self.setupTableView()
                         }
+                        
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     }
                 case .failure:
                     print(response.error?.localizedDescription ?? "Unknown error")
+                    
                     self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.transactionsErrorResponse = []
                     self.transactions = []
-                    self.navigationItem.title = "Error"
+                    
+                    if self.navigationItem.title != "Error" {
+                        self.navigationItem.title = "Error"
+                    }
+                    
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                     #endif
+                    
                     if self.fetchingView.isDescendant(of: self.view) {
                         self.fetchingView.removeFromSuperview()
                     }
                     if !self.tableViewController.tableView.isDescendant(of: self.view) {
                         self.setupTableView()
                     }
+                    
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
             }
@@ -190,11 +226,13 @@ class TransactionsByTagVC: ViewController {
     
     private func fetchCategories() {
         let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
+        
         AF.request(UpApi.Categories().listCategories, method: .get, headers: headers).responseJSON { response in
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
                         print("Categories JSON decoding succeeded")
+                        
                         self.categories = decodedResponse.data
                     } else {
                         print("Categories JSON decoding failed")
@@ -207,11 +245,13 @@ class TransactionsByTagVC: ViewController {
     
     private func fetchAccounts() {
         let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
+        
         AF.request(UpApi.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: headers).responseJSON { response in
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
                         print("Accounts JSON decoding succeeded")
+                        
                         self.accounts = decodedResponse.data
                     } else {
                         print("Accounts JSON decoding failed")
@@ -224,6 +264,10 @@ class TransactionsByTagVC: ViewController {
 }
 
 extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
             return 1
@@ -240,11 +284,8 @@ extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let transactionCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.transactionCell, for: indexPath)!
-        
         let noTransactionsCell = tableView.dequeueReusableCell(withIdentifier: "noTransactionsCell", for: indexPath)
-        
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
-        
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
@@ -272,7 +313,7 @@ extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
                 let error = transactionsErrorResponse[indexPath.row]
                 
                 errorObjectCell.selectionStyle = .none
-                errorObjectCell.textLabel?.textColor = .red
+                errorObjectCell.textLabel?.textColor = .systemRed
                 errorObjectCell.textLabel?.font = circularStdBold
                 errorObjectCell.textLabel?.text = error.title
                 errorObjectCell.detailTextLabel?.numberOfLines = 0
@@ -323,8 +364,10 @@ extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
             let remove = UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { _ in
                 #if !targetEnvironment(macCatalyst)
                 let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                
                 let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
                     let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
+                    
                     var request = URLRequest(url: url)
                     
                     request.httpMethod = "DELETE"
@@ -345,6 +388,7 @@ extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
                     URLSession.shared.dataTask(with: request) { data, response, error in
                         if error == nil {
                             let statusCode = (response as! HTTPURLResponse).statusCode
+                            
                             if statusCode != 204 {
                                 DispatchQueue.main.async {
                                     let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
@@ -359,8 +403,11 @@ extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
                                     ac.setValue(messageAttrString, forKey: "attributedMessage")
                                     
                                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                                    
                                     dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                    
                                     ac.addAction(dismissAction)
+                                    
                                     self.present(ac, animated: true)
                                     
                                 }
@@ -383,8 +430,11 @@ extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
                                 ac.setValue(messageAttrString, forKey: "attributedMessage")
                                 
                                 let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                                
                                 dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                
                                 ac.addAction(dismissAction)
+                                
                                 self.present(ac, animated: true)
                             }
                         }
@@ -392,12 +442,16 @@ extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
                     .resume()
                 })
                 let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                
                 cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                
                 ac.addAction(confirmAction)
                 ac.addAction(cancelAction)
+                
                 self.present(ac, animated: true)
                 #else
                 let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
+                
                 var request = URLRequest(url: url)
                 
                 request.httpMethod = "DELETE"
@@ -418,6 +472,7 @@ extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
                 URLSession.shared.dataTask(with: request) { data, response, error in
                     if error == nil {
                         let statusCode = (response as! HTTPURLResponse).statusCode
+                        
                         if statusCode != 204 {
                             DispatchQueue.main.async {
                                 let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
@@ -432,8 +487,11 @@ extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
                                 ac.setValue(messageAttrString, forKey: "attributedMessage")
                                 
                                 let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                                
                                 dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                
                                 ac.addAction(dismissAction)
+                                
                                 self.present(ac, animated: true)
                                 
                             }
@@ -456,8 +514,11 @@ extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
                             ac.setValue(messageAttrString, forKey: "attributedMessage")
                             
                             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                            
                             dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                            
                             ac.addAction(dismissAction)
+                            
                             self.present(ac, animated: true)
                         }
                     }

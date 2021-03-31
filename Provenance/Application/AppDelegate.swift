@@ -64,23 +64,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             })
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            
             cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
             
             let submitAction = UIAlertAction(title: "Save", style: .default) { _ in
                 let answer = ac.textFields![0]
+                
                 if (answer.text != "" && answer.text != nil) && answer.text != appDefaults.string(forKey: "apiKey") {
                     let url = URL(string: "https://api.up.com.au/api/v1/util/ping")!
+                    
                     var request = URLRequest(url: url)
+                    
                     request.httpMethod = "GET"
                     request.addValue("application/json", forHTTPHeaderField: "Accept")
                     request.addValue("Bearer \(answer.text!)", forHTTPHeaderField: "Authorization")
+                    
                     URLSession.shared.dataTask(with: request) { data, response, error in
                         if error == nil {
                             let statusCode = (response as! HTTPURLResponse).statusCode
+                            
                             if statusCode == 200 {
                                 DispatchQueue.main.async {
                                     appDefaults.set(answer.text!, forKey: "apiKey")
+                                    
                                     self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
+                                    
                                     WidgetCenter.shared.reloadAllTimelines()
                                 }
                             } else {
@@ -99,9 +107,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                                         self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
                                     })
+                                    
                                     dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                    
                                     ac.addAction(dismissAction)
+                                    
                                     self.window?.rootViewController?.present(ac, animated: true)
+                                    
                                     WidgetCenter.shared.reloadAllTimelines()
                                 }
                             }
@@ -121,9 +133,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                                     self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
                                 })
+                                
                                 dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                
                                 ac.addAction(dismissAction)
+                                
                                 self.window?.rootViewController?.present(ac, animated: true)
+                                
                                 WidgetCenter.shared.reloadAllTimelines()
                             }
                         }
@@ -144,14 +160,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                         self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
                     })
+                    
                     dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                    
                     ac.addAction(dismissAction)
+                    
                     self.window?.rootViewController?.present(ac, animated: true)
+                    
                     WidgetCenter.shared.reloadAllTimelines()
                 }
             }
             submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
             submitAction.isEnabled = false
+            
             submitActionProxy = submitAction
             
             ac.addAction(cancelAction)

@@ -12,6 +12,7 @@ class CollectionViewController: UICollectionViewController {
         collectionView.backgroundColor = R.color.bgColour()
         collectionView.indicatorStyle = .white
         collectionView.showsHorizontalScrollIndicator = false
+        
         #if !targetEnvironment(macCatalyst)
         collectionView.showsVerticalScrollIndicator = false
         #endif

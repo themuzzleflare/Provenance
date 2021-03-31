@@ -10,10 +10,8 @@ class TransactionsVC: ViewController {
     let refreshControl = RefreshControl(frame: .zero)
     let searchController = UISearchController(searchResultsController: nil)
     
-    private lazy var dataSource = transactionsDataSource()
-    
     private var filterButton: UIBarButtonItem!
-    private var transactionList = Transaction(data: [], links: .init(prev: nil, next: nil))
+    private var transactionList = Transaction(data: [], links: Pagination(prev: nil, next: nil))
     private var transactions: [TransactionResource] = []
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
@@ -36,6 +34,8 @@ class TransactionsVC: ViewController {
     private var filteredTransactionList: Transaction {
         return Transaction(data: filteredTransactions, links: transactionList.links)
     }
+    
+    private lazy var dataSource = transactionsDataSource()
     
     private enum FilterCategory: String, CaseIterable, Identifiable {
         case all = "All"
@@ -147,10 +147,8 @@ class TransactionsVC: ViewController {
         return UITableViewDiffableDataSource(
             tableView: tableViewController.tableView,
             cellProvider: {  tableView, indexPath, transaction in
-                let cell = tableView.dequeueReusableCell(
-                    withIdentifier: R.reuseIdentifier.transactionCell,
-                    for: indexPath
-                )!
+                let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.transactionCell, for: indexPath)!
+                
                 self.tableViewController.tableView.separatorStyle = .singleLine
                 
                 cell.selectedBackgroundView = bgCellView
@@ -171,6 +169,7 @@ class TransactionsVC: ViewController {
     }
     private func update(with list: Transaction, animate: Bool = false) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>()
+        
         snapshot.appendSections(Section.allCases)
         
         snapshot.appendItems(list.data, toSection: .transactions)
@@ -180,6 +179,7 @@ class TransactionsVC: ViewController {
         } else {
             tableViewController.tableView.dataSource = dataSource
         }
+        
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
     
@@ -195,8 +195,10 @@ class TransactionsVC: ViewController {
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
         let loadingView = ActivityIndicator(style: .medium)
+        
         navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchTransactions()
             self.fetchCategories()
@@ -228,9 +230,11 @@ class TransactionsVC: ViewController {
     }
     
     private func setupNavigation() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
-        navigationController?.navigationBar.prefersLargeTitles = true
+        
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
         #endif
@@ -238,16 +242,20 @@ class TransactionsVC: ViewController {
     
     private func setupFilterButton() {
         filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), style: .plain, target: self, action: nil)
+        
         filterButton.menu = filterMenu()
     }
     
     private func setupSearch() {
         searchController.delegate = self
+        
         searchController.obscuresBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = true
+        
+        searchController.searchBar.delegate = self
+        
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.placeholder = "Search"
-        searchController.hidesNavigationBarDuringPresentation = true
-        searchController.searchBar.delegate = self
         
         definesPresentationContext = true
         
@@ -257,6 +265,7 @@ class TransactionsVC: ViewController {
     
     private func setupRefreshControl() {
         refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+        
         tableViewController.refreshControl = refreshControl
     }
     
@@ -268,6 +277,7 @@ class TransactionsVC: ViewController {
     
     private func setupTableView() {
         super.addChild(tableViewController)
+        
         view.addSubview(tableViewController.tableView)
         
         tableViewController.tableView.edgesToSuperview()
@@ -282,94 +292,134 @@ class TransactionsVC: ViewController {
     
     private func fetchTransactions() {
         let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
+        
         AF.request(UpApi.Transactions().listTransactions, method: .get, parameters: pageSize100Param, headers: headers).responseJSON { response in
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
                         print("Transactions JSON decoding succeeded")
+                        
                         self.transactionList = decodedResponse
                         self.transactions = decodedResponse.data
                         self.transactionsError = ""
                         self.transactionsErrorResponse = []
-                        self.navigationItem.title = "Transactions"
+                        
+                        if self.navigationItem.title != "Transactions" {
+                            self.navigationItem.title = "Transactions"
+                        }
                         if self.navigationItem.leftBarButtonItems == nil {
                             self.navigationItem.setLeftBarButtonItems([UIBarButtonItem(image: R.image.arrowUpArrowDown(), style: .plain, target: self, action: #selector(self.switchDateStyle)), self.filterButton], animated: true)
                         }
+                        
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
+                        
                         if self.fetchingView.isDescendant(of: self.view) {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
                             self.setupTableView()
                         }
+                        
                         self.update(with: self.filteredTransactionList)
                         self.refreshControl.endRefreshing()
+                        
                         if self.searchController.isActive {
                             self.prevFilteredTransactions = self.filteredTransactions
                         }
+                        
                         WidgetCenter.shared.reloadAllTimelines()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Transactions Error JSON decoding succeeded")
+                        
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
                         self.transactions = []
-                        self.transactionList = .init(data: [], links: .init(prev: nil, next: nil))
-                        self.navigationItem.title = "Errors"
-                        self.navigationItem.setLeftBarButtonItems(nil, animated: true)
+                        self.transactionList = Transaction(data: [], links: Pagination(prev: nil, next: nil))
+                        
+                        if self.navigationItem.title != "Errors" {
+                            self.navigationItem.title = "Errors"
+                        }
+                        if self.navigationItem.leftBarButtonItems != nil {
+                            self.navigationItem.setLeftBarButtonItems(nil, animated: true)
+                        }
+                        
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
+                        
                         if self.fetchingView.isDescendant(of: self.view) {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
                             self.setupTableView()
                         }
+                        
                         self.update(with: self.filteredTransactionList)
                         self.refreshControl.endRefreshing()
+                        
                         WidgetCenter.shared.reloadAllTimelines()
                     } else {
                         print("Transactions JSON decoding failed")
+                        
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
                         self.transactions = []
-                        self.transactionList = .init(data: [], links: .init(prev: nil, next: nil))
-                        self.navigationItem.title = "Error"
-                        self.navigationItem.setLeftBarButtonItems(nil, animated: true)
+                        self.transactionList = Transaction(data: [], links: Pagination(prev: nil, next: nil))
+                        
+                        if self.navigationItem.title != "Error" {
+                            self.navigationItem.title = "Error"
+                        }
+                        if self.navigationItem.leftBarButtonItems != nil {
+                            self.navigationItem.setLeftBarButtonItems(nil, animated: true)
+                        }
+                        
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
+                        
                         if self.fetchingView.isDescendant(of: self.view) {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
                             self.setupTableView()
                         }
+                        
                         self.update(with: self.filteredTransactionList)
                         self.refreshControl.endRefreshing()
+                        
                         WidgetCenter.shared.reloadAllTimelines()
                     }
                 case .failure:
                     print(response.error?.localizedDescription ?? "Unknown error")
+                    
                     self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.transactionsErrorResponse = []
                     self.transactions = []
-                    self.transactionList = .init(data: [], links: .init(prev: nil, next: nil))
-                    self.navigationItem.title = "Error"
-                    self.navigationItem.setLeftBarButtonItems(nil, animated: true)
+                    self.transactionList = Transaction(data: [], links: Pagination(prev: nil, next: nil))
+                    
+                    if self.navigationItem.title != "Error" {
+                        self.navigationItem.title = "Error"
+                    }
+                    if self.navigationItem.leftBarButtonItems != nil {
+                        self.navigationItem.setLeftBarButtonItems(nil, animated: true)
+                    }
+                    
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                     #endif
+                    
                     if self.fetchingView.isDescendant(of: self.view) {
                         self.fetchingView.removeFromSuperview()
                     }
                     if !self.tableViewController.tableView.isDescendant(of: self.view) {
                         self.setupTableView()
                     }
+                    
                     self.update(with: self.filteredTransactionList)
                     self.refreshControl.endRefreshing()
+                    
                     WidgetCenter.shared.reloadAllTimelines()
             }
             self.searchController.searchBar.placeholder = "Search \(self.preFilteredTransactions.count.description) \(self.preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
@@ -378,11 +428,13 @@ class TransactionsVC: ViewController {
     
     private func fetchCategories() {
         let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
+        
         AF.request(UpApi.Categories().listCategories, method: .get, headers: headers).responseJSON { response in
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
                         print("Categories JSON decoding succeeded")
+                        
                         self.categories = decodedResponse.data
                     } else {
                         print("Categories JSON decoding failed")
@@ -395,11 +447,13 @@ class TransactionsVC: ViewController {
     
     private func fetchAccounts() {
         let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
+        
         AF.request(UpApi.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: headers).responseJSON { response in
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
                         print("Accounts JSON decoding succeeded")
+                        
                         self.accounts = decodedResponse.data
                     } else {
                         print("Accounts JSON decoding failed")
@@ -440,9 +494,7 @@ extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let noTransactionsCell = tableView.dequeueReusableCell(withIdentifier: "noTransactionsCell", for: indexPath)
-        
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
-        
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
         if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
@@ -470,7 +522,7 @@ extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
                 let error = transactionsErrorResponse[indexPath.row]
                 
                 errorObjectCell.selectionStyle = .none
-                errorObjectCell.textLabel?.textColor = .red
+                errorObjectCell.textLabel?.textColor = .systemRed
                 errorObjectCell.textLabel?.font = circularStdBold
                 errorObjectCell.textLabel?.text = error.title
                 errorObjectCell.detailTextLabel?.numberOfLines = 0

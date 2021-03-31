@@ -15,8 +15,10 @@ class AccountsVC: ViewController {
     @objc private func refreshAccounts() {
         #if targetEnvironment(macCatalyst)
         let loadingView = ActivityIndicator(style: .medium)
+        
         navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchAccounts()
         }
@@ -40,9 +42,11 @@ class AccountsVC: ViewController {
     }
     
     private func setupNavigation() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.walletPass(), style: .plain, target: self, action: nil)
-        navigationController?.navigationBar.prefersLargeTitles = true
+        
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshAccounts)), animated: true)
         #endif
@@ -50,6 +54,7 @@ class AccountsVC: ViewController {
     
     private func setupRefreshControl() {
         refreshControl.addTarget(self, action: #selector(refreshAccounts), for: .valueChanged)
+        
         tableViewController.refreshControl = refreshControl
     }
     
@@ -61,12 +66,13 @@ class AccountsVC: ViewController {
     
     private func setupTableView() {
         super.addChild(tableViewController)
+        
         view.addSubview(tableViewController.tableView)
         
         tableViewController.tableView.edgesToSuperview()
         
-        tableViewController.tableView.dataSource = self
         tableViewController.tableView.delegate = self
+        tableViewController.tableView.dataSource = self
         
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "accountCell")
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noAccountsCell")
@@ -76,76 +82,105 @@ class AccountsVC: ViewController {
     
     private func fetchAccounts() {
         let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
+        
         AF.request(UpApi.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: headers).responseJSON { response in
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
                         print("Accounts JSON decoding succeeded")
+                        
                         self.accounts = decodedResponse.data
                         self.accountsError = ""
                         self.accountsErrorResponse = []
-                        self.navigationItem.title = "Accounts"
+                        
+                        if self.navigationItem.title != "Accounts" {
+                            self.navigationItem.title = "Accounts"
+                        }
+                        
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshAccounts)), animated: true)
                         #endif
+                        
                         if self.fetchingView.isDescendant(of: self.view) {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
                             self.setupTableView()
                         }
+                        
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Accounts Error JSON decoding succeeded")
+                        
                         self.accountsErrorResponse = decodedResponse.errors
                         self.accountsError = ""
                         self.accounts = []
-                        self.navigationItem.title = "Errors"
+                        
+                        if self.navigationItem.title != "Errors" {
+                            self.navigationItem.title = "Errors"
+                        }
+                        
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshAccounts)), animated: true)
                         #endif
+                        
                         if self.fetchingView.isDescendant(of: self.view) {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
                             self.setupTableView()
                         }
+                        
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     } else {
                         print("Accounts JSON decoding failed")
+                        
                         self.accountsError = "JSON Decoding Failed!"
                         self.accountsErrorResponse = []
                         self.accounts = []
-                        self.navigationItem.title = "Error"
+                        
+                        if self.navigationItem.title != "Error" {
+                            self.navigationItem.title = "Error"
+                        }
+                        
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshAccounts)), animated: true)
                         #endif
+                        
                         if self.fetchingView.isDescendant(of: self.view) {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
                             self.setupTableView()
                         }
+                        
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     }
                 case .failure:
                     print(response.error?.localizedDescription ?? "Unknown error")
+                    
                     self.accountsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.accountsErrorResponse = []
                     self.accounts = []
-                    self.navigationItem.title = "Error"
+                    
+                    if self.navigationItem.title != "Error" {
+                        self.navigationItem.title = "Error"
+                    }
+                    
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshAccounts)), animated: true)
                     #endif
+                    
                     if self.fetchingView.isDescendant(of: self.view) {
                         self.fetchingView.removeFromSuperview()
                     }
                     if !self.tableViewController.tableView.isDescendant(of: self.view) {
                         self.setupTableView()
                     }
+                    
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
             }
@@ -154,6 +189,10 @@ class AccountsVC: ViewController {
 }
 
 extension AccountsVC: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.accounts.isEmpty && self.accountsError.isEmpty && self.accountsErrorResponse.isEmpty {
             return 1
@@ -178,11 +217,8 @@ extension AccountsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let accountCell = tableView.dequeueReusableCell(withIdentifier: "accountCell", for: indexPath) as! SubtitleTableViewCell
-        
         let noAccountsCell = tableView.dequeueReusableCell(withIdentifier: "noAccountsCell", for: indexPath)
-        
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
-        
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
         if self.accounts.isEmpty && self.accountsError.isEmpty && self.accountsErrorResponse.isEmpty {
@@ -210,7 +246,7 @@ extension AccountsVC: UITableViewDelegate, UITableViewDataSource {
                 let error = accountsErrorResponse[indexPath.row]
                 
                 errorObjectCell.selectionStyle = .none
-                errorObjectCell.textLabel?.textColor = .red
+                errorObjectCell.textLabel?.textColor = .systemRed
                 errorObjectCell.textLabel?.font = circularStdBold
                 errorObjectCell.textLabel?.text = error.title
                 errorObjectCell.detailTextLabel?.numberOfLines = 0

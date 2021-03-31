@@ -9,10 +9,12 @@ class AboutViewController: TableViewController {
     
     @objc private func openSettings() {
         let vc = NavigationController(rootViewController: SettingsVC(style: .insetGrouped))
+        
         present(vc, animated: true)
     }
     @objc private func openDiagnostics() {
         let vc = NavigationController(rootViewController: DiagnosticTableVC(style: .insetGrouped))
+        
         present(vc, animated: true)
     }
     
@@ -34,9 +36,9 @@ class AboutViewController: TableViewController {
     
     private func setupNavigation() {
         navigationItem.title = "About"
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftSlashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.gear(), style: .plain, target: self, action: #selector(openSettings))
-        navigationItem.largeTitleDisplayMode = .never
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

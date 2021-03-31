@@ -3,6 +3,7 @@ import UIKit
 class RefreshControl: UIRefreshControl {
     override init(frame: CGRect) {
         super.init(frame: .zero)
+        
         self.tintColor = .white
     }
     

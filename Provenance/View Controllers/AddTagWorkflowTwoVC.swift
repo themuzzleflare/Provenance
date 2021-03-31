@@ -107,11 +107,14 @@ class AddTagWorkflowTwoVC: ViewController {
     
     private func setupSearch() {
         searchController.delegate = self
+        
         searchController.obscuresBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = true
+        
+        searchController.searchBar.delegate = self
+        
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.placeholder = "Search"
-        searchController.hidesNavigationBarDuringPresentation = true
-        searchController.searchBar.delegate = self
         
         definesPresentationContext = true
         
@@ -121,6 +124,7 @@ class AddTagWorkflowTwoVC: ViewController {
     
     private func setupRefreshControl() {
         refreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+        
         tableViewController.refreshControl = refreshControl
     }
     
@@ -137,8 +141,8 @@ class AddTagWorkflowTwoVC: ViewController {
         
         tableViewController.tableView.edgesToSuperview()
         
-        tableViewController.tableView.dataSource = self
         tableViewController.tableView.delegate = self
+        tableViewController.tableView.dataSource = self
         
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTagsCell")
@@ -148,73 +152,105 @@ class AddTagWorkflowTwoVC: ViewController {
     
     private func fetchTags() {
         let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
+        
         AF.request(UpApi.Tags().listTags, method: .get, parameters: pageSize200Param, headers: headers).responseJSON { response in
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: response.data!) {
                         print("Tags JSON decoding succeeded")
+                        
                         self.tags = decodedResponse.data
                         self.tagsError = ""
                         self.tagsErrorResponse = []
-                        self.navigationItem.title = "Select Tag"
+                        
+                        if self.navigationItem.title != "Select Tag" {
+                            self.navigationItem.title = "Select Tag"
+                        }
                         if self.navigationItem.rightBarButtonItem == nil {
                             self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.openAddWorkflow)), animated: true)
                         }
+                        
                         if self.fetchingView.isDescendant(of: self.view) {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
                             self.setupTableView()
                         }
+                        
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
+                        
                         if self.searchController.isActive {
                             self.prevFilteredTags = self.filteredTags
                         }
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Tags Error JSON decoding succeeded")
+                        
                         self.tagsErrorResponse = decodedResponse.errors
                         self.tagsError = ""
                         self.tags = []
-                        self.navigationItem.title = "Errors"
-                        self.navigationItem.setRightBarButton(nil, animated: true)
+                        
+                        if self.navigationItem.title != "Errors" {
+                            self.navigationItem.title = "Errors"
+                        }
+                        if self.navigationItem.rightBarButtonItem != nil {
+                            self.navigationItem.setRightBarButton(nil, animated: true)
+                        }
+                        
                         if self.fetchingView.isDescendant(of: self.view) {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
                             self.setupTableView()
                         }
+                        
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     } else {
                         print("Tags JSON decoding failed")
+                        
                         self.tagsError = "JSON Decoding Failed!"
                         self.tagsErrorResponse = []
                         self.tags = []
-                        self.navigationItem.title = "Error"
-                        self.navigationItem.setRightBarButton(nil, animated: true)
+                        
+                        if self.navigationItem.title != "Error" {
+                            self.navigationItem.title = "Error"
+                        }
+                        if self.navigationItem.rightBarButtonItem != nil {
+                            self.navigationItem.setRightBarButton(nil, animated: true)
+                        }
+                        
                         if self.fetchingView.isDescendant(of: self.view) {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
                             self.setupTableView()
                         }
+                        
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     }
                 case .failure:
                     print(response.error?.localizedDescription ?? "Unknown error")
+                    
                     self.tagsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.tagsErrorResponse = []
                     self.tags = []
-                    self.navigationItem.title = "Error"
-                    self.navigationItem.setRightBarButton(nil, animated: true)
+                    
+                    if self.navigationItem.title != "Error" {
+                        self.navigationItem.title = "Error"
+                    }
+                    if self.navigationItem.rightBarButtonItem != nil {
+                        self.navigationItem.setRightBarButton(nil, animated: true)
+                    }
+                    
                     if self.fetchingView.isDescendant(of: self.view) {
                         self.fetchingView.removeFromSuperview()
                     }
                     if !self.tableViewController.tableView.isDescendant(of: self.view) {
                         self.setupTableView()
                     }
+                    
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
             }
@@ -224,6 +260,10 @@ class AddTagWorkflowTwoVC: ViewController {
 }
 
 extension AddTagWorkflowTwoVC: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty {
             return 1
@@ -240,11 +280,8 @@ extension AddTagWorkflowTwoVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let tagCell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath)
-        
         let noTagsCell = tableView.dequeueReusableCell(withIdentifier: "noTagsCell", for: indexPath)
-        
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
-        
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
         if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty {
@@ -272,7 +309,7 @@ extension AddTagWorkflowTwoVC: UITableViewDelegate, UITableViewDataSource {
                 let error = tagsErrorResponse[indexPath.row]
                 
                 errorObjectCell.selectionStyle = .none
-                errorObjectCell.textLabel?.textColor = .red
+                errorObjectCell.textLabel?.textColor = .systemRed
                 errorObjectCell.textLabel?.font = circularStdBold
                 errorObjectCell.textLabel?.text = error.title
                 errorObjectCell.detailTextLabel?.numberOfLines = 0

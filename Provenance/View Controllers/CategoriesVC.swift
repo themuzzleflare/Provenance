@@ -22,8 +22,10 @@ class CategoriesVC: ViewController {
     @objc private func refreshCategories() {
         #if targetEnvironment(macCatalyst)
         let loadingView = ActivityIndicator(style: .medium)
+        
         navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
         #endif
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchCategories()
         }
@@ -48,9 +50,11 @@ class CategoriesVC: ViewController {
     }
     
     private func setupNavigation() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.arrowUpArrowDownCircle(), style: .plain, target: self, action: nil)
-        navigationController?.navigationBar.prefersLargeTitles = true
+        
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshCategories)), animated: true)
         #endif
@@ -58,11 +62,14 @@ class CategoriesVC: ViewController {
     
     private func setupSearch() {
         searchController.delegate = self
+        
         searchController.obscuresBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = true
+        
+        searchController.searchBar.delegate = self
+        
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.placeholder = "Search"
-        searchController.hidesNavigationBarDuringPresentation = true
-        searchController.searchBar.delegate = self
         
         definesPresentationContext = true
         
@@ -72,6 +79,7 @@ class CategoriesVC: ViewController {
     
     private func setupRefreshControl() {
         refreshControl.addTarget(self, action: #selector(refreshCategories), for: .valueChanged)
+        
         tableViewController.refreshControl = refreshControl
     }
     
@@ -83,12 +91,13 @@ class CategoriesVC: ViewController {
     
     private func setupTableView() {
         super.addChild(tableViewController)
+        
         view.addSubview(tableViewController.tableView)
         
         tableViewController.tableView.edgesToSuperview()
         
-        tableViewController.tableView.dataSource = self
         tableViewController.tableView.delegate = self
+        tableViewController.tableView.dataSource = self
         
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "categoryCell")
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noCategoriesCell")
@@ -98,79 +107,109 @@ class CategoriesVC: ViewController {
     
     private func fetchCategories() {
         let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
+        
         AF.request(UpApi.Categories().listCategories, method: .get, headers: headers).responseJSON { response in
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
                         print("Categories JSON decoding succeeded")
+                        
                         self.categories = decodedResponse.data
                         self.categoriesError = ""
                         self.categoriesErrorResponse = []
-                        self.navigationItem.title = "Categories"
+                        
+                        if self.navigationItem.title != "Categories" {
+                            self.navigationItem.title = "Categories"
+                        }
+                        
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshCategories)), animated: true)
                         #endif
+                        
                         if self.fetchingView.isDescendant(of: self.view) {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
                             self.setupTableView()
                         }
+                        
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
+                        
                         if self.searchController.isActive {
                             self.prevFilteredCategories = self.filteredCategories
                         }
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Categories Error JSON decoding succeeded")
+                        
                         self.categoriesErrorResponse = decodedResponse.errors
                         self.categoriesError = ""
                         self.categories = []
-                        self.navigationItem.title = "Errors"
+                        
+                        if self.navigationItem.title != "Errors" {
+                            self.navigationItem.title = "Errors"
+                        }
+                        
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshCategories)), animated: true)
                         #endif
+                        
                         if self.fetchingView.isDescendant(of: self.view) {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
                             self.setupTableView()
                         }
+                        
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     } else {
                         print("Categories JSON decoding failed")
+                        
                         self.categoriesError = "JSON Decoding Failed!"
                         self.categoriesErrorResponse = []
                         self.categories = []
-                        self.navigationItem.title = "Error"
+                        
+                        if self.navigationItem.title != "Error" {
+                            self.navigationItem.title = "Error"
+                        }
+                        
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshCategories)), animated: true)
                         #endif
+                        
                         if self.fetchingView.isDescendant(of: self.view) {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
                             self.setupTableView()
                         }
+                        
                         self.tableViewController.tableView.reloadData()
                         self.refreshControl.endRefreshing()
                     }
                 case .failure:
                     print(response.error?.localizedDescription ?? "Unknown error")
+                    
                     self.categoriesError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.categoriesErrorResponse = []
                     self.categories = []
-                    self.navigationItem.title = "Error"
+                    
+                    if self.navigationItem.title != "Error" {
+                        self.navigationItem.title = "Error"
+                    }
+                    
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshCategories)), animated: true)
                     #endif
+                    
                     if self.fetchingView.isDescendant(of: self.view) {
                         self.fetchingView.removeFromSuperview()
                     }
                     if !self.tableViewController.tableView.isDescendant(of: self.view) {
                         self.setupTableView()
                     }
+                    
                     self.tableViewController.tableView.reloadData()
                     self.refreshControl.endRefreshing()
             }
@@ -180,6 +219,10 @@ class CategoriesVC: ViewController {
 }
 
 extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.filteredCategories.isEmpty && self.categoriesError.isEmpty && self.categoriesErrorResponse.isEmpty {
             return 1
@@ -204,11 +247,8 @@ extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let categoryCell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
-        
         let noCategoriesCell = tableView.dequeueReusableCell(withIdentifier: "noCategoriesCell", for: indexPath)
-        
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
-        
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
         if self.filteredCategories.isEmpty && self.categoriesError.isEmpty && self.categoriesErrorResponse.isEmpty {
@@ -236,7 +276,7 @@ extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
                 let error = categoriesErrorResponse[indexPath.row]
                 
                 errorObjectCell.selectionStyle = .none
-                errorObjectCell.textLabel?.textColor = .red
+                errorObjectCell.textLabel?.textColor = .systemRed
                 errorObjectCell.textLabel?.font = circularStdBold
                 errorObjectCell.textLabel?.text = error.title
                 errorObjectCell.detailTextLabel?.numberOfLines = 0

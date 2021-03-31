@@ -63,7 +63,7 @@ class TransactionDetailVC: TableViewController {
         return ["Hold \(transaction.attributes.holdInfo?.amount.transactionType ?? "")": holdTransValue, "Hold Foreign \(transaction.attributes.holdInfo?.foreignAmount?.transactionType ?? "")": holdForeignTransValue, "Foreign \(transaction.attributes.foreignAmount?.transactionType ?? "")": foreignTransValue, transaction.attributes.amount.transactionType: transaction.attributes.amount.valueLong]
     }
     private var attributesFour: KeyValuePairs<String, String> {
-        return ["Created Date": transaction.attributes.creationDate, "Settled Date": transaction.attributes.settlementDate ?? ""]
+        return ["Creation Date": transaction.attributes.creationDate, "Settlement Date": transaction.attributes.settlementDate ?? ""]
     }
     private var attributesFive: KeyValuePairs<String, String> {
         return ["Parent Category": parentCategoryFilter?.first?.attributes.name ?? "", "Category": categoryFilter?.first?.attributes.name ?? ""]
@@ -123,10 +123,11 @@ class TransactionDetailVC: TableViewController {
         scrollingTitle.font = R.font.circularStdBook(size: 17)
         scrollingTitle.textAlignment = .center
         scrollingTitle.text = transaction.attributes.description
+        
+        navigationItem.titleView = scrollingTitle
     }
     
     private func setupNavigation() {
-        navigationItem.titleView = scrollingTitle
         navigationItem.setRightBarButton(UIBarButtonItem(customView: transaction.attributes.statusIconView), animated: true)
         navigationItem.largeTitleDisplayMode = .never
     }

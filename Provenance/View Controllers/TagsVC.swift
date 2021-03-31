@@ -47,10 +47,9 @@ class TagsVC: TableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let tag = transaction.relationships.tags.data[indexPath.row]
         let vc = TransactionsByTagVC()
         
-        vc.tag = TagResource(type: "tags", id: tag.id)
+        vc.tag = TagResource(type: "tags", id: transaction.relationships.tags.data[indexPath.row].id)
         
         navigationController?.pushViewController(vc, animated: true)
     }

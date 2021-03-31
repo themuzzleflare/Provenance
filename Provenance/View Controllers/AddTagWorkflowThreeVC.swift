@@ -14,7 +14,9 @@ class AddTagWorkflowThreeVC: TableViewController {
     
     @objc private func addTag() {
         let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
+        
         var request = URLRequest(url: url)
+        
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer \(appDefaults.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
@@ -27,11 +29,13 @@ class AddTagWorkflowThreeVC: TableViewController {
                 ]
             ]
         ]
+        
         request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             if error == nil {
                 let statusCode = (response as! HTTPURLResponse).statusCode
+                
                 if statusCode != 204 {
                     DispatchQueue.main.async {
                         let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)

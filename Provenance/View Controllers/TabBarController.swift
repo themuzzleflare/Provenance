@@ -1,17 +1,16 @@
 import UIKit
 import Rswift
 
-class TabBarController: UITabBarController, UITabBarControllerDelegate {
+class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setProperties()
         setupTabBarStyle()
         setupTabBarItems()
     }
     
-    private func setProperties() {
-        delegate = self
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        print("Selected tab: \(item.title ?? "Unknown")")
     }
     
     private func setupTabBarStyle() {
