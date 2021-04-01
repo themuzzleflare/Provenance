@@ -93,7 +93,7 @@ class AddTagWorkflowVC: ViewController {
         tableViewController.tableView.delegate = self
         tableViewController.tableView.dataSource = self
         
-        tableViewController.tableView.register(R.nib.transactionCell)
+        tableViewController.tableView.register(TransactionCell.self, forCellReuseIdentifier: TransactionCell.reuseIdentifier)
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTransactionsCell")
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
@@ -216,7 +216,7 @@ extension AddTagWorkflowVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let transactionCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.transactionCell, for: indexPath)!
+        let transactionCell = tableView.dequeueReusableCell(withIdentifier: TransactionCell.reuseIdentifier, for: indexPath) as! TransactionCell
         let noTransactionsCell = tableView.dequeueReusableCell(withIdentifier: "noTransactionsCell", for: indexPath)
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
@@ -255,19 +255,7 @@ extension AddTagWorkflowVC: UITableViewDelegate, UITableViewDataSource {
                 
                 return errorObjectCell
             } else {
-                let transaction = filteredTransactions[indexPath.row]
-                
-                transactionCell.selectedBackgroundView = bgCellView
-                transactionCell.leftLabel.text = transaction.attributes.description
-                transactionCell.leftSubtitle.text = transaction.attributes.creationDate
-                
-                if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
-                    transactionCell.rightLabel.textColor = .black
-                } else {
-                    transactionCell.rightLabel.textColor = R.color.greenColour()
-                }
-                
-                transactionCell.rightLabel.text = transaction.attributes.amount.valueShort
+                transactionCell.transaction = filteredTransactions[indexPath.row]
                 
                 return transactionCell
             }

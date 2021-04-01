@@ -1,8 +1,8 @@
 import UIKit
+import WidgetKit
 import Alamofire
 import TinyConstraints
 import Rswift
-import WidgetKit
 
 class TransactionsVC: ViewController {
     let fetchingView = ActivityIndicator(style: .medium)
@@ -10,34 +10,70 @@ class TransactionsVC: ViewController {
     let refreshControl = RefreshControl(frame: .zero)
     let searchController = UISearchController(searchResultsController: nil)
     
-    private var filterButton: UIBarButtonItem!
-    private var transactionList = Transaction(data: [], links: Pagination(prev: nil, next: nil))
+    private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
+    
+    private var filterButton = UIBarButtonItem()
+    private var filter: FilterCategory = .all {
+        didSet {
+            filterButton.menu = filterMenu()
+            searchController.searchBar.placeholder = "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
+            
+            if filter != .all {
+                if showSettledOnly {
+                    navigationItem.prompt = "\(categoryNameTransformed(filter)) - Settled"
+                } else {
+                    navigationItem.prompt = categoryNameTransformed(filter)
+                }
+            } else {
+                if showSettledOnly {
+                    navigationItem.prompt = "Settled"
+                } else {
+                    navigationItem.prompt = nil
+                }
+            }
+            
+            update(with: filteredTransactionList)
+        }
+    }
+    private var showSettledOnly: Bool = false {
+        didSet {
+            filterButton.menu = filterMenu()
+            searchController.searchBar.placeholder = "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
+            
+            if filter != .all {
+                if showSettledOnly {
+                    navigationItem.prompt = "\(categoryNameTransformed(filter)) - Settled"
+                } else {
+                    navigationItem.prompt = categoryNameTransformed(filter)
+                }
+            } else {
+                if showSettledOnly {
+                    navigationItem.prompt = "Settled"
+                } else {
+                    navigationItem.prompt = nil
+                }
+            }
+            
+            update(with: filteredTransactionList)
+        }
+    }
+    
     private var transactions: [TransactionResource] = []
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
+    
     private var prevFilteredTransactions: [TransactionResource] = []
-    private var showSettledOnly: Bool = false
+    
+    private var transactionList: Transaction = Transaction(data: [], links: Pagination(prev: nil, next: nil))
+    
     private var categories: [CategoryResource] = []
+    
     private var accounts: [AccountResource] = []
-    private var filter: FilterCategory = .all
-    private var preFilteredTransactions: [TransactionResource] {
-        transactions.filter { transaction in
-            (!showSettledOnly || transaction.attributes.isSettled)
-                && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
-        }
-    }
-    private var filteredTransactions: [TransactionResource] {
-        preFilteredTransactions.filter { transaction in
-            searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
-        }
-    }
-    private var filteredTransactionList: Transaction {
-        return Transaction(data: filteredTransactions, links: transactionList.links)
-    }
     
-    private lazy var dataSource = transactionsDataSource()
+    private lazy var dataSource = makeDataSource()
     
-    private enum FilterCategory: String, CaseIterable, Identifiable {
+    private enum FilterCategory: String, CaseIterable {
         case all = "All"
         case gamesAndSoftware = "games-and-software"
         case carInsuranceAndMaintenance = "car-insurance-and-maintenance"
@@ -79,35 +115,53 @@ class TransactionsVC: ViewController {
         case tvAndMusic = "tv-and-music"
         case adult = "adult"
         case technology = "technology"
+    }
+    private enum Section: CaseIterable, Hashable {
+        case transactions
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        var id: FilterCategory {
-            return self
+        configureProperties()
+        configureNavigation()
+        configureFilterButton()
+        configureSearch()
+        configureRefreshControl()
+        configureFetchingView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        update(with: filteredTransactionList)
+        
+        fetchTransactions()
+        fetchAccounts()
+        fetchCategories()
+    }
+}
+
+extension TransactionsVC {
+    private var preFilteredTransactions: [TransactionResource] {
+        transactions.filter { transaction in
+            (!showSettledOnly || transaction.attributes.isSettled)
+                && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
         }
     }
-    private enum Section: CaseIterable {
-        case transactions
+    
+    private var filteredTransactions: [TransactionResource] {
+        preFilteredTransactions.filter { transaction in
+            searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
+        }
+    }
+    
+    private var filteredTransactionList: Transaction {
+        return Transaction(data: filteredTransactions, links: transactionList.links)
     }
     
     private func filterMenu() -> UIMenu {
         let categoryItems = FilterCategory.allCases.map { category in
             UIAction(title: categoryNameTransformed(category), state: self.filter == category ? .on : .off) { _ in
                 self.filter = category
-                self.filterButton.menu = self.filterMenu()
-                self.searchController.searchBar.placeholder = "Search \(self.preFilteredTransactions.count.description) \(self.preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
-                if self.filter != .all {
-                    if self.showSettledOnly {
-                        self.navigationItem.prompt = "\(self.categoryNameTransformed(self.filter)) - Settled"
-                    } else {
-                        self.navigationItem.prompt = self.categoryNameTransformed(self.filter)
-                    }
-                } else {
-                    if self.showSettledOnly {
-                        self.navigationItem.prompt = "Settled"
-                    } else {
-                        self.navigationItem.prompt = nil
-                    }
-                }
-                self.update(with: self.filteredTransactionList)
             }
         }
         
@@ -115,26 +169,11 @@ class TransactionsVC: ViewController {
         
         let settledOnlyFilter = UIAction(title: "Settled Only", image: R.image.checkmarkCircle(), state: self.showSettledOnly ? .on : .off) { _ in
             self.showSettledOnly.toggle()
-            self.filterButton.menu = self.filterMenu()
-            self.searchController.searchBar.placeholder = "Search \(self.preFilteredTransactions.count.description) \(self.preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
-            if self.filter != .all {
-                if self.showSettledOnly {
-                    self.navigationItem.prompt = "\(self.categoryNameTransformed(self.filter)) - Settled"
-                } else {
-                    self.navigationItem.prompt = self.categoryNameTransformed(self.filter)
-                }
-            } else {
-                if self.showSettledOnly {
-                    self.navigationItem.prompt = "Settled"
-                } else {
-                    self.navigationItem.prompt = nil
-                }
-            }
-            self.update(with: self.filteredTransactionList)
         }
         
         return UIMenu(image: R.image.sliderHorizontal3(), options: .displayInline, children: [categoriesMenu, settledOnlyFilter])
     }
+    
     private func categoryNameTransformed(_ category: FilterCategory) -> String {
         switch category {
             case .gamesAndSoftware: return "Apps, Games & Software"
@@ -143,32 +182,24 @@ class TransactionsVC: ViewController {
             default: return category.rawValue.replacingOccurrences(of: "and", with: "&").replacingOccurrences(of: "-", with: " ").capitalized
         }
     }
-    private func transactionsDataSource() -> UITableViewDiffableDataSource<Section, TransactionResource> {
-        return UITableViewDiffableDataSource(
+    
+    private func makeDataSource() -> DataSource {
+        return DataSource(
             tableView: tableViewController.tableView,
             cellProvider: {  tableView, indexPath, transaction in
-                let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.transactionCell, for: indexPath)!
+                let cell = tableView.dequeueReusableCell(withIdentifier: TransactionCell.reuseIdentifier, for: indexPath) as! TransactionCell
                 
                 self.tableViewController.tableView.separatorStyle = .singleLine
                 
-                cell.selectedBackgroundView = bgCellView
-                cell.leftLabel.text = transaction.attributes.description
-                cell.leftSubtitle.text = transaction.attributes.creationDate
-                
-                if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
-                    cell.rightLabel.textColor = .black
-                } else {
-                    cell.rightLabel.textColor = R.color.greenColour()
-                }
-                
-                cell.rightLabel.text = transaction.attributes.amount.valueShort
+                cell.transaction = transaction
                 
                 return cell
             }
         )
     }
+    
     private func update(with list: Transaction, animate: Bool = false) {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>()
+        var snapshot = Snapshot()
         
         snapshot.appendSections(Section.allCases)
         
@@ -189,9 +220,12 @@ class TransactionsVC: ViewController {
         } else if appDefaults.string(forKey: "dateStyle") == "Relative" {
             appDefaults.setValue("Absolute", forKey: "dateStyle")
         }
-        self.update(with: self.filteredTransactionList)
+        
+        update(with: filteredTransactionList)
+        
         WidgetCenter.shared.reloadAllTimelines()
     }
+    
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
         let loadingView = ActivityIndicator(style: .medium)
@@ -206,30 +240,12 @@ class TransactionsVC: ViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setProperties()
-        setupNavigation()
-        setupFilterButton()
-        setupSearch()
-        setupRefreshControl()
-        setupFetchingView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        update(with: filteredTransactionList)
-        
-        fetchTransactions()
-        fetchAccounts()
-        fetchCategories()
-    }
-    
-    private func setProperties() {
+    private func configureProperties() {
         title = "Transactions"
+        definesPresentationContext = true
     }
     
-    private func setupNavigation() {
+    private func configureNavigation() {
         navigationController?.navigationBar.prefersLargeTitles = true
         
         navigationItem.title = "Loading"
@@ -238,15 +254,18 @@ class TransactionsVC: ViewController {
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
         #endif
+        
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
-    private func setupFilterButton() {
+    private func configureFilterButton() {
         filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), style: .plain, target: self, action: nil)
         
         filterButton.menu = filterMenu()
     }
     
-    private func setupSearch() {
+    private func configureSearch() {
         searchController.delegate = self
         
         searchController.obscuresBackgroundDuringPresentation = false
@@ -256,26 +275,21 @@ class TransactionsVC: ViewController {
         
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.placeholder = "Search"
-        
-        definesPresentationContext = true
-        
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
-    private func setupRefreshControl() {
+    private func configureRefreshControl() {
         refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
         
         tableViewController.refreshControl = refreshControl
     }
     
-    private func setupFetchingView() {
+    private func configureFetchingView() {
         view.addSubview(fetchingView)
         
         fetchingView.edgesToSuperview()
     }
     
-    private func setupTableView() {
+    private func configureTableView() {
         super.addChild(tableViewController)
         
         view.addSubview(tableViewController.tableView)
@@ -284,7 +298,7 @@ class TransactionsVC: ViewController {
         
         tableViewController.tableView.delegate = self
         
-        tableViewController.tableView.register(R.nib.transactionCell)
+        tableViewController.tableView.register(TransactionCell.self, forCellReuseIdentifier: TransactionCell.reuseIdentifier)
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTransactionsCell")
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
@@ -319,7 +333,7 @@ class TransactionsVC: ViewController {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                            self.setupTableView()
+                            self.configureTableView()
                         }
                         
                         self.update(with: self.filteredTransactionList)
@@ -353,7 +367,7 @@ class TransactionsVC: ViewController {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                            self.setupTableView()
+                            self.configureTableView()
                         }
                         
                         self.update(with: self.filteredTransactionList)
@@ -383,7 +397,7 @@ class TransactionsVC: ViewController {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                            self.setupTableView()
+                            self.configureTableView()
                         }
                         
                         self.update(with: self.filteredTransactionList)
@@ -414,7 +428,7 @@ class TransactionsVC: ViewController {
                         self.fetchingView.removeFromSuperview()
                     }
                     if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                        self.setupTableView()
+                        self.configureTableView()
                     }
                     
                     self.update(with: self.filteredTransactionList)
@@ -471,15 +485,13 @@ extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
+        if filteredTransactions.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty {
             return 1
         } else {
             if !self.transactionsError.isEmpty {
                 return 1
-            } else if !self.transactionsErrorResponse.isEmpty {
-                return transactionsErrorResponse.count
             } else {
-                return filteredTransactions.count
+                return transactionsErrorResponse.count
             }
         }
     }
@@ -490,6 +502,10 @@ extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 20
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -535,25 +551,31 @@ extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
+        if transactionsErrorResponse.isEmpty && transactionsError.isEmpty && !filteredTransactions.isEmpty {
             let vc = TransactionDetailVC(style: .insetGrouped)
             
-            vc.transaction = filteredTransactions[indexPath.row]
-            vc.categories = self.categories
-            vc.accounts = self.accounts
+            vc.transaction = dataSource.itemIdentifier(for: indexPath)!
+            vc.categories = categories
+            vc.accounts = accounts
             
             navigationController?.pushViewController(vc, animated: true)
         }
     }
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
-            let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                UIPasteboard.general.string = self.filteredTransactions[indexPath.row].attributes.description
+        if transactionsErrorResponse.isEmpty && transactionsError.isEmpty && !filteredTransactions.isEmpty {
+            let copyDescription = UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
+                UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.description
+            }
+            let copyCreationDate = UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
+                UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.creationDate
+            }
+            let copyAmount = UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
+                UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.amount.valueShort
             }
             
             return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                UIMenu(children: [copy])
+                UIMenu(children: [copyDescription, copyCreationDate, copyAmount])
             }
         } else {
             return nil
@@ -563,23 +585,23 @@ extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
 
 extension TransactionsVC: UISearchControllerDelegate, UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        if self.prevFilteredTransactions != self.filteredTransactions {
-            self.prevFilteredTransactions = self.filteredTransactions
+        if prevFilteredTransactions != filteredTransactions {
+            prevFilteredTransactions = filteredTransactions
         }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if self.filteredTransactions != self.prevFilteredTransactions {
-            self.update(with: self.filteredTransactionList)
+        if filteredTransactions != prevFilteredTransactions {
+            update(with: filteredTransactionList)
         }
-        self.prevFilteredTransactions = self.filteredTransactions
+        prevFilteredTransactions = filteredTransactions
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.text != "" {
             searchBar.text = ""
-            self.prevFilteredTransactions = self.filteredTransactions
-            self.update(with: self.filteredTransactionList)
+            prevFilteredTransactions = filteredTransactions
+            update(with: filteredTransactionList)
         }
     }
 }

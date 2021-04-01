@@ -1,6 +1,6 @@
 import UIKit
-import Rswift
 import WidgetKit
+import Rswift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

@@ -1,12 +1,22 @@
 import UIKit
-import Rswift
 import WidgetKit
+import Rswift
 
 class SettingsVC: TableViewController {
     weak var submitActionProxy: UIAlertAction?
     
     private var textDidChangeObserver: NSObjectProtocol!
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setProperties()
+        setupNavigation()
+        setupTableView()
+    }
+}
+
+extension SettingsVC {
     @objc private func switchDateStyle(segment: UISegmentedControl) {
         if segment.selectedSegmentIndex == 0 {
             appDefaults.setValue("Absolute", forKey: "dateStyle")
@@ -16,16 +26,9 @@ class SettingsVC: TableViewController {
         
         WidgetCenter.shared.reloadAllTimelines()
     }
+    
     @objc private func closeWorkflow() {
         dismiss(animated: true)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setProperties()
-        setupNavigation()
-        setupTableView()
     }
     
     private func setProperties() {
@@ -38,8 +41,8 @@ class SettingsVC: TableViewController {
     }
     
     private func setupTableView() {
-        tableView.register(R.nib.apiKeyCell)
-        tableView.register(R.nib.dateStylePickerCell)
+        tableView.register(APIKeyCell.self, forCellReuseIdentifier: APIKeyCell.reuseIdentifier)
+        tableView.register(DateStylePickerCell.self, forCellReuseIdentifier: DateStylePickerCell.reuseIdentifier)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -51,32 +54,18 @@ class SettingsVC: TableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.apiKeyCell, for: indexPath)!
-        let datePickerCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.datePickerCell, for: indexPath)!
+        let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: APIKeyCell.reuseIdentifier, for: indexPath) as! APIKeyCell
+        let datePickerCell = tableView.dequeueReusableCell(withIdentifier: DateStylePickerCell.reuseIdentifier, for: indexPath) as! DateStylePickerCell
         
-        apiKeyCell.selectedBackgroundView = bgCellView
-        
-        if appDefaults.string(forKey: "apiKey") != "" && appDefaults.string(forKey: "apiKey") != nil {
-            apiKeyCell.leftImage.tintColor = .systemGreen
-        } else {
-            apiKeyCell.leftImage.tintColor = .darkGray
-        }
-        
-        apiKeyCell.rightDetail.speed = .rate(65)
-        apiKeyCell.rightDetail.leadingBuffer = 20
-        apiKeyCell.rightDetail.fadeLength = 20
-        
-        apiKeyCell.rightDetail.text = apiKeyDisplay
-        
-        datePickerCell.datePicker.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: R.font.circularStdBook(size: 14)!], for: .normal)
+        apiKeyCell.apiKeyLabel.text = apiKeyDisplay
         
         if appDefaults.string(forKey: "dateStyle") == "Absolute" || appDefaults.string(forKey: "dateStyle") == nil {
-            datePickerCell.datePicker.selectedSegmentIndex = 0
+            datePickerCell.segmentedControl.selectedSegmentIndex = 0
         } else {
-            datePickerCell.datePicker.selectedSegmentIndex = 1
+            datePickerCell.segmentedControl.selectedSegmentIndex = 1
         }
         
-        datePickerCell.datePicker.addTarget(self, action: #selector(switchDateStyle), for:.valueChanged)
+        datePickerCell.segmentedControl.addTarget(self, action: #selector(switchDateStyle), for:.valueChanged)
         
         if indexPath.section == 0 {
             return apiKeyCell
@@ -251,6 +240,14 @@ class SettingsVC: TableViewController {
         }
     }
     
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return "API Key"
+        } else {
+            return nil
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 0 {
             return "The personal access token used to communicate with the Up Banking Developer API."
@@ -259,10 +256,21 @@ class SettingsVC: TableViewController {
         }
     }
     
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let headerView = view as? UITableViewHeaderFooterView {
+            headerView.textLabel?.textColor = .lightGray
+            headerView.textLabel?.font = R.font.circularStdBook(size: 13)
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         if let footerView = view as? UITableViewHeaderFooterView {
             footerView.textLabel?.textColor = .lightGray
             footerView.textLabel?.font = R.font.circularStdBook(size: 12)
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
 }

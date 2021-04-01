@@ -7,28 +7,33 @@ class AboutViewController: TableViewController {
     @IBOutlet var versionValue: UILabel!
     @IBOutlet var buildValue: UILabel!
     
-    @objc private func openSettings() {
-        let vc = NavigationController(rootViewController: SettingsVC(style: .insetGrouped))
-        
-        present(vc, animated: true)
-    }
-    @objc private func openDiagnostics() {
-        let vc = NavigationController(rootViewController: DiagnosticTableVC(style: .insetGrouped))
-        
-        present(vc, animated: true)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setProperties()
         setupNavigation()
     }
+}
+
+extension AboutViewController {
+    @objc private func openSettings() {
+        let vc = NavigationController(rootViewController: SettingsVC(style: .insetGrouped))
+        
+        present(vc, animated: true)
+    }
+    
+    @objc private func openDiagnostics() {
+        let vc = NavigationController(rootViewController: DiagnosticTableVC(style: .insetGrouped))
+        
+        present(vc, animated: true)
+    }
     
     private func setProperties() {
         title = "About"
         
         appImage.image = upAnimation
+        appImage.layer.cornerRadius = 20
+        
         appNameValue.text = appName
         versionValue.text = appVersion
         buildValue.text = appBuild
@@ -39,6 +44,10 @@ class AboutViewController: TableViewController {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftSlashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.gear(), style: .plain, target: self, action: #selector(openSettings))
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -87,7 +96,7 @@ class AboutViewController: TableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 {
-            self.tableView.deselectRow(at: indexPath, animated: true)
+            tableView.deselectRow(at: indexPath, animated: true)
             
             if indexPath.row == 0 {
                 UIApplication.shared.open(URL(string: "mailto:feedback@tavitian.cloud?subject=Feedback%20for%20Provenance")!)

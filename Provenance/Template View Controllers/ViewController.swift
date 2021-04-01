@@ -5,10 +5,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupViewStyle()
+        configure()
     }
-    
-    private func setupViewStyle() {
+}
+
+extension ViewController {
+    private func configure() {
         view.backgroundColor = R.color.bgColour()
     }
 }

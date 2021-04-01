@@ -51,30 +51,6 @@
                                 <constraint firstItem="oKH-9a-U0B" firstAttribute="centerY" secondItem="SLF-8q-Fae" secondAttribute="centerY" id="kuu-78-7ZR"/>
                             </constraints>
                         </view>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="loadingCell" id="1Ge-ee-ieJ" customClass="LoadingTableViewCell" customModule="Provenance" customModuleProvider="target">
-                                <rect key="frame" x="20" y="172.33333206176758" width="374" height="43.666667938232422"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1Ge-ee-ieJ" id="sA4-Le-uZG">
-                                    <rect key="frame" x="0.0" y="0.0" width="374" height="43.666667938232422"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="4iO-sw-jY6" customClass="ActivityIndicator" customModule="Provenance" customModuleProvider="target">
-                                            <rect key="frame" x="177" y="12" width="20" height="20"/>
-                                            <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </activityIndicatorView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="4iO-sw-jY6" firstAttribute="centerX" secondItem="sA4-Le-uZG" secondAttribute="centerX" id="A5D-BC-Zzb"/>
-                                        <constraint firstItem="4iO-sw-jY6" firstAttribute="centerY" secondItem="sA4-Le-uZG" secondAttribute="centerY" id="fzJ-uJ-ZFI"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <connections>
-                                    <outlet property="loadingIndicator" destination="4iO-sw-jY6" id="99z-K1-0tl"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
                     </tableView>
                     <connections>
                         <outlet property="accountBalance" destination="8yx-71-4h4" id="mRR-4Q-0ND"/>

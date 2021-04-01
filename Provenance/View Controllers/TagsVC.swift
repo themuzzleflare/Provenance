@@ -7,21 +7,23 @@ class TagsVC: TableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setProperties()
-        setupNavigation()
-        setupTableView()
+        configureProperties()
+        configureNavigation()
+        configureTableView()
     }
-    
-    private func setProperties() {
+}
+
+extension TagsVC {
+    private func configureProperties() {
         title = "Tags"
     }
     
-    private func setupNavigation() {
+    private func configureNavigation() {
         navigationItem.title = "Tags"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
     }
     
-    private func setupTableView() {
+    private func configureTableView() {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")
     }
     

@@ -36,7 +36,7 @@ class AccountDetailVC: TableViewController {
     }
     
     private func setupTableView() {
-        tableView.register(R.nib.attributeCell)
+        tableView.register(AttributeCell.self, forCellReuseIdentifier: AttributeCell.reuseIdentifier)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -48,12 +48,12 @@ class AccountDetailVC: TableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.attributeCell, for: indexPath)!
+        let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as! AttributeCell
         
         let attribute = altAttributes[indexPath.row]
         
         cell.leftLabel.text = attribute.key
-        cell.rightDetail.text = attribute.value
+        cell.rightLabel.text = attribute.value
         
         return cell
     }

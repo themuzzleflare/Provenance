@@ -2,20 +2,22 @@ import UIKit
 import Rswift
 
 class DiagnosticTableVC: TableViewController {
-    private var attributes: KeyValuePairs<String, String> {
-        return ["Version": appVersion, "Build": appBuild]
-    }
-    
-    @objc private func closeWorkflow() {
-        dismiss(animated: true)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setProperties()
         setupNavigation()
         setupTableView()
+    }
+}
+
+extension DiagnosticTableVC {
+    private var attributes: KeyValuePairs<String, String> {
+        return ["Version": appVersion, "Build": appBuild]
+    }
+    
+    @objc private func closeWorkflow() {
+        dismiss(animated: true)
     }
     
     private func setProperties() {
@@ -28,7 +30,7 @@ class DiagnosticTableVC: TableViewController {
     }
     
     private func setupTableView() {
-        tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: "diagnosticCell")
+        tableView.register(AttributeCell.self, forCellReuseIdentifier: AttributeCell.reuseIdentifier)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -42,16 +44,10 @@ class DiagnosticTableVC: TableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let attribute = attributes[indexPath.row]
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "diagnosticCell", for: indexPath) as! RightDetailTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as! AttributeCell
         
-        cell.selectionStyle = .none
-        cell.textLabel?.textColor = .darkGray
-        cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-        cell.textLabel?.text = attribute.key
-        cell.detailTextLabel?.textColor = .black
-        cell.detailTextLabel?.textAlignment = .right
-        cell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-        cell.detailTextLabel?.text = attribute.value
+        cell.leftLabel.text = attribute.key
+        cell.rightLabel.text = attribute.value
         
         return cell
     }
@@ -70,5 +66,9 @@ class DiagnosticTableVC: TableViewController {
         } else {
             return nil
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
 }

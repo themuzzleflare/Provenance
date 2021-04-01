@@ -13,6 +13,23 @@ class CategoriesVC: ViewController {
     private var categoriesErrorResponse: [ErrorObject] = []
     private var categoriesError: String = ""
     private var prevFilteredCategories: [CategoryResource] = []
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configureProperties()
+        configureNavigation()
+        configureSearch()
+        configureRefreshControl()
+        configureFetchingView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        fetchCategories()
+    }
+}
+
+extension CategoriesVC {
     private var filteredCategories: [CategoryResource] {
         categories.filter { category in
             searchController.searchBar.text!.isEmpty || category.attributes.name.localizedStandardContains(searchController.searchBar.text!)
@@ -31,25 +48,11 @@ class CategoriesVC: ViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setProperties()
-        setupNavigation()
-        setupSearch()
-        setupRefreshControl()
-        setupFetchingView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        fetchCategories()
-    }
-    
-    private func setProperties() {
+    private func configureProperties() {
         title = "Categories"
     }
     
-    private func setupNavigation() {
+    private func configureNavigation() {
         navigationController?.navigationBar.prefersLargeTitles = true
         
         navigationItem.title = "Loading"
@@ -60,7 +63,7 @@ class CategoriesVC: ViewController {
         #endif
     }
     
-    private func setupSearch() {
+    private func configureSearch() {
         searchController.delegate = self
         
         searchController.obscuresBackgroundDuringPresentation = false
@@ -77,19 +80,19 @@ class CategoriesVC: ViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
-    private func setupRefreshControl() {
+    private func configureRefreshControl() {
         refreshControl.addTarget(self, action: #selector(refreshCategories), for: .valueChanged)
         
         tableViewController.refreshControl = refreshControl
     }
     
-    private func setupFetchingView() {
+    private func configureFetchingView() {
         view.addSubview(fetchingView)
         
         fetchingView.edgesToSuperview()
     }
     
-    private func setupTableView() {
+    private func configureTableView() {
         super.addChild(tableViewController)
         
         view.addSubview(tableViewController.tableView)
@@ -130,7 +133,7 @@ class CategoriesVC: ViewController {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                            self.setupTableView()
+                            self.configureTableView()
                         }
                         
                         self.tableViewController.tableView.reloadData()
@@ -158,7 +161,7 @@ class CategoriesVC: ViewController {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                            self.setupTableView()
+                            self.configureTableView()
                         }
                         
                         self.tableViewController.tableView.reloadData()
@@ -182,7 +185,7 @@ class CategoriesVC: ViewController {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                            self.setupTableView()
+                            self.configureTableView()
                         }
                         
                         self.tableViewController.tableView.reloadData()
@@ -207,7 +210,7 @@ class CategoriesVC: ViewController {
                         self.fetchingView.removeFromSuperview()
                     }
                     if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                        self.setupTableView()
+                        self.configureTableView()
                     }
                     
                     self.tableViewController.tableView.reloadData()
@@ -224,12 +227,12 @@ extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.filteredCategories.isEmpty && self.categoriesError.isEmpty && self.categoriesErrorResponse.isEmpty {
+        if filteredCategories.isEmpty && categoriesError.isEmpty && categoriesErrorResponse.isEmpty {
             return 1
         } else {
-            if !self.categoriesError.isEmpty {
+            if !categoriesError.isEmpty {
                 return 1
-            } else if !self.categoriesErrorResponse.isEmpty {
+            } else if !categoriesErrorResponse.isEmpty {
                 return categoriesErrorResponse.count
             } else {
                 return filteredCategories.count
@@ -251,7 +254,7 @@ extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
-        if self.filteredCategories.isEmpty && self.categoriesError.isEmpty && self.categoriesErrorResponse.isEmpty {
+        if filteredCategories.isEmpty && categoriesError.isEmpty && categoriesErrorResponse.isEmpty {
             tableView.separatorStyle = .none
             
             noCategoriesCell.selectionStyle = .none
@@ -265,14 +268,14 @@ extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
         } else {
             tableView.separatorStyle = .singleLine
             
-            if !self.categoriesError.isEmpty {
+            if !categoriesError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
                 errorStringCell.textLabel?.font = circularStdBook
                 errorStringCell.textLabel?.text = categoriesError
                 
                 return errorStringCell
-            } else if !self.categoriesErrorResponse.isEmpty {
+            } else if !categoriesErrorResponse.isEmpty {
                 let error = categoriesErrorResponse[indexPath.row]
                 
                 errorObjectCell.selectionStyle = .none
@@ -298,7 +301,7 @@ extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.categoriesErrorResponse.isEmpty && self.categoriesError.isEmpty && !self.filteredCategories.isEmpty {
+        if categoriesErrorResponse.isEmpty && categoriesError.isEmpty && !filteredCategories.isEmpty {
             let vc = TransactionsByCategoryVC()
             
             vc.category = filteredCategories[indexPath.row]
@@ -308,7 +311,7 @@ extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        if self.categoriesErrorResponse.isEmpty && self.categoriesError.isEmpty && !self.filteredCategories.isEmpty {
+        if categoriesErrorResponse.isEmpty && categoriesError.isEmpty && !filteredCategories.isEmpty {
             let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
                 UIPasteboard.general.string = self.filteredCategories[indexPath.row].attributes.name
             }
@@ -324,23 +327,23 @@ extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
 
 extension CategoriesVC: UISearchControllerDelegate, UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        if self.prevFilteredCategories != self.filteredCategories {
-            self.prevFilteredCategories = self.filteredCategories
+        if prevFilteredCategories != filteredCategories {
+            prevFilteredCategories = filteredCategories
         }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if self.filteredCategories != self.prevFilteredCategories {
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        if filteredCategories != prevFilteredCategories {
+            tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
-        self.prevFilteredCategories = self.filteredCategories
+        prevFilteredCategories = filteredCategories
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.text != "" {
             searchBar.text = ""
-            self.prevFilteredCategories = self.filteredCategories
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+            prevFilteredCategories = filteredCategories
+            tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
     }
 }

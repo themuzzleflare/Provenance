@@ -10,8 +10,31 @@ class TransactionsByAccountVC: TableViewController {
     private var transactions: [TransactionResource] = []
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
-    private var prevFilteredTransactions: [TransactionResource]? = nil
+    
+    private var prevFilteredTransactions: [TransactionResource] = []
     private var categories: [CategoryResource] = []
+    
+    @IBOutlet var accountBalance: UILabel!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configureProperties()
+        configureNavigation()
+        configureSearch()
+        configureRefreshControl()
+        configureTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
+        
+        fetchTransactions()
+        fetchCategories()
+    }
+}
+
+extension TransactionsByAccountVC {
     private var filteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
@@ -26,6 +49,7 @@ class TransactionsByAccountVC: TableViewController {
         
         present(NavigationController(rootViewController: vc), animated: true)
     }
+    
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
         let loadingView = ActivityIndicator(style: .medium)
@@ -38,32 +62,13 @@ class TransactionsByAccountVC: TableViewController {
         }
     }
     
-    @IBOutlet var accountBalance: UILabel!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setProperties()
-        setupNavigation()
-        setupSearch()
-        setupRefreshControl()
-        setupTableView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        tableView.reloadData()
-        
-        fetchTransactions()
-        fetchCategories()
-    }
-    
-    private func setProperties() {
+    private func configureProperties() {
         title = "Transactions by Account"
         
         accountBalance.text = account.attributes.balance.valueShort
     }
     
-    private func setupNavigation() {
+    private func configureNavigation() {
         navigationItem.largeTitleDisplayMode = .always
         
         navigationItem.title = "Loading"
@@ -76,7 +81,7 @@ class TransactionsByAccountVC: TableViewController {
         #endif
     }
     
-    private func setupSearch() {
+    private func configureSearch() {
         searchController.delegate = self
         
         searchController.obscuresBackgroundDuringPresentation = false
@@ -93,14 +98,15 @@ class TransactionsByAccountVC: TableViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
-    private func setupRefreshControl() {
+    private func configureRefreshControl() {
         refreshControl = RefreshControl(frame: .zero)
         
         refreshControl?.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
     }
     
-    private func setupTableView() {
-        tableView.register(R.nib.transactionCell)
+    private func configureTableView() {
+        tableView.register(TransactionCell.self, forCellReuseIdentifier: TransactionCell.reuseIdentifier)
+        tableView.register(LoadingTableViewCell.self, forCellReuseIdentifier: LoadingTableViewCell.reuseIdentifier)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTransactionsCell")
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
         tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
@@ -212,12 +218,12 @@ class TransactionsByAccountVC: TableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
+        if filteredTransactions.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty {
             return 1
         } else {
-            if !self.transactionsError.isEmpty {
+            if !transactionsError.isEmpty {
                 return 1
-            } else if !self.transactionsErrorResponse.isEmpty {
+            } else if !transactionsErrorResponse.isEmpty {
                 return transactionsErrorResponse.count
             } else {
                 return filteredTransactions.count
@@ -226,16 +232,16 @@ class TransactionsByAccountVC: TableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let transactionCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.transactionCell, for: indexPath)!
-        let loadingCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.loadingCell, for: indexPath)!
+        let transactionCell = tableView.dequeueReusableCell(withIdentifier: TransactionCell.reuseIdentifier, for: indexPath) as! TransactionCell
+        let loadingCell = tableView.dequeueReusableCell(withIdentifier: LoadingTableViewCell.reuseIdentifier, for: indexPath) as! LoadingTableViewCell
         let noTransactionsCell = tableView.dequeueReusableCell(withIdentifier: "noTransactionsCell", for: indexPath)
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
-        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
+        if filteredTransactions.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty {
             tableView.separatorStyle = .none
             
-            if self.transactions.isEmpty {
+            if transactions.isEmpty {
                 loadingCell.loadingIndicator.startAnimating()
                 
                 return loadingCell
@@ -252,14 +258,14 @@ class TransactionsByAccountVC: TableViewController {
         } else {
             tableView.separatorStyle = .singleLine
             
-            if !self.transactionsError.isEmpty {
+            if !transactionsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
                 errorStringCell.textLabel?.font = circularStdBook
                 errorStringCell.textLabel?.text = transactionsError
                 
                 return errorStringCell
-            } else if !self.transactionsErrorResponse.isEmpty {
+            } else if !transactionsErrorResponse.isEmpty {
                 let error = transactionsErrorResponse[indexPath.row]
                 
                 errorObjectCell.selectionStyle = .none
@@ -272,19 +278,7 @@ class TransactionsByAccountVC: TableViewController {
                 
                 return errorObjectCell
             } else {
-                let transaction = filteredTransactions[indexPath.row]
-                
-                transactionCell.selectedBackgroundView = bgCellView
-                transactionCell.leftLabel.text = transaction.attributes.description
-                transactionCell.leftSubtitle.text = transaction.attributes.creationDate
-                
-                if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
-                    transactionCell.rightLabel.textColor = .black
-                } else {
-                    transactionCell.rightLabel.textColor = R.color.greenColour()
-                }
-                
-                transactionCell.rightLabel.text = transaction.attributes.amount.valueShort
+                transactionCell.transaction = filteredTransactions[indexPath.row]
                 
                 return transactionCell
             }
@@ -292,18 +286,18 @@ class TransactionsByAccountVC: TableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
+        if transactionsErrorResponse.isEmpty && transactionsError.isEmpty && !filteredTransactions.isEmpty {
             let vc = TransactionDetailVC(style: .insetGrouped)
             
             vc.transaction = filteredTransactions[indexPath.row]
-            vc.categories = self.categories
+            vc.categories = categories
             
             navigationController?.pushViewController(vc, animated: true)
         }
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
+        if transactionsErrorResponse.isEmpty && transactionsError.isEmpty && !filteredTransactions.isEmpty {
             let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
                 UIPasteboard.general.string = self.filteredTransactions[indexPath.row].attributes.description
             }
@@ -319,23 +313,23 @@ class TransactionsByAccountVC: TableViewController {
 
 extension TransactionsByAccountVC: UISearchControllerDelegate, UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        if self.prevFilteredTransactions != self.filteredTransactions {
-            self.prevFilteredTransactions = self.filteredTransactions
+        if prevFilteredTransactions != filteredTransactions {
+            prevFilteredTransactions = filteredTransactions
         }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if self.filteredTransactions != self.prevFilteredTransactions {
-            self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        if filteredTransactions != prevFilteredTransactions {
+            tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
-        self.prevFilteredTransactions = self.filteredTransactions
+        prevFilteredTransactions = filteredTransactions
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.text != "" {
             searchBar.text = ""
-            self.prevFilteredTransactions = self.filteredTransactions
-            self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+            prevFilteredTransactions = filteredTransactions
+            tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
     }
 }

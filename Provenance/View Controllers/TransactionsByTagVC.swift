@@ -17,6 +17,27 @@ class TransactionsByTagVC: ViewController {
     private var transactions: [TransactionResource] = []
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setProperties()
+        setupNavigation()
+        setupSearch()
+        setupRefreshControl()
+        setupFetchingView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableViewController.tableView.reloadData()
+        
+        fetchTransactions()
+        fetchCategories()
+        fetchAccounts()
+    }
+}
+
+extension TransactionsByTagVC {
     private var filteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
@@ -35,24 +56,6 @@ class TransactionsByTagVC: ViewController {
             self.fetchCategories()
             self.fetchAccounts()
         }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setProperties()
-        setupNavigation()
-        setupSearch()
-        setupRefreshControl()
-        setupFetchingView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        tableViewController.tableView.reloadData()
-        
-        fetchTransactions()
-        fetchCategories()
-        fetchAccounts()
     }
     
     private func setProperties() {
@@ -108,7 +111,7 @@ class TransactionsByTagVC: ViewController {
         tableViewController.tableView.delegate = self
         tableViewController.tableView.dataSource = self
         
-        tableViewController.tableView.register(R.nib.transactionCell)
+        tableViewController.tableView.register(TransactionCell.self, forCellReuseIdentifier: TransactionCell.reuseIdentifier)
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTransactionsCell")
         tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
         tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
@@ -283,7 +286,7 @@ extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let transactionCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.transactionCell, for: indexPath)!
+        let transactionCell = tableView.dequeueReusableCell(withIdentifier: TransactionCell.reuseIdentifier, for: indexPath) as! TransactionCell
         let noTransactionsCell = tableView.dequeueReusableCell(withIdentifier: "noTransactionsCell", for: indexPath)
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
@@ -321,20 +324,8 @@ extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
                 errorObjectCell.detailTextLabel?.text = error.detail
                 
                 return errorObjectCell
-            } else {
-                let transaction = filteredTransactions[indexPath.row]
-                
-                transactionCell.selectedBackgroundView = bgCellView
-                transactionCell.leftLabel.text = transaction.attributes.description
-                transactionCell.leftSubtitle.text = transaction.attributes.creationDate
-                
-                if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
-                    transactionCell.rightLabel.textColor = .black
-                } else {
-                    transactionCell.rightLabel.textColor = R.color.greenColour()
-                }
-                
-                transactionCell.rightLabel.text = transaction.attributes.amount.valueShort
+            } else {                
+                transactionCell.transaction = filteredTransactions[indexPath.row]
                 
                 return transactionCell
             }
@@ -538,23 +529,23 @@ extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
 
 extension TransactionsByTagVC: UISearchControllerDelegate, UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        if self.prevFilteredTransactions != self.filteredTransactions {
-            self.prevFilteredTransactions = self.filteredTransactions
+        if prevFilteredTransactions != filteredTransactions {
+            prevFilteredTransactions = filteredTransactions
         }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if self.filteredTransactions != self.prevFilteredTransactions {
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        if filteredTransactions != prevFilteredTransactions {
+            tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
-        self.prevFilteredTransactions = self.filteredTransactions
+        prevFilteredTransactions = filteredTransactions
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.text != "" {
             searchBar.text = ""
-            self.prevFilteredTransactions = self.filteredTransactions
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+            prevFilteredTransactions = filteredTransactions
+            tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
     }
 }

@@ -13,13 +13,15 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupTableViewStyle()
+        configure()
     }
-    
-    private func setupTableViewStyle() {
+}
+
+extension TableViewController {
+    private func configure() {
         tableView.backgroundColor = R.color.bgColour()
         tableView.separatorColor = R.color.bgColour()
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        tableView.separatorInset = .zero
         tableView.indicatorStyle = .white
         tableView.showsHorizontalScrollIndicator = false
         

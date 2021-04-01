@@ -5,20 +5,18 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupTabBarStyle()
-        setupTabBarItems()
+        configureStyle()
+        configureItems()
     }
-    
-    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        print("Selected tab: \(item.title ?? "Unknown")")
-    }
-    
-    private func setupTabBarStyle() {
+}
+
+extension TabBarController {
+    private func configureStyle() {
         tabBar.barStyle = .black
         tabBar.barTintColor = R.color.bgColour()
     }
     
-    private func setupTabBarItems() {
+    private func configureItems() {
         // MARK: - Transactions
         let tabOne = NavigationController(rootViewController: TransactionsVC())
         let tabOneBarItem = UITabBarItem(title: "Transactions", image: R.image.dollarsignCircle(), selectedImage: R.image.dollarsignCircleFill())
@@ -51,5 +49,11 @@ class TabBarController: UITabBarController {
         
         // MARK: - Tab Bar Items
         viewControllers = [tabOne, tabTwo, tabThree, tabFour, tabFive]
+    }
+}
+
+extension TabBarController {
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        print("Selected tab: \(item.title ?? "Unknown")")
     }
 }

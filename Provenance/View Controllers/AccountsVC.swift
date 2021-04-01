@@ -27,21 +27,22 @@ class AccountsVC: ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setProperties()
-        setupNavigation()
-        setupRefreshControl()
-        setupFetchingView()
+        configureProperties()
+        configureNavigation()
+        configureRefreshControl()
+        configureFetchingView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         fetchAccounts()
     }
-    
-    private func setProperties() {
+}
+extension AccountsVC {
+    private func configureProperties() {
         title = "Accounts"
     }
     
-    private func setupNavigation() {
+    private func configureNavigation() {
         navigationController?.navigationBar.prefersLargeTitles = true
         
         navigationItem.title = "Loading"
@@ -52,19 +53,19 @@ class AccountsVC: ViewController {
         #endif
     }
     
-    private func setupRefreshControl() {
+    private func configureRefreshControl() {
         refreshControl.addTarget(self, action: #selector(refreshAccounts), for: .valueChanged)
         
         tableViewController.refreshControl = refreshControl
     }
     
-    private func setupFetchingView() {
+    private func configureFetchingView() {
         view.addSubview(fetchingView)
         
         fetchingView.edgesToSuperview()
     }
     
-    private func setupTableView() {
+    private func configureTableView() {
         super.addChild(tableViewController)
         
         view.addSubview(tableViewController.tableView)
@@ -105,7 +106,7 @@ class AccountsVC: ViewController {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                            self.setupTableView()
+                            self.configureTableView()
                         }
                         
                         self.tableViewController.tableView.reloadData()
@@ -129,7 +130,7 @@ class AccountsVC: ViewController {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                            self.setupTableView()
+                            self.configureTableView()
                         }
                         
                         self.tableViewController.tableView.reloadData()
@@ -153,7 +154,7 @@ class AccountsVC: ViewController {
                             self.fetchingView.removeFromSuperview()
                         }
                         if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                            self.setupTableView()
+                            self.configureTableView()
                         }
                         
                         self.tableViewController.tableView.reloadData()
@@ -178,7 +179,7 @@ class AccountsVC: ViewController {
                         self.fetchingView.removeFromSuperview()
                     }
                     if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                        self.setupTableView()
+                        self.configureTableView()
                     }
                     
                     self.tableViewController.tableView.reloadData()

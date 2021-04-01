@@ -4,10 +4,16 @@ class RefreshControl: UIRefreshControl {
     override init(frame: CGRect) {
         super.init(frame: .zero)
         
-        self.tintColor = .white
+        configure()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+}
+
+extension RefreshControl {
+    private func configure() {
+        self.tintColor = .white
     }
 }

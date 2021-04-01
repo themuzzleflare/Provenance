@@ -5,10 +5,12 @@ class CollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupCollectionViewStyle()
+        configure()
     }
-    
-    private func setupCollectionViewStyle() {
+}
+
+extension CollectionViewController {
+    private func configure() {
         collectionView.backgroundColor = R.color.bgColour()
         collectionView.indicatorStyle = .white
         collectionView.showsHorizontalScrollIndicator = false

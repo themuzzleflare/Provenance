@@ -62,8 +62,10 @@ class AddTagWorkflowTwoVC: ViewController {
             let answer = ac.textFields![0]
             if answer.text != "" {
                 let vc = AddTagWorkflowThreeVC(style: .insetGrouped)
+                
                 vc.transaction = self.transaction
                 vc.tag = answer.text
+                
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }
@@ -76,6 +78,7 @@ class AddTagWorkflowTwoVC: ViewController {
         
         present(ac, animated: true)
     }
+    
     @objc private func refreshTags() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchTags()
@@ -356,23 +359,23 @@ extension AddTagWorkflowTwoVC: UITextFieldDelegate {
 
 extension AddTagWorkflowTwoVC: UISearchControllerDelegate, UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        if self.prevFilteredTags != self.filteredTags {
-            self.prevFilteredTags = self.filteredTags
+        if prevFilteredTags != filteredTags {
+            prevFilteredTags = filteredTags
         }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if self.filteredTags != self.prevFilteredTags {
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        if filteredTags != prevFilteredTags {
+            tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
-        self.prevFilteredTags = self.filteredTags
+        prevFilteredTags = filteredTags
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.text != "" {
             searchBar.text = ""
-            self.prevFilteredTags = self.filteredTags
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+            prevFilteredTags = filteredTags
+            tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
     }
 }
