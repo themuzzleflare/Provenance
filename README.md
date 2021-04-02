@@ -10,5 +10,5 @@ To proceed with the following steps, install [Homebrew Package Manager](https://
 3. Change your current working directory to the root directory of the cloned repository (`cd Provenance`).
 4. Install the CocoaPods dependencies of the project (`pod install`).
 5. Open the newly generated **Provenance.xcworkspace** file found in the root directory of the cloned repository.
-6. Change the signing credentials under the **Signing & Capabilities** tab of the Provenance target to your own.
+6. Change the signing credentials under the **Signing & Capabilities** tab of the Provenance, Provenance Widgets and Provenance Stickers targets to your own.
 7. Build the project with **⌘ + B** or by selecting **Product -> Build** from the menu bar (do this **at least once**).
