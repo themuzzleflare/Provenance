@@ -1,5 +1,7 @@
 import UIKit
 import MarqueeLabel
+import TinyConstraints
+import Rswift
 
 class APIKeyCell: UITableViewCell {
     static let reuseIdentifier = "apiKeyCell"
@@ -9,9 +11,9 @@ class APIKeyCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        setupCell()
-        setupContentView()
-        setupApiKeyLabel()
+        configureCell()
+        configureContentView()
+        configureApiKeyLabel()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -20,32 +22,25 @@ class APIKeyCell: UITableViewCell {
 }
 
 extension APIKeyCell {
-    private func setupCell() {
+    private func configureCell() {
         selectionStyle = .default
         accessoryType = .disclosureIndicator
         separatorInset = .zero
-        selectedBackgroundView = {
-            let view = UIView()
-            view.backgroundColor = UIColor(named: "AccentColor")
-            return view
-        }()
+        selectedBackgroundView = bgCellView
     }
     
-    private func setupContentView() {
+    private func configureContentView() {
         contentView.addSubview(apiKeyLabel)
     }
     
-    private func setupApiKeyLabel() {
-        apiKeyLabel.translatesAutoresizingMaskIntoConstraints = false
-        apiKeyLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
-        apiKeyLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16).isActive = true
-        apiKeyLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+    private func configureApiKeyLabel() {
+        apiKeyLabel.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
         
         apiKeyLabel.speed = .rate(65)
-        apiKeyLabel.leadingBuffer = 20
         apiKeyLabel.fadeLength = 20
         
-        apiKeyLabel.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
+        apiKeyLabel.textAlignment = .left
+        apiKeyLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         apiKeyLabel.textColor = .black
     }
 }

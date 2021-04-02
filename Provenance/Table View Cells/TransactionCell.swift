@@ -1,4 +1,6 @@
 import UIKit
+import TinyConstraints
+import Rswift
 
 class TransactionCell: UITableViewCell {
     var transaction: TransactionResource! {
@@ -9,7 +11,7 @@ class TransactionCell: UITableViewCell {
             if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
                 transactionAmount.textColor = .black
             } else {
-                transactionAmount.textColor = UIColor(named: "greenColour")
+                transactionAmount.textColor = R.color.greenColour()
             }
             
             transactionAmount.text = transaction.attributes.amount.valueShort
@@ -27,13 +29,13 @@ class TransactionCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        setupCell()
-        setupContentView()
-        setupTransactionDescription()
-        setupTransactionCreationDate()
-        setupTransactionAmount()
-        setupVerticalStackView()
-        setupHorizontalStackView()
+        configureCell()
+        configureContentView()
+        configureTransactionDescription()
+        configureTransactionCreationDate()
+        configureTransactionAmount()
+        configureVerticalStackView()
+        configureHorizontalStackView()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -42,51 +44,44 @@ class TransactionCell: UITableViewCell {
 }
 
 extension TransactionCell {
-    private func setupCell() {
+    private func configureCell() {
         selectionStyle = .default
         accessoryType = .none
         separatorInset = .zero
-        selectedBackgroundView = {
-            let view = UIView()
-            view.backgroundColor = UIColor(named: "AccentColor")
-            return view
-        }()
+        selectedBackgroundView = bgCellView
     }
     
-    private func setupContentView() {
+    private func configureContentView() {
         contentView.addSubview(horizontalStack)
-        
-        contentView.topAnchor.constraint(equalTo: horizontalStack.topAnchor, constant: -13).isActive = true
-        contentView.bottomAnchor.constraint(equalTo: horizontalStack.bottomAnchor, constant: 13).isActive = true
     }
     
-    private func setupTransactionDescription() {
+    private func configureTransactionDescription() {
         transactionDescription.translatesAutoresizingMaskIntoConstraints = false
         
-        transactionDescription.font = UIFont(name: "CircularStd-Bold", size: UIFont.labelFontSize)
+        transactionDescription.font = R.font.circularStdBold(size: UIFont.labelFontSize)
         transactionDescription.textAlignment = .left
         transactionDescription.numberOfLines = 0
         transactionDescription.textColor = .black
     }
     
-    private func setupTransactionCreationDate() {
+    private func configureTransactionCreationDate() {
         transactionCreationDate.translatesAutoresizingMaskIntoConstraints = false
         
-        transactionCreationDate.font = UIFont(name: "CircularStd-Book", size: UIFont.smallSystemFontSize)
+        transactionCreationDate.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
         transactionCreationDate.textAlignment = .left
         transactionCreationDate.numberOfLines = 0
         transactionCreationDate.textColor = .darkGray
     }
     
-    private func setupTransactionAmount() {
+    private func configureTransactionAmount() {
         transactionAmount.translatesAutoresizingMaskIntoConstraints = false
         
-        transactionAmount.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
+        transactionAmount.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         transactionAmount.textAlignment = .right
         transactionAmount.numberOfLines = 0
     }
     
-    private func setupVerticalStackView() {
+    private func configureVerticalStackView() {
         verticalStack.addArrangedSubview(transactionDescription)
         verticalStack.addArrangedSubview(transactionCreationDate)
         
@@ -97,13 +92,11 @@ extension TransactionCell {
         verticalStack.distribution = .fill
     }
     
-    private func setupHorizontalStackView() {
+    private func configureHorizontalStackView() {
         horizontalStack.addArrangedSubview(verticalStack)
         horizontalStack.addArrangedSubview(transactionAmount)
         
-        horizontalStack.translatesAutoresizingMaskIntoConstraints = false
-        horizontalStack.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
-        horizontalStack.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16).isActive = true
+        horizontalStack.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
         
         horizontalStack.axis = .horizontal
         horizontalStack.alignment = .center

@@ -116,7 +116,7 @@ class TransactionsVC: ViewController {
         case adult = "adult"
         case technology = "technology"
     }
-    private enum Section: CaseIterable, Hashable {
+    private enum Section: CaseIterable {
         case transactions
     }
     
@@ -488,7 +488,7 @@ extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
         if filteredTransactions.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty {
             return 1
         } else {
-            if !self.transactionsError.isEmpty {
+            if !transactionsError.isEmpty {
                 return 1
             } else {
                 return transactionsErrorResponse.count
@@ -513,7 +513,7 @@ extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
         let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
         let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
         
-        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
+        if filteredTransactions.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty {
             tableView.separatorStyle = .none
             
             noTransactionsCell.selectionStyle = .none
@@ -527,7 +527,7 @@ extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
         } else {
             tableView.separatorStyle = .singleLine
             
-            if !self.transactionsError.isEmpty {
+            if !transactionsError.isEmpty {
                 errorStringCell.selectionStyle = .none
                 errorStringCell.textLabel?.numberOfLines = 0
                 errorStringCell.textLabel?.font = circularStdBook
@@ -552,6 +552,8 @@ extension TransactionsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if transactionsErrorResponse.isEmpty && transactionsError.isEmpty && !filteredTransactions.isEmpty {
+            tableView.deselectRow(at: indexPath, animated: true)
+            
             let vc = TransactionDetailVC(style: .insetGrouped)
             
             vc.transaction = dataSource.itemIdentifier(for: indexPath)!

@@ -1,4 +1,5 @@
 import UIKit
+import TinyConstraints
 
 class LoadingTableViewCell: UITableViewCell {
     static let reuseIdentifier = "loadingCell"
@@ -31,8 +32,6 @@ extension LoadingTableViewCell {
     }
     
     private func configureLoadingIndicator() {
-        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
-        loadingIndicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        loadingIndicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        loadingIndicator.center(in: contentView)
     }
 }

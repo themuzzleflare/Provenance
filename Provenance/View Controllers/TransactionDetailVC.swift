@@ -208,6 +208,8 @@ extension TransactionDetailVC {
         scrollingTitle.speed = .rate(65)
         scrollingTitle.fadeLength = 20
         
+        scrollingTitle.translatesAutoresizingMaskIntoConstraints = false
+        
         scrollingTitle.textAlignment = .center
         scrollingTitle.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         scrollingTitle.text = transaction.attributes.description

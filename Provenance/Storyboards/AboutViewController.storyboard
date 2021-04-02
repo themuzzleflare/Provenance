@@ -50,6 +50,7 @@
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nix-dV-NE2">
                                                             <rect key="frame" x="0.0" y="150.66666666666666" width="342" height="123.33333333333334"/>
+                                                            <gestureRecognizers/>
                                                             <string key="text">Provenance is a lightweight application that interacts with the Up Banking Developer API to display information about your bank accounts, transactions, categories, tags, and more.</string>
                                                             <fontDescription key="fontDescription" name="CircularStd-Book" family="Circular Std" pointSize="17"/>
                                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

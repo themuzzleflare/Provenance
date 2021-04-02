@@ -1,4 +1,6 @@
 import UIKit
+import TinyConstraints
+import Rswift
 
 class AttributeCell: UITableViewCell {
     static let reuseIdentifier = "attributeCell"
@@ -10,11 +12,11 @@ class AttributeCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        setupCell()
-        setupContentView()
-        setupLeftLabel()
-        setupRightLabel()
-        setupHorizontalStackView()
+        configureCell()
+        configureContentView()
+        configureLeftLabel()
+        configureRightLabel()
+        configureHorizontalStackView()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -23,49 +25,40 @@ class AttributeCell: UITableViewCell {
 }
 
 extension AttributeCell {
-    private func setupCell() {
+    private func configureCell() {
         selectionStyle = .none
         accessoryType = .none
         separatorInset = .zero
-        selectedBackgroundView = {
-            let view = UIView()
-            view.backgroundColor = UIColor(named: "AccentColor")
-            return view
-        }()
+        selectedBackgroundView = bgCellView
     }
     
-    private func setupContentView() {
+    private func configureContentView() {
         contentView.addSubview(horizontalStack)
-        
-        contentView.topAnchor.constraint(equalTo: horizontalStack.topAnchor, constant: -13).isActive = true
-        contentView.bottomAnchor.constraint(equalTo: horizontalStack.bottomAnchor, constant: 13).isActive = true
     }
     
-    private func setupLeftLabel() {
+    private func configureLeftLabel() {
         leftLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        leftLabel.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
+        leftLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         leftLabel.textAlignment = .left
         leftLabel.textColor = .darkGray
         leftLabel.numberOfLines = 0
     }
     
-    private func setupRightLabel() {
+    private func configureRightLabel() {
         rightLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        rightLabel.font = UIFont(name: "CircularStd-Book", size: UIFont.labelFontSize)
+        rightLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         rightLabel.textAlignment = .right
         rightLabel.textColor = .black
         rightLabel.numberOfLines = 0
     }
     
-    private func setupHorizontalStackView() {
+    private func configureHorizontalStackView() {
         horizontalStack.addArrangedSubview(leftLabel)
         horizontalStack.addArrangedSubview(rightLabel)
         
-        horizontalStack.translatesAutoresizingMaskIntoConstraints = false
-        horizontalStack.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
-        horizontalStack.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16).isActive = true
+        horizontalStack.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
         
         horizontalStack.axis = .horizontal
         horizontalStack.alignment = .center
