@@ -2,7 +2,7 @@ import UIKit
 import TinyConstraints
 import Rswift
 
-class TransactionCell: UITableViewCell {
+class TransactionTableViewCell: UITableViewCell {
     var transaction: TransactionResource! {
         didSet {
             transactionDescription.text = transaction.attributes.description
@@ -18,7 +18,7 @@ class TransactionCell: UITableViewCell {
         }
     }
     
-    static let reuseIdentifier = "transactionCell"
+    static let reuseIdentifier = "transactionTableViewCell"
     
     let transactionDescription = UILabel()
     let transactionCreationDate = UILabel()
@@ -38,12 +38,12 @@ class TransactionCell: UITableViewCell {
         configureHorizontalStackView()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
-extension TransactionCell {
+extension TransactionTableViewCell {
     private func configureCell() {
         selectionStyle = .default
         accessoryType = .none

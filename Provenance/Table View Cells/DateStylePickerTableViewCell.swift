@@ -2,8 +2,8 @@ import UIKit
 import TinyConstraints
 import Rswift
 
-class DateStylePickerCell: UITableViewCell {
-    static let reuseIdentifier = "datePickerCell"
+class DateStylePickerTableViewCell: UITableViewCell {
+    static let reuseIdentifier = "datePickerTableViewCell"
     
     let label = UILabel()
     let segmentedControl = UISegmentedControl()
@@ -19,12 +19,12 @@ class DateStylePickerCell: UITableViewCell {
         setupHorizontalStackView()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
-extension DateStylePickerCell {
+extension DateStylePickerTableViewCell {
     private func setupCell() {
         selectionStyle = .none
         accessoryType = .none

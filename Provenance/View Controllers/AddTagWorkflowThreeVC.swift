@@ -45,24 +45,26 @@ extension AddTagWorkflowThreeVC {
         if let headerView = view as? UITableViewHeaderFooterView {
             headerView.textLabel?.textColor = .lightGray
             headerView.textLabel?.font = R.font.circularStdBook(size: 13)
+            headerView.textLabel?.textAlignment = .center
         }
     }
     
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         if let footerView = view as? UITableViewHeaderFooterView {
             footerView.textLabel?.textColor = .lightGray
-            footerView.textLabel?.font = R.font.circularStdBook(size: 12)
+            footerView.textLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
+            footerView.textLabel?.textAlignment = .center
         }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! SubtitleTableViewCell
-        let transactionCell = tableView.dequeueReusableCell(withIdentifier: TransactionCell.reuseIdentifier, for: indexPath) as! TransactionCell
+        let transactionCell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
         let section = indexPath.section
         
         cell.selectionStyle = .none
-        cell.textLabel?.font = circularStdBook
-        cell.detailTextLabel?.font = circularStdBook
+        cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+        cell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         
         transactionCell.selectionStyle = .none
         transactionCell.accessoryType = .none
@@ -180,6 +182,6 @@ extension AddTagWorkflowThreeVC {
     
     private func configureTableView() {
         tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "attributeCell")
-        tableView.register(TransactionCell.self, forCellReuseIdentifier: TransactionCell.reuseIdentifier)
+        tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
     }
 }

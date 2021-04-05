@@ -2,53 +2,49 @@ import UIKit
 import Rswift
 
 class TabBarController: UITabBarController {
+    let tabOne: UIViewController = {
+        let vc = NavigationController(rootViewController: TransactionsVC(style: .grouped))
+        vc.tabBarItem = UITabBarItem(title: "Transactions", image: R.image.dollarsignCircle(), selectedImage: R.image.dollarsignCircleFill())
+        return vc
+    }()
+    
+    let tabTwo: UIViewController = {
+        let vc = NavigationController(rootViewController: AccountsCVC(collectionViewLayout: twoColumnGridLayout()))
+        vc.tabBarItem = UITabBarItem(title: "Accounts", image: R.image.walletPass(), selectedImage: R.image.walletPassFill())
+        return vc
+    }()
+    
+    let tabThree: UIViewController = {
+        let vc = NavigationController(rootViewController: AllTagsVC(style: .grouped))
+        vc.tabBarItem = UITabBarItem(title: "Tags", image: R.image.tag(), selectedImage: R.image.tagFill())
+        return vc
+    }()
+    
+    let tabFour: UIViewController = {
+        let vc = NavigationController(rootViewController: CategoriesCVC(collectionViewLayout: twoColumnGridLayout()))
+        vc.tabBarItem = UITabBarItem(title: "Categories", image: R.image.arrowUpArrowDownCircle(), selectedImage: R.image.arrowUpArrowDownCircleFill())
+        return vc
+    }()
+    
+    let tabFive: UIViewController = {
+        let vc = NavigationController(rootViewController: R.storyboard.aboutViewController.aboutVC()!)
+        vc.tabBarItem = UITabBarItem(title: "About", image: R.image.infoCircle(), selectedImage: R.image.infoCircleFill())
+        return vc
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureStyle()
-        configureItems()
+        configure()
     }
 }
 
 extension TabBarController {
-    private func configureStyle() {
+    private func configure() {
+        viewControllers = [tabOne, tabTwo, tabThree, tabFour, tabFive]
+        
         tabBar.barStyle = .black
         tabBar.barTintColor = R.color.bgColour()
-    }
-    
-    private func configureItems() {
-        // MARK: - Transactions
-        let tabOne = NavigationController(rootViewController: TransactionsVC())
-        let tabOneBarItem = UITabBarItem(title: "Transactions", image: R.image.dollarsignCircle(), selectedImage: R.image.dollarsignCircleFill())
-        
-        tabOne.tabBarItem = tabOneBarItem
-        
-        // MARK: - Accounts
-        let tabTwo = NavigationController(rootViewController: AccountsVC())
-        let tabTwoBarItem = UITabBarItem(title: "Accounts", image: R.image.walletPass(), selectedImage: R.image.walletPassFill())
-        
-        tabTwo.tabBarItem = tabTwoBarItem
-        
-        // MARK: - Tags
-        let tabThree = NavigationController(rootViewController: AllTagsVC())
-        let tabThreeBarItem = UITabBarItem(title: "Tags", image: R.image.tag(), selectedImage: R.image.tagFill())
-        
-        tabThree.tabBarItem = tabThreeBarItem
-        
-        // MARK: - Categories
-        let tabFour = NavigationController(rootViewController: CategoriesVC())
-        let tabFourBarItem = UITabBarItem(title: "Categories", image: R.image.arrowUpArrowDownCircle(), selectedImage: R.image.arrowUpArrowDownCircleFill())
-        
-        tabFour.tabBarItem = tabFourBarItem
-        
-        // MARK: - About
-        let tabFive = NavigationController(rootViewController: R.storyboard.aboutViewController.aboutVC()!)
-        let tabFiveBarItem = UITabBarItem(title: "About", image: R.image.infoCircle(), selectedImage: R.image.infoCircleFill())
-        
-        tabFive.tabBarItem = tabFiveBarItem
-        
-        // MARK: - Tab Bar Items
-        viewControllers = [tabOne, tabTwo, tabThree, tabFour, tabFive]
     }
 }
 

@@ -1,59 +1,59 @@
 import UIKit
 import Alamofire
-import TinyConstraints
 import Rswift
 
-class AddTagWorkflowVC: TableViewController {
-    let tableRefreshControl = RefreshControl(frame: .zero)
+class AccountsCVC: CollectionViewController {
     let searchController = UISearchController(searchResultsController: nil)
+    let refreshControl = RefreshControl(frame: .zero)
     
-    private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
+    private var accountsStatusCode: Int = 0
+    private var accounts: [AccountResource] = []
+    private var accountsPagination: Pagination = Pagination(prev: nil, next: nil)
+    private var accountsErrorResponse: [ErrorObject] = []
+    private var accountsError: String = ""
     
-    private var transactionsStatusCode: Int = 0
-    private var transactionsPagination: Pagination = Pagination(prev: nil, next: nil)
-    private var transactions: [TransactionResource] = []
-    private var transactionsErrorResponse: [ErrorObject] = []
-    private var transactionsError: String = ""
-    private var filteredTransactions: [TransactionResource] {
-        transactions.filter { transaction in
-            searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
+    private var filteredAccounts: [AccountResource] {
+        accounts.filter { account in
+            searchController.searchBar.text!.isEmpty || account.attributes.displayName.localizedStandardContains(searchController.searchBar.text!)
         }
     }
     
-    private var filteredTransactionList: Transaction {
-        return Transaction(data: filteredTransactions, links: transactionsPagination)
+    private var filteredAccountsList: Account {
+        return Account(data: filteredAccounts, links: accountsPagination)
     }
-    
-    private lazy var dataSource = makeDataSource()
     
     private enum Section: CaseIterable {
         case main
     }
     
+    private typealias DataSource = UICollectionViewDiffableDataSource<Section, AccountResource>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, AccountResource>
+    
+    private lazy var dataSource = makeDataSource()
+    
     private func makeDataSource() -> DataSource {
         return DataSource(
-            tableView: tableView,
-            cellProvider: {  tableView, indexPath, transaction in
-                let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
+            collectionView: collectionView,
+            cellProvider: {  collectionView, indexPath, account in
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AccountCollectionViewCell.reuseIdentifier, for: indexPath) as! AccountCollectionViewCell
                 
-                cell.transaction = transaction
+                cell.account = account
                 
                 return cell
             }
         )
     }
     
-    private func applySnapshot(animate: Bool = false) {
+    private func applySnapshot(animate: Bool = true) {
         var snapshot = Snapshot()
         
         snapshot.appendSections(Section.allCases)
         
-        snapshot.appendItems(filteredTransactionList.data, toSection: .main)
+        snapshot.appendItems(filteredAccountsList.data, toSection: .main)
         
-        if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty  {
-            if transactions.isEmpty && transactionsStatusCode == 0 {
-                tableView.backgroundView = {
+        if snapshot.itemIdentifiers.isEmpty && accountsError.isEmpty && accountsErrorResponse.isEmpty  {
+            if accounts.isEmpty && accountsStatusCode == 0 {
+                collectionView.backgroundView = {
                     let view = UIView()
                     
                     let loadingIndicator = ActivityIndicator(style: .medium)
@@ -66,7 +66,7 @@ class AddTagWorkflowVC: TableViewController {
                     return view
                 }()
             } else {
-                tableView.backgroundView = {
+                collectionView.backgroundView = {
                     let view = UIView()
                     
                     let label = UILabel()
@@ -78,14 +78,14 @@ class AddTagWorkflowVC: TableViewController {
                     label.textColor = .white
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
-                    label.text = "No Transactions"
+                    label.text = "No Accounts"
                     
                     return view
                 }()
             }
         } else {
-            if !transactionsError.isEmpty {
-                tableView.backgroundView = {
+            if !accountsError.isEmpty {
+                collectionView.backgroundView = {
                     let view = UIView()
                     
                     let label = UILabel()
@@ -98,12 +98,12 @@ class AddTagWorkflowVC: TableViewController {
                     label.textColor = .white
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
-                    label.text = transactionsError
+                    label.text = accountsError
                     
                     return view
                 }()
-            } else if !transactionsErrorResponse.isEmpty {
-                tableView.backgroundView = {
+            } else if !accountsErrorResponse.isEmpty {
+                collectionView.backgroundView = {
                     let view = UIView()
                     
                     let titleLabel = UILabel()
@@ -117,14 +117,14 @@ class AddTagWorkflowVC: TableViewController {
                     titleLabel.textColor = .systemRed
                     titleLabel.font = R.font.circularStdBold(size: UIFont.labelFontSize)
                     titleLabel.numberOfLines = 0
-                    titleLabel.text = transactionsErrorResponse.first?.title
+                    titleLabel.text = accountsErrorResponse.first?.title
                     
                     detailLabel.translatesAutoresizingMaskIntoConstraints = false
                     detailLabel.textAlignment = .center
                     detailLabel.textColor = .white
                     detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     detailLabel.numberOfLines = 0
-                    detailLabel.text = transactionsErrorResponse.first?.detail
+                    detailLabel.text = accountsErrorResponse.first?.detail
                     
                     verticalStack.addArrangedSubview(titleLabel)
                     verticalStack.addArrangedSubview(detailLabel)
@@ -139,51 +139,47 @@ class AddTagWorkflowVC: TableViewController {
                     return view
                 }()
             } else {
-                tableView.backgroundView = nil
+                collectionView.backgroundView = nil
             }
         }
         
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
     
-    @objc private func refreshTransactions() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.fetchTransactions()
-        }
-    }
-    @objc private func closeWorkflow() {
-        performSegue(withIdentifier: R.segue.addTagWorkflowVC.closeWorkflow, sender: self)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setProperties()
-        setupNavigation()
-        setupSearch()
-        setupRefreshControl()
-        setupTableView()
+        configureProperties()
+        configureNavigation()
+        configureSearch()
+        configureRefreshControl()
+        configureCollectionView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         applySnapshot()
         
-        fetchTransactions()
+        fetchCategories()
     }
     
-    private func setProperties() {
-        title = "Transactions"
+    @objc private func refreshCategories() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.fetchCategories()
+        }
+    }
+    
+    private func configureProperties() {
+        title = "Accounts"
         definesPresentationContext = true
     }
     
-    private func setupNavigation() {
+    private func configureNavigation() {
         navigationItem.title = "Loading"
-        navigationItem.backButtonDisplayMode = .minimal
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.walletPass(), style: .plain, target: self, action: nil)
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
-    private func setupSearch() {
+    private func configureSearch() {
         searchController.delegate = self
         
         searchController.obscuresBackgroundDuringPresentation = false
@@ -195,31 +191,31 @@ class AddTagWorkflowVC: TableViewController {
         searchController.searchBar.placeholder = "Search"
     }
     
-    private func setupRefreshControl() {
-        tableRefreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+    private func configureRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(refreshCategories), for: .valueChanged)
     }
     
-    private func setupTableView() {
-        tableView.refreshControl = tableRefreshControl
-        tableView.dataSource = dataSource
-        tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
+    private func configureCollectionView() {
+        collectionView.refreshControl = refreshControl
+        collectionView.dataSource = dataSource
+        collectionView.register(AccountCollectionViewCell.self, forCellWithReuseIdentifier: AccountCollectionViewCell.reuseIdentifier)
     }
     
-    private func fetchTransactions() {
+    private func fetchCategories() {
         let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
         
-        AF.request(UpApi.Transactions().listTransactions, method: .get, parameters: pageSize100Param, headers: headers).responseJSON { response in
-            self.transactionsStatusCode = response.response?.statusCode ?? 0
+        AF.request(UpApi.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: headers).responseJSON { response in
+            self.accountsStatusCode = response.response?.statusCode ?? 0
             
             switch response.result {
                 case .success:
-                    if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
-                        print("Transactions JSON decoding succeeded")
+                    if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
+                        print("Accounts JSON decoding succeeded")
                         
-                        self.transactions = decodedResponse.data
-                        self.transactionsPagination = decodedResponse.links
-                        self.transactionsError = ""
-                        self.transactionsErrorResponse = []
+                        self.accounts = decodedResponse.data
+                        self.accountsPagination = decodedResponse.links
+                        self.accountsError = ""
+                        self.accountsErrorResponse = []
                         
                         if !decodedResponse.data.isEmpty {
                             if self.navigationItem.searchController == nil {
@@ -231,19 +227,19 @@ class AddTagWorkflowVC: TableViewController {
                             }
                         }
                         
-                        if self.navigationItem.title != "Select Transaction" {
-                            self.navigationItem.title = "Select Transaction"
+                        if self.navigationItem.title != "Accounts" {
+                            self.navigationItem.title = "Accounts"
                         }
                         
                         self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
+                        self.collectionView.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
-                        print("Transactions Error JSON decoding succeeded")
+                        print("Accounts Error JSON decoding succeeded")
                         
-                        self.transactionsErrorResponse = decodedResponse.errors
-                        self.transactionsError = ""
-                        self.transactions = []
-                        self.transactionsPagination = Pagination(prev: nil, next: nil)
+                        self.accountsErrorResponse = decodedResponse.errors
+                        self.accountsError = ""
+                        self.accounts = []
+                        self.accountsPagination = Pagination(prev: nil, next: nil)
                         
                         if self.navigationItem.searchController != nil {
                             self.navigationItem.searchController = nil
@@ -254,14 +250,14 @@ class AddTagWorkflowVC: TableViewController {
                         }
                         
                         self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
+                        self.collectionView.refreshControl?.endRefreshing()
                     } else {
-                        print("Transactions JSON decoding failed")
+                        print("Accounts JSON decoding failed")
                         
-                        self.transactionsError = "JSON Decoding Failed!"
-                        self.transactionsErrorResponse = []
-                        self.transactions = []
-                        self.transactionsPagination = Pagination(prev: nil, next: nil)
+                        self.accountsError = "JSON Decoding Failed!"
+                        self.accountsErrorResponse = []
+                        self.accounts = []
+                        self.accountsPagination = Pagination(prev: nil, next: nil)
                         
                         if self.navigationItem.searchController != nil {
                             self.navigationItem.searchController = nil
@@ -272,15 +268,15 @@ class AddTagWorkflowVC: TableViewController {
                         }
                         
                         self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
+                        self.collectionView.refreshControl?.endRefreshing()
                     }
                 case .failure:
                     print(response.error?.localizedDescription ?? "Unknown error")
                     
-                    self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
-                    self.transactionsErrorResponse = []
-                    self.transactions = []
-                    self.transactionsPagination = Pagination(prev: nil, next: nil)
+                    self.accountsError = response.error?.localizedDescription ?? "Unknown Error!"
+                    self.accountsErrorResponse = []
+                    self.accounts = []
+                    self.accountsPagination = Pagination(prev: nil, next: nil)
                     
                     if self.navigationItem.searchController != nil {
                         self.navigationItem.searchController = nil
@@ -291,26 +287,37 @@ class AddTagWorkflowVC: TableViewController {
                     }
                     
                     self.applySnapshot()
-                    self.refreshControl?.endRefreshing()
+                    self.collectionView.refreshControl?.endRefreshing()
             }
-            self.searchController.searchBar.placeholder = "Search \(self.transactions.count.description) \(self.transactions.count == 1 ? "Transaction" : "Transactions")"
+            self.searchController.searchBar.placeholder = "Search \(self.accounts.count.description) \(self.accounts.count == 1 ? "Account" : "Accounts")"
         }
     }
-}
-
-extension AddTagWorkflowVC {
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+    
+    override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
+            UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.displayName
+        }
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            UIMenu(children: [copy])
+        }
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
         
-        navigationController?.pushViewController({let vc = AddTagWorkflowTwoVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
+        navigationController?.pushViewController({
+            let vc = R.storyboard.transactionsByAccount.transactionsByAccountController()!
+            
+            vc.account = dataSource.itemIdentifier(for: indexPath)
+            
+            return vc
+        }(),
+        animated: true)
     }
 }
 
-extension AddTagWorkflowVC: UISearchControllerDelegate, UISearchBarDelegate {
+extension AccountsCVC: UISearchControllerDelegate, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         applySnapshot()
     }

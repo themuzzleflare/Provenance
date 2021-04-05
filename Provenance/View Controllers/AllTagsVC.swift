@@ -3,20 +3,151 @@ import Alamofire
 import TinyConstraints
 import Rswift
 
-class AllTagsVC: ViewController {
-    let fetchingView = ActivityIndicator(style: .medium)
-    let tableViewController = TableViewController(style: .insetGrouped)
-    let refreshControl = RefreshControl(frame: .zero)
+class AllTagsVC: TableViewController {
+    let tableRefreshControl = RefreshControl(frame: .zero)
     let searchController = UISearchController(searchResultsController: nil)
     
+    private typealias DataSource = UITableViewDiffableDataSource<Section, TagResource>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TagResource>
+    
+    private var tagsStatusCode: Int = 0
     private var tags: [TagResource] = []
+    private var tagsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var tagsErrorResponse: [ErrorObject] = []
     private var tagsError: String = ""
-    private var prevFilteredTags: [TagResource] = []
+    
     private var filteredTags: [TagResource] {
         tags.filter { tag in
             searchController.searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchController.searchBar.text!)
         }
+    }
+    
+    private var filteredTagsList: Tag {
+        return Tag(data: filteredTags, links: tagsPagination)
+    }
+    
+    private lazy var dataSource = makeDataSource()
+    
+    private enum Section: CaseIterable {
+        case main
+    }
+    
+    private func makeDataSource() -> DataSource {
+        return DataSource(
+            tableView: tableView,
+            cellProvider: {  tableView, indexPath, tag in
+                let cell = tableView.dequeueReusableCell(withIdentifier: "tagTableViewCell", for: indexPath) as! BasicTableViewCell
+                
+                cell.selectedBackgroundView = bgCellView
+                cell.accessoryType = .none
+                cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                cell.textLabel?.text = tag.id
+                
+                return cell
+            }
+        )
+    }
+    
+    private func applySnapshot(animate: Bool = false) {
+        var snapshot = Snapshot()
+        
+        snapshot.appendSections(Section.allCases)
+        
+        snapshot.appendItems(filteredTagsList.data, toSection: .main)
+        
+        if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty && tagsErrorResponse.isEmpty  {
+            if tags.isEmpty && tagsStatusCode == 0 {
+                tableView.backgroundView = {
+                    let view = UIView()
+                    
+                    let loadingIndicator = ActivityIndicator(style: .medium)
+                    view.addSubview(loadingIndicator)
+                    
+                    loadingIndicator.center(in: view)
+                    
+                    loadingIndicator.startAnimating()
+                    
+                    return view
+                }()
+            } else {
+                tableView.backgroundView = {
+                    let view = UIView()
+                    
+                    let label = UILabel()
+                    view.addSubview(label)
+                    
+                    label.center(in: view)
+                    
+                    label.textAlignment = .center
+                    label.textColor = .white
+                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                    label.numberOfLines = 0
+                    label.text = "No Transactions"
+                    
+                    return view
+                }()
+            }
+        } else {
+            if !tagsError.isEmpty {
+                tableView.backgroundView = {
+                    let view = UIView()
+                    
+                    let label = UILabel()
+                    view.addSubview(label)
+                    
+                    label.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
+                    label.center(in: view)
+                    
+                    label.textAlignment = .center
+                    label.textColor = .white
+                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                    label.numberOfLines = 0
+                    label.text = tagsError
+                    
+                    return view
+                }()
+            } else if !tagsErrorResponse.isEmpty {
+                tableView.backgroundView = {
+                    let view = UIView()
+                    
+                    let titleLabel = UILabel()
+                    let detailLabel = UILabel()
+                    let verticalStack = UIStackView()
+                    
+                    view.addSubview(verticalStack)
+                    
+                    titleLabel.translatesAutoresizingMaskIntoConstraints = false
+                    titleLabel.textAlignment = .center
+                    titleLabel.textColor = .systemRed
+                    titleLabel.font = R.font.circularStdBold(size: UIFont.labelFontSize)
+                    titleLabel.numberOfLines = 0
+                    titleLabel.text = tagsErrorResponse.first?.title
+                    
+                    detailLabel.translatesAutoresizingMaskIntoConstraints = false
+                    detailLabel.textAlignment = .center
+                    detailLabel.textColor = .white
+                    detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                    detailLabel.numberOfLines = 0
+                    detailLabel.text = tagsErrorResponse.first?.detail
+                    
+                    verticalStack.addArrangedSubview(titleLabel)
+                    verticalStack.addArrangedSubview(detailLabel)
+                    
+                    verticalStack.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
+                    verticalStack.center(in: view)
+                    
+                    verticalStack.axis = .vertical
+                    verticalStack.alignment = .center
+                    verticalStack.distribution = .fill
+                    
+                    return view
+                }()
+            } else {
+                tableView.backgroundView = nil
+            }
+        }
+        
+        dataSource.apply(snapshot, animatingDifferences: animate)
     }
     
     @objc private func openAddWorkflow() {
@@ -47,26 +178,29 @@ class AllTagsVC: ViewController {
         setupNavigation()
         setupSearch()
         setupRefreshControl()
-        setupFetchingView()
+        setupTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        applySnapshot()
+        
         fetchTags()
     }
     
     private func setProperties() {
         title = "Tags"
+        definesPresentationContext = true
     }
     
     private func setupNavigation() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
         
         #if targetEnvironment(macCatalyst)
         navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTags)), animated: true)
         #endif
+        
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func setupSearch() {
@@ -79,53 +213,43 @@ class AllTagsVC: ViewController {
         
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.placeholder = "Search"
-        
-        definesPresentationContext = true
-        
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func setupRefreshControl() {
-        refreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
-        
-        tableViewController.refreshControl = refreshControl
-    }
-    
-    private func setupFetchingView() {
-        view.addSubview(fetchingView)
-        
-        fetchingView.edgesToSuperview()
+        tableRefreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
     }
     
     private func setupTableView() {
-        super.addChild(tableViewController)
-        
-        view.addSubview(tableViewController.tableView)
-        
-        tableViewController.tableView.edgesToSuperview()
-        
-        tableViewController.tableView.delegate = self
-        tableViewController.tableView.dataSource = self
-        
-        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")
-        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTagsCell")
-        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
-        tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
+        tableView.refreshControl = tableRefreshControl
+        tableView.dataSource = dataSource
+        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagTableViewCell")
     }
     
     private func fetchTags() {
         let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
         
         AF.request(UpApi.Tags().listTags, method: .get, parameters: pageSize200Param, headers: headers).responseJSON { response in
+            self.tagsStatusCode = response.response?.statusCode ?? 0
+            
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: response.data!) {
                         print("Tags JSON decoding succeeded")
                         
                         self.tags = decodedResponse.data
+                        self.tagsPagination = decodedResponse.links
                         self.tagsError = ""
                         self.tagsErrorResponse = []
+                        
+                        if !decodedResponse.data.isEmpty {
+                            if self.navigationItem.searchController == nil {
+                                self.navigationItem.searchController = self.searchController
+                            }
+                        } else {
+                            if self.navigationItem.searchController != nil {
+                                self.navigationItem.searchController = nil
+                            }
+                        }
                         
                         if self.navigationItem.title != "Tags" {
                             self.navigationItem.title = "Tags"
@@ -138,25 +262,19 @@ class AllTagsVC: ViewController {
                         self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                         #endif
                         
-                        if self.fetchingView.isDescendant(of: self.view) {
-                            self.fetchingView.removeFromSuperview()
-                        }
-                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                            self.setupTableView()
-                        }
-                        
-                        self.tableViewController.tableView.reloadData()
-                        self.refreshControl.endRefreshing()
-                        
-                        if self.searchController.isActive {
-                            self.prevFilteredTags = self.filteredTags
-                        }
+                        self.applySnapshot()
+                        self.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Tags Error JSON decoding succeeded")
                         
                         self.tagsErrorResponse = decodedResponse.errors
                         self.tagsError = ""
                         self.tags = []
+                        self.tagsPagination = Pagination(prev: nil, next: nil)
+                        
+                        if self.navigationItem.searchController != nil {
+                            self.navigationItem.searchController = nil
+                        }
                         
                         if self.navigationItem.title != "Errors" {
                             self.navigationItem.title = "Errors"
@@ -169,21 +287,19 @@ class AllTagsVC: ViewController {
                         self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                         #endif
                         
-                        if self.fetchingView.isDescendant(of: self.view) {
-                            self.fetchingView.removeFromSuperview()
-                        }
-                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                            self.setupTableView()
-                        }
-                        
-                        self.tableViewController.tableView.reloadData()
-                        self.refreshControl.endRefreshing()
+                        self.applySnapshot()
+                        self.refreshControl?.endRefreshing()
                     } else {
                         print("Tags JSON decoding failed")
                         
                         self.tagsError = "JSON Decoding Failed!"
                         self.tagsErrorResponse = []
                         self.tags = []
+                        self.tagsPagination = Pagination(prev: nil, next: nil)
+                        
+                        if self.navigationItem.searchController != nil {
+                            self.navigationItem.searchController = nil
+                        }
                         
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
@@ -196,15 +312,8 @@ class AllTagsVC: ViewController {
                         self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                         #endif
                         
-                        if self.fetchingView.isDescendant(of: self.view) {
-                            self.fetchingView.removeFromSuperview()
-                        }
-                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                            self.setupTableView()
-                        }
-                        
-                        self.tableViewController.tableView.reloadData()
-                        self.refreshControl.endRefreshing()
+                        self.applySnapshot()
+                        self.refreshControl?.endRefreshing()
                     }
                 case .failure:
                     print(response.error?.localizedDescription ?? "Unknown error")
@@ -212,6 +321,11 @@ class AllTagsVC: ViewController {
                     self.tagsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.tagsErrorResponse = []
                     self.tags = []
+                    self.tagsPagination = Pagination(prev: nil, next: nil)
+                    
+                    if self.navigationItem.searchController != nil {
+                        self.navigationItem.searchController = nil
+                    }
                     
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
@@ -224,144 +338,45 @@ class AllTagsVC: ViewController {
                     self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                     #endif
                     
-                    if self.fetchingView.isDescendant(of: self.view) {
-                        self.fetchingView.removeFromSuperview()
-                    }
-                    if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                        self.setupTableView()
-                    }
-                    
-                    self.tableViewController.tableView.reloadData()
-                    self.refreshControl.endRefreshing()
+                    self.applySnapshot()
+                    self.refreshControl?.endRefreshing()
             }
             self.searchController.searchBar.placeholder = "Search \(self.tags.count.description) \(self.tags.count == 1 ? "Tag" : "Tags")"
         }
     }
 }
 
-extension AllTagsVC: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+extension AllTagsVC {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty {
-            return 1
-        } else {
-            if !self.tagsError.isEmpty {
-                return 1
-            } else if !self.tagsErrorResponse.isEmpty {
-                return tagsErrorResponse.count
-            } else {
-                return filteredTags.count
-            }
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return UIView()
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let tagCell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath)
-        let noTagsCell = tableView.dequeueReusableCell(withIdentifier: "noTagsCell", for: indexPath)
-        let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
-        let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
-        if self.filteredTags.isEmpty && self.tagsError.isEmpty && self.tagsErrorResponse.isEmpty {
-            tableView.separatorStyle = .none
-            
-            noTagsCell.selectionStyle = .none
-            noTagsCell.textLabel?.textAlignment = .center
-            noTagsCell.textLabel?.textColor = .white
-            noTagsCell.textLabel?.text = "No Tags"
-            noTagsCell.textLabel?.font = circularStdBook
-            noTagsCell.backgroundColor = .clear
-            
-            return noTagsCell
-        } else {
-            tableView.separatorStyle = .singleLine
-            
-            if !self.tagsError.isEmpty {
-                errorStringCell.selectionStyle = .none
-                errorStringCell.textLabel?.numberOfLines = 0
-                errorStringCell.textLabel?.font = circularStdBook
-                errorStringCell.textLabel?.text = tagsError
-                
-                return errorStringCell
-            } else if !self.tagsErrorResponse.isEmpty {
-                let error = tagsErrorResponse[indexPath.row]
-                
-                errorObjectCell.selectionStyle = .none
-                errorObjectCell.textLabel?.textColor = .systemRed
-                errorObjectCell.textLabel?.font = circularStdBold
-                errorObjectCell.textLabel?.text = error.title
-                errorObjectCell.detailTextLabel?.numberOfLines = 0
-                errorObjectCell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
-                errorObjectCell.detailTextLabel?.text = error.detail
-                
-                return errorObjectCell
-            } else {                
-                let tag = filteredTags[indexPath.row]
-                
-                tagCell.selectedBackgroundView = bgCellView
-                tagCell.accessoryType = .none
-                tagCell.textLabel?.font = circularStdBook
-                tagCell.textLabel?.text = tag.id
-                
-                return tagCell
-            }
-        }
+        navigationController?.pushViewController({let vc = TransactionsByTagVC(style: .grouped);vc.tag = dataSource.itemIdentifier(for: indexPath)!;return vc}(), animated: true)
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.tagsErrorResponse.isEmpty && self.tagsError.isEmpty && !self.filteredTags.isEmpty {
-            let vc = TransactionsByTagVC()
-            
-            vc.tag = filteredTags[indexPath.row]
-            
-            navigationController?.pushViewController(vc, animated: true)
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        if self.tagsErrorResponse.isEmpty && self.tagsError.isEmpty && !self.filteredTags.isEmpty {
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
             let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                UIPasteboard.general.string = self.filteredTags[indexPath.row].id
+                UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.id
             }
             
             return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                 UIMenu(children: [copy])
             }
-        } else {
-            return nil
-        }
     }
 }
 
 extension AllTagsVC: UISearchControllerDelegate, UISearchBarDelegate {
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        if self.prevFilteredTags != self.filteredTags {
-            self.prevFilteredTags = self.filteredTags
-        }
-    }
-    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if self.filteredTags != self.prevFilteredTags {
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-        }
-        self.prevFilteredTags = self.filteredTags
+        applySnapshot()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.text != "" {
             searchBar.text = ""
-            self.prevFilteredTags = self.filteredTags
-            self.tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+            applySnapshot()
         }
     }
 }

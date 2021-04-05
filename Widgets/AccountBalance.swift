@@ -15,12 +15,16 @@ struct AccountBalanceProvider: TimelineProvider {
         var entries: [AccountBalanceModel] = []
         
         var url = URL(string: "https://api.up.com.au/api/v1/accounts")!
+        
         let urlParams = ["page[size]":"1"]
         url = url.appendingQueryParameters(urlParams)
+        
         var request = URLRequest(url: url)
+        
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("Bearer \(appDefaults.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
+        
         URLSession.shared.dataTask(with: request) { data, response, error in
             if error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Account.self, from: data!) {
@@ -80,7 +84,7 @@ struct AccountBalanceEntryView: View {
                     .foregroundColor(family != .systemSmall ? .white : Color("AccentColor"))
                 Text(entry.accountDisplayName)
                     .font(.custom("CircularStd-Book", size: 17))
-                    .foregroundColor(Color(UIColor.lightGray))
+                    .foregroundColor(.white)
             }
             .padding()
         }

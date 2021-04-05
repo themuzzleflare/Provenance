@@ -30,7 +30,7 @@ extension DiagnosticTableVC {
     }
     
     private func setupTableView() {
-        tableView.register(AttributeCell.self, forCellReuseIdentifier: AttributeCell.reuseIdentifier)
+        tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -44,7 +44,7 @@ extension DiagnosticTableVC {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let attribute = attributes[indexPath.row]
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as! AttributeCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
         
         cell.leftLabel.text = attribute.key
         cell.rightLabel.text = attribute.value

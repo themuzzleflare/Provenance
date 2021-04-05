@@ -11,6 +11,22 @@ struct AccountResource: Hashable, Codable, Identifiable {
     var attributes: AccountAttribute
     var relationships: AccountRelationship
     var links: SelfLink?
+    
+    init(type: String, id: String, attributes: AccountAttribute, relationships: AccountRelationship, links: SelfLink? = nil) {
+        self.type = type
+        self.id = id
+        self.attributes = attributes
+        self.relationships = relationships
+        self.links = links
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: AccountResource, rhs: AccountResource) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 struct AccountAttribute: Hashable, Codable {

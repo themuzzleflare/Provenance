@@ -2,20 +2,19 @@ import UIKit
 
 class ActivityIndicator: UIActivityIndicatorView {
     override init(style: UIActivityIndicatorView.Style) {
-        super.init(style: .medium)
-        
+        super.init(style: style)
         configure()
     }
     
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
 extension ActivityIndicator {
     private func configure() {
-        self.color = .white
-        self.hidesWhenStopped = true
-        self.startAnimating()
+        color = .white
+        hidesWhenStopped = true
+        startAnimating()
     }
 }

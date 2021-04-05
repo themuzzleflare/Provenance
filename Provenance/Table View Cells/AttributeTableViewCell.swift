@@ -2,8 +2,8 @@ import UIKit
 import TinyConstraints
 import Rswift
 
-class AttributeCell: UITableViewCell {
-    static let reuseIdentifier = "attributeCell"
+class AttributeTableViewCell: UITableViewCell {
+    static let reuseIdentifier = "attributeTableViewCell"
     
     let leftLabel = UILabel()
     let rightLabel = UILabel()
@@ -19,12 +19,12 @@ class AttributeCell: UITableViewCell {
         configureHorizontalStackView()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
-extension AttributeCell {
+extension AttributeTableViewCell {
     private func configureCell() {
         selectionStyle = .none
         accessoryType = .none

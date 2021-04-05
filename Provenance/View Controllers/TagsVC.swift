@@ -49,7 +49,7 @@ extension TagsVC {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = TransactionsByTagVC()
+        let vc = TransactionsByTagVC(style: .grouped)
         
         vc.tag = TagResource(type: "tags", id: transaction.relationships.tags.data[indexPath.row].id)
         

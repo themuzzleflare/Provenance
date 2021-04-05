@@ -3,20 +3,148 @@ import Alamofire
 import TinyConstraints
 import Rswift
 
-class TransactionsByTagVC: ViewController {
+class TransactionsByTagVC: TableViewController {
     var tag: TagResource!
     
-    let fetchingView = ActivityIndicator(style: .medium)
-    let tableViewController = TableViewController(style: .insetGrouped)
-    let refreshControl = RefreshControl(frame: .zero)
+    let tableRefreshControl = RefreshControl(frame: .zero)
     let searchController = UISearchController(searchResultsController: nil)
+    
+    private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
     
     private var categories: [CategoryResource] = []
     private var accounts: [AccountResource] = []
-    private var prevFilteredTransactions: [TransactionResource] = []
+    
+    private var transactionsStatusCode: Int = 0
     private var transactions: [TransactionResource] = []
+    private var transactionsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
+    
+    private var filteredTransactionList: Transaction {
+        return Transaction(data: filteredTransactions, links: transactionsPagination)
+    }
+    
+    private lazy var dataSource = makeDataSource()
+    
+    private enum Section: CaseIterable {
+        case main
+    }
+    
+    private func makeDataSource() -> DataSource {
+        return DataSource(
+            tableView: tableView,
+            cellProvider: {  tableView, indexPath, transaction in
+                let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
+                
+                cell.transaction = transaction
+                
+                return cell
+            }
+        )
+    }
+    
+    private func applySnapshot(animate: Bool = false) {
+        var snapshot = Snapshot()
+        
+        snapshot.appendSections(Section.allCases)
+        
+        snapshot.appendItems(filteredTransactionList.data, toSection: .main)
+        
+        if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty  {
+            if transactions.isEmpty && transactionsStatusCode == 0 {
+                tableView.backgroundView = {
+                    let view = UIView()
+                    
+                    let loadingIndicator = ActivityIndicator(style: .medium)
+                    view.addSubview(loadingIndicator)
+                    
+                    loadingIndicator.center(in: view)
+                    
+                    loadingIndicator.startAnimating()
+                    
+                    return view
+                }()
+            } else {
+                tableView.backgroundView = {
+                    let view = UIView()
+                    
+                    let label = UILabel()
+                    view.addSubview(label)
+                    
+                    label.center(in: view)
+                    
+                    label.textAlignment = .center
+                    label.textColor = .white
+                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                    label.numberOfLines = 0
+                    label.text = "No Transactions"
+                    
+                    return view
+                }()
+            }
+        } else {
+            if !transactionsError.isEmpty {
+                tableView.backgroundView = {
+                    let view = UIView()
+                    
+                    let label = UILabel()
+                    view.addSubview(label)
+                    
+                    label.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
+                    label.center(in: view)
+                    
+                    label.textAlignment = .center
+                    label.textColor = .white
+                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                    label.numberOfLines = 0
+                    label.text = transactionsError
+                    
+                    return view
+                }()
+            } else if !transactionsErrorResponse.isEmpty {
+                tableView.backgroundView = {
+                    let view = UIView()
+                    
+                    let titleLabel = UILabel()
+                    let detailLabel = UILabel()
+                    let verticalStack = UIStackView()
+                    
+                    view.addSubview(verticalStack)
+                    
+                    titleLabel.translatesAutoresizingMaskIntoConstraints = false
+                    titleLabel.textAlignment = .center
+                    titleLabel.textColor = .systemRed
+                    titleLabel.font = R.font.circularStdBold(size: UIFont.labelFontSize)
+                    titleLabel.numberOfLines = 0
+                    titleLabel.text = transactionsErrorResponse.first?.title
+                    
+                    detailLabel.translatesAutoresizingMaskIntoConstraints = false
+                    detailLabel.textAlignment = .center
+                    detailLabel.textColor = .white
+                    detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                    detailLabel.numberOfLines = 0
+                    detailLabel.text = transactionsErrorResponse.first?.detail
+                    
+                    verticalStack.addArrangedSubview(titleLabel)
+                    verticalStack.addArrangedSubview(detailLabel)
+                    
+                    verticalStack.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
+                    verticalStack.center(in: view)
+                    
+                    verticalStack.axis = .vertical
+                    verticalStack.alignment = .center
+                    verticalStack.distribution = .fill
+                    
+                    return view
+                }()
+            } else {
+                tableView.backgroundView = nil
+            }
+        }
+        
+        dataSource.apply(snapshot, animatingDifferences: animate)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,11 +153,11 @@ class TransactionsByTagVC: ViewController {
         setupNavigation()
         setupSearch()
         setupRefreshControl()
-        setupFetchingView()
+        setupTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tableViewController.tableView.reloadData()
+        applySnapshot()
         
         fetchTransactions()
         fetchCategories()
@@ -60,16 +188,18 @@ extension TransactionsByTagVC {
     
     private func setProperties() {
         title = "Transactions by Tag"
+        definesPresentationContext = true
     }
     
     private func setupNavigation() {
         navigationItem.title = "Loading"
-        navigationItem.largeTitleDisplayMode = .never
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
         
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
         #endif
+        
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func setupSearch() {
@@ -82,53 +212,43 @@ extension TransactionsByTagVC {
         
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.placeholder = "Search"
-        
-        definesPresentationContext = true
-        
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func setupRefreshControl() {
-        refreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
-        
-        tableViewController.refreshControl = refreshControl
-    }
-    
-    private func setupFetchingView() {
-        view.addSubview(fetchingView)
-        
-        fetchingView.edgesToSuperview()
+        tableRefreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
     }
     
     private func setupTableView() {
-        super.addChild(tableViewController)
-        
-        view.addSubview(tableViewController.tableView)
-        
-        tableViewController.tableView.edgesToSuperview()
-        
-        tableViewController.tableView.delegate = self
-        tableViewController.tableView.dataSource = self
-        
-        tableViewController.tableView.register(TransactionCell.self, forCellReuseIdentifier: TransactionCell.reuseIdentifier)
-        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "noTransactionsCell")
-        tableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "errorStringCell")
-        tableViewController.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "errorObjectCell")
+        tableView.refreshControl = tableRefreshControl
+        tableView.dataSource = dataSource
+        tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
     }
     
     private func fetchTransactions() {
         let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
         
         AF.request(UpApi.Transactions().listTransactions, method: .get, parameters: filterTagAndPageSize100Params(tagId: tag.id), headers: headers).responseJSON { response in
+            self.transactionsStatusCode = response.response?.statusCode ?? 0
+            
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
                         print("Transactions JSON decoding succeeded")
                         
                         self.transactions = decodedResponse.data
+                        self.transactionsPagination = decodedResponse.links
                         self.transactionsError = ""
                         self.transactionsErrorResponse = []
+                        
+                        if !decodedResponse.data.isEmpty {
+                            if self.navigationItem.searchController == nil {
+                                self.navigationItem.searchController = self.searchController
+                            }
+                        } else {
+                            if self.navigationItem.searchController != nil {
+                                self.navigationItem.searchController = nil
+                            }
+                        }
                         
                         self.navigationItem.title = self.tag.id
                         
@@ -136,25 +256,19 @@ extension TransactionsByTagVC {
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
                         
-                        if self.fetchingView.isDescendant(of: self.view) {
-                            self.fetchingView.removeFromSuperview()
-                        }
-                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                            self.setupTableView()
-                        }
-                        
-                        self.tableViewController.tableView.reloadData()
-                        self.refreshControl.endRefreshing()
-                        
-                        if self.searchController.isActive {
-                            self.prevFilteredTransactions = self.filteredTransactions
-                        }
+                        self.applySnapshot()
+                        self.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         print("Transactions Error JSON decoding succeeded")
                         
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
                         self.transactions = []
+                        self.transactionsPagination = Pagination(prev: nil, next: nil)
+                        
+                        if self.navigationItem.searchController != nil {
+                            self.navigationItem.searchController = nil
+                        }
                         
                         if self.navigationItem.title != "Errors" {
                             self.navigationItem.title = "Errors"
@@ -164,21 +278,19 @@ extension TransactionsByTagVC {
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
                         
-                        if self.fetchingView.isDescendant(of: self.view) {
-                            self.fetchingView.removeFromSuperview()
-                        }
-                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                            self.setupTableView()
-                        }
-                        
-                        self.tableViewController.tableView.reloadData()
-                        self.refreshControl.endRefreshing()
+                        self.applySnapshot()
+                        self.refreshControl?.endRefreshing()
                     } else {
                         print("Transactions JSON decoding failed")
                         
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
                         self.transactions = []
+                        self.transactionsPagination = Pagination(prev: nil, next: nil)
+                        
+                        if self.navigationItem.searchController != nil {
+                            self.navigationItem.searchController = nil
+                        }
                         
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
@@ -188,15 +300,8 @@ extension TransactionsByTagVC {
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
                         
-                        if self.fetchingView.isDescendant(of: self.view) {
-                            self.fetchingView.removeFromSuperview()
-                        }
-                        if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                            self.setupTableView()
-                        }
-                        
-                        self.tableViewController.tableView.reloadData()
-                        self.refreshControl.endRefreshing()
+                        self.applySnapshot()
+                        self.refreshControl?.endRefreshing()
                     }
                 case .failure:
                     print(response.error?.localizedDescription ?? "Unknown error")
@@ -204,6 +309,11 @@ extension TransactionsByTagVC {
                     self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.transactionsErrorResponse = []
                     self.transactions = []
+                    self.transactionsPagination = Pagination(prev: nil, next: nil)
+                    
+                    if self.navigationItem.searchController != nil {
+                        self.navigationItem.searchController = nil
+                    }
                     
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
@@ -213,15 +323,8 @@ extension TransactionsByTagVC {
                     self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                     #endif
                     
-                    if self.fetchingView.isDescendant(of: self.view) {
-                        self.fetchingView.removeFromSuperview()
-                    }
-                    if !self.tableViewController.tableView.isDescendant(of: self.view) {
-                        self.setupTableView()
-                    }
-                    
-                    self.tableViewController.tableView.reloadData()
-                    self.refreshControl.endRefreshing()
+                    self.applySnapshot()
+                    self.refreshControl?.endRefreshing()
             }
             self.searchController.searchBar.placeholder = "Search \(self.transactions.count.description) \(self.transactions.count == 1 ? "Transaction" : "Transactions")"
         }
@@ -266,181 +369,34 @@ extension TransactionsByTagVC {
     }
 }
 
-extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+extension TransactionsByTagVC {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
-            return 1
-        } else {
-            if !self.transactionsError.isEmpty {
-                return 1
-            } else if !self.transactionsErrorResponse.isEmpty {
-                return transactionsErrorResponse.count
-            } else {
-                return filteredTransactions.count
-            }
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let transactionCell = tableView.dequeueReusableCell(withIdentifier: TransactionCell.reuseIdentifier, for: indexPath) as! TransactionCell
-        let noTransactionsCell = tableView.dequeueReusableCell(withIdentifier: "noTransactionsCell", for: indexPath)
-        let errorStringCell = tableView.dequeueReusableCell(withIdentifier: "errorStringCell", for: indexPath)
-        let errorObjectCell = tableView.dequeueReusableCell(withIdentifier: "errorObjectCell", for: indexPath) as! SubtitleTableViewCell
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
-        if self.filteredTransactions.isEmpty && self.transactionsError.isEmpty && self.transactionsErrorResponse.isEmpty {
-            tableView.separatorStyle = .none
-            
-            noTransactionsCell.selectionStyle = .none
-            noTransactionsCell.textLabel?.font = circularStdBook
-            noTransactionsCell.textLabel?.textColor = .white
-            noTransactionsCell.textLabel?.textAlignment = .center
-            noTransactionsCell.textLabel?.text = "No Transactions"
-            noTransactionsCell.backgroundColor = .clear
-            
-            return noTransactionsCell
-        } else {
-            tableView.separatorStyle = .singleLine
-            
-            if !self.transactionsError.isEmpty {
-                errorStringCell.selectionStyle = .none
-                errorStringCell.textLabel?.numberOfLines = 0
-                errorStringCell.textLabel?.font = circularStdBook
-                errorStringCell.textLabel?.text = transactionsError
-                
-                return errorStringCell
-            } else if !self.transactionsErrorResponse.isEmpty {
-                let error = transactionsErrorResponse[indexPath.row]
-                
-                errorObjectCell.selectionStyle = .none
-                errorObjectCell.textLabel?.textColor = .systemRed
-                errorObjectCell.textLabel?.font = circularStdBold
-                errorObjectCell.textLabel?.text = error.title
-                errorObjectCell.detailTextLabel?.numberOfLines = 0
-                errorObjectCell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
-                errorObjectCell.detailTextLabel?.text = error.detail
-                
-                return errorObjectCell
-            } else {                
-                transactionCell.transaction = filteredTransactions[indexPath.row]
-                
-                return transactionCell
-            }
-        }
+        navigationController?.pushViewController({let vc = TransactionDetailVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);vc.categories = self.categories;vc.accounts = self.accounts;return vc}(), animated: true)
     }
     
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
-            let vc = TransactionDetailVC(style: .insetGrouped)
-            
-            vc.transaction = filteredTransactions[indexPath.row]
-            vc.categories = self.categories
-            vc.accounts = self.accounts
-            
-            navigationController?.pushViewController(vc, animated: true)
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let transaction = dataSource.itemIdentifier(for: indexPath)!
+        
+        let copyDescription = UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
+            UIPasteboard.general.string = transaction.attributes.description
         }
-    }
-    
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        if self.transactionsErrorResponse.isEmpty && self.transactionsError.isEmpty && !self.filteredTransactions.isEmpty {
-            let transaction = filteredTransactions[indexPath.row]
+        let copyCreationDate = UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
+            UIPasteboard.general.string = transaction.attributes.creationDate
+        }
+        let copyAmount = UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
+            UIPasteboard.general.string = transaction.attributes.amount.valueShort
+        }
+        let remove = UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { _ in
+            #if !targetEnvironment(macCatalyst)
+            let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             
-            let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                UIPasteboard.general.string = transaction.attributes.description
-            }
-            let remove = UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { _ in
-                #if !targetEnvironment(macCatalyst)
-                let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                
-                let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
-                    let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
-                    
-                    var request = URLRequest(url: url)
-                    
-                    request.httpMethod = "DELETE"
-                    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                    request.addValue("Bearer \(appDefaults.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
-                    
-                    let bodyObject: [String : Any] = [
-                        "data": [
-                            [
-                                "type": "tags",
-                                "id": self.tag.id
-                            ]
-                        ]
-                    ]
-                    
-                    request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
-                    
-                    URLSession.shared.dataTask(with: request) { data, response, error in
-                        if error == nil {
-                            let statusCode = (response as! HTTPURLResponse).statusCode
-                            
-                            if statusCode != 204 {
-                                DispatchQueue.main.async {
-                                    let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
-                                    
-                                    let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
-                                    let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
-                                    
-                                    let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
-                                    let messageAttrString = NSMutableAttributedString(string: "\(self.tag.id) was not removed from \(transaction.attributes.description).", attributes: messageFont)
-                                    
-                                    ac.setValue(titleAttrString, forKey: "attributedTitle")
-                                    ac.setValue(messageAttrString, forKey: "attributedMessage")
-                                    
-                                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                                    
-                                    dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-                                    
-                                    ac.addAction(dismissAction)
-                                    
-                                    self.present(ac, animated: true)
-                                    
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    self.fetchTransactions()
-                                }
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
-                                
-                                let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
-                                let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
-                                
-                                let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
-                                let messageAttrString = NSMutableAttributedString(string: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", attributes: messageFont)
-                                
-                                ac.setValue(titleAttrString, forKey: "attributedTitle")
-                                ac.setValue(messageAttrString, forKey: "attributedMessage")
-                                
-                                let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                                
-                                dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-                                
-                                ac.addAction(dismissAction)
-                                
-                                self.present(ac, animated: true)
-                            }
-                        }
-                    }
-                    .resume()
-                })
-                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-                
-                cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-                
-                ac.addAction(confirmAction)
-                ac.addAction(cancelAction)
-                
-                self.present(ac, animated: true)
-                #else
+            let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
                 let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
                 
                 var request = URLRequest(url: url)
@@ -515,37 +471,108 @@ extension TransactionsByTagVC: UITableViewDelegate, UITableViewDataSource {
                     }
                 }
                 .resume()
-                #endif
-            }
+            })
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
             
-            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                UIMenu(children: [copy, remove])
+            cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+            
+            ac.addAction(confirmAction)
+            ac.addAction(cancelAction)
+            
+            self.present(ac, animated: true)
+            #else
+            let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
+            
+            var request = URLRequest(url: url)
+            
+            request.httpMethod = "DELETE"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("Bearer \(appDefaults.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
+            
+            let bodyObject: [String : Any] = [
+                "data": [
+                    [
+                        "type": "tags",
+                        "id": self.tag.id
+                    ]
+                ]
+            ]
+            
+            request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+            
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if error == nil {
+                    let statusCode = (response as! HTTPURLResponse).statusCode
+                    
+                    if statusCode != 204 {
+                        DispatchQueue.main.async {
+                            let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                            
+                            let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+                            let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+                            
+                            let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
+                            let messageAttrString = NSMutableAttributedString(string: "\(self.tag.id) was not removed from \(transaction.attributes.description).", attributes: messageFont)
+                            
+                            ac.setValue(titleAttrString, forKey: "attributedTitle")
+                            ac.setValue(messageAttrString, forKey: "attributedMessage")
+                            
+                            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                            
+                            dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                            
+                            ac.addAction(dismissAction)
+                            
+                            self.present(ac, animated: true)
+                            
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            self.fetchTransactions()
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                        
+                        let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+                        let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+                        
+                        let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
+                        let messageAttrString = NSMutableAttributedString(string: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", attributes: messageFont)
+                        
+                        ac.setValue(titleAttrString, forKey: "attributedTitle")
+                        ac.setValue(messageAttrString, forKey: "attributedMessage")
+                        
+                        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                        
+                        dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                        
+                        ac.addAction(dismissAction)
+                        
+                        self.present(ac, animated: true)
+                    }
+                }
             }
-        } else {
-            return nil
+            .resume()
+            #endif
+        }
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            UIMenu(children: [copyDescription, copyCreationDate, copyAmount, remove])
         }
     }
 }
 
 extension TransactionsByTagVC: UISearchControllerDelegate, UISearchBarDelegate {
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        if prevFilteredTransactions != filteredTransactions {
-            prevFilteredTransactions = filteredTransactions
-        }
-    }
-    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if filteredTransactions != prevFilteredTransactions {
-            tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-        }
-        prevFilteredTransactions = filteredTransactions
+        applySnapshot()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.text != "" {
             searchBar.text = ""
-            prevFilteredTransactions = filteredTransactions
-            tableViewController.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+            applySnapshot()
         }
     }
 }

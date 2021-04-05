@@ -4,34 +4,35 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Add Tag WorkflowVC-->
-        <scene sceneID="JSz-m5-Ykl">
+        <scene sceneID="iv7-bT-Glu">
             <objects>
-                <viewController id="Wfe-JN-t50" customClass="AddTagWorkflowVC" customModule="Provenance" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="oFa-3H-7TA">
+                <tableViewController id="v1u-I6-TP0" customClass="AddTagWorkflowVC" customModule="Provenance" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" indicatorStyle="white" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="qA1-lg-0RT">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="2Sk-Nd-STj"/>
                         <color key="backgroundColor" name="bgColour"/>
-                    </view>
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" id="61T-2k-nmA">
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="Ymz-75-oyI">
+                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <connections>
+                            <outlet property="dataSource" destination="v1u-I6-TP0" id="F5l-NN-Qvl"/>
+                            <outlet property="delegate" destination="v1u-I6-TP0" id="4e8-YC-enh"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="iRr-nC-NVn">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="xcs-5y-ZnT">
                             <color key="tintColor" name="AccentColor"/>
                             <connections>
-                                <segue destination="IoW-uX-pER" kind="unwind" identifier="closeWorkflow" unwindAction="workflowClosedWithUnwindSegue:" id="Id3-tk-dpP"/>
+                                <segue destination="IoW-uX-pER" kind="unwind" identifier="closeWorkflow" unwindAction="workflowClosedWithUnwindSegue:" id="SbC-fO-jK9"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FsA-8w-hi3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="le5-lj-kRY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1176.8115942028987" y="159.375"/>
+            <point key="canvasLocation" x="1236" y="159"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="u0X-aX-6t5">
@@ -45,7 +46,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Wfe-JN-t50" kind="relationship" relationship="rootViewController" id="4ue-h0-Uaw"/>
+                        <segue destination="v1u-I6-TP0" kind="relationship" relationship="rootViewController" id="r5x-fs-V1a"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AS6-eG-81b" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

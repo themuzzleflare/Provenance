@@ -12,76 +12,8 @@ class TransactionDetailVC: TableViewController {
     private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
     
-    private lazy var sections: [Section] = [
-        Section(title: "Section 1", detailAttributes: [
-            DetailAttribute(
-                titleKey: "Status",
-                titleValue: transaction.attributes.statusString
-            ),
-            DetailAttribute(
-                titleKey: "Account",
-                titleValue: accountFilter?.first?.attributes.displayName ?? ""
-            )
-        ]),
-        Section(title: "Section 2", detailAttributes: [
-            DetailAttribute(
-                titleKey: "Description",
-                titleValue: transaction.attributes.description
-            ),
-            DetailAttribute(
-                titleKey: "Raw Text",
-                titleValue: transaction.attributes.rawText ?? ""
-            ),
-            DetailAttribute(
-                titleKey: "Message",
-                titleValue: transaction.attributes.message ?? ""
-            )
-        ]),
-        Section(title: "Section 3", detailAttributes: [
-            DetailAttribute(
-                titleKey: "Hold \(transaction.attributes.holdInfo?.amount.transactionType ?? "")",
-                titleValue: holdTransValue
-            ),
-            DetailAttribute(
-                titleKey: "Hold Foreign \(transaction.attributes.holdInfo?.foreignAmount?.transactionType ?? "")",
-                titleValue: holdForeignTransValue
-            ),
-            DetailAttribute(
-                titleKey: "Foreign \(transaction.attributes.foreignAmount?.transactionType ?? "")",
-                titleValue: holdForeignTransValue
-            ),
-            DetailAttribute(
-                titleKey: transaction.attributes.amount.transactionType,
-                titleValue: transaction.attributes.amount.valueLong
-            )
-        ]),
-        Section(title: "Section 4", detailAttributes: [
-            DetailAttribute(
-                titleKey: "Creation Date",
-                titleValue: transaction.attributes.creationDate
-            ),
-            DetailAttribute(
-                titleKey: "Settlement Date",
-                titleValue: transaction.attributes.settlementDate ?? ""
-            )
-        ]),
-        Section(title: "Section 5", detailAttributes: [
-            DetailAttribute(
-                titleKey: "Parent Category",
-                titleValue: parentCategoryFilter?.first?.attributes.name ?? ""
-            ),
-            DetailAttribute(
-                titleKey: "Category",
-                titleValue: categoryFilter?.first?.attributes.name ?? ""
-            )
-        ]),
-        Section(title: "Section 6", detailAttributes: [
-            DetailAttribute(
-                titleKey: "Tags",
-                titleValue: transaction.relationships.tags.data.count.description
-            )
-        ])
-    ]
+    private var sections: [Section]!
+    
     private lazy var dataSource = makeDataSource()
     
     override func viewDidLoad() {
@@ -91,8 +23,10 @@ class TransactionDetailVC: TableViewController {
         configureMarqueeLabel()
         configureNavigation()
         configureTableView()
-        
-        applySnapshot(animatingDifferences: false)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        applySnapshot()
     }
 }
 
@@ -153,7 +87,7 @@ extension TransactionDetailVC {
         return DataSource(
             tableView: tableView,
             cellProvider: {  tableView, indexPath, detailAttribute in
-                let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as! AttributeCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
                 
                 var cellSelectionStyle: UITableViewCell.SelectionStyle {
                     switch detailAttribute.titleKey {
@@ -186,7 +120,78 @@ extension TransactionDetailVC {
             }
         )
     }
-    private func applySnapshot(animatingDifferences: Bool = true) {
+    private func applySnapshot(animatingDifferences: Bool = false) {
+        sections = [
+            Section(title: "Section 1", detailAttributes: [
+                DetailAttribute(
+                    titleKey: "Status",
+                    titleValue: transaction.attributes.statusString
+                ),
+                DetailAttribute(
+                    titleKey: "Account",
+                    titleValue: accountFilter?.first?.attributes.displayName ?? ""
+                )
+            ]),
+            Section(title: "Section 2", detailAttributes: [
+                DetailAttribute(
+                    titleKey: "Description",
+                    titleValue: transaction.attributes.description
+                ),
+                DetailAttribute(
+                    titleKey: "Raw Text",
+                    titleValue: transaction.attributes.rawText ?? ""
+                ),
+                DetailAttribute(
+                    titleKey: "Message",
+                    titleValue: transaction.attributes.message ?? ""
+                )
+            ]),
+            Section(title: "Section 3", detailAttributes: [
+                DetailAttribute(
+                    titleKey: "Hold \(transaction.attributes.holdInfo?.amount.transactionType ?? "")",
+                    titleValue: holdTransValue
+                ),
+                DetailAttribute(
+                    titleKey: "Hold Foreign \(transaction.attributes.holdInfo?.foreignAmount?.transactionType ?? "")",
+                    titleValue: holdForeignTransValue
+                ),
+                DetailAttribute(
+                    titleKey: "Foreign \(transaction.attributes.foreignAmount?.transactionType ?? "")",
+                    titleValue: holdForeignTransValue
+                ),
+                DetailAttribute(
+                    titleKey: transaction.attributes.amount.transactionType,
+                    titleValue: transaction.attributes.amount.valueLong
+                )
+            ]),
+            Section(title: "Section 4", detailAttributes: [
+                DetailAttribute(
+                    titleKey: "Creation Date",
+                    titleValue: transaction.attributes.creationDate
+                ),
+                DetailAttribute(
+                    titleKey: "Settlement Date",
+                    titleValue: transaction.attributes.settlementDate ?? ""
+                )
+            ]),
+            Section(title: "Section 5", detailAttributes: [
+                DetailAttribute(
+                    titleKey: "Parent Category",
+                    titleValue: parentCategoryFilter?.first?.attributes.name ?? ""
+                ),
+                DetailAttribute(
+                    titleKey: "Category",
+                    titleValue: categoryFilter?.first?.attributes.name ?? ""
+                )
+            ]),
+            Section(title: "Section 6", detailAttributes: [
+                DetailAttribute(
+                    titleKey: "Tags",
+                    titleValue: transaction.relationships.tags.data.count.description
+                )
+            ])
+        ]
+        
         var snapshot = Snapshot()
         
         snapshot.appendSections(filteredSections)
@@ -217,13 +222,13 @@ extension TransactionDetailVC {
     
     private func configureNavigation() {
         navigationItem.titleView = scrollingTitle
-        navigationItem.largeTitleDisplayMode = .never
+        navigationItem.backButtonDisplayMode = .minimal
         navigationItem.setRightBarButton(UIBarButtonItem(customView: transaction.attributes.statusIconView), animated: true)
     }
     
     private func configureTableView() {
-        tableView.register(AttributeCell.self, forCellReuseIdentifier: AttributeCell.reuseIdentifier)
         tableView.dataSource = dataSource
+        tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -238,7 +243,7 @@ extension TransactionDetailVC {
             
             navigationController?.pushViewController(vc, animated: true)
         } else if attribute.titleKey == "Parent Category" || attribute.titleKey == "Category" {
-            let vc = TransactionsByCategoryVC()
+            let vc = TransactionsByCategoryVC(style: .grouped)
             
             if attribute.titleKey == "Parent Category" {
                 vc.category = parentCategoryFilter!.first
@@ -248,7 +253,7 @@ extension TransactionDetailVC {
             
             navigationController?.pushViewController(vc, animated: true)
         } else if attribute.titleKey == "Tags" {
-            let vc = TagsVC(style: .insetGrouped)
+            let vc = TagsVC(style: .grouped)
             
             vc.transaction = transaction
             

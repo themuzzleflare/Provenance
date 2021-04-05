@@ -5,13 +5,59 @@ class AccountDetailVC: TableViewController {
     var account: AccountResource!
     var transaction: TransactionResource!
     
-    private var attributes: KeyValuePairs<String, String> {
-        return ["Account Balance": account.attributes.balance.valueLong, "Latest Transaction": transaction?.attributes.description ?? "", "Account ID": account.id, "Creation Date": account.attributes.creationDate]
+    private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
+    
+    private var sections: [Section]!
+    
+    private lazy var dataSource = makeDataSource()
+    
+    private func makeDataSource() -> DataSource {
+        return DataSource(
+            tableView: tableView,
+            cellProvider: {  tableView, indexPath, detailAttribute in
+                let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
+                
+                cell.leftLabel.text = detailAttribute.titleKey
+                cell.rightLabel.text = detailAttribute.titleValue
+                
+                return cell
+            }
+        )
     }
-    private var altAttributes: Array<(key: String, value: String)> {
-        return attributes.filter {
-            $0.value != ""
+    private func applySnapshot(animatingDifferences: Bool = false) {
+        sections = [
+            Section(title: "Section 1", detailAttributes: [
+                DetailAttribute(
+                    titleKey: "Account Balance",
+                    titleValue: account.attributes.balance.valueLong
+                ),
+                DetailAttribute(
+                    titleKey: "Latest Transaction",
+                    titleValue: transaction?.attributes.description ?? ""
+                ),
+                DetailAttribute(
+                    titleKey: "Account ID",
+                    titleValue: account.id
+                ),
+                DetailAttribute(
+                    titleKey: "Creation Date",
+                    titleValue: account.attributes.creationDate
+                )
+            ])
+        ]
+        
+        var snapshot = Snapshot()
+        
+        snapshot.appendSections(sections)
+        
+        sections.forEach { section in
+            snapshot.appendItems(section.detailAttributes.filter { detailAttribute in
+                detailAttribute.titleValue != ""
+            }, toSection: section)
         }
+        
+        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
     
     @objc private func closeWorkflow() {
@@ -26,6 +72,10 @@ class AccountDetailVC: TableViewController {
         setupTableView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        applySnapshot()
+    }
+    
     private func setProperties() {
         title = "Account Details"
     }
@@ -36,31 +86,13 @@ class AccountDetailVC: TableViewController {
     }
     
     private func setupTableView() {
-        tableView.register(AttributeCell.self, forCellReuseIdentifier: AttributeCell.reuseIdentifier)
-    }
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return altAttributes.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as! AttributeCell
-        
-        let attribute = altAttributes[indexPath.row]
-        
-        cell.leftLabel.text = attribute.key
-        cell.rightLabel.text = attribute.value
-        
-        return cell
+        tableView.dataSource = dataSource
+        tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-            UIPasteboard.general.string = self.altAttributes[indexPath.row].value
+            UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.titleValue
         }
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in

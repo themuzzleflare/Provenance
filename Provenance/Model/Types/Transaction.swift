@@ -13,6 +13,22 @@ struct TransactionResource: Hashable, Codable, Identifiable {
     var attributes: Attribute
     var relationships: Relationship
     var links: SelfLink?
+    
+    init(type: String, id: String, attributes: Attribute, relationships: Relationship, links: SelfLink? = nil) {
+        self.type = type
+        self.id = id
+        self.attributes = attributes
+        self.relationships = relationships
+        self.links = links
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: TransactionResource, rhs: TransactionResource) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 struct Attribute: Hashable, Codable {

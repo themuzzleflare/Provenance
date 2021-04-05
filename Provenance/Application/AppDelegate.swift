@@ -11,7 +11,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var textDidChangeObserver: NSObjectProtocol!
     
     let viewController = TabBarController()
-    let settingsController = SettingsVC(style: .insetGrouped)
+    let settingsController = SettingsVC(style: .grouped)
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:[UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         setupWindow()
@@ -19,7 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-    
+}
+
+extension AppDelegate {
     private func setupWindow() {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = viewController

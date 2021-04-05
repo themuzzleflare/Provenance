@@ -10,6 +10,22 @@ struct CategoryResource: Hashable, Codable, Identifiable {
     var attributes: CategoryAttribute
     var relationships: CategoryRelationship
     var links: SelfLink?
+    
+    init(type: String, id: String, attributes: CategoryAttribute, relationships: CategoryRelationship, links: SelfLink? = nil) {
+        self.type = type
+        self.id = id
+        self.attributes = attributes
+        self.relationships = relationships
+        self.links = links
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: CategoryResource, rhs: CategoryResource) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 struct CategoryAttribute: Hashable, Codable {

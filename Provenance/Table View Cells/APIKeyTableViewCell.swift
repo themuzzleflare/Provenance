@@ -3,8 +3,8 @@ import MarqueeLabel
 import TinyConstraints
 import Rswift
 
-class APIKeyCell: UITableViewCell {
-    static let reuseIdentifier = "apiKeyCell"
+class APIKeyTableViewCell: UITableViewCell {
+    static let reuseIdentifier = "apiKeyTableViewCell"
     
     let apiKeyLabel = MarqueeLabel()
     
@@ -16,12 +16,12 @@ class APIKeyCell: UITableViewCell {
         configureApiKeyLabel()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
-extension APIKeyCell {
+extension APIKeyTableViewCell {
     private func configureCell() {
         selectionStyle = .default
         accessoryType = .disclosureIndicator

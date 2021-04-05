@@ -17,15 +17,11 @@ class AboutViewController: TableViewController {
 
 extension AboutViewController {
     @objc private func openSettings() {
-        let vc = NavigationController(rootViewController: SettingsVC(style: .insetGrouped))
-        
-        present(vc, animated: true)
+        present(NavigationController(rootViewController: SettingsVC(style: .grouped)), animated: true)
     }
     
     @objc private func openDiagnostics() {
-        let vc = NavigationController(rootViewController: DiagnosticTableVC(style: .insetGrouped))
-        
-        present(vc, animated: true)
+        present(NavigationController(rootViewController: DiagnosticTableVC(style: .grouped)), animated: true)
     }
     
     private func setProperties() {
@@ -109,7 +105,8 @@ extension AboutViewController {
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         if let footerView = view as? UITableViewHeaderFooterView {
             footerView.textLabel?.textColor = .lightGray
-            footerView.textLabel?.font = R.font.circularStdBook(size: 12)
+            footerView.textLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
+            footerView.textLabel?.textAlignment = .center
         }
     }
 }

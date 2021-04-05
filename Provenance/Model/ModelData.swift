@@ -10,8 +10,28 @@ let appBuild = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unk
 let appName = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "Provenance"
 let appCopyright = Bundle.main.infoDictionary?["NSHumanReadableCopyright"] as? String ?? "Copyright © 2021 Paul Tavitian"
 
-let circularStdBook = R.font.circularStdBook(size: UIFont.labelFontSize)
-let circularStdBold = R.font.circularStdBold(size: UIFont.labelFontSize)
+func twoColumnGridLayout() -> UICollectionViewLayout {
+    let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int,
+                                                        layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection in
+        let contentSize = layoutEnvironment.container.effectiveContentSize
+        let columns = contentSize.width > 800 ? 3 : 2
+        let spacing = CGFloat(10)
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                              heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                               heightDimension: .absolute(100))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columns)
+        group.interItemSpacing = .fixed(spacing)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = spacing
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        
+        return section
+    }
+    return layout
+}
 
 var apiKeyDisplay: String {
     switch appDefaults.string(forKey: "apiKey") {

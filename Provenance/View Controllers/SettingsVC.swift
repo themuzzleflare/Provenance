@@ -41,8 +41,8 @@ extension SettingsVC {
     }
     
     private func setupTableView() {
-        tableView.register(APIKeyCell.self, forCellReuseIdentifier: APIKeyCell.reuseIdentifier)
-        tableView.register(DateStylePickerCell.self, forCellReuseIdentifier: DateStylePickerCell.reuseIdentifier)
+        tableView.register(APIKeyTableViewCell.self, forCellReuseIdentifier: APIKeyTableViewCell.reuseIdentifier)
+        tableView.register(DateStylePickerTableViewCell.self, forCellReuseIdentifier: DateStylePickerTableViewCell.reuseIdentifier)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -54,8 +54,8 @@ extension SettingsVC {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: APIKeyCell.reuseIdentifier, for: indexPath) as! APIKeyCell
-        let datePickerCell = tableView.dequeueReusableCell(withIdentifier: DateStylePickerCell.reuseIdentifier, for: indexPath) as! DateStylePickerCell
+        let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: APIKeyTableViewCell.reuseIdentifier, for: indexPath) as! APIKeyTableViewCell
+        let datePickerCell = tableView.dequeueReusableCell(withIdentifier: DateStylePickerTableViewCell.reuseIdentifier, for: indexPath) as! DateStylePickerTableViewCell
         
         apiKeyCell.apiKeyLabel.text = apiKeyDisplay
         
@@ -260,13 +260,15 @@ extension SettingsVC {
         if let headerView = view as? UITableViewHeaderFooterView {
             headerView.textLabel?.textColor = .lightGray
             headerView.textLabel?.font = R.font.circularStdBook(size: 13)
+            headerView.textLabel?.textAlignment = .center
         }
     }
     
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         if let footerView = view as? UITableViewHeaderFooterView {
             footerView.textLabel?.textColor = .lightGray
-            footerView.textLabel?.font = R.font.circularStdBook(size: 12)
+            footerView.textLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
+            footerView.textLabel?.textAlignment = .center
         }
     }
     

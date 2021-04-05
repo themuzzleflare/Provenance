@@ -2,17 +2,8 @@ import UIKit
 import Rswift
 
 class TableViewController: UITableViewController {
-    override init(style: UITableView.Style) {
-        super.init(style: .insetGrouped)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configure()
     }
 }

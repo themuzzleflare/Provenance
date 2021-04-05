@@ -4,7 +4,6 @@ import Rswift
 class CollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configure()
     }
 }

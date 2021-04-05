@@ -2,7 +2,7 @@ import UIKit
 import TinyConstraints
 
 class LoadingTableViewCell: UITableViewCell {
-    static let reuseIdentifier = "loadingCell"
+    static let reuseIdentifier = "loadingTableViewCell"
     
     let loadingIndicator = ActivityIndicator(style: .medium)
     
@@ -14,8 +14,8 @@ class LoadingTableViewCell: UITableViewCell {
         configureLoadingIndicator()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
