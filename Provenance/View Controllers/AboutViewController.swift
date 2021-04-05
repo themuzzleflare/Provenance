@@ -47,9 +47,10 @@ extension AboutViewController {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let section = indexPath.section
         let row = indexPath.row
         
-        if indexPath.section == 0 {
+        if section == 0 {
             if row == 1 {
                 if appVersion != "Unknown" {
                     let copyVersion = UIAction(title: "Copy Version", image: R.image.docOnClipboard()) { _ in
@@ -73,6 +74,18 @@ extension AboutViewController {
                     }
                 } else {
                     return nil
+                }
+            } else {
+                return nil
+            }
+        } else if section == 1 {
+            if row == 1 {
+                let copyGithub = UIAction(title: "Copy Link", image: R.image.docOnClipboard()) { _ in
+                    UIPasteboard.general.string = "https://github.com/themuzzleflare/Provenance"
+                }
+                
+                return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                    UIMenu(children: [copyGithub])
                 }
             } else {
                 return nil

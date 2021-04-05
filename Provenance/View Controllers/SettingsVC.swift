@@ -44,6 +44,12 @@ extension SettingsVC {
         tableView.register(APIKeyTableViewCell.self, forCellReuseIdentifier: APIKeyTableViewCell.reuseIdentifier)
         tableView.register(DateStylePickerTableViewCell.self, forCellReuseIdentifier: DateStylePickerTableViewCell.reuseIdentifier)
     }
+}
+
+extension SettingsVC {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -270,9 +276,5 @@ extension SettingsVC {
             footerView.textLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
             footerView.textLabel?.textAlignment = .center
         }
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
     }
 }

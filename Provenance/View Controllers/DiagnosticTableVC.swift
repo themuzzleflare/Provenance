@@ -5,8 +5,18 @@ class DiagnosticTableVC: TableViewController {
     private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
     
-    private var sections: [Section]!
-    
+    private lazy var sections: [Section] = [
+        Section(title: "Section 1", detailAttributes: [
+            DetailAttribute(
+                titleKey: "Version",
+                titleValue: appVersion
+            ),
+            DetailAttribute(
+                titleKey: "Build",
+                titleValue: appBuild
+            )
+        ])
+    ]
     private lazy var dataSource = makeDataSource()
     
     private func makeDataSource() -> DataSource {
@@ -23,19 +33,6 @@ class DiagnosticTableVC: TableViewController {
         )
     }
     private func applySnapshot(animatingDifferences: Bool = false) {
-        sections = [
-            Section(title: "Section 1", detailAttributes: [
-                DetailAttribute(
-                    titleKey: "Version",
-                    titleValue: appVersion
-                ),
-                DetailAttribute(
-                    titleKey: "Build",
-                    titleValue: appBuild
-                )
-            ])
-        ]
-        
         var snapshot = Snapshot()
         
         snapshot.appendSections(sections)
