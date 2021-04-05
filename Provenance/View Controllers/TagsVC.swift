@@ -49,11 +49,7 @@ extension TagsVC {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = TransactionsByTagVC(style: .grouped)
-        
-        vc.tag = TagResource(type: "tags", id: transaction.relationships.tags.data[indexPath.row].id)
-        
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController({let vc = TransactionsByTagVC(style: .grouped);vc.tag = TagResource(type: "tags", id: transaction.relationships.tags.data[indexPath.row].id);return vc}(), animated: true)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

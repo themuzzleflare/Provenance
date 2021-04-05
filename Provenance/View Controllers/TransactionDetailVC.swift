@@ -237,11 +237,7 @@ extension TransactionDetailVC {
         let attribute = dataSource.itemIdentifier(for: indexPath)!
         
         if attribute.titleKey == "Account" {
-            let vc = R.storyboard.transactionsByAccount.transactionsByAccountController()!
-            
-            vc.account = accountFilter!.first!
-            
-            navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController({let vc = R.storyboard.transactionsByAccount.transactionsByAccountController()!;vc.account = accountFilter!.first!;return vc}(), animated: true)
         } else if attribute.titleKey == "Parent Category" || attribute.titleKey == "Category" {
             let vc = TransactionsByCategoryVC(style: .grouped)
             
@@ -253,11 +249,7 @@ extension TransactionDetailVC {
             
             navigationController?.pushViewController(vc, animated: true)
         } else if attribute.titleKey == "Tags" {
-            let vc = TagsVC(style: .grouped)
-            
-            vc.transaction = transaction
-            
-            navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController({let vc = TagsVC(style: .grouped);vc.transaction = transaction;return vc}(), animated: true)
         }
     }
 }

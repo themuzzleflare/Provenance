@@ -52,7 +52,7 @@ extension AboutViewController {
         if indexPath.section == 0 {
             if row == 1 {
                 if appVersion != "Unknown" {
-                    let copyVersion = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
+                    let copyVersion = UIAction(title: "Copy Version", image: R.image.docOnClipboard()) { _ in
                         UIPasteboard.general.string = appVersion
                     }
                     
@@ -64,7 +64,7 @@ extension AboutViewController {
                 }
             } else if row == 2 {
                 if appBuild != "Unknown" {
-                    let copyBuild = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
+                    let copyBuild = UIAction(title: "Copy Build", image: R.image.docOnClipboard()) { _ in
                         UIPasteboard.general.string = appBuild
                     }
                     

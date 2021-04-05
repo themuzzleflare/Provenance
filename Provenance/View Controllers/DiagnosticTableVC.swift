@@ -2,20 +2,62 @@ import UIKit
 import Rswift
 
 class DiagnosticTableVC: TableViewController {
+    private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
+    
+    private var sections: [Section]!
+    
+    private lazy var dataSource = makeDataSource()
+    
+    private func makeDataSource() -> DataSource {
+        return DataSource(
+            tableView: tableView,
+            cellProvider: {  tableView, indexPath, detailAttribute in
+                let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
+                
+                cell.leftLabel.text = detailAttribute.titleKey
+                cell.rightLabel.text = detailAttribute.titleValue
+                
+                return cell
+            }
+        )
+    }
+    private func applySnapshot(animatingDifferences: Bool = false) {
+        sections = [
+            Section(title: "Section 1", detailAttributes: [
+                DetailAttribute(
+                    titleKey: "Version",
+                    titleValue: appVersion
+                ),
+                DetailAttribute(
+                    titleKey: "Build",
+                    titleValue: appBuild
+                )
+            ])
+        ]
+        
+        var snapshot = Snapshot()
+        
+        snapshot.appendSections(sections)
+        
+        sections.forEach { section in
+            snapshot.appendItems(section.detailAttributes, toSection: section)
+        }
+        
+        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setProperties()
         setupNavigation()
         setupTableView()
+        
+        applySnapshot()
     }
 }
 
 extension DiagnosticTableVC {
-    private var attributes: KeyValuePairs<String, String> {
-        return ["Version": appVersion, "Build": appBuild]
-    }
-    
     @objc private func closeWorkflow() {
         dismiss(animated: true)
     }
@@ -30,34 +72,22 @@ extension DiagnosticTableVC {
     }
     
     private func setupTableView() {
+        tableView.dataSource = dataSource
         tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
     }
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return attributes.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let attribute = attributes[indexPath.row]
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-        
-        cell.leftLabel.text = attribute.key
-        cell.rightLabel.text = attribute.value
-        
-        return cell
+}
+
+extension DiagnosticTableVC {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let attribute = attributes[indexPath.row]
+        let attribute = dataSource.itemIdentifier(for: indexPath)!
         
-        if attribute.value != "Unknown" {
-            let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                UIPasteboard.general.string = attribute.value
+        if attribute.titleValue != "Unknown" {
+            let copy = UIAction(title: "Copy \(attribute.titleKey)", image: R.image.docOnClipboard()) { _ in
+                UIPasteboard.general.string = attribute.titleValue
             }
             
             return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
@@ -66,9 +96,5 @@ extension DiagnosticTableVC {
         } else {
             return nil
         }
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
     }
 }

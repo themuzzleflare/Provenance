@@ -6,6 +6,9 @@ class AccountsCVC: CollectionViewController {
     let searchController = UISearchController(searchResultsController: nil)
     let refreshControl = RefreshControl(frame: .zero)
     
+    private typealias DataSource = UICollectionViewDiffableDataSource<Section, AccountResource>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, AccountResource>
+    
     private var accountsStatusCode: Int = 0
     private var accounts: [AccountResource] = []
     private var accountsPagination: Pagination = Pagination(prev: nil, next: nil)
@@ -25,9 +28,6 @@ class AccountsCVC: CollectionViewController {
     private enum Section: CaseIterable {
         case main
     }
-    
-    private typealias DataSource = UICollectionViewDiffableDataSource<Section, AccountResource>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, AccountResource>
     
     private lazy var dataSource = makeDataSource()
     
@@ -294,26 +294,22 @@ class AccountsCVC: CollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
+        let copyBalance = UIAction(title: "Copy Balance", image: R.image.dollarsignCircle()) { _ in
+            UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.balance.valueShort
+        }
+        let copyDisplayName = UIAction(title: "Copy Display Name", image: R.image.textAlignright()) { _ in
             UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.displayName
         }
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            UIMenu(children: [copy])
+            UIMenu(children: [copyBalance, copyDisplayName])
         }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
-        navigationController?.pushViewController({
-            let vc = R.storyboard.transactionsByAccount.transactionsByAccountController()!
-            
-            vc.account = dataSource.itemIdentifier(for: indexPath)
-            
-            return vc
-        }(),
-        animated: true)
+        navigationController?.pushViewController({let vc = R.storyboard.transactionsByAccount.transactionsByAccountController()!;vc.account = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
     }
 }
 
