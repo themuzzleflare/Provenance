@@ -1,4 +1,5 @@
 import UIKit
+import Firebase
 import WidgetKit
 import Rswift
 
@@ -16,6 +17,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:[UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         setupWindow()
         initialSetup()
+        
+        FirebaseApp.configure()
+        Analytics.load()
         
         return true
     }

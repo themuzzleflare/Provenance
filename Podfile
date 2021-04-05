@@ -7,5 +7,7 @@ target 'Provenance' do
   pod 'TinyConstraints'
   pod 'R.swift'
   pod 'Alamofire', '~> 5.2'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Crashlytics'
 
 end
