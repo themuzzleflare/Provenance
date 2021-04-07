@@ -38,6 +38,7 @@ extension AboutViewController {
     
     private func setupNavigation() {
         navigationItem.title = "About"
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: nil)
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftSlashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.gear(), style: .plain, target: self, action: #selector(openSettings))
     }
@@ -78,7 +79,7 @@ extension AboutViewController {
             } else {
                 return nil
             }
-        } else if section == 1 {
+        } else if section == 2 {
             if row == 1 {
                 let copyGithub = UIAction(title: "Copy Link", image: R.image.docOnClipboard()) { _ in
                     UIPasteboard.general.string = "https://github.com/themuzzleflare/Provenance"
@@ -96,7 +97,7 @@ extension AboutViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if section == 1 {
+        if section == 2 {
             return appCopyright
         } else {
             return nil
@@ -104,9 +105,13 @@ extension AboutViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 {
-            tableView.deselectRow(at: indexPath, animated: true)
-            
+        let section = indexPath.section
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if section == 1 {
+            navigationController?.pushViewController(WidgetsVC(), animated: true)
+        } else if section == 2 {
             if indexPath.row == 0 {
                 UIApplication.shared.open(URL(string: "mailto:feedback@tavitian.cloud?subject=Feedback%20for%20Provenance")!)
             } else {

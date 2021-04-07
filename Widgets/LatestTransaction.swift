@@ -145,3 +145,15 @@ struct LatestTransaction: Widget {
         .description("Displays the latest transaction.")
     }
 }
+
+struct LatestTransaction_Previews: PreviewProvider {
+    static let families: [WidgetFamily] = [.systemSmall, .systemMedium]
+    static var previews: some View {
+        ForEach(families, id: \.self) { family in
+            LatestTransactionEntryView(entry: LatestTransactionModel(date: Date(), configuration: DateStyleConfigurationIntent(), transactionValueInBaseUnits: -1, transactionDescription: "Officeworks", transactionDate: "21 hours ago", transactionAmount: "-$79.95", error: ""))
+                .previewContext(WidgetPreviewContext(family: family))
+                .previewDisplayName(family.description)
+                .colorScheme(.light)
+        }
+    }
+}

@@ -51,6 +51,7 @@
 		7AB609AA2602C79B0038B85B /* AddTagWorkflowVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7AB609A92602C79B0038B85B /* AddTagWorkflowVC.storyboard */; };
 		7AB609B02603F0D80038B85B /* AddTagWorkflowTwoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */; };
 		7AB609B32603F1130038B85B /* AddTagWorkflowThreeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */; };
+		7ACD456C261D67A7000C8FD2 /* WidgetsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD456B261D67A7000C8FD2 /* WidgetsVC.swift */; };
 		7AD127DC2604735800A39272 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AD317952604412000B4E008 /* WidgetKit.framework */; };
 		7AD127DD2604735800A39272 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AD317972604412000B4E008 /* SwiftUI.framework */; };
 		7AD127E92604735B00A39272 /* Provenance Widgets.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7AD127DB2604735800A39272 /* Provenance Widgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -161,6 +162,7 @@
 		7AB609A92602C79B0038B85B /* AddTagWorkflowVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AddTagWorkflowVC.storyboard; sourceTree = "<group>"; };
 		7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagWorkflowTwoVC.swift; sourceTree = "<group>"; };
 		7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagWorkflowThreeVC.swift; sourceTree = "<group>"; };
+		7ACD456B261D67A7000C8FD2 /* WidgetsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetsVC.swift; sourceTree = "<group>"; };
 		7AD1277A260455B800A39272 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
 		7AD12781260455E100A39272 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		7AD1279A2604702600A39272 /* ProvenanceWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvenanceWidgets.swift; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 				7AE75E4A25FF58B800C16AF6 /* AboutViewController.swift */,
 				7A67980C25D3E15D002AA83A /* DiagnosticTableVC.swift */,
 				7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */,
+				7ACD456B261D67A7000C8FD2 /* WidgetsVC.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -697,6 +700,7 @@
 				7AB34D2225C78230000A1E81 /* TransactionsVC.swift in Sources */,
 				7A455CD526080F1300A7F2B8 /* LatestTransaction.intentdefinition in Sources */,
 				7AB34D4D25C7A90E000A1E81 /* TransactionDetailVC.swift in Sources */,
+				7ACD456C261D67A7000C8FD2 /* WidgetsVC.swift in Sources */,
 				7AD5944C25C8B3AD0018C86E /* SubtitleTableViewCell.swift in Sources */,
 				7AA113BF26154F3800386E2D /* DetailAttribute.swift in Sources */,
 				7AE75E3F25FF1FEE00C16AF6 /* RefreshControl.swift in Sources */,
@@ -896,7 +900,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 9.1;
+				MARKETING_VERSION = 9.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -927,7 +931,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 9.1;
+				MARKETING_VERSION = 9.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -957,7 +961,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 9.1;
+				MARKETING_VERSION = 9.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -987,7 +991,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 9.1;
+				MARKETING_VERSION = 9.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1011,7 +1015,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 9.1;
+				MARKETING_VERSION = 9.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1031,7 +1035,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 9.1;
+				MARKETING_VERSION = 9.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -111,3 +111,15 @@ struct AccountBalance: Widget {
         .description("Displays the account balance of the main transactional Up account.")
     }
 }
+
+struct AccountBalance_Previews: PreviewProvider {
+    static let families: [WidgetFamily] = [.systemSmall, .systemMedium]
+    static var previews: some View {
+        ForEach(families, id: \.self) { family in
+            AccountBalanceEntryView(entry: AccountBalanceModel(date: Date(), accountDisplayName: "Up Account", accountBalance: "$123.45", error: ""))
+                .previewContext(WidgetPreviewContext(family: family))
+                .previewDisplayName(family.description)
+                .colorScheme(.light)
+        }
+    }
+}

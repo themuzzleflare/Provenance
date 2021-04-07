@@ -120,26 +120,22 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection footerTitle="Copyright © 2021 Paul Tavitian" id="sAL-Ea-hiv">
+                            <tableViewSection id="sAL-Ea-hiv">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="GtL-0E-uGs" imageView="xgZ-c9-Ppd" style="IBUITableViewCellStyleDefault" id="B4n-TB-qeC">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="GtL-0E-uGs" style="IBUITableViewCellStyleDefault" id="B4n-TB-qeC">
                                         <rect key="frame" x="0.0" y="441" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="B4n-TB-qeC" id="HDb-jq-aHE">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="382.66666666666669" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Contact Developer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GtL-0E-uGs">
-                                                    <rect key="frame" x="57.5" y="0.0" width="336.5" height="43.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Widgets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GtL-0E-uGs">
+                                                    <rect key="frame" x="20" y="0.0" width="354.66666666666669" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="CircularStd-Book" family="Circular Std" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="square.and.pencil" catalog="system" id="xgZ-c9-Ppd">
-                                                    <rect key="frame" x="21.5" y="11.666666666666666" width="21" height="18.666666666666668"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="tintColor" name="AccentColor"/>
@@ -148,24 +144,54 @@
                                             <outlet property="selectedBackgroundView" destination="xyI-tq-idd" id="UgZ-DG-fqM"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="3IK-Dp-3y9">
-                                        <rect key="frame" x="0.0" y="484.5" width="414" height="43.5"/>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection footerTitle="Copyright © 2021 Paul Tavitian" id="Aar-oy-Ecd">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="nnm-uI-fO0" imageView="EDo-xJ-Sye" style="IBUITableViewCellStyleDefault" id="2t5-cm-xs0">
+                                        <rect key="frame" x="0.0" y="520.5" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3IK-Dp-3y9" id="RmY-Dk-rgl">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2t5-cm-xs0" id="Wgu-vJ-XWm">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Mz9-8Z-tnS">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Contact Developer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nnm-uI-fO0">
+                                                    <rect key="frame" x="57.5" y="0.0" width="336.5" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" name="CircularStd-Book" family="Circular Std" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="square.and.pencil" catalog="system" id="EDo-xJ-Sye">
+                                                    <rect key="frame" x="21.5" y="11.666666666666666" width="21" height="18.666666666666668"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="tintColor" name="AccentColor"/>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <connections>
+                                            <outlet property="selectedBackgroundView" destination="xyI-tq-idd" id="EVy-Bz-ycp"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="C3H-oi-Jnv">
+                                        <rect key="frame" x="0.0" y="564" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="C3H-oi-Jnv" id="Ea2-rY-inz">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Irk-0j-BHc">
                                                     <rect key="frame" x="16" y="13.000000000000002" width="382" height="17.666666666666671"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="github" translatesAutoresizingMaskIntoConstraints="NO" id="O4c-Ud-Na6">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="github" translatesAutoresizingMaskIntoConstraints="NO" id="BtL-HN-fEZ">
                                                             <rect key="frame" x="0.0" y="1" width="32" height="16"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="16" id="EhX-ka-abB"/>
-                                                                <constraint firstAttribute="width" constant="32" id="zld-PL-y8d"/>
+                                                                <constraint firstAttribute="height" constant="16" id="Bgr-u8-Lo3"/>
+                                                                <constraint firstAttribute="width" constant="32" id="tYh-Rk-K2C"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GitHub" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HhQ-VC-24S">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GitHub" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XSc-WJ-bKq">
                                                             <rect key="frame" x="42" y="0.0" width="340" height="17.666666666666668"/>
                                                             <fontDescription key="fontDescription" name="CircularStd-Book" family="Circular Std" pointSize="17"/>
                                                             <nil key="textColor"/>
@@ -175,16 +201,16 @@
                                                 </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Mz9-8Z-tnS" firstAttribute="leading" secondItem="RmY-Dk-rgl" secondAttribute="leading" constant="16" id="64f-zi-6Sb"/>
-                                                <constraint firstAttribute="trailing" secondItem="Mz9-8Z-tnS" secondAttribute="trailing" constant="16" id="9ha-hf-c1G"/>
-                                                <constraint firstItem="Mz9-8Z-tnS" firstAttribute="top" secondItem="RmY-Dk-rgl" secondAttribute="top" constant="13" id="HaL-JB-VDb"/>
-                                                <constraint firstAttribute="bottom" secondItem="Mz9-8Z-tnS" secondAttribute="bottom" constant="13" id="dm0-7S-lQe"/>
+                                                <constraint firstItem="Irk-0j-BHc" firstAttribute="leading" secondItem="Ea2-rY-inz" secondAttribute="leading" constant="16" id="2A4-mQ-udY"/>
+                                                <constraint firstAttribute="bottom" secondItem="Irk-0j-BHc" secondAttribute="bottom" constant="13" id="SGf-gi-VFA"/>
+                                                <constraint firstAttribute="trailing" secondItem="Irk-0j-BHc" secondAttribute="trailing" constant="16" id="UAV-al-4Hp"/>
+                                                <constraint firstItem="Irk-0j-BHc" firstAttribute="top" secondItem="Ea2-rY-inz" secondAttribute="top" constant="13" id="lBn-Av-p2I"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="tintColor" name="AccentColor"/>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
-                                            <outlet property="selectedBackgroundView" destination="xyI-tq-idd" id="awQ-Fa-fAa"/>
+                                            <outlet property="selectedBackgroundView" destination="xyI-tq-idd" id="5Cx-iv-bMr"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -216,7 +242,7 @@
     <color key="tintColor" name="AccentColor"/>
     <resources>
         <image name="UpLogoSequence/first" width="100" height="100"/>
-        <image name="github" width="512" height="512"/>
+        <image name="github" width="512" height="500"/>
         <image name="square.and.pencil" catalog="system" width="128" height="115"/>
         <namedColor name="AccentColor">
             <color red="0.89803921568627454" green="0.44705882352941179" blue="0.37647058823529411" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
