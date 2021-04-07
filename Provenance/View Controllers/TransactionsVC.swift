@@ -118,6 +118,7 @@ extension TransactionsVC {
             }
         )
         dataSource.defaultRowAnimation = .fade
+        
         return dataSource
     }
     
@@ -267,7 +268,6 @@ extension TransactionsVC {
     
     private func configureFilterButton() {
         filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), style: .plain, target: self, action: nil)
-        
         filterButton.menu = filterMenu()
     }
     
@@ -288,8 +288,8 @@ extension TransactionsVC {
     }
     
     private func configureTableView() {
-        tableView.dataSource = dataSource
         tableView.refreshControl = tableRefreshControl
+        tableView.dataSource = dataSource
         tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
     }
     
@@ -318,11 +318,9 @@ extension TransactionsVC {
                                 self.navigationItem.searchController = nil
                             }
                         }
-                        
                         if self.navigationItem.title != "Transactions" {
                             self.navigationItem.title = "Transactions"
                         }
-                        
                         if self.navigationItem.leftBarButtonItems == nil {
                             self.navigationItem.setLeftBarButtonItems([UIBarButtonItem(image: R.image.arrowUpArrowDown(), style: .plain, target: self, action: #selector(self.switchDateStyle)), self.filterButton], animated: true)
                         }
@@ -470,14 +468,16 @@ extension TransactionsVC {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let transaction = self.dataSource.itemIdentifier(for: indexPath)!
+        
         let copyDescription = UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
-            UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.description
+            UIPasteboard.general.string = transaction.attributes.description
         }
         let copyCreationDate = UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
-            UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.creationDate
+            UIPasteboard.general.string = transaction.attributes.creationDate
         }
         let copyAmount = UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
-            UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.amount.valueShort
+            UIPasteboard.general.string = transaction.attributes.amount.valueShort
         }
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in

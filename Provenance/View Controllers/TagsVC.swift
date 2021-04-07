@@ -24,7 +24,13 @@ extension TagsVC {
     }
     
     private func configureTableView() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")
+        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagCell")
+    }
+}
+
+extension TagsVC {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -36,7 +42,7 @@ extension TagsVC {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
         
         let tag = transaction.relationships.tags.data[indexPath.row]
         

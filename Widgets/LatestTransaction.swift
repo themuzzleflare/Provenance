@@ -131,7 +131,7 @@ struct LatestTransactionEntryView: View {
                 .foregroundColor(.primary)
         })
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(colorScheme == .dark ? Color("WidgetBackground") : Color.white)
+        .background(Color("WidgetBackground"))
     }
 }
 
