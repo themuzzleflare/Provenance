@@ -9,5 +9,6 @@ target 'Provenance' do
   pod 'Alamofire', '~> 5.2'
   pod 'Firebase/Analytics'
   pod 'Firebase/Crashlytics'
+  pod 'SwiftyGif'
 
 end

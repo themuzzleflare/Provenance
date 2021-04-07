@@ -289,7 +289,7 @@ class CategoriesCVC: CollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
+        let copy = UIAction(title: "Copy Category Name", image: R.image.docOnClipboard()) { _ in
             UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.name
         }
         

@@ -144,12 +144,34 @@
                                             <outlet property="selectedBackgroundView" destination="xyI-tq-idd" id="UgZ-DG-fqM"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="2i2-Vx-KUb" style="IBUITableViewCellStyleDefault" id="3ha-36-WQW">
+                                        <rect key="frame" x="0.0" y="484.5" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3ha-36-WQW" id="Qo1-4A-Lpc">
+                                            <rect key="frame" x="0.0" y="0.0" width="382.66666666666669" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Stickers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2i2-Vx-KUb">
+                                                    <rect key="frame" x="20" y="0.0" width="354.66666666666669" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" name="CircularStd-Book" family="Circular Std" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="tintColor" name="AccentColor"/>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <connections>
+                                            <outlet property="selectedBackgroundView" destination="xyI-tq-idd" id="M9C-PT-cwP"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection footerTitle="Copyright © 2021 Paul Tavitian" id="Aar-oy-Ecd">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="nnm-uI-fO0" imageView="EDo-xJ-Sye" style="IBUITableViewCellStyleDefault" id="2t5-cm-xs0">
-                                        <rect key="frame" x="0.0" y="520.5" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="564" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2t5-cm-xs0" id="Wgu-vJ-XWm">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
@@ -175,7 +197,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="C3H-oi-Jnv">
-                                        <rect key="frame" x="0.0" y="564" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="607.5" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="C3H-oi-Jnv" id="Ea2-rY-inz">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>

@@ -106,13 +106,18 @@ extension AboutViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
+        let row = indexPath.row
         
         tableView.deselectRow(at: indexPath, animated: true)
         
         if section == 1 {
-            navigationController?.pushViewController(WidgetsVC(), animated: true)
+            if row == 0 {
+                navigationController?.pushViewController(WidgetsVC(), animated: true)
+            } else {
+                navigationController?.pushViewController(StickersVC(collectionViewLayout: gridLayout()), animated: true)
+            }
         } else if section == 2 {
-            if indexPath.row == 0 {
+            if row == 0 {
                 UIApplication.shared.open(URL(string: "mailto:feedback@tavitian.cloud?subject=Feedback%20for%20Provenance")!)
             } else {
                 UIApplication.shared.open(URL(string: "https://github.com/themuzzleflare/Provenance")!)

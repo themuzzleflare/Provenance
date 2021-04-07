@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import Alamofire
+import SwiftyGif
 import Rswift
 
 let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
@@ -33,6 +34,22 @@ func twoColumnGridLayout() -> UICollectionViewLayout {
     return layout
 }
 
+func gridLayout() -> UICollectionViewLayout {
+    let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2),
+                                          heightDimension: .fractionalHeight(1.0))
+    let item = NSCollectionLayoutItem(layoutSize: itemSize)
+    
+    let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                           heightDimension: .fractionalWidth(0.2))
+    let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+                                                   subitems: [item])
+    
+    let section = NSCollectionLayoutSection(group: group)
+    
+    let layout = UICollectionViewCompositionalLayout(section: section)
+    return layout
+}
+
 var apiKeyDisplay: String {
     switch appDefaults.string(forKey: "apiKey") {
         case nil, "": return "None"
@@ -45,6 +62,12 @@ var bgCellView: UIView {
     bgView.backgroundColor = R.color.accentColor()
     return bgView
 }
+
+let stickerTwo = try! UIImage(gifName: "StickerTwo.gif")
+let stickerThree = try! UIImage(gifName: "StickerThree.gif")
+let stickerSix = try! UIImage(gifName: "StickerSix.gif")
+let stickerSeven = try! UIImage(gifName: "StickerSeven.gif")
+let stickerGifs = [stickerTwo, stickerThree, stickerSix, stickerSeven]
 
 let up1 = R.image.upLogoSequence.first()!
 let up2 = R.image.upLogoSequence.second()!
