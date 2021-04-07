@@ -29,8 +29,10 @@ class CategoryCollectionViewCell: UICollectionViewCell {
 extension CategoryCollectionViewCell {
     private func configureCell() {
         clipsToBounds = true
-        layer.cornerRadius = 20
-        backgroundColor = .white
+        layer.cornerRadius = 12.5
+        layer.borderColor = UIColor.separator.cgColor
+        layer.borderWidth = 0.5
+        backgroundColor = .secondarySystemGroupedBackground
         selectedBackgroundView = bgCellView
     }
     
@@ -43,7 +45,7 @@ extension CategoryCollectionViewCell {
         
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.textColor = .black
+        label.textColor = .label
         label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
     }
 }

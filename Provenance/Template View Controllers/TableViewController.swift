@@ -10,10 +10,7 @@ class TableViewController: UITableViewController {
 
 extension TableViewController {
     private func configure() {
-        tableView.backgroundColor = R.color.bgColour()
-        tableView.separatorColor = R.color.bgColour()
         tableView.separatorInset = .zero
-        tableView.indicatorStyle = .white
         tableView.showsHorizontalScrollIndicator = false
         
         #if !targetEnvironment(macCatalyst)

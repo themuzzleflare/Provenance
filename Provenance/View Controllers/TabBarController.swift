@@ -42,9 +42,6 @@ class TabBarController: UITabBarController {
 extension TabBarController {
     private func configure() {
         viewControllers = [tabOne, tabTwo, tabThree, tabFour, tabFive]
-        
-        tabBar.barStyle = .black
-        tabBar.barTintColor = R.color.bgColour()
     }
 }
 

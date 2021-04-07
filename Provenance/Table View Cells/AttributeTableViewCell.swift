@@ -41,7 +41,7 @@ extension AttributeTableViewCell {
         
         leftLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         leftLabel.textAlignment = .left
-        leftLabel.textColor = .darkGray
+        leftLabel.textColor = .secondaryLabel
         leftLabel.numberOfLines = 0
     }
     
@@ -50,7 +50,7 @@ extension AttributeTableViewCell {
         
         rightLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         rightLabel.textAlignment = .right
-        rightLabel.textColor = .black
+        rightLabel.textColor = .label
         rightLabel.numberOfLines = 0
     }
     

@@ -84,7 +84,7 @@ class AddTagWorkflowTwoVC: TableViewController {
                     label.center(in: view)
                     
                     label.textAlignment = .center
-                    label.textColor = .white
+                    label.textColor = .label
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = "No Transactions"
@@ -104,7 +104,7 @@ class AddTagWorkflowTwoVC: TableViewController {
                     label.center(in: view)
                     
                     label.textAlignment = .center
-                    label.textColor = .white
+                    label.textColor = .label
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = tagsError
@@ -130,7 +130,7 @@ class AddTagWorkflowTwoVC: TableViewController {
                     
                     detailLabel.translatesAutoresizingMaskIntoConstraints = false
                     detailLabel.textAlignment = .center
-                    detailLabel.textColor = .white
+                    detailLabel.textColor = .label
                     detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     detailLabel.numberOfLines = 0
                     detailLabel.text = tagsErrorResponse.first?.detail

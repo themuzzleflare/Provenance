@@ -10,6 +10,5 @@ class ViewController: UIViewController {
 
 extension ViewController {
     private func configure() {
-        view.backgroundColor = R.color.bgColour()
     }
 }

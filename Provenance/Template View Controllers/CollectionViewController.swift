@@ -10,8 +10,7 @@ class CollectionViewController: UICollectionViewController {
 
 extension CollectionViewController {
     private func configure() {
-        collectionView.backgroundColor = R.color.bgColour()
-        collectionView.indicatorStyle = .white
+        collectionView.backgroundColor = .systemGroupedBackground
         collectionView.showsHorizontalScrollIndicator = false
         
         #if !targetEnvironment(macCatalyst)

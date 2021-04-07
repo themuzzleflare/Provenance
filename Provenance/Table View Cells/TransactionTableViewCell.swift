@@ -9,7 +9,7 @@ class TransactionTableViewCell: UITableViewCell {
             transactionCreationDate.text = transaction.attributes.creationDate
             
             if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
-                transactionAmount.textColor = .black
+                transactionAmount.textColor = .label
             } else {
                 transactionAmount.textColor = R.color.greenColour()
             }
@@ -61,7 +61,7 @@ extension TransactionTableViewCell {
         transactionDescription.font = R.font.circularStdBold(size: UIFont.labelFontSize)
         transactionDescription.textAlignment = .left
         transactionDescription.numberOfLines = 0
-        transactionDescription.textColor = .black
+        transactionDescription.textColor = .label
     }
     
     private func configureTransactionCreationDate() {
@@ -70,7 +70,7 @@ extension TransactionTableViewCell {
         transactionCreationDate.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
         transactionCreationDate.textAlignment = .left
         transactionCreationDate.numberOfLines = 0
-        transactionCreationDate.textColor = .darkGray
+        transactionCreationDate.textColor = .secondaryLabel
     }
     
     private func configureTransactionAmount() {

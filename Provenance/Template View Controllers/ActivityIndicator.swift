@@ -13,7 +13,6 @@ class ActivityIndicator: UIActivityIndicatorView {
 
 extension ActivityIndicator {
     private func configure() {
-        color = .white
         hidesWhenStopped = true
         startAnimating()
     }

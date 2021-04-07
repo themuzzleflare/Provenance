@@ -67,6 +67,7 @@ struct AccountBalanceModel: TimelineEntry {
 
 struct AccountBalanceEntryView: View {
     @Environment(\.widgetFamily) private var family
+    @Environment(\.colorScheme) private var colorScheme
     
     var entry: AccountBalanceModel
     
@@ -81,10 +82,10 @@ struct AccountBalanceEntryView: View {
                 }
                 Text(entry.accountBalance)
                     .font(.custom("CircularStd-Bold", size: 23))
-                    .foregroundColor(family != .systemSmall ? .white : Color("AccentColor"))
+                    .foregroundColor(family != .systemSmall ? .primary : Color("AccentColor"))
                 Text(entry.accountDisplayName)
                     .font(.custom("CircularStd-Book", size: 17))
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
             }
             .padding()
         }
@@ -93,10 +94,10 @@ struct AccountBalanceEntryView: View {
                 .padding()
                 .fixedSize(horizontal: false, vertical: true)
                 .font(.custom("CircularStd-Book", size: 17))
-                .foregroundColor(.white)
+                .foregroundColor(.primary)
         })
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color("WidgetBackground"))
+        .background(colorScheme == .dark ? Color("WidgetBackground") : Color.white)
     }
 }
 

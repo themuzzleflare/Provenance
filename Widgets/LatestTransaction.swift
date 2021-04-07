@@ -78,6 +78,7 @@ struct LatestTransactionModel: TimelineEntry {
 
 struct LatestTransactionEntryView: View {
     @Environment(\.widgetFamily) private var family
+    @Environment(\.colorScheme) private var colorScheme
     
     var entry: LatestTransactionModel
     
@@ -95,14 +96,14 @@ struct LatestTransactionEntryView: View {
                         VStack(alignment: .leading, spacing: 0) {
                             Text(entry.transactionDescription)
                                 .font(.custom("CircularStd-Bold", size: 17))
-                                .foregroundColor(.white)
+                                .foregroundColor(.primary)
                             Text(entry.transactionDate)
                                 .font(.custom("CircularStd-Book", size: 12))
-                                .foregroundColor(Color(UIColor.lightGray))
+                                .foregroundColor(.secondary)
                         }
                         Spacer()
                         Text(entry.transactionAmount)
-                            .foregroundColor(entry.transactionValueInBaseUnits == -1 ? .white : Color("greenColour"))
+                            .foregroundColor(entry.transactionValueInBaseUnits == -1 ? .primary : Color("greenColour"))
                             .font(.custom("CircularStd-Book", size: 17))
                             .multilineTextAlignment(.trailing)
                     }
@@ -111,13 +112,13 @@ struct LatestTransactionEntryView: View {
                         .font(.custom("CircularStd-Bold", size: 17))
                         .foregroundColor(Color("AccentColor"))
                     Text(entry.transactionAmount)
-                        .foregroundColor(entry.transactionValueInBaseUnits == -1 ? .white : Color("greenColour"))
+                        .foregroundColor(entry.transactionValueInBaseUnits == -1 ? .primary : Color("greenColour"))
                         .font(.custom("CircularStd-Book", size: 14))
                         .multilineTextAlignment(.trailing)
                     Spacer()
                     Text(entry.transactionDate)
                         .font(.custom("CircularStd-Book", size: 12))
-                        .foregroundColor(Color(UIColor.lightGray))
+                        .foregroundColor(.secondary)
                 }
             }
             .padding()
@@ -127,10 +128,10 @@ struct LatestTransactionEntryView: View {
                 .padding()
                 .fixedSize(horizontal: false, vertical: true)
                 .font(.custom("CircularStd-Book", size: 17))
-                .foregroundColor(.white)
+                .foregroundColor(.primary)
         })
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color("WidgetBackground"))
+        .background(colorScheme == .dark ? Color("WidgetBackground") : Color.white)
     }
 }
 

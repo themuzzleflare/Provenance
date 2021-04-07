@@ -74,7 +74,7 @@ class CategoriesCVC: CollectionViewController {
                     label.center(in: view)
                     
                     label.textAlignment = .center
-                    label.textColor = .white
+                    label.textColor = .label
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = "No Categories"
@@ -94,7 +94,7 @@ class CategoriesCVC: CollectionViewController {
                     label.center(in: view)
                     
                     label.textAlignment = .center
-                    label.textColor = .white
+                    label.textColor = .label
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = categoriesError
@@ -120,7 +120,7 @@ class CategoriesCVC: CollectionViewController {
                     
                     detailLabel.translatesAutoresizingMaskIntoConstraints = false
                     detailLabel.textAlignment = .center
-                    detailLabel.textColor = .white
+                    detailLabel.textColor = .label
                     detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     detailLabel.numberOfLines = 0
                     detailLabel.text = categoriesErrorResponse.first?.detail

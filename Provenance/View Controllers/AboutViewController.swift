@@ -28,6 +28,7 @@ extension AboutViewController {
         title = "About"
         
         appImage.image = upAnimation
+        appImage.clipsToBounds = true
         appImage.layer.cornerRadius = 20
         
         appNameValue.text = appName
@@ -37,7 +38,6 @@ extension AboutViewController {
     
     private func setupNavigation() {
         navigationItem.title = "About"
-        navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftSlashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.gear(), style: .plain, target: self, action: #selector(openSettings))
     }
@@ -117,7 +117,6 @@ extension AboutViewController {
     
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         if let footerView = view as? UITableViewHeaderFooterView {
-            footerView.textLabel?.textColor = .lightGray
             footerView.textLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
             footerView.textLabel?.textAlignment = .center
         }

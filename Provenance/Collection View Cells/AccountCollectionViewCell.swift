@@ -34,8 +34,10 @@ class AccountCollectionViewCell: UICollectionViewCell {
 extension AccountCollectionViewCell {
     private func configureCell() {
         clipsToBounds = true
-        layer.cornerRadius = 20
-        backgroundColor = .white
+        layer.cornerRadius = 12.5
+        layer.borderColor = UIColor.separator.cgColor
+        layer.borderWidth = 0.5
+        backgroundColor = .secondarySystemGroupedBackground
         selectedBackgroundView = bgCellView
     }
     
@@ -57,7 +59,7 @@ extension AccountCollectionViewCell {
         
         displayNameLabel.textAlignment = .center
         displayNameLabel.numberOfLines = 0
-        displayNameLabel.textColor = .black
+        displayNameLabel.textColor = .label
         displayNameLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
     }
     

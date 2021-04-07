@@ -36,7 +36,7 @@ class TransactionsByAccountVC: TableViewController {
     }
     
     private func makeDataSource() -> DataSource {
-        return DataSource(
+        let dataSource = DataSource(
             tableView: tableView,
             cellProvider: {  tableView, indexPath, transaction in
                 let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
@@ -46,6 +46,8 @@ class TransactionsByAccountVC: TableViewController {
                 return cell
             }
         )
+        dataSource.defaultRowAnimation = .fade
+        return dataSource
     }
     
     private func applySnapshot(animate: Bool = false) {
@@ -79,7 +81,7 @@ class TransactionsByAccountVC: TableViewController {
                     label.center(in: view)
                     
                     label.textAlignment = .center
-                    label.textColor = .white
+                    label.textColor = .label
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = "No Transactions"
@@ -99,7 +101,7 @@ class TransactionsByAccountVC: TableViewController {
                     label.center(in: view)
                     
                     label.textAlignment = .center
-                    label.textColor = .white
+                    label.textColor = .label
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = transactionsError
@@ -125,7 +127,7 @@ class TransactionsByAccountVC: TableViewController {
                     
                     detailLabel.translatesAutoresizingMaskIntoConstraints = false
                     detailLabel.textAlignment = .center
-                    detailLabel.textColor = .white
+                    detailLabel.textColor = .label
                     detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     detailLabel.numberOfLines = 0
                     detailLabel.text = transactionsErrorResponse.first?.detail
@@ -383,13 +385,13 @@ extension TransactionsByAccountVC {
 
 extension TransactionsByAccountVC: UISearchControllerDelegate, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        applySnapshot()
+        applySnapshot(animate: true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.text != "" {
             searchBar.text = ""
-            applySnapshot()
+            applySnapshot(animate: true)
         }
     }
 }

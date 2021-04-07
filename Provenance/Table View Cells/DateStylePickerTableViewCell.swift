@@ -40,7 +40,7 @@ extension DateStylePickerTableViewCell {
         
         label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         label.textAlignment = .left
-        label.textColor = .darkGray
+        label.textColor = .secondaryLabel
         label.numberOfLines = 1
         label.text = "Date Style"
     }
@@ -50,11 +50,8 @@ extension DateStylePickerTableViewCell {
         segmentedControl.insertSegment(withTitle: "Relative", at: 1, animated: false)
         
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        
-        segmentedControl.selectedSegmentTintColor = R.color.accentColor()
-        segmentedControl.backgroundColor = R.color.bgColour()
-        
-        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: R.font.circularStdBook(size: 14)!], for: .normal)
+                
+        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: R.font.circularStdBook(size: 14)!], for: .normal)
     }
     
     private func setupHorizontalStackView() {

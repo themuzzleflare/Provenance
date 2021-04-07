@@ -13,6 +13,5 @@ class RefreshControl: UIRefreshControl {
 
 extension RefreshControl {
     private func configure() {
-        tintColor = .white
     }
 }

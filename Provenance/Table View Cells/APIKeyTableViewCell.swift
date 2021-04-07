@@ -41,6 +41,6 @@ extension APIKeyTableViewCell {
         
         apiKeyLabel.textAlignment = .left
         apiKeyLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-        apiKeyLabel.textColor = .black
+        apiKeyLabel.textColor = .label
     }
 }
