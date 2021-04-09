@@ -20,6 +20,8 @@ class StickerView: ViewController {
 
 extension StickerView {
     private func configure() {
+        title = "Sticker View"
+        navigationItem.title = "Sticker"
         view.addSubview(imageView)
         imageView.width(300)
         imageView.height(300)

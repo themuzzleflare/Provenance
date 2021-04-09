@@ -9,6 +9,7 @@ class StickersVC: CollectionViewController {
 
 extension StickersVC {
     private func configure() {
+        title = "Stickers"
         navigationItem.title = "Stickers"
         collectionView.register(StickerCollectionViewCell.self, forCellWithReuseIdentifier: StickerCollectionViewCell.reuseIdentifier)
     }

@@ -19,6 +19,7 @@ class WidgetsVC: ViewController {
 
 extension WidgetsVC {
     private func configure() {
+        title = "Widgets"
         navigationItem.title = "Widgets"
         
         accountBalanceWidget.image = R.image.actbalsmall()
@@ -54,7 +55,7 @@ extension WidgetsVC {
         instructionLabel.text = """
             1. Long-press an empty area on your Home Screen until the apps jiggle.
 
-            2. Tap the plus button in the upper-left corner to bring up the widget picker.
+            2. Tap the plus button in the upper-right corner to bring up the widget picker.
 
             3. Find Provenance in the list.
 
