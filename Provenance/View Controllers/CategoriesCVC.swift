@@ -289,24 +289,17 @@ class CategoriesCVC: CollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let copy = UIAction(title: "Copy Category Name", image: R.image.docOnClipboard()) { _ in
-            UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.name
-        }
-        
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            UIMenu(children: [copy])
+            UIMenu(children: [
+                UIAction(title: "Copy Category Name", image: R.image.docOnClipboard()) { _ in
+                    UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.name
+                }
+            ])
         }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
-        
-        navigationController?.pushViewController({
-            let vc = TransactionsByCategoryVC(style: .grouped)
-            vc.category = dataSource.itemIdentifier(for: indexPath)
-            return vc
-        }(),
-        animated: true)
+        navigationController?.pushViewController({let vc = TransactionsByCategoryVC(style: .grouped);vc.category = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
     }
 }
 

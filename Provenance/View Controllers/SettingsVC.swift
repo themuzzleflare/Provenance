@@ -229,14 +229,14 @@ extension SettingsVC {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-            UIPasteboard.general.string = appDefaults.string(forKey: "apiKey")
-        }
-        
         if indexPath.section == 0 {
             if appDefaults.string(forKey: "apiKey") != nil {
                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                    UIMenu(children: [copy])
+                    UIMenu(children: [
+                        UIAction(title: "Copy API Key", image: R.image.docOnClipboard()) { _ in
+                            UIPasteboard.general.string = appDefaults.string(forKey: "apiKey")
+                        }
+                    ])
                 }
             } else {
                 return nil

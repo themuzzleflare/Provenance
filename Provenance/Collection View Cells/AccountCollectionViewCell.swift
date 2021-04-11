@@ -12,6 +12,12 @@ class AccountCollectionViewCell: UICollectionViewCell {
     
     static let reuseIdentifier = "accountCollectionViewCell"
     
+    override var isSelected: Bool {
+        didSet {
+            balanceLabel.textColor = isSelected ? .white : R.color.accentColor()
+        }
+    }
+    
     let balanceLabel = UILabel()
     let displayNameLabel = UILabel()
     let verticalStack = UIStackView()

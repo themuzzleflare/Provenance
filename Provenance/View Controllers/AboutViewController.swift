@@ -54,24 +54,24 @@ extension AboutViewController {
         if section == 0 {
             if row == 1 {
                 if appVersion != "Unknown" {
-                    let copyVersion = UIAction(title: "Copy Version", image: R.image.docOnClipboard()) { _ in
-                        UIPasteboard.general.string = appVersion
-                    }
-                    
                     return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                        UIMenu(children: [copyVersion])
+                        UIMenu(children: [
+                            UIAction(title: "Copy Version", image: R.image.docOnClipboard()) { _ in
+                                UIPasteboard.general.string = appVersion
+                            }
+                        ])
                     }
                 } else {
                     return nil
                 }
             } else if row == 2 {
                 if appBuild != "Unknown" {
-                    let copyBuild = UIAction(title: "Copy Build", image: R.image.docOnClipboard()) { _ in
-                        UIPasteboard.general.string = appBuild
-                    }
-                    
                     return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                        UIMenu(children: [copyBuild])
+                        UIMenu(children: [
+                            UIAction(title: "Copy Build", image: R.image.docOnClipboard()) { _ in
+                                UIPasteboard.general.string = appBuild
+                            }
+                        ])
                     }
                 } else {
                     return nil
@@ -81,12 +81,12 @@ extension AboutViewController {
             }
         } else if section == 2 {
             if row == 1 {
-                let copyGithub = UIAction(title: "Copy Link", image: R.image.docOnClipboard()) { _ in
-                    UIPasteboard.general.string = "https://github.com/themuzzleflare/Provenance"
-                }
-                
                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                    UIMenu(children: [copyGithub])
+                    UIMenu(children: [
+                        UIAction(title: "Copy Link", image: R.image.docOnClipboard()) { _ in
+                            UIPasteboard.general.string = "https://github.com/themuzzleflare/Provenance"
+                        }
+                    ])
                 }
             } else {
                 return nil

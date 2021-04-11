@@ -260,12 +260,12 @@ extension TransactionDetailVC {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let copy = UIAction(title: "Copy \(self.dataSource.itemIdentifier(for: indexPath)!.titleKey)", image: R.image.docOnClipboard()) { _ in
-            UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.titleValue
-        }
-        
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            UIMenu(children: [copy])
+            UIMenu(children: [
+                UIAction(title: "Copy \(self.dataSource.itemIdentifier(for: indexPath)!.titleKey)", image: R.image.docOnClipboard()) { _ in
+                    UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.titleValue
+                }
+            ])
         }
     }
 }

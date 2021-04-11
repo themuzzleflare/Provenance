@@ -83,12 +83,12 @@ extension DiagnosticTableVC {
         let attribute = dataSource.itemIdentifier(for: indexPath)!
         
         if attribute.titleValue != "Unknown" {
-            let copy = UIAction(title: "Copy \(attribute.titleKey)", image: R.image.docOnClipboard()) { _ in
-                UIPasteboard.general.string = attribute.titleValue
-            }
-            
             return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                UIMenu(children: [copy])
+                UIMenu(children: [
+                    UIAction(title: "Copy \(attribute.titleKey)", image: R.image.docOnClipboard()) { _ in
+                        UIPasteboard.general.string = attribute.titleValue
+                    }
+                ])
             }
         } else {
             return nil

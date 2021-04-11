@@ -294,21 +294,21 @@ class AccountsCVC: CollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let copyBalance = UIAction(title: "Copy Balance", image: R.image.dollarsignCircle()) { _ in
-            UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.balance.valueShort
-        }
-        let copyDisplayName = UIAction(title: "Copy Display Name", image: R.image.textAlignright()) { _ in
-            UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.displayName
-        }
+        let transaction = dataSource.itemIdentifier(for: indexPath)!
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            UIMenu(children: [copyBalance, copyDisplayName])
+            UIMenu(children: [
+                UIAction(title: "Copy Balance", image: R.image.dollarsignCircle()) { _ in
+                    UIPasteboard.general.string = transaction.attributes.balance.valueShort
+                },
+                UIAction(title: "Copy Display Name", image: R.image.textAlignright()) { _ in
+                    UIPasteboard.general.string = transaction.attributes.displayName
+                }
+            ])
         }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
-        
         navigationController?.pushViewController({let vc = R.storyboard.transactionsByAccount.transactionsByAccountController()!;vc.account = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
     }
 }

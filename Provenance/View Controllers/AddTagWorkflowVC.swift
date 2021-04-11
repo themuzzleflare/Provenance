@@ -308,6 +308,24 @@ extension AddTagWorkflowVC {
         
         navigationController?.pushViewController({let vc = AddTagWorkflowTwoVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
     }
+    
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let transaction = self.dataSource.itemIdentifier(for: indexPath)!
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            UIMenu(children: [
+                UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
+                    UIPasteboard.general.string = transaction.attributes.description
+                },
+                UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
+                    UIPasteboard.general.string = transaction.attributes.creationDate
+                },
+                UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
+                    UIPasteboard.general.string = transaction.attributes.amount.valueShort
+                }
+            ])
+        }
+    }
 }
 
 extension AddTagWorkflowVC: UISearchControllerDelegate, UISearchBarDelegate {

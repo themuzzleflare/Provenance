@@ -8,8 +8,26 @@ class AccountDetailVC: TableViewController {
     private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
     
-    private var sections: [Section]!
-    
+    private lazy var sections: [Section] = [
+        Section(title: "Section 1", detailAttributes: [
+            DetailAttribute(
+                titleKey: "Account Balance",
+                titleValue: account.attributes.balance.valueLong
+            ),
+            DetailAttribute(
+                titleKey: "Latest Transaction",
+                titleValue: transaction?.attributes.description ?? ""
+            ),
+            DetailAttribute(
+                titleKey: "Account ID",
+                titleValue: account.id
+            ),
+            DetailAttribute(
+                titleKey: "Creation Date",
+                titleValue: account.attributes.creationDate
+            )
+        ])
+    ]
     private lazy var dataSource = makeDataSource()
     
     private func makeDataSource() -> DataSource {
@@ -26,27 +44,6 @@ class AccountDetailVC: TableViewController {
         )
     }
     private func applySnapshot(animatingDifferences: Bool = false) {
-        sections = [
-            Section(title: "Section 1", detailAttributes: [
-                DetailAttribute(
-                    titleKey: "Account Balance",
-                    titleValue: account.attributes.balance.valueLong
-                ),
-                DetailAttribute(
-                    titleKey: "Latest Transaction",
-                    titleValue: transaction?.attributes.description ?? ""
-                ),
-                DetailAttribute(
-                    titleKey: "Account ID",
-                    titleValue: account.id
-                ),
-                DetailAttribute(
-                    titleKey: "Creation Date",
-                    titleValue: account.attributes.creationDate
-                )
-            ])
-        ]
-        
         var snapshot = Snapshot()
         
         snapshot.appendSections(sections)
@@ -70,9 +67,7 @@ class AccountDetailVC: TableViewController {
         setProperties()
         setupNavigation()
         setupTableView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
+        
         applySnapshot()
     }
     
@@ -91,12 +86,12 @@ class AccountDetailVC: TableViewController {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let copy = UIAction(title: "Copy \(self.dataSource.itemIdentifier(for: indexPath)!.titleKey)", image: R.image.docOnClipboard()) { _ in
-            UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.titleValue
-        }
-        
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            UIMenu(children: [copy])
+            UIMenu(children: [
+                UIAction(title: "Copy \(self.dataSource.itemIdentifier(for: indexPath)!.titleKey)", image: R.image.docOnClipboard()) { _ in
+                    UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.titleValue
+                }
+            ])
         }
     }
 }

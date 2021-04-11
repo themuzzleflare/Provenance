@@ -470,18 +470,18 @@ extension TransactionsVC {
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let transaction = self.dataSource.itemIdentifier(for: indexPath)!
         
-        let copyDescription = UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
-            UIPasteboard.general.string = transaction.attributes.description
-        }
-        let copyCreationDate = UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
-            UIPasteboard.general.string = transaction.attributes.creationDate
-        }
-        let copyAmount = UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
-            UIPasteboard.general.string = transaction.attributes.amount.valueShort
-        }
-        
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            UIMenu(children: [copyDescription, copyCreationDate, copyAmount])
+            UIMenu(children: [
+                UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
+                    UIPasteboard.general.string = transaction.attributes.description
+                },
+                UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
+                    UIPasteboard.general.string = transaction.attributes.creationDate
+                },
+                UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
+                    UIPasteboard.general.string = transaction.attributes.amount.valueShort
+                }
+            ])
         }
     }
 }

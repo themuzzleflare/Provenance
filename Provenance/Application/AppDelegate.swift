@@ -1,5 +1,6 @@
 import UIKit
 import Firebase
+import FirebaseAnalytics
 import WidgetKit
 import Rswift
 

@@ -59,12 +59,12 @@ extension TagsVC {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let copy = UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-            UIPasteboard.general.string = self.transaction.relationships.tags.data[indexPath.row].id
-        }
-        
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            UIMenu(children: [copy])
+            UIMenu(children: [
+                UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
+                    UIPasteboard.general.string = self.transaction.relationships.tags.data[indexPath.row].id
+                }
+            ])
         }
     }
 }
