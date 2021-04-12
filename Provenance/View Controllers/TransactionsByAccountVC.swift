@@ -152,7 +152,7 @@ class TransactionsByAccountVC: TableViewController {
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
     
-    @IBOutlet var accountBalance: UILabel!
+    @IBOutlet weak var accountBalance: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()

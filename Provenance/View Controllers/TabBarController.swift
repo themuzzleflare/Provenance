@@ -27,7 +27,7 @@ class TabBarController: UITabBarController {
     }()
     
     let tabFive: UIViewController = {
-        let vc = NavigationController(rootViewController: R.storyboard.aboutViewController.aboutVC()!)
+        let vc = NavigationController(rootViewController: AboutVC(style: .grouped))
         vc.tabBarItem = UITabBarItem(title: "About", image: R.image.infoCircle(), selectedImage: R.image.infoCircleFill())
         return vc
     }()
