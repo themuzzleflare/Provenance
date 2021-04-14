@@ -42,6 +42,32 @@
 				<string>Relative</string>
 			</array>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Diagnostics</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>Version</string>
+			<key>Key</key>
+			<string>app_version</string>
+			<key>DefaultValue</key>
+			<string>Unknown</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>Build</string>
+			<key>Key</key>
+			<string>app_build</string>
+			<key>DefaultValue</key>
+			<string>Unknown</string>
+		</dict>
 	</array>
 </dict>
 </plist>
