@@ -172,6 +172,10 @@ class TransactionsByCategoryVC: TableViewController {
 }
 
 extension TransactionsByCategoryVC {
+    @objc private func appMovedToForeground() {
+        applySnapshot()
+    }
+    
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
         let loadingView = ActivityIndicator(style: .medium)
@@ -189,6 +193,7 @@ extension TransactionsByCategoryVC {
     private func setProperties() {
         title = "Transactions by Category"
         definesPresentationContext = true
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     private func setupNavigation() {

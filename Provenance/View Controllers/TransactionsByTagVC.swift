@@ -171,6 +171,10 @@ extension TransactionsByTagVC {
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
         }
     }
+
+    @objc private func appMovedToForeground() {
+        applySnapshot()
+    }
     
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
@@ -189,6 +193,7 @@ extension TransactionsByTagVC {
     private func setProperties() {
         title = "Transactions by Tag"
         definesPresentationContext = true
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     private func setupNavigation() {
@@ -383,183 +388,106 @@ extension TransactionsByTagVC {
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let transaction = dataSource.itemIdentifier(for: indexPath)!
         
-        let copyDescription = UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
-            UIPasteboard.general.string = transaction.attributes.description
-        }
-        let copyCreationDate = UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
-            UIPasteboard.general.string = transaction.attributes.creationDate
-        }
-        let copyAmount = UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
-            UIPasteboard.general.string = transaction.attributes.amount.valueShort
-        }
-        let remove = UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { _ in
-            #if !targetEnvironment(macCatalyst)
-            let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            
-            let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
-                let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
-                
-                var request = URLRequest(url: url)
-                
-                request.httpMethod = "DELETE"
-                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                request.addValue("Bearer \(appDefaults.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
-                
-                let bodyObject: [String : Any] = [
-                    "data": [
-                        [
-                            "type": "tags",
-                            "id": self.tag.id
-                        ]
-                    ]
-                ]
-                
-                request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
-                
-                URLSession.shared.dataTask(with: request) { data, response, error in
-                    if error == nil {
-                        let statusCode = (response as! HTTPURLResponse).statusCode
-                        
-                        if statusCode != 204 {
-                            DispatchQueue.main.async {
-                                let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
-                                
-                                let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
-                                let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
-                                
-                                let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
-                                let messageAttrString = NSMutableAttributedString(string: "\(self.tag.id) was not removed from \(transaction.attributes.description).", attributes: messageFont)
-                                
-                                ac.setValue(titleAttrString, forKey: "attributedTitle")
-                                ac.setValue(messageAttrString, forKey: "attributedMessage")
-                                
-                                let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                                
-                                dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-                                
-                                ac.addAction(dismissAction)
-                                
-                                self.present(ac, animated: true)
-                                
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                self.fetchTransactions()
-                            }
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
-                            
-                            let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
-                            let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
-                            
-                            let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
-                            let messageAttrString = NSMutableAttributedString(string: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", attributes: messageFont)
-                            
-                            ac.setValue(titleAttrString, forKey: "attributedTitle")
-                            ac.setValue(messageAttrString, forKey: "attributedMessage")
-                            
-                            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                            
-                            dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-                            
-                            ac.addAction(dismissAction)
-                            
-                            self.present(ac, animated: true)
-                        }
-                    }
-                }
-                .resume()
-            })
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-            
-            cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-            
-            ac.addAction(confirmAction)
-            ac.addAction(cancelAction)
-            
-            self.present(ac, animated: true)
-            #else
-            let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
-            
-            var request = URLRequest(url: url)
-            
-            request.httpMethod = "DELETE"
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.addValue("Bearer \(appDefaults.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
-            
-            let bodyObject: [String : Any] = [
-                "data": [
-                    [
-                        "type": "tags",
-                        "id": self.tag.id
-                    ]
-                ]
-            ]
-            
-            request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
-            
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                if error == nil {
-                    let statusCode = (response as! HTTPURLResponse).statusCode
-                    
-                    if statusCode != 204 {
-                        DispatchQueue.main.async {
-                            let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
-                            
-                            let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
-                            let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
-                            
-                            let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
-                            let messageAttrString = NSMutableAttributedString(string: "\(self.tag.id) was not removed from \(transaction.attributes.description).", attributes: messageFont)
-                            
-                            ac.setValue(titleAttrString, forKey: "attributedTitle")
-                            ac.setValue(messageAttrString, forKey: "attributedMessage")
-                            
-                            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                            
-                            dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-                            
-                            ac.addAction(dismissAction)
-                            
-                            self.present(ac, animated: true)
-                            
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            self.fetchTransactions()
-                        }
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
-                        
-                        let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
-                        let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
-                        
-                        let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
-                        let messageAttrString = NSMutableAttributedString(string: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", attributes: messageFont)
-                        
-                        ac.setValue(titleAttrString, forKey: "attributedTitle")
-                        ac.setValue(messageAttrString, forKey: "attributedMessage")
-                        
-                        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                        
-                        dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-                        
-                        ac.addAction(dismissAction)
-                        
-                        self.present(ac, animated: true)
-                    }
-                }
-            }
-            .resume()
-            #endif
-        }
-        
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            UIMenu(children: [copyDescription, copyCreationDate, copyAmount, remove])
+            UIMenu(children: [
+                UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
+                    UIPasteboard.general.string = transaction.attributes.description
+                },
+                UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
+                    UIPasteboard.general.string = transaction.attributes.creationDate
+                },
+                UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
+                    UIPasteboard.general.string = transaction.attributes.amount.valueShort
+                },
+                UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { _ in
+                    let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+                    let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
+                        let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
+
+                        var request = URLRequest(url: url)
+
+                        request.httpMethod = "DELETE"
+                        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                        request.addValue("Bearer \(appDefaults.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
+
+                        let bodyObject: [String : Any] = [
+                            "data": [
+                                [
+                                    "type": "tags",
+                                    "id": self.tag.id
+                                ]
+                            ]
+                        ]
+
+                        request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+
+                        URLSession.shared.dataTask(with: request) { data, response, error in
+                            if error == nil {
+                                let statusCode = (response as! HTTPURLResponse).statusCode
+
+                                if statusCode != 204 {
+                                    DispatchQueue.main.async {
+                                        let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+
+                                        let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+                                        let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+
+                                        let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
+                                        let messageAttrString = NSMutableAttributedString(string: "\(self.tag.id) was not removed from \(transaction.attributes.description).", attributes: messageFont)
+
+                                        ac.setValue(titleAttrString, forKey: "attributedTitle")
+                                        ac.setValue(messageAttrString, forKey: "attributedMessage")
+
+                                        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+
+                                        dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+
+                                        ac.addAction(dismissAction)
+
+                                        self.present(ac, animated: true)
+
+                                    }
+                                } else {
+                                    DispatchQueue.main.async {
+                                        self.fetchTransactions()
+                                    }
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
+
+                                    let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
+                                    let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
+
+                                    let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
+                                    let messageAttrString = NSMutableAttributedString(string: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", attributes: messageFont)
+
+                                    ac.setValue(titleAttrString, forKey: "attributedTitle")
+                                    ac.setValue(messageAttrString, forKey: "attributedMessage")
+
+                                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+
+                                    dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+
+                                    ac.addAction(dismissAction)
+
+                                    self.present(ac, animated: true)
+                                }
+                            }
+                        }
+                        .resume()
+                    })
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+
+                    cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+
+                    ac.addAction(confirmAction)
+                    ac.addAction(cancelAction)
+
+                    self.present(ac, animated: true)
+                }
+            ])
         }
     }
 }

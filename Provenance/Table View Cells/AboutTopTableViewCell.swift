@@ -41,7 +41,7 @@ extension AboutTopTableViewCell {
         logoImageView.clipsToBounds = true
         logoImageView.layer.cornerRadius = 20
         logoImageView.image = upAnimation
-
+        
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.font = R.font.circularStdBold(size: 32)
         nameLabel.textAlignment = .center

@@ -8,26 +8,8 @@ class AccountDetailVC: TableViewController {
     private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
     
-    private lazy var sections: [Section] = [
-        Section(title: "Section 1", detailAttributes: [
-            DetailAttribute(
-                titleKey: "Account Balance",
-                titleValue: account.attributes.balance.valueLong
-            ),
-            DetailAttribute(
-                titleKey: "Latest Transaction",
-                titleValue: transaction?.attributes.description ?? ""
-            ),
-            DetailAttribute(
-                titleKey: "Account ID",
-                titleValue: account.id
-            ),
-            DetailAttribute(
-                titleKey: "Creation Date",
-                titleValue: account.attributes.creationDate
-            )
-        ])
-    ]
+    private var sections: [Section]!
+
     private lazy var dataSource = makeDataSource()
     
     private func makeDataSource() -> DataSource {
@@ -44,6 +26,27 @@ class AccountDetailVC: TableViewController {
         )
     }
     private func applySnapshot(animatingDifferences: Bool = false) {
+        sections = [
+            Section(title: "Section 1", detailAttributes: [
+                DetailAttribute(
+                    titleKey: "Account Balance",
+                    titleValue: account.attributes.balance.valueLong
+                ),
+                DetailAttribute(
+                    titleKey: "Latest Transaction",
+                    titleValue: transaction?.attributes.description ?? ""
+                ),
+                DetailAttribute(
+                    titleKey: "Account ID",
+                    titleValue: account.id
+                ),
+                DetailAttribute(
+                    titleKey: "Creation Date",
+                    titleValue: account.attributes.creationDate
+                )
+            ])
+        ]
+        
         var snapshot = Snapshot()
         
         snapshot.appendSections(sections)
@@ -55,6 +58,10 @@ class AccountDetailVC: TableViewController {
         }
         
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
+    }
+
+    @objc private func appMovedToForeground() {
+        applySnapshot()
     }
     
     @objc private func closeWorkflow() {
@@ -73,6 +80,7 @@ class AccountDetailVC: TableViewController {
     
     private func setProperties() {
         title = "Account Details"
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     private func setupNavigation() {

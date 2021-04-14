@@ -82,19 +82,16 @@ extension TransactionsVC {
     }
     
     private func filterMenu() -> UIMenu {
-        let categoryItems = FilterCategory.allCases.map { category in
-            UIAction(title: categoryNameTransformed(category), state: self.filter == category ? .on : .off) { _ in
-                self.filter = category
+        return UIMenu(image: R.image.sliderHorizontal3(), options: .displayInline, children: [
+            UIMenu(title: "Category", image: R.image.arrowUpArrowDownCircle(), children: FilterCategory.allCases.map { category in
+                UIAction(title: categoryNameTransformed(category), state: self.filter == category ? .on : .off) { _ in
+                    self.filter = category
+                }
+            }),
+            UIAction(title: "Settled Only", image: R.image.checkmarkCircle(), state: self.showSettledOnly ? .on : .off) { _ in
+                self.showSettledOnly.toggle()
             }
-        }
-        
-        let categoriesMenu = UIMenu(title: "Category", image: R.image.arrowUpArrowDownCircle(), children: categoryItems)
-        
-        let settledOnlyFilter = UIAction(title: "Settled Only", image: R.image.checkmarkCircle(), state: self.showSettledOnly ? .on : .off) { _ in
-            self.showSettledOnly.toggle()
-        }
-        
-        return UIMenu(image: R.image.sliderHorizontal3(), options: .displayInline, children: [categoriesMenu, settledOnlyFilter])
+        ])
     }
     
     private func categoryNameTransformed(_ category: FilterCategory) -> String {
@@ -117,6 +114,7 @@ extension TransactionsVC {
                 return cell
             }
         )
+
         dataSource.defaultRowAnimation = .fade
         
         return dataSource
@@ -223,6 +221,10 @@ extension TransactionsVC {
         
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
+
+    @objc private func appMovedToForeground() {
+        applySnapshot()
+    }
     
     @objc private func switchDateStyle() {
         if appDefaults.string(forKey: "dateStyle") == "Absolute" || appDefaults.string(forKey: "dateStyle") == nil {
@@ -253,6 +255,7 @@ extension TransactionsVC {
     private func configureProperties() {
         title = "Transactions"
         definesPresentationContext = true
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     private func configureNavigation() {        

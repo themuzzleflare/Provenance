@@ -91,6 +91,10 @@ extension AddTagWorkflowThreeVC {
             default: return (title: "Failed", content: "The tag was not added to the transaction.")
         }
     }
+
+    @objc private func appMovedToForeground() {
+        tableView.reloadData()
+    }
     
     @objc private func addTag() {
         let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
@@ -171,6 +175,7 @@ extension AddTagWorkflowThreeVC {
     
     private func configureProperties() {
         title = "Confirmation"
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     private func configureNavigation() {

@@ -17,11 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:[UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         setupWindow()
+        registerDefaultsFromSettingsBundle()
         initialSetup()
         
         FirebaseApp.configure()
         Analytics.load()
-        
+
         return true
     }
 }
@@ -31,6 +32,35 @@ extension AppDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = viewController
         window?.makeKeyAndVisible()
+    }
+
+    private func registerDefaultsFromSettingsBundle() {
+        let settingsName                    = "Settings"
+        let settingsExtension               = "bundle"
+        let settingsRootPlist               = "Root.plist"
+        let settingsPreferencesItems        = "PreferenceSpecifiers"
+        let settingsPreferenceKey           = "Key"
+        let settingsPreferenceDefaultValue  = "DefaultValue"
+
+        guard let settingsBundleURL = Bundle.main.url(forResource: settingsName, withExtension: settingsExtension),
+              let settingsData = try? Data(contentsOf: settingsBundleURL.appendingPathComponent(settingsRootPlist)),
+              let settingsPlist = try? PropertyListSerialization.propertyList(
+                from: settingsData,
+                options: [],
+                format: nil) as? [String: Any],
+              let settingsPreferences = settingsPlist[settingsPreferencesItems] as? [[String: Any]] else {
+            return
+        }
+
+        var defaultsToRegister = [String: Any]()
+
+        settingsPreferences.forEach { preference in
+            if let key = preference[settingsPreferenceKey] as? String {
+                defaultsToRegister[key] = preference[settingsPreferenceDefaultValue]
+            }
+        }
+
+        appDefaults.register(defaults: defaultsToRegister)
     }
     
     private func initialSetup() {
@@ -53,6 +83,7 @@ extension AppDelegate {
             ac.addTextField(configurationHandler: { textField in
                 textField.autocapitalizationType = .none
                 textField.autocorrectionType = .no
+                textField.isSecureTextEntry = false
                 textField.tintColor = R.color.accentColor()
                 textField.text = appDefaults.string(forKey: "apiKey") ?? nil
                 

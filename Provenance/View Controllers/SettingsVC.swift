@@ -17,6 +17,10 @@ class SettingsVC: TableViewController {
 }
 
 extension SettingsVC {
+    @objc private func appMovedToForeground() {
+        tableView.reloadData()
+    }
+
     @objc private func switchDateStyle(segment: UISegmentedControl) {
         if segment.selectedSegmentIndex == 0 {
             appDefaults.setValue("Absolute", forKey: "dateStyle")
@@ -33,6 +37,7 @@ extension SettingsVC {
     
     private func setProperties() {
         title = "Settings"
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     private func setupNavigation() {
@@ -98,6 +103,7 @@ extension SettingsVC {
             ac.addTextField(configurationHandler: { textField in
                 textField.autocapitalizationType = .none
                 textField.autocorrectionType = .no
+                textField.isSecureTextEntry = false
                 textField.tintColor = R.color.accentColor()
                 textField.text = appDefaults.string(forKey: "apiKey") ?? nil
                 

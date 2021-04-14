@@ -145,6 +145,10 @@ class AddTagWorkflowVC: TableViewController {
         
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
+
+    @objc private func appMovedToForeground() {
+        applySnapshot()
+    }
     
     @objc private func refreshTransactions() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -174,6 +178,7 @@ class AddTagWorkflowVC: TableViewController {
     private func setProperties() {
         title = "Transactions"
         definesPresentationContext = true
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     private func setupNavigation() {

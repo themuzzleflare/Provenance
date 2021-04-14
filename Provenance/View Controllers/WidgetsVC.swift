@@ -52,15 +52,7 @@ extension WidgetsVC {
         instructionLabel.textColor = .label
         instructionLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         instructionLabel.numberOfLines = 0
-        instructionLabel.text = """
-            1. Long-press an empty area on your Home Screen until the apps jiggle.
-
-            2. Tap the plus button in the upper-right corner to bring up the widget picker.
-
-            3. Find Provenance in the list.
-
-            4. Tap the Add Widget button or drag the widget to the desired spot on your Home Screen.
-            """
+        instructionLabel.text = "1. Long-press an empty area on your Home Screen until the apps jiggle.\n\n2. Tap the plus button in the upper-right corner to bring up the widget picker.\n\n3. Find Provenance in the list.\n\n4. Tap the Add Widget button or drag the widget to the desired spot on your Home Screen."
         
         view.addSubview(scrollView)
         

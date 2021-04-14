@@ -46,7 +46,9 @@ class TransactionsByAccountVC: TableViewController {
                 return cell
             }
         )
+
         dataSource.defaultRowAnimation = .fade
+
         return dataSource
     }
     
@@ -173,6 +175,10 @@ class TransactionsByAccountVC: TableViewController {
 }
 
 extension TransactionsByAccountVC {
+    @objc private func appMovedToForeground() {
+        applySnapshot()
+    }
+
     @objc private func openAccountInfo() {
         present(NavigationController(rootViewController: {let vc = AccountDetailVC(style: .grouped);vc.account = account;vc.transaction = transactions.first;return vc}()), animated: true)
     }
@@ -194,6 +200,8 @@ extension TransactionsByAccountVC {
         definesPresentationContext = true
         
         accountBalance.text = account.attributes.balance.valueShort
+
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     private func configureNavigation() {        

@@ -31,6 +31,10 @@ class TransactionDetailVC: TableViewController {
 }
 
 extension TransactionDetailVC {
+    @objc private func appMovedToForeground() {
+        applySnapshot()
+    }
+
     private var filteredSections: [Section] {
         sections.filter { section in
             !section.detailAttributes.allSatisfy { detailAttribute in
@@ -207,6 +211,7 @@ extension TransactionDetailVC {
     
     private func configureProperties() {
         title = "Transaction Details"
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     private func configureMarqueeLabel() {
