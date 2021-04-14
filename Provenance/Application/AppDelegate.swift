@@ -35,12 +35,12 @@ extension AppDelegate {
     }
 
     private func registerDefaultsFromSettingsBundle() {
-        let settingsName                    = "Settings"
-        let settingsExtension               = "bundle"
-        let settingsRootPlist               = "Root.plist"
-        let settingsPreferencesItems        = "PreferenceSpecifiers"
-        let settingsPreferenceKey           = "Key"
-        let settingsPreferenceDefaultValue  = "DefaultValue"
+        let settingsName = "Settings"
+        let settingsExtension = "bundle"
+        let settingsRootPlist = "Root.plist"
+        let settingsPreferencesItems = "PreferenceSpecifiers"
+        let settingsPreferenceKey = "Key"
+        let settingsPreferenceDefaultValue = "DefaultValue"
 
         guard let settingsBundleURL = Bundle.main.url(forResource: settingsName, withExtension: settingsExtension),
               let settingsData = try? Data(contentsOf: settingsBundleURL.appendingPathComponent(settingsRootPlist)),
