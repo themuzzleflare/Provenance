@@ -47,6 +47,8 @@
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
 			<string>Diagnostics</string>
+			<key>FooterText</key>
+			<string></string>
 		</dict>
 		<dict>
 			<key>Type</key>
@@ -56,7 +58,7 @@
 			<key>Key</key>
 			<string>app_version</string>
 			<key>DefaultValue</key>
-			<string>Unknown</string>
+			<string></string>
 		</dict>
 		<dict>
 			<key>Type</key>
@@ -66,7 +68,7 @@
 			<key>Key</key>
 			<string>app_build</string>
 			<key>DefaultValue</key>
-			<string>Unknown</string>
+			<string></string>
 		</dict>
 	</array>
 </dict>
