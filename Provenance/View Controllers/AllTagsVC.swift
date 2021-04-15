@@ -82,7 +82,7 @@ class AllTagsVC: TableViewController {
                     label.textColor = .label
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
-                    label.text = "No Transactions"
+                    label.text = "No Tags"
                     
                     return view
                 }()

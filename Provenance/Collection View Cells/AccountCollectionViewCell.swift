@@ -3,10 +3,15 @@ import TinyConstraints
 import Rswift
 
 class AccountCollectionViewCell: UICollectionViewCell {
-    var account: AccountResource! {
+    var account: AccountResource? {
         didSet {
-            balanceLabel.text = account.attributes.balance.valueShort
-            displayNameLabel.text = account.attributes.displayName
+            if let account = account {
+                balanceLabel.text = account.attributes.balance.valueShort
+                displayNameLabel.text = account.attributes.displayName
+            } else {
+                balanceLabel.text = "Balance"
+                displayNameLabel.text = "Display Name"
+            }
         }
     }
     

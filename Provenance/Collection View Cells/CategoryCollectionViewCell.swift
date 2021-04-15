@@ -3,9 +3,13 @@ import TinyConstraints
 import Rswift
 
 class CategoryCollectionViewCell: UICollectionViewCell {
-    var category: CategoryResource! {
+    var category: CategoryResource? {
         didSet {
-            label.text = category.attributes.name
+            if let category = category {
+                label.text = category.attributes.name
+            } else {
+                label.text = "Category Name"
+            }
         }
     }
     
