@@ -210,7 +210,7 @@ extension SceneDelegate {
                     ac.addAction(dismissAction)
 
                     self.window?.rootViewController?.present(ac, animated: true)
-
+                    
                     WidgetCenter.shared.reloadAllTimelines()
                 }
             }

@@ -209,8 +209,6 @@ class CategoriesCVC: CollectionViewController {
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
-                        print("Categories JSON decoding succeeded")
-                        
                         self.categories = decodedResponse.data
                         self.categoriesError = ""
                         self.categoriesErrorResponse = []
@@ -232,8 +230,6 @@ class CategoriesCVC: CollectionViewController {
                         self.applySnapshot()
                         self.collectionView.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
-                        print("Categories Error JSON decoding succeeded")
-                        
                         self.categoriesErrorResponse = decodedResponse.errors
                         self.categoriesError = ""
                         self.categories = []
@@ -249,8 +245,6 @@ class CategoriesCVC: CollectionViewController {
                         self.applySnapshot()
                         self.collectionView.refreshControl?.endRefreshing()
                     } else {
-                        print("Categories JSON decoding failed")
-                        
                         self.categoriesError = "JSON Decoding Failed!"
                         self.categoriesErrorResponse = []
                         self.categories = []
@@ -267,8 +261,6 @@ class CategoriesCVC: CollectionViewController {
                         self.collectionView.refreshControl?.endRefreshing()
                     }
                 case .failure:
-                    print(response.error?.localizedDescription ?? "Unknown error")
-                    
                     self.categoriesError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.categoriesErrorResponse = []
                     self.categories = []

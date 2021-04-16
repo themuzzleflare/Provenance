@@ -248,8 +248,6 @@ extension TransactionsByAccountVC {
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
-                        print("Transactions JSON decoding succeeded")
-                        
                         self.transactions = decodedResponse.data
                         self.transactionsPagination = decodedResponse.links
                         self.transactionsError = ""
@@ -274,8 +272,6 @@ extension TransactionsByAccountVC {
                         self.applySnapshot()
                         self.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
-                        print("Transactions Error JSON decoding succeeded")
-                        
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
                         self.transactions = []
@@ -296,8 +292,6 @@ extension TransactionsByAccountVC {
                         self.applySnapshot()
                         self.refreshControl?.endRefreshing()
                     } else {
-                        print("Transactions JSON decoding failed")
-                        
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
                         self.transactions = []
@@ -319,8 +313,6 @@ extension TransactionsByAccountVC {
                         self.refreshControl?.endRefreshing()
                     }
                 case .failure:
-                    print(response.error?.localizedDescription ?? "Unknown error")
-                    
                     self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.transactionsErrorResponse = []
                     self.transactions = []
@@ -352,8 +344,6 @@ extension TransactionsByAccountVC {
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
-                        print("Categories JSON decoding succeeded")
-                        
                         self.categories = decodedResponse.data
                     } else {
                         print("Categories JSON decoding failed")

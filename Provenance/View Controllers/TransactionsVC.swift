@@ -309,8 +309,6 @@ extension TransactionsVC {
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
-                        print("Transactions JSON decoding succeeded")
-                        
                         self.transactions = decodedResponse.data
                         self.transactionsPagination = decodedResponse.links
                         self.transactionsError = ""
@@ -338,11 +336,7 @@ extension TransactionsVC {
                         
                         self.applySnapshot()
                         self.refreshControl?.endRefreshing()
-                        
-                        WidgetCenter.shared.reloadAllTimelines()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
-                        print("Transactions Error JSON decoding succeeded")
-                        
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
                         self.transactions = []
@@ -364,11 +358,7 @@ extension TransactionsVC {
                         
                         self.applySnapshot()
                         self.refreshControl?.endRefreshing()
-                        
-                        WidgetCenter.shared.reloadAllTimelines()
                     } else {
-                        print("Transactions JSON decoding failed")
-                        
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
                         self.transactions = []
@@ -390,12 +380,8 @@ extension TransactionsVC {
                         
                         self.applySnapshot()
                         self.refreshControl?.endRefreshing()
-                        
-                        WidgetCenter.shared.reloadAllTimelines()
                     }
                 case .failure:
-                    print(response.error?.localizedDescription ?? "Unknown error")
-                    
                     self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.transactionsErrorResponse = []
                     self.transactions = []
@@ -417,9 +403,8 @@ extension TransactionsVC {
                     
                     self.applySnapshot()
                     self.refreshControl?.endRefreshing()
-                    
-                    WidgetCenter.shared.reloadAllTimelines()
             }
+            WidgetCenter.shared.reloadAllTimelines()
             self.searchController.searchBar.placeholder = "Search \(self.preFilteredTransactions.count.description) \(self.preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
         }
     }
@@ -431,8 +416,6 @@ extension TransactionsVC {
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
-                        print("Categories JSON decoding succeeded")
-                        
                         self.categories = decodedResponse.data
                     } else {
                         print("Categories JSON decoding failed")
@@ -450,8 +433,6 @@ extension TransactionsVC {
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
-                        print("Accounts JSON decoding succeeded")
-                        
                         self.accounts = decodedResponse.data
                     } else {
                         print("Accounts JSON decoding failed")

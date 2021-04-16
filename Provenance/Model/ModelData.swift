@@ -4,13 +4,31 @@ import Alamofire
 import SwiftyGif
 import Rswift
 
-let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance") ?? .standard
+// MARK: - UserDefaults Suite for Provenance Application Group
+let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
 
+// MARK: - Application Metadata Values
 let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
 let appBuild = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
 let appName = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "Provenance"
 let appCopyright = Bundle.main.infoDictionary?["NSHumanReadableCopyright"] as? String ?? "Copyright © 2021 Paul Tavitian"
 
+var apiKeyDisplay: String {
+    switch appDefaults.string(forKey: "apiKey") {
+        case nil, "":
+            return "None"
+        default:
+            return appDefaults.string(forKey: "apiKey")!
+    }
+}
+
+var bgCellView: UIView {
+    let view = UIView()
+    view.backgroundColor = R.color.accentColor()
+    return view
+}
+
+// MARK: - UICollectionView Layouts
 func twoColumnGridLayout() -> UICollectionViewLayout {
     let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int,
                                                         layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection in
@@ -50,27 +68,14 @@ func gridLayout() -> UICollectionViewLayout {
     return layout
 }
 
-var apiKeyDisplay: String {
-    switch appDefaults.string(forKey: "apiKey") {
-        case nil, "":
-            return "None"
-        default:
-            return appDefaults.string(forKey: "apiKey")!
-    }
-}
-
-var bgCellView: UIView {
-    let bgView = UIView()
-    bgView.backgroundColor = R.color.accentColor()
-    return bgView
-}
-
+// MARK: - GIF Stickers Array
 let stickerTwo = try! UIImage(gifName: "StickerTwo.gif")
 let stickerThree = try! UIImage(gifName: "StickerThree.gif")
 let stickerSix = try! UIImage(gifName: "StickerSix.gif")
 let stickerSeven = try! UIImage(gifName: "StickerSeven.gif")
 let stickerGifs = [stickerTwo, stickerThree, stickerSix, stickerSeven]
 
+// MARK: - Animated Up Logo
 let up1 = R.image.upLogoSequence.first()!
 let up2 = R.image.upLogoSequence.second()!
 let up3 = R.image.upLogoSequence.third()!
@@ -82,6 +87,7 @@ let up8 = R.image.upLogoSequence.eighth()!
 let upImages = [up1, up2, up3, up4, up5, up6, up7, up8]
 let upAnimation = UIImage.animatedImage(with: upImages, duration: 0.65)!
 
+// MARK: - Alamofire & Up API Shortcuts
 var authorisationHeader: HTTPHeader {
     return .authorization(bearerToken: appDefaults.string(forKey: "apiKey") ?? "")
 }

@@ -78,7 +78,6 @@ struct LatestTransactionModel: TimelineEntry {
 
 struct LatestTransactionEntryView: View {
     @Environment(\.widgetFamily) private var family
-    @Environment(\.colorScheme) private var colorScheme
     
     var entry: LatestTransactionModel
     

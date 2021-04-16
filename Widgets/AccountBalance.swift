@@ -67,7 +67,6 @@ struct AccountBalanceModel: TimelineEntry {
 
 struct AccountBalanceEntryView: View {
     @Environment(\.widgetFamily) private var family
-    @Environment(\.colorScheme) private var colorScheme
     
     var entry: AccountBalanceModel
     

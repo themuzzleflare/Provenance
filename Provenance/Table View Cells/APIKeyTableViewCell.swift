@@ -10,7 +10,6 @@ class APIKeyTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         configureCell()
         configureContentView()
         configureApiKeyLabel()
@@ -39,7 +38,7 @@ extension APIKeyTableViewCell {
         apiKeyLabel.speed = .rate(65)
         apiKeyLabel.fadeLength = 20
         
-        apiKeyLabel.textAlignment = .left
+        apiKeyLabel.textAlignment = .center
         apiKeyLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         apiKeyLabel.textColor = .label
     }

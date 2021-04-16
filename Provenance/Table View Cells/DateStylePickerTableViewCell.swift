@@ -11,12 +11,11 @@ class DateStylePickerTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        setupCell()
-        setupContentView()
-        setupLabel()
-        setupSegmentedControl()
-        setupHorizontalStackView()
+        configureCell()
+        configureContentView()
+        configureLabel()
+        configureSegmentedControl()
+        configureHorizontalStackView()
     }
     
     required init?(coder: NSCoder) {
@@ -25,17 +24,17 @@ class DateStylePickerTableViewCell: UITableViewCell {
 }
 
 extension DateStylePickerTableViewCell {
-    private func setupCell() {
+    private func configureCell() {
         selectionStyle = .none
         accessoryType = .none
         separatorInset = .zero
     }
     
-    private func setupContentView() {
+    private func configureContentView() {
         contentView.addSubview(horizontalStack)
     }
     
-    private func setupLabel() {
+    private func configureLabel() {
         label.translatesAutoresizingMaskIntoConstraints = false
         
         label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
@@ -45,16 +44,16 @@ extension DateStylePickerTableViewCell {
         label.text = "Date Style"
     }
     
-    private func setupSegmentedControl() {
+    private func configureSegmentedControl() {
         segmentedControl.insertSegment(withTitle: "Absolute", at: 0, animated: false)
         segmentedControl.insertSegment(withTitle: "Relative", at: 1, animated: false)
         
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-                
+
         segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: R.font.circularStdBook(size: 14)!], for: .normal)
     }
     
-    private func setupHorizontalStackView() {
+    private func configureHorizontalStackView() {
         horizontalStack.addArrangedSubview(label)
         horizontalStack.addArrangedSubview(segmentedControl)
         

@@ -1,6 +1,6 @@
 import Foundation
 
-let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance") ?? .standard
+let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
 
 // MARK: - URLSession Extensions for Query Parameter Support
 protocol URLQueryParameterStringConvertible {

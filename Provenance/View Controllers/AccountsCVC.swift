@@ -210,8 +210,6 @@ class AccountsCVC: CollectionViewController {
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
-                        print("Accounts JSON decoding succeeded")
-                        
                         self.accounts = decodedResponse.data
                         self.accountsPagination = decodedResponse.links
                         self.accountsError = ""
@@ -232,10 +230,9 @@ class AccountsCVC: CollectionViewController {
                         }
                         
                         self.applySnapshot()
+                        self.collectionView.reloadData()
                         self.collectionView.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
-                        print("Accounts Error JSON decoding succeeded")
-                        
                         self.accountsErrorResponse = decodedResponse.errors
                         self.accountsError = ""
                         self.accounts = []
@@ -252,8 +249,6 @@ class AccountsCVC: CollectionViewController {
                         self.applySnapshot()
                         self.collectionView.refreshControl?.endRefreshing()
                     } else {
-                        print("Accounts JSON decoding failed")
-                        
                         self.accountsError = "JSON Decoding Failed!"
                         self.accountsErrorResponse = []
                         self.accounts = []
@@ -271,8 +266,6 @@ class AccountsCVC: CollectionViewController {
                         self.collectionView.refreshControl?.endRefreshing()
                     }
                 case .failure:
-                    print(response.error?.localizedDescription ?? "Unknown error")
-                    
                     self.accountsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.accountsErrorResponse = []
                     self.accounts = []

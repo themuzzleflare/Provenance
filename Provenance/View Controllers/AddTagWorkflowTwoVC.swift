@@ -274,8 +274,6 @@ class AddTagWorkflowTwoVC: TableViewController {
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: response.data!) {
-                        print("Tags JSON decoding succeeded")
-                        
                         self.tags = decodedResponse.data
                         self.tagsPagination = decodedResponse.links
                         self.tagsError = ""
@@ -301,8 +299,6 @@ class AddTagWorkflowTwoVC: TableViewController {
                         self.applySnapshot()
                         self.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
-                        print("Tags Error JSON decoding succeeded")
-                        
                         self.tagsErrorResponse = decodedResponse.errors
                         self.tagsError = ""
                         self.tags = []
@@ -322,8 +318,6 @@ class AddTagWorkflowTwoVC: TableViewController {
                         self.applySnapshot()
                         self.refreshControl?.endRefreshing()
                     } else {
-                        print("Tags JSON decoding failed")
-                        
                         self.tagsError = "JSON Decoding Failed!"
                         self.tagsErrorResponse = []
                         self.tags = []
@@ -344,8 +338,6 @@ class AddTagWorkflowTwoVC: TableViewController {
                         self.refreshControl?.endRefreshing()
                     }
                 case .failure:
-                    print(response.error?.localizedDescription ?? "Unknown error")
-                    
                     self.tagsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.tagsErrorResponse = []
                     self.tags = []

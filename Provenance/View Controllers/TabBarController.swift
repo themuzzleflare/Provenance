@@ -43,9 +43,3 @@ extension TabBarController {
         viewControllers = [tabOne, tabTwo, tabThree, tabFour, tabFive]
     }
 }
-
-extension TabBarController {
-    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        print("Selected tab: \(item.title ?? "Unknown")")
-    }
-}
