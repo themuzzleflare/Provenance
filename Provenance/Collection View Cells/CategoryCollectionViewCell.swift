@@ -8,7 +8,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
             if let category = category {
                 label.text = category.attributes.name
             } else {
-                label.text = "Category Name"
+                label.text = "Name"
             }
         }
     }

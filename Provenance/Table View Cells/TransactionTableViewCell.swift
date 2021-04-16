@@ -3,18 +3,25 @@ import TinyConstraints
 import Rswift
 
 class TransactionTableViewCell: UITableViewCell {
-    var transaction: TransactionResource! {
+    var transaction: TransactionResource? {
         didSet {
-            transactionDescription.text = transaction.attributes.description
-            transactionCreationDate.text = transaction.attributes.creationDate
-            
-            if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
-                transactionAmount.textColor = .label
+            if let transaction = transaction {
+                transactionDescription.text = transaction.attributes.description
+                transactionCreationDate.text = transaction.attributes.creationDate
+
+                if transaction.attributes.amount.valueInBaseUnits.signum() == -1 {
+                    transactionAmount.textColor = .label
+                } else {
+                    transactionAmount.textColor = R.color.greenColour()
+                }
+
+                transactionAmount.text = transaction.attributes.amount.valueShort
             } else {
-                transactionAmount.textColor = R.color.greenColour()
+                transactionDescription.text = "Description"
+                transactionCreationDate.text = "Creation Date"
+                transactionAmount.textColor = .label
+                transactionAmount.text = "Amount"
             }
-            
-            transactionAmount.text = transaction.attributes.amount.valueShort
         }
     }
     

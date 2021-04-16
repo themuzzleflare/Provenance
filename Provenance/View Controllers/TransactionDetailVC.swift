@@ -95,20 +95,26 @@ extension TransactionDetailVC {
                 
                 var cellSelectionStyle: UITableViewCell.SelectionStyle {
                     switch detailAttribute.titleKey {
-                        case "Account", "Parent Category", "Category", "Tags": return .default
-                        default: return .none
+                        case "Account", "Parent Category", "Category", "Tags":
+                            return .default
+                        default:
+                            return .none
                     }
                 }
                 var cellAccessoryType: UITableViewCell.AccessoryType {
                     switch detailAttribute.titleKey {
-                        case "Account", "Parent Category", "Category", "Tags": return .disclosureIndicator
-                        default: return .none
+                        case "Account", "Parent Category", "Category", "Tags":
+                            return .disclosureIndicator
+                        default:
+                            return .none
                     }
                 }
                 var cellRightDetailFont: UIFont {
                     switch detailAttribute.titleKey {
-                        case "Raw Text": return R.font.sfMonoRegular(size: UIFont.labelFontSize)!
-                        default: return R.font.circularStdBook(size: UIFont.labelFontSize)!
+                        case "Raw Text":
+                            return R.font.sfMonoRegular(size: UIFont.labelFontSize)!
+                        default:
+                            return R.font.circularStdBook(size: UIFont.labelFontSize)!
                     }
                 }
                 

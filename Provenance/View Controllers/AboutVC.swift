@@ -42,10 +42,14 @@ extension AboutVC {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-            case 0: return 3
-            case 1: return 2
-            case 2: return 2
-            default: fatalError("Unknown section")
+            case 0:
+                return 3
+            case 1:
+                return 2
+            case 2:
+                return 2
+            default:
+                fatalError("Unknown section")
         }
     }
     
@@ -60,6 +64,7 @@ extension AboutVC {
         basicCell.selectionStyle = .default
         basicCell.separatorInset = .zero
         basicCell.selectedBackgroundView = bgCellView
+        basicCell.imageView?.tintColor = .label
         basicCell.textLabel?.textColor = .label
         basicCell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         
@@ -119,18 +124,6 @@ extension AboutVC {
             } else {
                 UIApplication.shared.open(URL(string: "https://github.com/themuzzleflare/Provenance")!)
             }
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        if indexPath.section == 2 {
-            tableView.cellForRow(at: indexPath)?.imageView?.tintColor = .label
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-        if indexPath.section == 2 {
-            tableView.cellForRow(at: indexPath)?.imageView?.tintColor = R.color.accentColor()
         }
     }
     

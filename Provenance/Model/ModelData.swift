@@ -4,7 +4,7 @@ import Alamofire
 import SwiftyGif
 import Rswift
 
-let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
+let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance") ?? .standard
 
 let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
 let appBuild = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
@@ -52,8 +52,10 @@ func gridLayout() -> UICollectionViewLayout {
 
 var apiKeyDisplay: String {
     switch appDefaults.string(forKey: "apiKey") {
-        case nil, "": return "None"
-        default: return appDefaults.string(forKey: "apiKey")!
+        case nil, "":
+            return "None"
+        default:
+            return appDefaults.string(forKey: "apiKey")!
     }
 }
 
@@ -79,24 +81,6 @@ let up7 = R.image.upLogoSequence.seventh()!
 let up8 = R.image.upLogoSequence.eighth()!
 let upImages = [up1, up2, up3, up4, up5, up6, up7, up8]
 let upAnimation = UIImage.animatedImage(with: upImages, duration: 0.65)!
-
-struct UpApi {
-    struct Transactions {
-        let listTransactions = "https://api.up.com.au/api/v1/transactions"
-    }
-    struct Accounts {
-        let listAccounts = "https://api.up.com.au/api/v1/accounts"
-        func listTransactionsByAccount(accountId: String) -> String {
-            return "https://api.up.com.au/api/v1/accounts/\(accountId)/transactions"
-        }
-    }
-    struct Categories {
-        let listCategories = "https://api.up.com.au/api/v1/categories"
-    }
-    struct Tags {
-        let listTags = "https://api.up.com.au/api/v1/tags"
-    }
-}
 
 var authorisationHeader: HTTPHeader {
     return .authorization(bearerToken: appDefaults.string(forKey: "apiKey") ?? "")
