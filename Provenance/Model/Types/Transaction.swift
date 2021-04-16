@@ -33,25 +33,25 @@ struct TransactionResource: Hashable, Codable, Identifiable {
 
 struct Attribute: Hashable, Codable {
     private var status: TransactionStatusEnum
-    private enum TransactionStatusEnum: String, CaseIterable, Codable, Hashable, Identifiable {
+    private enum TransactionStatusEnum: String, CaseIterable, Codable, Hashable {
         case held = "HELD"
         case settled = "SETTLED"
-        
-        var id: TransactionStatusEnum {
-            return self
-        }
     }
     var isSettled: Bool {
         switch status {
-            case .settled: return true
-            case .held: return false
+            case .settled:
+                return true
+            case .held:
+                return false
         }
     }
     var statusIcon: UIImage {
         let configuration = UIImage.SymbolConfiguration(pointSize: 21)
         switch isSettled {
-            case true: return R.image.checkmarkCircle()!.withConfiguration(configuration)
-            case false: return R.image.clock()!.withConfiguration(configuration)
+            case true:
+                return R.image.checkmarkCircle()!.withConfiguration(configuration)
+            case false:
+                return R.image.clock()!.withConfiguration(configuration)
         }
     }
     var statusIconView: UIImageView {
@@ -61,14 +61,18 @@ struct Attribute: Hashable, Codable {
     }
     var statusIconColor: UIColor {
         switch isSettled {
-            case true: return .systemGreen
-            case false: return .systemYellow
+            case true:
+                return .systemGreen
+            case false:
+                return .systemYellow
         }
     }
     var statusString: String {
         switch isSettled {
-            case true: return "Settled"
-            case false: return "Held"
+            case true:
+                return "Settled"
+            case false:
+                return "Held"
         }
     }
     
@@ -99,9 +103,12 @@ struct Attribute: Hashable, Codable {
     var settlementDate: String? {
         if settledAt != nil {
             switch appDefaults.string(forKey: "dateStyle") {
-                case "Absolute", .none: return settledDateAbsolute
-                case "Relative": return settledDateRelative
-                default: return settledDateAbsolute
+                case "Absolute", .none:
+                    return settledDateAbsolute
+                case "Relative":
+                    return settledDateRelative
+                default:
+                    return settledDateAbsolute
             }
         } else {
             return nil
@@ -117,9 +124,12 @@ struct Attribute: Hashable, Codable {
     }
     var creationDate: String {
         switch appDefaults.string(forKey: "dateStyle") {
-            case "Absolute", .none: return createdDateAbsolute
-            case "Relative": return createdDateRelative
-            default: return createdDateAbsolute
+            case "Absolute", .none:
+                return createdDateAbsolute
+            case "Relative":
+                return createdDateRelative
+            default:
+                return createdDateAbsolute
         }
     }
 }

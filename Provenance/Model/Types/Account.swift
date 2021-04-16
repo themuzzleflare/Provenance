@@ -33,13 +33,9 @@ struct AccountAttribute: Hashable, Codable {
     var displayName: String
     
     var accountType: AccountTypeEnum
-    enum AccountTypeEnum: String, CaseIterable, Codable, Hashable, Identifiable {
+    enum AccountTypeEnum: String, CaseIterable, Codable, Hashable {
         case saver = "SAVER"
         case transactional = "TRANSACTIONAL"
-        
-        var id: AccountTypeEnum {
-            return self
-        }
     }
     
     var balance: MoneyObject
@@ -53,9 +49,12 @@ struct AccountAttribute: Hashable, Codable {
     }
     var creationDate: String {
         switch appDefaults.string(forKey: "dateStyle") {
-            case "Absolute", .none: return creationDateAbsolute
-            case "Relative": return creationDateRelative
-            default: return creationDateAbsolute
+            case "Absolute", .none:
+                return creationDateAbsolute
+            case "Relative":
+                return creationDateRelative
+            default:
+                return creationDateAbsolute
         }
     }
 }

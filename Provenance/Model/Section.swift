@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 class Section: Hashable {
     var id = UUID()

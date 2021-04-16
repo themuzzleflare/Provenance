@@ -158,7 +158,7 @@ class AccountsCVC: CollectionViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        applySnapshot()
+        applySnapshot(animate: false)
         
         fetchCategories()
     }
@@ -230,7 +230,7 @@ class AccountsCVC: CollectionViewController {
                             self.navigationItem.title = "Accounts"
                         }
                         
-                        self.applySnapshot()
+                        self.applySnapshot(animate: false)
                         self.collectionView.reloadData()
                         self.collectionView.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
@@ -303,8 +303,6 @@ class AccountsCVC: CollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
-
         navigationController?.pushViewController({let vc = R.storyboard.transactionsByAccount.transactionsByAccountController()!;vc.account = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
     }
 }
