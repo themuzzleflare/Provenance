@@ -1,5 +1,6 @@
 import UIKit
 import Alamofire
+import TinyConstraints
 import Rswift
 
 class AccountsCVC: CollectionViewController {
@@ -302,6 +303,8 @@ class AccountsCVC: CollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+
         navigationController?.pushViewController({let vc = R.storyboard.transactionsByAccount.transactionsByAccountController()!;vc.account = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
     }
 }

@@ -1,5 +1,6 @@
 import UIKit
 import Alamofire
+import TinyConstraints
 import Rswift
 
 class CategoriesCVC: CollectionViewController {
