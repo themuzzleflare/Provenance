@@ -1,6 +1,7 @@
 import UIKit
 import Firebase
 import FirebaseAnalytics
+import Rswift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,26 +20,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
     private func registerDefaultsFromSettingsBundle() {
-        let settingsName = "Settings"
-        let settingsExtension = "bundle"
         let settingsRootPlist = "Root.plist"
         let settingsPreferencesItems = "PreferenceSpecifiers"
         let settingsPreferenceKey = "Key"
         let settingsPreferenceDefaultValue = "DefaultValue"
-        
-        guard let settingsBundleURL = Bundle.main.url(forResource: settingsName, withExtension: settingsExtension),
-              let settingsData = try? Data(contentsOf: settingsBundleURL.appendingPathComponent(settingsRootPlist)),
-              let settingsPlist = try? PropertyListSerialization.propertyList(
-                from: settingsData,
-                options: [],
-                format: nil) as? [String: Any],
-              let settingsPreferences = settingsPlist[settingsPreferencesItems] as? [[String: Any]] else {
-            return
-        }
+
+        let settingsData = try! Data(contentsOf: R.file.settingsBundle()!.appendingPathComponent(settingsRootPlist))
+        let settingsPlist = try! PropertyListSerialization.propertyList(
+            from: settingsData,
+            options: [],
+            format: nil) as? [String: Any]
+        let settingsPreferences = settingsPlist?[settingsPreferencesItems] as? [[String: Any]]
 
         var defaultsToRegister = [String: Any]()
 
-        settingsPreferences.forEach { preference in
+        settingsPreferences?.forEach { preference in
             if let key = preference[settingsPreferenceKey] as? String {
                 defaultsToRegister[key] = preference[settingsPreferenceDefaultValue]
             }

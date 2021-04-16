@@ -38,7 +38,7 @@ extension APIKeyTableViewCell {
         apiKeyLabel.speed = .rate(65)
         apiKeyLabel.fadeLength = 20
         
-        apiKeyLabel.textAlignment = .center
+        apiKeyLabel.textAlignment = .left
         apiKeyLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         apiKeyLabel.textColor = .label
     }
