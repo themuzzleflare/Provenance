@@ -3,21 +3,21 @@ import WidgetKit
 import Rswift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+
+    weak var submitActionProxy: UIAlertAction?
+
+    private var savedShortCutItem: UIApplicationShortcutItem!
+    private var textDidChangeObserver: NSObjectProtocol!
+
+    let viewController = TabBarController()
+    let settingsController = SettingsVC(style: .grouped)
+
     private enum ActionType: String {
         case accountsAction = "cloud.tavitian.provenance.accounts"
         case tagsAction = "cloud.tavitian.provenance.tags"
         case categoriesAction = "cloud.tavitian.provenance.categories"
     }
-
-    var window: UIWindow?
-    var savedShortCutItem: UIApplicationShortcutItem!
-
-    weak var submitActionProxy: UIAlertAction?
-
-    private var textDidChangeObserver: NSObjectProtocol!
-
-    let viewController = TabBarController()
-    let settingsController = SettingsVC(style: .grouped)
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -206,7 +206,7 @@ extension SceneDelegate {
                     })
                     
                     dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-                    
+
                     ac.addAction(dismissAction)
 
                     self.window?.rootViewController?.present(ac, animated: true)

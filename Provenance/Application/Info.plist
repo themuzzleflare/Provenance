@@ -2,50 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIApplicationSceneManifest</key>
-	<dict>
-		<key>UIApplicationSupportsMultipleScenes</key>
-		<false/>
-		<key>UISceneConfigurations</key>
-		<dict>
-			<key>UIWindowSceneSessionRoleApplication</key>
-			<array>
-				<dict>
-					<key>UISceneConfigurationName</key>
-					<string>Default Configuration</string>
-					<key>UISceneDelegateClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
-				</dict>
-			</array>
-		</dict>
-	</dict>
-	<key>UIApplicationShortcutItems</key>
-	<array>
-		<dict>
-			<key>UIApplicationShortcutItemIconFile</key>
-			<string>wallet.pass</string>
-			<key>UIApplicationShortcutItemType</key>
-			<string>cloud.tavitian.provenance.accounts</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>Accounts</string>
-		</dict>
-		<dict>
-			<key>UIApplicationShortcutItemIconFile</key>
-			<string>tag</string>
-			<key>UIApplicationShortcutItemType</key>
-			<string>cloud.tavitian.provenance.tags</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>Tags</string>
-		</dict>
-		<dict>
-			<key>UIApplicationShortcutItemIconFile</key>
-			<string>arrow.up.arrow.down.circle</string>
-			<key>UIApplicationShortcutItemType</key>
-			<string>cloud.tavitian.provenance.categories</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>Categories</string>
-		</dict>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -80,6 +36,50 @@
 		<string>CircularStd-BookItalic.ttf</string>
 		<string>CircularStd-Bold.otf</string>
 		<string>SF-Mono-Regular.otf</string>
+	</array>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneConfigurationName</key>
+					<string>Default Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>wallet.pass</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Accounts</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>cloud.tavitian.provenance.accounts</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>tag</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Tags</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>cloud.tavitian.provenance.tags</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>arrow.up.arrow.down.circle</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Categories</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>cloud.tavitian.provenance.categories</string>
+		</dict>
 	</array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
