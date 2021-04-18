@@ -239,8 +239,8 @@ class CategoriesCVC: CollectionViewController {
                             self.navigationItem.searchController = nil
                         }
                         
-                        if self.navigationItem.title != "Errors" {
-                            self.navigationItem.title = "Errors"
+                        if self.navigationItem.title != "Error" {
+                            self.navigationItem.title = "Error"
                         }
                         
                         self.applySnapshot()

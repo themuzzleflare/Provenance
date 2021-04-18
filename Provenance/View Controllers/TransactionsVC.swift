@@ -345,8 +345,8 @@ extension TransactionsVC {
                         if self.navigationItem.searchController != nil {
                             self.navigationItem.searchController = nil
                         }
-                        if self.navigationItem.title != "Errors" {
-                            self.navigationItem.title = "Errors"
+                        if self.navigationItem.title != "Error" {
+                            self.navigationItem.title = "Error"
                         }
                         if self.navigationItem.leftBarButtonItems != nil {
                             self.navigationItem.setLeftBarButtonItems(nil, animated: true)
