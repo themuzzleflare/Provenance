@@ -25,7 +25,6 @@ extension AppDelegate {
             options: [],
             format: nil) as? [String: Any]
         let settingsPreferences = settingsPlist?["PreferenceSpecifiers"] as? [[String: Any]]
-
         var defaultsToRegister = [String: Any]()
 
         settingsPreferences?.forEach { preference in
@@ -33,7 +32,7 @@ extension AppDelegate {
                 defaultsToRegister[key] = preference["DefaultValue"]
             }
         }
-
+        
         appDefaults.register(defaults: defaultsToRegister)
     }
 

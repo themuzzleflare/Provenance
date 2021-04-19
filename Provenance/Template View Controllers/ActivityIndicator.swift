@@ -14,5 +14,6 @@ class ActivityIndicator: UIActivityIndicatorView {
 extension ActivityIndicator {
     private func configure() {
         hidesWhenStopped = true
+        startAnimating()
     }
 }

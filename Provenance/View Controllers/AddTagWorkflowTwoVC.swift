@@ -153,22 +153,14 @@ class AddTagWorkflowTwoVC: TableViewController {
     @objc private func appMovedToForeground() {
         fetchTags()
     }
+
     @objc private func openAddWorkflow() {
-        let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
-        
-        let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
-        let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
-        
-        let titleAttrString = NSMutableAttributedString(string: "New Tag", attributes: titleFont)
-        let messageAttrString = NSMutableAttributedString(string: "Enter the name of the new tag.", attributes: messageFont)
-        
-        ac.setValue(titleAttrString, forKey: "attributedTitle")
-        ac.setValue(messageAttrString, forKey: "attributedMessage")
+        let ac = UIAlertController(title: "New Tag", message: "Enter the name of the new tag.", preferredStyle: .alert)
         ac.addTextField { textField in
             textField.delegate = self
             textField.autocapitalizationType = .none
-            textField.tintColor = R.color.accentColor()
             textField.autocorrectionType = .no
+            textField.tintColor = R.color.accentColor()
             
             self.textDidChangeObserver = NotificationCenter.default.addObserver(
                 forName: UITextField.textDidChangeNotification,
@@ -183,28 +175,20 @@ class AddTagWorkflowTwoVC: TableViewController {
                 }
             }
         }
-        
+
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-        
         let submitAction = UIAlertAction(title: "Next", style: .default) { _ in
             let answer = ac.textFields![0]
             if answer.text != "" {
-                let vc = AddTagWorkflowThreeVC(style: .grouped)
-                
-                vc.transaction = self.transaction
-                vc.tag = answer.text
-                
-                self.navigationController?.pushViewController(vc, animated: true)
+                self.navigationController?.pushViewController({let vc = AddTagWorkflowThreeVC(style: .grouped);vc.transaction = self.transaction;vc.tag = answer.text;return vc}(), animated: true)
             }
         }
         submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
         submitAction.isEnabled = false
         submitActionProxy = submitAction
-        
         ac.addAction(cancelAction)
         ac.addAction(submitAction)
-        
         present(ac, animated: true)
     }
     
@@ -216,7 +200,6 @@ class AddTagWorkflowTwoVC: TableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setProperties()
         setupNavigation()
         setupSearch()
@@ -379,11 +362,8 @@ extension AddTagWorkflowTwoVC {
 extension AddTagWorkflowTwoVC: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""
-        
-        guard let stringRange = Range(range, in: currentText) else { return false }
-        
+        guard let stringRange = Range(range, in: textField.text ?? "") else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-        
         return updatedText.count <= 30
     }
 }

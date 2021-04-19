@@ -17,14 +17,14 @@ class TransactionsVC: TableViewController {
         didSet {
             filterButton.menu = filterMenu()
             searchController.searchBar.placeholder = "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
-            applySnapshot()
+            applySnapshot(animate: true)
         }
     }
     private var showSettledOnly: Bool = false {
         didSet {
             filterButton.menu = filterMenu()
             searchController.searchBar.placeholder = "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
-            applySnapshot()
+            applySnapshot(animate: true)
         }
     }
     private var transactionsStatusCode: Int = 0

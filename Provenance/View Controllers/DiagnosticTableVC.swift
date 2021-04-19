@@ -34,7 +34,6 @@ class DiagnosticTableVC: TableViewController {
     }
     private func applySnapshot(animatingDifferences: Bool = false) {
         var snapshot = Snapshot()
-        
         snapshot.appendSections(sections)
         
         sections.forEach { section in
@@ -45,11 +44,9 @@ class DiagnosticTableVC: TableViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setProperties()
         setupNavigation()
         setupTableView()
-        
         applySnapshot()
     }
 }

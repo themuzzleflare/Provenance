@@ -57,9 +57,10 @@ extension AddTagWorkflowThreeVC {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let section = indexPath.section
+
         let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! SubtitleTableViewCell
         let transactionCell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
-        let section = indexPath.section
         
         cell.selectionStyle = .none
         cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
@@ -70,16 +71,13 @@ extension AddTagWorkflowThreeVC {
         
         if section == 0 {
             cell.textLabel?.text = tag
-            
             return cell
         } else if section == 1 {
             transactionCell.transaction = transaction
-            
             return transactionCell
         } else {
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = "You are adding the tag \"\(tag!)\" to the transaction \"\(transaction.attributes.description)\", which was created \(transaction.attributes.creationDate)."
-            
             return cell
         }
     }
@@ -95,13 +93,7 @@ extension AddTagWorkflowThreeVC {
     
     @objc private func addTag() {
         let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
-        
         var request = URLRequest(url: url)
-        
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("Bearer \(appDefaults.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
-        
         let bodyObject: [String : Any] = [
             "data": [
                 [
@@ -110,34 +102,21 @@ extension AddTagWorkflowThreeVC {
                 ]
             ]
         ]
-        
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(appDefaults.apiKey)", forHTTPHeaderField: "Authorization")
         request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
-        
         URLSession.shared.dataTask(with: request) { data, response, error in
             if error == nil {
                 let statusCode = (response as! HTTPURLResponse).statusCode
-                
                 if statusCode != 204 {
                     DispatchQueue.main.async {
-                        let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
-                        
-                        let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
-                        let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
-                        
-                        let titleAttrString = NSMutableAttributedString(string: self.errorAlert(statusCode).title, attributes: titleFont)
-                        let messageAttrString = NSMutableAttributedString(string: self.errorAlert(statusCode).content, attributes: messageFont)
-                        
-                        ac.setValue(titleAttrString, forKey: "attributedTitle")
-                        ac.setValue(messageAttrString, forKey: "attributedMessage")
-                        
+                        let ac = UIAlertController(title: self.errorAlert(statusCode).title, message: self.errorAlert(statusCode).content, preferredStyle: .alert)
                         let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                             self.navigationController?.popViewController(animated: true)
                         })
-                        
                         dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-                        
                         ac.addAction(dismissAction)
-                        
                         self.present(ac, animated: true)
                     }
                 } else {
@@ -147,25 +126,12 @@ extension AddTagWorkflowThreeVC {
                 }
             } else {
                 DispatchQueue.main.async {
-                    let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
-                    
-                    let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
-                    let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
-                    
-                    let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
-                    let messageAttrString = NSMutableAttributedString(string: error?.localizedDescription ?? "\(self.tag!) was not added to \(self.transaction.attributes.description).", attributes: messageFont)
-                    
-                    ac.setValue(titleAttrString, forKey: "attributedTitle")
-                    ac.setValue(messageAttrString, forKey: "attributedMessage")
-                    
+                    let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "\(self.tag!) was not added to \(self.transaction.attributes.description).", preferredStyle: .alert)
                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                         self.navigationController?.popToRootViewController(animated: true)
                     })
-
                     dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-
                     ac.addAction(dismissAction)
-
                     self.present(ac, animated: true)
                 }
             }

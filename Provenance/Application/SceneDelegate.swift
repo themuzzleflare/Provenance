@@ -71,17 +71,7 @@ extension SceneDelegate {
 
     private func initialSetup() {
         if appDefaults.apiKey.isEmpty {
-            let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
-
-            let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
-            let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
-
-            let titleAttrString = NSMutableAttributedString(string: "API Key Required", attributes: titleFont)
-            let messageAttrString = NSMutableAttributedString(string: "You don't have an API Key set. Set one now.", attributes: messageFont)
-
-            ac.setValue(titleAttrString, forKey: "attributedTitle")
-            ac.setValue(messageAttrString, forKey: "attributedMessage")
-
+            let ac = UIAlertController(title: "API Key Required", message: "You don't have an API Key set. Set one now.", preferredStyle: .alert)
             ac.addTextField(configurationHandler: { textField in
                 textField.autocapitalizationType = .none
                 textField.autocorrectionType = .no
@@ -104,25 +94,18 @@ extension SceneDelegate {
             })
 
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-
             cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-
             let submitAction = UIAlertAction(title: "Save", style: .default) { _ in
                 let answer = ac.textFields![0]
-
                 if (answer.text != "" && answer.text != nil) && answer.text != appDefaults.apiKey {
                     let url = URL(string: "https://api.up.com.au/api/v1/util/ping")!
-
                     var request = URLRequest(url: url)
-
                     request.httpMethod = "GET"
                     request.addValue("application/json", forHTTPHeaderField: "Accept")
                     request.addValue("Bearer \(answer.text!)", forHTTPHeaderField: "Authorization")
-
                     URLSession.shared.dataTask(with: request) { data, response, error in
                         if error == nil {
                             let statusCode = (response as! HTTPURLResponse).statusCode
-
                             if statusCode == 200 {
                                 DispatchQueue.main.async {
                                     appDefaults.setValue(answer.text!, forKey: "apiKey")
@@ -131,91 +114,46 @@ extension SceneDelegate {
                                 }
                             } else {
                                 DispatchQueue.main.async {
-                                    let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
-
-                                    let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
-                                    let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
-
-                                    let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
-                                    let messageAttrString = NSMutableAttributedString(string: "The API Key could not be verified.", attributes: messageFont)
-
-                                    ac.setValue(titleAttrString, forKey: "attributedTitle")
-                                    ac.setValue(messageAttrString, forKey: "attributedMessage")
-
+                                    let ac = UIAlertController(title: "Failed", message: "The API Key could not be verified.", preferredStyle: .alert)
                                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                                         self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
                                     })
-
                                     dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-
                                     ac.addAction(dismissAction)
-
                                     self.window?.rootViewController?.present(ac, animated: true)
-
                                     WidgetCenter.shared.reloadAllTimelines()
                                 }
                             }
                         } else {
                             DispatchQueue.main.async {
-                                let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
-
-                                let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
-                                let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
-
-                                let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
-                                let messageAttrString = NSMutableAttributedString(string: error?.localizedDescription ?? "The API Key could not be verified.", attributes: messageFont)
-
-                                ac.setValue(titleAttrString, forKey: "attributedTitle")
-                                ac.setValue(messageAttrString, forKey: "attributedMessage")
-
+                                let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "The API Key could not be verified.", preferredStyle: .alert)
                                 let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                                     self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
                                 })
-
                                 dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-
                                 ac.addAction(dismissAction)
-
                                 self.window?.rootViewController?.present(ac, animated: true)
-
                                 WidgetCenter.shared.reloadAllTimelines()
                             }
                         }
                     }
                     .resume()
                 } else {
-                    let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
-
-                    let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
-                    let messageFont = [NSAttributedString.Key.font: R.font.circularStdBook(size: 12)!]
-
-                    let titleAttrString = NSMutableAttributedString(string: "Failed", attributes: titleFont)
-                    let messageAttrString = NSMutableAttributedString(string: "The provided API Key was the same as the current one.", attributes: messageFont)
-
-                    ac.setValue(titleAttrString, forKey: "attributedTitle")
-                    ac.setValue(messageAttrString, forKey: "attributedMessage")
-
+                    let ac = UIAlertController(title: "Failed", message: "The provided API Key was the same as the current one.", preferredStyle: .alert)
                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                         self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
                     })
-                    
                     dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-
                     ac.addAction(dismissAction)
-
                     self.window?.rootViewController?.present(ac, animated: true)
-                    
                     WidgetCenter.shared.reloadAllTimelines()
                 }
             }
             submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
             submitAction.isEnabled = false
-
             submitActionProxy = submitAction
-
             ac.addAction(cancelAction)
             ac.addAction(submitAction)
-
             window?.rootViewController?.present(ac, animated: true)
         }
     }

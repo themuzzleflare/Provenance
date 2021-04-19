@@ -148,9 +148,11 @@ class AllTagsVC: TableViewController {
     @objc private func appMovedToForeground() {
         fetchTags()
     }
+
     @objc private func openAddWorkflow() {
         present(R.storyboard.addTagWorkflowVC.addTagWorkflowNavigation()!, animated: true)
     }
+    
     @objc private func refreshTags() {
         #if targetEnvironment(macCatalyst)
         navigationItem.setLeftBarButton(UIBarButtonItem(customView: ActivityIndicator(style: .medium)), animated: true)
@@ -244,7 +246,7 @@ class AllTagsVC: TableViewController {
                         self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                         #endif
                         
-                        self.applySnapshot()
+                        self.applySnapshot(animate: true)
                         self.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.tagsErrorResponse = decodedResponse.errors

@@ -206,11 +206,8 @@ class AddTagWorkflowVC: TableViewController {
     }
     
     private func fetchTransactions() {
-        let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
-        
-        AF.request(UpAPI.Transactions().listTransactions, method: .get, parameters: pageSize100Param, headers: headers).responseJSON { response in
+        AF.request(UpAPI.Transactions().listTransactions, method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             self.transactionsStatusCode = response.response?.statusCode ?? 0
-            
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
