@@ -7,13 +7,12 @@ class ActivityIndicator: UIActivityIndicatorView {
     }
     
     required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Not implemented")
     }
 }
 
 extension ActivityIndicator {
     private func configure() {
         hidesWhenStopped = true
-        startAnimating()
     }
 }

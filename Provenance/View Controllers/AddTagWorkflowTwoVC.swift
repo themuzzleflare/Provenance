@@ -20,13 +20,11 @@ class AddTagWorkflowTwoVC: TableViewController {
     private var tags: [TagResource] = []
     private var tagsErrorResponse: [ErrorObject] = []
     private var tagsError: String = ""
-    
     private var filteredTags: [TagResource] {
         tags.filter { tag in
             searchController.searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    
     private var filteredTagsList: Tag {
         return Tag(data: filteredTags, links: tagsPagination)
     }
@@ -43,7 +41,7 @@ class AddTagWorkflowTwoVC: TableViewController {
             cellProvider: {  tableView, indexPath, tag in
                 let cell = tableView.dequeueReusableCell(withIdentifier: "tagTableViewCell", for: indexPath) as! BasicTableViewCell
                 
-                cell.selectedBackgroundView = bgCellView
+                cell.selectedBackgroundView = selectedBackgroundCellView
                 cell.accessoryType = .none
                 cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                 cell.textLabel?.text = tag.id
@@ -52,12 +50,9 @@ class AddTagWorkflowTwoVC: TableViewController {
             }
         )
     }
-    
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
-        
         snapshot.appendSections(Section.allCases)
-        
         snapshot.appendItems(filteredTagsList.data, toSection: .main)
         
         if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty && tagsErrorResponse.isEmpty  {
@@ -154,7 +149,10 @@ class AddTagWorkflowTwoVC: TableViewController {
         
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
-    
+
+    @objc private func appMovedToForeground() {
+        fetchTags()
+    }
     @objc private func openAddWorkflow() {
         let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
         
@@ -224,17 +222,17 @@ class AddTagWorkflowTwoVC: TableViewController {
         setupSearch()
         setupRefreshControl()
         setupTableView()
+        applySnapshot()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        applySnapshot()
-        
         fetchTags()
     }
     
     private func setProperties() {
         title = "Tags"
         definesPresentationContext = true
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     private func setupNavigation() {
@@ -245,12 +243,9 @@ class AddTagWorkflowTwoVC: TableViewController {
     
     private func setupSearch() {
         searchController.delegate = self
-        
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = true
-        
         searchController.searchBar.delegate = self
-        
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.placeholder = "Search"
     }
@@ -266,11 +261,8 @@ class AddTagWorkflowTwoVC: TableViewController {
     }
     
     private func fetchTags() {
-        let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
-        
-        AF.request(UpApi.Tags().listTags, method: .get, parameters: pageSize200Param, headers: headers).responseJSON { response in
+        AF.request(UpAPI.Tags().listTags, method: .get, parameters: pageSize200Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             self.tagsStatusCode = response.response?.statusCode ?? 0
-            
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: response.data!) {

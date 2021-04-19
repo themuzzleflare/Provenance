@@ -4,37 +4,30 @@ import Rswift
 
 class TransactionDetailVC: TableViewController {
     var transaction: TransactionResource!
-    var categories: [CategoryResource]!
-    var accounts: [AccountResource]!
-    
-    let scrollingTitle = MarqueeLabel()
-    
+    var categories: [CategoryResource]?
+    var accounts: [AccountResource]?
+
     private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
-    
+
+    private var dateStyleObserver: NSKeyValueObservation?
     private var sections: [Section]!
     
     private lazy var dataSource = makeDataSource()
+
+    let scrollingTitle = MarqueeLabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureProperties()
-        configureMarqueeLabel()
+        configureScrollingTitle()
         configureNavigation()
         configureTableView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
         applySnapshot()
     }
 }
 
 extension TransactionDetailVC {
-    @objc private func appMovedToForeground() {
-        applySnapshot()
-    }
-
     private var filteredSections: [Section] {
         sections.filter { section in
             !section.detailAttributes.allSatisfy { detailAttribute in
@@ -130,7 +123,7 @@ extension TransactionDetailVC {
             }
         )
     }
-    private func applySnapshot(animatingDifferences: Bool = false) {
+    private func applySnapshot() {
         sections = [
             Section(title: "Section 1", detailAttributes: [
                 DetailAttribute(
@@ -167,7 +160,7 @@ extension TransactionDetailVC {
                 ),
                 DetailAttribute(
                     titleKey: "Foreign \(transaction.attributes.foreignAmount?.transactionType ?? "")",
-                    titleValue: holdForeignTransValue
+                    titleValue: foreignTransValue
                 ),
                 DetailAttribute(
                     titleKey: transaction.attributes.amount.transactionType,
@@ -203,7 +196,6 @@ extension TransactionDetailVC {
         ]
         
         var snapshot = Snapshot()
-        
         snapshot.appendSections(filteredSections)
         
         filteredSections.forEach { section in
@@ -212,20 +204,20 @@ extension TransactionDetailVC {
             }, toSection: section)
         }
         
-        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
     
     private func configureProperties() {
         title = "Transaction Details"
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
+            self.applySnapshot()
+        }
     }
     
-    private func configureMarqueeLabel() {
+    private func configureScrollingTitle() {
+        scrollingTitle.translatesAutoresizingMaskIntoConstraints = false
         scrollingTitle.speed = .rate(65)
         scrollingTitle.fadeLength = 20
-        
-        scrollingTitle.translatesAutoresizingMaskIntoConstraints = false
-        
         scrollingTitle.textAlignment = .center
         scrollingTitle.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         scrollingTitle.text = transaction.attributes.description
@@ -234,7 +226,7 @@ extension TransactionDetailVC {
     private func configureNavigation() {
         navigationItem.titleView = scrollingTitle
         navigationItem.backButtonDisplayMode = .minimal
-        navigationItem.setRightBarButton(UIBarButtonItem(customView: transaction.attributes.statusIconView), animated: true)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: transaction.attributes.statusIconView)
     }
     
     private func configureTableView() {
@@ -249,9 +241,9 @@ extension TransactionDetailVC {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
         let attribute = dataSource.itemIdentifier(for: indexPath)!
+
+        tableView.deselectRow(at: indexPath, animated: true)
         
         if attribute.titleKey == "Account" {
             navigationController?.pushViewController({let vc = R.storyboard.transactionsByAccount.transactionsByAccountController()!;vc.account = accountFilter!.first!;return vc}(), animated: true)
@@ -271,10 +263,12 @@ extension TransactionDetailVC {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let attribute = dataSource.itemIdentifier(for: indexPath)!
+        
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy \(self.dataSource.itemIdentifier(for: indexPath)!.titleKey)", image: R.image.docOnClipboard()) { _ in
-                    UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.titleValue
+                UIAction(title: "Copy \(attribute.titleKey)", image: R.image.docOnClipboard()) { _ in
+                    UIPasteboard.general.string = attribute.titleValue
                 }
             ])
         }

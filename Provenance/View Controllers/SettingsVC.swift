@@ -6,10 +6,19 @@ class SettingsVC: TableViewController {
     weak var submitActionProxy: UIAlertAction?
     
     private var textDidChangeObserver: NSObjectProtocol!
+    private var apiKeyObserver: NSKeyValueObservation?
+    private var dateStyleObserver: NSKeyValueObservation?
+    private var apiKeyDisplay: String {
+        switch appDefaults.apiKey {
+            case nil, "":
+                return "None"
+            default:
+                return appDefaults.apiKey
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setProperties()
         setupNavigation()
         setupTableView()
@@ -27,8 +36,6 @@ extension SettingsVC {
         } else {
             appDefaults.setValue("Relative", forKey: "dateStyle")
         }
-        
-        WidgetCenter.shared.reloadAllTimelines()
     }
     
     @objc private func closeWorkflow() {
@@ -38,6 +45,13 @@ extension SettingsVC {
     private func setProperties() {
         title = "Settings"
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: [.new, .old]) { (object, change) in
+            self.tableView.reloadData()
+            WidgetCenter.shared.reloadAllTimelines()
+        }
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
+            WidgetCenter.shared.reloadAllTimelines()
+        }
     }
     
     private func setupNavigation() {
@@ -47,7 +61,7 @@ extension SettingsVC {
     
     private func setupTableView() {
         tableView.register(APIKeyTableViewCell.self, forCellReuseIdentifier: APIKeyTableViewCell.reuseIdentifier)
-        tableView.register(DateStylePickerTableViewCell.self, forCellReuseIdentifier: DateStylePickerTableViewCell.reuseIdentifier)
+        tableView.register(DateStyleTableViewCell.self, forCellReuseIdentifier: DateStyleTableViewCell.reuseIdentifier)
     }
 }
 
@@ -66,11 +80,11 @@ extension SettingsVC {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: APIKeyTableViewCell.reuseIdentifier, for: indexPath) as! APIKeyTableViewCell
-        let datePickerCell = tableView.dequeueReusableCell(withIdentifier: DateStylePickerTableViewCell.reuseIdentifier, for: indexPath) as! DateStylePickerTableViewCell
+        let datePickerCell = tableView.dequeueReusableCell(withIdentifier: DateStyleTableViewCell.reuseIdentifier, for: indexPath) as! DateStyleTableViewCell
         
         apiKeyCell.apiKeyLabel.text = apiKeyDisplay
         
-        if appDefaults.string(forKey: "dateStyle") == "Absolute" || appDefaults.string(forKey: "dateStyle") == nil {
+        if appDefaults.dateStyle == "Absolute" {
             datePickerCell.segmentedControl.selectedSegmentIndex = 0
         } else {
             datePickerCell.segmentedControl.selectedSegmentIndex = 1
@@ -105,7 +119,7 @@ extension SettingsVC {
                 textField.autocorrectionType = .no
                 textField.isSecureTextEntry = false
                 textField.tintColor = R.color.accentColor()
-                textField.text = appDefaults.string(forKey: "apiKey") ?? nil
+                textField.text = appDefaults.apiKey
                 
                 self.textDidChangeObserver = NotificationCenter.default.addObserver(
                     forName: UITextField.textDidChangeNotification,
@@ -113,7 +127,7 @@ extension SettingsVC {
                     queue: OperationQueue.main) { (notification) in
                     if let textField = notification.object as? UITextField {
                         if let text = textField.text {
-                            self.submitActionProxy!.isEnabled = text.count >= 1 && text != appDefaults.string(forKey: "apiKey")
+                            self.submitActionProxy!.isEnabled = text.count >= 1 && text != appDefaults.apiKey
                         } else {
                             self.submitActionProxy!.isEnabled = false
                         }
@@ -128,7 +142,7 @@ extension SettingsVC {
             let submitAction = UIAlertAction(title: "Save", style: .default) { _ in
                 let answer = ac.textFields![0]
                 
-                if (answer.text != "" && answer.text != nil) && answer.text != appDefaults.string(forKey: "apiKey") {
+                if (answer.text != "" && answer.text != nil) && answer.text != appDefaults.apiKey {
                     let url = URL(string: "https://api.up.com.au/api/v1/util/ping")!
                     
                     var request = URLRequest(url: url)
@@ -143,11 +157,7 @@ extension SettingsVC {
                             
                             if statusCode == 200 {
                                 DispatchQueue.main.async {
-                                    appDefaults.set(answer.text!, forKey: "apiKey")
-                                    
-                                    self.tableView.reloadData()
-                                    
-                                    WidgetCenter.shared.reloadAllTimelines()
+                                    appDefaults.setValue(answer.text!, forKey: "apiKey")
                                 }
                             } else {
                                 DispatchQueue.main.async {
@@ -236,11 +246,11 @@ extension SettingsVC {
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         if indexPath.section == 0 {
-            if appDefaults.string(forKey: "apiKey") != nil {
+            if !appDefaults.apiKey.isEmpty {
                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                     UIMenu(children: [
                         UIAction(title: "Copy API Key", image: R.image.docOnClipboard()) { _ in
-                            UIPasteboard.general.string = appDefaults.string(forKey: "apiKey")
+                            UIPasteboard.general.string = appDefaults.apiKey
                         }
                     ])
                 }

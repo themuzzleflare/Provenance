@@ -16,7 +16,7 @@ class APIKeyTableViewCell: UITableViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Not implemented")
     }
 }
 
@@ -25,7 +25,7 @@ extension APIKeyTableViewCell {
         selectionStyle = .default
         accessoryType = .disclosureIndicator
         separatorInset = .zero
-        selectedBackgroundView = bgCellView
+        selectedBackgroundView = selectedBackgroundCellView
     }
     
     private func configureContentView() {
@@ -34,10 +34,8 @@ extension APIKeyTableViewCell {
     
     private func configureApiKeyLabel() {
         apiKeyLabel.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
-        
         apiKeyLabel.speed = .rate(65)
         apiKeyLabel.fadeLength = 20
-        
         apiKeyLabel.textAlignment = .left
         apiKeyLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         apiKeyLabel.textColor = .label

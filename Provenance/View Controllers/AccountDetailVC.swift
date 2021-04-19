@@ -7,7 +7,8 @@ class AccountDetailVC: TableViewController {
     
     private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
-    
+
+    private var dateStyleObserver: NSKeyValueObservation?
     private var sections: [Section]!
 
     private lazy var dataSource = makeDataSource()
@@ -48,7 +49,6 @@ class AccountDetailVC: TableViewController {
         ]
         
         var snapshot = Snapshot()
-        
         snapshot.appendSections(sections)
         
         sections.forEach { section in
@@ -59,10 +59,6 @@ class AccountDetailVC: TableViewController {
         
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
-
-    @objc private func appMovedToForeground() {
-        applySnapshot()
-    }
     
     @objc private func closeWorkflow() {
         dismiss(animated: true)
@@ -70,17 +66,17 @@ class AccountDetailVC: TableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setProperties()
         setupNavigation()
         setupTableView()
-        
         applySnapshot()
     }
     
     private func setProperties() {
         title = "Account Details"
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
+            self.applySnapshot()
+        }
     }
     
     private func setupNavigation() {

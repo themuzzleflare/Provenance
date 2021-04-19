@@ -20,7 +20,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Not implemented")
     }
 }
 
@@ -33,7 +33,6 @@ extension StickerCollectionViewCell {
         contentView.addSubview(stickerImageView)
         
         stickerImageView.edges(to: contentView)
-        
         stickerImageView.frame = contentView.bounds
     }
 }

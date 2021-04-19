@@ -1,6 +1,6 @@
 import Foundation
 
-struct UpApi {
+struct UpAPI {
     struct Transactions {
         let listTransactions = "https://api.up.com.au/api/v1/transactions"
     }

@@ -11,13 +11,11 @@ class CategoriesCVC: CollectionViewController {
     private var categories: [CategoryResource] = []
     private var categoriesErrorResponse: [ErrorObject] = []
     private var categoriesError: String = ""
-    
     private var filteredCategories: [CategoryResource] {
         categories.filter { category in
             searchController.searchBar.text!.isEmpty || category.attributes.name.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    
     private var filteredCategoriesList: Category {
         return Category(data: filteredCategories)
     }
@@ -43,12 +41,9 @@ class CategoriesCVC: CollectionViewController {
             }
         )
     }
-    
     private func applySnapshot(animate: Bool = true) {
         var snapshot = Snapshot()
-        
         snapshot.appendSections(Section.allCases)
-        
         snapshot.appendItems(filteredCategoriesList.data, toSection: .main)
         
         if snapshot.itemIdentifiers.isEmpty && categoriesError.isEmpty && categoriesErrorResponse.isEmpty  {
@@ -148,17 +143,19 @@ class CategoriesCVC: CollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureProperties()
         configureNavigation()
         configureSearch()
         configureRefreshControl()
         configureCollectionView()
+        applySnapshot()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        applySnapshot()
-        
+        fetchCategories()
+    }
+
+    @objc private func appMovedToForeground() {
         fetchCategories()
     }
     
@@ -171,6 +168,7 @@ class CategoriesCVC: CollectionViewController {
     private func configureProperties() {
         title = "Categories"
         definesPresentationContext = true
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     private func configureNavigation() {
@@ -181,12 +179,9 @@ class CategoriesCVC: CollectionViewController {
     
     private func configureSearch() {
         searchController.delegate = self
-        
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = true
-        
         searchController.searchBar.delegate = self
-        
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.placeholder = "Search"
     }
@@ -202,11 +197,8 @@ class CategoriesCVC: CollectionViewController {
     }
     
     private func fetchCategories() {
-        let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
-        
-        AF.request(UpApi.Categories().listCategories, method: .get, headers: headers).responseJSON { response in
+        AF.request(UpAPI.Categories().listCategories, method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             self.categoriesStatusCode = response.response?.statusCode ?? 0
-            
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {

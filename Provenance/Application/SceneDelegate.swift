@@ -7,7 +7,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     weak var submitActionProxy: UIAlertAction?
 
-    private var savedShortCutItem: UIApplicationShortcutItem!
+    private var savedShortcutItem: UIApplicationShortcutItem!
     private var textDidChangeObserver: NSObjectProtocol!
 
     let viewController = TabBarController()
@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
         if let shortcutItem = connectionOptions.shortcutItem {
-            savedShortCutItem = shortcutItem
+            savedShortcutItem = shortcutItem
         }
 
         let window = UIWindow(windowScene: windowScene)
@@ -37,23 +37,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func windowScene(_ windowScene: UIWindowScene,
                      performActionFor shortcutItem: UIApplicationShortcutItem,
                      completionHandler: @escaping (Bool) -> Void) {
-        let handled = handleShortCutItem(shortcutItem: shortcutItem)
+        let handled = handleShortcutItem(shortcutItem: shortcutItem)
         completionHandler(handled)
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
-        if savedShortCutItem != nil {
-            _ = handleShortCutItem(shortcutItem: savedShortCutItem)
+        if savedShortcutItem != nil {
+            _ = handleShortcutItem(shortcutItem: savedShortcutItem)
         }
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
-        savedShortCutItem = nil
+        savedShortcutItem = nil
     }
 }
 
 extension SceneDelegate {
-    private func handleShortCutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
+    private func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
         let tabcontrol = window?.rootViewController as! TabBarController
 
         if let actionTypeValue = ActionType(rawValue: shortcutItem.type) {
@@ -70,11 +70,7 @@ extension SceneDelegate {
     }
 
     private func initialSetup() {
-        if appDefaults.string(forKey: "dateStyle") == nil {
-            appDefaults.setValue("Absolute", forKey: "dateStyle")
-        }
-
-        if appDefaults.string(forKey: "apiKey") == "" || appDefaults.string(forKey: "apiKey") == nil {
+        if appDefaults.apiKey.isEmpty {
             let ac = UIAlertController(title: "", message: "", preferredStyle: .alert)
 
             let titleFont = [NSAttributedString.Key.font: R.font.circularStdBold(size: 17)!]
@@ -91,7 +87,7 @@ extension SceneDelegate {
                 textField.autocorrectionType = .no
                 textField.isSecureTextEntry = false
                 textField.tintColor = R.color.accentColor()
-                textField.text = appDefaults.string(forKey: "apiKey") ?? nil
+                textField.text = appDefaults.apiKey
 
                 self.textDidChangeObserver = NotificationCenter.default.addObserver(
                     forName: UITextField.textDidChangeNotification,
@@ -99,7 +95,7 @@ extension SceneDelegate {
                     queue: OperationQueue.main) { (notification) in
                     if let textField = notification.object as? UITextField {
                         if let text = textField.text {
-                            self.submitActionProxy!.isEnabled = text.count >= 1 && text != appDefaults.string(forKey: "apiKey")
+                            self.submitActionProxy!.isEnabled = text.count >= 1 && text != appDefaults.apiKey
                         } else {
                             self.submitActionProxy!.isEnabled = false
                         }
@@ -114,7 +110,7 @@ extension SceneDelegate {
             let submitAction = UIAlertAction(title: "Save", style: .default) { _ in
                 let answer = ac.textFields![0]
 
-                if (answer.text != "" && answer.text != nil) && answer.text != appDefaults.string(forKey: "apiKey") {
+                if (answer.text != "" && answer.text != nil) && answer.text != appDefaults.apiKey {
                     let url = URL(string: "https://api.up.com.au/api/v1/util/ping")!
 
                     var request = URLRequest(url: url)
@@ -129,10 +125,8 @@ extension SceneDelegate {
 
                             if statusCode == 200 {
                                 DispatchQueue.main.async {
-                                    appDefaults.set(answer.text!, forKey: "apiKey")
-
+                                    appDefaults.setValue(answer.text!, forKey: "apiKey")
                                     self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
-
                                     WidgetCenter.shared.reloadAllTimelines()
                                 }
                             } else {

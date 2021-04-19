@@ -7,9 +7,7 @@ import Rswift
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:[UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         registerDefaultsFromSettingsBundle()
-        
-        FirebaseApp.configure()
-        Analytics.load()
+        configureFirebase()
 
         return true
     }
@@ -21,26 +19,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
     private func registerDefaultsFromSettingsBundle() {
-        let settingsRootPlist = "Root.plist"
-        let settingsPreferencesItems = "PreferenceSpecifiers"
-        let settingsPreferenceKey = "Key"
-        let settingsPreferenceDefaultValue = "DefaultValue"
-
-        let settingsData = try! Data(contentsOf: R.file.settingsBundle()!.appendingPathComponent(settingsRootPlist))
+        let settingsData = try! Data(contentsOf: R.file.settingsBundle()!.appendingPathComponent("Root.plist"))
         let settingsPlist = try! PropertyListSerialization.propertyList(
             from: settingsData,
             options: [],
             format: nil) as? [String: Any]
-        let settingsPreferences = settingsPlist?[settingsPreferencesItems] as? [[String: Any]]
+        let settingsPreferences = settingsPlist?["PreferenceSpecifiers"] as? [[String: Any]]
 
         var defaultsToRegister = [String: Any]()
 
         settingsPreferences?.forEach { preference in
-            if let key = preference[settingsPreferenceKey] as? String {
-                defaultsToRegister[key] = preference[settingsPreferenceDefaultValue]
+            if let key = preference["Key"] as? String {
+                defaultsToRegister[key] = preference["DefaultValue"]
             }
         }
 
         appDefaults.register(defaults: defaultsToRegister)
+    }
+
+    private func configureFirebase() {
+        FirebaseApp.configure()
+        Analytics.load()
     }
 }

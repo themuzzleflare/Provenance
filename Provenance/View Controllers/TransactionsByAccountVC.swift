@@ -5,27 +5,27 @@ import Rswift
 
 class TransactionsByAccountVC: TableViewController {
     var account: AccountResource!
+
+    @IBOutlet weak var accountBalance: UILabel!
     
     let searchController = UISearchController(searchResultsController: nil)
     let tableRefreshControl = RefreshControl(frame: .zero)
     
     private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
-    
+
+    private var dateStyleObserver: NSKeyValueObservation?
     private var transactionsStatusCode: Int = 0
     private var transactions: [TransactionResource] = []
     private var transactionsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
-    
     private var categories: [CategoryResource] = []
-    
     private var filteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    
     private var filteredTransactionList: Transaction {
         return Transaction(data: filteredTransactions, links: transactionsPagination)
     }
@@ -47,19 +47,14 @@ class TransactionsByAccountVC: TableViewController {
                 return cell
             }
         )
-
         dataSource.defaultRowAnimation = .fade
-
         return dataSource
     }
-    
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
-        
         snapshot.appendSections(Section.allCases)
-        
         snapshot.appendItems(filteredTransactionList.data, toSection: .main)
-        
+
         if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty  {
             if transactions.isEmpty && transactionsStatusCode == 0 {
                 tableView.backgroundView = {
@@ -151,25 +146,21 @@ class TransactionsByAccountVC: TableViewController {
                 tableView.backgroundView = nil
             }
         }
-        
+
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
     
-    @IBOutlet weak var accountBalance: UILabel!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureProperties()
         configureNavigation()
         configureSearch()
         configureRefreshControl()
         configureTableView()
+        applySnapshot()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        applySnapshot()
-        
         fetchTransactions()
         fetchCategories()
     }
@@ -177,7 +168,8 @@ class TransactionsByAccountVC: TableViewController {
 
 extension TransactionsByAccountVC {
     @objc private func appMovedToForeground() {
-        applySnapshot()
+        fetchTransactions()
+        fetchCategories()
     }
 
     @objc private func openAccountInfo() {
@@ -186,10 +178,8 @@ extension TransactionsByAccountVC {
     
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
-        let loadingView = ActivityIndicator(style: .medium)
-        navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(customView: loadingView)], animated: true)
+        navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(customView: ActivityIndicator(style: .medium))], animated: true)
         #endif
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchTransactions()
             self.fetchCategories()
@@ -199,33 +189,29 @@ extension TransactionsByAccountVC {
     private func configureProperties() {
         title = "Transactions by Account"
         definesPresentationContext = true
-        
         accountBalance.text = account.attributes.balance.valueShort
-
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
+            self.applySnapshot()
+        }
     }
     
     private func configureNavigation() {        
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
-        
+        navigationItem.hidesSearchBarWhenScrolling = false
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions))], animated: true)
         #else
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo))
         #endif
-        
-        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func configureSearch() {
         searchController.delegate = self
-        
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = true
-        
         searchController.searchBar.delegate = self
-        
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.placeholder = "Search"
     }
@@ -241,11 +227,8 @@ extension TransactionsByAccountVC {
     }
     
     private func fetchTransactions() {
-        let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
-        
-        AF.request(UpApi.Accounts().listTransactionsByAccount(accountId: account.id), method: .get, parameters: pageSize100Param, headers: headers).responseJSON { response in
+        AF.request(UpAPI.Accounts().listTransactionsByAccount(accountId: account.id), method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             self.transactionsStatusCode = response.response?.statusCode ?? 0
-            
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
@@ -339,9 +322,7 @@ extension TransactionsByAccountVC {
     }
     
     private func fetchCategories() {
-        let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
-        
-        AF.request(UpApi.Categories().listCategories, method: .get, headers: headers).responseJSON { response in
+        AF.request(UpAPI.Categories().listCategories, method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {

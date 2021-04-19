@@ -6,7 +6,6 @@ class TagsVC: TableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureProperties()
         configureNavigation()
         configureTableView()
@@ -44,7 +43,7 @@ extension TagsVC {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
 
-        cell.selectedBackgroundView = bgCellView
+        cell.selectedBackgroundView = selectedBackgroundCellView
         cell.accessoryType = .disclosureIndicator
         cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         cell.textLabel?.text = transaction.relationships.tags.data[indexPath.row].id

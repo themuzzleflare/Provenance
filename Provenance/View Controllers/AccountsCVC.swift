@@ -15,13 +15,11 @@ class AccountsCVC: CollectionViewController {
     private var accountsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var accountsErrorResponse: [ErrorObject] = []
     private var accountsError: String = ""
-    
     private var filteredAccounts: [AccountResource] {
         accounts.filter { account in
             searchController.searchBar.text!.isEmpty || account.attributes.displayName.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    
     private var filteredAccountsList: Account {
         return Account(data: filteredAccounts, links: accountsPagination)
     }
@@ -44,12 +42,9 @@ class AccountsCVC: CollectionViewController {
             }
         )
     }
-    
     private func applySnapshot(animate: Bool = true) {
         var snapshot = Snapshot()
-        
         snapshot.appendSections(Section.allCases)
-        
         snapshot.appendItems(filteredAccountsList.data, toSection: .main)
         
         if snapshot.itemIdentifiers.isEmpty && accountsError.isEmpty && accountsErrorResponse.isEmpty  {
@@ -149,7 +144,6 @@ class AccountsCVC: CollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureProperties()
         configureNavigation()
         configureSearch()
@@ -159,7 +153,10 @@ class AccountsCVC: CollectionViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         applySnapshot(animate: false)
-        
+        fetchCategories()
+    }
+
+    @objc private func appMovedToForeground() {
         fetchCategories()
     }
     
@@ -172,6 +169,7 @@ class AccountsCVC: CollectionViewController {
     private func configureProperties() {
         title = "Accounts"
         definesPresentationContext = true
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     private func configureNavigation() {
@@ -182,12 +180,9 @@ class AccountsCVC: CollectionViewController {
     
     private func configureSearch() {
         searchController.delegate = self
-        
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = true
-        
         searchController.searchBar.delegate = self
-        
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.placeholder = "Search"
     }
@@ -203,11 +198,8 @@ class AccountsCVC: CollectionViewController {
     }
     
     private func fetchCategories() {
-        let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
-        
-        AF.request(UpApi.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: headers).responseJSON { response in
+        AF.request(UpAPI.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             self.accountsStatusCode = response.response?.statusCode ?? 0
-            
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {

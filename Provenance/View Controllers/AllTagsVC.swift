@@ -15,13 +15,11 @@ class AllTagsVC: TableViewController {
     private var tagsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var tagsErrorResponse: [ErrorObject] = []
     private var tagsError: String = ""
-    
     private var filteredTags: [TagResource] {
         tags.filter { tag in
             searchController.searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    
     private var filteredTagsList: Tag {
         return Tag(data: filteredTags, links: tagsPagination)
     }
@@ -38,7 +36,7 @@ class AllTagsVC: TableViewController {
             cellProvider: {  tableView, indexPath, tag in
                 let cell = tableView.dequeueReusableCell(withIdentifier: "tagTableViewCell", for: indexPath) as! BasicTableViewCell
                 
-                cell.selectedBackgroundView = bgCellView
+                cell.selectedBackgroundView = selectedBackgroundCellView
                 cell.accessoryType = .none
                 cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                 cell.textLabel?.text = tag.id
@@ -47,12 +45,9 @@ class AllTagsVC: TableViewController {
             }
         )
     }
-    
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
-        
         snapshot.appendSections(Section.allCases)
-        
         snapshot.appendItems(filteredTagsList.data, toSection: .main)
         
         if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty && tagsErrorResponse.isEmpty  {
@@ -149,19 +144,17 @@ class AllTagsVC: TableViewController {
         
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
-    
+
+    @objc private func appMovedToForeground() {
+        fetchTags()
+    }
     @objc private func openAddWorkflow() {
-        let vc = R.storyboard.addTagWorkflowVC.addTagWorkflowNavigation()!
-        
-        present(vc, animated: true)
+        present(R.storyboard.addTagWorkflowVC.addTagWorkflowNavigation()!, animated: true)
     }
     @objc private func refreshTags() {
         #if targetEnvironment(macCatalyst)
-        let loadingView = ActivityIndicator(style: .medium)
-        
-        navigationItem.setLeftBarButton(UIBarButtonItem(customView: loadingView), animated: true)
+        navigationItem.setLeftBarButton(UIBarButtonItem(customView: ActivityIndicator(style: .medium)), animated: true)
         #endif
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchTags()
         }
@@ -173,44 +166,38 @@ class AllTagsVC: TableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setProperties()
         setupNavigation()
         setupSearch()
         setupRefreshControl()
         setupTableView()
+        applySnapshot()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        applySnapshot()
-        
         fetchTags()
     }
     
     private func setProperties() {
         title = "Tags"
         definesPresentationContext = true
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     private func setupNavigation() {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
-        
+        navigationItem.hidesSearchBarWhenScrolling = false
         #if targetEnvironment(macCatalyst)
         navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTags)), animated: true)
         #endif
-        
-        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func setupSearch() {
         searchController.delegate = self
-        
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = true
-        
         searchController.searchBar.delegate = self
-        
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.placeholder = "Search"
     }
@@ -226,11 +213,8 @@ class AllTagsVC: TableViewController {
     }
     
     private func fetchTags() {
-        let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
-        
-        AF.request(UpApi.Tags().listTags, method: .get, parameters: pageSize200Param, headers: headers).responseJSON { response in
+        AF.request(UpAPI.Tags().listTags, method: .get, parameters: pageSize200Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             self.tagsStatusCode = response.response?.statusCode ?? 0
-            
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: response.data!) {

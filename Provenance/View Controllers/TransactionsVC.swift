@@ -7,10 +7,11 @@ import Rswift
 class TransactionsVC: TableViewController {
     let tableRefreshControl = RefreshControl(frame: .zero)
     let searchController = UISearchController(searchResultsController: nil)
-    
+
     private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
-    
+
+    private var dateStyleObserver: NSKeyValueObservation?
     private var filterButton = UIBarButtonItem()
     private var filter: FilterCategory = .all {
         didSet {
@@ -26,15 +27,12 @@ class TransactionsVC: TableViewController {
             applySnapshot()
         }
     }
-    
     private var transactionsStatusCode: Int = 0
     private var transactions: [TransactionResource] = []
     private var transactionsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
-    
     private var categories: [CategoryResource] = []
-    
     private var accounts: [AccountResource] = []
     
     private lazy var dataSource = makeDataSource()
@@ -45,18 +43,16 @@ class TransactionsVC: TableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureProperties()
         configureNavigation()
         configureFilterButton()
         configureSearch()
         configureRefreshControl()
         configureTableView()
+        applySnapshot()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        applySnapshot()
-        
         fetchTransactions()
         fetchAccounts()
         fetchCategories()
@@ -118,17 +114,13 @@ extension TransactionsVC {
                 return cell
             }
         )
-
         dataSource.defaultRowAnimation = .fade
-        
         return dataSource
     }
     
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
-        
         snapshot.appendSections(Section.allCases)
-        
         snapshot.appendItems(filteredTransactionList.data, toSection: .main)
         
         if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty  {
@@ -227,28 +219,23 @@ extension TransactionsVC {
     }
 
     @objc private func appMovedToForeground() {
-        applySnapshot()
+        fetchTransactions()
+        fetchAccounts()
+        fetchCategories()
     }
     
     @objc private func switchDateStyle() {
-        if appDefaults.string(forKey: "dateStyle") == "Absolute" || appDefaults.string(forKey: "dateStyle") == nil {
+        if appDefaults.dateStyle == "Absolute" {
             appDefaults.setValue("Relative", forKey: "dateStyle")
-        } else if appDefaults.string(forKey: "dateStyle") == "Relative" {
+        } else if appDefaults.dateStyle == "Relative" {
             appDefaults.setValue("Absolute", forKey: "dateStyle")
         }
-        
-        applySnapshot()
-        
-        WidgetCenter.shared.reloadAllTimelines()
     }
     
     @objc private func refreshTransactions() {
         #if targetEnvironment(macCatalyst)
-        let loadingView = ActivityIndicator(style: .medium)
-        
-        navigationItem.setRightBarButton(UIBarButtonItem(customView: loadingView), animated: true)
+        navigationItem.setRightBarButton(UIBarButtonItem(customView: ActivityIndicator(style: .medium)), animated: true)
         #endif
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchTransactions()
             self.fetchCategories()
@@ -260,17 +247,19 @@ extension TransactionsVC {
         title = "Transactions"
         definesPresentationContext = true
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
+            self.applySnapshot()
+            WidgetCenter.shared.reloadAllTimelines()
+        }
     }
     
     private func configureNavigation() {        
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
-        
+        navigationItem.hidesSearchBarWhenScrolling = false
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
         #endif
-        
-        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func configureFilterButton() {
@@ -280,12 +269,9 @@ extension TransactionsVC {
     
     private func configureSearch() {
         searchController.delegate = self
-        
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = true
-        
         searchController.searchBar.delegate = self
-        
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.placeholder = "Search"
     }
@@ -301,11 +287,8 @@ extension TransactionsVC {
     }
     
     private func fetchTransactions() {
-        let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
-        
-        AF.request(UpApi.Transactions().listTransactions, method: .get, parameters: pageSize100Param, headers: headers).responseJSON { response in
+        AF.request(UpAPI.Transactions().listTransactions, method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             self.transactionsStatusCode = response.response?.statusCode ?? 0
-            
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
@@ -410,9 +393,7 @@ extension TransactionsVC {
     }
     
     private func fetchCategories() {
-        let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
-        
-        AF.request(UpApi.Categories().listCategories, method: .get, headers: headers).responseJSON { response in
+        AF.request(UpAPI.Categories().listCategories, method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
@@ -427,9 +408,7 @@ extension TransactionsVC {
     }
     
     private func fetchAccounts() {
-        let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
-        
-        AF.request(UpApi.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: headers).responseJSON { response in
+        AF.request(UpAPI.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {

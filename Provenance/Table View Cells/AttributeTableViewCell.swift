@@ -19,7 +19,7 @@ class AttributeTableViewCell: UITableViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Not implemented")
     }
 }
 
@@ -28,7 +28,7 @@ extension AttributeTableViewCell {
         selectionStyle = .none
         accessoryType = .none
         separatorInset = .zero
-        selectedBackgroundView = bgCellView
+        selectedBackgroundView = selectedBackgroundCellView
     }
     
     private func configureContentView() {
@@ -37,7 +37,6 @@ extension AttributeTableViewCell {
     
     private func configureLeftLabel() {
         leftLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         leftLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         leftLabel.textAlignment = .left
         leftLabel.textColor = .secondaryLabel
@@ -46,7 +45,6 @@ extension AttributeTableViewCell {
     
     private func configureRightLabel() {
         rightLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         rightLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         rightLabel.textAlignment = .right
         rightLabel.textColor = .label
@@ -54,11 +52,9 @@ extension AttributeTableViewCell {
     }
     
     private func configureHorizontalStackView() {
+        horizontalStack.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
         horizontalStack.addArrangedSubview(leftLabel)
         horizontalStack.addArrangedSubview(rightLabel)
-        
-        horizontalStack.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
-        
         horizontalStack.axis = .horizontal
         horizontalStack.alignment = .center
         horizontalStack.distribution = .equalSpacing

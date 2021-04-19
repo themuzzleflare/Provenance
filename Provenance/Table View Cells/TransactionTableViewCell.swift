@@ -45,7 +45,7 @@ class TransactionTableViewCell: UITableViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Not implemented")
     }
 }
 
@@ -54,7 +54,7 @@ extension TransactionTableViewCell {
         selectionStyle = .default
         accessoryType = .none
         separatorInset = .zero
-        selectedBackgroundView = bgCellView
+        selectedBackgroundView = selectedBackgroundCellView
     }
     
     private func configureContentView() {
@@ -63,7 +63,6 @@ extension TransactionTableViewCell {
     
     private func configureTransactionDescription() {
         transactionDescription.translatesAutoresizingMaskIntoConstraints = false
-        
         transactionDescription.font = R.font.circularStdBold(size: UIFont.labelFontSize)
         transactionDescription.textAlignment = .left
         transactionDescription.numberOfLines = 0
@@ -72,7 +71,6 @@ extension TransactionTableViewCell {
     
     private func configureTransactionCreationDate() {
         transactionCreationDate.translatesAutoresizingMaskIntoConstraints = false
-        
         transactionCreationDate.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
         transactionCreationDate.textAlignment = .left
         transactionCreationDate.numberOfLines = 0
@@ -81,29 +79,24 @@ extension TransactionTableViewCell {
     
     private func configureTransactionAmount() {
         transactionAmount.translatesAutoresizingMaskIntoConstraints = false
-        
         transactionAmount.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         transactionAmount.textAlignment = .right
         transactionAmount.numberOfLines = 0
     }
     
     private func configureVerticalStackView() {
+        verticalStack.translatesAutoresizingMaskIntoConstraints = false
         verticalStack.addArrangedSubview(transactionDescription)
         verticalStack.addArrangedSubview(transactionCreationDate)
-        
-        verticalStack.translatesAutoresizingMaskIntoConstraints = false
-        
         verticalStack.axis = .vertical
         verticalStack.alignment = .leading
         verticalStack.distribution = .fill
     }
     
     private func configureHorizontalStackView() {
+        horizontalStack.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
         horizontalStack.addArrangedSubview(verticalStack)
         horizontalStack.addArrangedSubview(transactionAmount)
-        
-        horizontalStack.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
-        
         horizontalStack.axis = .horizontal
         horizontalStack.alignment = .center
         horizontalStack.distribution = .equalSpacing

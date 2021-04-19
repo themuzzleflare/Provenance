@@ -35,7 +35,6 @@ class AccountCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         configureCell()
         configureContentView()
         configureBalanceLabel()
@@ -44,7 +43,7 @@ class AccountCollectionViewCell: UICollectionViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Not implemented")
     }
 }
 
@@ -55,7 +54,7 @@ extension AccountCollectionViewCell {
         layer.borderColor = UIColor.separator.cgColor
         layer.borderWidth = 0.5
         backgroundColor = .secondarySystemGroupedBackground
-        selectedBackgroundView = bgCellView
+        selectedBackgroundView = selectedBackgroundCellView
     }
     
     private func configureContentView() {
@@ -64,7 +63,6 @@ extension AccountCollectionViewCell {
     
     private func configureBalanceLabel() {
         balanceLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         balanceLabel.textAlignment = .center
         balanceLabel.numberOfLines = 0
         balanceLabel.textColor = R.color.accentColor()
@@ -73,7 +71,6 @@ extension AccountCollectionViewCell {
     
     private func configureDisplayNameLabel() {
         displayNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         displayNameLabel.textAlignment = .center
         displayNameLabel.numberOfLines = 0
         displayNameLabel.textColor = .label
@@ -81,12 +78,10 @@ extension AccountCollectionViewCell {
     }
     
     private func configureStackView() {
-        verticalStack.addArrangedSubview(balanceLabel)
-        verticalStack.addArrangedSubview(displayNameLabel)
-        
         verticalStack.edges(to: contentView, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
         verticalStack.center(in: contentView)
-        
+        verticalStack.addArrangedSubview(balanceLabel)
+        verticalStack.addArrangedSubview(displayNameLabel)
         verticalStack.axis = .vertical
         verticalStack.alignment = .center
         verticalStack.distribution = .fillProportionally

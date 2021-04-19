@@ -9,7 +9,8 @@ class AddTagWorkflowVC: TableViewController {
     
     private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
-    
+
+    private var dateStyleObserver: NSKeyValueObservation?
     private var transactionsStatusCode: Int = 0
     private var transactionsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var transactions: [TransactionResource] = []
@@ -20,7 +21,6 @@ class AddTagWorkflowVC: TableViewController {
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    
     private var filteredTransactionList: Transaction {
         return Transaction(data: filteredTransactions, links: transactionsPagination)
     }
@@ -43,12 +43,9 @@ class AddTagWorkflowVC: TableViewController {
             }
         )
     }
-    
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
-        
         snapshot.appendSections(Section.allCases)
-        
         snapshot.appendItems(filteredTransactionList.data, toSection: .main)
         
         if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty  {
@@ -147,7 +144,7 @@ class AddTagWorkflowVC: TableViewController {
     }
 
     @objc private func appMovedToForeground() {
-        applySnapshot()
+        fetchTransactions()
     }
     
     @objc private func refreshTransactions() {
@@ -161,17 +158,15 @@ class AddTagWorkflowVC: TableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setProperties()
         setupNavigation()
         setupSearch()
         setupRefreshControl()
         setupTableView()
+        applySnapshot()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        applySnapshot()
-        
         fetchTransactions()
     }
     
@@ -179,6 +174,9 @@ class AddTagWorkflowVC: TableViewController {
         title = "Transactions"
         definesPresentationContext = true
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
+            self.applySnapshot()
+        }
     }
     
     private func setupNavigation() {
@@ -190,12 +188,9 @@ class AddTagWorkflowVC: TableViewController {
     
     private func setupSearch() {
         searchController.delegate = self
-        
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = true
-        
         searchController.searchBar.delegate = self
-        
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.placeholder = "Search"
     }
@@ -213,7 +208,7 @@ class AddTagWorkflowVC: TableViewController {
     private func fetchTransactions() {
         let headers: HTTPHeaders = [acceptJsonHeader, authorisationHeader]
         
-        AF.request(UpApi.Transactions().listTransactions, method: .get, parameters: pageSize100Param, headers: headers).responseJSON { response in
+        AF.request(UpAPI.Transactions().listTransactions, method: .get, parameters: pageSize100Param, headers: headers).responseJSON { response in
             self.transactionsStatusCode = response.response?.statusCode ?? 0
             
             switch response.result {

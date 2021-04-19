@@ -19,14 +19,13 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         configureCell()
         configureContentView()
         configureLabel()
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Not implemented")
     }
 }
 
@@ -37,7 +36,7 @@ extension CategoryCollectionViewCell {
         layer.borderColor = UIColor.separator.cgColor
         layer.borderWidth = 0.5
         backgroundColor = .secondarySystemGroupedBackground
-        selectedBackgroundView = bgCellView
+        selectedBackgroundView = selectedBackgroundCellView
     }
     
     private func configureContentView() {
@@ -46,7 +45,6 @@ extension CategoryCollectionViewCell {
     
     private func configureLabel() {
         label.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
-        
         label.textAlignment = .center
         label.numberOfLines = 0
         label.textColor = .label

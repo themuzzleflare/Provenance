@@ -41,7 +41,7 @@
 		7A9494062629350B00B39E75 /* UpAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9494052629350B00B39E75 /* UpAPI.swift */; };
 		7AA1137E2614876C00386E2D /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA1137D2614876C00386E2D /* TransactionTableViewCell.swift */; };
 		7AA113882615181700386E2D /* AttributeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA113872615181700386E2D /* AttributeTableViewCell.swift */; };
-		7AA1139026152CBE00386E2D /* DateStylePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA1138F26152CBE00386E2D /* DateStylePickerTableViewCell.swift */; };
+		7AA1139026152CBE00386E2D /* DateStyleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA1138F26152CBE00386E2D /* DateStyleTableViewCell.swift */; };
 		7AA11398261532D000386E2D /* APIKeyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA11397261532D000386E2D /* APIKeyTableViewCell.swift */; };
 		7AA113BF26154F3800386E2D /* DetailAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA113BE26154F3800386E2D /* DetailAttribute.swift */; };
 		7AA113C7261550B900386E2D /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA113C6261550B900386E2D /* Section.swift */; };
@@ -156,7 +156,7 @@
 		7A9DE23C25DE35AB00175697 /* Provenance.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Provenance.entitlements; sourceTree = "<group>"; };
 		7AA1137D2614876C00386E2D /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
 		7AA113872615181700386E2D /* AttributeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeTableViewCell.swift; sourceTree = "<group>"; };
-		7AA1138F26152CBE00386E2D /* DateStylePickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateStylePickerTableViewCell.swift; sourceTree = "<group>"; };
+		7AA1138F26152CBE00386E2D /* DateStyleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateStyleTableViewCell.swift; sourceTree = "<group>"; };
 		7AA11397261532D000386E2D /* APIKeyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeyTableViewCell.swift; sourceTree = "<group>"; };
 		7AA113BE26154F3800386E2D /* DetailAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailAttribute.swift; sourceTree = "<group>"; };
 		7AA113C6261550B900386E2D /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
@@ -281,7 +281,7 @@
 			children = (
 				7AA1137D2614876C00386E2D /* TransactionTableViewCell.swift */,
 				7AA113872615181700386E2D /* AttributeTableViewCell.swift */,
-				7AA1138F26152CBE00386E2D /* DateStylePickerTableViewCell.swift */,
+				7AA1138F26152CBE00386E2D /* DateStyleTableViewCell.swift */,
 				7A14D616261AF39400C072E3 /* BasicTableViewCell.swift */,
 				7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */,
 				7AB34D4325C79BD0000A1E81 /* RightDetailTableViewCell.swift */,
@@ -732,7 +732,7 @@
 				7A14D617261AF39400C072E3 /* BasicTableViewCell.swift in Sources */,
 				7A9494062629350B00B39E75 /* UpAPI.swift in Sources */,
 				7AA113C7261550B900386E2D /* Section.swift in Sources */,
-				7AA1139026152CBE00386E2D /* DateStylePickerTableViewCell.swift in Sources */,
+				7AA1139026152CBE00386E2D /* DateStyleTableViewCell.swift in Sources */,
 				7ACD4576261D9416000C8FD2 /* StickerCollectionViewCell.swift in Sources */,
 				7A5BDE712616B96F00B5A5F9 /* CollectionViewController.swift in Sources */,
 				7A56101225D219770091396E /* AllTagsVC.swift in Sources */,
@@ -947,7 +947,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 11.1;
+				MARKETING_VERSION = 11.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -978,7 +978,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 11.1;
+				MARKETING_VERSION = 11.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1008,7 +1008,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 11.1;
+				MARKETING_VERSION = 11.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1038,7 +1038,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 11.1;
+				MARKETING_VERSION = 11.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1062,7 +1062,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 11.1;
+				MARKETING_VERSION = 11.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1082,7 +1082,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 11.1;
+				MARKETING_VERSION = 11.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

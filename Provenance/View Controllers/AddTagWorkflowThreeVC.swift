@@ -4,10 +4,11 @@ import Rswift
 class AddTagWorkflowThreeVC: TableViewController {
     var transaction: TransactionResource!
     var tag: String!
+
+    private var dateStyleObserver: NSKeyValueObservation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureProperties()
         configureNavigation()
         configureTableView()
@@ -90,10 +91,6 @@ extension AddTagWorkflowThreeVC {
             case 403: return (title: "Forbidden", content: "Too many tags added to this transaction. Each transaction may have up to 6 tags.")
             default: return (title: "Failed", content: "The tag was not added to the transaction.")
         }
-    }
-
-    @objc private func appMovedToForeground() {
-        tableView.reloadData()
     }
     
     @objc private func addTag() {
@@ -178,7 +175,9 @@ extension AddTagWorkflowThreeVC {
     
     private func configureProperties() {
         title = "Confirmation"
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
+            self.tableView.reloadData()
+        }
     }
     
     private func configureNavigation() {
