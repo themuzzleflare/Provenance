@@ -5,7 +5,7 @@ import Rswift
 
 class AllTagsVC: TableViewController {
     let tableRefreshControl = RefreshControl(frame: .zero)
-    let searchController = UISearchController(searchResultsController: nil)
+    let searchController = SearchController(searchResultsController: nil)
     
     private typealias DataSource = UITableViewDiffableDataSource<Section, TagResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TagResource>
@@ -158,7 +158,7 @@ class AllTagsVC: TableViewController {
     }
 
     @objc private func openAddWorkflow() {
-        present(R.storyboard.addTagWorkflowVC.addTagWorkflowNavigation()!, animated: true)
+        present({let vc = NavigationController(rootViewController: AddTagWorkflowVC(style: .grouped));vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
     }
     
     @objc private func refreshTags() {
@@ -168,10 +168,6 @@ class AllTagsVC: TableViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchTags()
         }
-    }
-    
-    @IBAction func workflowClosed(unwindSegue: UIStoryboardSegue) {
-        fetchTags()
     }
     
     override func viewDidLoad() {
@@ -197,19 +193,13 @@ class AllTagsVC: TableViewController {
     private func setupNavigation() {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
-        navigationItem.hidesSearchBarWhenScrolling = false
         #if targetEnvironment(macCatalyst)
         navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTags)), animated: true)
         #endif
     }
     
     private func setupSearch() {
-        searchController.delegate = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.hidesNavigationBarDuringPresentation = true
         searchController.searchBar.delegate = self
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.placeholder = "Search"
     }
     
     private func setupRefreshControl() {
@@ -341,7 +331,7 @@ extension AllTagsVC {
     }
 }
 
-extension AllTagsVC: UISearchControllerDelegate, UISearchBarDelegate {
+extension AllTagsVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         applySnapshot(animate: true)
     }

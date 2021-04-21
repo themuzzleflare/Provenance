@@ -10,5 +10,7 @@ class ViewController: UIViewController {
 extension ViewController {
     private func configure() {
         view.backgroundColor = .systemGroupedBackground
+        navigationItem.backButtonDisplayMode = .minimal
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
 }

@@ -12,6 +12,8 @@ extension CollectionViewController {
     private func configure() {
         collectionView.backgroundColor = .systemGroupedBackground
         collectionView.showsHorizontalScrollIndicator = false
+        navigationItem.backButtonDisplayMode = .minimal
+        navigationItem.hidesSearchBarWhenScrolling = false
         #if !targetEnvironment(macCatalyst)
         collectionView.showsVerticalScrollIndicator = false
         #endif

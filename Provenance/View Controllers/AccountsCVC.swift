@@ -4,7 +4,7 @@ import TinyConstraints
 import Rswift
 
 class AccountsCVC: CollectionViewController {
-    let searchController = UISearchController(searchResultsController: nil)
+    let searchController = SearchController(searchResultsController: nil)
     let refreshControl = RefreshControl(frame: .zero)
     
     private typealias DataSource = UICollectionViewDiffableDataSource<Section, AccountResource>
@@ -184,16 +184,10 @@ class AccountsCVC: CollectionViewController {
     private func configureNavigation() {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.walletPass(), style: .plain, target: self, action: nil)
-        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func configureSearch() {
-        searchController.delegate = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.hidesNavigationBarDuringPresentation = true
         searchController.searchBar.delegate = self
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.placeholder = "Search"
     }
     
     private func configureRefreshControl() {
@@ -290,11 +284,11 @@ class AccountsCVC: CollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        navigationController?.pushViewController({let vc = R.storyboard.transactionsByAccount.transactionsByAccountController()!;vc.account = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
+        navigationController?.pushViewController({let vc = TransactionsByAccountVC(style: .grouped);vc.account = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
     }
 }
 
-extension AccountsCVC: UISearchControllerDelegate, UISearchBarDelegate {
+extension AccountsCVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         applySnapshot()
     }

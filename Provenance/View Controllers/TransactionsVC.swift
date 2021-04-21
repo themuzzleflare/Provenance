@@ -6,7 +6,7 @@ import Rswift
 
 class TransactionsVC: TableViewController {
     let tableRefreshControl = RefreshControl(frame: .zero)
-    let searchController = UISearchController(searchResultsController: nil)
+    let searchController = SearchController(searchResultsController: nil)
 
     private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
@@ -262,10 +262,9 @@ extension TransactionsVC {
         }
     }
     
-    private func configureNavigation() {        
+    private func configureNavigation() {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
-        navigationItem.hidesSearchBarWhenScrolling = false
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
         #endif
@@ -277,12 +276,7 @@ extension TransactionsVC {
     }
     
     private func configureSearch() {
-        searchController.delegate = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.hidesNavigationBarDuringPresentation = true
         searchController.searchBar.delegate = self
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.placeholder = "Search"
     }
     
     private func configureRefreshControl() {
@@ -448,7 +442,7 @@ extension TransactionsVC {
     }
 }
 
-extension TransactionsVC: UISearchControllerDelegate, UISearchBarDelegate {
+extension TransactionsVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         applySnapshot(animate: true)
     }

@@ -18,18 +18,9 @@ class AccountDetailVC: TableViewController {
             tableView: tableView,
             cellProvider: {  tableView, indexPath, detailAttribute in
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-
-                var cellRightDetailFont: UIFont {
-                    switch detailAttribute.key {
-                        case "Account ID":
-                            return R.font.sfMonoRegular(size: UIFont.labelFontSize)!
-                        default:
-                            return R.font.circularStdBook(size: UIFont.labelFontSize)!
-                    }
-                }
                 
                 cell.leftLabel.text = detailAttribute.key
-                cell.rightLabel.font = cellRightDetailFont
+                cell.rightLabel.font = detailAttribute.key == "Account ID" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
                 cell.rightLabel.text = detailAttribute.value
                 
                 return cell
@@ -71,7 +62,7 @@ class AccountDetailVC: TableViewController {
     }
     
     @objc private func closeWorkflow() {
-        dismiss(animated: true)
+        navigationController?.dismiss(animated: true)
     }
     
     override func viewDidLoad() {

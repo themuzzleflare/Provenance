@@ -127,21 +127,11 @@ extension TransactionDetailVC {
                             return .none
                     }
                 }
-                var cellRightDetailFont: UIFont {
-                    switch detailAttribute.key {
-                        case "Raw Text":
-                            return R.font.sfMonoRegular(size: UIFont.labelFontSize)!
-                        default:
-                            return R.font.circularStdBook(size: UIFont.labelFontSize)!
-                    }
-                }
                 
                 cell.selectionStyle = cellSelectionStyle
                 cell.accessoryType = cellAccessoryType
-                
                 cell.leftLabel.text = detailAttribute.key
-                
-                cell.rightLabel.font = cellRightDetailFont
+                cell.rightLabel.font = detailAttribute.key == "Raw Text" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
                 cell.rightLabel.text = detailAttribute.value
                 
                 return cell
@@ -245,13 +235,12 @@ extension TransactionDetailVC {
         scrollingTitle.speed = .rate(65)
         scrollingTitle.fadeLength = 20
         scrollingTitle.textAlignment = .center
-        scrollingTitle.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+        scrollingTitle.font = .boldSystemFont(ofSize: UIFont.labelFontSize)
         scrollingTitle.text = transaction.attributes.description
     }
     
     private func configureNavigation() {
         navigationItem.titleView = scrollingTitle
-        navigationItem.backButtonDisplayMode = .minimal
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: transaction.attributes.statusIconView)
     }
     
@@ -272,7 +261,7 @@ extension TransactionDetailVC {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if attribute.key == "Account" {
-            navigationController?.pushViewController({let vc = R.storyboard.transactionsByAccount.transactionsByAccountController()!;vc.account = accountFilter!.first!;return vc}(), animated: true)
+            navigationController?.pushViewController({let vc = TransactionsByAccountVC(style: .grouped);vc.account = accountFilter!.first!;return vc}(), animated: true)
         } else if attribute.key == "Parent Category" || attribute.key == "Category" {
             let vc = TransactionsByCategoryVC(style: .grouped)
             

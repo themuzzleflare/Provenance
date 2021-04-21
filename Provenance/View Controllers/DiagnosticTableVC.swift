@@ -53,7 +53,7 @@ class DiagnosticTableVC: TableViewController {
 
 extension DiagnosticTableVC {
     @objc private func closeWorkflow() {
-        dismiss(animated: true)
+        navigationController?.dismiss(animated: true)
     }
     
     private func setProperties() {

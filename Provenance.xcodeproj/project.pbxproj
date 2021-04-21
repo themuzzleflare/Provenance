@@ -13,7 +13,6 @@
 		7A14D600261AD5FF00C072E3 /* FilterCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A14D5FF261AD5FF00C072E3 /* FilterCategory.swift */; };
 		7A14D617261AF39400C072E3 /* BasicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A14D616261AF39400C072E3 /* BasicTableViewCell.swift */; };
 		7A202B5D262908EC00D2450A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A202B5C262908EC00D2450A /* SceneDelegate.swift */; };
-		7A2A1E862611A11D001E642F /* TransactionsByAccount.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A1E852611A11D001E642F /* TransactionsByAccount.storyboard */; };
 		7A2E6D0025DCA06B00BA2AB6 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2E6CFF25DCA06B00BA2AB6 /* ModelData.swift */; };
 		7A2F18FE261D9CC80054A9B6 /* StickerSeven.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F18F6261D9CC60054A9B6 /* StickerSeven.gif */; };
 		7A2F1900261D9CC80054A9B6 /* StickerTwo.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F18F8261D9CC70054A9B6 /* StickerTwo.gif */; };
@@ -38,6 +37,7 @@
 		7A8DDCA225D138C200EF85B9 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8DDCA125D138C200EF85B9 /* Category.swift */; };
 		7A8DDCA525D1472400EF85B9 /* TagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8DDCA425D1472400EF85B9 /* TagsVC.swift */; };
 		7A8E41F126048320003D0E6A /* ProvenanceWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD1279A2604702600A39272 /* ProvenanceWidgets.swift */; };
+		7A8E9C43262FD7460018BEBE /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8E9C42262FD7460018BEBE /* SearchController.swift */; };
 		7A9494062629350B00B39E75 /* UpAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9494052629350B00B39E75 /* UpAPI.swift */; };
 		7AA1137E2614876C00386E2D /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA1137D2614876C00386E2D /* TransactionTableViewCell.swift */; };
 		7AA113882615181700386E2D /* AttributeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA113872615181700386E2D /* AttributeTableViewCell.swift */; };
@@ -61,7 +61,6 @@
 		7AB34D4D25C7A90E000A1E81 /* TransactionDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D4C25C7A90E000A1E81 /* TransactionDetailVC.swift */; };
 		7AB34D5325C7C30E000A1E81 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D5225C7C30E000A1E81 /* TabBarController.swift */; };
 		7AB34D5D25C7CDCB000A1E81 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */; };
-		7AB609AA2602C79B0038B85B /* AddTagWorkflowVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7AB609A92602C79B0038B85B /* AddTagWorkflowVC.storyboard */; };
 		7AB609B02603F0D80038B85B /* AddTagWorkflowTwoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */; };
 		7AB609B32603F1130038B85B /* AddTagWorkflowThreeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */; };
 		7ACD456C261D67A7000C8FD2 /* WidgetsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD456B261D67A7000C8FD2 /* WidgetsVC.swift */; };
@@ -133,7 +132,6 @@
 		7A14D5FF261AD5FF00C072E3 /* FilterCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategory.swift; sourceTree = "<group>"; };
 		7A14D616261AF39400C072E3 /* BasicTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicTableViewCell.swift; sourceTree = "<group>"; };
 		7A202B5C262908EC00D2450A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		7A2A1E852611A11D001E642F /* TransactionsByAccount.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TransactionsByAccount.storyboard; sourceTree = "<group>"; };
 		7A2E6CFF25DCA06B00BA2AB6 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
 		7A2F18F6261D9CC60054A9B6 /* StickerSeven.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerSeven.gif; sourceTree = "<group>"; };
 		7A2F18F8261D9CC70054A9B6 /* StickerTwo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerTwo.gif; sourceTree = "<group>"; };
@@ -154,6 +152,7 @@
 		7A7DAC6926071702001349FD /* LatestTransaction.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = LatestTransaction.intentdefinition; sourceTree = "<group>"; };
 		7A8DDCA125D138C200EF85B9 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		7A8DDCA425D1472400EF85B9 /* TagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsVC.swift; sourceTree = "<group>"; };
+		7A8E9C42262FD7460018BEBE /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		7A9494052629350B00B39E75 /* UpAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpAPI.swift; sourceTree = "<group>"; };
 		7A9DE23C25DE35AB00175697 /* Provenance.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Provenance.entitlements; sourceTree = "<group>"; };
 		7AA1137D2614876C00386E2D /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
@@ -180,7 +179,6 @@
 		7AB34D4C25C7A90E000A1E81 /* TransactionDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailVC.swift; sourceTree = "<group>"; };
 		7AB34D5225C7C30E000A1E81 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
-		7AB609A92602C79B0038B85B /* AddTagWorkflowVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AddTagWorkflowVC.storyboard; sourceTree = "<group>"; };
 		7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagWorkflowTwoVC.swift; sourceTree = "<group>"; };
 		7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagWorkflowThreeVC.swift; sourceTree = "<group>"; };
 		7ACD456B261D67A7000C8FD2 /* WidgetsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetsVC.swift; sourceTree = "<group>"; };
@@ -317,6 +315,7 @@
 				7AE75E4225FF21D500C16AF6 /* TableViewController.swift */,
 				7AE75E4625FF225900C16AF6 /* ViewController.swift */,
 				7A455CF5260822CC00A7F2B8 /* CollectionViewController.swift */,
+				7A8E9C42262FD7460018BEBE /* SearchController.swift */,
 			);
 			path = "Template View Controllers";
 			sourceTree = "<group>";
@@ -381,8 +380,6 @@
 			isa = PBXGroup;
 			children = (
 				7AB34D2825C78232000A1E81 /* LaunchScreen.storyboard */,
-				7A2A1E852611A11D001E642F /* TransactionsByAccount.storyboard */,
-				7AB609A92602C79B0038B85B /* AddTagWorkflowVC.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -588,10 +585,8 @@
 				7AF4C35925DB3674009CF391 /* CircularStd-Book.otf in Resources */,
 				7AA124FD262682F300F50D6D /* Settings.bundle in Resources */,
 				7AF4C35C25DB3674009CF391 /* CircularStd-Bold.otf in Resources */,
-				7A2A1E862611A11D001E642F /* TransactionsByAccount.storyboard in Resources */,
 				7AF4C35B25DB3674009CF391 /* SF-Mono-Regular.otf in Resources */,
 				7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */,
-				7AB609AA2602C79B0038B85B /* AddTagWorkflowVC.storyboard in Resources */,
 				7A2F1902261D9CC80054A9B6 /* StickerThree.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -725,6 +720,7 @@
 				7A2F1946261D9E1E0054A9B6 /* R.generated.swift in Sources */,
 				7AD295F425D358B200B8A765 /* TransactionsByAccountVC.swift in Sources */,
 				7AB609B32603F1130038B85B /* AddTagWorkflowThreeVC.swift in Sources */,
+				7A8E9C43262FD7460018BEBE /* SearchController.swift in Sources */,
 				7AA6C4EC2623F606003F7947 /* AboutVC.swift in Sources */,
 				7AD295F825D3599A00B8A765 /* AccountDetailVC.swift in Sources */,
 				7AA6C4F12623F6BE003F7947 /* AboutTopTableViewCell.swift in Sources */,
@@ -955,7 +951,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 11.4;
+				MARKETING_VERSION = 11.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -986,7 +982,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 11.4;
+				MARKETING_VERSION = 11.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1016,7 +1012,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 11.4;
+				MARKETING_VERSION = 11.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1046,7 +1042,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 11.4;
+				MARKETING_VERSION = 11.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1070,7 +1066,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 11.4;
+				MARKETING_VERSION = 11.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1090,7 +1086,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 11.4;
+				MARKETING_VERSION = 11.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

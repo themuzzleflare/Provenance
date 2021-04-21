@@ -5,7 +5,7 @@ import Rswift
 
 class AddTagWorkflowVC: TableViewController {
     let tableRefreshControl = RefreshControl(frame: .zero)
-    let searchController = UISearchController(searchResultsController: nil)
+    let searchController = SearchController(searchResultsController: nil)
     
     private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
@@ -163,7 +163,7 @@ class AddTagWorkflowVC: TableViewController {
         }
     }
     @objc private func closeWorkflow() {
-        performSegue(withIdentifier: R.segue.addTagWorkflowVC.closeWorkflow, sender: self)
+        navigationController?.dismiss(animated: true)
     }
     
     override func viewDidLoad() {
@@ -191,18 +191,11 @@ class AddTagWorkflowVC: TableViewController {
     
     private func setupNavigation() {
         navigationItem.title = "Loading"
-        navigationItem.backButtonDisplayMode = .minimal
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
-        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func setupSearch() {
-        searchController.delegate = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.hidesNavigationBarDuringPresentation = true
         searchController.searchBar.delegate = self
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.placeholder = "Search"
     }
     
     private func setupRefreshControl() {
@@ -314,7 +307,7 @@ extension AddTagWorkflowVC {
     }
 }
 
-extension AddTagWorkflowVC: UISearchControllerDelegate, UISearchBarDelegate {
+extension AddTagWorkflowVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         applySnapshot(animate: true)
     }

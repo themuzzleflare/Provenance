@@ -9,7 +9,7 @@ class AddTagWorkflowTwoVC: TableViewController {
     weak var submitActionProxy: UIAlertAction?
     
     let tableRefreshControl = RefreshControl(frame: .zero)
-    let searchController = UISearchController(searchResultsController: nil)
+    let searchController = SearchController(searchResultsController: nil)
     
     private typealias DataSource = UITableViewDiffableDataSource<Section, TagResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TagResource>
@@ -19,7 +19,7 @@ class AddTagWorkflowTwoVC: TableViewController {
     private var tagsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var tags: [TagResource] = [] {
         didSet {
-            applySnapshot()
+            applySnapshot(animate: true)
             refreshControl?.endRefreshing()
             searchController.searchBar.placeholder = "Search \(tags.count.description) \(tags.count == 1 ? "Tag" : "Tags")"
 
@@ -229,17 +229,10 @@ class AddTagWorkflowTwoVC: TableViewController {
     
     private func setupNavigation() {
         navigationItem.title = "Loading"
-        navigationItem.backButtonDisplayMode = .minimal
-        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func setupSearch() {
-        searchController.delegate = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.hidesNavigationBarDuringPresentation = true
         searchController.searchBar.delegate = self
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.placeholder = "Search"
     }
     
     private func setupRefreshControl() {
@@ -364,7 +357,7 @@ extension AddTagWorkflowTwoVC: UITextFieldDelegate {
     }
 }
 
-extension AddTagWorkflowTwoVC: UISearchControllerDelegate, UISearchBarDelegate {
+extension AddTagWorkflowTwoVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         applySnapshot(animate: true)
     }

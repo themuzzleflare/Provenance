@@ -4,7 +4,7 @@ import TinyConstraints
 import Rswift
 
 class CategoriesCVC: CollectionViewController {
-    let searchController = UISearchController(searchResultsController: nil)
+    let searchController = SearchController(searchResultsController: nil)
     let refreshControl = RefreshControl(frame: .zero)
     
     private var categoriesStatusCode: Int = 0
@@ -47,7 +47,7 @@ class CategoriesCVC: CollectionViewController {
             }
         )
     }
-    private func applySnapshot(animate: Bool = true) {
+    private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(filteredCategoriesList.data, toSection: .main)
@@ -182,16 +182,10 @@ class CategoriesCVC: CollectionViewController {
     private func configureNavigation() {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.arrowUpArrowDownCircle(), style: .plain, target: self, action: nil)
-        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func configureSearch() {
-        searchController.delegate = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.hidesNavigationBarDuringPresentation = true
         searchController.searchBar.delegate = self
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.placeholder = "Search"
     }
     
     private func configureRefreshControl() {
@@ -283,15 +277,15 @@ class CategoriesCVC: CollectionViewController {
     }
 }
 
-extension CategoriesCVC: UISearchControllerDelegate, UISearchBarDelegate {
+extension CategoriesCVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        applySnapshot()
+        applySnapshot(animate: true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if !searchBar.text!.isEmpty {
             searchBar.text = ""
-            applySnapshot()
+            applySnapshot(animate: true)
         }
     }
 }

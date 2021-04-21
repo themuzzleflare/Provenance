@@ -44,14 +44,12 @@ extension AddTagWorkflowThreeVC {
     
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
-            headerView.textLabel?.font = R.font.circularStdBook(size: 13)
             headerView.textLabel?.textAlignment = .center
         }
     }
     
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         if let footerView = view as? UITableViewHeaderFooterView {
-            footerView.textLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
             footerView.textLabel?.textAlignment = .center
         }
     }

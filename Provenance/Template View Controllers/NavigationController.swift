@@ -11,6 +11,5 @@ class NavigationController: UINavigationController {
 extension NavigationController {
     private func configure() {
         navigationBar.tintColor = R.color.accentColor()
-        navigationBar.titleTextAttributes = [NSAttributedString.Key.font: R.font.circularStdBook(size: UIFont.labelFontSize)!]
     }
 }

@@ -4,11 +4,45 @@ import TinyConstraints
 import Rswift
 
 class TransactionsByAccountVC: TableViewController {
-    var account: AccountResource!
+    var account: AccountResource! {
+        didSet {
+            tableView.tableHeaderView = {
+                let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 117))
 
-    @IBOutlet weak var accountBalance: UILabel!
-    
-    let searchController = UISearchController(searchResultsController: nil)
+                let balanceLabel = UILabel()
+                let displayNameLabel = UILabel()
+                let verticalStack = UIStackView()
+
+                view.addSubview(verticalStack)
+
+                verticalStack.centerInSuperview()
+                verticalStack.addArrangedSubview(balanceLabel)
+                verticalStack.addArrangedSubview(displayNameLabel)
+                verticalStack.axis = .vertical
+                verticalStack.alignment = .center
+                verticalStack.distribution = .fill
+                verticalStack.spacing = 0
+
+                balanceLabel.translatesAutoresizingMaskIntoConstraints = false
+                balanceLabel.textColor = R.color.accentColor()
+                balanceLabel.font = R.font.circularStdBold(size: 32)
+                balanceLabel.textAlignment = .center
+                balanceLabel.numberOfLines = 1
+                balanceLabel.text = account.attributes.balance.valueShort
+
+                displayNameLabel.translatesAutoresizingMaskIntoConstraints = false
+                displayNameLabel.textColor = .secondaryLabel
+                displayNameLabel.font = R.font.circularStdBook(size: 14)
+                displayNameLabel.textAlignment = .center
+                displayNameLabel.numberOfLines = 1
+                displayNameLabel.text = account.attributes.displayName
+
+                return view
+            }()
+        }
+    }
+
+    let searchController = SearchController(searchResultsController: nil)
     let tableRefreshControl = RefreshControl(frame: .zero)
     
     private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
@@ -200,7 +234,6 @@ extension TransactionsByAccountVC {
     private func configureProperties() {
         title = "Transactions by Account"
         definesPresentationContext = true
-        accountBalance.text = account.attributes.balance.valueShort
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
             self.applySnapshot()
@@ -210,7 +243,6 @@ extension TransactionsByAccountVC {
     private func configureNavigation() {        
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
-        navigationItem.hidesSearchBarWhenScrolling = false
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions))], animated: true)
         #else
@@ -219,12 +251,7 @@ extension TransactionsByAccountVC {
     }
     
     private func configureSearch() {
-        searchController.delegate = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.hidesNavigationBarDuringPresentation = true
         searchController.searchBar.delegate = self
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.placeholder = "Search"
     }
     
     private func configureRefreshControl() {
@@ -243,7 +270,6 @@ extension TransactionsByAccountVC {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(SingleAccountResponse.self, from: response.data!) {
                         self.account = decodedResponse.data
-                        self.accountBalance.text = self.account.attributes.balance.valueShort
                     } else {
                         print("JSON decoding failed")
                     }
@@ -353,7 +379,7 @@ extension TransactionsByAccountVC {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -379,7 +405,7 @@ extension TransactionsByAccountVC {
     }
 }
 
-extension TransactionsByAccountVC: UISearchControllerDelegate, UISearchBarDelegate {
+extension TransactionsByAccountVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         applySnapshot(animate: true)
     }

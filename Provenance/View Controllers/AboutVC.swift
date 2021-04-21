@@ -189,10 +189,9 @@ extension AboutVC {
             return nil
         }
     }
-
+    
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         if let footerView = view as? UITableViewHeaderFooterView {
-            footerView.textLabel?.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
             footerView.textLabel?.textAlignment = .center
         }
     }
