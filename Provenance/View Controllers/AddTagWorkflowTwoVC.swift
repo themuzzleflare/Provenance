@@ -19,7 +19,7 @@ class AddTagWorkflowTwoVC: TableViewController {
     private var tagsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var tags: [TagResource] = [] {
         didSet {
-            applySnapshot(animate: true)
+            applySnapshot()
             refreshControl?.endRefreshing()
             searchController.searchBar.placeholder = "Search \(tags.count.description) \(tags.count == 1 ? "Tag" : "Tags")"
 
@@ -229,6 +229,7 @@ class AddTagWorkflowTwoVC: TableViewController {
     
     private func setupNavigation() {
         navigationItem.title = "Loading"
+        navigationItem.searchController = searchController
     }
     
     private func setupSearch() {
@@ -256,16 +257,6 @@ class AddTagWorkflowTwoVC: TableViewController {
                         self.tagsError = ""
                         self.tagsErrorResponse = []
                         
-                        if !decodedResponse.data.isEmpty {
-                            if self.navigationItem.searchController == nil {
-                                self.navigationItem.searchController = self.searchController
-                            }
-                        } else {
-                            if self.navigationItem.searchController != nil {
-                                self.navigationItem.searchController = nil
-                            }
-                        }
-                        
                         if self.navigationItem.title != "Select Tag" {
                             self.navigationItem.title = "Select Tag"
                         }
@@ -278,10 +269,6 @@ class AddTagWorkflowTwoVC: TableViewController {
                         self.tags = []
                         self.tagsPagination = Pagination(prev: nil, next: nil)
                         
-                        if self.navigationItem.searchController != nil {
-                            self.navigationItem.searchController = nil
-                        }
-                        
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -293,11 +280,7 @@ class AddTagWorkflowTwoVC: TableViewController {
                         self.tagsErrorResponse = []
                         self.tags = []
                         self.tagsPagination = Pagination(prev: nil, next: nil)
-                        
-                        if self.navigationItem.searchController != nil {
-                            self.navigationItem.searchController = nil
-                        }
-                        
+
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -310,10 +293,6 @@ class AddTagWorkflowTwoVC: TableViewController {
                     self.tagsErrorResponse = []
                     self.tags = []
                     self.tagsPagination = Pagination(prev: nil, next: nil)
-                    
-                    if self.navigationItem.searchController != nil {
-                        self.navigationItem.searchController = nil
-                    }
                     
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"

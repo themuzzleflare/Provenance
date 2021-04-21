@@ -184,6 +184,7 @@ class AccountsCVC: CollectionViewController {
     private func configureNavigation() {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.walletPass(), style: .plain, target: self, action: nil)
+        navigationItem.searchController = searchController
     }
     
     private func configureSearch() {
@@ -211,16 +212,6 @@ class AccountsCVC: CollectionViewController {
                         self.accountsError = ""
                         self.accountsErrorResponse = []
                         
-                        if !decodedResponse.data.isEmpty {
-                            if self.navigationItem.searchController == nil {
-                                self.navigationItem.searchController = self.searchController
-                            }
-                        } else {
-                            if self.navigationItem.searchController != nil {
-                                self.navigationItem.searchController = nil
-                            }
-                        }
-                        
                         if self.navigationItem.title != "Accounts" {
                             self.navigationItem.title = "Accounts"
                         }
@@ -229,10 +220,6 @@ class AccountsCVC: CollectionViewController {
                         self.accountsError = ""
                         self.accounts = []
                         self.accountsPagination = Pagination(prev: nil, next: nil)
-                        
-                        if self.navigationItem.searchController != nil {
-                            self.navigationItem.searchController = nil
-                        }
                         
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
@@ -243,10 +230,6 @@ class AccountsCVC: CollectionViewController {
                         self.accounts = []
                         self.accountsPagination = Pagination(prev: nil, next: nil)
                         
-                        if self.navigationItem.searchController != nil {
-                            self.navigationItem.searchController = nil
-                        }
-                        
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -256,10 +239,6 @@ class AccountsCVC: CollectionViewController {
                     self.accountsErrorResponse = []
                     self.accounts = []
                     self.accountsPagination = Pagination(prev: nil, next: nil)
-                    
-                    if self.navigationItem.searchController != nil {
-                        self.navigationItem.searchController = nil
-                    }
                     
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"

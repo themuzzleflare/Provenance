@@ -243,6 +243,7 @@ extension TransactionsByAccountVC {
     private func configureNavigation() {        
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
+        navigationItem.searchController = searchController
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions))], animated: true)
         #else
@@ -290,16 +291,6 @@ extension TransactionsByAccountVC {
                         self.transactionsError = ""
                         self.transactionsErrorResponse = []
                         
-                        if !decodedResponse.data.isEmpty {
-                            if self.navigationItem.searchController == nil {
-                                self.navigationItem.searchController = self.searchController
-                            }
-                        } else {
-                            if self.navigationItem.searchController != nil {
-                                self.navigationItem.searchController = nil
-                            }
-                        }
-                        
                         self.navigationItem.title = self.account.attributes.displayName
                         
                         #if targetEnvironment(macCatalyst)
@@ -310,10 +301,6 @@ extension TransactionsByAccountVC {
                         self.transactionsError = ""
                         self.transactions = []
                         self.transactionsPagination = Pagination(prev: nil, next: nil)
-                        
-                        if self.navigationItem.searchController != nil {
-                            self.navigationItem.searchController = nil
-                        }
                         
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
@@ -328,10 +315,6 @@ extension TransactionsByAccountVC {
                         self.transactions = []
                         self.transactionsPagination = Pagination(prev: nil, next: nil)
                         
-                        if self.navigationItem.searchController != nil {
-                            self.navigationItem.searchController = nil
-                        }
-                        
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -345,10 +328,6 @@ extension TransactionsByAccountVC {
                     self.transactionsErrorResponse = []
                     self.transactions = []
                     self.transactionsPagination = Pagination(prev: nil, next: nil)
-                    
-                    if self.navigationItem.searchController != nil {
-                        self.navigationItem.searchController = nil
-                    }
                     
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"

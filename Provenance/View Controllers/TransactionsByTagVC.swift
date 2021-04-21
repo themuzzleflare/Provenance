@@ -209,6 +209,7 @@ extension TransactionsByTagVC {
     private func setupNavigation() {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
+        navigationItem.searchController = searchController
         #if targetEnvironment(macCatalyst)
         navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
         #endif
@@ -239,16 +240,6 @@ extension TransactionsByTagVC {
                         self.transactionsError = ""
                         self.transactionsErrorResponse = []
                         
-                        if !decodedResponse.data.isEmpty {
-                            if self.navigationItem.searchController == nil {
-                                self.navigationItem.searchController = self.searchController
-                            }
-                        } else {
-                            if self.navigationItem.searchController != nil {
-                                self.navigationItem.searchController = nil
-                            }
-                        }
-                        
                         self.navigationItem.title = self.tag.id
                         
                         #if targetEnvironment(macCatalyst)
@@ -259,10 +250,6 @@ extension TransactionsByTagVC {
                         self.transactionsError = ""
                         self.transactions = []
                         self.transactionsPagination = Pagination(prev: nil, next: nil)
-                        
-                        if self.navigationItem.searchController != nil {
-                            self.navigationItem.searchController = nil
-                        }
                         
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
@@ -277,10 +264,6 @@ extension TransactionsByTagVC {
                         self.transactions = []
                         self.transactionsPagination = Pagination(prev: nil, next: nil)
                         
-                        if self.navigationItem.searchController != nil {
-                            self.navigationItem.searchController = nil
-                        }
-                        
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -294,10 +277,6 @@ extension TransactionsByTagVC {
                     self.transactionsErrorResponse = []
                     self.transactions = []
                     self.transactionsPagination = Pagination(prev: nil, next: nil)
-                    
-                    if self.navigationItem.searchController != nil {
-                        self.navigationItem.searchController = nil
-                    }
                     
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"

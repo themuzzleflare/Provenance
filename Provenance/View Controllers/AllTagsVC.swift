@@ -193,6 +193,7 @@ class AllTagsVC: TableViewController {
     private func setupNavigation() {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
+        navigationItem.searchController = searchController
         #if targetEnvironment(macCatalyst)
         navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTags)), animated: true)
         #endif
@@ -223,16 +224,6 @@ class AllTagsVC: TableViewController {
                         self.tagsError = ""
                         self.tagsErrorResponse = []
                         
-                        if !decodedResponse.data.isEmpty {
-                            if self.navigationItem.searchController == nil {
-                                self.navigationItem.searchController = self.searchController
-                            }
-                        } else {
-                            if self.navigationItem.searchController != nil {
-                                self.navigationItem.searchController = nil
-                            }
-                        }
-                        
                         if self.navigationItem.title != "Tags" {
                             self.navigationItem.title = "Tags"
                         }
@@ -248,10 +239,6 @@ class AllTagsVC: TableViewController {
                         self.tagsError = ""
                         self.tags = []
                         self.tagsPagination = Pagination(prev: nil, next: nil)
-                        
-                        if self.navigationItem.searchController != nil {
-                            self.navigationItem.searchController = nil
-                        }
                         
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
@@ -269,10 +256,6 @@ class AllTagsVC: TableViewController {
                         self.tags = []
                         self.tagsPagination = Pagination(prev: nil, next: nil)
                         
-                        if self.navigationItem.searchController != nil {
-                            self.navigationItem.searchController = nil
-                        }
-                        
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -289,10 +272,6 @@ class AllTagsVC: TableViewController {
                     self.tagsErrorResponse = []
                     self.tags = []
                     self.tagsPagination = Pagination(prev: nil, next: nil)
-                    
-                    if self.navigationItem.searchController != nil {
-                        self.navigationItem.searchController = nil
-                    }
                     
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"

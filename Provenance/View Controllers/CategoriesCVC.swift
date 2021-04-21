@@ -182,6 +182,7 @@ class CategoriesCVC: CollectionViewController {
     private func configureNavigation() {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.arrowUpArrowDownCircle(), style: .plain, target: self, action: nil)
+        navigationItem.searchController = searchController
     }
     
     private func configureSearch() {
@@ -208,16 +209,6 @@ class CategoriesCVC: CollectionViewController {
                         self.categoriesError = ""
                         self.categoriesErrorResponse = []
                         
-                        if !decodedResponse.data.isEmpty {
-                            if self.navigationItem.searchController == nil {
-                                self.navigationItem.searchController = self.searchController
-                            }
-                        } else {
-                            if self.navigationItem.searchController != nil {
-                                self.navigationItem.searchController = nil
-                            }
-                        }
-                        
                         if self.navigationItem.title != "Categories" {
                             self.navigationItem.title = "Categories"
                         }
@@ -225,10 +216,6 @@ class CategoriesCVC: CollectionViewController {
                         self.categoriesErrorResponse = decodedResponse.errors
                         self.categoriesError = ""
                         self.categories = []
-                        
-                        if self.navigationItem.searchController != nil {
-                            self.navigationItem.searchController = nil
-                        }
                         
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
@@ -238,10 +225,6 @@ class CategoriesCVC: CollectionViewController {
                         self.categoriesErrorResponse = []
                         self.categories = []
                         
-                        if self.navigationItem.searchController != nil {
-                            self.navigationItem.searchController = nil
-                        }
-                        
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -250,10 +233,6 @@ class CategoriesCVC: CollectionViewController {
                     self.categoriesError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.categoriesErrorResponse = []
                     self.categories = []
-                    
-                    if self.navigationItem.searchController != nil {
-                        self.navigationItem.searchController = nil
-                    }
                     
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"

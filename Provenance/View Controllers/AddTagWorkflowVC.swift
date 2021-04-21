@@ -192,6 +192,7 @@ class AddTagWorkflowVC: TableViewController {
     private func setupNavigation() {
         navigationItem.title = "Loading"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+        navigationItem.searchController = searchController
     }
     
     private func setupSearch() {
@@ -219,16 +220,6 @@ class AddTagWorkflowVC: TableViewController {
                         self.transactionsError = ""
                         self.transactionsErrorResponse = []
                         
-                        if !decodedResponse.data.isEmpty {
-                            if self.navigationItem.searchController == nil {
-                                self.navigationItem.searchController = self.searchController
-                            }
-                        } else {
-                            if self.navigationItem.searchController != nil {
-                                self.navigationItem.searchController = nil
-                            }
-                        }
-                        
                         if self.navigationItem.title != "Select Transaction" {
                             self.navigationItem.title = "Select Transaction"
                         }
@@ -237,10 +228,6 @@ class AddTagWorkflowVC: TableViewController {
                         self.transactionsError = ""
                         self.transactions = []
                         self.transactionsPagination = Pagination(prev: nil, next: nil)
-                        
-                        if self.navigationItem.searchController != nil {
-                            self.navigationItem.searchController = nil
-                        }
                         
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
@@ -251,10 +238,6 @@ class AddTagWorkflowVC: TableViewController {
                         self.transactions = []
                         self.transactionsPagination = Pagination(prev: nil, next: nil)
                         
-                        if self.navigationItem.searchController != nil {
-                            self.navigationItem.searchController = nil
-                        }
-                        
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -264,10 +247,6 @@ class AddTagWorkflowVC: TableViewController {
                     self.transactionsErrorResponse = []
                     self.transactions = []
                     self.transactionsPagination = Pagination(prev: nil, next: nil)
-                    
-                    if self.navigationItem.searchController != nil {
-                        self.navigationItem.searchController = nil
-                    }
                     
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
