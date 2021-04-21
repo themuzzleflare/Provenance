@@ -219,10 +219,10 @@ class AllTagsVC: TableViewController {
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: response.data!) {
-                        self.tags = decodedResponse.data
-                        self.tagsPagination = decodedResponse.links
                         self.tagsError = ""
                         self.tagsErrorResponse = []
+                        self.tagsPagination = decodedResponse.links
+                        self.tags = decodedResponse.data
                         
                         if self.navigationItem.title != "Tags" {
                             self.navigationItem.title = "Tags"
@@ -237,8 +237,8 @@ class AllTagsVC: TableViewController {
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.tagsErrorResponse = decodedResponse.errors
                         self.tagsError = ""
-                        self.tags = []
                         self.tagsPagination = Pagination(prev: nil, next: nil)
+                        self.tags = []
                         
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
@@ -253,9 +253,9 @@ class AllTagsVC: TableViewController {
                     } else {
                         self.tagsError = "JSON Decoding Failed!"
                         self.tagsErrorResponse = []
-                        self.tags = []
                         self.tagsPagination = Pagination(prev: nil, next: nil)
-                        
+                        self.tags = []
+
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -270,9 +270,9 @@ class AllTagsVC: TableViewController {
                 case .failure:
                     self.tagsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.tagsErrorResponse = []
-                    self.tags = []
                     self.tagsPagination = Pagination(prev: nil, next: nil)
-                    
+                    self.tags = []
+
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
                     }

@@ -207,10 +207,10 @@ class AccountsCVC: CollectionViewController {
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
-                        self.accounts = decodedResponse.data
-                        self.accountsPagination = decodedResponse.links
                         self.accountsError = ""
                         self.accountsErrorResponse = []
+                        self.accountsPagination = decodedResponse.links
+                        self.accounts = decodedResponse.data
                         
                         if self.navigationItem.title != "Accounts" {
                             self.navigationItem.title = "Accounts"
@@ -227,9 +227,9 @@ class AccountsCVC: CollectionViewController {
                     } else {
                         self.accountsError = "JSON Decoding Failed!"
                         self.accountsErrorResponse = []
-                        self.accounts = []
                         self.accountsPagination = Pagination(prev: nil, next: nil)
-                        
+                        self.accounts = []
+
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -237,9 +237,9 @@ class AccountsCVC: CollectionViewController {
                 case .failure:
                     self.accountsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.accountsErrorResponse = []
-                    self.accounts = []
                     self.accountsPagination = Pagination(prev: nil, next: nil)
-                    
+                    self.accounts = []
+
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
                     }

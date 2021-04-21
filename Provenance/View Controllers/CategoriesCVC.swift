@@ -205,9 +205,9 @@ class CategoriesCVC: CollectionViewController {
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
-                        self.categories = decodedResponse.data
                         self.categoriesError = ""
                         self.categoriesErrorResponse = []
+                        self.categories = decodedResponse.data
                         
                         if self.navigationItem.title != "Categories" {
                             self.navigationItem.title = "Categories"

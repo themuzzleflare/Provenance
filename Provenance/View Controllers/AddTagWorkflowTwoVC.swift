@@ -252,10 +252,10 @@ class AddTagWorkflowTwoVC: TableViewController {
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: response.data!) {
-                        self.tags = decodedResponse.data
-                        self.tagsPagination = decodedResponse.links
                         self.tagsError = ""
                         self.tagsErrorResponse = []
+                        self.tagsPagination = decodedResponse.links
+                        self.tags = decodedResponse.data
                         
                         if self.navigationItem.title != "Select Tag" {
                             self.navigationItem.title = "Select Tag"
@@ -266,8 +266,8 @@ class AddTagWorkflowTwoVC: TableViewController {
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.tagsErrorResponse = decodedResponse.errors
                         self.tagsError = ""
-                        self.tags = []
                         self.tagsPagination = Pagination(prev: nil, next: nil)
+                        self.tags = []
                         
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
@@ -278,8 +278,8 @@ class AddTagWorkflowTwoVC: TableViewController {
                     } else {
                         self.tagsError = "JSON Decoding Failed!"
                         self.tagsErrorResponse = []
-                        self.tags = []
                         self.tagsPagination = Pagination(prev: nil, next: nil)
+                        self.tags = []
 
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
@@ -291,9 +291,9 @@ class AddTagWorkflowTwoVC: TableViewController {
                 case .failure:
                     self.tagsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.tagsErrorResponse = []
-                    self.tags = []
                     self.tagsPagination = Pagination(prev: nil, next: nil)
-                    
+                    self.tags = []
+
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
                     }

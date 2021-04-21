@@ -228,10 +228,10 @@ extension TransactionsByCategoryVC {
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
-                        self.transactions = decodedResponse.data
-                        self.transactionsPagination = decodedResponse.links
                         self.transactionsError = ""
                         self.transactionsErrorResponse = []
+                        self.transactionsPagination = decodedResponse.links
+                        self.transactions = decodedResponse.data
                         
                         self.navigationItem.title = self.category.attributes.name
                         
@@ -241,8 +241,8 @@ extension TransactionsByCategoryVC {
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
-                        self.transactions = []
                         self.transactionsPagination = Pagination(prev: nil, next: nil)
+                        self.transactions = []
                         
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
@@ -254,9 +254,9 @@ extension TransactionsByCategoryVC {
                     } else {
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
-                        self.transactions = []
                         self.transactionsPagination = Pagination(prev: nil, next: nil)
-                        
+                        self.transactions = []
+
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -268,9 +268,9 @@ extension TransactionsByCategoryVC {
                 case .failure:
                     self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.transactionsErrorResponse = []
-                    self.transactions = []
                     self.transactionsPagination = Pagination(prev: nil, next: nil)
-                    
+                    self.transactions = []
+
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
                     }
