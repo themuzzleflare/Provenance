@@ -80,22 +80,22 @@ extension SettingsVC {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: APIKeyTableViewCell.reuseIdentifier, for: indexPath) as! APIKeyTableViewCell
-        let datePickerCell = tableView.dequeueReusableCell(withIdentifier: DateStyleTableViewCell.reuseIdentifier, for: indexPath) as! DateStyleTableViewCell
+        let dateStyleCell = tableView.dequeueReusableCell(withIdentifier: DateStyleTableViewCell.reuseIdentifier, for: indexPath) as! DateStyleTableViewCell
         
         apiKeyCell.apiKeyLabel.text = apiKeyDisplay
         
         if appDefaults.dateStyle == "Absolute" {
-            datePickerCell.segmentedControl.selectedSegmentIndex = 0
+            dateStyleCell.segmentedControl.selectedSegmentIndex = 0
         } else {
-            datePickerCell.segmentedControl.selectedSegmentIndex = 1
+            dateStyleCell.segmentedControl.selectedSegmentIndex = 1
         }
         
-        datePickerCell.segmentedControl.addTarget(self, action: #selector(switchDateStyle), for:.valueChanged)
+        dateStyleCell.segmentedControl.addTarget(self, action: #selector(switchDateStyle), for:.valueChanged)
         
         if indexPath.section == 0 {
             return apiKeyCell
         } else {
-            return datePickerCell
+            return dateStyleCell
         }
     }
     
@@ -129,7 +129,7 @@ extension SettingsVC {
             cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
             let submitAction = UIAlertAction(title: "Save", style: .default) { _ in
                 let answer = ac.textFields![0]
-                if (answer.text != "" && answer.text != nil) && answer.text != appDefaults.apiKey {
+                if !answer.text!.isEmpty && answer.text != appDefaults.apiKey {
                     let url = URL(string: "https://api.up.com.au/api/v1/util/ping")!
                     var request = URLRequest(url: url)
                     request.httpMethod = "GET"

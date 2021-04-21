@@ -97,7 +97,7 @@ extension SceneDelegate {
             cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
             let submitAction = UIAlertAction(title: "Save", style: .default) { _ in
                 let answer = ac.textFields![0]
-                if (answer.text != "" && answer.text != nil) && answer.text != appDefaults.apiKey {
+                if !answer.text!.isEmpty && answer.text != appDefaults.apiKey {
                     let url = URL(string: "https://api.up.com.au/api/v1/util/ping")!
                     var request = URLRequest(url: url)
                     request.httpMethod = "GET"

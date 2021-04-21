@@ -1,8 +1,51 @@
 import UIKit
+import Alamofire
 import Rswift
 
 class TagsVC: TableViewController {
-    var transaction: TransactionResource!
+    var transaction: TransactionResource! {
+        didSet {
+            if transaction.relationships.tags.data.isEmpty {
+                navigationController?.popViewController(animated: true)
+            } else {
+                applySnapshot()
+            }
+        }
+    }
+
+    private typealias DataSource = UITableViewDiffableDataSource<Section, RelationshipData>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, RelationshipData>
+
+    private lazy var dataSource = makeDataSource()
+
+    private enum Section: CaseIterable {
+        case main
+    }
+
+    private func makeDataSource() -> DataSource {
+        return DataSource(
+            tableView: tableView,
+            cellProvider: {  tableView, indexPath, tag in
+                let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
+
+                cell.selectedBackgroundView = selectedBackgroundCellView
+                cell.accessoryType = .disclosureIndicator
+                cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                cell.textLabel?.textColor = .label
+                cell.textLabel?.numberOfLines = 0
+                cell.textLabel?.text = tag.id
+
+                return cell
+            }
+        )
+    }
+
+    private func applySnapshot(animate: Bool = true) {
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(transaction.relationships.tags.data, toSection: .main)
+        dataSource.apply(snapshot, animatingDifferences: animate)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -10,11 +53,20 @@ class TagsVC: TableViewController {
         configureNavigation()
         configureTableView()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        fetchTags()
+    }
 }
 
 extension TagsVC {
+    @objc private func appMovedToForeground() {
+        fetchTags()
+    }
+
     private func configureProperties() {
         title = "Tags"
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     private func configureNavigation() {
@@ -23,7 +75,23 @@ extension TagsVC {
     }
     
     private func configureTableView() {
+        tableView.dataSource = dataSource
         tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagCell")
+    }
+
+    private func fetchTags() {
+        AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)", method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
+            switch response.result {
+                case .success:
+                    if let decodedResponse = try? JSONDecoder().decode(SingleTransactionResponse.self, from: response.data!) {
+                        self.transaction = decodedResponse.data
+                    } else {
+                        print("JSON decoding failed")
+                    }
+                case .failure:
+                    print(response.error?.localizedDescription ?? "Unknown error")
+            }
+        }
     }
 }
 
@@ -32,39 +100,70 @@ extension TagsVC {
         return UITableView.automaticDimension
     }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return transaction.relationships.tags.data.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
-
-        cell.selectedBackgroundView = selectedBackgroundCellView
-        cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-        cell.textLabel?.text = transaction.relationships.tags.data[indexPath.row].id
-        
-        return cell
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        navigationController?.pushViewController({let vc = TransactionsByTagVC(style: .grouped);vc.tag = TagResource(type: "tags", id: transaction.relationships.tags.data[indexPath.row].id);return vc}(), animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        navigationController?.pushViewController({let vc = TransactionsByTagVC(style: .grouped);vc.tag = TagResource(type: "tags", id: dataSource.itemIdentifier(for: indexPath)!.id);return vc}(), animated: true)
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let tag = dataSource.itemIdentifier(for: indexPath)!
+
+        if editingStyle == .delete {
+            let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(self.transaction.id)/relationships/tags")!
+            var request = URLRequest(url: url)
+            let bodyObject: [String : Any] = [
+                "data": [
+                    [
+                        "type": "tags",
+                        "id": tag.id
+                    ]
+                ]
+            ]
+            request.httpMethod = "DELETE"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("Bearer \(appDefaults.apiKey)", forHTTPHeaderField: "Authorization")
+            request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if error == nil {
+                    let statusCode = (response as! HTTPURLResponse).statusCode
+                    if statusCode != 204 {
+                        DispatchQueue.main.async {
+                            let ac = UIAlertController(title: "Failed", message: "\(tag.id) was not removed from \(self.transaction.attributes.description).", preferredStyle: .alert)
+                            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                            dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                            ac.addAction(dismissAction)
+                            self.present(ac, animated: true)
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            self.fetchTags()
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "\(tag.id) was not removed from \(self.transaction.attributes.description).", preferredStyle: .alert)
+                        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
+                        dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                        ac.addAction(dismissAction)
+                        self.present(ac, animated: true)
+                    }
+                }
+            }
+            .resume()
+        }
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let tag = transaction.relationships.tags.data[indexPath.row]
+        let tag = dataSource.itemIdentifier(for: indexPath)!
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
+                UIAction(title: "Copy Tag Name", image: R.image.docOnClipboard()) { _ in
                     UIPasteboard.general.string = tag.id
                 },
                 UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { _ in
-                    let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                    let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(self.transaction.attributes.description)\"?", preferredStyle: .actionSheet)
                     let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
                         let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(self.transaction.id)/relationships/tags")!
                         var request = URLRequest(url: url)
@@ -93,7 +192,7 @@ extension TagsVC {
                                     }
                                 } else {
                                     DispatchQueue.main.async {
-                                        self.navigationController?.popToRootViewController(animated: true)
+                                        self.fetchTags()
                                     }
                                 }
                             } else {

@@ -63,12 +63,12 @@ extension AddTagWorkflowThreeVC {
         let transactionCell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
         
         cell.selectionStyle = .none
+        cell.textLabel?.numberOfLines = 0
         cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         cell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         
         transactionCell.selectionStyle = .none
-        transactionCell.accessoryType = .none
-        
+
         if section == 0 {
             cell.textLabel?.text = tag
             return cell
@@ -76,7 +76,6 @@ extension AddTagWorkflowThreeVC {
             transactionCell.transaction = transaction
             return transactionCell
         } else {
-            cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = "You are adding the tag \"\(tag!)\" to the transaction \"\(transaction.attributes.description)\", which was created \(transaction.attributes.creationDate)."
             return cell
         }

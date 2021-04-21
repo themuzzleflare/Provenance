@@ -48,8 +48,8 @@ struct AccountAttribute: Hashable, Codable {
         return formatDateRelative(dateString: createdAt)
     }
     var creationDate: String {
-        switch appDefaults.string(forKey: "dateStyle") {
-            case "Absolute", .none:
+        switch appDefaults.dateStyle {
+            case "Absolute":
                 return creationDateAbsolute
             case "Relative":
                 return creationDateRelative

@@ -8,12 +8,12 @@ class DiagnosticTableVC: TableViewController {
     private lazy var sections: [Section] = [
         Section(title: "Section 1", detailAttributes: [
             DetailAttribute(
-                titleKey: "Version",
-                titleValue: appVersion
+                key: "Version",
+                value: appVersion
             ),
             DetailAttribute(
-                titleKey: "Build",
-                titleValue: appBuild
+                key: "Build",
+                value: appBuild
             )
         ])
     ]
@@ -25,8 +25,8 @@ class DiagnosticTableVC: TableViewController {
             cellProvider: {  tableView, indexPath, detailAttribute in
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
                 
-                cell.leftLabel.text = detailAttribute.titleKey
-                cell.rightLabel.text = detailAttribute.titleValue
+                cell.leftLabel.text = detailAttribute.key
+                cell.rightLabel.text = detailAttribute.value
                 
                 return cell
             }
@@ -79,11 +79,11 @@ extension DiagnosticTableVC {
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let attribute = dataSource.itemIdentifier(for: indexPath)!
         
-        if attribute.titleValue != "Unknown" {
+        if attribute.value != "Unknown" {
             return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                 UIMenu(children: [
-                    UIAction(title: "Copy \(attribute.titleKey)", image: R.image.docOnClipboard()) { _ in
-                        UIPasteboard.general.string = attribute.titleValue
+                    UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { _ in
+                        UIPasteboard.general.string = attribute.value
                     }
                 ])
             }

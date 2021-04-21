@@ -16,36 +16,40 @@ struct TransactionResource: Hashable, Identifiable, Decodable {
 
 struct Attribute: Hashable, Codable {
     private var status: TransactionStatusEnum
-    private enum TransactionStatusEnum: String, CaseIterable, Codable, Hashable, Identifiable {
+    private enum TransactionStatusEnum: String, CaseIterable, Codable, Hashable {
         case held = "HELD"
         case settled = "SETTLED"
-        
-        var id: TransactionStatusEnum {
-            return self
-        }
     }
     var isSettled: Bool {
         switch status {
-            case .settled: return true
-            case .held: return false
+            case .settled:
+                return true
+            case .held:
+                return false
         }
     }
     var statusIcon: Image {
         switch isSettled {
-            case true: return Image("checkmark.circle")
-            case false: return Image("clock")
+            case true:
+                return Image("checkmark.circle")
+            case false:
+                return Image("clock")
         }
     }
     var statusIconColor: Color {
         switch isSettled {
-            case true: return .green
-            case false: return .yellow
+            case true:
+                return .green
+            case false:
+                return .yellow
         }
     }
     var statusString: String {
         switch isSettled {
-            case true: return "Settled"
-            case false: return "Held"
+            case true:
+                return "Settled"
+            case false:
+                return "Held"
         }
     }
     
@@ -75,10 +79,13 @@ struct Attribute: Hashable, Codable {
     }
     var settlementDate: String? {
         if settledAt != nil {
-            switch appDefaults.string(forKey: "dateStyle") {
-                case "Absolute", .none: return settledDateAbsolute
-                case "Relative": return settledDateRelative
-                default: return settledDateAbsolute
+            switch appDefaults.dateStyle {
+                case "Absolute":
+                    return settledDateAbsolute
+                case "Relative":
+                    return settledDateRelative
+                default:
+                    return settledDateAbsolute
             }
         } else {
             return nil
@@ -93,10 +100,13 @@ struct Attribute: Hashable, Codable {
         return formatDateRelative(dateString: createdAt)
     }
     var creationDate: String {
-        switch appDefaults.string(forKey: "dateStyle") {
-            case "Absolute", .none: return createdDateAbsolute
-            case "Relative": return createdDateRelative
-            default: return createdDateAbsolute
+        switch appDefaults.dateStyle {
+            case "Absolute":
+                return createdDateAbsolute
+            case "Relative":
+                return createdDateRelative
+            default:
+                return createdDateAbsolute
         }
     }
 }

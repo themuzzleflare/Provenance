@@ -1,8 +1,29 @@
 import Foundation
 
+// MARK: - UserDefaults Suite for Provenance Application Group
 let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
 
-// MARK: - URLSession Extensions for Query Parameter Support
+// MARK: - UserDefaults Extension for Value Observation
+extension UserDefaults {
+    @objc dynamic var apiKey: String {
+        get {
+            return string(forKey: "apiKey") ?? ""
+        }
+        set {
+            setValue(newValue, forKey: "apiKey")
+        }
+    }
+    @objc dynamic var dateStyle: String {
+        get {
+            return string(forKey: "dateStyle") ?? "Absolute"
+        }
+        set {
+            setValue(newValue, forKey: "dateStyle")
+        }
+    }
+}
+
+// MARK: - Protocols & Extensions for URLSession Query Parameter Support
 protocol URLQueryParameterStringConvertible {
     var queryParameters: String {
         get

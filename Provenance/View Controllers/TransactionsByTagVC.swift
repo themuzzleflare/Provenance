@@ -16,7 +16,17 @@ class TransactionsByTagVC: TableViewController {
     private var categories: [CategoryResource] = []
     private var accounts: [AccountResource] = []
     private var transactionsStatusCode: Int = 0
-    private var transactions: [TransactionResource] = []
+    private var transactions: [TransactionResource] = [] {
+        didSet {
+            if transactions.isEmpty {
+                navigationController?.popViewController(animated: true)
+            } else {
+                applySnapshot()
+                refreshControl?.endRefreshing()
+                searchController.searchBar.placeholder = "Search \(transactions.count.description) \(transactions.count == 1 ? "Transaction" : "Transactions")"
+            }
+        }
+    }
     private var transactionsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
@@ -31,7 +41,7 @@ class TransactionsByTagVC: TableViewController {
     }
     
     private func makeDataSource() -> DataSource {
-        return DataSource(
+        let dataSource = DataSource(
             tableView: tableView,
             cellProvider: {  tableView, indexPath, transaction in
                 let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
@@ -41,10 +51,12 @@ class TransactionsByTagVC: TableViewController {
                 return cell
             }
         )
+        dataSource.defaultRowAnimation = .fade
+        return dataSource
     }
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
-        snapshot.appendSections(Section.allCases)
+        snapshot.appendSections([.main])
         snapshot.appendItems(filteredTransactionList.data, toSection: .main)
         
         if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty  {
@@ -135,7 +147,9 @@ class TransactionsByTagVC: TableViewController {
                     return view
                 }()
             } else {
-                tableView.backgroundView = nil
+                if tableView.backgroundView != nil {
+                    tableView.backgroundView = nil
+                }
             }
         }
         
@@ -246,9 +260,6 @@ extension TransactionsByTagVC {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        
-                        self.applySnapshot(animate: true)
-                        self.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
@@ -266,9 +277,6 @@ extension TransactionsByTagVC {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     } else {
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
@@ -286,9 +294,6 @@ extension TransactionsByTagVC {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     }
                 case .failure:
                     self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
@@ -307,11 +312,7 @@ extension TransactionsByTagVC {
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                     #endif
-                    
-                    self.applySnapshot()
-                    self.refreshControl?.endRefreshing()
             }
-            self.searchController.searchBar.placeholder = "Search \(self.transactions.count.description) \(self.transactions.count == 1 ? "Transaction" : "Transactions")"
         }
     }
     
@@ -354,7 +355,7 @@ extension TransactionsByTagVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        navigationController?.pushViewController({let vc = TransactionDetailVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);vc.categories = self.categories;vc.accounts = self.accounts;return vc}(), animated: true)
+        navigationController?.pushViewController({let vc = TransactionDetailVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);vc.categories = categories;vc.accounts = accounts;return vc}(), animated: true)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -372,7 +373,7 @@ extension TransactionsByTagVC {
                     UIPasteboard.general.string = transaction.attributes.amount.valueShort
                 },
                 UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { _ in
-                    let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                    let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(self.tag.id)\" from \"\(transaction.attributes.description)\"?", preferredStyle: .actionSheet)
                     let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
                         let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
                         var request = URLRequest(url: url)
@@ -429,13 +430,13 @@ extension TransactionsByTagVC {
 
 extension TransactionsByTagVC: UISearchControllerDelegate, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        applySnapshot()
+        applySnapshot(animate: true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if searchBar.text != "" {
+        if !searchBar.text!.isEmpty {
             searchBar.text = ""
-            applySnapshot()
+            applySnapshot(animate: true)
         }
     }
 }

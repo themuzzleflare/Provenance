@@ -16,7 +16,13 @@ class TransactionsByAccountVC: TableViewController {
 
     private var dateStyleObserver: NSKeyValueObservation?
     private var transactionsStatusCode: Int = 0
-    private var transactions: [TransactionResource] = []
+    private var transactions: [TransactionResource] = [] {
+        didSet {
+            applySnapshot()
+            refreshControl?.endRefreshing()
+            searchController.searchBar.placeholder = "Search \(transactions.count.description) \(transactions.count == 1 ? "Transaction" : "Transactions")"
+        }
+    }
     private var transactionsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
@@ -52,7 +58,7 @@ class TransactionsByAccountVC: TableViewController {
     }
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
-        snapshot.appendSections(Section.allCases)
+        snapshot.appendSections([.main])
         snapshot.appendItems(filteredTransactionList.data, toSection: .main)
 
         if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty  {
@@ -143,7 +149,9 @@ class TransactionsByAccountVC: TableViewController {
                     return view
                 }()
             } else {
-                tableView.backgroundView = nil
+                if tableView.backgroundView != nil {
+                    tableView.backgroundView = nil
+                }
             }
         }
 
@@ -161,6 +169,7 @@ class TransactionsByAccountVC: TableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        fetchAccount()
         fetchTransactions()
         fetchCategories()
     }
@@ -168,6 +177,7 @@ class TransactionsByAccountVC: TableViewController {
 
 extension TransactionsByAccountVC {
     @objc private func appMovedToForeground() {
+        fetchAccount()
         fetchTransactions()
         fetchCategories()
     }
@@ -181,6 +191,7 @@ extension TransactionsByAccountVC {
         navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(customView: ActivityIndicator(style: .medium))], animated: true)
         #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.fetchAccount()
             self.fetchTransactions()
             self.fetchCategories()
         }
@@ -225,6 +236,22 @@ extension TransactionsByAccountVC {
         tableView.dataSource = dataSource
         tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
     }
+
+    private func fetchAccount() {
+        AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)", method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
+            switch response.result {
+                case .success:
+                    if let decodedResponse = try? JSONDecoder().decode(SingleAccountResponse.self, from: response.data!) {
+                        self.account = decodedResponse.data
+                        self.accountBalance.text = self.account.attributes.balance.valueShort
+                    } else {
+                        print("JSON decoding failed")
+                    }
+                case .failure:
+                    print(response.error?.localizedDescription ?? "Unknown error")
+            }
+        }
+    }
     
     private func fetchTransactions() {
         AF.request(UpAPI.Accounts().listTransactionsByAccount(accountId: account.id), method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
@@ -252,9 +279,6 @@ extension TransactionsByAccountVC {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
                         #endif
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
@@ -272,9 +296,6 @@ extension TransactionsByAccountVC {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
                         #endif
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     } else {
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
@@ -292,9 +313,6 @@ extension TransactionsByAccountVC {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
                         #endif
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     }
                 case .failure:
                     self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
@@ -313,11 +331,7 @@ extension TransactionsByAccountVC {
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
                     #endif
-                    
-                    self.applySnapshot()
-                    self.refreshControl?.endRefreshing()
             }
-            self.searchController.searchBar.placeholder = "Search \(self.transactions.count.description) \(self.transactions.count == 1 ? "Transaction" : "Transactions")"
         }
     }
     
@@ -371,7 +385,7 @@ extension TransactionsByAccountVC: UISearchControllerDelegate, UISearchBarDelega
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if searchBar.text != "" {
+        if !searchBar.text!.isEmpty {
             searchBar.text = ""
             applySnapshot(animate: true)
         }

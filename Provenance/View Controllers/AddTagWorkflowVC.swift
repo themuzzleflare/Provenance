@@ -13,7 +13,13 @@ class AddTagWorkflowVC: TableViewController {
     private var dateStyleObserver: NSKeyValueObservation?
     private var transactionsStatusCode: Int = 0
     private var transactionsPagination: Pagination = Pagination(prev: nil, next: nil)
-    private var transactions: [TransactionResource] = []
+    private var transactions: [TransactionResource] = [] {
+        didSet {
+            applySnapshot()
+            refreshControl?.endRefreshing()
+            searchController.searchBar.placeholder = "Search \(transactions.count.description) \(transactions.count == 1 ? "Transaction" : "Transactions")"
+        }
+    }
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
     private var filteredTransactions: [TransactionResource] {
@@ -32,7 +38,7 @@ class AddTagWorkflowVC: TableViewController {
     }
     
     private func makeDataSource() -> DataSource {
-        return DataSource(
+        let dataSource = DataSource(
             tableView: tableView,
             cellProvider: {  tableView, indexPath, transaction in
                 let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
@@ -42,10 +48,12 @@ class AddTagWorkflowVC: TableViewController {
                 return cell
             }
         )
+        dataSource.defaultRowAnimation = .fade
+        return dataSource
     }
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
-        snapshot.appendSections(Section.allCases)
+        snapshot.appendSections([.main])
         snapshot.appendItems(filteredTransactionList.data, toSection: .main)
         
         if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty  {
@@ -136,7 +144,9 @@ class AddTagWorkflowVC: TableViewController {
                     return view
                 }()
             } else {
-                tableView.backgroundView = nil
+                if tableView.backgroundView != nil {
+                    tableView.backgroundView = nil
+                }
             }
         }
         
@@ -229,9 +239,6 @@ class AddTagWorkflowVC: TableViewController {
                         if self.navigationItem.title != "Select Transaction" {
                             self.navigationItem.title = "Select Transaction"
                         }
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
@@ -245,9 +252,6 @@ class AddTagWorkflowVC: TableViewController {
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     } else {
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
@@ -261,9 +265,6 @@ class AddTagWorkflowVC: TableViewController {
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     }
                 case .failure:
                     self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
@@ -278,11 +279,7 @@ class AddTagWorkflowVC: TableViewController {
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
                     }
-                    
-                    self.applySnapshot()
-                    self.refreshControl?.endRefreshing()
             }
-            self.searchController.searchBar.placeholder = "Search \(self.transactions.count.description) \(self.transactions.count == 1 ? "Transaction" : "Transactions")"
         }
     }
 }
@@ -299,7 +296,7 @@ extension AddTagWorkflowVC {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let transaction = self.dataSource.itemIdentifier(for: indexPath)!
+        let transaction = dataSource.itemIdentifier(for: indexPath)!
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
@@ -319,13 +316,13 @@ extension AddTagWorkflowVC {
 
 extension AddTagWorkflowVC: UISearchControllerDelegate, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        applySnapshot()
+        applySnapshot(animate: true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if searchBar.text != "" {
+        if !searchBar.text!.isEmpty {
             searchBar.text = ""
-            applySnapshot()
+            applySnapshot(animate: true)
         }
     }
 }

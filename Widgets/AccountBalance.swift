@@ -13,18 +13,13 @@ struct AccountBalanceProvider: TimelineProvider {
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [AccountBalanceModel] = []
-        
         var url = URL(string: "https://api.up.com.au/api/v1/accounts")!
-        
         let urlParams = ["page[size]":"1"]
         url = url.appendingQueryParameters(urlParams)
-        
         var request = URLRequest(url: url)
-        
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("Bearer \(appDefaults.string(forKey: "apiKey") ?? "")", forHTTPHeaderField: "Authorization")
-        
+        request.addValue("Bearer \(appDefaults.apiKey)", forHTTPHeaderField: "Authorization")
         URLSession.shared.dataTask(with: request) { data, response, error in
             if error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Account.self, from: data!) {

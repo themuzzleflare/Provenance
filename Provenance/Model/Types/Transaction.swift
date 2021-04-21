@@ -102,8 +102,8 @@ struct Attribute: Hashable, Codable {
     }
     var settlementDate: String? {
         if settledAt != nil {
-            switch appDefaults.string(forKey: "dateStyle") {
-                case "Absolute", .none:
+            switch appDefaults.dateStyle {
+                case "Absolute":
                     return settledDateAbsolute
                 case "Relative":
                     return settledDateRelative
@@ -123,8 +123,8 @@ struct Attribute: Hashable, Codable {
         return formatDateRelative(dateString: createdAt)
     }
     var creationDate: String {
-        switch appDefaults.string(forKey: "dateStyle") {
-            case "Absolute", .none:
+        switch appDefaults.dateStyle {
+            case "Absolute":
                 return createdDateAbsolute
             case "Relative":
                 return createdDateRelative

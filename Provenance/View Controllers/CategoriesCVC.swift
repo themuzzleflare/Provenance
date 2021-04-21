@@ -8,7 +8,13 @@ class CategoriesCVC: CollectionViewController {
     let refreshControl = RefreshControl(frame: .zero)
     
     private var categoriesStatusCode: Int = 0
-    private var categories: [CategoryResource] = []
+    private var categories: [CategoryResource] = [] {
+        didSet {
+            applySnapshot()
+            collectionView.refreshControl?.endRefreshing()
+            searchController.searchBar.placeholder = "Search \(categories.count.description) \(categories.count == 1 ? "Category" : "Categories")"
+        }
+    }
     private var categoriesErrorResponse: [ErrorObject] = []
     private var categoriesError: String = ""
     private var filteredCategories: [CategoryResource] {
@@ -43,7 +49,7 @@ class CategoriesCVC: CollectionViewController {
     }
     private func applySnapshot(animate: Bool = true) {
         var snapshot = Snapshot()
-        snapshot.appendSections(Section.allCases)
+        snapshot.appendSections([.main])
         snapshot.appendItems(filteredCategoriesList.data, toSection: .main)
         
         if snapshot.itemIdentifiers.isEmpty && categoriesError.isEmpty && categoriesErrorResponse.isEmpty  {
@@ -134,7 +140,9 @@ class CategoriesCVC: CollectionViewController {
                     return view
                 }()
             } else {
-                collectionView.backgroundView = nil
+                if collectionView.backgroundView != nil {
+                    collectionView.backgroundView = nil
+                }
             }
         }
         
@@ -219,9 +227,6 @@ class CategoriesCVC: CollectionViewController {
                         if self.navigationItem.title != "Categories" {
                             self.navigationItem.title = "Categories"
                         }
-                        
-                        self.applySnapshot()
-                        self.collectionView.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.categoriesErrorResponse = decodedResponse.errors
                         self.categoriesError = ""
@@ -234,9 +239,6 @@ class CategoriesCVC: CollectionViewController {
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
-                        
-                        self.applySnapshot()
-                        self.collectionView.refreshControl?.endRefreshing()
                     } else {
                         self.categoriesError = "JSON Decoding Failed!"
                         self.categoriesErrorResponse = []
@@ -249,9 +251,6 @@ class CategoriesCVC: CollectionViewController {
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
-                        
-                        self.applySnapshot()
-                        self.collectionView.refreshControl?.endRefreshing()
                     }
                 case .failure:
                     self.categoriesError = response.error?.localizedDescription ?? "Unknown Error!"
@@ -265,11 +264,7 @@ class CategoriesCVC: CollectionViewController {
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
                     }
-                    
-                    self.applySnapshot()
-                    self.collectionView.refreshControl?.endRefreshing()
             }
-            self.searchController.searchBar.placeholder = "Search \(self.categories.count.description) \(self.categories.count == 1 ? "Category" : "Categories")"
         }
     }
     
@@ -294,7 +289,7 @@ extension CategoriesCVC: UISearchControllerDelegate, UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if searchBar.text != "" {
+        if !searchBar.text!.isEmpty {
             searchBar.text = ""
             applySnapshot()
         }

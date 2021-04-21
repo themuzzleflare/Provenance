@@ -11,7 +11,14 @@ class AccountsCVC: CollectionViewController {
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, AccountResource>
     
     private var accountsStatusCode: Int = 0
-    private var accounts: [AccountResource] = []
+    private var accounts: [AccountResource] = [] {
+        didSet {
+            applySnapshot()
+            collectionView.reloadData()
+            collectionView.refreshControl?.endRefreshing()
+            searchController.searchBar.placeholder = "Search \(accounts.count.description) \(accounts.count == 1 ? "Account" : "Accounts")"
+        }
+    }
     private var accountsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var accountsErrorResponse: [ErrorObject] = []
     private var accountsError: String = ""
@@ -44,7 +51,7 @@ class AccountsCVC: CollectionViewController {
     }
     private func applySnapshot(animate: Bool = true) {
         var snapshot = Snapshot()
-        snapshot.appendSections(Section.allCases)
+        snapshot.appendSections([.main])
         snapshot.appendItems(filteredAccountsList.data, toSection: .main)
         
         if snapshot.itemIdentifiers.isEmpty && accountsError.isEmpty && accountsErrorResponse.isEmpty  {
@@ -135,7 +142,9 @@ class AccountsCVC: CollectionViewController {
                     return view
                 }()
             } else {
-                collectionView.backgroundView = nil
+                if collectionView.backgroundView != nil {
+                    collectionView.backgroundView = nil
+                }
             }
         }
         
@@ -221,10 +230,6 @@ class AccountsCVC: CollectionViewController {
                         if self.navigationItem.title != "Accounts" {
                             self.navigationItem.title = "Accounts"
                         }
-                        
-                        self.applySnapshot(animate: false)
-                        self.collectionView.reloadData()
-                        self.collectionView.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.accountsErrorResponse = decodedResponse.errors
                         self.accountsError = ""
@@ -238,9 +243,6 @@ class AccountsCVC: CollectionViewController {
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
-                        
-                        self.applySnapshot()
-                        self.collectionView.refreshControl?.endRefreshing()
                     } else {
                         self.accountsError = "JSON Decoding Failed!"
                         self.accountsErrorResponse = []
@@ -254,9 +256,6 @@ class AccountsCVC: CollectionViewController {
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
-                        
-                        self.applySnapshot()
-                        self.collectionView.refreshControl?.endRefreshing()
                     }
                 case .failure:
                     self.accountsError = response.error?.localizedDescription ?? "Unknown Error!"
@@ -271,11 +270,7 @@ class AccountsCVC: CollectionViewController {
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
                     }
-                    
-                    self.applySnapshot()
-                    self.collectionView.refreshControl?.endRefreshing()
             }
-            self.searchController.searchBar.placeholder = "Search \(self.accounts.count.description) \(self.accounts.count == 1 ? "Account" : "Accounts")"
         }
     }
     
@@ -305,7 +300,7 @@ extension AccountsCVC: UISearchControllerDelegate, UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if searchBar.text != "" {
+        if !searchBar.text!.isEmpty {
             searchBar.text = ""
             applySnapshot()
         }

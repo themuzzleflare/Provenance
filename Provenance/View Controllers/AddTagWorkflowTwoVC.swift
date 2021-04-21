@@ -17,7 +17,14 @@ class AddTagWorkflowTwoVC: TableViewController {
     private var textDidChangeObserver: NSObjectProtocol!
     private var tagsStatusCode: Int = 0
     private var tagsPagination: Pagination = Pagination(prev: nil, next: nil)
-    private var tags: [TagResource] = []
+    private var tags: [TagResource] = [] {
+        didSet {
+            applySnapshot()
+            refreshControl?.endRefreshing()
+            searchController.searchBar.placeholder = "Search \(tags.count.description) \(tags.count == 1 ? "Tag" : "Tags")"
+
+        }
+    }
     private var tagsErrorResponse: [ErrorObject] = []
     private var tagsError: String = ""
     private var filteredTags: [TagResource] {
@@ -52,7 +59,7 @@ class AddTagWorkflowTwoVC: TableViewController {
     }
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
-        snapshot.appendSections(Section.allCases)
+        snapshot.appendSections([.main])
         snapshot.appendItems(filteredTagsList.data, toSection: .main)
         
         if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty && tagsErrorResponse.isEmpty  {
@@ -143,7 +150,9 @@ class AddTagWorkflowTwoVC: TableViewController {
                     return view
                 }()
             } else {
-                tableView.backgroundView = nil
+                if tableView.backgroundView != nil {
+                    tableView.backgroundView = nil
+                }
             }
         }
         
@@ -180,7 +189,7 @@ class AddTagWorkflowTwoVC: TableViewController {
         cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
         let submitAction = UIAlertAction(title: "Next", style: .default) { _ in
             let answer = ac.textFields![0]
-            if answer.text != "" {
+            if !answer.text!.isEmpty {
                 self.navigationController?.pushViewController({let vc = AddTagWorkflowThreeVC(style: .grouped);vc.transaction = self.transaction;vc.tag = answer.text;return vc}(), animated: true)
             }
         }
@@ -270,9 +279,6 @@ class AddTagWorkflowTwoVC: TableViewController {
                         if self.navigationItem.rightBarButtonItem == nil {
                             self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.openAddWorkflow)), animated: true)
                         }
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.tagsErrorResponse = decodedResponse.errors
                         self.tagsError = ""
@@ -289,9 +295,6 @@ class AddTagWorkflowTwoVC: TableViewController {
                         if self.navigationItem.rightBarButtonItem != nil {
                             self.navigationItem.setRightBarButton(nil, animated: true)
                         }
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     } else {
                         self.tagsError = "JSON Decoding Failed!"
                         self.tagsErrorResponse = []
@@ -308,9 +311,6 @@ class AddTagWorkflowTwoVC: TableViewController {
                         if self.navigationItem.rightBarButtonItem != nil {
                             self.navigationItem.setRightBarButton(nil, animated: true)
                         }
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     }
                 case .failure:
                     self.tagsError = response.error?.localizedDescription ?? "Unknown Error!"
@@ -328,11 +328,7 @@ class AddTagWorkflowTwoVC: TableViewController {
                     if self.navigationItem.rightBarButtonItem != nil {
                         self.navigationItem.setRightBarButton(nil, animated: true)
                     }
-                    
-                    self.applySnapshot()
-                    self.refreshControl?.endRefreshing()
             }
-            self.searchController.searchBar.placeholder = "Search \(self.tags.count.description) \(self.tags.count == 1 ? "Tag" : "Tags")"
         }
     }
 }
@@ -370,13 +366,13 @@ extension AddTagWorkflowTwoVC: UITextFieldDelegate {
 
 extension AddTagWorkflowTwoVC: UISearchControllerDelegate, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        applySnapshot()
+        applySnapshot(animate: true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if searchBar.text != "" {
+        if !searchBar.text!.isEmpty {
             searchBar.text = ""
-            applySnapshot()
+            applySnapshot(animate: true)
         }
     }
 }

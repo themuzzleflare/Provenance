@@ -3,7 +3,7 @@ import Rswift
 
 class AccountDetailVC: TableViewController {
     var account: AccountResource!
-    var transaction: TransactionResource!
+    var transaction: TransactionResource?
     
     private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
@@ -18,9 +18,19 @@ class AccountDetailVC: TableViewController {
             tableView: tableView,
             cellProvider: {  tableView, indexPath, detailAttribute in
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
+
+                var cellRightDetailFont: UIFont {
+                    switch detailAttribute.key {
+                        case "Account ID":
+                            return R.font.sfMonoRegular(size: UIFont.labelFontSize)!
+                        default:
+                            return R.font.circularStdBook(size: UIFont.labelFontSize)!
+                    }
+                }
                 
-                cell.leftLabel.text = detailAttribute.titleKey
-                cell.rightLabel.text = detailAttribute.titleValue
+                cell.leftLabel.text = detailAttribute.key
+                cell.rightLabel.font = cellRightDetailFont
+                cell.rightLabel.text = detailAttribute.value
                 
                 return cell
             }
@@ -30,20 +40,20 @@ class AccountDetailVC: TableViewController {
         sections = [
             Section(title: "Section 1", detailAttributes: [
                 DetailAttribute(
-                    titleKey: "Account Balance",
-                    titleValue: account.attributes.balance.valueLong
+                    key: "Account Balance",
+                    value: account.attributes.balance.valueLong
                 ),
                 DetailAttribute(
-                    titleKey: "Latest Transaction",
-                    titleValue: transaction?.attributes.description ?? ""
+                    key: "Latest Transaction",
+                    value: transaction?.attributes.description ?? ""
                 ),
                 DetailAttribute(
-                    titleKey: "Account ID",
-                    titleValue: account.id
+                    key: "Account ID",
+                    value: account.id
                 ),
                 DetailAttribute(
-                    titleKey: "Creation Date",
-                    titleValue: account.attributes.creationDate
+                    key: "Creation Date",
+                    value: account.attributes.creationDate
                 )
             ])
         ]
@@ -53,7 +63,7 @@ class AccountDetailVC: TableViewController {
         
         sections.forEach { section in
             snapshot.appendItems(section.detailAttributes.filter { detailAttribute in
-                detailAttribute.titleValue != ""
+                !detailAttribute.value.isEmpty
             }, toSection: section)
         }
         
@@ -90,10 +100,12 @@ class AccountDetailVC: TableViewController {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let attribute = dataSource.itemIdentifier(for: indexPath)!
+
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy \(self.dataSource.itemIdentifier(for: indexPath)!.titleKey)", image: R.image.docOnClipboard()) { _ in
-                    UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.titleValue
+                UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { _ in
+                    UIPasteboard.general.string = attribute.value
                 }
             ])
         }

@@ -47,7 +47,6 @@ extension DateStyleTableViewCell {
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.insertSegment(withTitle: "Absolute", at: 0, animated: false)
         segmentedControl.insertSegment(withTitle: "Relative", at: 1, animated: false)
-        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: R.font.circularStdBook(size: 14)!], for: .normal)
     }
     
     private func configureHorizontalStackView() {

@@ -1,4 +1,5 @@
 import UIKit
+import Alamofire
 import MarqueeLabel
 import Rswift
 
@@ -25,13 +26,21 @@ class TransactionDetailVC: TableViewController {
         configureTableView()
         applySnapshot()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        fetchTransaction()
+    }
 }
 
 extension TransactionDetailVC {
+    @objc private func appMovedToForeground() {
+        fetchTransaction()
+    }
+
     private var filteredSections: [Section] {
         sections.filter { section in
             !section.detailAttributes.allSatisfy { detailAttribute in
-                detailAttribute.titleValue == "" || (detailAttribute.titleKey == "Tags" && detailAttribute.titleValue == "0")
+                detailAttribute.value.isEmpty || (detailAttribute.key == "Tags" && detailAttribute.value == "0")
             }
         }
     }
@@ -79,6 +88,22 @@ extension TransactionDetailVC {
             return ""
         }
     }
+
+    private func fetchTransaction() {
+        AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)", method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
+            switch response.result {
+                case .success:
+                    if let decodedResponse = try? JSONDecoder().decode(SingleTransactionResponse.self, from: response.data!) {
+                        self.transaction = decodedResponse.data
+                        self.applySnapshot()
+                    } else {
+                        print("JSON decoding failed")
+                    }
+                case .failure:
+                    print(response.error?.localizedDescription ?? "Unknown error")
+            }
+        }
+    }
     
     private func makeDataSource() -> DataSource {
         return DataSource(
@@ -87,7 +112,7 @@ extension TransactionDetailVC {
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
                 
                 var cellSelectionStyle: UITableViewCell.SelectionStyle {
-                    switch detailAttribute.titleKey {
+                    switch detailAttribute.key {
                         case "Account", "Parent Category", "Category", "Tags":
                             return .default
                         default:
@@ -95,7 +120,7 @@ extension TransactionDetailVC {
                     }
                 }
                 var cellAccessoryType: UITableViewCell.AccessoryType {
-                    switch detailAttribute.titleKey {
+                    switch detailAttribute.key {
                         case "Account", "Parent Category", "Category", "Tags":
                             return .disclosureIndicator
                         default:
@@ -103,7 +128,7 @@ extension TransactionDetailVC {
                     }
                 }
                 var cellRightDetailFont: UIFont {
-                    switch detailAttribute.titleKey {
+                    switch detailAttribute.key {
                         case "Raw Text":
                             return R.font.sfMonoRegular(size: UIFont.labelFontSize)!
                         default:
@@ -114,10 +139,10 @@ extension TransactionDetailVC {
                 cell.selectionStyle = cellSelectionStyle
                 cell.accessoryType = cellAccessoryType
                 
-                cell.leftLabel.text = detailAttribute.titleKey
+                cell.leftLabel.text = detailAttribute.key
                 
                 cell.rightLabel.font = cellRightDetailFont
-                cell.rightLabel.text = detailAttribute.titleValue
+                cell.rightLabel.text = detailAttribute.value
                 
                 return cell
             }
@@ -127,70 +152,70 @@ extension TransactionDetailVC {
         sections = [
             Section(title: "Section 1", detailAttributes: [
                 DetailAttribute(
-                    titleKey: "Status",
-                    titleValue: transaction.attributes.statusString
+                    key: "Status",
+                    value: transaction.attributes.statusString
                 ),
                 DetailAttribute(
-                    titleKey: "Account",
-                    titleValue: accountFilter?.first?.attributes.displayName ?? ""
+                    key: "Account",
+                    value: accountFilter?.first?.attributes.displayName ?? ""
                 )
             ]),
             Section(title: "Section 2", detailAttributes: [
                 DetailAttribute(
-                    titleKey: "Description",
-                    titleValue: transaction.attributes.description
+                    key: "Description",
+                    value: transaction.attributes.description
                 ),
                 DetailAttribute(
-                    titleKey: "Raw Text",
-                    titleValue: transaction.attributes.rawText ?? ""
+                    key: "Raw Text",
+                    value: transaction.attributes.rawText ?? ""
                 ),
                 DetailAttribute(
-                    titleKey: "Message",
-                    titleValue: transaction.attributes.message ?? ""
+                    key: "Message",
+                    value: transaction.attributes.message ?? ""
                 )
             ]),
             Section(title: "Section 3", detailAttributes: [
                 DetailAttribute(
-                    titleKey: "Hold \(transaction.attributes.holdInfo?.amount.transactionType ?? "")",
-                    titleValue: holdTransValue
+                    key: "Hold \(transaction.attributes.holdInfo?.amount.transactionType ?? "")",
+                    value: holdTransValue
                 ),
                 DetailAttribute(
-                    titleKey: "Hold Foreign \(transaction.attributes.holdInfo?.foreignAmount?.transactionType ?? "")",
-                    titleValue: holdForeignTransValue
+                    key: "Hold Foreign \(transaction.attributes.holdInfo?.foreignAmount?.transactionType ?? "")",
+                    value: holdForeignTransValue
                 ),
                 DetailAttribute(
-                    titleKey: "Foreign \(transaction.attributes.foreignAmount?.transactionType ?? "")",
-                    titleValue: foreignTransValue
+                    key: "Foreign \(transaction.attributes.foreignAmount?.transactionType ?? "")",
+                    value: foreignTransValue
                 ),
                 DetailAttribute(
-                    titleKey: transaction.attributes.amount.transactionType,
-                    titleValue: transaction.attributes.amount.valueLong
+                    key: transaction.attributes.amount.transactionType,
+                    value: transaction.attributes.amount.valueLong
                 )
             ]),
             Section(title: "Section 4", detailAttributes: [
                 DetailAttribute(
-                    titleKey: "Creation Date",
-                    titleValue: transaction.attributes.creationDate
+                    key: "Creation Date",
+                    value: transaction.attributes.creationDate
                 ),
                 DetailAttribute(
-                    titleKey: "Settlement Date",
-                    titleValue: transaction.attributes.settlementDate ?? ""
+                    key: "Settlement Date",
+                    value: transaction.attributes.settlementDate ?? ""
                 )
             ]),
             Section(title: "Section 5", detailAttributes: [
                 DetailAttribute(
-                    titleKey: "Parent Category",
-                    titleValue: parentCategoryFilter?.first?.attributes.name ?? ""
+                    key: "Parent Category",
+                    value: parentCategoryFilter?.first?.attributes.name ?? ""
                 ),
                 DetailAttribute(
-                    titleKey: "Category",
-                    titleValue: categoryFilter?.first?.attributes.name ?? ""
+                    key: "Category",
+                    value: categoryFilter?.first?.attributes.name ?? ""
                 )
             ]),
             Section(title: "Section 6", detailAttributes: [
                 DetailAttribute(
-                    titleKey: "Tags",
-                    titleValue: transaction.relationships.tags.data.count.description
+                    key: "Tags",
+                    value: transaction.relationships.tags.data.count.description
                 )
             ])
         ]
@@ -200,7 +225,7 @@ extension TransactionDetailVC {
         
         filteredSections.forEach { section in
             snapshot.appendItems(section.detailAttributes.filter { detailAttribute in
-                detailAttribute.titleValue != ""
+                !detailAttribute.value.isEmpty
             }, toSection: section)
         }
         
@@ -209,6 +234,7 @@ extension TransactionDetailVC {
     
     private func configureProperties() {
         title = "Transaction Details"
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
             self.applySnapshot()
         }
@@ -245,32 +271,36 @@ extension TransactionDetailVC {
 
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if attribute.titleKey == "Account" {
+        if attribute.key == "Account" {
             navigationController?.pushViewController({let vc = R.storyboard.transactionsByAccount.transactionsByAccountController()!;vc.account = accountFilter!.first!;return vc}(), animated: true)
-        } else if attribute.titleKey == "Parent Category" || attribute.titleKey == "Category" {
+        } else if attribute.key == "Parent Category" || attribute.key == "Category" {
             let vc = TransactionsByCategoryVC(style: .grouped)
             
-            if attribute.titleKey == "Parent Category" {
+            if attribute.key == "Parent Category" {
                 vc.category = parentCategoryFilter!.first
             } else {
                 vc.category = categoryFilter!.first
             }
             
             navigationController?.pushViewController(vc, animated: true)
-        } else if attribute.titleKey == "Tags" {
+        } else if attribute.key == "Tags" {
             navigationController?.pushViewController({let vc = TagsVC(style: .grouped);vc.transaction = transaction;return vc}(), animated: true)
         }
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let attribute = dataSource.itemIdentifier(for: indexPath)!
-        
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            UIMenu(children: [
-                UIAction(title: "Copy \(attribute.titleKey)", image: R.image.docOnClipboard()) { _ in
-                    UIPasteboard.general.string = attribute.titleValue
-                }
-            ])
+
+        if attribute.key != "Tags" {
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(children: [
+                    UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { _ in
+                        UIPasteboard.general.string = attribute.value
+                    }
+                ])
+            }
+        } else {
+            return nil
         }
     }
 }

@@ -11,7 +11,13 @@ class AllTagsVC: TableViewController {
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TagResource>
     
     private var tagsStatusCode: Int = 0
-    private var tags: [TagResource] = []
+    private var tags: [TagResource] = [] {
+        didSet {
+            applySnapshot()
+            refreshControl?.endRefreshing()
+            searchController.searchBar.placeholder = "Search \(tags.count.description) \(tags.count == 1 ? "Tag" : "Tags")"
+        }
+    }
     private var tagsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var tagsErrorResponse: [ErrorObject] = []
     private var tagsError: String = ""
@@ -47,7 +53,7 @@ class AllTagsVC: TableViewController {
     }
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
-        snapshot.appendSections(Section.allCases)
+        snapshot.appendSections([.main])
         snapshot.appendItems(filteredTagsList.data, toSection: .main)
         
         if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty && tagsErrorResponse.isEmpty  {
@@ -138,7 +144,9 @@ class AllTagsVC: TableViewController {
                     return view
                 }()
             } else {
-                tableView.backgroundView = nil
+                if tableView.backgroundView != nil {
+                    tableView.backgroundView = nil
+                }
             }
         }
         
@@ -245,9 +253,6 @@ class AllTagsVC: TableViewController {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                         #endif
-                        
-                        self.applySnapshot(animate: true)
-                        self.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.tagsErrorResponse = decodedResponse.errors
                         self.tagsError = ""
@@ -268,9 +273,6 @@ class AllTagsVC: TableViewController {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                         #endif
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     } else {
                         self.tagsError = "JSON Decoding Failed!"
                         self.tagsErrorResponse = []
@@ -291,9 +293,6 @@ class AllTagsVC: TableViewController {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                         #endif
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     }
                 case .failure:
                     self.tagsError = response.error?.localizedDescription ?? "Unknown Error!"
@@ -315,11 +314,7 @@ class AllTagsVC: TableViewController {
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
                     #endif
-                    
-                    self.applySnapshot()
-                    self.refreshControl?.endRefreshing()
             }
-            self.searchController.searchBar.placeholder = "Search \(self.tags.count.description) \(self.tags.count == 1 ? "Tag" : "Tags")"
         }
     }
 }
@@ -332,7 +327,7 @@ extension AllTagsVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        navigationController?.pushViewController({let vc = TransactionsByTagVC(style: .grouped);vc.tag = dataSource.itemIdentifier(for: indexPath)!;return vc}(), animated: true)
+        navigationController?.pushViewController({let vc = TransactionsByTagVC(style: .grouped);vc.tag = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -348,13 +343,13 @@ extension AllTagsVC {
 
 extension AllTagsVC: UISearchControllerDelegate, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        applySnapshot()
+        applySnapshot(animate: true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if searchBar.text != "" {
+        if !searchBar.text!.isEmpty {
             searchBar.text = ""
-            applySnapshot()
+            applySnapshot(animate: true)
         }
     }
 }

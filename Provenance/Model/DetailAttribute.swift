@@ -2,12 +2,12 @@ import Foundation
 
 class DetailAttribute: Hashable {
     var id = UUID()
-    var titleKey: String
-    var titleValue: String
+    var key: String
+    var value: String
     
-    init(titleKey: String, titleValue: String) {
-        self.titleKey = titleKey
-        self.titleValue = titleValue
+    init(key: String, value: String) {
+        self.key = key
+        self.value = value
     }
     
     func hash(into hasher: inout Hasher) {

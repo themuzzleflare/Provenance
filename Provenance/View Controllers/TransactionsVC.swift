@@ -28,7 +28,14 @@ class TransactionsVC: TableViewController {
         }
     }
     private var transactionsStatusCode: Int = 0
-    private var transactions: [TransactionResource] = []
+    private var transactions: [TransactionResource] = [] {
+        didSet {
+            applySnapshot()
+            refreshControl?.endRefreshing()
+            WidgetCenter.shared.reloadAllTimelines()
+            searchController.searchBar.placeholder = "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
+        }
+    }
     private var transactionsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
@@ -80,11 +87,11 @@ extension TransactionsVC {
     private func filterMenu() -> UIMenu {
         return UIMenu(image: R.image.sliderHorizontal3(), options: .displayInline, children: [
             UIMenu(title: "Category", image: R.image.arrowUpArrowDownCircle(), children: FilterCategory.allCases.map { category in
-                UIAction(title: categoryNameTransformed(category), state: self.filter == category ? .on : .off) { _ in
+                UIAction(title: categoryNameTransformed(category), state: filter == category ? .on : .off) { _ in
                     self.filter = category
                 }
             }),
-            UIAction(title: "Settled Only", image: R.image.checkmarkCircle(), state: self.showSettledOnly ? .on : .off) { _ in
+            UIAction(title: "Settled Only", image: R.image.checkmarkCircle(), state: showSettledOnly ? .on : .off) { _ in
                 self.showSettledOnly.toggle()
             }
         ])
@@ -120,7 +127,7 @@ extension TransactionsVC {
     
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
-        snapshot.appendSections(Section.allCases)
+        snapshot.appendSections([.main])
         snapshot.appendItems(filteredTransactionList.data, toSection: .main)
         
         if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty  {
@@ -211,7 +218,9 @@ extension TransactionsVC {
                     return view
                 }()
             } else {
-                tableView.backgroundView = nil
+                if tableView.backgroundView != nil {
+                    tableView.backgroundView = nil
+                }
             }
         }
         
@@ -316,9 +325,6 @@ extension TransactionsVC {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
@@ -338,9 +344,6 @@ extension TransactionsVC {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     } else {
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
@@ -360,9 +363,6 @@ extension TransactionsVC {
                         #if targetEnvironment(macCatalyst)
                         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                         #endif
-                        
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
                     }
                 case .failure:
                     self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
@@ -383,12 +383,7 @@ extension TransactionsVC {
                     #if targetEnvironment(macCatalyst)
                     self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
                     #endif
-                    
-                    self.applySnapshot()
-                    self.refreshControl?.endRefreshing()
             }
-            WidgetCenter.shared.reloadAllTimelines()
-            self.searchController.searchBar.placeholder = "Search \(self.preFilteredTransactions.count.description) \(self.preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
         }
     }
     
@@ -435,7 +430,7 @@ extension TransactionsVC {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let transaction = self.dataSource.itemIdentifier(for: indexPath)!
+        let transaction = dataSource.itemIdentifier(for: indexPath)!
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
@@ -459,7 +454,7 @@ extension TransactionsVC: UISearchControllerDelegate, UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if searchBar.text != "" {
+        if !searchBar.text!.isEmpty {
             searchBar.text = ""
             applySnapshot(animate: true)
         }
