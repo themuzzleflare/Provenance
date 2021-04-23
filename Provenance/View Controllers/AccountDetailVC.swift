@@ -20,14 +20,14 @@ class AccountDetailVC: TableViewController {
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
                 
                 cell.leftLabel.text = detailAttribute.key
-                cell.rightLabel.font = detailAttribute.key == "Account ID" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
+                cell.rightLabel.font = detailAttribute.key == "Account ID" ? R.font.cousineRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
                 cell.rightLabel.text = detailAttribute.value
                 
                 return cell
             }
         )
     }
-    private func applySnapshot(animatingDifferences: Bool = false) {
+    private func applySnapshot() {
         sections = [
             Section(title: "Section 1", detailAttributes: [
                 DetailAttribute(
@@ -58,7 +58,7 @@ class AccountDetailVC: TableViewController {
             }, toSection: section)
         }
         
-        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
     
     @objc private func closeWorkflow() {
@@ -82,7 +82,7 @@ class AccountDetailVC: TableViewController {
     
     private func setupNavigation() {
         navigationItem.title = account.attributes.displayName
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
     }
     
     private func setupTableView() {

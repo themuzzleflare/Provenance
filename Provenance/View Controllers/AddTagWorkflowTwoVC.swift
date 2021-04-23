@@ -43,7 +43,7 @@ class AddTagWorkflowTwoVC: TableViewController {
     }
     
     private func makeDataSource() -> DataSource {
-        return DataSource(
+        let dataSource = DataSource(
             tableView: tableView,
             cellProvider: {  tableView, indexPath, tag in
                 let cell = tableView.dequeueReusableCell(withIdentifier: "tagTableViewCell", for: indexPath) as! BasicTableViewCell
@@ -56,6 +56,8 @@ class AddTagWorkflowTwoVC: TableViewController {
                 return cell
             }
         )
+        dataSource.defaultRowAnimation = .fade
+        return dataSource
     }
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
@@ -65,7 +67,7 @@ class AddTagWorkflowTwoVC: TableViewController {
         if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty && tagsErrorResponse.isEmpty  {
             if tags.isEmpty && tagsStatusCode == 0 {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let loadingIndicator = ActivityIndicator(style: .medium)
                     view.addSubview(loadingIndicator)
@@ -78,7 +80,7 @@ class AddTagWorkflowTwoVC: TableViewController {
                 }()
             } else {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let label = UILabel()
                     view.addSubview(label)
@@ -97,7 +99,7 @@ class AddTagWorkflowTwoVC: TableViewController {
         } else {
             if !tagsError.isEmpty {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let label = UILabel()
                     view.addSubview(label)
@@ -115,7 +117,7 @@ class AddTagWorkflowTwoVC: TableViewController {
                 }()
             } else if !tagsErrorResponse.isEmpty {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let titleLabel = UILabel()
                     let detailLabel = UILabel()
@@ -169,7 +171,7 @@ class AddTagWorkflowTwoVC: TableViewController {
             textField.delegate = self
             textField.autocapitalizationType = .none
             textField.autocorrectionType = .no
-            textField.tintColor = R.color.accentColor()
+            textField.tintColor = R.color.accentColour()
             
             self.textDidChangeObserver = NotificationCenter.default.addObserver(
                 forName: UITextField.textDidChangeNotification,
@@ -186,14 +188,14 @@ class AddTagWorkflowTwoVC: TableViewController {
         }
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+        cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
         let submitAction = UIAlertAction(title: "Next", style: .default) { _ in
             let answer = ac.textFields![0]
             if !answer.text!.isEmpty {
                 self.navigationController?.pushViewController({let vc = AddTagWorkflowThreeVC(style: .grouped);vc.transaction = self.transaction;vc.tag = answer.text;return vc}(), animated: true)
             }
         }
-        submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+        submitAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
         submitAction.isEnabled = false
         submitActionProxy = submitAction
         ac.addAction(cancelAction)

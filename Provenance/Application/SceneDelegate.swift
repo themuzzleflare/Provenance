@@ -10,7 +10,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var savedShortcutItem: UIApplicationShortcutItem!
     private var textDidChangeObserver: NSObjectProtocol!
 
-    let viewController = TabBarController()
+    let tabController = TabBarController()
     let settingsController = SettingsVC(style: .grouped)
 
     private enum ActionType: String {
@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = viewController
+        window.rootViewController = tabController
         self.window = window
         window.makeKeyAndVisible()
 
@@ -76,7 +76,7 @@ extension SceneDelegate {
                 textField.autocapitalizationType = .none
                 textField.autocorrectionType = .no
                 textField.isSecureTextEntry = false
-                textField.tintColor = R.color.accentColor()
+                textField.tintColor = R.color.accentColour()
                 textField.text = appDefaults.apiKey
 
                 self.textDidChangeObserver = NotificationCenter.default.addObserver(
@@ -94,7 +94,7 @@ extension SceneDelegate {
             })
 
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-            cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+            cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
             let submitAction = UIAlertAction(title: "Save", style: .default) { _ in
                 let answer = ac.textFields![0]
                 if !answer.text!.isEmpty && answer.text != appDefaults.apiKey {
@@ -118,7 +118,7 @@ extension SceneDelegate {
                                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                                         self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
                                     })
-                                    dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                    dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                                     ac.addAction(dismissAction)
                                     self.window?.rootViewController?.present(ac, animated: true)
                                     WidgetCenter.shared.reloadAllTimelines()
@@ -130,7 +130,7 @@ extension SceneDelegate {
                                 let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                                     self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
                                 })
-                                dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                                 ac.addAction(dismissAction)
                                 self.window?.rootViewController?.present(ac, animated: true)
                                 WidgetCenter.shared.reloadAllTimelines()
@@ -143,13 +143,13 @@ extension SceneDelegate {
                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                         self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
                     })
-                    dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                    dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                     ac.addAction(dismissAction)
                     self.window?.rootViewController?.present(ac, animated: true)
                     WidgetCenter.shared.reloadAllTimelines()
                 }
             }
-            submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+            submitAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
             submitAction.isEnabled = false
             submitActionProxy = submitAction
             ac.addAction(cancelAction)

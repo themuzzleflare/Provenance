@@ -42,7 +42,7 @@ extension WidgetsVC {
         
         instructionTitle.translatesAutoresizingMaskIntoConstraints = false
         instructionTitle.textAlignment = .center
-        instructionTitle.textColor = R.color.accentColor()
+        instructionTitle.textColor = R.color.accentColour()
         instructionTitle.font = R.font.circularStdBold(size: 23)
         instructionTitle.numberOfLines = 1
         instructionTitle.text = "Adding a Widget"

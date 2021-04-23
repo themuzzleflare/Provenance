@@ -5,7 +5,7 @@ import SwiftyGif
 import Rswift
 
 // MARK: - UserDefaults Suite for Provenance Application Group
-let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
+let appDefaults = UserDefaults(suiteName: R.entitlements.comAppleSecurityApplicationGroups.groupCloudTavitianProvenance)!
 
 // MARK: - UserDefaults Extension for Value Observation
 extension UserDefaults {
@@ -35,7 +35,7 @@ let appCopyright = Bundle.main.infoDictionary?["NSHumanReadableCopyright"] as? S
 
 var selectedBackgroundCellView: UIView {
     let view = UIView()
-    view.backgroundColor = R.color.accentColor()
+    view.backgroundColor = R.color.accentColour()
     return view
 }
 

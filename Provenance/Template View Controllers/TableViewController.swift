@@ -1,5 +1,4 @@
 import UIKit
-import Rswift
 
 class TableViewController: UITableViewController {
     override func viewDidLoad() {

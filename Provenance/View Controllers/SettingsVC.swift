@@ -56,7 +56,7 @@ extension SettingsVC {
     
     private func setupNavigation() {
         navigationItem.title = "Settings"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
     }
     
     private func setupTableView() {
@@ -108,7 +108,7 @@ extension SettingsVC {
                 textField.autocapitalizationType = .none
                 textField.autocorrectionType = .no
                 textField.isSecureTextEntry = false
-                textField.tintColor = R.color.accentColor()
+                textField.tintColor = R.color.accentColour()
                 textField.text = appDefaults.apiKey
                 
                 self.textDidChangeObserver = NotificationCenter.default.addObserver(
@@ -126,7 +126,7 @@ extension SettingsVC {
             })
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-            cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+            cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
             let submitAction = UIAlertAction(title: "Save", style: .default) { _ in
                 let answer = ac.textFields![0]
                 if !answer.text!.isEmpty && answer.text != appDefaults.apiKey {
@@ -146,7 +146,7 @@ extension SettingsVC {
                                 DispatchQueue.main.async {
                                     let ac = UIAlertController(title: "Failed", message: "The API Key could not be verified.", preferredStyle: .alert)
                                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                                    dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                    dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                                     ac.addAction(dismissAction)
                                     self.present(ac, animated: true)
                                     WidgetCenter.shared.reloadAllTimelines()
@@ -156,7 +156,7 @@ extension SettingsVC {
                             DispatchQueue.main.async {
                                 let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "The API Key could not be verified.", preferredStyle: .alert)
                                 let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                                dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                                 ac.addAction(dismissAction)
                                 self.present(ac, animated: true)
                                 WidgetCenter.shared.reloadAllTimelines()
@@ -167,13 +167,13 @@ extension SettingsVC {
                 } else {
                     let ac = UIAlertController(title: "Failed", message: "The provided API Key was the same as the current one.", preferredStyle: .alert)
                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                    dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                    dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                     ac.addAction(dismissAction)
                     self.present(ac, animated: true)
                     WidgetCenter.shared.reloadAllTimelines()
                 }
             }
-            submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+            submitAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
             submitAction.isEnabled = false
             submitActionProxy = submitAction
             ac.addAction(cancelAction)

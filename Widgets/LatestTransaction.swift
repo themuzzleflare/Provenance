@@ -28,8 +28,8 @@ struct LatestTransactionProvider: IntentTimelineProvider {
                     var creationDate: String {
                         switch configuration.dateStyle {
                             case .unknown: return decodedResponse.data.first!.attributes.creationDate
-                            case .absolute: return decodedResponse.data.first!.attributes.createdDateAbsolute
-                            case .relative: return decodedResponse.data.first!.attributes.createdDateRelative
+                            case .absolute: return decodedResponse.data.first!.attributes.creationDateAbsolute
+                            case .relative: return decodedResponse.data.first!.attributes.creationDateRelative
                         }
                     }
                     DispatchQueue.main.async {
@@ -83,7 +83,7 @@ struct LatestTransactionEntryView: View {
                 if entry.error.isEmpty && family != .systemSmall {
                     Text("Latest Transaction")
                         .font(.custom("CircularStd-Bold", size: 23))
-                        .foregroundColor(Color("AccentColor"))
+                        .foregroundColor(Color("AccentColour"))
                     Spacer()
                 }
                 if family != .systemSmall {
@@ -105,7 +105,7 @@ struct LatestTransactionEntryView: View {
                 } else {
                     Text(entry.transactionDescription)
                         .font(.custom("CircularStd-Bold", size: 17))
-                        .foregroundColor(Color("AccentColor"))
+                        .foregroundColor(Color("AccentColour"))
                     Text(entry.transactionAmount)
                         .foregroundColor(entry.transactionValueInBaseUnits == -1 ? .primary : Color("greenColour"))
                         .font(.custom("CircularStd-Book", size: 14))
@@ -148,7 +148,7 @@ struct LatestTransaction_Previews: PreviewProvider {
             LatestTransactionEntryView(entry: LatestTransactionModel(date: Date(), configuration: DateStyleConfigurationIntent(), transactionValueInBaseUnits: -1, transactionDescription: "Officeworks", transactionDate: "21 hours ago", transactionAmount: "-$79.95", error: ""))
                 .previewContext(WidgetPreviewContext(family: family))
                 .previewDisplayName(family.description)
-                .colorScheme(.light)
+                .colorScheme(.dark)
         }
     }
 }

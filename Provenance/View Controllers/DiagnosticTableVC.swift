@@ -62,7 +62,7 @@ extension DiagnosticTableVC {
     
     private func setupNavigation() {
         navigationItem.title = "Diagnostics"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
     }
     
     private func setupTableView() {

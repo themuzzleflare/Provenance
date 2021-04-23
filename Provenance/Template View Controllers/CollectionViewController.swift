@@ -1,5 +1,4 @@
 import UIKit
-import Rswift
 
 class CollectionViewController: UICollectionViewController {
     override func viewDidLoad() {

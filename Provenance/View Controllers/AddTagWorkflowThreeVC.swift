@@ -112,7 +112,7 @@ extension AddTagWorkflowThreeVC {
                         let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                             self.navigationController?.popViewController(animated: true)
                         })
-                        dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                        dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                         ac.addAction(dismissAction)
                         self.present(ac, animated: true)
                     }
@@ -127,7 +127,7 @@ extension AddTagWorkflowThreeVC {
                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
                         self.navigationController?.popToRootViewController(animated: true)
                     })
-                    dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                    dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                     ac.addAction(dismissAction)
                     self.present(ac, animated: true)
                 }

@@ -59,7 +59,7 @@ class AddTagWorkflowVC: TableViewController {
         if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty  {
             if transactions.isEmpty && transactionsStatusCode == 0 {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let loadingIndicator = ActivityIndicator(style: .medium)
                     view.addSubview(loadingIndicator)
@@ -72,7 +72,7 @@ class AddTagWorkflowVC: TableViewController {
                 }()
             } else {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let label = UILabel()
                     view.addSubview(label)
@@ -91,7 +91,7 @@ class AddTagWorkflowVC: TableViewController {
         } else {
             if !transactionsError.isEmpty {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let label = UILabel()
                     view.addSubview(label)
@@ -109,7 +109,7 @@ class AddTagWorkflowVC: TableViewController {
                 }()
             } else if !transactionsErrorResponse.isEmpty {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let titleLabel = UILabel()
                     let detailLabel = UILabel()
@@ -191,7 +191,7 @@ class AddTagWorkflowVC: TableViewController {
     
     private func setupNavigation() {
         navigationItem.title = "Loading"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         navigationItem.searchController = searchController
     }
     

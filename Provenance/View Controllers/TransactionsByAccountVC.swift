@@ -24,7 +24,7 @@ class TransactionsByAccountVC: TableViewController {
                 verticalStack.spacing = 0
 
                 balanceLabel.translatesAutoresizingMaskIntoConstraints = false
-                balanceLabel.textColor = R.color.accentColor()
+                balanceLabel.textColor = R.color.accentColour()
                 balanceLabel.font = R.font.circularStdBold(size: 32)
                 balanceLabel.textAlignment = .center
                 balanceLabel.numberOfLines = 1
@@ -98,7 +98,7 @@ class TransactionsByAccountVC: TableViewController {
         if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty  {
             if transactions.isEmpty && transactionsStatusCode == 0 {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let loadingIndicator = ActivityIndicator(style: .medium)
                     view.addSubview(loadingIndicator)
@@ -111,7 +111,7 @@ class TransactionsByAccountVC: TableViewController {
                 }()
             } else {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let label = UILabel()
                     view.addSubview(label)
@@ -130,7 +130,7 @@ class TransactionsByAccountVC: TableViewController {
         } else {
             if !transactionsError.isEmpty {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let label = UILabel()
                     view.addSubview(label)
@@ -148,7 +148,7 @@ class TransactionsByAccountVC: TableViewController {
                 }()
             } else if !transactionsErrorResponse.isEmpty {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let titleLabel = UILabel()
                     let detailLabel = UILabel()

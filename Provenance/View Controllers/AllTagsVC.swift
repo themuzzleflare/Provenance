@@ -37,19 +37,23 @@ class AllTagsVC: TableViewController {
     }
     
     private func makeDataSource() -> DataSource {
-        return DataSource(
+        let dataSource = DataSource(
             tableView: tableView,
             cellProvider: {  tableView, indexPath, tag in
                 let cell = tableView.dequeueReusableCell(withIdentifier: "tagTableViewCell", for: indexPath) as! BasicTableViewCell
                 
                 cell.selectedBackgroundView = selectedBackgroundCellView
+                cell.selectionStyle = .default
                 cell.accessoryType = .none
+                cell.separatorInset = .zero
                 cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                 cell.textLabel?.text = tag.id
                 
                 return cell
             }
         )
+        dataSource.defaultRowAnimation = .fade
+        return dataSource
     }
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
@@ -59,7 +63,7 @@ class AllTagsVC: TableViewController {
         if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty && tagsErrorResponse.isEmpty  {
             if tags.isEmpty && tagsStatusCode == 0 {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let loadingIndicator = ActivityIndicator(style: .medium)
                     view.addSubview(loadingIndicator)
@@ -72,7 +76,7 @@ class AllTagsVC: TableViewController {
                 }()
             } else {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let label = UILabel()
                     view.addSubview(label)
@@ -91,7 +95,7 @@ class AllTagsVC: TableViewController {
         } else {
             if !tagsError.isEmpty {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let label = UILabel()
                     view.addSubview(label)
@@ -109,7 +113,7 @@ class AllTagsVC: TableViewController {
                 }()
             } else if !tagsErrorResponse.isEmpty {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let titleLabel = UILabel()
                     let detailLabel = UILabel()

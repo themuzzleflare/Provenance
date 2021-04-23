@@ -19,13 +19,13 @@ class AccountCollectionViewCell: UICollectionViewCell {
 
     override var isHighlighted: Bool {
         didSet {
-            balanceLabel.textColor = isHighlighted ? .label : R.color.accentColor()
+            balanceLabel.textColor = isHighlighted ? .label : R.color.accentColour()
         }
     }
     
     override var isSelected: Bool {
         didSet {
-            balanceLabel.textColor = isSelected ? .label : R.color.accentColor()
+            balanceLabel.textColor = isSelected ? .label : R.color.accentColour()
         }
     }
     
@@ -65,7 +65,7 @@ extension AccountCollectionViewCell {
         balanceLabel.translatesAutoresizingMaskIntoConstraints = false
         balanceLabel.textAlignment = .center
         balanceLabel.numberOfLines = 0
-        balanceLabel.textColor = R.color.accentColor()
+        balanceLabel.textColor = R.color.accentColour()
         balanceLabel.font = R.font.circularStdBold(size: 32)
     }
     

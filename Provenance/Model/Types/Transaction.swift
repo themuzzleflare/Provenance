@@ -55,17 +55,9 @@ struct Attribute: Hashable, Codable {
         }
     }
     var statusIconView: UIImageView {
-        let imageView = UIImageView(image: statusIcon)
-        imageView.tintColor = isSettled ? .systemGreen : .systemYellow
-        return imageView
-    }
-    var statusIconColor: UIColor {
-        switch isSettled {
-            case true:
-                return .systemGreen
-            case false:
-                return .systemYellow
-        }
+        let view = UIImageView(image: statusIcon)
+        view.tintColor = isSettled ? .systemGreen : .systemYellow
+        return view
     }
     var statusString: String {
         switch isSettled {
@@ -86,14 +78,14 @@ struct Attribute: Hashable, Codable {
     var foreignAmount: MoneyObject?
     
     private var settledAt: String?
-    private var settledDateAbsolute: String? {
+    private var settlementDateAbsolute: String? {
         if settledAt != nil {
             return formatDate(dateString: settledAt!)
         } else {
             return nil
         }
     }
-    private var settledDateRelative: String? {
+    private var settlementDateRelative: String? {
         if settledAt != nil {
             return formatDateRelative(dateString: settledAt!)
         } else {
@@ -104,11 +96,11 @@ struct Attribute: Hashable, Codable {
         if settledAt != nil {
             switch appDefaults.dateStyle {
                 case "Absolute":
-                    return settledDateAbsolute
+                    return settlementDateAbsolute
                 case "Relative":
-                    return settledDateRelative
+                    return settlementDateRelative
                 default:
-                    return settledDateAbsolute
+                    return settlementDateAbsolute
             }
         } else {
             return nil
@@ -116,20 +108,20 @@ struct Attribute: Hashable, Codable {
     }
     
     private var createdAt: String
-    private var createdDateAbsolute: String {
+    private var creationDateAbsolute: String {
         return formatDate(dateString: createdAt)
     }
-    private var createdDateRelative: String {
+    private var creationDateRelative: String {
         return formatDateRelative(dateString: createdAt)
     }
     var creationDate: String {
         switch appDefaults.dateStyle {
             case "Absolute":
-                return createdDateAbsolute
+                return creationDateAbsolute
             case "Relative":
-                return createdDateRelative
+                return creationDateRelative
             default:
-                return createdDateAbsolute
+                return creationDateAbsolute
         }
     }
 }

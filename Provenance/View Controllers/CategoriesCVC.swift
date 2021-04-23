@@ -55,7 +55,7 @@ class CategoriesCVC: CollectionViewController {
         if snapshot.itemIdentifiers.isEmpty && categoriesError.isEmpty && categoriesErrorResponse.isEmpty  {
             if categories.isEmpty && categoriesStatusCode == 0 {
                 collectionView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
                     
                     let loadingIndicator = ActivityIndicator(style: .medium)
                     view.addSubview(loadingIndicator)
@@ -68,7 +68,7 @@ class CategoriesCVC: CollectionViewController {
                 }()
             } else {
                 collectionView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
                     
                     let label = UILabel()
                     view.addSubview(label)
@@ -87,7 +87,7 @@ class CategoriesCVC: CollectionViewController {
         } else {
             if !categoriesError.isEmpty {
                 collectionView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
                     
                     let label = UILabel()
                     view.addSubview(label)
@@ -105,7 +105,7 @@ class CategoriesCVC: CollectionViewController {
                 }()
             } else if !categoriesErrorResponse.isEmpty {
                 collectionView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
                     
                     let titleLabel = UILabel()
                     let detailLabel = UILabel()

@@ -57,7 +57,7 @@ class AccountsCVC: CollectionViewController {
         if snapshot.itemIdentifiers.isEmpty && accountsError.isEmpty && accountsErrorResponse.isEmpty  {
             if accounts.isEmpty && accountsStatusCode == 0 {
                 collectionView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
                     
                     let loadingIndicator = ActivityIndicator(style: .medium)
                     view.addSubview(loadingIndicator)
@@ -70,7 +70,7 @@ class AccountsCVC: CollectionViewController {
                 }()
             } else {
                 collectionView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
                     
                     let label = UILabel()
                     view.addSubview(label)
@@ -89,7 +89,7 @@ class AccountsCVC: CollectionViewController {
         } else {
             if !accountsError.isEmpty {
                 collectionView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
                     
                     let label = UILabel()
                     view.addSubview(label)
@@ -107,7 +107,7 @@ class AccountsCVC: CollectionViewController {
                 }()
             } else if !accountsErrorResponse.isEmpty {
                 collectionView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
                     
                     let titleLabel = UILabel()
                     let detailLabel = UILabel()
@@ -218,9 +218,9 @@ class AccountsCVC: CollectionViewController {
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.accountsErrorResponse = decodedResponse.errors
                         self.accountsError = ""
-                        self.accounts = []
                         self.accountsPagination = Pagination(prev: nil, next: nil)
-                        
+                        self.accounts = []
+
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -248,15 +248,15 @@ class AccountsCVC: CollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let transaction = dataSource.itemIdentifier(for: indexPath)!
+        let account = dataSource.itemIdentifier(for: indexPath)!
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy Balance", image: R.image.dollarsignCircle()) { _ in
-                    UIPasteboard.general.string = transaction.attributes.balance.valueShort
+                    UIPasteboard.general.string = account.attributes.balance.valueShort
                 },
                 UIAction(title: "Copy Display Name", image: R.image.textAlignright()) { _ in
-                    UIPasteboard.general.string = transaction.attributes.displayName
+                    UIPasteboard.general.string = account.attributes.displayName
                 }
             ])
         }

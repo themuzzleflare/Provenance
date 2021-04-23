@@ -62,7 +62,7 @@ class TransactionsByTagVC: TableViewController {
         if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty  {
             if transactions.isEmpty && transactionsStatusCode == 0 {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let loadingIndicator = ActivityIndicator(style: .medium)
                     view.addSubview(loadingIndicator)
@@ -75,7 +75,7 @@ class TransactionsByTagVC: TableViewController {
                 }()
             } else {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let label = UILabel()
                     view.addSubview(label)
@@ -94,7 +94,7 @@ class TransactionsByTagVC: TableViewController {
         } else {
             if !transactionsError.isEmpty {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let label = UILabel()
                     view.addSubview(label)
@@ -112,7 +112,7 @@ class TransactionsByTagVC: TableViewController {
                 }()
             } else if !transactionsErrorResponse.isEmpty {
                 tableView.backgroundView = {
-                    let view = UIView()
+                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
                     
                     let titleLabel = UILabel()
                     let detailLabel = UILabel()
@@ -369,7 +369,7 @@ extension TransactionsByTagVC {
                                     DispatchQueue.main.async {
                                         let ac = UIAlertController(title: "Failed", message: "\(self.tag.id) was not removed from \(transaction.attributes.description).", preferredStyle: .alert)
                                         let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                                        dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                        dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                                         ac.addAction(dismissAction)
                                         self.present(ac, animated: true)
                                     }
@@ -382,7 +382,7 @@ extension TransactionsByTagVC {
                                 DispatchQueue.main.async {
                                     let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", preferredStyle: .alert)
                                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                                    dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                    dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                                     ac.addAction(dismissAction)
                                     self.present(ac, animated: true)
                                 }
@@ -391,7 +391,7 @@ extension TransactionsByTagVC {
                         .resume()
                     })
                     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-                    cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                    cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                     ac.addAction(confirmAction)
                     ac.addAction(cancelAction)
                     self.present(ac, animated: true)

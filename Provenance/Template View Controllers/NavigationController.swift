@@ -10,6 +10,6 @@ class NavigationController: UINavigationController {
 
 extension NavigationController {
     private func configure() {
-        navigationBar.tintColor = R.color.accentColor()
+        navigationBar.tintColor = R.color.accentColour()
     }
 }

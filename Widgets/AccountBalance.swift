@@ -71,12 +71,12 @@ struct AccountBalanceEntryView: View {
                 if entry.error.isEmpty && family != .systemSmall {
                     Text("Account Balance")
                         .font(.custom("CircularStd-Bold", size: 23))
-                        .foregroundColor(Color("AccentColor"))
+                        .foregroundColor(Color("AccentColour"))
                     Spacer()
                 }
                 Text(entry.accountBalance)
                     .font(.custom("CircularStd-Bold", size: 23))
-                    .foregroundColor(family != .systemSmall ? .primary : Color("AccentColor"))
+                    .foregroundColor(family != .systemSmall ? .primary : Color("AccentColour"))
                 Text(entry.accountDisplayName)
                     .font(.custom("CircularStd-Book", size: 17))
                     .foregroundColor(.primary)
@@ -113,7 +113,7 @@ struct AccountBalance_Previews: PreviewProvider {
             AccountBalanceEntryView(entry: AccountBalanceModel(date: Date(), accountDisplayName: "Up Account", accountBalance: "$123.45", error: ""))
                 .previewContext(WidgetPreviewContext(family: family))
                 .previewDisplayName(family.description)
-                .colorScheme(.light)
+                .colorScheme(.dark)
         }
     }
 }

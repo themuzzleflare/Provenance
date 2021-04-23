@@ -105,54 +105,6 @@ extension TagsVC {
 
         navigationController?.pushViewController({let vc = TransactionsByTagVC(style: .grouped);vc.tag = TagResource(type: "tags", id: dataSource.itemIdentifier(for: indexPath)!.id);return vc}(), animated: true)
     }
-
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let tag = dataSource.itemIdentifier(for: indexPath)!
-
-        if editingStyle == .delete {
-            let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(self.transaction.id)/relationships/tags")!
-            var request = URLRequest(url: url)
-            let bodyObject: [String : Any] = [
-                "data": [
-                    [
-                        "type": "tags",
-                        "id": tag.id
-                    ]
-                ]
-            ]
-            request.httpMethod = "DELETE"
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.addValue("Bearer \(appDefaults.apiKey)", forHTTPHeaderField: "Authorization")
-            request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                if error == nil {
-                    let statusCode = (response as! HTTPURLResponse).statusCode
-                    if statusCode != 204 {
-                        DispatchQueue.main.async {
-                            let ac = UIAlertController(title: "Failed", message: "\(tag.id) was not removed from \(self.transaction.attributes.description).", preferredStyle: .alert)
-                            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                            dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-                            ac.addAction(dismissAction)
-                            self.present(ac, animated: true)
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            self.fetchTags()
-                        }
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "\(tag.id) was not removed from \(self.transaction.attributes.description).", preferredStyle: .alert)
-                        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                        dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-                        ac.addAction(dismissAction)
-                        self.present(ac, animated: true)
-                    }
-                }
-            }
-            .resume()
-        }
-    }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let tag = dataSource.itemIdentifier(for: indexPath)!
@@ -186,7 +138,7 @@ extension TagsVC {
                                     DispatchQueue.main.async {
                                         let ac = UIAlertController(title: "Failed", message: "\(tag.id) was not removed from \(self.transaction.attributes.description).", preferredStyle: .alert)
                                         let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                                        dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                        dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                                         ac.addAction(dismissAction)
                                         self.present(ac, animated: true)
                                     }
@@ -199,7 +151,7 @@ extension TagsVC {
                                 DispatchQueue.main.async {
                                     let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "\(tag.id) was not removed from \(self.transaction.attributes.description).", preferredStyle: .alert)
                                     let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                                    dismissAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                    dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                                     ac.addAction(dismissAction)
                                     self.present(ac, animated: true)
                                 }
@@ -208,7 +160,7 @@ extension TagsVC {
                         .resume()
                     })
                     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-                    cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                    cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                     ac.addAction(confirmAction)
                     ac.addAction(cancelAction)
                     self.present(ac, animated: true)
