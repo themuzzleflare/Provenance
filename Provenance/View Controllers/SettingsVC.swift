@@ -90,7 +90,7 @@ extension SettingsVC {
             dateStyleCell.segmentedControl.selectedSegmentIndex = 1
         }
         
-        dateStyleCell.segmentedControl.addTarget(self, action: #selector(switchDateStyle), for:.valueChanged)
+        dateStyleCell.segmentedControl.addTarget(self, action: #selector(switchDateStyle), for: .valueChanged)
         
         if indexPath.section == 0 {
             return apiKeyCell

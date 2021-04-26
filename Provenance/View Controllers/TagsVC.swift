@@ -25,16 +25,14 @@ class TagsVC: TableViewController {
     private func makeDataSource() -> DataSource {
         return DataSource(
             tableView: tableView,
-            cellProvider: {  tableView, indexPath, tag in
+            cellProvider: { tableView, indexPath, tag in
                 let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
-
                 cell.selectedBackgroundView = selectedBackgroundCellView
                 cell.accessoryType = .disclosureIndicator
                 cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                 cell.textLabel?.textColor = .label
                 cell.textLabel?.numberOfLines = 0
                 cell.textLabel?.text = tag.id
-
                 return cell
             }
         )
@@ -65,7 +63,7 @@ extension TagsVC {
     }
 
     private func configureProperties() {
-        title = "Tags"
+        title = "Transaction Tags"
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     

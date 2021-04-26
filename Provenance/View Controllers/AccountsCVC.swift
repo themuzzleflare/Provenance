@@ -40,49 +40,39 @@ class AccountsCVC: CollectionViewController {
     private func makeDataSource() -> DataSource {
         return DataSource(
             collectionView: collectionView,
-            cellProvider: {  collectionView, indexPath, account in
+            cellProvider: { collectionView, indexPath, account in
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AccountCollectionViewCell.reuseIdentifier, for: indexPath) as! AccountCollectionViewCell
-                
                 cell.account = account
-                
                 return cell
             }
         )
     }
+    
     private func applySnapshot(animate: Bool = true) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(filteredAccountsList.data, toSection: .main)
-        
         if snapshot.itemIdentifiers.isEmpty && accountsError.isEmpty && accountsErrorResponse.isEmpty  {
             if accounts.isEmpty && accountsStatusCode == 0 {
                 collectionView.backgroundView = {
                     let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
-                    
                     let loadingIndicator = ActivityIndicator(style: .medium)
                     view.addSubview(loadingIndicator)
-                    
                     loadingIndicator.center(in: view)
-                    
                     loadingIndicator.startAnimating()
-                    
                     return view
                 }()
             } else {
                 collectionView.backgroundView = {
                     let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
-                    
                     let label = UILabel()
                     view.addSubview(label)
-                    
                     label.center(in: view)
-                    
                     label.textAlignment = .center
                     label.textColor = .label
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = "No Accounts"
-                    
                     return view
                 }()
             }
@@ -90,55 +80,43 @@ class AccountsCVC: CollectionViewController {
             if !accountsError.isEmpty {
                 collectionView.backgroundView = {
                     let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
-                    
                     let label = UILabel()
                     view.addSubview(label)
-                    
                     label.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
                     label.center(in: view)
-                    
                     label.textAlignment = .center
                     label.textColor = .label
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = accountsError
-                    
                     return view
                 }()
             } else if !accountsErrorResponse.isEmpty {
                 collectionView.backgroundView = {
                     let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
-                    
                     let titleLabel = UILabel()
                     let detailLabel = UILabel()
                     let verticalStack = UIStackView()
-                    
                     view.addSubview(verticalStack)
-                    
                     titleLabel.translatesAutoresizingMaskIntoConstraints = false
                     titleLabel.textAlignment = .center
                     titleLabel.textColor = .systemRed
                     titleLabel.font = R.font.circularStdBold(size: UIFont.labelFontSize)
                     titleLabel.numberOfLines = 0
                     titleLabel.text = accountsErrorResponse.first?.title
-                    
                     detailLabel.translatesAutoresizingMaskIntoConstraints = false
                     detailLabel.textAlignment = .center
                     detailLabel.textColor = .label
                     detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     detailLabel.numberOfLines = 0
                     detailLabel.text = accountsErrorResponse.first?.detail
-                    
                     verticalStack.addArrangedSubview(titleLabel)
                     verticalStack.addArrangedSubview(detailLabel)
-                    
                     verticalStack.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
                     verticalStack.center(in: view)
-                    
                     verticalStack.axis = .vertical
                     verticalStack.alignment = .center
                     verticalStack.distribution = .fill
-                    
                     return view
                 }()
             } else {
@@ -147,7 +125,6 @@ class AccountsCVC: CollectionViewController {
                 }
             }
         }
-        
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
     

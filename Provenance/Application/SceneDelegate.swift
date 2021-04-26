@@ -55,7 +55,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 extension SceneDelegate {
     private func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
         let tabcontrol = window?.rootViewController as! TabBarController
-
         if let actionTypeValue = ActionType(rawValue: shortcutItem.type) {
             switch actionTypeValue {
                 case .accountsAction:

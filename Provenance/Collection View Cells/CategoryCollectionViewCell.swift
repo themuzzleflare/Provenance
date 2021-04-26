@@ -3,6 +3,8 @@ import TinyConstraints
 import Rswift
 
 class CategoryCollectionViewCell: UICollectionViewCell {
+    static let reuseIdentifier = "categoryCollectionViewCell"
+
     var category: CategoryResource? {
         didSet {
             if let category = category {
@@ -12,8 +14,6 @@ class CategoryCollectionViewCell: UICollectionViewCell {
             }
         }
     }
-    
-    static let reuseIdentifier = "categoryCollectionViewCell"
     
     let label = UILabel()
     

@@ -108,9 +108,8 @@ extension TransactionDetailVC {
     private func makeDataSource() -> DataSource {
         return DataSource(
             tableView: tableView,
-            cellProvider: {  tableView, indexPath, detailAttribute in
+            cellProvider: { tableView, indexPath, detailAttribute in
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-                
                 var cellSelectionStyle: UITableViewCell.SelectionStyle {
                     switch detailAttribute.key {
                         case "Account", "Parent Category", "Category", "Tags":
@@ -127,17 +126,16 @@ extension TransactionDetailVC {
                             return .none
                     }
                 }
-                
                 cell.selectionStyle = cellSelectionStyle
                 cell.accessoryType = cellAccessoryType
                 cell.leftLabel.text = detailAttribute.key
                 cell.rightLabel.font = detailAttribute.key == "Raw Text" ? R.font.cousineRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
                 cell.rightLabel.text = detailAttribute.value
-                
                 return cell
             }
         )
     }
+    
     private func applySnapshot() {
         sections = [
             Section(title: "Section 1", detailAttributes: [
@@ -209,16 +207,13 @@ extension TransactionDetailVC {
                 )
             ])
         ]
-        
         var snapshot = Snapshot()
         snapshot.appendSections(filteredSections)
-        
         filteredSections.forEach { section in
             snapshot.appendItems(section.detailAttributes.filter { detailAttribute in
                 !detailAttribute.value.isEmpty
             }, toSection: section)
         }
-        
         dataSource.apply(snapshot, animatingDifferences: false)
     }
     

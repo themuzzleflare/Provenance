@@ -40,51 +40,41 @@ class AddTagWorkflowVC: TableViewController {
     private func makeDataSource() -> DataSource {
         let dataSource = DataSource(
             tableView: tableView,
-            cellProvider: {  tableView, indexPath, transaction in
+            cellProvider: { tableView, indexPath, transaction in
                 let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
-                
                 cell.transaction = transaction
-                
                 return cell
             }
         )
         dataSource.defaultRowAnimation = .fade
         return dataSource
     }
+
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(filteredTransactionList.data, toSection: .main)
-        
         if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty  {
             if transactions.isEmpty && transactionsStatusCode == 0 {
                 tableView.backgroundView = {
                     let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
-                    
                     let loadingIndicator = ActivityIndicator(style: .medium)
                     view.addSubview(loadingIndicator)
-                    
                     loadingIndicator.center(in: view)
-                    
                     loadingIndicator.startAnimating()
-                    
                     return view
                 }()
             } else {
                 tableView.backgroundView = {
                     let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
-                    
                     let label = UILabel()
                     view.addSubview(label)
-                    
                     label.center(in: view)
-                    
                     label.textAlignment = .center
                     label.textColor = .label
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = "No Transactions"
-                    
                     return view
                 }()
             }
@@ -92,55 +82,43 @@ class AddTagWorkflowVC: TableViewController {
             if !transactionsError.isEmpty {
                 tableView.backgroundView = {
                     let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
-                    
                     let label = UILabel()
                     view.addSubview(label)
-                    
                     label.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
                     label.center(in: view)
-                    
                     label.textAlignment = .center
                     label.textColor = .label
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = transactionsError
-                    
                     return view
                 }()
             } else if !transactionsErrorResponse.isEmpty {
                 tableView.backgroundView = {
                     let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
-                    
                     let titleLabel = UILabel()
                     let detailLabel = UILabel()
                     let verticalStack = UIStackView()
-                    
                     view.addSubview(verticalStack)
-                    
                     titleLabel.translatesAutoresizingMaskIntoConstraints = false
                     titleLabel.textAlignment = .center
                     titleLabel.textColor = .systemRed
                     titleLabel.font = R.font.circularStdBold(size: UIFont.labelFontSize)
                     titleLabel.numberOfLines = 0
                     titleLabel.text = transactionsErrorResponse.first?.title
-                    
                     detailLabel.translatesAutoresizingMaskIntoConstraints = false
                     detailLabel.textAlignment = .center
                     detailLabel.textColor = .label
                     detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     detailLabel.numberOfLines = 0
                     detailLabel.text = transactionsErrorResponse.first?.detail
-                    
                     verticalStack.addArrangedSubview(titleLabel)
                     verticalStack.addArrangedSubview(detailLabel)
-                    
                     verticalStack.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
                     verticalStack.center(in: view)
-                    
                     verticalStack.axis = .vertical
                     verticalStack.alignment = .center
                     verticalStack.distribution = .fill
-                    
                     return view
                 }()
             } else {
@@ -149,7 +127,6 @@ class AddTagWorkflowVC: TableViewController {
                 }
             }
         }
-        
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
 
@@ -181,7 +158,7 @@ class AddTagWorkflowVC: TableViewController {
     }
     
     private func setProperties() {
-        title = "Transactions"
+        title = "Transaction Selection"
         definesPresentationContext = true
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in

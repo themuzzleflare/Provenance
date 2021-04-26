@@ -3,6 +3,8 @@ import TinyConstraints
 import Rswift
 
 class AccountCollectionViewCell: UICollectionViewCell {
+    static let reuseIdentifier = "accountCollectionViewCell"
+    
     var account: AccountResource? {
         didSet {
             if let account = account {
@@ -12,20 +14,6 @@ class AccountCollectionViewCell: UICollectionViewCell {
                 balanceLabel.text = "Balance"
                 displayNameLabel.text = "Display Name"
             }
-        }
-    }
-    
-    static let reuseIdentifier = "accountCollectionViewCell"
-
-    override var isHighlighted: Bool {
-        didSet {
-            balanceLabel.textColor = isHighlighted ? .label : R.color.accentColour()
-        }
-    }
-    
-    override var isSelected: Bool {
-        didSet {
-            balanceLabel.textColor = isSelected ? .label : R.color.accentColour()
         }
     }
     
@@ -40,6 +28,18 @@ class AccountCollectionViewCell: UICollectionViewCell {
         configureBalanceLabel()
         configureDisplayNameLabel()
         configureStackView()
+    }
+
+    override var isHighlighted: Bool {
+        didSet {
+            balanceLabel.textColor = isHighlighted ? .label : R.color.accentColour()
+        }
+    }
+
+    override var isSelected: Bool {
+        didSet {
+            balanceLabel.textColor = isSelected ? .label : R.color.accentColour()
+        }
     }
     
     required init?(coder: NSCoder) {

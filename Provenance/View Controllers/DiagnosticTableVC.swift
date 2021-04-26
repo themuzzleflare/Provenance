@@ -24,22 +24,19 @@ class DiagnosticTableVC: TableViewController {
             tableView: tableView,
             cellProvider: {  tableView, indexPath, detailAttribute in
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-                
                 cell.leftLabel.text = detailAttribute.key
                 cell.rightLabel.text = detailAttribute.value
-                
                 return cell
             }
         )
     }
+
     private func applySnapshot(animatingDifferences: Bool = false) {
         var snapshot = Snapshot()
         snapshot.appendSections(sections)
-        
         sections.forEach { section in
             snapshot.appendItems(section.detailAttributes, toSection: section)
         }
-        
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
     override func viewDidLoad() {

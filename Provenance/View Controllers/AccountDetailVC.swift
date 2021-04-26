@@ -16,17 +16,16 @@ class AccountDetailVC: TableViewController {
     private func makeDataSource() -> DataSource {
         return DataSource(
             tableView: tableView,
-            cellProvider: {  tableView, indexPath, detailAttribute in
+            cellProvider: { tableView, indexPath, detailAttribute in
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-                
                 cell.leftLabel.text = detailAttribute.key
                 cell.rightLabel.font = detailAttribute.key == "Account ID" ? R.font.cousineRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
                 cell.rightLabel.text = detailAttribute.value
-                
                 return cell
             }
         )
     }
+
     private func applySnapshot() {
         sections = [
             Section(title: "Section 1", detailAttributes: [
@@ -48,16 +47,13 @@ class AccountDetailVC: TableViewController {
                 )
             ])
         ]
-        
         var snapshot = Snapshot()
         snapshot.appendSections(sections)
-        
         sections.forEach { section in
             snapshot.appendItems(section.detailAttributes.filter { detailAttribute in
                 !detailAttribute.value.isEmpty
             }, toSection: section)
         }
-        
         dataSource.apply(snapshot, animatingDifferences: false)
     }
     

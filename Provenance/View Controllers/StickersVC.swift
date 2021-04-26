@@ -26,9 +26,7 @@ extension StickersVC {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StickerCollectionViewCell.reuseIdentifier, for: indexPath) as! StickerCollectionViewCell
-        
         cell.image = stickerGifs[indexPath.item]
-        
         return cell
     }
     

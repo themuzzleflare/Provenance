@@ -3,14 +3,14 @@ import SwiftyGif
 import TinyConstraints
 
 class StickerCollectionViewCell: UICollectionViewCell {
+    static let reuseIdentifier = "stickerCollectionViewCell"
+    
     var image: UIImage! {
         didSet {
             stickerImageView.setGifImage(image)
             stickerImageView.startAnimatingGif()
         }
     }
-    
-    static let reuseIdentifier = "stickerCollectionViewCell"
     
     let stickerImageView = UIImageView()
     
