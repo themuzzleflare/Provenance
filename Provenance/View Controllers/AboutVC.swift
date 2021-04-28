@@ -203,10 +203,4 @@ extension AboutVC {
                 return nil
         }
     }
-    
-    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        if let footerView = view as? UITableViewHeaderFooterView {
-            footerView.textLabel?.textAlignment = .center
-        }
-    }
 }

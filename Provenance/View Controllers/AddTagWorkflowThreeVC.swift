@@ -72,7 +72,7 @@ private extension AddTagWorkflowThreeVC {
     }
 
     private func configureProperties() {
-        title = "Confirmation"
+        title = "Add Tag Confirmation"
         dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
             self.tableView.reloadData()
         }
@@ -117,18 +117,6 @@ extension AddTagWorkflowThreeVC {
                 return "No more than 6 tags may be present on any single transaction. Duplicate tags are silently ignored."
             default:
                 return nil
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        if let headerView = view as? UITableViewHeaderFooterView {
-            headerView.textLabel?.textAlignment = .center
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        if let footerView = view as? UITableViewHeaderFooterView {
-            footerView.textLabel?.textAlignment = .center
         }
     }
     
