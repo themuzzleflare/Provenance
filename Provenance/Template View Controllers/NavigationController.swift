@@ -8,7 +8,7 @@ class NavigationController: UINavigationController {
     }
 }
 
-extension NavigationController {
+private extension NavigationController {
     private func configure() {
         navigationBar.tintColor = R.color.accentColour()
     }

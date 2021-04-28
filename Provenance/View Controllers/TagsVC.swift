@@ -38,11 +38,11 @@ class TagsVC: TableViewController {
         )
     }
 
-    private func applySnapshot(animate: Bool = true) {
+    private func applySnapshot() {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(transaction.relationships.tags.data, toSection: .main)
-        dataSource.apply(snapshot, animatingDifferences: animate)
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     override func viewDidLoad() {
@@ -57,7 +57,7 @@ class TagsVC: TableViewController {
     }
 }
 
-extension TagsVC {
+private extension TagsVC {
     @objc private func appMovedToForeground() {
         fetchTags()
     }
@@ -94,10 +94,6 @@ extension TagsVC {
 }
 
 extension TagsVC {
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 

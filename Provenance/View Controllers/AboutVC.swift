@@ -8,7 +8,7 @@ class AboutVC: TableViewController {
     }
 }
 
-extension AboutVC {
+private extension AboutVC {
     @objc private func openSettings() {
         present(NavigationController(rootViewController: SettingsVC(style: .grouped)), animated: true)
     }
@@ -32,10 +32,6 @@ extension AboutVC {
 }
 
 extension AboutVC {
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }

@@ -139,7 +139,9 @@ class CategoriesCVC: CollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         fetchCategories()
     }
+}
 
+private extension CategoriesCVC {
     @objc private func appMovedToForeground() {
         fetchCategories()
     }
@@ -217,7 +219,9 @@ class CategoriesCVC: CollectionViewController {
             }
         }
     }
-    
+}
+
+extension CategoriesCVC {
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [

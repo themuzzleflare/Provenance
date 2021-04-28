@@ -129,11 +129,27 @@ class AddTagWorkflowVC: TableViewController {
         }
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureProperties()
+        configureNavigation()
+        configureSearch()
+        configureRefreshControl()
+        configureTableView()
+        applySnapshot()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        fetchTransactions()
+    }
+}
 
+private extension AddTagWorkflowVC {
     @objc private func appMovedToForeground() {
         fetchTransactions()
     }
-    
+
     @objc private func refreshTransactions() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchTransactions()
@@ -142,22 +158,8 @@ class AddTagWorkflowVC: TableViewController {
     @objc private func closeWorkflow() {
         navigationController?.dismiss(animated: true)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setProperties()
-        setupNavigation()
-        setupSearch()
-        setupRefreshControl()
-        setupTableView()
-        applySnapshot()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        fetchTransactions()
-    }
-    
-    private func setProperties() {
+
+    private func configureProperties() {
         title = "Transaction Selection"
         definesPresentationContext = true
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -166,21 +168,21 @@ class AddTagWorkflowVC: TableViewController {
         }
     }
     
-    private func setupNavigation() {
+    private func configureNavigation() {
         navigationItem.title = "Loading"
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         navigationItem.searchController = searchController
     }
     
-    private func setupSearch() {
+    private func configureSearch() {
         searchController.searchBar.delegate = self
     }
     
-    private func setupRefreshControl() {
+    private func configureRefreshControl() {
         tableRefreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
     }
     
-    private func setupTableView() {
+    private func configureTableView() {
         tableView.refreshControl = tableRefreshControl
         tableView.dataSource = dataSource
         tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
@@ -234,10 +236,6 @@ class AddTagWorkflowVC: TableViewController {
 }
 
 extension AddTagWorkflowVC {
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         

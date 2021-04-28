@@ -29,25 +29,13 @@ class AccountCollectionViewCell: UICollectionViewCell {
         configureDisplayNameLabel()
         configureStackView()
     }
-
-    override var isHighlighted: Bool {
-        didSet {
-            balanceLabel.textColor = isHighlighted ? .label : R.color.accentColour()
-        }
-    }
-
-    override var isSelected: Bool {
-        didSet {
-            balanceLabel.textColor = isSelected ? .label : R.color.accentColour()
-        }
-    }
     
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
     }
 }
 
-extension AccountCollectionViewCell {
+private extension AccountCollectionViewCell {
     private func configureCell() {
         clipsToBounds = true
         layer.cornerRadius = 12.5
@@ -85,5 +73,19 @@ extension AccountCollectionViewCell {
         verticalStack.axis = .vertical
         verticalStack.alignment = .center
         verticalStack.distribution = .fillProportionally
+    }
+}
+
+extension AccountCollectionViewCell {
+    override var isHighlighted: Bool {
+        didSet {
+            balanceLabel.textColor = isHighlighted ? .label : R.color.accentColour()
+        }
+    }
+
+    override var isSelected: Bool {
+        didSet {
+            balanceLabel.textColor = isSelected ? .label : R.color.accentColour()
+        }
     }
 }

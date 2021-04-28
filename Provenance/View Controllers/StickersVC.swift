@@ -7,7 +7,7 @@ class StickersVC: CollectionViewController {
     }
 }
 
-extension StickersVC {
+private extension StickersVC {
     private func configure() {
         title = "Stickers"
         navigationItem.title = "Stickers"

@@ -8,13 +8,10 @@ class TransactionsByAccountVC: TableViewController {
         didSet {
             tableView.tableHeaderView = {
                 let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 117))
-
                 let balanceLabel = UILabel()
                 let displayNameLabel = UILabel()
                 let verticalStack = UIStackView()
-
                 view.addSubview(verticalStack)
-
                 verticalStack.centerInSuperview()
                 verticalStack.addArrangedSubview(balanceLabel)
                 verticalStack.addArrangedSubview(displayNameLabel)
@@ -22,21 +19,18 @@ class TransactionsByAccountVC: TableViewController {
                 verticalStack.alignment = .center
                 verticalStack.distribution = .fill
                 verticalStack.spacing = 0
-
                 balanceLabel.translatesAutoresizingMaskIntoConstraints = false
                 balanceLabel.textColor = R.color.accentColour()
                 balanceLabel.font = R.font.circularStdBold(size: 32)
                 balanceLabel.textAlignment = .center
                 balanceLabel.numberOfLines = 1
                 balanceLabel.text = account.attributes.balance.valueShort
-
                 displayNameLabel.translatesAutoresizingMaskIntoConstraints = false
                 displayNameLabel.textColor = .secondaryLabel
                 displayNameLabel.font = R.font.circularStdBook(size: 14)
                 displayNameLabel.textAlignment = .center
-                displayNameLabel.numberOfLines = 1
+                displayNameLabel.numberOfLines = 0
                 displayNameLabel.text = account.attributes.displayName
-
                 return view
             }()
         }
@@ -186,7 +180,7 @@ class TransactionsByAccountVC: TableViewController {
     }
 }
 
-extension TransactionsByAccountVC {
+private extension TransactionsByAccountVC {
     @objc private func appMovedToForeground() {
         fetchAccount()
         fetchTransactions()
@@ -198,9 +192,6 @@ extension TransactionsByAccountVC {
     }
     
     @objc private func refreshTransactions() {
-        #if targetEnvironment(macCatalyst)
-        navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(customView: ActivityIndicator(style: .medium))], animated: true)
-        #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchAccount()
             self.fetchTransactions()
@@ -221,11 +212,7 @@ extension TransactionsByAccountVC {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
         navigationItem.searchController = searchController
-        #if targetEnvironment(macCatalyst)
-        navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions))], animated: true)
-        #else
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo))
-        #endif
     }
     
     private func configureSearch() {
@@ -269,10 +256,6 @@ extension TransactionsByAccountVC {
                         self.transactions = decodedResponse.data
 
                         self.navigationItem.title = self.account.attributes.displayName
-                        
-                        #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
-                        #endif
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
@@ -282,10 +265,6 @@ extension TransactionsByAccountVC {
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
-                        
-                        #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
-                        #endif
                     } else {
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
@@ -295,10 +274,6 @@ extension TransactionsByAccountVC {
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
-                        
-                        #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
-                        #endif
                     }
                 case .failure:
                     self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
@@ -309,10 +284,6 @@ extension TransactionsByAccountVC {
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
                     }
-                    
-                    #if targetEnvironment(macCatalyst)
-                    self.navigationItem.setRightBarButtonItems([UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(self.openAccountInfo)), UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions))], animated: true)
-                    #endif
             }
         }
     }
@@ -331,11 +302,9 @@ extension TransactionsByAccountVC {
             }
         }
     }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
+}
 
+extension TransactionsByAccountVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         

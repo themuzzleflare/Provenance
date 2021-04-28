@@ -20,7 +20,7 @@ class AboutTopTableViewCell: UITableViewCell {
     }
 }
 
-extension AboutTopTableViewCell {
+private extension AboutTopTableViewCell {
     private func configure() {
         selectionStyle = .none
         accessoryType = .none

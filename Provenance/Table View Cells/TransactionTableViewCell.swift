@@ -43,7 +43,7 @@ class TransactionTableViewCell: UITableViewCell {
     }
 }
 
-extension TransactionTableViewCell {
+private extension TransactionTableViewCell {
     private func configureCell() {
         selectionStyle = .default
         accessoryType = .none

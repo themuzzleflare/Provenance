@@ -23,7 +23,7 @@ class DateStyleTableViewCell: UITableViewCell {
     }
 }
 
-extension DateStyleTableViewCell {
+private extension DateStyleTableViewCell {
     private func configureCell() {
         selectionStyle = .none
         accessoryType = .none

@@ -23,7 +23,7 @@ class AttributeTableViewCell: UITableViewCell {
     }
 }
 
-extension AttributeTableViewCell {
+private extension AttributeTableViewCell {
     private func configureCell() {
         selectionStyle = .none
         accessoryType = .none

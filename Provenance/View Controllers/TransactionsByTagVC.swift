@@ -135,11 +135,11 @@ class TransactionsByTagVC: TableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setProperties()
-        setupNavigation()
-        setupSearch()
-        setupRefreshControl()
-        setupTableView()
+        configureProperties()
+        configureNavigation()
+        configureSearch()
+        configureRefreshControl()
+        configureTableView()
         applySnapshot()
     }
     
@@ -150,7 +150,7 @@ class TransactionsByTagVC: TableViewController {
     }
 }
 
-extension TransactionsByTagVC {
+private extension TransactionsByTagVC {
     private var filteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
@@ -164,9 +164,6 @@ extension TransactionsByTagVC {
     }
     
     @objc private func refreshTransactions() {
-        #if targetEnvironment(macCatalyst)
-        navigationItem.setRightBarButton(UIBarButtonItem(customView: ActivityIndicator(style: .medium)), animated: true)
-        #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchTransactions()
             self.fetchCategories()
@@ -174,7 +171,7 @@ extension TransactionsByTagVC {
         }
     }
     
-    private func setProperties() {
+    private func configureProperties() {
         title = "Transactions by Tag"
         definesPresentationContext = true
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -183,24 +180,21 @@ extension TransactionsByTagVC {
         }
     }
     
-    private func setupNavigation() {
+    private func configureNavigation() {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
         navigationItem.searchController = searchController
-        #if targetEnvironment(macCatalyst)
-        navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
-        #endif
     }
     
-    private func setupSearch() {
+    private func configureSearch() {
         searchController.searchBar.delegate = self
     }
     
-    private func setupRefreshControl() {
+    private func configureRefreshControl() {
         tableRefreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
     }
     
-    private func setupTableView() {
+    private func configureTableView() {
         tableView.refreshControl = tableRefreshControl
         tableView.dataSource = dataSource
         tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
@@ -218,10 +212,6 @@ extension TransactionsByTagVC {
                         self.transactions = decodedResponse.data
                         
                         self.navigationItem.title = self.tag.id
-                        
-                        #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
-                        #endif
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
@@ -231,10 +221,6 @@ extension TransactionsByTagVC {
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
-                        
-                        #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
-                        #endif
                     } else {
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
@@ -244,10 +230,6 @@ extension TransactionsByTagVC {
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
-                        
-                        #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
-                        #endif
                     }
                 case .failure:
                     self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
@@ -258,10 +240,6 @@ extension TransactionsByTagVC {
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
                     }
-                    
-                    #if targetEnvironment(macCatalyst)
-                    self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
-                    #endif
             }
         }
     }
@@ -298,10 +276,6 @@ extension TransactionsByTagVC {
 }
 
 extension TransactionsByTagVC {
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         

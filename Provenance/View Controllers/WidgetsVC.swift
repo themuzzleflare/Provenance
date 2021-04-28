@@ -17,7 +17,7 @@ class WidgetsVC: ViewController {
     }
 }
 
-extension WidgetsVC {
+private extension WidgetsVC {
     private func configure() {
         title = "Widgets"
         navigationItem.title = "Widgets"

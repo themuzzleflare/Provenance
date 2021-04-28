@@ -24,7 +24,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     }
 }
 
-extension StickerCollectionViewCell {
+private extension StickerCollectionViewCell {
     private func configure() {
         backgroundColor = .secondarySystemGroupedBackground
         layer.borderWidth = 0.5

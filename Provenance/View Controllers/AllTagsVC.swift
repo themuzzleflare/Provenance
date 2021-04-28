@@ -133,7 +133,23 @@ class AllTagsVC: TableViewController {
         }
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureProperties()
+        configureNavigation()
+        configureSearch()
+        configureRefreshControl()
+        configureTableView()
+        applySnapshot()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        fetchTags()
+    }
+}
 
+private extension AllTagsVC {
     @objc private func appMovedToForeground() {
         fetchTags()
     }
@@ -141,54 +157,34 @@ class AllTagsVC: TableViewController {
     @objc private func openAddWorkflow() {
         present({let vc = NavigationController(rootViewController: AddTagWorkflowVC(style: .grouped));vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
     }
-    
+
     @objc private func refreshTags() {
-        #if targetEnvironment(macCatalyst)
-        navigationItem.setLeftBarButton(UIBarButtonItem(customView: ActivityIndicator(style: .medium)), animated: true)
-        #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchTags()
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setProperties()
-        setupNavigation()
-        setupSearch()
-        setupRefreshControl()
-        setupTableView()
-        applySnapshot()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        fetchTags()
-    }
-    
-    private func setProperties() {
+    private func configureProperties() {
         title = "Tags"
         definesPresentationContext = true
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
-    private func setupNavigation() {
+    private func configureNavigation() {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
         navigationItem.searchController = searchController
-        #if targetEnvironment(macCatalyst)
-        navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTags)), animated: true)
-        #endif
     }
     
-    private func setupSearch() {
+    private func configureSearch() {
         searchController.searchBar.delegate = self
     }
     
-    private func setupRefreshControl() {
+    private func configureRefreshControl() {
         tableRefreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
     }
     
-    private func setupTableView() {
+    private func configureTableView() {
         tableView.refreshControl = tableRefreshControl
         tableView.dataSource = dataSource
         tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagTableViewCell")
@@ -211,10 +207,6 @@ class AllTagsVC: TableViewController {
                         if self.navigationItem.rightBarButtonItem == nil {
                             self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.openAddWorkflow)), animated: true)
                         }
-                        
-                        #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
-                        #endif
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.tagsErrorResponse = decodedResponse.errors
                         self.tagsError = ""
@@ -227,10 +219,6 @@ class AllTagsVC: TableViewController {
                         if self.navigationItem.rightBarButtonItem != nil {
                             self.navigationItem.setRightBarButton(nil, animated: true)
                         }
-                        
-                        #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
-                        #endif
                     } else {
                         self.tagsError = "JSON Decoding Failed!"
                         self.tagsErrorResponse = []
@@ -243,10 +231,6 @@ class AllTagsVC: TableViewController {
                         if self.navigationItem.rightBarButtonItem != nil {
                             self.navigationItem.setRightBarButton(nil, animated: true)
                         }
-                        
-                        #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
-                        #endif
                     }
                 case .failure:
                     self.tagsError = response.error?.localizedDescription ?? "Unknown Error!"
@@ -260,20 +244,12 @@ class AllTagsVC: TableViewController {
                     if self.navigationItem.rightBarButtonItem != nil {
                         self.navigationItem.setRightBarButton(nil, animated: true)
                     }
-                    
-                    #if targetEnvironment(macCatalyst)
-                    self.navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTags)), animated: true)
-                    #endif
             }
         }
     }
 }
 
 extension AllTagsVC {
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         

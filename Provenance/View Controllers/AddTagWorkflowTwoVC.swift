@@ -137,7 +137,23 @@ class AddTagWorkflowTwoVC: TableViewController {
         }
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureProperties()
+        configureNavigation()
+        configureSearch()
+        configureRefreshControl()
+        configureTableView()
+        applySnapshot()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        fetchTags()
+    }
+}
 
+private extension AddTagWorkflowTwoVC {
     @objc private func appMovedToForeground() {
         fetchTags()
     }
@@ -149,7 +165,7 @@ class AddTagWorkflowTwoVC: TableViewController {
             textField.autocapitalizationType = .none
             textField.autocorrectionType = .no
             textField.tintColor = R.color.accentColour()
-            
+
             self.textDidChangeObserver = NotificationCenter.default.addObserver(
                 forName: UITextField.textDidChangeNotification,
                 object: textField,
@@ -179,47 +195,33 @@ class AddTagWorkflowTwoVC: TableViewController {
         ac.addAction(submitAction)
         present(ac, animated: true)
     }
-    
+
     @objc private func refreshTags() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchTags()
         }
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setProperties()
-        setupNavigation()
-        setupSearch()
-        setupRefreshControl()
-        setupTableView()
-        applySnapshot()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        fetchTags()
-    }
-    
-    private func setProperties() {
+
+    private func configureProperties() {
         title = "Tag Selection"
         definesPresentationContext = true
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
-    private func setupNavigation() {
+    private func configureNavigation() {
         navigationItem.title = "Loading"
         navigationItem.searchController = searchController
     }
     
-    private func setupSearch() {
+    private func configureSearch() {
         searchController.searchBar.delegate = self
     }
     
-    private func setupRefreshControl() {
+    private func configureRefreshControl() {
         tableRefreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
     }
     
-    private func setupTableView() {
+    private func configureTableView() {
         tableView.refreshControl = tableRefreshControl
         tableView.dataSource = dataSource
         tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagTableViewCell")
@@ -285,10 +287,6 @@ class AddTagWorkflowTwoVC: TableViewController {
 }
 
 extension AddTagWorkflowTwoVC {
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         

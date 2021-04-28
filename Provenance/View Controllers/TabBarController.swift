@@ -38,7 +38,7 @@ class TabBarController: UITabBarController {
     }
 }
 
-extension TabBarController {
+private extension TabBarController {
     private func configure() {
         viewControllers = [tabOne, tabTwo, tabThree, tabFour, tabFive]
     }

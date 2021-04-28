@@ -11,7 +11,7 @@ class SearchController: UISearchController {
     }
 }
 
-extension SearchController {
+private extension SearchController {
     private func configure() {
         obscuresBackgroundDuringPresentation = false
         searchBar.searchBarStyle = .minimal

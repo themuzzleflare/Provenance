@@ -284,12 +284,12 @@
 			children = (
 				7AA1137D2614876C00386E2D /* TransactionTableViewCell.swift */,
 				7AA113872615181700386E2D /* AttributeTableViewCell.swift */,
-				7AA1138F26152CBE00386E2D /* DateStyleTableViewCell.swift */,
 				7A14D616261AF39400C072E3 /* BasicTableViewCell.swift */,
 				7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */,
 				7AB34D4325C79BD0000A1E81 /* RightDetailTableViewCell.swift */,
-				7AA11397261532D000386E2D /* APIKeyTableViewCell.swift */,
 				7AA6C4F02623F6BE003F7947 /* AboutTopTableViewCell.swift */,
+				7AA11397261532D000386E2D /* APIKeyTableViewCell.swift */,
+				7AA1138F26152CBE00386E2D /* DateStyleTableViewCell.swift */,
 			);
 			path = "Table View Cells";
 			sourceTree = "<group>";
@@ -540,7 +540,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "Tavitian Cloud";
 				TargetAttributes = {
 					7AB34D1925C78230000A1E81 = {
@@ -953,7 +953,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 11.9;
+				MARKETING_VERSION = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -984,7 +984,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 11.9;
+				MARKETING_VERSION = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1014,7 +1014,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 11.9;
+				MARKETING_VERSION = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1044,7 +1044,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 11.9;
+				MARKETING_VERSION = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1068,7 +1068,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 11.9;
+				MARKETING_VERSION = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1088,7 +1088,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 11.9;
+				MARKETING_VERSION = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

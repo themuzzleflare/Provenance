@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
-extension AppDelegate {
+private extension AppDelegate {
     private func registerDefaults() {
         let settingsData = try! Data(contentsOf: R.file.settingsBundle()!.appendingPathComponent("Root.plist"))
         let settingsPlist = try! PropertyListSerialization.propertyList(

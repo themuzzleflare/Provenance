@@ -7,7 +7,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController {
+private extension ViewController {
     private func configure() {
         view.backgroundColor = .systemGroupedBackground
         navigationItem.backButtonDisplayMode = .minimal

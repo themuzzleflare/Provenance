@@ -66,7 +66,7 @@ class TransactionsVC: TableViewController {
     }
 }
 
-extension TransactionsVC {
+private extension TransactionsVC {
     private var preFilteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             (!showSettledOnly || transaction.attributes.isSettled)
@@ -218,9 +218,6 @@ extension TransactionsVC {
     }
     
     @objc private func refreshTransactions() {
-        #if targetEnvironment(macCatalyst)
-        navigationItem.setRightBarButton(UIBarButtonItem(customView: ActivityIndicator(style: .medium)), animated: true)
-        #endif
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchTransactions()
             self.fetchCategories()
@@ -242,9 +239,6 @@ extension TransactionsVC {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
         navigationItem.searchController = searchController
-        #if targetEnvironment(macCatalyst)
-        navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTransactions)), animated: true)
-        #endif
     }
     
     private func configureFilterButton() {
@@ -283,10 +277,6 @@ extension TransactionsVC {
                         if self.navigationItem.leftBarButtonItems == nil {
                             self.navigationItem.setLeftBarButtonItems([UIBarButtonItem(image: R.image.arrowUpArrowDown(), style: .plain, target: self, action: #selector(self.switchDateStyle)), self.filterButton], animated: true)
                         }
-                        
-                        #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
-                        #endif
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""
@@ -299,10 +289,6 @@ extension TransactionsVC {
                         if self.navigationItem.leftBarButtonItems != nil {
                             self.navigationItem.setLeftBarButtonItems(nil, animated: true)
                         }
-                        
-                        #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
-                        #endif
                     } else {
                         self.transactionsError = "JSON Decoding Failed!"
                         self.transactionsErrorResponse = []
@@ -315,10 +301,6 @@ extension TransactionsVC {
                         if self.navigationItem.leftBarButtonItems != nil {
                             self.navigationItem.setLeftBarButtonItems(nil, animated: true)
                         }
-                        
-                        #if targetEnvironment(macCatalyst)
-                        self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
-                        #endif
                     }
                 case .failure:
                     self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
@@ -332,10 +314,6 @@ extension TransactionsVC {
                     if self.navigationItem.leftBarButtonItems != nil {
                         self.navigationItem.setLeftBarButtonItems(nil, animated: true)
                     }
-                    
-                    #if targetEnvironment(macCatalyst)
-                    self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTransactions)), animated: true)
-                    #endif
             }
         }
     }
@@ -372,10 +350,6 @@ extension TransactionsVC {
 }
 
 extension TransactionsVC {
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         

@@ -57,35 +57,39 @@ class AccountDetailVC: TableViewController {
         dataSource.apply(snapshot, animatingDifferences: false)
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureProperties()
+        configureNavigation()
+        configureTableView()
+        applySnapshot()
+    }
+}
+
+private extension AccountDetailVC {
     @objc private func closeWorkflow() {
         navigationController?.dismiss(animated: true)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setProperties()
-        setupNavigation()
-        setupTableView()
-        applySnapshot()
-    }
-    
-    private func setProperties() {
+
+    private func configureProperties() {
         title = "Account Details"
         dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
             self.applySnapshot()
         }
     }
     
-    private func setupNavigation() {
+    private func configureNavigation() {
         navigationItem.title = account.attributes.displayName
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
     }
     
-    private func setupTableView() {
+    private func configureTableView() {
         tableView.dataSource = dataSource
         tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
     }
-    
+}
+
+extension AccountDetailVC {
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let attribute = dataSource.itemIdentifier(for: indexPath)!
 

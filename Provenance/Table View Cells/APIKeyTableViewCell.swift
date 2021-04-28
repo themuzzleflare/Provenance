@@ -20,7 +20,7 @@ class APIKeyTableViewCell: UITableViewCell {
     }
 }
 
-extension APIKeyTableViewCell {
+private extension APIKeyTableViewCell {
     private func configureCell() {
         selectionStyle = .default
         accessoryType = .disclosureIndicator

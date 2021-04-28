@@ -11,7 +11,7 @@ class ActivityIndicator: UIActivityIndicatorView {
     }
 }
 
-extension ActivityIndicator {
+private extension ActivityIndicator {
     private func configure() {
         hidesWhenStopped = true
         startAnimating()

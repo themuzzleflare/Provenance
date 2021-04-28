@@ -29,7 +29,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     }
 }
 
-extension CategoryCollectionViewCell {
+private extension CategoryCollectionViewCell {
     private func configureCell() {
         clipsToBounds = true
         layer.cornerRadius = 12.5

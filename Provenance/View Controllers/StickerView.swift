@@ -18,7 +18,7 @@ class StickerView: ViewController {
     }
 }
 
-extension StickerView {
+private extension StickerView {
     private func configure() {
         title = "Sticker View"
         navigationItem.title = "Sticker"

@@ -17,12 +17,13 @@ class DiagnosticTableVC: TableViewController {
             )
         ])
     ]
+
     private lazy var dataSource = makeDataSource()
     
     private func makeDataSource() -> DataSource {
         return DataSource(
             tableView: tableView,
-            cellProvider: {  tableView, indexPath, detailAttribute in
+            cellProvider: { tableView, indexPath, detailAttribute in
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
                 cell.leftLabel.text = detailAttribute.key
                 cell.rightLabel.text = detailAttribute.value
@@ -39,40 +40,37 @@ class DiagnosticTableVC: TableViewController {
         }
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        setProperties()
-        setupNavigation()
-        setupTableView()
+        configureProperties()
+        configureNavigation()
+        configureTableView()
         applySnapshot()
     }
 }
 
-extension DiagnosticTableVC {
+private extension DiagnosticTableVC {
     @objc private func closeWorkflow() {
         navigationController?.dismiss(animated: true)
     }
     
-    private func setProperties() {
+    private func configureProperties() {
         title = "Diagnostics"
     }
     
-    private func setupNavigation() {
+    private func configureNavigation() {
         navigationItem.title = "Diagnostics"
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
     }
     
-    private func setupTableView() {
+    private func configureTableView() {
         tableView.dataSource = dataSource
         tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
     }
 }
 
 extension DiagnosticTableVC {
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let attribute = dataSource.itemIdentifier(for: indexPath)!
         

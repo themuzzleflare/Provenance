@@ -141,7 +141,9 @@ class AccountsCVC: CollectionViewController {
         applySnapshot(animate: false)
         fetchCategories()
     }
+}
 
+private extension AccountsCVC {
     @objc private func appMovedToForeground() {
         fetchCategories()
     }
@@ -223,7 +225,9 @@ class AccountsCVC: CollectionViewController {
             }
         }
     }
-    
+}
+
+extension AccountsCVC {
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let account = dataSource.itemIdentifier(for: indexPath)!
         

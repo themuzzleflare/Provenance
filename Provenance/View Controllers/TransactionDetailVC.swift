@@ -32,7 +32,7 @@ class TransactionDetailVC: TableViewController {
     }
 }
 
-extension TransactionDetailVC {
+private extension TransactionDetailVC {
     @objc private func appMovedToForeground() {
         fetchTransaction()
     }
@@ -246,10 +246,6 @@ extension TransactionDetailVC {
 }
 
 extension TransactionDetailVC {
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let attribute = dataSource.itemIdentifier(for: indexPath)!
 

@@ -8,6 +8,7 @@ class SettingsVC: TableViewController {
     private var textDidChangeObserver: NSObjectProtocol!
     private var apiKeyObserver: NSKeyValueObservation?
     private var dateStyleObserver: NSKeyValueObservation?
+
     private var apiKeyDisplay: String {
         switch appDefaults.apiKey {
             case nil, "":
@@ -19,30 +20,26 @@ class SettingsVC: TableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setProperties()
-        setupNavigation()
-        setupTableView()
+        configureProperties()
+        configureNavigation()
+        configureTableView()
     }
 }
 
-extension SettingsVC {
+private extension SettingsVC {
     @objc private func appMovedToForeground() {
         tableView.reloadData()
     }
 
     @objc private func switchDateStyle(segment: UISegmentedControl) {
-        if segment.selectedSegmentIndex == 0 {
-            appDefaults.setValue("Absolute", forKey: "dateStyle")
-        } else {
-            appDefaults.setValue("Relative", forKey: "dateStyle")
-        }
+        appDefaults.setValue(segment.titleForSegment(at: segment.selectedSegmentIndex), forKey: "dateStyle")
     }
     
     @objc private func closeWorkflow() {
         navigationController?.dismiss(animated: true)
     }
     
-    private func setProperties() {
+    private func configureProperties() {
         title = "Settings"
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         apiKeyObserver = appDefaults.observe(\.apiKey, options: [.new, .old]) { (object, change) in
@@ -54,22 +51,18 @@ extension SettingsVC {
         }
     }
     
-    private func setupNavigation() {
+    private func configureNavigation() {
         navigationItem.title = "Settings"
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
     }
     
-    private func setupTableView() {
+    private func configureTableView() {
         tableView.register(APIKeyTableViewCell.self, forCellReuseIdentifier: APIKeyTableViewCell.reuseIdentifier)
         tableView.register(DateStyleTableViewCell.self, forCellReuseIdentifier: DateStyleTableViewCell.reuseIdentifier)
     }
 }
 
 extension SettingsVC {
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -86,7 +79,7 @@ extension SettingsVC {
         
         if appDefaults.dateStyle == "Absolute" {
             dateStyleCell.segmentedControl.selectedSegmentIndex = 0
-        } else {
+        } else if appDefaults.dateStyle == "Relative" {
             dateStyleCell.segmentedControl.selectedSegmentIndex = 1
         }
         
