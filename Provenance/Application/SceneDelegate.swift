@@ -1,5 +1,6 @@
 import UIKit
 import WidgetKit
+import NotificationBannerSwift
 import Rswift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -9,9 +10,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private var savedShortcutItem: UIApplicationShortcutItem!
     private var textDidChangeObserver: NSObjectProtocol!
-
-    let tabController = TabBarController()
-    let settingsController = SettingsVC(style: .grouped)
 
     private enum ActionType: String {
         case accountsAction = "cloud.tavitian.provenance.accounts"
@@ -27,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = tabController
+        window.rootViewController = TabBarController()
         self.window = window
         window.makeKeyAndVisible()
 
@@ -107,45 +105,33 @@ private extension SceneDelegate {
                             let statusCode = (response as! HTTPURLResponse).statusCode
                             if statusCode == 200 {
                                 DispatchQueue.main.async {
+                                    let notificationBanner = NotificationBanner(title: "Success", subtitle: "The API Key was verified and saved.", style: .success)
+                                    notificationBanner.duration = 2
                                     appDefaults.setValue(answer.text!, forKey: "apiKey")
-                                    self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
-                                    WidgetCenter.shared.reloadAllTimelines()
+                                    self.window?.rootViewController?.present({let vc = NavigationController(rootViewController: {let vc = SettingsVC(style: .grouped);vc.displayBanner = notificationBanner;return vc}());vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
                                 }
                             } else {
                                 DispatchQueue.main.async {
-                                    let ac = UIAlertController(title: "Failed", message: "The API Key could not be verified.", preferredStyle: .alert)
-                                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
-                                        self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
-                                    })
-                                    dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-                                    ac.addAction(dismissAction)
-                                    self.window?.rootViewController?.present(ac, animated: true)
-                                    WidgetCenter.shared.reloadAllTimelines()
+                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: "The API Key could not be verified.", style: .danger)
+                                    notificationBanner.duration = 2
+                                    self.window?.rootViewController?.present({let vc = NavigationController(rootViewController: {let vc = SettingsVC(style: .grouped);vc.displayBanner = notificationBanner;return vc}());vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
                                 }
                             }
                         } else {
                             DispatchQueue.main.async {
-                                let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "The API Key could not be verified.", preferredStyle: .alert)
-                                let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
-                                    self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
-                                })
-                                dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-                                ac.addAction(dismissAction)
-                                self.window?.rootViewController?.present(ac, animated: true)
-                                WidgetCenter.shared.reloadAllTimelines()
+                                let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "The API Key could not be verified.", style: .danger)
+                                notificationBanner.duration = 2
+                                self.window?.rootViewController?.present({let vc = NavigationController(rootViewController: {let vc = SettingsVC(style: .grouped);vc.displayBanner = notificationBanner;return vc}());vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
                             }
                         }
+                        WidgetCenter.shared.reloadAllTimelines()
                     }
                     .resume()
                 } else {
-                    let ac = UIAlertController(title: "Failed", message: "The provided API Key was the same as the current one.", preferredStyle: .alert)
-                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
-                        self.window?.rootViewController?.present(NavigationController(rootViewController: self.settingsController), animated: true)
-                    })
-                    dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-                    ac.addAction(dismissAction)
-                    self.window?.rootViewController?.present(ac, animated: true)
+                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: "The provided API Key was the same as the current one.", style: .danger)
+                    notificationBanner.duration = 2
                     WidgetCenter.shared.reloadAllTimelines()
+                    self.window?.rootViewController?.present({let vc = NavigationController(rootViewController: {let vc = SettingsVC(style: .grouped);vc.displayBanner = notificationBanner;return vc}());vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
                 }
             }
             submitAction.setValue(R.color.accentColour(), forKey: "titleTextColor")

@@ -1,4 +1,5 @@
 import UIKit
+import NotificationBannerSwift
 import Rswift
 
 class AddTagWorkflowThreeVC: TableViewController {
@@ -45,28 +46,25 @@ private extension AddTagWorkflowThreeVC {
                 let statusCode = (response as! HTTPURLResponse).statusCode
                 if statusCode != 204 {
                     DispatchQueue.main.async {
-                        let ac = UIAlertController(title: self.errorAlert(statusCode).title, message: self.errorAlert(statusCode).content, preferredStyle: .alert)
-                        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
-                            self.navigationController?.popViewController(animated: true)
-                        })
-                        dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-                        ac.addAction(dismissAction)
-                        self.present(ac, animated: true)
+                        let notificationBanner = NotificationBanner(title: self.errorAlert(statusCode).title, subtitle: self.errorAlert(statusCode).content, style: .danger)
+                        notificationBanner.duration = 2
+                        notificationBanner.show()
+                        self.navigationController?.popViewController(animated: true)
                     }
                 } else {
                     DispatchQueue.main.async {
+                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(self.tag!) was added to \(self.transaction.attributes.description).", style: .success)
+                        notificationBanner.duration = 2
+                        notificationBanner.show()
                         self.navigationController?.popViewController(animated: true)
                     }
                 }
             } else {
                 DispatchQueue.main.async {
-                    let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "\(self.tag!) was not added to \(self.transaction.attributes.description).", preferredStyle: .alert)
-                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: { _ in
-                        self.navigationController?.popToRootViewController(animated: true)
-                    })
-                    dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-                    ac.addAction(dismissAction)
-                    self.present(ac, animated: true)
+                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(self.tag!) was not added to \(self.transaction.attributes.description).", style: .danger)
+                    notificationBanner.duration = 2
+                    notificationBanner.show()
+                    self.navigationController?.popToRootViewController(animated: true)
                 }
             }
         }
@@ -101,20 +99,24 @@ extension AddTagWorkflowThreeVC {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "Adding Tag"
-        } else if section == 1 {
-            return "To Transaction"
-        } else {
-            return "Summary"
+        switch section {
+            case 0:
+                return "Adding Tag"
+            case 1:
+                return "To Transaction"
+            case 2:
+                return "Summary"
+            default:
+                return nil
         }
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if section == 2 {
-            return "No more than 6 tags may be present on any single transaction. Duplicate tags are silently ignored."
-        } else {
-            return nil
+        switch section {
+            case 2:
+                return "No more than 6 tags may be present on any single transaction. Duplicate tags are silently ignored."
+            default:
+                return nil
         }
     }
     
@@ -143,15 +145,18 @@ extension AddTagWorkflowThreeVC {
         
         transactionCell.selectionStyle = .none
 
-        if section == 0 {
-            cell.textLabel?.text = tag
-            return cell
-        } else if section == 1 {
-            transactionCell.transaction = transaction
-            return transactionCell
-        } else {
-            cell.textLabel?.text = "You are adding the tag \"\(tag!)\" to the transaction \"\(transaction.attributes.description)\", which was created \(transaction.attributes.creationDate)."
-            return cell
+        switch section {
+            case 0:
+                cell.textLabel?.text = tag
+                return cell
+            case 1:
+                transactionCell.transaction = transaction
+                return transactionCell
+            case 2:
+                cell.textLabel?.text = "You are adding the tag \"\(tag!)\" to the transaction \"\(transaction.attributes.description)\", which was created \(transaction.attributes.creationDate)."
+                return cell
+            default:
+                fatalError("Unknown section")
         }
     }
 }

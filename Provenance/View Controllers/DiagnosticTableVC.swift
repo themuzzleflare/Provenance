@@ -32,13 +32,13 @@ class DiagnosticTableVC: TableViewController {
         )
     }
 
-    private func applySnapshot(animatingDifferences: Bool = false) {
+    private func applySnapshot() {
         var snapshot = Snapshot()
         snapshot.appendSections(sections)
         sections.forEach { section in
             snapshot.appendItems(section.detailAttributes, toSection: section)
         }
-        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
 
     override func viewDidLoad() {
@@ -73,17 +73,18 @@ private extension DiagnosticTableVC {
 extension DiagnosticTableVC {
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let attribute = dataSource.itemIdentifier(for: indexPath)!
-        
-        if attribute.value != "Unknown" {
-            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                UIMenu(children: [
-                    UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { _ in
-                        UIPasteboard.general.string = attribute.value
-                    }
-                ])
-            }
-        } else {
-            return nil
+
+        switch attribute.value {
+            case "Unknown":
+                return nil
+            default:
+                return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                    UIMenu(children: [
+                        UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { _ in
+                            UIPasteboard.general.string = attribute.value
+                        }
+                    ])
+                }
         }
     }
 }

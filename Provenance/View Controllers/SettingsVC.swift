@@ -1,8 +1,11 @@
 import UIKit
 import WidgetKit
+import NotificationBannerSwift
 import Rswift
 
 class SettingsVC: TableViewController {
+    var displayBanner: NotificationBanner?
+
     weak var submitActionProxy: UIAlertAction?
     
     private var textDidChangeObserver: NSObjectProtocol!
@@ -11,7 +14,7 @@ class SettingsVC: TableViewController {
 
     private var apiKeyDisplay: String {
         switch appDefaults.apiKey {
-            case nil, "":
+            case "":
                 return "None"
             default:
                 return appDefaults.apiKey
@@ -23,6 +26,12 @@ class SettingsVC: TableViewController {
         configureProperties()
         configureNavigation()
         configureTableView()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        if let displayBanner = displayBanner {
+            displayBanner.show()
+        }
     }
 }
 
@@ -85,10 +94,13 @@ extension SettingsVC {
         
         dateStyleCell.segmentedControl.addTarget(self, action: #selector(switchDateStyle), for: .valueChanged)
         
-        if indexPath.section == 0 {
-            return apiKeyCell
-        } else {
-            return dateStyleCell
+        switch indexPath.section {
+            case 0:
+                return apiKeyCell
+            case 1:
+                return dateStyleCell
+            default:
+                fatalError("Unknown section")
         }
     }
     
@@ -133,36 +145,33 @@ extension SettingsVC {
                             let statusCode = (response as! HTTPURLResponse).statusCode
                             if statusCode == 200 {
                                 DispatchQueue.main.async {
+                                    let notificationBanner = NotificationBanner(title: "Success", subtitle: "The API Key was verified and saved.", style: .success)
+                                    notificationBanner.duration = 2
+                                    notificationBanner.show()
                                     appDefaults.setValue(answer.text!, forKey: "apiKey")
                                 }
                             } else {
                                 DispatchQueue.main.async {
-                                    let ac = UIAlertController(title: "Failed", message: "The API Key could not be verified.", preferredStyle: .alert)
-                                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                                    dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-                                    ac.addAction(dismissAction)
-                                    self.present(ac, animated: true)
+                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: "The API Key could not be verified.", style: .danger)
+                                    notificationBanner.duration = 2
+                                    notificationBanner.show()
                                     WidgetCenter.shared.reloadAllTimelines()
                                 }
                             }
                         } else {
                             DispatchQueue.main.async {
-                                let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "The API Key could not be verified.", preferredStyle: .alert)
-                                let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                                dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-                                ac.addAction(dismissAction)
-                                self.present(ac, animated: true)
+                                let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "The API Key could not be verified.", style: .danger)
+                                notificationBanner.duration = 2
+                                notificationBanner.show()
                                 WidgetCenter.shared.reloadAllTimelines()
                             }
                         }
                     }
                     .resume()
                 } else {
-                    let ac = UIAlertController(title: "Failed", message: "The provided API Key was the same as the current one.", preferredStyle: .alert)
-                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                    dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-                    ac.addAction(dismissAction)
-                    self.present(ac, animated: true)
+                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: "The provided API Key was the same as the current one.", style: .danger)
+                    notificationBanner.duration = 2
+                    notificationBanner.show()
                     WidgetCenter.shared.reloadAllTimelines()
                 }
             }
@@ -176,36 +185,42 @@ extension SettingsVC {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        if indexPath.section == 0 {
-            if !appDefaults.apiKey.isEmpty {
-                return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                    UIMenu(children: [
-                        UIAction(title: "Copy API Key", image: R.image.docOnClipboard()) { _ in
-                            UIPasteboard.general.string = appDefaults.apiKey
+        switch indexPath.section {
+            case 0:
+                switch appDefaults.apiKey {
+                    case "":
+                        return nil
+                    default:
+                        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                            UIMenu(children: [
+                                UIAction(title: "Copy API Key", image: R.image.docOnClipboard()) { _ in
+                                    UIPasteboard.general.string = appDefaults.apiKey
+                                }
+                            ])
                         }
-                    ])
                 }
-            } else {
+            default:
                 return nil
-            }
-        } else {
-            return nil
         }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "API Key"
-        } else {
-            return nil
+        switch section {
+            case 0:
+                return "API Key"
+            default:
+                return nil
         }
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if section == 0 {
-            return "The personal access token used to communicate with the Up Banking Developer API."
-        } else {
-            return "The styling of dates displayed thoughout the application."
+        switch section {
+            case 0:
+                return "The personal access token used to communicate with the Up Banking Developer API."
+            case 1:
+                return "The styling of dates displayed thoughout the application."
+            default:
+                return nil
         }
     }
     

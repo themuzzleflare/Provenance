@@ -270,17 +270,18 @@ extension TransactionDetailVC {
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let attribute = dataSource.itemIdentifier(for: indexPath)!
-
-        if attribute.key != "Tags" {
-            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                UIMenu(children: [
-                    UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { _ in
-                        UIPasteboard.general.string = attribute.value
-                    }
-                ])
-            }
-        } else {
-            return nil
+        
+        switch attribute.key {
+            case "Tags":
+                return nil
+            default:
+                return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                    UIMenu(children: [
+                        UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { _ in
+                            UIPasteboard.general.string = attribute.value
+                        }
+                    ])
+                }
         }
     }
 }

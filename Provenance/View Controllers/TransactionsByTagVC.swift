@@ -1,5 +1,6 @@
 import UIKit
 import Alamofire
+import NotificationBannerSwift
 import TinyConstraints
 import Rswift
 
@@ -318,24 +319,23 @@ extension TransactionsByTagVC {
                                 let statusCode = (response as! HTTPURLResponse).statusCode
                                 if statusCode != 204 {
                                     DispatchQueue.main.async {
-                                        let ac = UIAlertController(title: "Failed", message: "\(self.tag.id) was not removed from \(transaction.attributes.description).", preferredStyle: .alert)
-                                        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                                        dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-                                        ac.addAction(dismissAction)
-                                        self.present(ac, animated: true)
+                                        let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(self.tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
+                                        notificationBanner.duration = 2
+                                        notificationBanner.show()
                                     }
                                 } else {
                                     DispatchQueue.main.async {
+                                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(self.tag.id) was removed from \(transaction.attributes.description).", style: .success)
+                                        notificationBanner.duration = 2
+                                        notificationBanner.show()
                                         self.fetchTransactions()
                                     }
                                 }
                             } else {
                                 DispatchQueue.main.async {
-                                    let ac = UIAlertController(title: "Failed", message: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", preferredStyle: .alert)
-                                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel)
-                                    dismissAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-                                    ac.addAction(dismissAction)
-                                    self.present(ac, animated: true)
+                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
+                                    notificationBanner.duration = 2
+                                    notificationBanner.show()
                                 }
                             }
                         }
