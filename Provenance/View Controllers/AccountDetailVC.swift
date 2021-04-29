@@ -79,6 +79,7 @@ private extension AccountDetailVC {
     }
     
     private func configureNavigation() {
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = account.attributes.displayName
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
     }
@@ -92,7 +93,6 @@ private extension AccountDetailVC {
 extension AccountDetailVC {
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let attribute = dataSource.itemIdentifier(for: indexPath)!
-
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { _ in

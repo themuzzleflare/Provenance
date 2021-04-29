@@ -169,6 +169,7 @@ private extension AddTagWorkflowVC {
     }
     
     private func configureNavigation() {
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Loading"
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         navigationItem.searchController = searchController
@@ -244,7 +245,6 @@ extension AddTagWorkflowVC {
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let transaction = dataSource.itemIdentifier(for: indexPath)!
-        
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in

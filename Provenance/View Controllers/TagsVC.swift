@@ -30,7 +30,7 @@ class TagsVC: TableViewController {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
                 cell.selectedBackgroundView = selectedBackgroundCellView
                 cell.accessoryType = .disclosureIndicator
-                cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                cell.textLabel?.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
                 cell.textLabel?.textColor = .label
                 cell.textLabel?.numberOfLines = 0
                 cell.textLabel?.text = tag.id
@@ -97,13 +97,11 @@ private extension TagsVC {
 extension TagsVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
         navigationController?.pushViewController({let vc = TransactionsByTagVC(style: .grouped);vc.tag = TagResource(type: "tags", id: dataSource.itemIdentifier(for: indexPath)!.id);return vc}(), animated: true)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let tag = dataSource.itemIdentifier(for: indexPath)!
-
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy Tag Name", image: R.image.docOnClipboard()) { _ in

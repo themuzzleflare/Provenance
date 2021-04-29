@@ -190,7 +190,6 @@ private extension AccountsCVC {
                         self.accountsErrorResponse = []
                         self.accountsPagination = decodedResponse.links
                         self.accounts = decodedResponse.data
-                        
                         if self.navigationItem.title != "Accounts" {
                             self.navigationItem.title = "Accounts"
                         }
@@ -199,7 +198,6 @@ private extension AccountsCVC {
                         self.accountsError = ""
                         self.accountsPagination = Pagination(prev: nil, next: nil)
                         self.accounts = []
-
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -208,7 +206,6 @@ private extension AccountsCVC {
                         self.accountsErrorResponse = []
                         self.accountsPagination = Pagination(prev: nil, next: nil)
                         self.accounts = []
-
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -218,7 +215,6 @@ private extension AccountsCVC {
                     self.accountsErrorResponse = []
                     self.accountsPagination = Pagination(prev: nil, next: nil)
                     self.accounts = []
-
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
                     }
@@ -230,7 +226,6 @@ private extension AccountsCVC {
 extension AccountsCVC {
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let account = dataSource.itemIdentifier(for: indexPath)!
-        
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy Balance", image: R.image.dollarsignCircle()) { _ in

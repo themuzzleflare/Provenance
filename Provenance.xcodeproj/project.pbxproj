@@ -20,6 +20,17 @@
 		7A2F1902261D9CC80054A9B6 /* StickerThree.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F18FA261D9CC80054A9B6 /* StickerThree.gif */; };
 		7A2F1946261D9E1E0054A9B6 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F1945261D9E1E0054A9B6 /* R.generated.swift */; };
 		7A2F1978261DA6B20054A9B6 /* StickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F1977261DA6B20054A9B6 /* StickerView.swift */; };
+		7A438774263AA3F0008C5714 /* ProximaNova-Bold Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7A43876E263AA3EF008C5714 /* ProximaNova-Bold Italic.otf */; };
+		7A438775263AA3F0008C5714 /* ProximaNova-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7A43876F263AA3EF008C5714 /* ProximaNova-Semibold.otf */; };
+		7A438776263AA3F0008C5714 /* ProximaNova-Semibold Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7A438770263AA3EF008C5714 /* ProximaNova-Semibold Italic.otf */; };
+		7A438777263AA3F0008C5714 /* ProximaNova-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7A438771263AA3EF008C5714 /* ProximaNova-Bold.otf */; };
+		7A438778263AA3F0008C5714 /* ProximaNova-Regular Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7A438772263AA3F0008C5714 /* ProximaNova-Regular Italic.otf */; };
+		7A438779263AA3F0008C5714 /* ProximaNova-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7A438773263AA3F0008C5714 /* ProximaNova-Regular.otf */; };
+		7A43877E263AA4BC008C5714 /* AdobeCleanBoldIt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7A43877A263AA4BB008C5714 /* AdobeCleanBoldIt.otf */; };
+		7A43877F263AA4BC008C5714 /* AdobeCleanBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7A43877B263AA4BB008C5714 /* AdobeCleanBold.otf */; };
+		7A438780263AA4BC008C5714 /* AdobeCleanIt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7A43877C263AA4BC008C5714 /* AdobeCleanIt.otf */; };
+		7A438781263AA4BC008C5714 /* AdobeCleanRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7A43877D263AA4BC008C5714 /* AdobeCleanRegular.otf */; };
+		7A438783263AAC9B008C5714 /* StatusIconHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A438782263AAC9B008C5714 /* StatusIconHelpView.swift */; };
 		7A455CA22607FBFE00A7F2B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
 		7A455CD526080F1300A7F2B8 /* LatestTransaction.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7A7DAC6926071702001349FD /* LatestTransaction.intentdefinition */; };
 		7A56100F25D219530091396E /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56100E25D219530091396E /* Tag.swift */; };
@@ -139,6 +150,17 @@
 		7A2F18FA261D9CC80054A9B6 /* StickerThree.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerThree.gif; sourceTree = "<group>"; };
 		7A2F1945261D9E1E0054A9B6 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		7A2F1977261DA6B20054A9B6 /* StickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerView.swift; sourceTree = "<group>"; };
+		7A43876E263AA3EF008C5714 /* ProximaNova-Bold Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Bold Italic.otf"; sourceTree = "<group>"; };
+		7A43876F263AA3EF008C5714 /* ProximaNova-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Semibold.otf"; sourceTree = "<group>"; };
+		7A438770263AA3EF008C5714 /* ProximaNova-Semibold Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Semibold Italic.otf"; sourceTree = "<group>"; };
+		7A438771263AA3EF008C5714 /* ProximaNova-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Bold.otf"; sourceTree = "<group>"; };
+		7A438772263AA3F0008C5714 /* ProximaNova-Regular Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Regular Italic.otf"; sourceTree = "<group>"; };
+		7A438773263AA3F0008C5714 /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Regular.otf"; sourceTree = "<group>"; };
+		7A43877A263AA4BB008C5714 /* AdobeCleanBoldIt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AdobeCleanBoldIt.otf; sourceTree = "<group>"; };
+		7A43877B263AA4BB008C5714 /* AdobeCleanBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AdobeCleanBold.otf; sourceTree = "<group>"; };
+		7A43877C263AA4BC008C5714 /* AdobeCleanIt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AdobeCleanIt.otf; sourceTree = "<group>"; };
+		7A43877D263AA4BC008C5714 /* AdobeCleanRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AdobeCleanRegular.otf; sourceTree = "<group>"; };
+		7A438782263AAC9B008C5714 /* StatusIconHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusIconHelpView.swift; sourceTree = "<group>"; };
 		7A455CF5260822CC00A7F2B8 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		7A56100E25D219530091396E /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		7A56101125D219770091396E /* AllTagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTagsVC.swift; sourceTree = "<group>"; };
@@ -244,6 +266,7 @@
 				7AB34D5225C7C30E000A1E81 /* TabBarController.swift */,
 				7AB34D2125C78230000A1E81 /* TransactionsVC.swift */,
 				7AB34D4C25C7A90E000A1E81 /* TransactionDetailVC.swift */,
+				7A438782263AAC9B008C5714 /* StatusIconHelpView.swift */,
 				7A8DDCA425D1472400EF85B9 /* TagsVC.swift */,
 				7A14D5E9261AC37100C072E3 /* AccountsCVC.swift */,
 				7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */,
@@ -446,9 +469,19 @@
 		7AF4C35425DB3668009CF391 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				7A43876E263AA3EF008C5714 /* ProximaNova-Bold Italic.otf */,
+				7A438771263AA3EF008C5714 /* ProximaNova-Bold.otf */,
+				7A438772263AA3F0008C5714 /* ProximaNova-Regular Italic.otf */,
+				7A438773263AA3F0008C5714 /* ProximaNova-Regular.otf */,
+				7A438770263AA3EF008C5714 /* ProximaNova-Semibold Italic.otf */,
+				7A43876F263AA3EF008C5714 /* ProximaNova-Semibold.otf */,
 				7AF4C35825DB3674009CF391 /* CircularStd-Bold.otf */,
 				7AF4C35525DB3673009CF391 /* CircularStd-Book.otf */,
 				7A638F4B26324BDB0042E08F /* Cousine-Regular.ttf */,
+				7A43877B263AA4BB008C5714 /* AdobeCleanBold.otf */,
+				7A43877A263AA4BB008C5714 /* AdobeCleanBoldIt.otf */,
+				7A43877C263AA4BC008C5714 /* AdobeCleanIt.otf */,
+				7A43877D263AA4BC008C5714 /* AdobeCleanRegular.otf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -579,16 +612,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A438779263AA3F0008C5714 /* ProximaNova-Regular.otf in Resources */,
+				7A438776263AA3F0008C5714 /* ProximaNova-Semibold Italic.otf in Resources */,
 				7AA6C4FC26240732003F7947 /* GoogleService-Info.plist in Resources */,
 				7AB34D2A25C78232000A1E81 /* LaunchScreen.storyboard in Resources */,
+				7A438774263AA3F0008C5714 /* ProximaNova-Bold Italic.otf in Resources */,
+				7A43877E263AA4BC008C5714 /* AdobeCleanBoldIt.otf in Resources */,
 				7A2F1900261D9CC80054A9B6 /* StickerTwo.gif in Resources */,
+				7A438775263AA3F0008C5714 /* ProximaNova-Semibold.otf in Resources */,
 				7A2F1901261D9CC80054A9B6 /* StickerSix.gif in Resources */,
 				7A638F4C26324BDB0042E08F /* Cousine-Regular.ttf in Resources */,
 				7A2F18FE261D9CC80054A9B6 /* StickerSeven.gif in Resources */,
+				7A438777263AA3F0008C5714 /* ProximaNova-Bold.otf in Resources */,
 				7AF4C35925DB3674009CF391 /* CircularStd-Book.otf in Resources */,
 				7AA124FD262682F300F50D6D /* Settings.bundle in Resources */,
+				7A43877F263AA4BC008C5714 /* AdobeCleanBold.otf in Resources */,
+				7A438781263AA4BC008C5714 /* AdobeCleanRegular.otf in Resources */,
 				7AF4C35C25DB3674009CF391 /* CircularStd-Bold.otf in Resources */,
 				7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */,
+				7A438778263AA3F0008C5714 /* ProximaNova-Regular Italic.otf in Resources */,
+				7A438780263AA4BC008C5714 /* AdobeCleanIt.otf in Resources */,
 				7A2F1902261D9CC80054A9B6 /* StickerThree.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -769,6 +812,7 @@
 				7AB34D3D25C78588000A1E81 /* Transaction.swift in Sources */,
 				7AAC68FB262D581D0046494C /* SingleTransaction.swift in Sources */,
 				7AA1137E2614876C00386E2D /* TransactionTableViewCell.swift in Sources */,
+				7A438783263AAC9B008C5714 /* StatusIconHelpView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -953,7 +997,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 12.2;
+				MARKETING_VERSION = 12.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -984,7 +1028,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 12.2;
+				MARKETING_VERSION = 12.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1014,7 +1058,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 12.2;
+				MARKETING_VERSION = 12.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1044,7 +1088,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 12.2;
+				MARKETING_VERSION = 12.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1068,7 +1112,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 12.2;
+				MARKETING_VERSION = 12.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1089,7 +1133,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 12.2;
+				MARKETING_VERSION = 12.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

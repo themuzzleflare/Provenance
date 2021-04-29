@@ -270,7 +270,6 @@ private extension TransactionsVC {
                         self.transactionsErrorResponse = []
                         self.transactionsPagination = decodedResponse.links
                         self.transactions = decodedResponse.data
-
                         if self.navigationItem.title != "Transactions" {
                             self.navigationItem.title = "Transactions"
                         }
@@ -282,7 +281,6 @@ private extension TransactionsVC {
                         self.transactionsError = ""
                         self.transactionsPagination = Pagination(prev: nil, next: nil)
                         self.transactions = []
-
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -294,7 +292,6 @@ private extension TransactionsVC {
                         self.transactionsErrorResponse = []
                         self.transactionsPagination = Pagination(prev: nil, next: nil)
                         self.transactions = []
-
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -307,7 +304,6 @@ private extension TransactionsVC {
                     self.transactionsErrorResponse = []
                     self.transactionsPagination = Pagination(prev: nil, next: nil)
                     self.transactions = []
-
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
                     }
@@ -352,13 +348,11 @@ private extension TransactionsVC {
 extension TransactionsVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
         navigationController?.pushViewController({let vc = TransactionDetailVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);vc.categories = categories;vc.accounts = accounts;return vc}(), animated: true)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let transaction = dataSource.itemIdentifier(for: indexPath)!
-        
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in

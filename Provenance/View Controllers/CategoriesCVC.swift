@@ -187,7 +187,6 @@ private extension CategoriesCVC {
                         self.categoriesError = ""
                         self.categoriesErrorResponse = []
                         self.categories = decodedResponse.data
-                        
                         if self.navigationItem.title != "Categories" {
                             self.navigationItem.title = "Categories"
                         }
@@ -195,7 +194,6 @@ private extension CategoriesCVC {
                         self.categoriesErrorResponse = decodedResponse.errors
                         self.categoriesError = ""
                         self.categories = []
-                        
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -203,7 +201,6 @@ private extension CategoriesCVC {
                         self.categoriesError = "JSON Decoding Failed!"
                         self.categoriesErrorResponse = []
                         self.categories = []
-                        
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -212,7 +209,6 @@ private extension CategoriesCVC {
                     self.categoriesError = response.error?.localizedDescription ?? "Unknown Error!"
                     self.categoriesErrorResponse = []
                     self.categories = []
-                    
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
                     }

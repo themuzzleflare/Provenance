@@ -182,6 +182,7 @@ private extension TransactionsByTagVC {
     }
     
     private func configureNavigation() {
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
         navigationItem.searchController = searchController

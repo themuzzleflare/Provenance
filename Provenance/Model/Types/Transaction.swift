@@ -46,12 +46,11 @@ struct Attribute: Hashable, Codable {
         }
     }
     var statusIcon: UIImage {
-        let configuration = UIImage.SymbolConfiguration(pointSize: 21)
         switch isSettled {
             case true:
-                return R.image.checkmarkCircle()!.withConfiguration(configuration)
+                return R.image.checkmarkCircle()!
             case false:
-                return R.image.clock()!.withConfiguration(configuration)
+                return R.image.clock()!
         }
     }
     var statusIconView: UIImageView {

@@ -34,7 +34,7 @@ private extension CategoryCollectionViewCell {
         clipsToBounds = true
         layer.cornerRadius = 12.5
         layer.borderColor = UIColor.separator.cgColor
-        layer.borderWidth = 0.5
+        layer.borderWidth = 1
         backgroundColor = .secondarySystemGroupedBackground
         selectedBackgroundView = selectedBackgroundCellView
     }
@@ -48,6 +48,6 @@ private extension CategoryCollectionViewCell {
         label.textAlignment = .center
         label.numberOfLines = 0
         label.textColor = .label
-        label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+        label.font = R.font.adobeCleanBold(size: UIFont.labelFontSize)
     }
 }

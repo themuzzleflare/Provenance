@@ -209,6 +209,7 @@ private extension AddTagWorkflowTwoVC {
     }
     
     private func configureNavigation() {
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Loading"
         navigationItem.searchController = searchController
     }

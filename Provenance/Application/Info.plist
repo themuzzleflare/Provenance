@@ -33,6 +33,16 @@
 		<string>CircularStd-Book.otf</string>
 		<string>CircularStd-Bold.otf</string>
 		<string>Cousine-Regular.ttf</string>
+		<string>ProximaNova-Bold Italic.otf</string>
+		<string>ProximaNova-Bold.otf</string>
+		<string>ProximaNova-Regular Italic.otf</string>
+		<string>ProximaNova-Regular.otf</string>
+		<string>ProximaNova-Semibold Italic.otf</string>
+		<string>ProximaNova-Semibold.otf</string>
+		<string>AdobeCleanBold.otf</string>
+		<string>AdobeCleanBoldIt.otf</string>
+		<string>AdobeCleanIt.otf</string>
+		<string>AdobeCleanRegular.otf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

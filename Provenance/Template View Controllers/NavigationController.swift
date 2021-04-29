@@ -10,6 +10,9 @@ class NavigationController: UINavigationController {
 
 private extension NavigationController {
     private func configure() {
+        navigationBar.prefersLargeTitles = true
         navigationBar.tintColor = R.color.accentColour()
+        navigationBar.titleTextAttributes = [.font: R.font.proximaNovaBold(size: UIFont.labelFontSize)!]
+        navigationBar.largeTitleTextAttributes = [.font: R.font.proximaNovaBold(size: 32)!]
     }
 }

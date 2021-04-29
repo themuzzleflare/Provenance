@@ -40,7 +40,7 @@ private extension AccountCollectionViewCell {
         clipsToBounds = true
         layer.cornerRadius = 12.5
         layer.borderColor = UIColor.separator.cgColor
-        layer.borderWidth = 0.5
+        layer.borderWidth = 1
         backgroundColor = .secondarySystemGroupedBackground
         selectedBackgroundView = selectedBackgroundCellView
     }
@@ -52,7 +52,7 @@ private extension AccountCollectionViewCell {
     private func configureBalanceLabel() {
         balanceLabel.translatesAutoresizingMaskIntoConstraints = false
         balanceLabel.textAlignment = .center
-        balanceLabel.numberOfLines = 0
+        balanceLabel.numberOfLines = 1
         balanceLabel.textColor = R.color.accentColour()
         balanceLabel.font = R.font.circularStdBold(size: 32)
     }
@@ -60,9 +60,9 @@ private extension AccountCollectionViewCell {
     private func configureDisplayNameLabel() {
         displayNameLabel.translatesAutoresizingMaskIntoConstraints = false
         displayNameLabel.textAlignment = .center
-        displayNameLabel.numberOfLines = 0
+        displayNameLabel.numberOfLines = 1
         displayNameLabel.textColor = .label
-        displayNameLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+        displayNameLabel.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
     }
     
     private func configureStackView() {

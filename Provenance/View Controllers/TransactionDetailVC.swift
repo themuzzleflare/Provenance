@@ -37,6 +37,10 @@ private extension TransactionDetailVC {
         fetchTransaction()
     }
 
+    @objc private func openStatusIconHelpView() {
+        present(NavigationController(rootViewController: StatusIconHelpView()), animated: true)
+    }
+
     private var filteredSections: [Section] {
         sections.filter { section in
             !section.detailAttributes.allSatisfy { detailAttribute in
@@ -129,7 +133,7 @@ private extension TransactionDetailVC {
                 cell.selectionStyle = cellSelectionStyle
                 cell.accessoryType = cellAccessoryType
                 cell.leftLabel.text = detailAttribute.key
-                cell.rightLabel.font = detailAttribute.key == "Raw Text" ? R.font.cousineRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
+                cell.rightLabel.font = detailAttribute.key == "Raw Text" ? R.font.cousineRegular(size: UIFont.labelFontSize)! : R.font.proximaNovaRegular(size: UIFont.labelFontSize)!
                 cell.rightLabel.text = detailAttribute.value
                 return cell
             }
@@ -230,13 +234,16 @@ private extension TransactionDetailVC {
         scrollingTitle.speed = .rate(65)
         scrollingTitle.fadeLength = 20
         scrollingTitle.textAlignment = .center
-        scrollingTitle.font = .boldSystemFont(ofSize: UIFont.labelFontSize)
+        scrollingTitle.font = R.font.proximaNovaBold(size: UIFont.labelFontSize)
         scrollingTitle.text = transaction.attributes.description
     }
     
     private func configureNavigation() {
+        navigationItem.largeTitleDisplayMode = .never
+        navigationItem.title = transaction.attributes.description
         navigationItem.titleView = scrollingTitle
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: transaction.attributes.statusIconView)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: transaction.attributes.statusIcon, style: .plain, target: self, action: #selector(openStatusIconHelpView))
+        navigationItem.rightBarButtonItem?.tintColor = transaction.attributes.isSettled ? .systemGreen : .systemYellow
     }
     
     private func configureTableView() {
@@ -248,20 +255,16 @@ private extension TransactionDetailVC {
 extension TransactionDetailVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let attribute = dataSource.itemIdentifier(for: indexPath)!
-
         tableView.deselectRow(at: indexPath, animated: true)
-        
         if attribute.key == "Account" {
             navigationController?.pushViewController({let vc = TransactionsByAccountVC(style: .grouped);vc.account = accountFilter!.first!;return vc}(), animated: true)
         } else if attribute.key == "Parent Category" || attribute.key == "Category" {
             let vc = TransactionsByCategoryVC(style: .grouped)
-            
             if attribute.key == "Parent Category" {
                 vc.category = parentCategoryFilter!.first
             } else {
                 vc.category = categoryFilter!.first
             }
-            
             navigationController?.pushViewController(vc, animated: true)
         } else if attribute.key == "Tags" {
             navigationController?.pushViewController({let vc = TagsVC(style: .grouped);vc.transaction = transaction;return vc}(), animated: true)
@@ -270,7 +273,6 @@ extension TransactionDetailVC {
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let attribute = dataSource.itemIdentifier(for: indexPath)!
-        
         switch attribute.key {
             case "Tags":
                 return nil

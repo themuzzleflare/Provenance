@@ -19,6 +19,7 @@ private extension AboutVC {
     
     private func configure() {
         title = "About"
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "About"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: nil)
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftSlashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
@@ -60,7 +61,7 @@ extension AboutVC {
         basicCell.selectedBackgroundView = selectedBackgroundCellView
         basicCell.imageView?.tintColor = .label
         basicCell.textLabel?.textColor = .label
-        basicCell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+        basicCell.textLabel?.font = R.font.proximaNovaRegular(size: UIFont.labelFontSize)
 
         switch section {
             case 0:

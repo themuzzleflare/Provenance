@@ -45,7 +45,7 @@ class AllTagsVC: TableViewController {
                 cell.selectionStyle = .default
                 cell.accessoryType = .none
                 cell.separatorInset = .zero
-                cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                cell.textLabel?.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
                 cell.textLabel?.text = tag.id
                 return cell
             }
@@ -200,7 +200,6 @@ private extension AllTagsVC {
                         self.tagsErrorResponse = []
                         self.tagsPagination = decodedResponse.links
                         self.tags = decodedResponse.data
-                        
                         if self.navigationItem.title != "Tags" {
                             self.navigationItem.title = "Tags"
                         }
@@ -212,7 +211,6 @@ private extension AllTagsVC {
                         self.tagsError = ""
                         self.tagsPagination = Pagination(prev: nil, next: nil)
                         self.tags = []
-                        
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -224,7 +222,6 @@ private extension AllTagsVC {
                         self.tagsErrorResponse = []
                         self.tagsPagination = Pagination(prev: nil, next: nil)
                         self.tags = []
-
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -237,7 +234,6 @@ private extension AllTagsVC {
                     self.tagsErrorResponse = []
                     self.tagsPagination = Pagination(prev: nil, next: nil)
                     self.tags = []
-
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
                     }
@@ -252,7 +248,6 @@ private extension AllTagsVC {
 extension AllTagsVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
         navigationController?.pushViewController({let vc = TransactionsByTagVC(style: .grouped);vc.tag = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
     }
     

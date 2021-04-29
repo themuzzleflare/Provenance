@@ -20,6 +20,7 @@ class WidgetsVC: ViewController {
 private extension WidgetsVC {
     private func configure() {
         title = "Widgets"
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Widgets"
         accountBalanceWidget.image = R.image.actbalsmall()
         accountBalanceWidget.clipsToBounds = true
