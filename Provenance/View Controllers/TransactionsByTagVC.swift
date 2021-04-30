@@ -19,46 +19,54 @@ class TransactionsByTagVC: TableViewController {
         override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
             let transaction = itemIdentifier(for: indexPath)!
             if editingStyle == .delete {
-                let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
-                var request = URLRequest(url: url)
-                let bodyObject: [String : Any] = [
-                    "data": [
-                        [
-                            "type": "tags",
-                            "id": self.parent.tag.id
+                let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(self.parent.tag.id)\" from \"\(transaction.attributes.description)\"?", preferredStyle: .actionSheet)
+                let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
+                    let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
+                    var request = URLRequest(url: url)
+                    let bodyObject: [String : Any] = [
+                        "data": [
+                            [
+                                "type": "tags",
+                                "id": self.parent.tag.id
+                            ]
                         ]
                     ]
-                ]
-                request.httpMethod = "DELETE"
-                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                request.addValue("Bearer \(appDefaults.apiKey)", forHTTPHeaderField: "Authorization")
-                request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
-                URLSession.shared.dataTask(with: request) { data, response, error in
-                    if error == nil {
-                        let statusCode = (response as! HTTPURLResponse).statusCode
-                        if statusCode != 204 {
-                            DispatchQueue.main.async {
-                                let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(self.parent.tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
-                                notificationBanner.duration = 2
-                                notificationBanner.show()
+                    request.httpMethod = "DELETE"
+                    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                    request.addValue("Bearer \(appDefaults.apiKey)", forHTTPHeaderField: "Authorization")
+                    request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+                    URLSession.shared.dataTask(with: request) { data, response, error in
+                        if error == nil {
+                            let statusCode = (response as! HTTPURLResponse).statusCode
+                            if statusCode != 204 {
+                                DispatchQueue.main.async {
+                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(self.parent.tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
+                                    notificationBanner.duration = 2
+                                    notificationBanner.show()
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(self.parent.tag.id) was removed from \(transaction.attributes.description).", style: .success)
+                                    notificationBanner.duration = 2
+                                    notificationBanner.show()
+                                    self.parent.fetchTransactions()
+                                }
                             }
                         } else {
                             DispatchQueue.main.async {
-                                let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(self.parent.tag.id) was removed from \(transaction.attributes.description).", style: .success)
+                                let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(self.parent.tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
                                 notificationBanner.duration = 2
                                 notificationBanner.show()
-                                self.parent.fetchTransactions()
                             }
                         }
-                    } else {
-                        DispatchQueue.main.async {
-                            let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(self.parent.tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
-                            notificationBanner.duration = 2
-                            notificationBanner.show()
-                        }
                     }
-                }
-                .resume()
+                    .resume()
+                })
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+                ac.addAction(confirmAction)
+                ac.addAction(cancelAction)
+                self.parent.present(ac, animated: true)
             }
         }
     }
@@ -86,7 +94,7 @@ class TransactionsByTagVC: TableViewController {
             if transactions.isEmpty {
                 navigationController?.popViewController(animated: true)
             } else {
-                applySnapshot()
+                applySnapshot(animate: isEditing)
                 refreshControl?.endRefreshing()
                 searchController.searchBar.placeholder = "Search \(transactions.count.description) \(transactions.count == 1 ? "Transaction" : "Transactions")"
             }
@@ -341,6 +349,14 @@ extension TransactionsByTagVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         navigationController?.pushViewController({let vc = TransactionDetailVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);vc.categories = categories;vc.accounts = accounts;return vc}(), animated: true)
+    }
+
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+
+    override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "Remove"
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
