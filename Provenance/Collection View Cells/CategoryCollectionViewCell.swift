@@ -48,6 +48,6 @@ private extension CategoryCollectionViewCell {
         label.textAlignment = .center
         label.numberOfLines = 0
         label.textColor = .label
-        label.font = R.font.adobeCleanBold(size: UIFont.labelFontSize)
+        label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
     }
 }

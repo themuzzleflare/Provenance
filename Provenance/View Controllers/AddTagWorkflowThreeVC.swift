@@ -85,7 +85,7 @@ private extension AddTagWorkflowThreeVC {
     }
 
     private func configureTableView() {
-        tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "attributeCell")
+        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "attributeCell")
         tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
     }
 }
@@ -123,17 +123,12 @@ extension AddTagWorkflowThreeVC {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! SubtitleTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! BasicTableViewCell
         let transactionCell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
-        
         cell.selectionStyle = .none
         cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-        cell.detailTextLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-        
+        cell.textLabel?.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
         transactionCell.selectionStyle = .none
-
         switch section {
             case 0:
                 cell.textLabel?.text = tag

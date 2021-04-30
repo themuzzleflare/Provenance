@@ -67,9 +67,9 @@ class CategoriesCVC: CollectionViewController {
                     view.addSubview(label)
                     label.center(in: view)
                     label.textAlignment = .center
-                    label.textColor = .label
-                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                    label.numberOfLines = 0
+                    label.textColor = .secondaryLabel
+                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    label.numberOfLines = 1
                     label.text = "No Categories"
                     return view
                 }()
@@ -83,8 +83,8 @@ class CategoriesCVC: CollectionViewController {
                     label.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
                     label.center(in: view)
                     label.textAlignment = .center
-                    label.textColor = .label
-                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                    label.textColor = .secondaryLabel
+                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = categoriesError
                     return view
@@ -99,13 +99,13 @@ class CategoriesCVC: CollectionViewController {
                     titleLabel.translatesAutoresizingMaskIntoConstraints = false
                     titleLabel.textAlignment = .center
                     titleLabel.textColor = .systemRed
-                    titleLabel.font = R.font.circularStdBold(size: UIFont.labelFontSize)
+                    titleLabel.font = R.font.adobeCleanBold(size: UIFont.labelFontSize)
                     titleLabel.numberOfLines = 0
                     titleLabel.text = categoriesErrorResponse.first?.title
                     detailLabel.translatesAutoresizingMaskIntoConstraints = false
                     detailLabel.textAlignment = .center
-                    detailLabel.textColor = .label
-                    detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                    detailLabel.textColor = .secondaryLabel
+                    detailLabel.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
                     detailLabel.numberOfLines = 0
                     detailLabel.text = categoriesErrorResponse.first?.detail
                     verticalStack.addArrangedSubview(titleLabel)
@@ -115,6 +115,7 @@ class CategoriesCVC: CollectionViewController {
                     verticalStack.axis = .vertical
                     verticalStack.alignment = .center
                     verticalStack.distribution = .fill
+                    verticalStack.spacing = 0
                     return view
                 }()
             } else {

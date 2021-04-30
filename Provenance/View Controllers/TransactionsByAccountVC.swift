@@ -23,11 +23,11 @@ class TransactionsByAccountVC: TableViewController {
                 balanceLabel.textColor = R.color.accentColour()
                 balanceLabel.font = R.font.circularStdBold(size: 32)
                 balanceLabel.textAlignment = .center
-                balanceLabel.numberOfLines = 1
+                balanceLabel.numberOfLines = 0
                 balanceLabel.text = account.attributes.balance.valueShort
                 displayNameLabel.translatesAutoresizingMaskIntoConstraints = false
                 displayNameLabel.textColor = .secondaryLabel
-                displayNameLabel.font = R.font.circularStdBook(size: 14)
+                displayNameLabel.font = R.font.adobeCleanRegular(size: 14)
                 displayNameLabel.textAlignment = .center
                 displayNameLabel.numberOfLines = 0
                 displayNameLabel.text = account.attributes.displayName
@@ -104,9 +104,9 @@ class TransactionsByAccountVC: TableViewController {
                     view.addSubview(label)
                     label.center(in: view)
                     label.textAlignment = .center
-                    label.textColor = .label
-                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                    label.numberOfLines = 0
+                    label.textColor = .secondaryLabel
+                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    label.numberOfLines = 1
                     label.text = "No Transactions"
                     return view
                 }()
@@ -120,8 +120,8 @@ class TransactionsByAccountVC: TableViewController {
                     label.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
                     label.center(in: view)
                     label.textAlignment = .center
-                    label.textColor = .label
-                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                    label.textColor = .secondaryLabel
+                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = transactionsError
                     return view
@@ -136,13 +136,13 @@ class TransactionsByAccountVC: TableViewController {
                     titleLabel.translatesAutoresizingMaskIntoConstraints = false
                     titleLabel.textAlignment = .center
                     titleLabel.textColor = .systemRed
-                    titleLabel.font = R.font.circularStdBold(size: UIFont.labelFontSize)
+                    titleLabel.font = R.font.adobeCleanBold(size: UIFont.labelFontSize)
                     titleLabel.numberOfLines = 0
                     titleLabel.text = transactionsErrorResponse.first?.title
                     detailLabel.translatesAutoresizingMaskIntoConstraints = false
                     detailLabel.textAlignment = .center
-                    detailLabel.textColor = .label
-                    detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                    detailLabel.textColor = .secondaryLabel
+                    detailLabel.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
                     detailLabel.numberOfLines = 0
                     detailLabel.text = transactionsErrorResponse.first?.detail
                     verticalStack.addArrangedSubview(titleLabel)
@@ -152,6 +152,7 @@ class TransactionsByAccountVC: TableViewController {
                     verticalStack.axis = .vertical
                     verticalStack.alignment = .center
                     verticalStack.distribution = .fill
+                    verticalStack.spacing = 0
                     return view
                 }()
             } else {

@@ -75,6 +75,7 @@
 		7AB34D5D25C7CDCB000A1E81 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */; };
 		7AB609B02603F0D80038B85B /* AddTagWorkflowTwoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */; };
 		7AB609B32603F1130038B85B /* AddTagWorkflowThreeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */; };
+		7AB7FDA8263BC5C300B38BFC /* SF-Mono-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7AB7FDA7263BC5C300B38BFC /* SF-Mono-Regular.otf */; };
 		7ACD456C261D67A7000C8FD2 /* WidgetsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD456B261D67A7000C8FD2 /* WidgetsVC.swift */; };
 		7ACD4571261D93C3000C8FD2 /* StickersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD4570261D93C3000C8FD2 /* StickersVC.swift */; };
 		7ACD4576261D9416000C8FD2 /* StickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD4575261D9416000C8FD2 /* StickerCollectionViewCell.swift */; };
@@ -205,6 +206,7 @@
 		7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagWorkflowTwoVC.swift; sourceTree = "<group>"; };
 		7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagWorkflowThreeVC.swift; sourceTree = "<group>"; };
+		7AB7FDA7263BC5C300B38BFC /* SF-Mono-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Mono-Regular.otf"; sourceTree = "<group>"; };
 		7ACD456B261D67A7000C8FD2 /* WidgetsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetsVC.swift; sourceTree = "<group>"; };
 		7ACD4570261D93C3000C8FD2 /* StickersVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickersVC.swift; sourceTree = "<group>"; };
 		7ACD4575261D9416000C8FD2 /* StickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -330,7 +332,7 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		7A22F7E925FFF90E0014BDC8 /* Template View Controllers */ = {
+		7A22F7E925FFF90E0014BDC8 /* Base View Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				7AE75E3625FF1C3B00C16AF6 /* NavigationController.swift */,
@@ -341,7 +343,7 @@
 				7A455CF5260822CC00A7F2B8 /* CollectionViewController.swift */,
 				7A8E9C42262FD7460018BEBE /* SearchController.swift */,
 			);
-			path = "Template View Controllers";
+			path = "Base View Controllers";
 			sourceTree = "<group>";
 		};
 		7A8E41D52604816B003D0E6A /* Model */ = {
@@ -395,7 +397,7 @@
 				7AD96B7C2614322500791DE7 /* Collection View Cells */,
 				7AB609AC2602CAD80038B85B /* Storyboards */,
 				7A0557E12604A0D20080D2CD /* Application */,
-				7A22F7E925FFF90E0014BDC8 /* Template View Controllers */,
+				7A22F7E925FFF90E0014BDC8 /* Base View Controllers */,
 				7A0557D72604A0A30080D2CD /* View Controllers */,
 			);
 			path = Provenance;
@@ -469,6 +471,7 @@
 		7AF4C35425DB3668009CF391 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				7AB7FDA7263BC5C300B38BFC /* SF-Mono-Regular.otf */,
 				7A43876E263AA3EF008C5714 /* ProximaNova-Bold Italic.otf */,
 				7A438771263AA3EF008C5714 /* ProximaNova-Bold.otf */,
 				7A438772263AA3F0008C5714 /* ProximaNova-Regular Italic.otf */,
@@ -630,6 +633,7 @@
 				7A438781263AA4BC008C5714 /* AdobeCleanRegular.otf in Resources */,
 				7AF4C35C25DB3674009CF391 /* CircularStd-Bold.otf in Resources */,
 				7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */,
+				7AB7FDA8263BC5C300B38BFC /* SF-Mono-Regular.otf in Resources */,
 				7A438778263AA3F0008C5714 /* ProximaNova-Regular Italic.otf in Resources */,
 				7A438780263AA4BC008C5714 /* AdobeCleanIt.otf in Resources */,
 				7A2F1902261D9CC80054A9B6 /* StickerThree.gif in Resources */,
@@ -997,7 +1001,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 12.3;
+				MARKETING_VERSION = 12.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1028,7 +1032,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 12.3;
+				MARKETING_VERSION = 12.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1058,7 +1062,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 12.3;
+				MARKETING_VERSION = 12.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1088,7 +1092,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 12.3;
+				MARKETING_VERSION = 12.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1112,7 +1116,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 12.3;
+				MARKETING_VERSION = 12.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1133,7 +1137,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 12.3;
+				MARKETING_VERSION = 12.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

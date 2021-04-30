@@ -73,7 +73,7 @@ private extension TransactionTableViewCell {
     
     private func configureTransactionAmount() {
         transactionAmount.translatesAutoresizingMaskIntoConstraints = false
-        transactionAmount.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+        transactionAmount.font = R.font.proximaNovaRegular(size: UIFont.labelFontSize)
         transactionAmount.textAlignment = .right
         transactionAmount.numberOfLines = 0
     }
@@ -85,6 +85,7 @@ private extension TransactionTableViewCell {
         verticalStack.axis = .vertical
         verticalStack.alignment = .leading
         verticalStack.distribution = .fill
+        verticalStack.spacing = 0
     }
     
     private func configureHorizontalStackView() {
@@ -94,5 +95,6 @@ private extension TransactionTableViewCell {
         horizontalStack.axis = .horizontal
         horizontalStack.alignment = .center
         horizontalStack.distribution = .equalSpacing
+        horizontalStack.spacing = 0
     }
 }

@@ -71,9 +71,9 @@ class AddTagWorkflowVC: TableViewController {
                     view.addSubview(label)
                     label.center(in: view)
                     label.textAlignment = .center
-                    label.textColor = .label
-                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                    label.numberOfLines = 0
+                    label.textColor = .secondaryLabel
+                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    label.numberOfLines = 1
                     label.text = "No Transactions"
                     return view
                 }()
@@ -87,8 +87,8 @@ class AddTagWorkflowVC: TableViewController {
                     label.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
                     label.center(in: view)
                     label.textAlignment = .center
-                    label.textColor = .label
-                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                    label.textColor = .secondaryLabel
+                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = transactionsError
                     return view
@@ -103,13 +103,13 @@ class AddTagWorkflowVC: TableViewController {
                     titleLabel.translatesAutoresizingMaskIntoConstraints = false
                     titleLabel.textAlignment = .center
                     titleLabel.textColor = .systemRed
-                    titleLabel.font = R.font.circularStdBold(size: UIFont.labelFontSize)
+                    titleLabel.font = R.font.adobeCleanBold(size: UIFont.labelFontSize)
                     titleLabel.numberOfLines = 0
                     titleLabel.text = transactionsErrorResponse.first?.title
                     detailLabel.translatesAutoresizingMaskIntoConstraints = false
                     detailLabel.textAlignment = .center
-                    detailLabel.textColor = .label
-                    detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                    detailLabel.textColor = .secondaryLabel
+                    detailLabel.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
                     detailLabel.numberOfLines = 0
                     detailLabel.text = transactionsErrorResponse.first?.detail
                     verticalStack.addArrangedSubview(titleLabel)
@@ -119,6 +119,7 @@ class AddTagWorkflowVC: TableViewController {
                     verticalStack.axis = .vertical
                     verticalStack.alignment = .center
                     verticalStack.distribution = .fill
+                    verticalStack.spacing = 0
                     return view
                 }()
             } else {
@@ -199,7 +200,6 @@ private extension AddTagWorkflowVC {
                         self.transactionsErrorResponse = []
                         self.transactionsPagination = decodedResponse.links
                         self.transactions = decodedResponse.data
-                        
                         if self.navigationItem.title != "Select Transaction" {
                             self.navigationItem.title = "Select Transaction"
                         }
@@ -208,7 +208,6 @@ private extension AddTagWorkflowVC {
                         self.transactionsError = ""
                         self.transactionsPagination = Pagination(prev: nil, next: nil)
                         self.transactions = []
-                        
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -217,7 +216,6 @@ private extension AddTagWorkflowVC {
                         self.transactionsErrorResponse = []
                         self.transactionsPagination = Pagination(prev: nil, next: nil)
                         self.transactions = []
-                        
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -227,7 +225,6 @@ private extension AddTagWorkflowVC {
                     self.transactionsErrorResponse = []
                     self.transactionsPagination = Pagination(prev: nil, next: nil)
                     self.transactions = []
-
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
                     }
@@ -239,7 +236,6 @@ private extension AddTagWorkflowVC {
 extension AddTagWorkflowVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
         navigationController?.pushViewController({let vc = AddTagWorkflowTwoVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
     }
     

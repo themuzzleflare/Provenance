@@ -19,16 +19,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-
         if let shortcutItem = connectionOptions.shortcutItem {
             savedShortcutItem = shortcutItem
         }
-
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = TabBarController()
         self.window = window
         window.makeKeyAndVisible()
-
         initialSetup()
     }
 
@@ -75,7 +72,6 @@ private extension SceneDelegate {
                 textField.isSecureTextEntry = false
                 textField.tintColor = R.color.accentColour()
                 textField.text = appDefaults.apiKey
-
                 self.textDidChangeObserver = NotificationCenter.default.addObserver(
                     forName: UITextField.textDidChangeNotification,
                     object: textField,
@@ -89,7 +85,6 @@ private extension SceneDelegate {
                     }
                 }
             })
-
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
             cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
             let submitAction = UIAlertAction(title: "Save", style: .default) { _ in

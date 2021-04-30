@@ -19,7 +19,7 @@ class AccountDetailVC: TableViewController {
             cellProvider: { tableView, indexPath, detailAttribute in
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
                 cell.leftLabel.text = detailAttribute.key
-                cell.rightLabel.font = detailAttribute.key == "Account ID" ? R.font.cousineRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
+                cell.rightLabel.font = detailAttribute.key == "Account ID" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.proximaNovaRegular(size: UIFont.labelFontSize)!
                 cell.rightLabel.text = detailAttribute.value
                 return cell
             }

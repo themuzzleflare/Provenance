@@ -73,6 +73,7 @@ private extension AccountCollectionViewCell {
         verticalStack.axis = .vertical
         verticalStack.alignment = .center
         verticalStack.distribution = .fillProportionally
+        verticalStack.spacing = 0
     }
 }
 

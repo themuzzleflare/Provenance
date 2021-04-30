@@ -74,7 +74,6 @@ private extension DiagnosticTableVC {
 extension DiagnosticTableVC {
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let attribute = dataSource.itemIdentifier(for: indexPath)!
-
         switch attribute.value {
             case "Unknown":
                 return nil

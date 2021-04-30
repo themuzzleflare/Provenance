@@ -51,18 +51,15 @@ extension AboutVC {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
         let row = indexPath.row
-        
         let topCell = tableView.dequeueReusableCell(withIdentifier: AboutTopTableViewCell.reuseIdentifier, for: indexPath) as! AboutTopTableViewCell
         let sectionOneAttributeCell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
         let basicCell = tableView.dequeueReusableCell(withIdentifier: "basicCell", for: indexPath) as! BasicTableViewCell
-        
         basicCell.selectionStyle = .default
         basicCell.separatorInset = .zero
         basicCell.selectedBackgroundView = selectedBackgroundCellView
         basicCell.imageView?.tintColor = .label
         basicCell.textLabel?.textColor = .label
         basicCell.textLabel?.font = R.font.proximaNovaRegular(size: UIFont.labelFontSize)
-
         switch section {
             case 0:
                 switch row {
@@ -82,7 +79,6 @@ extension AboutVC {
             case 1:
                 basicCell.accessoryType = .disclosureIndicator
                 basicCell.imageView?.image = nil
-
                 switch row {
                     case 0:
                         basicCell.textLabel?.text = "Widgets"
@@ -95,7 +91,6 @@ extension AboutVC {
                 }
             case 2:
                 basicCell.accessoryType = .none
-
                 switch row {
                     case 0:
                         basicCell.imageView?.image = R.image.envelope()
@@ -116,7 +111,6 @@ extension AboutVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
         let row = indexPath.row
-        
         if section == 1 {
             if row == 0 {
                 navigationController?.pushViewController(WidgetsVC(), animated: true)
@@ -125,7 +119,6 @@ extension AboutVC {
             }
         } else if section == 2 {
             tableView.deselectRow(at: indexPath, animated: true)
-            
             if row == 0 {
                 UIApplication.shared.open(URL(string: "mailto:feedback@tavitian.cloud?subject=Feedback%20for%20Provenance")!)
             } else {
@@ -137,7 +130,6 @@ extension AboutVC {
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let section = indexPath.section
         let row = indexPath.row
-
         switch section {
             case 0:
                 switch row {

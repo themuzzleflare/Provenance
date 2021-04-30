@@ -69,6 +69,7 @@ private extension TagsVC {
     }
     
     private func configureNavigation() {
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Tags"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
     }

@@ -84,17 +84,13 @@ extension SettingsVC {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: APIKeyTableViewCell.reuseIdentifier, for: indexPath) as! APIKeyTableViewCell
         let dateStyleCell = tableView.dequeueReusableCell(withIdentifier: DateStyleTableViewCell.reuseIdentifier, for: indexPath) as! DateStyleTableViewCell
-        
         apiKeyCell.apiKeyLabel.text = apiKeyDisplay
-        
         if appDefaults.dateStyle == "Absolute" {
             dateStyleCell.segmentedControl.selectedSegmentIndex = 0
         } else if appDefaults.dateStyle == "Relative" {
             dateStyleCell.segmentedControl.selectedSegmentIndex = 1
         }
-        
         dateStyleCell.segmentedControl.addTarget(self, action: #selector(switchDateStyle), for: .valueChanged)
-        
         switch indexPath.section {
             case 0:
                 return apiKeyCell
@@ -108,7 +104,6 @@ extension SettingsVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
             tableView.deselectRow(at: indexPath, animated: true)
-            
             let ac = UIAlertController(title: "API Key", message: "Enter a new API Key.", preferredStyle: .alert)
             ac.addTextField(configurationHandler: { textField in
                 textField.autocapitalizationType = .none
@@ -116,7 +111,6 @@ extension SettingsVC {
                 textField.isSecureTextEntry = false
                 textField.tintColor = R.color.accentColour()
                 textField.text = appDefaults.apiKey
-                
                 self.textDidChangeObserver = NotificationCenter.default.addObserver(
                     forName: UITextField.textDidChangeNotification,
                     object: textField,
@@ -130,7 +124,6 @@ extension SettingsVC {
                     }
                 }
             })
-            
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
             cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
             let submitAction = UIAlertAction(title: "Save", style: .default) { _ in

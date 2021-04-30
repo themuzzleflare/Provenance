@@ -133,7 +133,7 @@ private extension TransactionDetailVC {
                 cell.selectionStyle = cellSelectionStyle
                 cell.accessoryType = cellAccessoryType
                 cell.leftLabel.text = detailAttribute.key
-                cell.rightLabel.font = detailAttribute.key == "Raw Text" ? R.font.cousineRegular(size: UIFont.labelFontSize)! : R.font.proximaNovaRegular(size: UIFont.labelFontSize)!
+                cell.rightLabel.font = detailAttribute.key == "Raw Text" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.proximaNovaRegular(size: UIFont.labelFontSize)!
                 cell.rightLabel.text = detailAttribute.value
                 return cell
             }

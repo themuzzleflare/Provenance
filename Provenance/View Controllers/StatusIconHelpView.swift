@@ -24,6 +24,7 @@ private extension StatusIconHelpView {
     }
     
     private func configure() {
+        title = "Transaction Status Icons"
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Transaction Status Icons"
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))

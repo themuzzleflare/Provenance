@@ -49,7 +49,7 @@ class AddTagWorkflowTwoVC: TableViewController {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "tagTableViewCell", for: indexPath) as! BasicTableViewCell
                 cell.selectedBackgroundView = selectedBackgroundCellView
                 cell.accessoryType = .none
-                cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                cell.textLabel?.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
                 cell.textLabel?.text = tag.id
                 return cell
             }
@@ -79,9 +79,9 @@ class AddTagWorkflowTwoVC: TableViewController {
                     view.addSubview(label)
                     label.center(in: view)
                     label.textAlignment = .center
-                    label.textColor = .label
-                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                    label.numberOfLines = 0
+                    label.textColor = .secondaryLabel
+                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    label.numberOfLines = 1
                     label.text = "No Tags"
                     return view
                 }()
@@ -95,8 +95,8 @@ class AddTagWorkflowTwoVC: TableViewController {
                     label.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
                     label.center(in: view)
                     label.textAlignment = .center
-                    label.textColor = .label
-                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                    label.textColor = .secondaryLabel
+                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = tagsError
                     return view
@@ -111,13 +111,13 @@ class AddTagWorkflowTwoVC: TableViewController {
                     titleLabel.translatesAutoresizingMaskIntoConstraints = false
                     titleLabel.textAlignment = .center
                     titleLabel.textColor = .systemRed
-                    titleLabel.font = R.font.circularStdBold(size: UIFont.labelFontSize)
+                    titleLabel.font = R.font.adobeCleanBold(size: UIFont.labelFontSize)
                     titleLabel.numberOfLines = 0
                     titleLabel.text = tagsErrorResponse.first?.title
                     detailLabel.translatesAutoresizingMaskIntoConstraints = false
                     detailLabel.textAlignment = .center
-                    detailLabel.textColor = .label
-                    detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                    detailLabel.textColor = .secondaryLabel
+                    detailLabel.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
                     detailLabel.numberOfLines = 0
                     detailLabel.text = tagsErrorResponse.first?.detail
                     verticalStack.addArrangedSubview(titleLabel)
@@ -127,6 +127,7 @@ class AddTagWorkflowTwoVC: TableViewController {
                     verticalStack.axis = .vertical
                     verticalStack.alignment = .center
                     verticalStack.distribution = .fill
+                    verticalStack.spacing = 0
                     return view
                 }()
             } else {
@@ -165,7 +166,6 @@ private extension AddTagWorkflowTwoVC {
             textField.autocapitalizationType = .none
             textField.autocorrectionType = .no
             textField.tintColor = R.color.accentColour()
-
             self.textDidChangeObserver = NotificationCenter.default.addObserver(
                 forName: UITextField.textDidChangeNotification,
                 object: textField,
@@ -179,7 +179,6 @@ private extension AddTagWorkflowTwoVC {
                 }
             }
         }
-
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
         let submitAction = UIAlertAction(title: "Next", style: .default) { _ in
@@ -238,7 +237,6 @@ private extension AddTagWorkflowTwoVC {
                         self.tagsErrorResponse = []
                         self.tagsPagination = decodedResponse.links
                         self.tags = decodedResponse.data
-                        
                         if self.navigationItem.title != "Select Tag" {
                             self.navigationItem.title = "Select Tag"
                         }
@@ -250,7 +248,6 @@ private extension AddTagWorkflowTwoVC {
                         self.tagsError = ""
                         self.tagsPagination = Pagination(prev: nil, next: nil)
                         self.tags = []
-                        
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -262,7 +259,6 @@ private extension AddTagWorkflowTwoVC {
                         self.tagsErrorResponse = []
                         self.tagsPagination = Pagination(prev: nil, next: nil)
                         self.tags = []
-
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -275,7 +271,6 @@ private extension AddTagWorkflowTwoVC {
                     self.tagsErrorResponse = []
                     self.tagsPagination = Pagination(prev: nil, next: nil)
                     self.tags = []
-
                     if self.navigationItem.title != "Error" {
                         self.navigationItem.title = "Error"
                     }
@@ -290,7 +285,6 @@ private extension AddTagWorkflowTwoVC {
 extension AddTagWorkflowTwoVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
         navigationController?.pushViewController({let vc = AddTagWorkflowThreeVC(style: .grouped);vc.transaction = transaction;vc.tag = dataSource.itemIdentifier(for: indexPath)!.id;return vc}(), animated: true)
     }
     
