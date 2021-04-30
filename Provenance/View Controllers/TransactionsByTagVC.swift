@@ -6,11 +6,75 @@ import Rswift
 
 class TransactionsByTagVC: TableViewController {
     var tag: TagResource!
-    
+
+    private lazy var dataSource = makeDataSource()
+
+    private class DataSource: UITableViewDiffableDataSource<Section, TransactionResource> {
+        weak var parent: TransactionsByTagVC! = nil
+
+        override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+            return true
+        }
+
+        override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+            let transaction = itemIdentifier(for: indexPath)!
+            if editingStyle == .delete {
+                let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
+                var request = URLRequest(url: url)
+                let bodyObject: [String : Any] = [
+                    "data": [
+                        [
+                            "type": "tags",
+                            "id": self.parent.tag.id
+                        ]
+                    ]
+                ]
+                request.httpMethod = "DELETE"
+                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                request.addValue("Bearer \(appDefaults.apiKey)", forHTTPHeaderField: "Authorization")
+                request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+                URLSession.shared.dataTask(with: request) { data, response, error in
+                    if error == nil {
+                        let statusCode = (response as! HTTPURLResponse).statusCode
+                        if statusCode != 204 {
+                            DispatchQueue.main.async {
+                                let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(self.parent.tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
+                                notificationBanner.duration = 2
+                                notificationBanner.show()
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(self.parent.tag.id) was removed from \(transaction.attributes.description).", style: .success)
+                                notificationBanner.duration = 2
+                                notificationBanner.show()
+                                self.parent.fetchTransactions()
+                            }
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(self.parent.tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
+                            notificationBanner.duration = 2
+                            notificationBanner.show()
+                        }
+                    }
+                }
+                .resume()
+            }
+        }
+    }
+
+    override init(style: UITableView.Style) {
+        super.init(style: style)
+        dataSource.parent = self
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     let tableRefreshControl = RefreshControl(frame: .zero)
     let searchController = SearchController(searchResultsController: nil)
     
-    private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
 
     private var dateStyleObserver: NSKeyValueObservation?
@@ -34,8 +98,6 @@ class TransactionsByTagVC: TableViewController {
     private var filteredTransactionList: Transaction {
         return Transaction(data: filteredTransactions, links: transactionsPagination)
     }
-    
-    private lazy var dataSource = makeDataSource()
     
     private enum Section: CaseIterable {
         case main
@@ -186,6 +248,7 @@ private extension TransactionsByTagVC {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
+        navigationItem.rightBarButtonItem = editButtonItem
         navigationItem.searchController = searchController
     }
     

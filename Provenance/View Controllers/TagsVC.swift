@@ -14,14 +14,76 @@ class TagsVC: TableViewController {
         }
     }
 
-    private typealias DataSource = UITableViewDiffableDataSource<Section, RelationshipData>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, RelationshipData>
-
     private lazy var dataSource = makeDataSource()
+
+    private class DataSource: UITableViewDiffableDataSource<Section, RelationshipData> {
+        weak var parent: TagsVC! = nil
+
+        override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+            return true
+        }
+
+        override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+            let tag = itemIdentifier(for: indexPath)!
+            if editingStyle == .delete {
+                let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(parent.transaction.id)/relationships/tags")!
+                var request = URLRequest(url: url)
+                let bodyObject: [String : Any] = [
+                    "data": [
+                        [
+                            "type": "tags",
+                            "id": tag.id
+                        ]
+                    ]
+                ]
+                request.httpMethod = "DELETE"
+                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                request.addValue("Bearer \(appDefaults.apiKey)", forHTTPHeaderField: "Authorization")
+                request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+                URLSession.shared.dataTask(with: request) { data, response, error in
+                    if error == nil {
+                        let statusCode = (response as! HTTPURLResponse).statusCode
+                        if statusCode != 204 {
+                            DispatchQueue.main.async {
+                                let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(tag.id) was not removed from \(self.parent.transaction.attributes.description).", style: .danger)
+                                notificationBanner.duration = 2
+                                notificationBanner.show()
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(self.parent.transaction.attributes.description).", style: .success)
+                                notificationBanner.duration = 2
+                                notificationBanner.show()
+                                self.parent.fetchTags()
+                            }
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(tag.id) was not removed from \(self.parent.transaction.attributes.description).", style: .danger)
+                            notificationBanner.duration = 2
+                            notificationBanner.show()
+                        }
+                    }
+                }
+                .resume()
+            }
+        }
+    }
+
+    override init(style: UITableView.Style) {
+        super.init(style: style)
+        dataSource.parent = self
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     private enum Section: CaseIterable {
         case main
     }
+
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, RelationshipData>
 
     private func makeDataSource() -> DataSource {
         return DataSource(
@@ -72,6 +134,7 @@ private extension TagsVC {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Tags"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
+        navigationItem.rightBarButtonItem = editButtonItem
     }
     
     private func configureTableView() {
