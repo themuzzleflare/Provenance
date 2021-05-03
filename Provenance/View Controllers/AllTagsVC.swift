@@ -187,7 +187,6 @@ private extension AllTagsVC {
     
     private func configureTableView() {
         tableView.refreshControl = tableRefreshControl
-        tableView.dataSource = dataSource
         tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagTableViewCell")
     }
     

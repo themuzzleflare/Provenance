@@ -146,7 +146,6 @@ private extension TagsVC {
     }
     
     private func configureTableView() {
-        tableView.dataSource = dataSource
         tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagCell")
     }
 

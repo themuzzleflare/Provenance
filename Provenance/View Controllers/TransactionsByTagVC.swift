@@ -270,7 +270,6 @@ private extension TransactionsByTagVC {
     
     private func configureTableView() {
         tableView.refreshControl = tableRefreshControl
-        tableView.dataSource = dataSource
         tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
     }
     

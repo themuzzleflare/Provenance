@@ -177,8 +177,6 @@ private extension AccountsCVC {
     
     private func configureCollectionView() {
         collectionView.refreshControl = refreshControl
-        collectionView.dataSource = dataSource
-        collectionView.register(AccountCollectionViewCell.self, forCellWithReuseIdentifier: AccountCollectionViewCell.reuseIdentifier)
     }
     
     private func fetchCategories() {

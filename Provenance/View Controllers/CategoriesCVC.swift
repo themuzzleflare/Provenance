@@ -175,8 +175,6 @@ private extension CategoriesCVC {
     
     private func configureCollectionView() {
         collectionView.refreshControl = refreshControl
-        collectionView.dataSource = dataSource
-        collectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: CategoryCollectionViewCell.reuseIdentifier)
     }
     
     private func fetchCategories() {

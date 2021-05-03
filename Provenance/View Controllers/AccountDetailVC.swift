@@ -85,7 +85,6 @@ private extension AccountDetailVC {
     }
     
     private func configureTableView() {
-        tableView.dataSource = dataSource
         tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
     }
 }
