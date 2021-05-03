@@ -225,6 +225,10 @@ private extension AccountsCVC {
 }
 
 extension AccountsCVC {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        navigationController?.pushViewController({let vc = TransactionsByAccountVC(style: .grouped);vc.account = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let account = dataSource.itemIdentifier(for: indexPath)!
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
@@ -237,10 +241,6 @@ extension AccountsCVC {
                 }
             ])
         }
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        navigationController?.pushViewController({let vc = TransactionsByAccountVC(style: .grouped);vc.account = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
     }
 }
 

@@ -99,28 +99,6 @@ extension AddTagWorkflowThreeVC {
         return 1
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-            case 0:
-                return "Adding Tag"
-            case 1:
-                return "To Transaction"
-            case 2:
-                return "Summary"
-            default:
-                return nil
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        switch section {
-            case 2:
-                return "No more than 6 tags may be present on any single transaction. Duplicate tags are silently ignored."
-            default:
-                return nil
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
         let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! BasicTableViewCell
@@ -141,6 +119,28 @@ extension AddTagWorkflowThreeVC {
                 return cell
             default:
                 fatalError("Unknown section")
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+            case 0:
+                return "Adding Tag"
+            case 1:
+                return "To Transaction"
+            case 2:
+                return "Summary"
+            default:
+                return nil
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        switch section {
+            case 2:
+                return "No more than 6 tags may be present on any single transaction. Duplicate tags are silently ignored."
+            default:
+                return nil
         }
     }
 }

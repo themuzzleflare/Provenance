@@ -170,7 +170,7 @@ struct MoneyObject: Hashable, Codable {
             case 1:
                 return "$"
             default:
-                return ""
+                return "$"
         }
     }
     private var valueString: String {

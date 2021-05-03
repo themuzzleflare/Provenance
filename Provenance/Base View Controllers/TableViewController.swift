@@ -11,9 +11,9 @@ private extension TableViewController {
     private func configure() {
         tableView.separatorInset = .zero
         tableView.showsHorizontalScrollIndicator = false
+        tableView.showsVerticalScrollIndicator = false
         navigationItem.backButtonDisplayMode = .minimal
         navigationItem.hidesSearchBarWhenScrolling = false
-        tableView.showsVerticalScrollIndicator = false
     }
 }
 

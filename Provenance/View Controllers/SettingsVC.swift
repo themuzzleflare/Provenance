@@ -177,6 +177,26 @@ extension SettingsVC {
             self.present(ac, animated: true)
         }
     }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+            case 0:
+                return "API Key"
+            default:
+                return nil
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        switch section {
+            case 0:
+                return "The personal access token used to communicate with the Up Banking Developer API."
+            case 1:
+                return "The styling of dates displayed thoughout the application."
+            default:
+                return nil
+        }
+    }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         switch indexPath.section {
@@ -193,26 +213,6 @@ extension SettingsVC {
                             ])
                         }
                 }
-            default:
-                return nil
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-            case 0:
-                return "API Key"
-            default:
-                return nil
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        switch section {
-            case 0:
-                return "The personal access token used to communicate with the Up Banking Developer API."
-            case 1:
-                return "The styling of dates displayed thoughout the application."
             default:
                 return nil
         }

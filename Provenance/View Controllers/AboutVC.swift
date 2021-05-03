@@ -126,6 +126,15 @@ extension AboutVC {
             }
         }
     }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        switch section {
+            case 2:
+                return appCopyright
+            default:
+                return nil
+        }
+    }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let section = indexPath.section
@@ -183,15 +192,6 @@ extension AboutVC {
                     default:
                         return nil
                 }
-            default:
-                return nil
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        switch section {
-            case 2:
-                return appCopyright
             default:
                 return nil
         }

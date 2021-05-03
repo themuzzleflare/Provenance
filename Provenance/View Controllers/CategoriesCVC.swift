@@ -219,6 +219,10 @@ private extension CategoriesCVC {
 }
 
 extension CategoriesCVC {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        navigationController?.pushViewController({let vc = TransactionsByCategoryVC(style: .grouped);vc.category = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
+    }
+
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
@@ -227,10 +231,6 @@ extension CategoriesCVC {
                 }
             ])
         }
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        navigationController?.pushViewController({let vc = TransactionsByCategoryVC(style: .grouped);vc.category = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
     }
 }
 
