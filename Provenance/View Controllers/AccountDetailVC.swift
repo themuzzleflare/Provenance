@@ -16,11 +16,11 @@ class AccountDetailVC: TableViewController {
     private func makeDataSource() -> DataSource {
         return DataSource(
             tableView: tableView,
-            cellProvider: { tableView, indexPath, detailAttribute in
+            cellProvider: { tableView, indexPath, attribute in
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-                cell.leftLabel.text = detailAttribute.key
-                cell.rightLabel.font = detailAttribute.key == "Account ID" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
-                cell.rightLabel.text = detailAttribute.value
+                cell.leftLabel.text = attribute.key
+                cell.rightLabel.font = attribute.key == "Account ID" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
+                cell.rightLabel.text = attribute.value
                 return cell
             }
         )
@@ -50,8 +50,8 @@ class AccountDetailVC: TableViewController {
         var snapshot = Snapshot()
         snapshot.appendSections(sections)
         sections.forEach { section in
-            snapshot.appendItems(section.detailAttributes.filter { detailAttribute in
-                !detailAttribute.value.isEmpty
+            snapshot.appendItems(section.detailAttributes.filter { attribute in
+                !attribute.value.isEmpty
             }, toSection: section)
         }
         dataSource.apply(snapshot, animatingDifferences: false)

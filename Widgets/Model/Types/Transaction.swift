@@ -12,10 +12,9 @@ struct TransactionResource: Hashable, Identifiable, Codable {
 struct Attribute: Hashable, Codable {
     var description: String
     var amount: MoneyObject
-    
     private var createdAt: String
     var creationDateAbsolute: String {
-        return formatDate(dateString: createdAt)
+        return formatDateAbsolute(dateString: createdAt)
     }
     var creationDateRelative: String {
         return formatDateRelative(dateString: createdAt)
@@ -35,19 +34,24 @@ struct Attribute: Hashable, Codable {
 struct MoneyObject: Hashable, Codable {
     var value: String
     var valueInBaseUnits: Int64
-
     private var valueSymbol: String {
-        if valueInBaseUnits.signum() == -1 {
-            return "-$"
-        } else {
-            return "$"
+        switch valueInBaseUnits.signum() {
+            case -1:
+                return "-$"
+            case 1:
+                return "$"
+            default:
+                return ""
         }
     }
     private var valueString: String {
-        if valueInBaseUnits.signum() == -1 {
-            return value.replacingOccurrences(of: "-", with: "")
-        } else {
-            return value
+        switch valueInBaseUnits.signum() {
+            case -1:
+                return value.replacingOccurrences(of: "-", with: "")
+            case 1:
+                return value
+            default:
+                return value
         }
     }
     var valueShort: String {

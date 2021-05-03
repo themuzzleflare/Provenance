@@ -31,18 +31,15 @@ struct AccountResource: Hashable, Codable, Identifiable {
 
 struct AccountAttribute: Hashable, Codable {
     var displayName: String
-    
     var accountType: AccountTypeEnum
     enum AccountTypeEnum: String, CaseIterable, Codable, Hashable {
         case saver = "SAVER"
         case transactional = "TRANSACTIONAL"
     }
-    
     var balance: MoneyObject
-    
     private var createdAt: String
     private var creationDateAbsolute: String {
-        return formatDate(dateString: createdAt)
+        return formatDateAbsolute(dateString: createdAt)
     }
     private var creationDateRelative: String {
         return formatDateRelative(dateString: createdAt)

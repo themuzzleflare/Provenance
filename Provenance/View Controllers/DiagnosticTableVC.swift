@@ -23,10 +23,10 @@ class DiagnosticTableVC: TableViewController {
     private func makeDataSource() -> DataSource {
         return DataSource(
             tableView: tableView,
-            cellProvider: { tableView, indexPath, detailAttribute in
+            cellProvider: { tableView, indexPath, attribute in
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-                cell.leftLabel.text = detailAttribute.key
-                cell.rightLabel.text = detailAttribute.value
+                cell.leftLabel.text = attribute.key
+                cell.rightLabel.text = attribute.value
                 return cell
             }
         )

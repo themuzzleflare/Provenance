@@ -43,8 +43,8 @@ private extension TransactionDetailVC {
 
     private var filteredSections: [Section] {
         sections.filter { section in
-            !section.detailAttributes.allSatisfy { detailAttribute in
-                detailAttribute.value.isEmpty || (detailAttribute.key == "Tags" && detailAttribute.value == "0")
+            !section.detailAttributes.allSatisfy { attribute in
+                attribute.value.isEmpty || (attribute.key == "Tags" && attribute.value == "0")
             }
         }
     }
@@ -64,32 +64,37 @@ private extension TransactionDetailVC {
         }
     }
     private var holdTransValue: String {
-        if transaction.attributes.holdInfo != nil {
-            if transaction.attributes.holdInfo!.amount.value != transaction.attributes.amount.value {
-                return transaction.attributes.holdInfo!.amount.valueLong
-            } else {
+        switch transaction.attributes.holdInfo {
+            case nil:
                 return ""
-            }
-        } else {
-            return ""
+            default:
+                switch transaction.attributes.holdInfo!.amount.value {
+                    case transaction.attributes.amount.value:
+                        return ""
+                    default:
+                        return transaction.attributes.holdInfo!.amount.valueLong
+                }
         }
     }
     private var holdForeignTransValue: String {
-        if transaction.attributes.holdInfo?.foreignAmount != nil {
-            if transaction.attributes.holdInfo!.foreignAmount!.value != transaction.attributes.foreignAmount!.value {
-                return transaction.attributes.holdInfo!.foreignAmount!.valueLong
-            } else {
+        switch transaction.attributes.holdInfo?.foreignAmount{
+            case nil:
                 return ""
-            }
-        } else {
-            return ""
+            default:
+                switch transaction.attributes.holdInfo!.foreignAmount!.value {
+                    case transaction.attributes.foreignAmount!.value:
+                        return ""
+                    default:
+                        return transaction.attributes.holdInfo!.foreignAmount!.valueLong
+                }
         }
     }
     private var foreignTransValue: String {
-        if transaction.attributes.foreignAmount != nil {
-            return transaction.attributes.foreignAmount!.valueLong
-        } else {
-            return ""
+        switch transaction.attributes.foreignAmount {
+            case nil:
+                return ""
+            default:
+                return transaction.attributes.foreignAmount!.valueLong
         }
     }
 
@@ -112,10 +117,10 @@ private extension TransactionDetailVC {
     private func makeDataSource() -> DataSource {
         return DataSource(
             tableView: tableView,
-            cellProvider: { tableView, indexPath, detailAttribute in
+            cellProvider: { tableView, indexPath, attribute in
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
                 var cellSelectionStyle: UITableViewCell.SelectionStyle {
-                    switch detailAttribute.key {
+                    switch attribute.key {
                         case "Account", "Parent Category", "Category", "Tags":
                             return .default
                         default:
@@ -123,7 +128,7 @@ private extension TransactionDetailVC {
                     }
                 }
                 var cellAccessoryType: UITableViewCell.AccessoryType {
-                    switch detailAttribute.key {
+                    switch attribute.key {
                         case "Account", "Parent Category", "Category", "Tags":
                             return .disclosureIndicator
                         default:
@@ -132,9 +137,9 @@ private extension TransactionDetailVC {
                 }
                 cell.selectionStyle = cellSelectionStyle
                 cell.accessoryType = cellAccessoryType
-                cell.leftLabel.text = detailAttribute.key
-                cell.rightLabel.font = detailAttribute.key == "Raw Text" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
-                cell.rightLabel.text = detailAttribute.value
+                cell.leftLabel.text = attribute.key
+                cell.rightLabel.font = attribute.key == "Raw Text" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
+                cell.rightLabel.text = attribute.value
                 return cell
             }
         )
@@ -214,8 +219,8 @@ private extension TransactionDetailVC {
         var snapshot = Snapshot()
         snapshot.appendSections(filteredSections)
         filteredSections.forEach { section in
-            snapshot.appendItems(section.detailAttributes.filter { detailAttribute in
-                !detailAttribute.value.isEmpty
+            snapshot.appendItems(section.detailAttributes.filter { attribute in
+                !attribute.value.isEmpty
             }, toSection: section)
         }
         dataSource.apply(snapshot, animatingDifferences: false)

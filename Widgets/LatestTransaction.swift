@@ -21,7 +21,6 @@ struct LatestTransactionProvider: IntentTimelineProvider {
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("Bearer \(appDefaults.apiKey)", forHTTPHeaderField: "Authorization")
-        
         URLSession.shared.dataTask(with: request) { data, response, error in
             if error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: data!) {

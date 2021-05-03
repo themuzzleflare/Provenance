@@ -2,7 +2,6 @@ import Foundation
 
 // MARK: - UserDefaults Suite for Provenance Application Group
 let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
-
 // MARK: - UserDefaults Extension for Value Observation
 extension UserDefaults {
     @objc dynamic var apiKey: String {
@@ -22,7 +21,6 @@ extension UserDefaults {
         }
     }
 }
-
 // MARK: - Protocols & Extensions for URLSession Query Parameter Support
 protocol URLQueryParameterStringConvertible {
     var queryParameters: String {
@@ -47,9 +45,8 @@ extension URL {
         return URL(string: URLString)!
     }
 }
-
 // MARK: - Date Formatters
-func formatDate(dateString: String) -> String {
+func formatDateAbsolute(dateString: String) -> String {
     if let date = ISO8601DateFormatter().date(from: dateString) {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy hh:mm:ss a"
@@ -60,7 +57,6 @@ func formatDate(dateString: String) -> String {
         return dateString
     }
 }
-
 func formatDateRelative(dateString: String) -> String {
     if let date = ISO8601DateFormatter().date(from: dateString) {
         let formatter = RelativeDateTimeFormatter()

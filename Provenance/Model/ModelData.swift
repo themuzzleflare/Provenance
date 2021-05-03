@@ -128,7 +128,7 @@ extension URL {
     }
 }
 // MARK: - Date Formatters
-func formatDate(dateString: String) -> String {
+func formatDateAbsolute(dateString: String) -> String {
     if let date = ISO8601DateFormatter().date(from: dateString) {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy hh:mm:ss a"

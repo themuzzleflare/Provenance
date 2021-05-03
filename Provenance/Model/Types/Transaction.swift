@@ -3,12 +3,15 @@ import UIKit
 import Rswift
 
 struct Transaction: Hashable, Codable {
+    // The list of transactions returned in this response.
     var data: [TransactionResource]
     var links: Pagination
 }
 
 struct TransactionResource: Hashable, Codable, Identifiable {
+    // The type of this resource: transactions
     private var type: String
+    // The unique identifier for this transaction.
     var id: String
     var attributes: Attribute
     var relationships: Relationship
@@ -32,6 +35,7 @@ struct TransactionResource: Hashable, Codable, Identifiable {
 }
 
 struct Attribute: Hashable, Codable {
+    // The current processing status of this transaction, according to whether or not this transaction has settled or is still held.
     private var status: TransactionStatusEnum
     private enum TransactionStatusEnum: String, CaseIterable, Codable, Hashable {
         case held = "HELD"
@@ -53,11 +57,6 @@ struct Attribute: Hashable, Codable {
                 return R.image.clock()!
         }
     }
-    var statusIconView: UIImageView {
-        let view = UIImageView(image: statusIcon)
-        view.tintColor = isSettled ? .systemGreen : .systemYellow
-        return view
-    }
     var statusString: String {
         switch isSettled {
             case true:
@@ -66,49 +65,59 @@ struct Attribute: Hashable, Codable {
                 return "Held"
         }
     }
-    
+    // The original, unprocessed text of the transaction. This is often not a perfect indicator of the actual merchant, but it is useful for reconciliation purposes in some cases.
     var rawText: String?
+    // A short description for this transaction. Usually the merchant name for purchases.
     var description: String
+    // Attached message for this transaction, such as a payment message, or a transfer note.
     var message: String?
+    // If this transaction is currently in the HELD status, or was ever in the HELD status, the amount and foreignAmount of the transaction while HELD.
     var holdInfo: HoldInfoObject?
+    // Details of how this transaction was rounded-up. If no Round Up was applied this field will be null.
     var roundUp: RoundUpObject?
+    // If all or part of this transaction was instantly reimbursed in the form of cashback, details of the reimbursement.
     var cashback: CashbackObject?
+    // The amount of this transaction in Australian dollars. For transactions that were once HELD but are now SETTLED, refer to the holdInfo field for the original amount the transaction was HELD at.
     var amount: MoneyObject
+    // The foreign currency amount of this transaction. This field will be null for domestic transactions. The amount was converted to the AUD amount reflected in the amount of this transaction. Refer to the holdInfo field for the original foreignAmount the transaction was HELD at.
     var foreignAmount: MoneyObject?
-    
+    // The date-time at which this transaction settled. This field will be null for transactions that are currently in the HELD status.
     private var settledAt: String?
     private var settlementDateAbsolute: String? {
-        if settledAt != nil {
-            return formatDate(dateString: settledAt!)
-        } else {
-            return nil
+        switch settledAt {
+            case nil:
+                return nil
+            default:
+                return formatDateAbsolute(dateString: settledAt!)
         }
     }
     private var settlementDateRelative: String? {
-        if settledAt != nil {
-            return formatDateRelative(dateString: settledAt!)
-        } else {
-            return nil
+        switch settledAt {
+            case nil:
+                return nil
+            default:
+                return formatDateRelative(dateString: settledAt!)
         }
     }
     var settlementDate: String? {
-        if settledAt != nil {
-            switch appDefaults.dateStyle {
-                case "Absolute":
-                    return settlementDateAbsolute
-                case "Relative":
-                    return settlementDateRelative
-                default:
-                    return settlementDateAbsolute
-            }
-        } else {
-            return nil
+        switch settledAt {
+            case nil:
+                return nil
+            default:
+                switch appDefaults.dateStyle {
+                    case "Absolute":
+                        return settlementDateAbsolute
+                    case "Relative":
+                        return settlementDateRelative
+                    default:
+                        return settlementDateAbsolute
+                }
         }
     }
-    
+    // The date-time at which this transaction was first encountered.
     private var createdAt: String
     private var creationDateAbsolute: String {
-        return formatDate(dateString: createdAt)
+        return formatDateAbsolute(dateString: createdAt)
     }
     private var creationDateRelative: String {
         return formatDateRelative(dateString: createdAt)
@@ -144,26 +153,34 @@ struct MoneyObject: Hashable, Codable {
     private var currencyCode: String
     var value: String
     var valueInBaseUnits: Int64
-    
     var transactionType: String {
-        if valueInBaseUnits.signum() == -1 {
-            return "Debit"
-        } else {
-            return "Credit"
+        switch valueInBaseUnits.signum() {
+            case -1:
+                return "Debit"
+            case 1:
+                return "Credit"
+            default:
+                return "Amount"
         }
     }
     private var valueSymbol: String {
-        if valueInBaseUnits.signum() == -1 {
-            return "-$"
-        } else {
-            return "$"
+        switch valueInBaseUnits.signum() {
+            case -1:
+                return "-$"
+            case 1:
+                return "$"
+            default:
+                return ""
         }
     }
     private var valueString: String {
-        if valueInBaseUnits.signum() == -1 {
-            return value.replacingOccurrences(of: "-", with: "")
-        } else {
-            return value
+        switch valueInBaseUnits.signum() {
+            case -1:
+                return value.replacingOccurrences(of: "-", with: "")
+            case 1:
+                return value
+            default:
+                return value
         }
     }
     var valueShort: String {
