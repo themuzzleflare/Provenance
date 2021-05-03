@@ -31,19 +31,19 @@ class CategoriesCVC: CollectionViewController {
     }
     
     private typealias DataSource = UICollectionViewDiffableDataSource<Section, CategoryResource>
+    private typealias CategoryCell = UICollectionView.CellRegistration<CategoryCollectionViewCell, CategoryResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, CategoryResource>
     
     private lazy var dataSource = makeDataSource()
+
+    private let cellRegistration = CategoryCell { cell, indexPath, category in
+        cell.category = category
+    }
     
     private func makeDataSource() -> DataSource {
-        return DataSource(
-            collectionView: collectionView,
-            cellProvider: { collectionView, indexPath, category in
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.reuseIdentifier, for: indexPath) as! CategoryCollectionViewCell
-                cell.category = category
-                return cell
-            }
-        )
+        return DataSource(collectionView: collectionView) { collectionView, indexPath, category in
+            return collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: category)
+        }
     }
 
     private func applySnapshot(animate: Bool = false) {

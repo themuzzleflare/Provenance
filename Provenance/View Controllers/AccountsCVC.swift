@@ -8,6 +8,7 @@ class AccountsCVC: CollectionViewController {
     let refreshControl = RefreshControl(frame: .zero)
     
     private typealias DataSource = UICollectionViewDiffableDataSource<Section, AccountResource>
+    private typealias AccountCell = UICollectionView.CellRegistration<AccountCollectionViewCell, AccountResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, AccountResource>
     
     private var accountsStatusCode: Int = 0
@@ -36,16 +37,15 @@ class AccountsCVC: CollectionViewController {
     }
     
     private lazy var dataSource = makeDataSource()
+
+    private let cellRegistration = AccountCell { cell, indexPath, account in
+        cell.account = account
+    }
     
     private func makeDataSource() -> DataSource {
-        return DataSource(
-            collectionView: collectionView,
-            cellProvider: { collectionView, indexPath, account in
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AccountCollectionViewCell.reuseIdentifier, for: indexPath) as! AccountCollectionViewCell
-                cell.account = account
-                return cell
-            }
-        )
+        return DataSource(collectionView: collectionView) { collectionView, indexPath, account in
+            return collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: account)
+        }
     }
     
     private func applySnapshot(animate: Bool = true) {
