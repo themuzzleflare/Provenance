@@ -84,7 +84,7 @@ class TagsVC: TableViewController {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Not implemented")
     }
 
     private enum Section: CaseIterable {
@@ -100,7 +100,7 @@ class TagsVC: TableViewController {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
                 cell.selectedBackgroundView = selectedBackgroundCellView
                 cell.accessoryType = .disclosureIndicator
-                cell.textLabel?.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                 cell.textLabel?.textColor = .label
                 cell.textLabel?.numberOfLines = 0
                 cell.textLabel?.text = tag.id

@@ -48,7 +48,7 @@ private extension StatusIconHelpView {
         heldImage.image = R.image.clock()?.withConfiguration(configuration)
         heldImage.tintColor = .systemYellow
         heldLabel.translatesAutoresizingMaskIntoConstraints = false
-        heldLabel.font = R.font.proximaNovaRegular(size: 23)
+        heldLabel.font = R.font.circularStdBook(size: 23)
         heldLabel.text = "Held"
         settledStack.translatesAutoresizingMaskIntoConstraints = false
         settledStack.addArrangedSubview(settledImage)
@@ -61,7 +61,7 @@ private extension StatusIconHelpView {
         settledImage.image = R.image.checkmarkCircle()?.withConfiguration(configuration)
         settledImage.tintColor = .systemGreen
         settledLabel.translatesAutoresizingMaskIntoConstraints = false
-        settledLabel.font = R.font.proximaNovaRegular(size: 23)
+        settledLabel.font = R.font.circularStdBook(size: 23)
         settledLabel.text = "Settled"
     }
 }

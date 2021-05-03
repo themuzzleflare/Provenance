@@ -45,7 +45,7 @@ class AllTagsVC: TableViewController {
                 cell.selectionStyle = .default
                 cell.accessoryType = .none
                 cell.separatorInset = .zero
-                cell.textLabel?.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                 cell.textLabel?.text = tag.id
                 return cell
             }
@@ -76,7 +76,7 @@ class AllTagsVC: TableViewController {
                     label.center(in: view)
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
-                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 1
                     label.text = "No Tags"
                     return view
@@ -92,7 +92,7 @@ class AllTagsVC: TableViewController {
                     label.center(in: view)
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
-                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = tagsError
                     return view
@@ -107,13 +107,13 @@ class AllTagsVC: TableViewController {
                     titleLabel.translatesAutoresizingMaskIntoConstraints = false
                     titleLabel.textAlignment = .center
                     titleLabel.textColor = .systemRed
-                    titleLabel.font = R.font.adobeCleanBold(size: UIFont.labelFontSize)
+                    titleLabel.font = R.font.circularStdBold(size: UIFont.labelFontSize)
                     titleLabel.numberOfLines = 0
                     titleLabel.text = tagsErrorResponse.first?.title
                     detailLabel.translatesAutoresizingMaskIntoConstraints = false
                     detailLabel.textAlignment = .center
                     detailLabel.textColor = .secondaryLabel
-                    detailLabel.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     detailLabel.numberOfLines = 0
                     detailLabel.text = tagsErrorResponse.first?.detail
                     verticalStack.addArrangedSubview(titleLabel)

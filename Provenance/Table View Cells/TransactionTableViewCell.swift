@@ -57,7 +57,7 @@ private extension TransactionTableViewCell {
     
     private func configureTransactionDescription() {
         transactionDescription.translatesAutoresizingMaskIntoConstraints = false
-        transactionDescription.font = R.font.adobeCleanBold(size: UIFont.labelFontSize)
+        transactionDescription.font = R.font.circularStdBold(size: UIFont.labelFontSize)
         transactionDescription.textAlignment = .left
         transactionDescription.numberOfLines = 0
         transactionDescription.textColor = .label
@@ -65,7 +65,7 @@ private extension TransactionTableViewCell {
     
     private func configureTransactionCreationDate() {
         transactionCreationDate.translatesAutoresizingMaskIntoConstraints = false
-        transactionCreationDate.font = R.font.adobeCleanIt(size: UIFont.smallSystemFontSize)
+        transactionCreationDate.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
         transactionCreationDate.textAlignment = .left
         transactionCreationDate.numberOfLines = 0
         transactionCreationDate.textColor = .secondaryLabel
@@ -73,7 +73,7 @@ private extension TransactionTableViewCell {
     
     private func configureTransactionAmount() {
         transactionAmount.translatesAutoresizingMaskIntoConstraints = false
-        transactionAmount.font = R.font.proximaNovaRegular(size: UIFont.labelFontSize)
+        transactionAmount.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         transactionAmount.textAlignment = .right
         transactionAmount.numberOfLines = 0
     }

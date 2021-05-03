@@ -127,7 +127,7 @@ extension AddTagWorkflowThreeVC {
         let transactionCell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
         cell.selectionStyle = .none
         cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+        cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         transactionCell.selectionStyle = .none
         switch section {
             case 0:

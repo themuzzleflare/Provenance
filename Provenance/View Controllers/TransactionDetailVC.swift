@@ -133,7 +133,7 @@ private extension TransactionDetailVC {
                 cell.selectionStyle = cellSelectionStyle
                 cell.accessoryType = cellAccessoryType
                 cell.leftLabel.text = detailAttribute.key
-                cell.rightLabel.font = detailAttribute.key == "Raw Text" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.proximaNovaRegular(size: UIFont.labelFontSize)!
+                cell.rightLabel.font = detailAttribute.key == "Raw Text" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
                 cell.rightLabel.text = detailAttribute.value
                 return cell
             }
@@ -234,7 +234,7 @@ private extension TransactionDetailVC {
         scrollingTitle.speed = .rate(65)
         scrollingTitle.fadeLength = 20
         scrollingTitle.textAlignment = .center
-        scrollingTitle.font = R.font.proximaNovaBold(size: UIFont.labelFontSize)
+        scrollingTitle.font = .boldSystemFont(ofSize: UIFont.labelFontSize)
         scrollingTitle.text = transaction.attributes.description
     }
     

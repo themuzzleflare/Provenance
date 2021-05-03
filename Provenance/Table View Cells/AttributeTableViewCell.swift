@@ -37,7 +37,7 @@ private extension AttributeTableViewCell {
     
     private func configureLeftLabel() {
         leftLabel.translatesAutoresizingMaskIntoConstraints = false
-        leftLabel.font = R.font.adobeCleanBold(size: UIFont.labelFontSize)
+        leftLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         leftLabel.textAlignment = .left
         leftLabel.textColor = .secondaryLabel
         leftLabel.numberOfLines = 0
@@ -45,7 +45,7 @@ private extension AttributeTableViewCell {
     
     private func configureRightLabel() {
         rightLabel.translatesAutoresizingMaskIntoConstraints = false
-        rightLabel.font = R.font.proximaNovaRegular(size: UIFont.labelFontSize)
+        rightLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         rightLabel.textAlignment = .right
         rightLabel.textColor = .label
         rightLabel.numberOfLines = 0

@@ -39,13 +39,13 @@ private extension AboutTopTableViewCell {
         logoImageView.layer.cornerRadius = 20
         logoImageView.image = upAnimation
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.font = R.font.adobeCleanBold(size: 32)
+        nameLabel.font = R.font.circularStdBold(size: 32)
         nameLabel.textAlignment = .center
         nameLabel.textColor = .label
         nameLabel.numberOfLines = 1
         nameLabel.text = appName
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+        descriptionLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         descriptionLabel.textAlignment = .left
         descriptionLabel.textColor = .secondaryLabel
         descriptionLabel.numberOfLines = 0

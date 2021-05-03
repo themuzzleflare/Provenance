@@ -36,7 +36,7 @@ private extension DateStyleTableViewCell {
     
     private func configureLabel() {
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = R.font.adobeCleanBold(size: UIFont.labelFontSize)
+        label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         label.textAlignment = .left
         label.textColor = .secondaryLabel
         label.numberOfLines = 1
@@ -47,7 +47,6 @@ private extension DateStyleTableViewCell {
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.insertSegment(withTitle: "Absolute", at: 0, animated: false)
         segmentedControl.insertSegment(withTitle: "Relative", at: 1, animated: false)
-        segmentedControl.setTitleTextAttributes([.font: R.font.proximaNovaRegular(size: 14)!], for: .normal)
     }
     
     private func configureHorizontalStackView() {

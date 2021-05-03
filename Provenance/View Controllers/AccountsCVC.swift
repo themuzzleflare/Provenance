@@ -70,7 +70,7 @@ class AccountsCVC: CollectionViewController {
                     label.center(in: view)
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
-                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 1
                     label.text = "No Accounts"
                     return view
@@ -86,7 +86,7 @@ class AccountsCVC: CollectionViewController {
                     label.center(in: view)
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
-                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = accountsError
                     return view
@@ -101,13 +101,13 @@ class AccountsCVC: CollectionViewController {
                     titleLabel.translatesAutoresizingMaskIntoConstraints = false
                     titleLabel.textAlignment = .center
                     titleLabel.textColor = .systemRed
-                    titleLabel.font = R.font.adobeCleanBold(size: UIFont.labelFontSize)
+                    titleLabel.font = R.font.circularStdBold(size: UIFont.labelFontSize)
                     titleLabel.numberOfLines = 0
                     titleLabel.text = accountsErrorResponse.first?.title
                     detailLabel.translatesAutoresizingMaskIntoConstraints = false
                     detailLabel.textAlignment = .center
                     detailLabel.textColor = .secondaryLabel
-                    detailLabel.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     detailLabel.numberOfLines = 0
                     detailLabel.text = accountsErrorResponse.first?.detail
                     verticalStack.addArrangedSubview(titleLabel)

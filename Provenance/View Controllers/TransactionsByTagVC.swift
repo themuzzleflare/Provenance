@@ -77,7 +77,7 @@ class TransactionsByTagVC: TableViewController {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Not implemented")
     }
 
     let tableRefreshControl = RefreshControl(frame: .zero)
@@ -146,7 +146,7 @@ class TransactionsByTagVC: TableViewController {
                     label.center(in: view)
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
-                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 1
                     label.text = "No Transactions"
                     return view
@@ -162,7 +162,7 @@ class TransactionsByTagVC: TableViewController {
                     label.center(in: view)
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
-                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = transactionsError
                     return view
@@ -177,13 +177,13 @@ class TransactionsByTagVC: TableViewController {
                     titleLabel.translatesAutoresizingMaskIntoConstraints = false
                     titleLabel.textAlignment = .center
                     titleLabel.textColor = .systemRed
-                    titleLabel.font = R.font.adobeCleanBold(size: UIFont.labelFontSize)
+                    titleLabel.font = R.font.circularStdBold(size: UIFont.labelFontSize)
                     titleLabel.numberOfLines = 0
                     titleLabel.text = transactionsErrorResponse.first?.title
                     detailLabel.translatesAutoresizingMaskIntoConstraints = false
                     detailLabel.textAlignment = .center
                     detailLabel.textColor = .secondaryLabel
-                    detailLabel.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     detailLabel.numberOfLines = 0
                     detailLabel.text = transactionsErrorResponse.first?.detail
                     verticalStack.addArrangedSubview(titleLabel)

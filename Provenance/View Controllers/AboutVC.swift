@@ -59,7 +59,7 @@ extension AboutVC {
         basicCell.selectedBackgroundView = selectedBackgroundCellView
         basicCell.imageView?.tintColor = .label
         basicCell.textLabel?.textColor = .label
-        basicCell.textLabel?.font = R.font.proximaNovaRegular(size: UIFont.labelFontSize)
+        basicCell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         switch section {
             case 0:
                 switch row {

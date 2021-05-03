@@ -62,7 +62,7 @@ private extension AccountCollectionViewCell {
         displayNameLabel.textAlignment = .center
         displayNameLabel.numberOfLines = 1
         displayNameLabel.textColor = .label
-        displayNameLabel.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+        displayNameLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
     }
     
     private func configureStackView() {

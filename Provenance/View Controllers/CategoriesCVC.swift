@@ -68,7 +68,7 @@ class CategoriesCVC: CollectionViewController {
                     label.center(in: view)
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
-                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 1
                     label.text = "No Categories"
                     return view
@@ -84,7 +84,7 @@ class CategoriesCVC: CollectionViewController {
                     label.center(in: view)
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
-                    label.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = categoriesError
                     return view
@@ -99,13 +99,13 @@ class CategoriesCVC: CollectionViewController {
                     titleLabel.translatesAutoresizingMaskIntoConstraints = false
                     titleLabel.textAlignment = .center
                     titleLabel.textColor = .systemRed
-                    titleLabel.font = R.font.adobeCleanBold(size: UIFont.labelFontSize)
+                    titleLabel.font = R.font.circularStdBold(size: UIFont.labelFontSize)
                     titleLabel.numberOfLines = 0
                     titleLabel.text = categoriesErrorResponse.first?.title
                     detailLabel.translatesAutoresizingMaskIntoConstraints = false
                     detailLabel.textAlignment = .center
                     detailLabel.textColor = .secondaryLabel
-                    detailLabel.font = R.font.adobeCleanRegular(size: UIFont.labelFontSize)
+                    detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     detailLabel.numberOfLines = 0
                     detailLabel.text = categoriesErrorResponse.first?.detail
                     verticalStack.addArrangedSubview(titleLabel)
