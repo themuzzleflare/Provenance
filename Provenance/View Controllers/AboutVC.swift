@@ -67,11 +67,11 @@ extension AboutVC {
                         return topCell
                     case 1:
                         sectionOneAttributeCell.leftLabel.text = "Version"
-                        sectionOneAttributeCell.rightLabel.text = appVersion
+                        sectionOneAttributeCell.rightLabel.text = appDefaults.appVersion
                         return sectionOneAttributeCell
                     case 2:
                         sectionOneAttributeCell.leftLabel.text = "Build"
-                        sectionOneAttributeCell.rightLabel.text = appBuild
+                        sectionOneAttributeCell.rightLabel.text = appDefaults.appBuild
                         return sectionOneAttributeCell
                     default:
                         fatalError("Unknown row")
@@ -143,27 +143,27 @@ extension AboutVC {
             case 0:
                 switch row {
                     case 1:
-                        switch appVersion {
+                        switch appDefaults.appVersion {
                             case "Unknown":
                                 return nil
                             default:
                                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                                     UIMenu(children: [
                                         UIAction(title: "Copy Version", image: R.image.docOnClipboard()) { _ in
-                                            UIPasteboard.general.string = appVersion
+                                            UIPasteboard.general.string = appDefaults.appVersion
                                         }
                                     ])
                                 }
                         }
                     case 2:
-                        switch appBuild {
+                        switch appDefaults.appBuild {
                             case "Unknown":
                                 return nil
                             default:
                                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                                     UIMenu(children: [
                                         UIAction(title: "Copy Build", image: R.image.docOnClipboard()) { _ in
-                                            UIPasteboard.general.string = appBuild
+                                            UIPasteboard.general.string = appDefaults.appBuild
                                         }
                                     ])
                                 }

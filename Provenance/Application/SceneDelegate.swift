@@ -85,14 +85,16 @@ private extension SceneDelegate {
             })
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
             cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-            let submitAction = UIAlertAction(title: "Save", style: .default) { _ in
+            let submitAction = UIAlertAction(title: "Save", style: .default) { [unowned self] _ in
                 let answer = ac.textFields![0]
                 if !answer.text!.isEmpty && answer.text != appDefaults.apiKey {
                     let url = URL(string: "https://api.up.com.au/api/v1/util/ping")!
                     var request = URLRequest(url: url)
                     request.httpMethod = "GET"
-                    request.addValue("application/json", forHTTPHeaderField: "Accept")
-                    request.addValue("Bearer \(answer.text!)", forHTTPHeaderField: "Authorization")
+                    request.allHTTPHeaderFields = [
+                        "Accept": "application/json",
+                        "Authorization": "Bearer \(answer.text!)"
+                    ]
                     URLSession.shared.dataTask(with: request) { data, response, error in
                         if error == nil {
                             let statusCode = (response as! HTTPURLResponse).statusCode
@@ -100,7 +102,7 @@ private extension SceneDelegate {
                                 DispatchQueue.main.async {
                                     let notificationBanner = NotificationBanner(title: "Success", subtitle: "The API Key was verified and saved.", style: .success)
                                     notificationBanner.duration = 2
-                                    appDefaults.setValue(answer.text!, forKey: "apiKey")
+                                    appDefaults.apiKey = answer.text!
                                     self.window?.rootViewController?.present({let vc = NavigationController(rootViewController: {let vc = SettingsVC(style: .grouped);vc.displayBanner = notificationBanner;return vc}());vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
                                 }
                             } else {

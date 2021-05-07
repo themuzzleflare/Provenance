@@ -38,8 +38,10 @@ private extension AddTagWorkflowThreeVC {
             ]
         ]
         request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("Bearer \(appDefaults.apiKey)", forHTTPHeaderField: "Authorization")
+        request.allHTTPHeaderFields = [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(appDefaults.apiKey)"
+        ]
         request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
         URLSession.shared.dataTask(with: request) { data, response, error in
             if error == nil {

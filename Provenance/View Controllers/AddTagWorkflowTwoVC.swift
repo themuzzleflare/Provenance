@@ -46,7 +46,7 @@ class AddTagWorkflowTwoVC: TableViewController {
         let dataSource = DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, tag in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "tagTableViewCell", for: indexPath) as! BasicTableViewCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
                 cell.selectedBackgroundView = selectedBackgroundCellView
                 cell.accessoryType = .none
                 cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
@@ -181,7 +181,7 @@ private extension AddTagWorkflowTwoVC {
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-        let submitAction = UIAlertAction(title: "Next", style: .default) { _ in
+        let submitAction = UIAlertAction(title: "Next", style: .default) { [unowned self] _ in
             let answer = ac.textFields![0]
             if !answer.text!.isEmpty {
                 self.navigationController?.pushViewController({let vc = AddTagWorkflowThreeVC(style: .grouped);vc.transaction = self.transaction;vc.tag = answer.text;return vc}(), animated: true)
@@ -223,7 +223,7 @@ private extension AddTagWorkflowTwoVC {
     
     private func configureTableView() {
         tableView.refreshControl = tableRefreshControl
-        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagTableViewCell")
+        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagCell")
     }
     
     private func fetchTags() {

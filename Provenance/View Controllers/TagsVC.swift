@@ -27,7 +27,7 @@ class TagsVC: TableViewController {
             let tag = itemIdentifier(for: indexPath)!
             if editingStyle == .delete {
                 let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(self.parent.transaction.attributes.description)\"?", preferredStyle: .actionSheet)
-                let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
+                let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { [unowned self] _ in
                     let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(self.parent.transaction.id)/relationships/tags")!
                     var request = URLRequest(url: url)
                     let bodyObject: [String : Any] = [
@@ -39,8 +39,10 @@ class TagsVC: TableViewController {
                         ]
                     ]
                     request.httpMethod = "DELETE"
-                    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                    request.addValue("Bearer \(appDefaults.apiKey)", forHTTPHeaderField: "Authorization")
+                    request.allHTTPHeaderFields = [
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer \(appDefaults.apiKey)"
+                    ]
                     request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
                     URLSession.shared.dataTask(with: request) { data, response, error in
                         if error == nil {
@@ -188,7 +190,7 @@ extension TagsVC {
                 },
                 UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { _ in
                     let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(self.transaction.attributes.description)\"?", preferredStyle: .actionSheet)
-                    let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { _ in
+                    let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { [unowned self] _ in
                         let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(self.transaction.id)/relationships/tags")!
                         var request = URLRequest(url: url)
                         let bodyObject: [String : Any] = [
@@ -200,8 +202,10 @@ extension TagsVC {
                             ]
                         ]
                         request.httpMethod = "DELETE"
-                        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                        request.addValue("Bearer \(appDefaults.apiKey)", forHTTPHeaderField: "Authorization")
+                        request.allHTTPHeaderFields = [
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer \(appDefaults.apiKey)"
+                        ]
                         request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
                         URLSession.shared.dataTask(with: request) { data, response, error in
                             if error == nil {

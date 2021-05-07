@@ -8,16 +8,10 @@ extension UserDefaults {
         get {
             return string(forKey: "apiKey") ?? ""
         }
-        set {
-            setValue(newValue, forKey: "apiKey")
-        }
     }
     @objc dynamic var dateStyle: String {
         get {
             return string(forKey: "dateStyle") ?? "Absolute"
-        }
-        set {
-            setValue(newValue, forKey: "dateStyle")
         }
     }
 }

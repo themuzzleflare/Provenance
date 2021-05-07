@@ -13,7 +13,7 @@ extension UserDefaults {
             return string(forKey: "apiKey") ?? ""
         }
         set {
-            setValue(newValue, forKey: "apiKey")
+            set(newValue, forKey: "apiKey")
         }
     }
     @objc dynamic var dateStyle: String {
@@ -21,13 +21,21 @@ extension UserDefaults {
             return string(forKey: "dateStyle") ?? "Absolute"
         }
         set {
-            setValue(newValue, forKey: "dateStyle")
+            set(newValue, forKey: "dateStyle")
+        }
+    }
+    @objc dynamic var appVersion: String {
+        get {
+            return string(forKey: "appVersion") ?? "Unknown"
+        }
+    }
+    @objc dynamic var appBuild: String {
+        get {
+            return string(forKey: "appBuild") ?? "Unknown"
         }
     }
 }
 // MARK: - Application Metadata & Reusable Values
-let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
-let appBuild = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
 let appName = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "Provenance"
 let appCopyright = Bundle.main.infoDictionary?["NSHumanReadableCopyright"] as? String ?? "Copyright © 2021 Paul Tavitian"
 var selectedBackgroundCellView: UIView {

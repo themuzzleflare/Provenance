@@ -40,7 +40,7 @@ class AllTagsVC: TableViewController {
         let dataSource = DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, tag in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "tagTableViewCell", for: indexPath) as! BasicTableViewCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
                 cell.selectedBackgroundView = selectedBackgroundCellView
                 cell.selectionStyle = .default
                 cell.accessoryType = .none
@@ -187,7 +187,7 @@ private extension AllTagsVC {
     
     private func configureTableView() {
         tableView.refreshControl = tableRefreshControl
-        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagTableViewCell")
+        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagCell")
     }
     
     private func fetchTags() {

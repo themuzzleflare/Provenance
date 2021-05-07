@@ -199,9 +199,9 @@ private extension TransactionsVC {
     
     @objc private func switchDateStyle() {
         if appDefaults.dateStyle == "Absolute" {
-            appDefaults.setValue("Relative", forKey: "dateStyle")
+            appDefaults.dateStyle = "Relative"
         } else if appDefaults.dateStyle == "Relative" {
-            appDefaults.setValue("Absolute", forKey: "dateStyle")
+            appDefaults.dateStyle = "Absolute"
         }
     }
     

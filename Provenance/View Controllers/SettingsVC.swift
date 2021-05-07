@@ -41,7 +41,7 @@ private extension SettingsVC {
     }
 
     @objc private func switchDateStyle(segment: UISegmentedControl) {
-        appDefaults.setValue(segment.titleForSegment(at: segment.selectedSegmentIndex), forKey: "dateStyle")
+        appDefaults.dateStyle = segment.titleForSegment(at: segment.selectedSegmentIndex)!
     }
     
     @objc private func closeWorkflow() {
@@ -132,8 +132,10 @@ extension SettingsVC {
                     let url = URL(string: "https://api.up.com.au/api/v1/util/ping")!
                     var request = URLRequest(url: url)
                     request.httpMethod = "GET"
-                    request.addValue("application/json", forHTTPHeaderField: "Accept")
-                    request.addValue("Bearer \(answer.text!)", forHTTPHeaderField: "Authorization")
+                    request.allHTTPHeaderFields = [
+                        "Accept": "application/json",
+                        "Authorization": "Bearer \(answer.text!)"
+                    ]
                     URLSession.shared.dataTask(with: request) { data, response, error in
                         if error == nil {
                             let statusCode = (response as! HTTPURLResponse).statusCode
@@ -142,7 +144,7 @@ extension SettingsVC {
                                     let notificationBanner = NotificationBanner(title: "Success", subtitle: "The API Key was verified and saved.", style: .success)
                                     notificationBanner.duration = 2
                                     notificationBanner.show()
-                                    appDefaults.setValue(answer.text!, forKey: "apiKey")
+                                    appDefaults.apiKey = answer.text!
                                 }
                             } else {
                                 DispatchQueue.main.async {

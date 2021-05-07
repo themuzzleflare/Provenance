@@ -9,11 +9,11 @@ class DiagnosticTableVC: TableViewController {
         Section(title: "Section 1", detailAttributes: [
             DetailAttribute(
                 key: "Version",
-                value: appVersion
+                value: appDefaults.appVersion
             ),
             DetailAttribute(
                 key: "Build",
-                value: appBuild
+                value: appDefaults.appBuild
             )
         ])
     ]
