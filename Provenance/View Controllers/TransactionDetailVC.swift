@@ -63,6 +63,11 @@ private extension TransactionDetailVC {
             transaction.relationships.account.data.id == account.id
         }
     }
+    private var transferAccountFilter: [AccountResource]? {
+        accounts?.filter { account in
+            transaction.relationships.transferAccount.data?.id == account.id
+        }
+    }
     private var holdTransValue: String {
         switch transaction.attributes.holdInfo {
             case nil:
@@ -121,7 +126,7 @@ private extension TransactionDetailVC {
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
                 var cellSelectionStyle: UITableViewCell.SelectionStyle {
                     switch attribute.key {
-                        case "Account", "Parent Category", "Category", "Tags":
+                        case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
                             return .default
                         default:
                             return .none
@@ -129,7 +134,7 @@ private extension TransactionDetailVC {
                 }
                 var cellAccessoryType: UITableViewCell.AccessoryType {
                     switch attribute.key {
-                        case "Account", "Parent Category", "Category", "Tags":
+                        case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
                             return .disclosureIndicator
                         default:
                             return .none
@@ -155,6 +160,10 @@ private extension TransactionDetailVC {
                 DetailAttribute(
                     key: "Account",
                     value: accountFilter?.first?.attributes.displayName ?? ""
+                ),
+                DetailAttribute(
+                    key: "Transfer Account",
+                    value: transferAccountFilter?.first?.attributes.displayName ?? ""
                 )
             ]),
             Section(title: "Section 2", detailAttributes: [
@@ -262,6 +271,8 @@ extension TransactionDetailVC {
         tableView.deselectRow(at: indexPath, animated: true)
         if attribute.key == "Account" {
             navigationController?.pushViewController({let vc = TransactionsByAccountVC(style: .grouped);vc.account = accountFilter!.first!;return vc}(), animated: true)
+        } else if attribute.key == "Transfer Account" {
+            navigationController?.pushViewController({let vc = TransactionsByAccountVC(style: .grouped);vc.account = transferAccountFilter!.first!;return vc}(), animated: true)
         } else if attribute.key == "Parent Category" || attribute.key == "Category" {
             let vc = TransactionsByCategoryVC(style: .grouped)
             if attribute.key == "Parent Category" {

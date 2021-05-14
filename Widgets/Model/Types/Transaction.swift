@@ -1,15 +1,15 @@
 import Foundation
 
-struct Transaction: Hashable, Codable {
+struct Transaction: Decodable {
     var data: [TransactionResource]
 }
 
-struct TransactionResource: Hashable, Identifiable, Codable {
+struct TransactionResource: Decodable, Identifiable {
     var id: String
     var attributes: Attribute
 }
 
-struct Attribute: Hashable, Codable {
+struct Attribute: Decodable {
     var description: String
     var amount: MoneyObject
     private var createdAt: String
@@ -31,7 +31,7 @@ struct Attribute: Hashable, Codable {
     }
 }
 
-struct MoneyObject: Hashable, Codable {
+struct MoneyObject: Decodable {
     var value: String
     var valueInBaseUnits: Int64
     private var valueSymbol: String {

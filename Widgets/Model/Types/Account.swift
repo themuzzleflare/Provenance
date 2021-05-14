@@ -1,15 +1,15 @@
 import Foundation
 
-struct Account: Hashable, Codable {
+struct Account: Decodable {
     var data: [AccountResource]
 }
 
-struct AccountResource: Hashable, Codable, Identifiable {
+struct AccountResource: Decodable, Identifiable {
     var id: String
     var attributes: AccountAttribute
 }
 
-struct AccountAttribute: Hashable, Codable {
+struct AccountAttribute: Decodable {
     var displayName: String
     var balance: MoneyObject
 }

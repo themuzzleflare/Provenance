@@ -1,10 +1,10 @@
 import Foundation
 
-struct Category: Hashable, Codable {
+struct Category: Decodable {
     var data: [CategoryResource]
 }
 
-struct CategoryResource: Hashable, Codable, Identifiable {
+struct CategoryResource: Decodable, Hashable, Identifiable {
     var type: String
     var id: String
     var attributes: CategoryAttribute
@@ -28,21 +28,21 @@ struct CategoryResource: Hashable, Codable, Identifiable {
     }
 }
 
-struct CategoryAttribute: Hashable, Codable {
+struct CategoryAttribute: Decodable {
     var name: String
 }
 
-struct CategoryRelationship: Codable, Hashable {
+struct CategoryRelationship: Decodable {
     var parent: CategoryRelationshipParent
     var children: CategoryRelationshipChildren
 }
 
-struct CategoryRelationshipParent: Codable, Hashable {
+struct CategoryRelationshipParent: Decodable {
     var data: RelationshipData?
     var links: RelationshipLink?
 }
 
-struct CategoryRelationshipChildren: Codable, Hashable {
+struct CategoryRelationshipChildren: Decodable {
     var data: [RelationshipData]
     var links: RelationshipLink?
 }

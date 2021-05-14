@@ -1,11 +1,11 @@
 import Foundation
 
-struct Tag: Hashable, Codable {
+struct Tag: Decodable {
     var data: [TagResource]
     var links: Pagination
 }
 
-struct TagResource: Hashable, Codable, Identifiable {
+struct TagResource: Decodable, Hashable, Identifiable {
     var type: String
     var id: String
     var relationships: AccountRelationship?

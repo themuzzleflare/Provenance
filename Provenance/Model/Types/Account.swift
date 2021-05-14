@@ -1,11 +1,11 @@
 import Foundation
 
-struct Account: Hashable, Codable {
+struct Account: Decodable {
     var data: [AccountResource]
     var links: Pagination
 }
 
-struct AccountResource: Hashable, Codable, Identifiable {
+struct AccountResource: Decodable, Hashable, Identifiable {
     private var type: String
     var id: String
     var attributes: AccountAttribute
@@ -29,10 +29,10 @@ struct AccountResource: Hashable, Codable, Identifiable {
     }
 }
 
-struct AccountAttribute: Hashable, Codable {
+struct AccountAttribute: Decodable {
     var displayName: String
     var accountType: AccountTypeEnum
-    enum AccountTypeEnum: String, CaseIterable, Codable, Hashable {
+    enum AccountTypeEnum: String, CaseIterable, Decodable {
         case saver = "SAVER"
         case transactional = "TRANSACTIONAL"
     }
@@ -56,14 +56,14 @@ struct AccountAttribute: Hashable, Codable {
     }
 }
 
-struct AccountRelationship: Hashable, Codable {
+struct AccountRelationship: Decodable {
     var transactions: TransactionsObject
 }
 
-struct TransactionsObject: Hashable, Codable {
+struct TransactionsObject: Decodable {
     var links: AccountRelationshipsLink?
 }
 
-struct AccountRelationshipsLink: Hashable, Codable {
+struct AccountRelationshipsLink: Decodable {
     var related: String
 }

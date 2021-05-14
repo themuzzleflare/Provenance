@@ -2,13 +2,13 @@ import Foundation
 import UIKit
 import Rswift
 
-struct Transaction: Hashable, Codable {
+struct Transaction: Decodable {
     // The list of transactions returned in this response.
     var data: [TransactionResource]
     var links: Pagination
 }
 
-struct TransactionResource: Hashable, Codable, Identifiable {
+struct TransactionResource: Decodable, Hashable, Identifiable {
     // The type of this resource: transactions
     private var type: String
     // The unique identifier for this transaction.
@@ -34,10 +34,10 @@ struct TransactionResource: Hashable, Codable, Identifiable {
     }
 }
 
-struct Attribute: Hashable, Codable {
+struct Attribute: Decodable {
     // The current processing status of this transaction, according to whether or not this transaction has settled or is still held.
     private var status: TransactionStatusEnum
-    private enum TransactionStatusEnum: String, CaseIterable, Codable, Hashable {
+    private enum TransactionStatusEnum: String, CaseIterable, Decodable {
         case held = "HELD"
         case settled = "SETTLED"
     }
@@ -134,24 +134,33 @@ struct Attribute: Hashable, Codable {
     }
 }
 
-struct HoldInfoObject: Hashable, Codable {
+struct HoldInfoObject: Decodable {
+    // The amount of this transaction while in the HELD status, in Australian dollars.
     var amount: MoneyObject
+    // The foreign currency amount of this transaction while in the HELD status. This field will be null for domestic transactions. The amount was converted to the AUD amount reflected in the amount field.
     var foreignAmount: MoneyObject?
 }
 
-struct RoundUpObject: Hashable, Codable {
+struct RoundUpObject: Decodable {
+    // The total amount of this Round Up, including any boosts, represented as a negative value.
     var amount: MoneyObject
+    // The portion of the Round Up amount owing to boosted Round Ups, represented as a negative value. If no boost was added to the Round Up this field will be null.
     var boostPortion: MoneyObject?
 }
 
-struct CashbackObject: Hashable, Codable {
+struct CashbackObject: Decodable {
+    // A brief description of why this cashback was paid.
     var description: String
+    // The total amount of cashback paid, represented as a positive value.
     var amount: MoneyObject
 }
 
-struct MoneyObject: Hashable, Codable {
+struct MoneyObject: Decodable {
+    // The ISO 4217 currency code.
     private var currencyCode: String
+    // The amount of money, formatted as a string in the relevant currency. For example, for an Australian dollar value of $10.56, this field will be "10.56". The currency symbol is not included in the string.
     var value: String
+    // The amount of money in the smallest denomination for the currency, as a 64-bit integer. For example, for an Australian dollar value of $10.56, this field will be 1056.
     var valueInBaseUnits: Int64
     var transactionType: String {
         switch valueInBaseUnits.signum() {
@@ -191,42 +200,50 @@ struct MoneyObject: Hashable, Codable {
     }
 }
 
-struct Relationship: Hashable, Codable {
+struct Relationship: Decodable {
     var account: RelationshipAccount
+    var transferAccount: RelationshipTransferAccount
     var category: RelationshipCategory
     var parentCategory: RelationshipCategory
     var tags: RelationshipTag
 }
 
-struct RelationshipAccount: Hashable, Codable {
+struct RelationshipAccount: Decodable {
     var data: RelationshipData
     var links: RelationshipLink?
 }
 
-struct RelationshipData: Hashable, Codable, Identifiable {
-    var type: String
-    var id: String
-}
-
-struct RelationshipLink: Hashable, Codable {
-    var related: String
-}
-
-struct RelationshipCategory: Hashable, Codable {
+struct RelationshipTransferAccount: Decodable {
     var data: RelationshipData?
     var links: RelationshipLink?
 }
 
-struct RelationshipTag: Hashable, Codable {
+struct RelationshipData: Decodable, Hashable, Identifiable {
+    var type: String
+    var id: String
+}
+
+struct RelationshipLink: Decodable {
+    var related: String
+}
+
+struct RelationshipCategory: Decodable {
+    var data: RelationshipData?
+    var links: RelationshipLink?
+}
+
+struct RelationshipTag: Decodable {
     var data: [RelationshipData]
     var links: SelfLink?
 }
 
-struct SelfLink: Hashable, Codable {
+struct SelfLink: Decodable {
     var `self`: String
 }
 
-struct Pagination: Hashable, Codable {
+struct Pagination: Decodable {
+    // The link to the previous page in the results. If this value is null there is no previous page.
     var prev: String?
+    // The link to the next page in the results. If this value is null there is no next page.
     var next: String?
 }
