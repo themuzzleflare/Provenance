@@ -10,7 +10,7 @@ class StickerView: ViewController {
         }
     }
     
-    let imageView = UIImageView()
+    private let imageView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()

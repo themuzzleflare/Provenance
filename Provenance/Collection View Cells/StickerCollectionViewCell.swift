@@ -12,7 +12,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    let stickerImageView = UIImageView()
+    private let stickerImageView = UIImageView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,7 +27,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
 private extension StickerCollectionViewCell {
     private func configure() {
         backgroundColor = .secondarySystemGroupedBackground
-        layer.borderWidth = 1
+        layer.borderWidth = 1.0
         layer.borderColor = UIColor.separator.cgColor
         contentView.addSubview(stickerImageView)
         stickerImageView.edges(to: contentView)

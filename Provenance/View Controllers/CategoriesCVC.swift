@@ -4,8 +4,8 @@ import TinyConstraints
 import Rswift
 
 class CategoriesCVC: CollectionViewController {
-    let searchController = SearchController(searchResultsController: nil)
-    let refreshControl = RefreshControl(frame: .zero)
+    private let searchController = SearchController(searchResultsController: nil)
+    private let refreshControl = RefreshControl(frame: .zero)
     
     private var categoriesStatusCode: Int = 0
     private var categories: [CategoryResource] = [] {
@@ -26,7 +26,7 @@ class CategoriesCVC: CollectionViewController {
         return Category(data: filteredCategories)
     }
     
-    private enum Section: CaseIterable {
+    private enum Section {
         case main
     }
     
@@ -69,7 +69,6 @@ class CategoriesCVC: CollectionViewController {
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                    label.numberOfLines = 1
                     label.text = "No Categories"
                     return view
                 }()
@@ -114,8 +113,6 @@ class CategoriesCVC: CollectionViewController {
                     verticalStack.center(in: view)
                     verticalStack.axis = .vertical
                     verticalStack.alignment = .center
-                    verticalStack.distribution = .fill
-                    verticalStack.spacing = 0
                     return view
                 }()
             } else {

@@ -16,7 +16,7 @@ class TransactionDetailVC: TableViewController {
     
     private lazy var dataSource = makeDataSource()
 
-    let scrollingTitle = MarqueeLabel()
+    private let scrollingTitle = MarqueeLabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -229,7 +229,7 @@ private extension TransactionDetailVC {
     private func configureProperties() {
         title = "Transaction Details"
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
             self.applySnapshot()
         }
     }

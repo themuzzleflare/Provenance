@@ -9,17 +9,6 @@ class SettingsVC: TableViewController {
     weak var submitActionProxy: UIAlertAction?
     
     private var textDidChangeObserver: NSObjectProtocol!
-    private var apiKeyObserver: NSKeyValueObservation?
-    private var dateStyleObserver: NSKeyValueObservation?
-
-    private var apiKeyDisplay: String {
-        switch appDefaults.apiKey {
-            case "":
-                return "None"
-            default:
-                return appDefaults.apiKey
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,28 +25,12 @@ class SettingsVC: TableViewController {
 }
 
 private extension SettingsVC {
-    @objc private func appMovedToForeground() {
-        tableView.reloadData()
-    }
-
-    @objc private func switchDateStyle(segment: UISegmentedControl) {
-        appDefaults.dateStyle = segment.titleForSegment(at: segment.selectedSegmentIndex)!
-    }
-    
     @objc private func closeWorkflow() {
         navigationController?.dismiss(animated: true)
     }
     
     private func configureProperties() {
         title = "Settings"
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        apiKeyObserver = appDefaults.observe(\.apiKey, options: [.new, .old]) { (object, change) in
-            self.tableView.reloadData()
-            WidgetCenter.shared.reloadAllTimelines()
-        }
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
-            WidgetCenter.shared.reloadAllTimelines()
-        }
     }
     
     private func configureNavigation() {
@@ -84,13 +57,6 @@ extension SettingsVC {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: APIKeyTableViewCell.reuseIdentifier, for: indexPath) as! APIKeyTableViewCell
         let dateStyleCell = tableView.dequeueReusableCell(withIdentifier: DateStyleTableViewCell.reuseIdentifier, for: indexPath) as! DateStyleTableViewCell
-        apiKeyCell.apiKeyLabel.text = apiKeyDisplay
-        if appDefaults.dateStyle == "Absolute" {
-            dateStyleCell.segmentedControl.selectedSegmentIndex = 0
-        } else if appDefaults.dateStyle == "Relative" {
-            dateStyleCell.segmentedControl.selectedSegmentIndex = 1
-        }
-        dateStyleCell.segmentedControl.addTarget(self, action: #selector(switchDateStyle), for: .valueChanged)
         switch indexPath.section {
             case 0:
                 return apiKeyCell
@@ -105,10 +71,9 @@ extension SettingsVC {
         if indexPath.section == 0 {
             tableView.deselectRow(at: indexPath, animated: true)
             let ac = UIAlertController(title: "API Key", message: "Enter a new API Key.", preferredStyle: .alert)
-            ac.addTextField(configurationHandler: { textField in
+            ac.addTextField { textField in
                 textField.autocapitalizationType = .none
                 textField.autocorrectionType = .no
-                textField.isSecureTextEntry = false
                 textField.tintColor = R.color.accentColour()
                 textField.text = appDefaults.apiKey
                 self.textDidChangeObserver = NotificationCenter.default.addObserver(
@@ -123,7 +88,7 @@ extension SettingsVC {
                         }
                     }
                 }
-            })
+            }
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
             cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
             let submitAction = UIAlertAction(title: "Save", style: .default) { _ in

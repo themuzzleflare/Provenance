@@ -17,8 +17,6 @@ class TransactionsByAccountVC: TableViewController {
                 verticalStack.addArrangedSubview(displayNameLabel)
                 verticalStack.axis = .vertical
                 verticalStack.alignment = .center
-                verticalStack.distribution = .fill
-                verticalStack.spacing = 0
                 balanceLabel.translatesAutoresizingMaskIntoConstraints = false
                 balanceLabel.textColor = R.color.accentColour()
                 balanceLabel.font = R.font.circularStdBold(size: 32)
@@ -36,8 +34,8 @@ class TransactionsByAccountVC: TableViewController {
         }
     }
 
-    let searchController = SearchController(searchResultsController: nil)
-    let tableRefreshControl = RefreshControl(frame: .zero)
+    private let searchController = SearchController(searchResultsController: nil)
+    private let tableRefreshControl = RefreshControl(frame: .zero)
     
     private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
@@ -66,7 +64,7 @@ class TransactionsByAccountVC: TableViewController {
     
     private lazy var dataSource = makeDataSource()
     
-    private enum Section: CaseIterable {
+    private enum Section {
         case main
     }
     
@@ -106,7 +104,6 @@ class TransactionsByAccountVC: TableViewController {
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                    label.numberOfLines = 1
                     label.text = "No Transactions"
                     return view
                 }()
@@ -151,8 +148,6 @@ class TransactionsByAccountVC: TableViewController {
                     verticalStack.center(in: view)
                     verticalStack.axis = .vertical
                     verticalStack.alignment = .center
-                    verticalStack.distribution = .fill
-                    verticalStack.spacing = 0
                     return view
                 }()
             } else {
@@ -204,7 +199,7 @@ private extension TransactionsByAccountVC {
         title = "Transactions by Account"
         definesPresentationContext = true
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
             self.applySnapshot()
         }
     }
@@ -255,7 +250,9 @@ private extension TransactionsByAccountVC {
                         self.transactionsErrorResponse = []
                         self.transactionsPagination = decodedResponse.links
                         self.transactions = decodedResponse.data
-                        self.navigationItem.title = self.account.attributes.displayName
+                        if self.navigationItem.title != self.account.attributes.displayName {
+                            self.navigationItem.title = self.account.attributes.displayName
+                        }
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""

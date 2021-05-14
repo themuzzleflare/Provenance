@@ -15,7 +15,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    let label = UILabel()
+    private let label = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,7 +34,7 @@ private extension CategoryCollectionViewCell {
         clipsToBounds = true
         layer.cornerRadius = 12.5
         layer.borderColor = UIColor.separator.cgColor
-        layer.borderWidth = 1
+        layer.borderWidth = 1.0
         backgroundColor = .secondarySystemGroupedBackground
         selectedBackgroundView = selectedBackgroundCellView
     }
@@ -47,7 +47,6 @@ private extension CategoryCollectionViewCell {
         label.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.textColor = .label
         label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
     }
 }

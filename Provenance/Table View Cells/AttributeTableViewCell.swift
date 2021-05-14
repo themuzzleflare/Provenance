@@ -7,7 +7,7 @@ class AttributeTableViewCell: UITableViewCell {
     
     let leftLabel = UILabel()
     let rightLabel = UILabel()
-    let horizontalStack = UIStackView()
+    private let horizontalStack = UIStackView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -26,7 +26,6 @@ class AttributeTableViewCell: UITableViewCell {
 private extension AttributeTableViewCell {
     private func configureCell() {
         selectionStyle = .none
-        accessoryType = .none
         separatorInset = .zero
         selectedBackgroundView = selectedBackgroundCellView
     }
@@ -47,7 +46,6 @@ private extension AttributeTableViewCell {
         rightLabel.translatesAutoresizingMaskIntoConstraints = false
         rightLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         rightLabel.textAlignment = .right
-        rightLabel.textColor = .label
         rightLabel.numberOfLines = 0
     }
     
@@ -55,9 +53,7 @@ private extension AttributeTableViewCell {
         horizontalStack.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
         horizontalStack.addArrangedSubview(leftLabel)
         horizontalStack.addArrangedSubview(rightLabel)
-        horizontalStack.axis = .horizontal
         horizontalStack.alignment = .center
         horizontalStack.distribution = .equalSpacing
-        horizontalStack.spacing = 0
     }
 }

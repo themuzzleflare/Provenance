@@ -21,11 +21,11 @@ class TransactionTableViewCell: UITableViewCell {
         }
     }
     
-    let transactionDescription = UILabel()
-    let transactionCreationDate = UILabel()
-    let transactionAmount = UILabel()
-    let verticalStack = UIStackView()
-    let horizontalStack = UIStackView()
+    private let transactionDescription = UILabel()
+    private let transactionCreationDate = UILabel()
+    private let transactionAmount = UILabel()
+    private let verticalStack = UIStackView()
+    private let horizontalStack = UIStackView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -45,8 +45,6 @@ class TransactionTableViewCell: UITableViewCell {
 
 private extension TransactionTableViewCell {
     private func configureCell() {
-        selectionStyle = .default
-        accessoryType = .none
         separatorInset = .zero
         selectedBackgroundView = selectedBackgroundCellView
     }
@@ -60,7 +58,6 @@ private extension TransactionTableViewCell {
         transactionDescription.font = R.font.circularStdBold(size: UIFont.labelFontSize)
         transactionDescription.textAlignment = .left
         transactionDescription.numberOfLines = 0
-        transactionDescription.textColor = .label
     }
     
     private func configureTransactionCreationDate() {
@@ -84,17 +81,13 @@ private extension TransactionTableViewCell {
         verticalStack.addArrangedSubview(transactionCreationDate)
         verticalStack.axis = .vertical
         verticalStack.alignment = .leading
-        verticalStack.distribution = .fill
-        verticalStack.spacing = 0
     }
     
     private func configureHorizontalStackView() {
         horizontalStack.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
         horizontalStack.addArrangedSubview(verticalStack)
         horizontalStack.addArrangedSubview(transactionAmount)
-        horizontalStack.axis = .horizontal
         horizontalStack.alignment = .center
         horizontalStack.distribution = .equalSpacing
-        horizontalStack.spacing = 0
     }
 }

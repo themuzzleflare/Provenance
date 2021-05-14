@@ -89,7 +89,7 @@ class TagsVC: TableViewController {
         fatalError("Not implemented")
     }
 
-    private enum Section: CaseIterable {
+    private enum Section {
         case main
     }
 
@@ -103,7 +103,6 @@ class TagsVC: TableViewController {
                 cell.selectedBackgroundView = selectedBackgroundCellView
                 cell.accessoryType = .disclosureIndicator
                 cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                cell.textLabel?.textColor = .label
                 cell.textLabel?.numberOfLines = 0
                 cell.textLabel?.text = tag.id
                 return cell

@@ -73,7 +73,7 @@ private extension AccountDetailVC {
 
     private func configureProperties() {
         title = "Account Details"
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
             self.applySnapshot()
         }
     }

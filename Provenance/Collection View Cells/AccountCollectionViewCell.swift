@@ -17,9 +17,9 @@ class AccountCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    let balanceLabel = UILabel()
-    let displayNameLabel = UILabel()
-    let verticalStack = UIStackView()
+    private let balanceLabel = UILabel()
+    private let displayNameLabel = UILabel()
+    private let verticalStack = UIStackView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -40,7 +40,7 @@ private extension AccountCollectionViewCell {
         clipsToBounds = true
         layer.cornerRadius = 12.5
         layer.borderColor = UIColor.separator.cgColor
-        layer.borderWidth = 1
+        layer.borderWidth = 1.0
         backgroundColor = .secondarySystemGroupedBackground
         selectedBackgroundView = selectedBackgroundCellView
     }
@@ -52,7 +52,6 @@ private extension AccountCollectionViewCell {
     private func configureBalanceLabel() {
         balanceLabel.translatesAutoresizingMaskIntoConstraints = false
         balanceLabel.textAlignment = .center
-        balanceLabel.numberOfLines = 1
         balanceLabel.textColor = R.color.accentColour()
         balanceLabel.font = R.font.circularStdBold(size: 32)
     }
@@ -60,8 +59,6 @@ private extension AccountCollectionViewCell {
     private func configureDisplayNameLabel() {
         displayNameLabel.translatesAutoresizingMaskIntoConstraints = false
         displayNameLabel.textAlignment = .center
-        displayNameLabel.numberOfLines = 1
-        displayNameLabel.textColor = .label
         displayNameLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
     }
     
@@ -73,7 +70,6 @@ private extension AccountCollectionViewCell {
         verticalStack.axis = .vertical
         verticalStack.alignment = .center
         verticalStack.distribution = .fillProportionally
-        verticalStack.spacing = 0
     }
 }
 

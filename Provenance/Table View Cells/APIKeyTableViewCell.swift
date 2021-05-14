@@ -1,15 +1,30 @@
 import UIKit
+import WidgetKit
 import MarqueeLabel
 import TinyConstraints
 import Rswift
 
 class APIKeyTableViewCell: UITableViewCell {
     static let reuseIdentifier = "apiKeyTableViewCell"
+
+    private var apiKeyObserver: NSKeyValueObservation?
+    private var apiKeyDisplay: String {
+        switch appDefaults.apiKey {
+            case "":
+                return "None"
+            default:
+                return appDefaults.apiKey
+        }
+    }
     
-    let apiKeyLabel = MarqueeLabel()
+    private let apiKeyLabel = MarqueeLabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { object, change in
+            self.apiKeyLabel.text = change.newValue
+            WidgetCenter.shared.reloadAllTimelines()
+        }
         configureCell()
         configureContentView()
         configureApiKeyLabel()
@@ -22,7 +37,6 @@ class APIKeyTableViewCell: UITableViewCell {
 
 private extension APIKeyTableViewCell {
     private func configureCell() {
-        selectionStyle = .default
         accessoryType = .disclosureIndicator
         separatorInset = .zero
         selectedBackgroundView = selectedBackgroundCellView
@@ -38,6 +52,6 @@ private extension APIKeyTableViewCell {
         apiKeyLabel.fadeLength = 10
         apiKeyLabel.textAlignment = .left
         apiKeyLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-        apiKeyLabel.textColor = .label
+        apiKeyLabel.text = apiKeyDisplay
     }
 }

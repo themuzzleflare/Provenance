@@ -64,10 +64,9 @@ private extension SceneDelegate {
     private func initialSetup() {
         if appDefaults.apiKey.isEmpty {
             let ac = UIAlertController(title: "API Key Required", message: "You don't have an API Key set. Set one now.", preferredStyle: .alert)
-            ac.addTextField(configurationHandler: { textField in
+            ac.addTextField { textField in
                 textField.autocapitalizationType = .none
                 textField.autocorrectionType = .no
-                textField.isSecureTextEntry = false
                 textField.tintColor = R.color.accentColour()
                 textField.text = appDefaults.apiKey
                 self.textDidChangeObserver = NotificationCenter.default.addObserver(
@@ -82,7 +81,7 @@ private extension SceneDelegate {
                         }
                     }
                 }
-            })
+            }
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
             cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
             let submitAction = UIAlertAction(title: "Save", style: .default) { [unowned self] _ in

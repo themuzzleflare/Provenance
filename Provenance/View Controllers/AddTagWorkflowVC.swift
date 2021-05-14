@@ -4,8 +4,8 @@ import TinyConstraints
 import Rswift
 
 class AddTagWorkflowVC: TableViewController {
-    let tableRefreshControl = RefreshControl(frame: .zero)
-    let searchController = SearchController(searchResultsController: nil)
+    private let tableRefreshControl = RefreshControl(frame: .zero)
+    private let searchController = SearchController(searchResultsController: nil)
     
     private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
@@ -33,7 +33,7 @@ class AddTagWorkflowVC: TableViewController {
     
     private lazy var dataSource = makeDataSource()
     
-    private enum Section: CaseIterable {
+    private enum Section {
         case main
     }
     
@@ -73,7 +73,6 @@ class AddTagWorkflowVC: TableViewController {
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                    label.numberOfLines = 1
                     label.text = "No Transactions"
                     return view
                 }()
@@ -118,8 +117,6 @@ class AddTagWorkflowVC: TableViewController {
                     verticalStack.center(in: view)
                     verticalStack.axis = .vertical
                     verticalStack.alignment = .center
-                    verticalStack.distribution = .fill
-                    verticalStack.spacing = 0
                     return view
                 }()
             } else {
@@ -164,7 +161,7 @@ private extension AddTagWorkflowVC {
         title = "Transaction Selection"
         definesPresentationContext = true
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
             self.applySnapshot()
         }
     }

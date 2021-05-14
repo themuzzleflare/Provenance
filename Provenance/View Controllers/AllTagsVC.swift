@@ -4,8 +4,8 @@ import TinyConstraints
 import Rswift
 
 class AllTagsVC: TableViewController {
-    let tableRefreshControl = RefreshControl(frame: .zero)
-    let searchController = SearchController(searchResultsController: nil)
+    private let tableRefreshControl = RefreshControl(frame: .zero)
+    private let searchController = SearchController(searchResultsController: nil)
     
     private typealias DataSource = UITableViewDiffableDataSource<Section, TagResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TagResource>
@@ -32,7 +32,7 @@ class AllTagsVC: TableViewController {
     
     private lazy var dataSource = makeDataSource()
     
-    private enum Section: CaseIterable {
+    private enum Section {
         case main
     }
     
@@ -42,8 +42,6 @@ class AllTagsVC: TableViewController {
             cellProvider: { tableView, indexPath, tag in
                 let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
                 cell.selectedBackgroundView = selectedBackgroundCellView
-                cell.selectionStyle = .default
-                cell.accessoryType = .none
                 cell.separatorInset = .zero
                 cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                 cell.textLabel?.text = tag.id
@@ -77,7 +75,6 @@ class AllTagsVC: TableViewController {
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                    label.numberOfLines = 1
                     label.text = "No Tags"
                     return view
                 }()
@@ -122,8 +119,6 @@ class AllTagsVC: TableViewController {
                     verticalStack.center(in: view)
                     verticalStack.axis = .vertical
                     verticalStack.alignment = .center
-                    verticalStack.distribution = .fill
-                    verticalStack.spacing = 0
                     return view
                 }()
             } else {

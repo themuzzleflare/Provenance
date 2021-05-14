@@ -5,14 +5,14 @@ import TinyConstraints
 import Rswift
 
 class TransactionsVC: TableViewController {
-    let tableRefreshControl = RefreshControl(frame: .zero)
-    let searchController = SearchController(searchResultsController: nil)
+    private let tableRefreshControl = RefreshControl(frame: .zero)
+    private let searchController = SearchController(searchResultsController: nil)
 
     private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
 
     private var dateStyleObserver: NSKeyValueObservation?
-    private var filterButton = UIBarButtonItem()
+    private lazy var filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), menu: filterMenu())
     private var filter: FilterCategory = .all {
         didSet {
             filterButton.menu = filterMenu()
@@ -44,7 +44,7 @@ class TransactionsVC: TableViewController {
     
     private lazy var dataSource = makeDataSource()
     
-    private enum Section: CaseIterable {
+    private enum Section {
         case main
     }
     
@@ -52,7 +52,6 @@ class TransactionsVC: TableViewController {
         super.viewDidLoad()
         configureProperties()
         configureNavigation()
-        configureFilterButton()
         configureSearch()
         configureRefreshControl()
         configureTableView()
@@ -133,7 +132,6 @@ private extension TransactionsVC {
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                    label.numberOfLines = 1
                     label.text = "No Transactions"
                     return view
                 }()
@@ -178,8 +176,6 @@ private extension TransactionsVC {
                     verticalStack.center(in: view)
                     verticalStack.axis = .vertical
                     verticalStack.alignment = .center
-                    verticalStack.distribution = .fill
-                    verticalStack.spacing = 0
                     return view
                 }()
             } else {
@@ -217,7 +213,7 @@ private extension TransactionsVC {
         title = "Transactions"
         definesPresentationContext = true
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
             self.applySnapshot()
             WidgetCenter.shared.reloadAllTimelines()
         }
@@ -227,11 +223,6 @@ private extension TransactionsVC {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
         navigationItem.searchController = searchController
-    }
-    
-    private func configureFilterButton() {
-        filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), style: .plain, target: self, action: nil)
-        filterButton.menu = filterMenu()
     }
     
     private func configureSearch() {

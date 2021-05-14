@@ -5,7 +5,7 @@ import SwiftyGif
 import Rswift
 
 // MARK: - UserDefaults Suite for Provenance Application Group
-let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
+let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance") ?? .standard
 // MARK: - UserDefaults Extension for Value Observation
 extension UserDefaults {
     @objc dynamic var apiKey: String {
@@ -24,12 +24,12 @@ extension UserDefaults {
             set(newValue, forKey: "dateStyle")
         }
     }
-    @objc dynamic var appVersion: String {
+    var appVersion: String {
         get {
             return string(forKey: "appVersion") ?? "Unknown"
         }
     }
-    @objc dynamic var appBuild: String {
+    var appBuild: String {
         get {
             return string(forKey: "appBuild") ?? "Unknown"
         }
@@ -76,21 +76,21 @@ func gridLayout() -> UICollectionViewLayout {
     return layout
 }
 // MARK: - GIF Stickers Array
-let stickerTwo = try! UIImage(gifName: "StickerTwo.gif")
-let stickerThree = try! UIImage(gifName: "StickerThree.gif")
-let stickerSix = try! UIImage(gifName: "StickerSix.gif")
-let stickerSeven = try! UIImage(gifName: "StickerSeven.gif")
+private let stickerTwo = try! UIImage(gifName: "StickerTwo.gif")
+private let stickerThree = try! UIImage(gifName: "StickerThree.gif")
+private let stickerSix = try! UIImage(gifName: "StickerSix.gif")
+private let stickerSeven = try! UIImage(gifName: "StickerSeven.gif")
 let stickerGifs = [stickerTwo, stickerThree, stickerSix, stickerSeven]
 // MARK: - Animated Application Logo
-let up1 = R.image.upLogoSequence.first()!
-let up2 = R.image.upLogoSequence.second()!
-let up3 = R.image.upLogoSequence.third()!
-let up4 = R.image.upLogoSequence.fourth()!
-let up5 = R.image.upLogoSequence.fifth()!
-let up6 = R.image.upLogoSequence.sixth()!
-let up7 = R.image.upLogoSequence.seventh()!
-let up8 = R.image.upLogoSequence.eighth()!
-let upImages = [up1, up2, up3, up4, up5, up6, up7, up8]
+private let up1 = R.image.upLogoSequence.first()!
+private let up2 = R.image.upLogoSequence.second()!
+private let up3 = R.image.upLogoSequence.third()!
+private let up4 = R.image.upLogoSequence.fourth()!
+private let up5 = R.image.upLogoSequence.fifth()!
+private let up6 = R.image.upLogoSequence.sixth()!
+private let up7 = R.image.upLogoSequence.seventh()!
+private let up8 = R.image.upLogoSequence.eighth()!
+private let upImages = [up1, up2, up3, up4, up5, up6, up7, up8]
 let upAnimation = UIImage.animatedImage(with: upImages, duration: 0.65)!
 // MARK: - Alamofire Predicates for Up API
 var authorisationHeader: HTTPHeader {

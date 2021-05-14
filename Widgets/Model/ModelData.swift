@@ -1,15 +1,15 @@
 import Foundation
 
 // MARK: - UserDefaults Suite for Provenance Application Group
-let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
+let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance") ?? .standard
 // MARK: - UserDefaults Extension for Value Observation
 extension UserDefaults {
-    @objc dynamic var apiKey: String {
+    var apiKey: String {
         get {
             return string(forKey: "apiKey") ?? ""
         }
     }
-    @objc dynamic var dateStyle: String {
+    var dateStyle: String {
         get {
             return string(forKey: "dateStyle") ?? "Absolute"
         }

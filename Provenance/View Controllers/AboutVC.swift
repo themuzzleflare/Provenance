@@ -54,11 +54,9 @@ extension AboutVC {
         let topCell = tableView.dequeueReusableCell(withIdentifier: AboutTopTableViewCell.reuseIdentifier, for: indexPath) as! AboutTopTableViewCell
         let sectionOneAttributeCell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
         let basicCell = tableView.dequeueReusableCell(withIdentifier: "basicCell", for: indexPath) as! BasicTableViewCell
-        basicCell.selectionStyle = .default
         basicCell.separatorInset = .zero
         basicCell.selectedBackgroundView = selectedBackgroundCellView
         basicCell.imageView?.tintColor = .label
-        basicCell.textLabel?.textColor = .label
         basicCell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         switch section {
             case 0:

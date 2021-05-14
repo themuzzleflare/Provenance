@@ -82,8 +82,8 @@ class TransactionsByTagVC: TableViewController {
         fatalError("Not implemented")
     }
 
-    let tableRefreshControl = RefreshControl(frame: .zero)
-    let searchController = SearchController(searchResultsController: nil)
+    private let tableRefreshControl = RefreshControl(frame: .zero)
+    private let searchController = SearchController(searchResultsController: nil)
     
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
 
@@ -109,7 +109,7 @@ class TransactionsByTagVC: TableViewController {
         return Transaction(data: filteredTransactions, links: transactionsPagination)
     }
     
-    private enum Section: CaseIterable {
+    private enum Section {
         case main
     }
     
@@ -149,7 +149,6 @@ class TransactionsByTagVC: TableViewController {
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                    label.numberOfLines = 1
                     label.text = "No Transactions"
                     return view
                 }()
@@ -194,8 +193,6 @@ class TransactionsByTagVC: TableViewController {
                     verticalStack.center(in: view)
                     verticalStack.axis = .vertical
                     verticalStack.alignment = .center
-                    verticalStack.distribution = .fill
-                    verticalStack.spacing = 0
                     return view
                 }()
             } else {
@@ -249,7 +246,7 @@ private extension TransactionsByTagVC {
         title = "Transactions by Tag"
         definesPresentationContext = true
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
             self.applySnapshot()
         }
     }
@@ -285,7 +282,9 @@ private extension TransactionsByTagVC {
                         self.transactionsErrorResponse = []
                         self.transactionsPagination = decodedResponse.links
                         self.transactions = decodedResponse.data
-                        self.navigationItem.title = self.tag.id
+                        if self.navigationItem.title != self.tag.id {
+                            self.navigationItem.title = self.tag.id
+                        }
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.transactionsErrorResponse = decodedResponse.errors
                         self.transactionsError = ""

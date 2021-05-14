@@ -4,8 +4,8 @@ import TinyConstraints
 import Rswift
 
 class AccountsCVC: CollectionViewController {
-    let searchController = SearchController(searchResultsController: nil)
-    let refreshControl = RefreshControl(frame: .zero)
+    private let searchController = SearchController(searchResultsController: nil)
+    private let refreshControl = RefreshControl(frame: .zero)
     
     private typealias DataSource = UICollectionViewDiffableDataSource<Section, AccountResource>
     private typealias AccountCell = UICollectionView.CellRegistration<AccountCollectionViewCell, AccountResource>
@@ -32,7 +32,7 @@ class AccountsCVC: CollectionViewController {
         return Account(data: filteredAccounts, links: accountsPagination)
     }
     
-    private enum Section: CaseIterable {
+    private enum Section {
         case main
     }
     
@@ -71,7 +71,6 @@ class AccountsCVC: CollectionViewController {
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                    label.numberOfLines = 1
                     label.text = "No Accounts"
                     return view
                 }()
@@ -116,8 +115,6 @@ class AccountsCVC: CollectionViewController {
                     verticalStack.center(in: view)
                     verticalStack.axis = .vertical
                     verticalStack.alignment = .center
-                    verticalStack.distribution = .fill
-                    verticalStack.spacing = 0
                     return view
                 }()
             } else {

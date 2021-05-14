@@ -75,7 +75,7 @@ private extension AddTagWorkflowThreeVC {
 
     private func configureProperties() {
         title = "Add Tag Confirmation"
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new, .old]) { (object, change) in
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
             self.tableView.reloadData()
         }
     }
