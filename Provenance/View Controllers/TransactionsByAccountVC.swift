@@ -53,6 +53,7 @@ class TransactionsByAccountVC: TableViewController {
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
     private var categories: [CategoryResource] = []
+    private var accounts: [AccountResource] = []
     private var filteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
@@ -173,6 +174,7 @@ class TransactionsByAccountVC: TableViewController {
         fetchAccount()
         fetchTransactions()
         fetchCategories()
+        fetchAccounts()
     }
 }
 
@@ -181,6 +183,7 @@ private extension TransactionsByAccountVC {
         fetchAccount()
         fetchTransactions()
         fetchCategories()
+        fetchAccounts()
     }
 
     @objc private func openAccountInfo() {
@@ -192,6 +195,7 @@ private extension TransactionsByAccountVC {
             self.fetchAccount()
             self.fetchTransactions()
             self.fetchCategories()
+            self.fetchAccounts()
         }
     }
     
@@ -296,12 +300,27 @@ private extension TransactionsByAccountVC {
             }
         }
     }
+
+    private func fetchAccounts() {
+        AF.request(UpAPI.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
+            switch response.result {
+                case .success:
+                    if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
+                        self.accounts = decodedResponse.data
+                    } else {
+                        print("Accounts JSON decoding failed")
+                    }
+                case .failure:
+                    print(response.error?.localizedDescription ?? "Unknown error")
+            }
+        }
+    }
 }
 
 extension TransactionsByAccountVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        navigationController?.pushViewController({let vc = TransactionDetailVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);vc.categories = categories;return vc}(), animated: true)
+        navigationController?.pushViewController({let vc = TransactionDetailVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);vc.categories = categories;vc.accounts = accounts;return vc}(), animated: true)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

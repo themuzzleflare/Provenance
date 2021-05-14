@@ -19,8 +19,6 @@
 			<string>None</string>
 			<key>AutocorrectionType</key>
 			<string>No</string>
-			<key>IsSecure</key>
-			<false/>
 		</dict>
 		<dict>
 			<key>Type</key>
