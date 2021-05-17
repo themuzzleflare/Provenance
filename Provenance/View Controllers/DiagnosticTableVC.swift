@@ -60,7 +60,6 @@ private extension DiagnosticTableVC {
     }
     
     private func configureNavigation() {
-        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Diagnostics"
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
     }

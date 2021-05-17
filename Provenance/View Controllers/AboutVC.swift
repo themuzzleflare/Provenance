@@ -19,7 +19,6 @@ private extension AboutVC {
     
     private func configure() {
         title = "About"
-        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "About"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: nil)
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftSlashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))

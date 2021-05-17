@@ -81,7 +81,6 @@ private extension AddTagWorkflowThreeVC {
     }
 
     private func configureNavigation() {
-        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Confirmation"
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.checkmark(), style: .plain, target: self, action: #selector(addTag))
     }

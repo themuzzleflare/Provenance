@@ -209,7 +209,6 @@ private extension TransactionsByAccountVC {
     }
     
     private func configureNavigation() {
-        navigationItem.largeTitleDisplayMode = .always
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo))

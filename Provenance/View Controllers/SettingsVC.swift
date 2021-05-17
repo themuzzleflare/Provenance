@@ -34,7 +34,6 @@ private extension SettingsVC {
     }
     
     private func configureNavigation() {
-        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Settings"
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
     }

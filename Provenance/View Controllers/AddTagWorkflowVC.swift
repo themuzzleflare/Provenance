@@ -167,7 +167,6 @@ private extension AddTagWorkflowVC {
     }
     
     private func configureNavigation() {
-        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Loading"
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         navigationItem.searchController = searchController

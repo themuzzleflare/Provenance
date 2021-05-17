@@ -82,7 +82,7 @@ private extension TransactionDetailVC {
         }
     }
     private var holdForeignTransValue: String {
-        switch transaction.attributes.holdInfo?.foreignAmount{
+        switch transaction.attributes.holdInfo?.foreignAmount {
             case nil:
                 return ""
             default:
@@ -253,7 +253,6 @@ private extension TransactionDetailVC {
     }
     
     private func configureNavigation() {
-        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = transaction.attributes.description
         navigationItem.titleView = scrollingTitle
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: transaction.attributes.statusIcon, style: .plain, target: self, action: #selector(openStatusIconHelpView))

@@ -10,7 +10,6 @@ class StickersVC: CollectionViewController {
 private extension StickersVC {
     private func configure() {
         title = "Stickers"
-        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Stickers"
         collectionView.register(StickerCollectionViewCell.self, forCellWithReuseIdentifier: StickerCollectionViewCell.reuseIdentifier)
     }

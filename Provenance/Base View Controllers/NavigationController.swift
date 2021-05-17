@@ -10,7 +10,6 @@ class NavigationController: UINavigationController {
 
 private extension NavigationController {
     private func configure() {
-        navigationBar.prefersLargeTitles = true
         navigationBar.tintColor = R.color.accentColour()
     }
 }

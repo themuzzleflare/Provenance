@@ -79,7 +79,6 @@ private extension AccountDetailVC {
     }
     
     private func configureNavigation() {
-        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = account.attributes.displayName
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
     }

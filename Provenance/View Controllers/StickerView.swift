@@ -21,7 +21,6 @@ class StickerView: ViewController {
 private extension StickerView {
     private func configure() {
         title = "Sticker View"
-        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = "Sticker"
         view.addSubview(imageView)
         imageView.width(300)
