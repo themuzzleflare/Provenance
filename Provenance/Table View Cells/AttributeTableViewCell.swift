@@ -3,11 +3,16 @@ import TinyConstraints
 import Rswift
 
 class AttributeTableViewCell: UITableViewCell {
+    // MARK: - Properties
+
     static let reuseIdentifier = "attributeTableViewCell"
+
+    private let horizontalStack = UIStackView()
     
     let leftLabel = UILabel()
     let rightLabel = UILabel()
-    private let horizontalStack = UIStackView()
+
+    // MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -22,6 +27,8 @@ class AttributeTableViewCell: UITableViewCell {
         fatalError("Not implemented")
     }
 }
+
+// MARK: - Configuration
 
 private extension AttributeTableViewCell {
     private func configureCell() {

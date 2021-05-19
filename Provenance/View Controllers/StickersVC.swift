@@ -1,11 +1,15 @@
 import UIKit
 
 class StickersVC: CollectionViewController {
+    // MARK: - View Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
     }
 }
+
+// MARK: - Configuration
 
 private extension StickersVC {
     private func configure() {
@@ -14,6 +18,8 @@ private extension StickersVC {
         collectionView.register(StickerCollectionViewCell.self, forCellWithReuseIdentifier: StickerCollectionViewCell.reuseIdentifier)
     }
 }
+
+// MARK: - UICollectionViewDataSource
 
 extension StickersVC {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -25,7 +31,11 @@ extension StickersVC {
         cell.image = stickerGifs[indexPath.item]
         return cell
     }
-    
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension StickersVC {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         navigationController?.pushViewController({let vc = StickerView();vc.image = stickerGifs[indexPath.item];return vc}(), animated: true)
     }

@@ -4,6 +4,8 @@ import NotificationBannerSwift
 import Rswift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    // MARK: - Properties
+
     var window: UIWindow?
 
     private weak var submitActionProxy: UIAlertAction?
@@ -16,6 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         case tagsAction = "cloud.tavitian.provenance.tags"
         case categoriesAction = "cloud.tavitian.provenance.categories"
     }
+
+    // MARK: - Life Cycle
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -45,22 +49,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 }
 
-private extension SceneDelegate {
-    private func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
-        let tabcontrol = window?.rootViewController as! TabBarController
-        if let actionTypeValue = ActionType(rawValue: shortcutItem.type) {
-            switch actionTypeValue {
-                case .accountsAction:
-                    tabcontrol.selectedIndex = 1
-                case .tagsAction:
-                    tabcontrol.selectedIndex = 2
-                case .categoriesAction:
-                    tabcontrol.selectedIndex = 3
-            }
-        }
-        return true
-    }
+// MARK: - Actions
 
+private extension SceneDelegate {
     private func initialSetup() {
         if appDefaults.apiKey.isEmpty {
             let ac = UIAlertController(title: "API Key Required", message: "You don't have an API Key set. Set one now.", preferredStyle: .alert)
@@ -135,5 +126,20 @@ private extension SceneDelegate {
             ac.addAction(submitAction)
             window?.rootViewController?.present(ac, animated: true)
         }
+    }
+
+    private func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
+        let tabcontrol = window?.rootViewController as! TabBarController
+        if let actionTypeValue = ActionType(rawValue: shortcutItem.type) {
+            switch actionTypeValue {
+                case .accountsAction:
+                    tabcontrol.selectedIndex = 1
+                case .tagsAction:
+                    tabcontrol.selectedIndex = 2
+                case .categoriesAction:
+                    tabcontrol.selectedIndex = 3
+            }
+        }
+        return true
     }
 }

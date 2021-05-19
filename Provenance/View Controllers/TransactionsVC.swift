@@ -5,26 +5,24 @@ import TinyConstraints
 import Rswift
 
 class TransactionsVC: TableViewController {
-    private let tableRefreshControl = RefreshControl(frame: .zero)
-    private let searchController = SearchController(searchResultsController: nil)
+    // MARK: - Properties
+
+    private enum Section {
+        case main
+    }
 
     private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
 
+    private lazy var dataSource = makeDataSource()
+    private lazy var filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), menu: filterMenu())
+
+    private let tableRefreshControl = RefreshControl(frame: .zero)
+    private let searchController = SearchController(searchResultsController: nil)
+
     private var dateStyleObserver: NSKeyValueObservation?
-    private var filter: FilterCategory = .all {
-        didSet {
-            filterButton.menu = filterMenu()
-            searchController.searchBar.placeholder = "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
-            applySnapshot(animate: true)
-        }
-    }
-    private var showSettledOnly: Bool = false {
-        didSet {
-            filterButton.menu = filterMenu()
-            searchController.searchBar.placeholder = "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
-            applySnapshot(animate: true)
-        }
+    private var searchBarPlaceholder: String {
+        "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
     }
     private var transactionsStatusCode: Int = 0
     private var transactions: [TransactionResource] = [] {
@@ -32,21 +30,44 @@ class TransactionsVC: TableViewController {
             applySnapshot()
             refreshControl?.endRefreshing()
             WidgetCenter.shared.reloadAllTimelines()
-            searchController.searchBar.placeholder = "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
+            searchController.searchBar.placeholder = searchBarPlaceholder
         }
     }
     private var transactionsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
+    private var preFilteredTransactions: [TransactionResource] {
+        transactions.filter { transaction in
+            (!showSettledOnly || transaction.attributes.isSettled)
+                && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
+        }
+    }
+    private var filteredTransactions: [TransactionResource] {
+        preFilteredTransactions.filter { transaction in
+            searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
+        }
+    }
+    private var filteredTransactionList: Transaction {
+        return Transaction(data: filteredTransactions, links: transactionsPagination)
+    }
     private var categories: [CategoryResource] = []
     private var accounts: [AccountResource] = []
-
-    private lazy var filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), menu: filterMenu())
-    private lazy var dataSource = makeDataSource()
-    
-    private enum Section {
-        case main
+    private var filter: FilterCategory = .all {
+        didSet {
+            filterButton.menu = filterMenu()
+            searchController.searchBar.placeholder = searchBarPlaceholder
+            applySnapshot(animate: true)
+        }
     }
+    private var showSettledOnly: Bool = false {
+        didSet {
+            filterButton.menu = filterMenu()
+            searchController.searchBar.placeholder = searchBarPlaceholder
+            applySnapshot(animate: true)
+        }
+    }
+
+    // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,24 +86,64 @@ class TransactionsVC: TableViewController {
     }
 }
 
+// MARK: - Configuration
+
 private extension TransactionsVC {
-    private var preFilteredTransactions: [TransactionResource] {
-        transactions.filter { transaction in
-            (!showSettledOnly || transaction.attributes.isSettled)
-                && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
+    private func configureProperties() {
+        title = "Transactions"
+        definesPresentationContext = true
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
+            self.applySnapshot()
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
     
-    private var filteredTransactions: [TransactionResource] {
-        preFilteredTransactions.filter { transaction in
-            searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
+    private func configureNavigation() {
+        navigationItem.title = "Loading"
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
+        navigationItem.searchController = searchController
+    }
+    
+    private func configureSearch() {
+        searchController.searchBar.delegate = self
+    }
+    
+    private func configureRefreshControl() {
+        tableRefreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+    }
+    
+    private func configureTableView() {
+        tableView.refreshControl = tableRefreshControl
+        tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
+    }
+}
+
+// MARK: - Actions
+
+private extension TransactionsVC {
+    @objc private func appMovedToForeground() {
+        fetchTransactions()
+        fetchAccounts()
+        fetchCategories()
+    }
+
+    @objc private func switchDateStyle() {
+        if appDefaults.dateStyle == "Absolute" {
+            appDefaults.dateStyle = "Relative"
+        } else if appDefaults.dateStyle == "Relative" {
+            appDefaults.dateStyle = "Absolute"
         }
     }
-    
-    private var filteredTransactionList: Transaction {
-        return Transaction(data: filteredTransactions, links: transactionsPagination)
+
+    @objc private func refreshTransactions() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.fetchTransactions()
+            self.fetchCategories()
+            self.fetchAccounts()
+        }
     }
-    
+
     private func filterMenu() -> UIMenu {
         return UIMenu(image: R.image.sliderHorizontal3(), options: .displayInline, children: [
             UIMenu(title: "Category", image: R.image.arrowUpArrowDownCircle(), children: FilterCategory.allCases.map { category in
@@ -95,7 +156,7 @@ private extension TransactionsVC {
             }
         ])
     }
-    
+
     private func makeDataSource() -> DataSource {
         let dataSource = DataSource(
             tableView: tableView,
@@ -187,57 +248,6 @@ private extension TransactionsVC {
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
 
-    @objc private func appMovedToForeground() {
-        fetchTransactions()
-        fetchAccounts()
-        fetchCategories()
-    }
-    
-    @objc private func switchDateStyle() {
-        if appDefaults.dateStyle == "Absolute" {
-            appDefaults.dateStyle = "Relative"
-        } else if appDefaults.dateStyle == "Relative" {
-            appDefaults.dateStyle = "Absolute"
-        }
-    }
-    
-    @objc private func refreshTransactions() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.fetchTransactions()
-            self.fetchCategories()
-            self.fetchAccounts()
-        }
-    }
-    
-    private func configureProperties() {
-        title = "Transactions"
-        definesPresentationContext = true
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
-            self.applySnapshot()
-            WidgetCenter.shared.reloadAllTimelines()
-        }
-    }
-    
-    private func configureNavigation() {
-        navigationItem.title = "Loading"
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
-        navigationItem.searchController = searchController
-    }
-    
-    private func configureSearch() {
-        searchController.searchBar.delegate = self
-    }
-    
-    private func configureRefreshControl() {
-        tableRefreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
-    }
-    
-    private func configureTableView() {
-        tableView.refreshControl = tableRefreshControl
-        tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
-    }
-    
     private func fetchTransactions() {
         AF.request(UpAPI.Transactions().listTransactions, method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             self.transactionsStatusCode = response.response?.statusCode ?? 0
@@ -291,7 +301,7 @@ private extension TransactionsVC {
             }
         }
     }
-    
+
     private func fetchCategories() {
         AF.request(UpAPI.Categories().listCategories, method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             switch response.result {
@@ -306,7 +316,7 @@ private extension TransactionsVC {
             }
         }
     }
-    
+
     private func fetchAccounts() {
         AF.request(UpAPI.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             switch response.result {
@@ -322,6 +332,8 @@ private extension TransactionsVC {
         }
     }
 }
+
+// MARK: - UITableViewDelegate
 
 extension TransactionsVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -346,6 +358,8 @@ extension TransactionsVC {
         }
     }
 }
+
+// MARK: - UISearchBarDelegate
 
 extension TransactionsVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

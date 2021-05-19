@@ -4,6 +4,8 @@ import MarqueeLabel
 import Rswift
 
 class TransactionDetailVC: TableViewController {
+    // MARK: - Properties
+
     var transaction: TransactionResource!
     var categories: [CategoryResource]?
     var accounts: [AccountResource]?
@@ -11,36 +13,12 @@ class TransactionDetailVC: TableViewController {
     private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
 
-    private var dateStyleObserver: NSKeyValueObservation?
-    private var sections: [Section]!
-    
     private lazy var dataSource = makeDataSource()
 
     private let scrollingTitle = MarqueeLabel()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureProperties()
-        configureScrollingTitle()
-        configureNavigation()
-        configureTableView()
-        applySnapshot()
-    }
 
-    override func viewWillAppear(_ animated: Bool) {
-        fetchTransaction()
-    }
-}
-
-private extension TransactionDetailVC {
-    @objc private func appMovedToForeground() {
-        fetchTransaction()
-    }
-
-    @objc private func openStatusIconHelpView() {
-        present(NavigationController(rootViewController: StatusIconHelpView()), animated: true)
-    }
-
+    private var dateStyleObserver: NSKeyValueObservation?
+    private var sections: [Section]!
     private var filteredSections: [Section] {
         sections.filter { section in
             !section.detailAttributes.allSatisfy { attribute in
@@ -103,22 +81,65 @@ private extension TransactionDetailVC {
         }
     }
 
-    private func fetchTransaction() {
-        AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)", method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
-            switch response.result {
-                case .success:
-                    if let decodedResponse = try? JSONDecoder().decode(SingleTransactionResponse.self, from: response.data!) {
-                        self.transaction = decodedResponse.data
-                        self.applySnapshot()
-                    } else {
-                        print("JSON decoding failed")
-                    }
-                case .failure:
-                    print(response.error?.localizedDescription ?? "Unknown error")
-            }
+    // MARK: - View Life Cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureProperties()
+        configureScrollingTitle()
+        configureNavigation()
+        configureTableView()
+        applySnapshot()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        fetchTransaction()
+    }
+}
+
+// MARK: - Configuration
+
+private extension TransactionDetailVC {
+    private func configureProperties() {
+        title = "Transaction Details"
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
+            self.applySnapshot()
         }
     }
     
+    private func configureScrollingTitle() {
+        scrollingTitle.translatesAutoresizingMaskIntoConstraints = false
+        scrollingTitle.speed = .rate(65)
+        scrollingTitle.fadeLength = 20
+        scrollingTitle.textAlignment = .center
+        scrollingTitle.font = .boldSystemFont(ofSize: UIFont.labelFontSize)
+        scrollingTitle.text = transaction.attributes.description
+    }
+    
+    private func configureNavigation() {
+        navigationItem.title = transaction.attributes.description
+        navigationItem.titleView = scrollingTitle
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: transaction.attributes.statusIcon, style: .plain, target: self, action: #selector(openStatusIconHelpView))
+        navigationItem.rightBarButtonItem?.tintColor = transaction.attributes.isSettled ? .systemGreen : .systemYellow
+    }
+    
+    private func configureTableView() {
+        tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
+    }
+}
+
+// MARK: - Actions
+
+private extension TransactionDetailVC {
+    @objc private func appMovedToForeground() {
+        fetchTransaction()
+    }
+
+    @objc private func openStatusIconHelpView() {
+        present(NavigationController(rootViewController: StatusIconHelpView()), animated: true)
+    }
+
     private func makeDataSource() -> DataSource {
         return DataSource(
             tableView: tableView,
@@ -149,7 +170,7 @@ private extension TransactionDetailVC {
             }
         )
     }
-    
+
     private func applySnapshot() {
         sections = [
             Section(title: "Section 1", detailAttributes: [
@@ -234,35 +255,25 @@ private extension TransactionDetailVC {
         }
         dataSource.apply(snapshot, animatingDifferences: false)
     }
-    
-    private func configureProperties() {
-        title = "Transaction Details"
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
-            self.applySnapshot()
+
+    private func fetchTransaction() {
+        AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)", method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
+            switch response.result {
+                case .success:
+                    if let decodedResponse = try? JSONDecoder().decode(SingleTransactionResponse.self, from: response.data!) {
+                        self.transaction = decodedResponse.data
+                        self.applySnapshot()
+                    } else {
+                        print("JSON decoding failed")
+                    }
+                case .failure:
+                    print(response.error?.localizedDescription ?? "Unknown error")
+            }
         }
     }
-    
-    private func configureScrollingTitle() {
-        scrollingTitle.translatesAutoresizingMaskIntoConstraints = false
-        scrollingTitle.speed = .rate(65)
-        scrollingTitle.fadeLength = 20
-        scrollingTitle.textAlignment = .center
-        scrollingTitle.font = .boldSystemFont(ofSize: UIFont.labelFontSize)
-        scrollingTitle.text = transaction.attributes.description
-    }
-    
-    private func configureNavigation() {
-        navigationItem.title = transaction.attributes.description
-        navigationItem.titleView = scrollingTitle
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: transaction.attributes.statusIcon, style: .plain, target: self, action: #selector(openStatusIconHelpView))
-        navigationItem.rightBarButtonItem?.tintColor = transaction.attributes.isSettled ? .systemGreen : .systemYellow
-    }
-    
-    private func configureTableView() {
-        tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
-    }
 }
+
+// MARK: - UITableViewDelegate
 
 extension TransactionDetailVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

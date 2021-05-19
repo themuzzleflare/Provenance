@@ -4,11 +4,15 @@ import NotificationBannerSwift
 import Rswift
 
 class SettingsVC: TableViewController {
+    // MARK: - Properties
+
     var displayBanner: NotificationBanner?
 
     private weak var submitActionProxy: UIAlertAction?
     
     private var textDidChangeObserver: NSObjectProtocol!
+
+    // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,11 +28,9 @@ class SettingsVC: TableViewController {
     }
 }
 
+// MARK: - Configuration
+
 private extension SettingsVC {
-    @objc private func closeWorkflow() {
-        navigationController?.dismiss(animated: true)
-    }
-    
     private func configureProperties() {
         title = "Settings"
     }
@@ -43,6 +45,16 @@ private extension SettingsVC {
         tableView.register(DateStyleTableViewCell.self, forCellReuseIdentifier: DateStyleTableViewCell.reuseIdentifier)
     }
 }
+
+// MARK: - Actions
+
+private extension SettingsVC {
+    @objc private func closeWorkflow() {
+        navigationController?.dismiss(animated: true)
+    }
+}
+
+// MARK: - UITableViewDataSource
 
 extension SettingsVC {
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -65,7 +77,31 @@ extension SettingsVC {
                 fatalError("Unknown section")
         }
     }
-    
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+            case 0:
+                return "API Key"
+            default:
+                return nil
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        switch section {
+            case 0:
+                return "The personal access token used to communicate with the Up Banking Developer API."
+            case 1:
+                return "The styling of dates displayed thoughout the application."
+            default:
+                return nil
+        }
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension SettingsVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
             tableView.deselectRow(at: indexPath, animated: true)
@@ -144,26 +180,6 @@ extension SettingsVC {
         }
     }
 
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-            case 0:
-                return "API Key"
-            default:
-                return nil
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        switch section {
-            case 0:
-                return "The personal access token used to communicate with the Up Banking Developer API."
-            case 1:
-                return "The styling of dates displayed thoughout the application."
-            default:
-                return nil
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         switch indexPath.section {
             case 0:

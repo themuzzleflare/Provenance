@@ -5,7 +5,11 @@ import TinyConstraints
 import Rswift
 
 class APIKeyTableViewCell: UITableViewCell {
+    // MARK: - Properties
+    
     static let reuseIdentifier = "apiKeyTableViewCell"
+
+    private let apiKeyLabel = MarqueeLabel()
 
     private var apiKeyObserver: NSKeyValueObservation?
     private var apiKeyDisplay: String {
@@ -16,8 +20,8 @@ class APIKeyTableViewCell: UITableViewCell {
                 return appDefaults.apiKey
         }
     }
-    
-    private let apiKeyLabel = MarqueeLabel()
+
+    // MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -34,6 +38,8 @@ class APIKeyTableViewCell: UITableViewCell {
         fatalError("Not implemented")
     }
 }
+
+// MARK: - Configuration
 
 private extension APIKeyTableViewCell {
     private func configureCell() {

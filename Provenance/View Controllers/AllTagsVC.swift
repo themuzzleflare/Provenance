@@ -4,11 +4,19 @@ import TinyConstraints
 import Rswift
 
 class AllTagsVC: TableViewController {
-    private let tableRefreshControl = RefreshControl(frame: .zero)
-    private let searchController = SearchController(searchResultsController: nil)
-    
+    // MARK: - Properties
+
+    private enum Section {
+        case main
+    }
+
     private typealias DataSource = UITableViewDiffableDataSource<Section, TagResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TagResource>
+
+    private lazy var dataSource = makeDataSource()
+
+    private let tableRefreshControl = RefreshControl(frame: .zero)
+    private let searchController = SearchController(searchResultsController: nil)
     
     private var tagsStatusCode: Int = 0
     private var tags: [TagResource] = [] {
@@ -30,12 +38,69 @@ class AllTagsVC: TableViewController {
         return Tag(data: filteredTags, links: tagsPagination)
     }
     
-    private lazy var dataSource = makeDataSource()
+    // MARK: - View Life Cycle
     
-    private enum Section {
-        case main
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureProperties()
+        configureNavigation()
+        configureSearch()
+        configureRefreshControl()
+        configureTableView()
+        applySnapshot()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        fetchTags()
+    }
+}
+
+// MARK: - Configuration
+
+private extension AllTagsVC {
+    private func configureProperties() {
+        title = "Tags"
+        definesPresentationContext = true
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+    
+    private func configureNavigation() {
+        navigationItem.title = "Loading"
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
+        navigationItem.searchController = searchController
+    }
+    
+    private func configureSearch() {
+        searchController.searchBar.delegate = self
+    }
+    
+    private func configureRefreshControl() {
+        tableRefreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+    }
+    
+    private func configureTableView() {
+        tableView.refreshControl = tableRefreshControl
+        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagCell")
+    }
+}
+
+// MARK: - Actions
+
+private extension AllTagsVC {
+    @objc private func appMovedToForeground() {
+        fetchTags()
+    }
+
+    @objc private func openAddWorkflow() {
+        present({let vc = NavigationController(rootViewController: AddTagWorkflowVC(style: .grouped));vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
+    }
+
+    @objc private func refreshTags() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.fetchTags()
+        }
+    }
+
     private func makeDataSource() -> DataSource {
         let dataSource = DataSource(
             tableView: tableView,
@@ -51,7 +116,7 @@ class AllTagsVC: TableViewController {
         dataSource.defaultRowAnimation = .fade
         return dataSource
     }
-    
+
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
@@ -129,62 +194,7 @@ class AllTagsVC: TableViewController {
         }
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureProperties()
-        configureNavigation()
-        configureSearch()
-        configureRefreshControl()
-        configureTableView()
-        applySnapshot()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        fetchTags()
-    }
-}
 
-private extension AllTagsVC {
-    @objc private func appMovedToForeground() {
-        fetchTags()
-    }
-
-    @objc private func openAddWorkflow() {
-        present({let vc = NavigationController(rootViewController: AddTagWorkflowVC(style: .grouped));vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
-    }
-
-    @objc private func refreshTags() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.fetchTags()
-        }
-    }
-    
-    private func configureProperties() {
-        title = "Tags"
-        definesPresentationContext = true
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-    }
-    
-    private func configureNavigation() {
-        navigationItem.title = "Loading"
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
-        navigationItem.searchController = searchController
-    }
-    
-    private func configureSearch() {
-        searchController.searchBar.delegate = self
-    }
-    
-    private func configureRefreshControl() {
-        tableRefreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
-    }
-    
-    private func configureTableView() {
-        tableView.refreshControl = tableRefreshControl
-        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagCell")
-    }
-    
     private func fetchTags() {
         AF.request(UpAPI.Tags().listTags, method: .get, parameters: pageSize200Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             self.tagsStatusCode = response.response?.statusCode ?? 0
@@ -240,6 +250,8 @@ private extension AllTagsVC {
     }
 }
 
+// MARK: - UITableViewDelegate
+
 extension AllTagsVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -256,6 +268,8 @@ extension AllTagsVC {
         }
     }
 }
+
+// MARK: - UISearchBarDelegate
 
 extension AllTagsVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

@@ -4,6 +4,8 @@ import NotificationBannerSwift
 import Rswift
 
 class TagsVC: TableViewController {
+    // MARK: - Properties
+
     var transaction: TransactionResource! {
         didSet {
             if transaction.relationships.tags.data.isEmpty {
@@ -14,8 +16,15 @@ class TagsVC: TableViewController {
         }
     }
 
+    private enum Section {
+        case main
+    }
+
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, RelationshipData>
+
     private lazy var dataSource = makeDataSource()
 
+    // UITableViewDiffableDataSource
     private class DataSource: UITableViewDiffableDataSource<Section, RelationshipData> {
         weak var parent: TagsVC! = nil
 
@@ -80,6 +89,8 @@ class TagsVC: TableViewController {
         }
     }
 
+    // MARK: - View Life Cycle
+
     override init(style: UITableView.Style) {
         super.init(style: style)
         dataSource.parent = self
@@ -88,12 +99,44 @@ class TagsVC: TableViewController {
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
     }
-
-    private enum Section {
-        case main
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureProperties()
+        configureNavigation()
+        configureTableView()
     }
 
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, RelationshipData>
+    override func viewWillAppear(_ animated: Bool) {
+        fetchTags()
+    }
+}
+
+// MARK: - Configuration
+
+private extension TagsVC {
+    private func configureProperties() {
+        title = "Transaction Tags"
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+    
+    private func configureNavigation() {
+        navigationItem.title = "Tags"
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
+        navigationItem.rightBarButtonItem = editButtonItem
+    }
+    
+    private func configureTableView() {
+        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagCell")
+    }
+}
+
+// MARK: - Actions
+
+private extension TagsVC {
+    @objc private func appMovedToForeground() {
+        fetchTags()
+    }
 
     private func makeDataSource() -> DataSource {
         return DataSource(
@@ -116,38 +159,6 @@ class TagsVC: TableViewController {
         snapshot.appendItems(transaction.relationships.tags.data, toSection: .main)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureProperties()
-        configureNavigation()
-        configureTableView()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        fetchTags()
-    }
-}
-
-private extension TagsVC {
-    @objc private func appMovedToForeground() {
-        fetchTags()
-    }
-
-    private func configureProperties() {
-        title = "Transaction Tags"
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-    }
-    
-    private func configureNavigation() {
-        navigationItem.title = "Tags"
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
-        navigationItem.rightBarButtonItem = editButtonItem
-    }
-    
-    private func configureTableView() {
-        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagCell")
-    }
 
     private func fetchTags() {
         AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)", method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
@@ -164,6 +175,8 @@ private extension TagsVC {
         }
     }
 }
+
+// MARK: - UITableViewDelegate
 
 extension TagsVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

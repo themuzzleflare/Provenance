@@ -3,6 +3,8 @@ import TinyConstraints
 import Rswift
 
 class TransactionTableViewCell: UITableViewCell {
+    // MARK: - Properties
+
     static let reuseIdentifier = "transactionTableViewCell"
     
     var transaction: TransactionResource? {
@@ -26,6 +28,8 @@ class TransactionTableViewCell: UITableViewCell {
     private let transactionAmount = UILabel()
     private let verticalStack = UIStackView()
     private let horizontalStack = UIStackView()
+
+    // MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -42,6 +46,8 @@ class TransactionTableViewCell: UITableViewCell {
         fatalError("Not implemented")
     }
 }
+
+// MARK: - Configuration
 
 private extension TransactionTableViewCell {
     private func configureCell() {

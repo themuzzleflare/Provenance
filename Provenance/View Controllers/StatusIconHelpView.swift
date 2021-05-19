@@ -3,6 +3,8 @@ import TinyConstraints
 import Rswift
 
 class StatusIconHelpView: ViewController {
+    // MARK: - Properties
+
     private let configuration = UIImage.SymbolConfiguration(pointSize: 21)
     private let verticalStack = UIStackView()
     private let heldStack = UIStackView()
@@ -12,17 +14,17 @@ class StatusIconHelpView: ViewController {
     private let heldLabel = UILabel()
     private let settledLabel = UILabel()
 
+    // MARK: - View Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
     }
 }
 
+// MARK: - Configuration
+
 private extension StatusIconHelpView {
-    @objc private func closeWorkflow() {
-        navigationController?.dismiss(animated: true)
-    }
-    
     private func configure() {
         title = "Transaction Status Icons"
         navigationItem.title = "Transaction Status Icons"
@@ -57,5 +59,13 @@ private extension StatusIconHelpView {
         settledLabel.translatesAutoresizingMaskIntoConstraints = false
         settledLabel.font = R.font.circularStdBook(size: 23)
         settledLabel.text = "Settled"
+    }
+}
+
+// MARK: - Actions
+
+private extension StatusIconHelpView {
+    @objc private func closeWorkflow() {
+        navigationController?.dismiss(animated: true)
     }
 }

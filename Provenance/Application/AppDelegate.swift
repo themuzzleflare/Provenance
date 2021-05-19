@@ -5,6 +5,8 @@ import Rswift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    // MARK: - Life Cycle
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:[UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         registerDefaults()
         configureFirebase()
@@ -15,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 }
+
+// MARK: - Configuration
 
 private extension AppDelegate {
     private func registerDefaults() {

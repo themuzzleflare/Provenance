@@ -3,6 +3,8 @@ import TinyConstraints
 import Rswift
 
 class AboutTopTableViewCell: UITableViewCell {
+    // MARK: - Properties
+
     static let reuseIdentifier = "aboutTopTableViewCell"
 
     private let logoImageView = UIImageView()
@@ -10,6 +12,8 @@ class AboutTopTableViewCell: UITableViewCell {
     private let descriptionLabel = UILabel()
     private let verticalStack = UIStackView()
 
+    // MARK: - Life Cycle
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
@@ -19,6 +23,8 @@ class AboutTopTableViewCell: UITableViewCell {
         fatalError("Not implemented")
     }
 }
+
+// MARK: - Configuration
 
 private extension AboutTopTableViewCell {
     private func configure() {

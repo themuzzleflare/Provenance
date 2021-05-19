@@ -1,11 +1,15 @@
 import UIKit
 
 class CollectionViewController: UICollectionViewController {
+    // MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
     }
 }
+
+// MARK: - Configuration
 
 private extension CollectionViewController {
     private func configure() {

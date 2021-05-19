@@ -2,9 +2,12 @@ import UIKit
 import Rswift
 
 class DiagnosticTableVC: TableViewController {
+    // MARK: - Properties
+
     private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
-    
+
+    private lazy var dataSource = makeDataSource()
     private lazy var sections: [Section] = [
         Section(title: "Section 1", detailAttributes: [
             DetailAttribute(
@@ -17,9 +20,42 @@ class DiagnosticTableVC: TableViewController {
             )
         ])
     ]
-
-    private lazy var dataSource = makeDataSource()
     
+    // MARK: - View Life Cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureProperties()
+        configureNavigation()
+        configureTableView()
+        applySnapshot()
+    }
+}
+
+// MARK: - Configuration
+
+private extension DiagnosticTableVC {
+    private func configureProperties() {
+        title = "Diagnostics"
+    }
+    
+    private func configureNavigation() {
+        navigationItem.title = "Diagnostics"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+    }
+    
+    private func configureTableView() {
+        tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
+    }
+}
+
+// MARK: - Actions
+
+private extension DiagnosticTableVC {
+    @objc private func closeWorkflow() {
+        navigationController?.dismiss(animated: true)
+    }
+
     private func makeDataSource() -> DataSource {
         return DataSource(
             tableView: tableView,
@@ -40,34 +76,9 @@ class DiagnosticTableVC: TableViewController {
         }
         dataSource.apply(snapshot, animatingDifferences: false)
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureProperties()
-        configureNavigation()
-        configureTableView()
-        applySnapshot()
-    }
 }
 
-private extension DiagnosticTableVC {
-    @objc private func closeWorkflow() {
-        navigationController?.dismiss(animated: true)
-    }
-    
-    private func configureProperties() {
-        title = "Diagnostics"
-    }
-    
-    private func configureNavigation() {
-        navigationItem.title = "Diagnostics"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
-    }
-    
-    private func configureTableView() {
-        tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
-    }
-}
+// MARK: - UITableViewDelegate
 
 extension DiagnosticTableVC {
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

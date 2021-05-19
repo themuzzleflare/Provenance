@@ -1,6 +1,8 @@
 import UIKit
 
 class ActivityIndicator: UIActivityIndicatorView {
+    // MARK: - Life Cycle
+    
     override init(style: UIActivityIndicatorView.Style) {
         super.init(style: style)
     }

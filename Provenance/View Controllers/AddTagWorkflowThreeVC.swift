@@ -3,10 +3,14 @@ import NotificationBannerSwift
 import Rswift
 
 class AddTagWorkflowThreeVC: TableViewController {
+    // MARK: - Properties
+
     var transaction: TransactionResource!
     var tag: String!
 
     private var dateStyleObserver: NSKeyValueObservation?
+
+    // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,6 +19,29 @@ class AddTagWorkflowThreeVC: TableViewController {
         configureTableView()
     }
 }
+
+// MARK: - Configuration
+
+private extension AddTagWorkflowThreeVC {
+    private func configureProperties() {
+        title = "Add Tag Confirmation"
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
+            self.tableView.reloadData()
+        }
+    }
+
+    private func configureNavigation() {
+        navigationItem.title = "Confirmation"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.checkmark(), style: .plain, target: self, action: #selector(addTag))
+    }
+
+    private func configureTableView() {
+        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "attributeCell")
+        tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
+    }
+}
+
+// MARK: - Actions
 
 private extension AddTagWorkflowThreeVC {
     private func errorAlert(_ statusCode: Int) -> (title: String, content: String) {
@@ -72,24 +99,9 @@ private extension AddTagWorkflowThreeVC {
         }
         .resume()
     }
-
-    private func configureProperties() {
-        title = "Add Tag Confirmation"
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
-            self.tableView.reloadData()
-        }
-    }
-
-    private func configureNavigation() {
-        navigationItem.title = "Confirmation"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.checkmark(), style: .plain, target: self, action: #selector(addTag))
-    }
-
-    private func configureTableView() {
-        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "attributeCell")
-        tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
-    }
 }
+
+// MARK: - UITableViewDataSource
 
 extension AddTagWorkflowThreeVC {
     override func numberOfSections(in tableView: UITableView) -> Int {

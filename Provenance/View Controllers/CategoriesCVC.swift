@@ -4,8 +4,23 @@ import TinyConstraints
 import Rswift
 
 class CategoriesCVC: CollectionViewController {
+    // MARK: - Properties
+
+    private enum Section {
+        case main
+    }
+
+    private typealias DataSource = UICollectionViewDiffableDataSource<Section, CategoryResource>
+    private typealias CategoryCell = UICollectionView.CellRegistration<CategoryCollectionViewCell, CategoryResource>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, CategoryResource>
+
+    private lazy var dataSource = makeDataSource()
+
     private let searchController = SearchController(searchResultsController: nil)
     private let refreshControl = RefreshControl(frame: .zero)
+    private let cellRegistration = CategoryCell { cell, indexPath, category in
+        cell.category = category
+    }
     
     private var categoriesStatusCode: Int = 0
     private var categories: [CategoryResource] = [] {
@@ -26,20 +41,64 @@ class CategoriesCVC: CollectionViewController {
         return Category(data: filteredCategories)
     }
     
-    private enum Section {
-        case main
+    // MARK: - View Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureProperties()
+        configureNavigation()
+        configureSearch()
+        configureRefreshControl()
+        configureCollectionView()
+        applySnapshot()
     }
     
-    private typealias DataSource = UICollectionViewDiffableDataSource<Section, CategoryResource>
-    private typealias CategoryCell = UICollectionView.CellRegistration<CategoryCollectionViewCell, CategoryResource>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, CategoryResource>
-    
-    private lazy var dataSource = makeDataSource()
+    override func viewWillAppear(_ animated: Bool) {
+        fetchCategories()
+    }
+}
 
-    private let cellRegistration = CategoryCell { cell, indexPath, category in
-        cell.category = category
+// MARK: - Configuration
+
+private extension CategoriesCVC {
+    private func configureProperties() {
+        title = "Categories"
+        definesPresentationContext = true
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
+    private func configureNavigation() {
+        navigationItem.title = "Loading"
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.arrowUpArrowDownCircle(), style: .plain, target: self, action: nil)
+        navigationItem.searchController = searchController
+    }
+    
+    private func configureSearch() {
+        searchController.searchBar.delegate = self
+    }
+    
+    private func configureRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(refreshCategories), for: .valueChanged)
+    }
+    
+    private func configureCollectionView() {
+        collectionView.refreshControl = refreshControl
+    }
+}
+
+// MARK: - Actions
+
+private extension CategoriesCVC {
+    @objc private func appMovedToForeground() {
+        fetchCategories()
+    }
+
+    @objc private func refreshCategories() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.fetchCategories()
+        }
+    }
+
     private func makeDataSource() -> DataSource {
         return DataSource(collectionView: collectionView) { collectionView, indexPath, category in
             return collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: category)
@@ -123,57 +182,7 @@ class CategoriesCVC: CollectionViewController {
         }
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureProperties()
-        configureNavigation()
-        configureSearch()
-        configureRefreshControl()
-        configureCollectionView()
-        applySnapshot()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        fetchCategories()
-    }
-}
 
-private extension CategoriesCVC {
-    @objc private func appMovedToForeground() {
-        fetchCategories()
-    }
-    
-    @objc private func refreshCategories() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.fetchCategories()
-        }
-    }
-    
-    private func configureProperties() {
-        title = "Categories"
-        definesPresentationContext = true
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-    }
-    
-    private func configureNavigation() {
-        navigationItem.title = "Loading"
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.arrowUpArrowDownCircle(), style: .plain, target: self, action: nil)
-        navigationItem.searchController = searchController
-    }
-    
-    private func configureSearch() {
-        searchController.searchBar.delegate = self
-    }
-    
-    private func configureRefreshControl() {
-        refreshControl.addTarget(self, action: #selector(refreshCategories), for: .valueChanged)
-    }
-    
-    private func configureCollectionView() {
-        collectionView.refreshControl = refreshControl
-    }
-    
     private func fetchCategories() {
         AF.request(UpAPI.Categories().listCategories, method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             self.categoriesStatusCode = response.response?.statusCode ?? 0
@@ -213,6 +222,8 @@ private extension CategoriesCVC {
     }
 }
 
+// MARK: - UICollectionViewDelegate
+
 extension CategoriesCVC {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         navigationController?.pushViewController({let vc = TransactionsByCategoryVC(style: .grouped);vc.category = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
@@ -228,6 +239,8 @@ extension CategoriesCVC {
         }
     }
 }
+
+// MARK: - UISearchBarDelegate
 
 extension CategoriesCVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

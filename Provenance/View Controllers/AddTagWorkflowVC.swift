@@ -4,11 +4,19 @@ import TinyConstraints
 import Rswift
 
 class AddTagWorkflowVC: TableViewController {
-    private let tableRefreshControl = RefreshControl(frame: .zero)
-    private let searchController = SearchController(searchResultsController: nil)
-    
+    // MARK: - Properties
+
+    private enum Section {
+        case main
+    }
+
     private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
+
+    private lazy var dataSource = makeDataSource()
+
+    private let tableRefreshControl = RefreshControl(frame: .zero)
+    private let searchController = SearchController(searchResultsController: nil)
 
     private var dateStyleObserver: NSKeyValueObservation?
     private var transactionsStatusCode: Int = 0
@@ -31,12 +39,72 @@ class AddTagWorkflowVC: TableViewController {
         return Transaction(data: filteredTransactions, links: transactionsPagination)
     }
     
-    private lazy var dataSource = makeDataSource()
+    // MARK: - View Life Cycle
     
-    private enum Section {
-        case main
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureProperties()
+        configureNavigation()
+        configureSearch()
+        configureRefreshControl()
+        configureTableView()
+        applySnapshot()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        fetchTransactions()
+    }
+}
+
+// MARK: - Configuration
+
+private extension AddTagWorkflowVC {
+    private func configureProperties() {
+        title = "Transaction Selection"
+        definesPresentationContext = true
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
+            self.applySnapshot()
+        }
+    }
+    
+    private func configureNavigation() {
+        navigationItem.title = "Loading"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+        navigationItem.searchController = searchController
+    }
+    
+    private func configureSearch() {
+        searchController.searchBar.delegate = self
+    }
+    
+    private func configureRefreshControl() {
+        tableRefreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+    }
+    
+    private func configureTableView() {
+        tableView.refreshControl = tableRefreshControl
+        tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
+    }
+}
+
+// MARK: - Actions
+
+private extension AddTagWorkflowVC {
+    @objc private func appMovedToForeground() {
+        fetchTransactions()
+    }
+
+    @objc private func refreshTransactions() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.fetchTransactions()
+        }
+    }
+
+    @objc private func closeWorkflow() {
+        navigationController?.dismiss(animated: true)
+    }
+
     private func makeDataSource() -> DataSource {
         let dataSource = DataSource(
             tableView: tableView,
@@ -127,64 +195,7 @@ class AddTagWorkflowVC: TableViewController {
         }
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureProperties()
-        configureNavigation()
-        configureSearch()
-        configureRefreshControl()
-        configureTableView()
-        applySnapshot()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        fetchTransactions()
-    }
-}
 
-private extension AddTagWorkflowVC {
-    @objc private func appMovedToForeground() {
-        fetchTransactions()
-    }
-
-    @objc private func refreshTransactions() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.fetchTransactions()
-        }
-    }
-    @objc private func closeWorkflow() {
-        navigationController?.dismiss(animated: true)
-    }
-
-    private func configureProperties() {
-        title = "Transaction Selection"
-        definesPresentationContext = true
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
-            self.applySnapshot()
-        }
-    }
-    
-    private func configureNavigation() {
-        navigationItem.title = "Loading"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
-        navigationItem.searchController = searchController
-    }
-    
-    private func configureSearch() {
-        searchController.searchBar.delegate = self
-    }
-    
-    private func configureRefreshControl() {
-        tableRefreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
-    }
-    
-    private func configureTableView() {
-        tableView.refreshControl = tableRefreshControl
-        tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
-    }
-    
     private func fetchTransactions() {
         AF.request(UpAPI.Transactions().listTransactions, method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             self.transactionsStatusCode = response.response?.statusCode ?? 0
@@ -228,6 +239,8 @@ private extension AddTagWorkflowVC {
     }
 }
 
+// MARK: - UITableViewDelegate
+
 extension AddTagWorkflowVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -251,6 +264,8 @@ extension AddTagWorkflowVC {
         }
     }
 }
+
+// MARK: - UISearchBarDelegate
 
 extension AddTagWorkflowVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

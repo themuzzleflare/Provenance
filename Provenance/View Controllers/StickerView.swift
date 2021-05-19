@@ -3,6 +3,8 @@ import SwiftyGif
 import TinyConstraints
 
 class StickerView: ViewController {
+    // MARK: - Properties
+
     var image: UIImage! {
         didSet {
             imageView.setGifImage(image)
@@ -11,12 +13,16 @@ class StickerView: ViewController {
     }
     
     private let imageView = UIImageView()
+
+    // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
     }
 }
+
+// MARK: - Configuration
 
 private extension StickerView {
     private func configure() {

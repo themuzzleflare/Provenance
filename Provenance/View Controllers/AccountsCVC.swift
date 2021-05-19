@@ -4,13 +4,24 @@ import TinyConstraints
 import Rswift
 
 class AccountsCVC: CollectionViewController {
-    private let searchController = SearchController(searchResultsController: nil)
-    private let refreshControl = RefreshControl(frame: .zero)
-    
+    // MARK: - Properties
+
+    private enum Section {
+        case main
+    }
+
     private typealias DataSource = UICollectionViewDiffableDataSource<Section, AccountResource>
     private typealias AccountCell = UICollectionView.CellRegistration<AccountCollectionViewCell, AccountResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, AccountResource>
-    
+
+    private lazy var dataSource = makeDataSource()
+
+    private let searchController = SearchController(searchResultsController: nil)
+    private let refreshControl = RefreshControl(frame: .zero)
+    private let cellRegistration = AccountCell { cell, indexPath, account in
+        cell.account = account
+    }
+
     private var accountsStatusCode: Int = 0
     private var accounts: [AccountResource] = [] {
         didSet {
@@ -32,22 +43,70 @@ class AccountsCVC: CollectionViewController {
         return Account(data: filteredAccounts, links: accountsPagination)
     }
     
-    private enum Section {
-        case main
+    // MARK: - View Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureProperties()
+        configureNavigation()
+        configureSearch()
+        configureRefreshControl()
+        configureCollectionView()
     }
     
-    private lazy var dataSource = makeDataSource()
+    override func viewWillAppear(_ animated: Bool) {
+        applySnapshot(animate: false)
+        fetchAccounts()
+    }
+}
 
-    private let cellRegistration = AccountCell { cell, indexPath, account in
-        cell.account = account
+// MARK: - Configuration
+
+private extension AccountsCVC {
+    private func configureProperties() {
+        title = "Accounts"
+        definesPresentationContext = true
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
+    private func configureNavigation() {
+        navigationItem.title = "Loading"
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.walletPass(), style: .plain, target: self, action: nil)
+        navigationItem.searchController = searchController
+    }
+    
+    private func configureSearch() {
+        searchController.searchBar.delegate = self
+    }
+    
+    private func configureRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(refreshCategories), for: .valueChanged)
+    }
+    
+    private func configureCollectionView() {
+        collectionView.refreshControl = refreshControl
+    }
+}
+
+// MARK: - Actions
+
+private extension AccountsCVC {
+    @objc private func appMovedToForeground() {
+        fetchAccounts()
+    }
+
+    @objc private func refreshCategories() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.fetchAccounts()
+        }
+    }
+
     private func makeDataSource() -> DataSource {
         return DataSource(collectionView: collectionView) { collectionView, indexPath, account in
             return collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: account)
         }
     }
-    
+
     private func applySnapshot(animate: Bool = true) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
@@ -125,58 +184,8 @@ class AccountsCVC: CollectionViewController {
         }
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureProperties()
-        configureNavigation()
-        configureSearch()
-        configureRefreshControl()
-        configureCollectionView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        applySnapshot(animate: false)
-        fetchCategories()
-    }
-}
 
-private extension AccountsCVC {
-    @objc private func appMovedToForeground() {
-        fetchCategories()
-    }
-    
-    @objc private func refreshCategories() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.fetchCategories()
-        }
-    }
-    
-    private func configureProperties() {
-        title = "Accounts"
-        definesPresentationContext = true
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-    }
-    
-    private func configureNavigation() {
-        navigationItem.title = "Loading"
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.walletPass(), style: .plain, target: self, action: nil)
-        navigationItem.searchController = searchController
-    }
-    
-    private func configureSearch() {
-        searchController.searchBar.delegate = self
-    }
-    
-    private func configureRefreshControl() {
-        refreshControl.addTarget(self, action: #selector(refreshCategories), for: .valueChanged)
-    }
-    
-    private func configureCollectionView() {
-        collectionView.refreshControl = refreshControl
-    }
-    
-    private func fetchCategories() {
+    private func fetchAccounts() {
         AF.request(UpAPI.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             self.accountsStatusCode = response.response?.statusCode ?? 0
             switch response.result {
@@ -219,6 +228,8 @@ private extension AccountsCVC {
     }
 }
 
+// MARK: - UICollectionViewDelegate
+
 extension AccountsCVC {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         navigationController?.pushViewController({let vc = TransactionsByAccountVC(style: .grouped);vc.account = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
@@ -238,6 +249,8 @@ extension AccountsCVC {
         }
     }
 }
+
+// MARK: - UISearchBarDelegate
 
 extension AccountsCVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

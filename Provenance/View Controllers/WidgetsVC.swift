@@ -3,6 +3,8 @@ import TinyConstraints
 import Rswift
 
 class WidgetsVC: ViewController {
+    // MARK: - Properties
+
     private let accountBalanceWidget = UIImageView()
     private let latestTransactionWidget = UIImageView()
     private let instructionTitle = UILabel()
@@ -10,12 +12,16 @@ class WidgetsVC: ViewController {
     private let horizontalStack = UIStackView()
     private let verticalStack = UIStackView()
     private let scrollView = UIScrollView()
+
+    // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
     }
 }
+
+// MARK: - Configuration
 
 private extension WidgetsVC {
     private func configure() {

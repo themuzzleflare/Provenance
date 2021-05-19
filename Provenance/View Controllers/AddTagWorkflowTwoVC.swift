@@ -4,15 +4,23 @@ import TinyConstraints
 import Rswift
 
 class AddTagWorkflowTwoVC: TableViewController {
+    // MARK: - Properties
+
     var transaction: TransactionResource!
-    
-    private weak var submitActionProxy: UIAlertAction?
-    
-    private let tableRefreshControl = RefreshControl(frame: .zero)
-    private let searchController = SearchController(searchResultsController: nil)
-    
+
+    private enum Section {
+        case main
+    }
+
     private typealias DataSource = UITableViewDiffableDataSource<Section, TagResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TagResource>
+
+    private lazy var dataSource = makeDataSource()
+
+    private let tableRefreshControl = RefreshControl(frame: .zero)
+    private let searchController = SearchController(searchResultsController: nil)
+
+    private weak var submitActionProxy: UIAlertAction?
     
     private var textDidChangeObserver: NSObjectProtocol!
     private var tagsStatusCode: Int = 0
@@ -22,7 +30,6 @@ class AddTagWorkflowTwoVC: TableViewController {
             applySnapshot()
             refreshControl?.endRefreshing()
             searchController.searchBar.placeholder = "Search \(tags.count.description) \(tags.count == 1 ? "Tag" : "Tags")"
-
         }
     }
     private var tagsErrorResponse: [ErrorObject] = []
@@ -36,12 +43,100 @@ class AddTagWorkflowTwoVC: TableViewController {
         return Tag(data: filteredTags, links: tagsPagination)
     }
     
-    private lazy var dataSource = makeDataSource()
+    // MARK: - View Life Cycle
     
-    private enum Section {
-        case main
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureProperties()
+        configureNavigation()
+        configureSearch()
+        configureRefreshControl()
+        configureTableView()
+        applySnapshot()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        fetchTags()
+    }
+}
+
+// MARK: - Configuration
+
+private extension AddTagWorkflowTwoVC {
+    private func configureProperties() {
+        title = "Tag Selection"
+        definesPresentationContext = true
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+    
+    private func configureNavigation() {
+        navigationItem.title = "Loading"
+        navigationItem.searchController = searchController
+    }
+    
+    private func configureSearch() {
+        searchController.searchBar.delegate = self
+    }
+    
+    private func configureRefreshControl() {
+        tableRefreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+    }
+    
+    private func configureTableView() {
+        tableView.refreshControl = tableRefreshControl
+        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagCell")
+    }
+}
+
+// MARK: - Actions
+
+private extension AddTagWorkflowTwoVC {
+    @objc private func appMovedToForeground() {
+        fetchTags()
+    }
+
+    @objc private func openAddWorkflow() {
+        let ac = UIAlertController(title: "New Tag", message: "Enter the name of the new tag.", preferredStyle: .alert)
+        ac.addTextField { textField in
+            textField.delegate = self
+            textField.autocapitalizationType = .none
+            textField.autocorrectionType = .no
+            textField.tintColor = R.color.accentColour()
+            self.textDidChangeObserver = NotificationCenter.default.addObserver(
+                forName: UITextField.textDidChangeNotification,
+                object: textField,
+                queue: OperationQueue.main) { (notification) in
+                if let textField = notification.object as? UITextField {
+                    if let text = textField.text {
+                        self.submitActionProxy!.isEnabled = text.count >= 1
+                    } else {
+                        self.submitActionProxy!.isEnabled = false
+                    }
+                }
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+        let submitAction = UIAlertAction(title: "Next", style: .default) { [unowned self] _ in
+            let answer = ac.textFields![0]
+            if !answer.text!.isEmpty {
+                self.navigationController?.pushViewController({let vc = AddTagWorkflowThreeVC(style: .grouped);vc.transaction = self.transaction;vc.tag = answer.text;return vc}(), animated: true)
+            }
+        }
+        submitAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+        submitAction.isEnabled = false
+        submitActionProxy = submitAction
+        ac.addAction(cancelAction)
+        ac.addAction(submitAction)
+        present(ac, animated: true)
+    }
+
+    @objc private func refreshTags() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.fetchTags()
+        }
+    }
+
     private func makeDataSource() -> DataSource {
         let dataSource = DataSource(
             tableView: tableView,
@@ -134,93 +229,7 @@ class AddTagWorkflowTwoVC: TableViewController {
         }
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureProperties()
-        configureNavigation()
-        configureSearch()
-        configureRefreshControl()
-        configureTableView()
-        applySnapshot()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        fetchTags()
-    }
-}
 
-private extension AddTagWorkflowTwoVC {
-    @objc private func appMovedToForeground() {
-        fetchTags()
-    }
-
-    @objc private func openAddWorkflow() {
-        let ac = UIAlertController(title: "New Tag", message: "Enter the name of the new tag.", preferredStyle: .alert)
-        ac.addTextField { textField in
-            textField.delegate = self
-            textField.autocapitalizationType = .none
-            textField.autocorrectionType = .no
-            textField.tintColor = R.color.accentColour()
-            self.textDidChangeObserver = NotificationCenter.default.addObserver(
-                forName: UITextField.textDidChangeNotification,
-                object: textField,
-                queue: OperationQueue.main) { (notification) in
-                if let textField = notification.object as? UITextField {
-                    if let text = textField.text {
-                        self.submitActionProxy!.isEnabled = text.count >= 1
-                    } else {
-                        self.submitActionProxy!.isEnabled = false
-                    }
-                }
-            }
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-        let submitAction = UIAlertAction(title: "Next", style: .default) { [unowned self] _ in
-            let answer = ac.textFields![0]
-            if !answer.text!.isEmpty {
-                self.navigationController?.pushViewController({let vc = AddTagWorkflowThreeVC(style: .grouped);vc.transaction = self.transaction;vc.tag = answer.text;return vc}(), animated: true)
-            }
-        }
-        submitAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-        submitAction.isEnabled = false
-        submitActionProxy = submitAction
-        ac.addAction(cancelAction)
-        ac.addAction(submitAction)
-        present(ac, animated: true)
-    }
-
-    @objc private func refreshTags() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.fetchTags()
-        }
-    }
-
-    private func configureProperties() {
-        title = "Tag Selection"
-        definesPresentationContext = true
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-    }
-    
-    private func configureNavigation() {
-        navigationItem.title = "Loading"
-        navigationItem.searchController = searchController
-    }
-    
-    private func configureSearch() {
-        searchController.searchBar.delegate = self
-    }
-    
-    private func configureRefreshControl() {
-        tableRefreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
-    }
-    
-    private func configureTableView() {
-        tableView.refreshControl = tableRefreshControl
-        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagCell")
-    }
-    
     private func fetchTags() {
         AF.request(UpAPI.Tags().listTags, method: .get, parameters: pageSize200Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             self.tagsStatusCode = response.response?.statusCode ?? 0
@@ -276,6 +285,8 @@ private extension AddTagWorkflowTwoVC {
     }
 }
 
+// MARK: - UITableViewDelegate
+
 extension AddTagWorkflowTwoVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -293,6 +304,8 @@ extension AddTagWorkflowTwoVC {
     }
 }
 
+// MARK: - UITextFieldDelegate
+
 extension AddTagWorkflowTwoVC: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""
@@ -301,6 +314,8 @@ extension AddTagWorkflowTwoVC: UITextFieldDelegate {
         return updatedText.count <= 30
     }
 }
+
+// MARK: - UISearchBarDelegate
 
 extension AddTagWorkflowTwoVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

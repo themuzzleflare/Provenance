@@ -2,11 +2,15 @@ import UIKit
 import Rswift
 
 class TabBarController: UITabBarController {
+    // MARK: - Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
     }
 }
+
+// MARK: - Configuration
 
 private extension TabBarController {
     private func configure() {

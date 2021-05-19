@@ -5,8 +5,11 @@ import SwiftyGif
 import Rswift
 
 // MARK: - UserDefaults Suite for Provenance Application Group
+
 let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
+
 // MARK: - UserDefaults Extension for Value Observation
+
 extension UserDefaults {
     @objc dynamic var apiKey: String {
         get {
@@ -16,6 +19,7 @@ extension UserDefaults {
             set(newValue, forKey: "apiKey")
         }
     }
+
     @objc dynamic var dateStyle: String {
         get {
             return string(forKey: "dateStyle") ?? "Absolute"
@@ -24,26 +28,33 @@ extension UserDefaults {
             set(newValue, forKey: "dateStyle")
         }
     }
+
     var appVersion: String {
         get {
             return string(forKey: "appVersion") ?? "Unknown"
         }
     }
+
     var appBuild: String {
         get {
             return string(forKey: "appBuild") ?? "Unknown"
         }
     }
 }
+
 // MARK: - Application Metadata & Reusable Values
+
 let appName = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "Provenance"
 let appCopyright = Bundle.main.infoDictionary?["NSHumanReadableCopyright"] as? String ?? "Copyright © 2021 Paul Tavitian"
+
 var selectedBackgroundCellView: UIView {
     let view = UIView()
     view.backgroundColor = R.color.accentColour()
     return view
 }
+
 // MARK: - UICollectionView Layouts
+
 func twoColumnGridLayout() -> UICollectionViewLayout {
     let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int,
                                                         layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection in
@@ -63,6 +74,7 @@ func twoColumnGridLayout() -> UICollectionViewLayout {
     }
     return layout
 }
+
 func gridLayout() -> UICollectionViewLayout {
     let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2),
                                           heightDimension: .fractionalHeight(1.0))
@@ -75,13 +87,18 @@ func gridLayout() -> UICollectionViewLayout {
     let layout = UICollectionViewCompositionalLayout(section: section)
     return layout
 }
+
 // MARK: - GIF Stickers Array
+
 private let stickerTwo = try! UIImage(gifName: "StickerTwo.gif")
 private let stickerThree = try! UIImage(gifName: "StickerThree.gif")
 private let stickerSix = try! UIImage(gifName: "StickerSix.gif")
 private let stickerSeven = try! UIImage(gifName: "StickerSeven.gif")
+
 let stickerGifs = [stickerTwo, stickerThree, stickerSix, stickerSeven]
+
 // MARK: - Animated Application Logo
+
 private let up1 = R.image.upLogoSequence.first()!
 private let up2 = R.image.upLogoSequence.second()!
 private let up3 = R.image.upLogoSequence.third()!
@@ -91,32 +108,43 @@ private let up6 = R.image.upLogoSequence.sixth()!
 private let up7 = R.image.upLogoSequence.seventh()!
 private let up8 = R.image.upLogoSequence.eighth()!
 private let upImages = [up1, up2, up3, up4, up5, up6, up7, up8]
+
 let upAnimation = UIImage.animatedImage(with: upImages, duration: 0.65)!
+
 // MARK: - Alamofire Predicates for Up API
+
 var authorisationHeader: HTTPHeader {
     return .authorization(bearerToken: appDefaults.apiKey)
 }
+
 let acceptJsonHeader: HTTPHeader = .accept("application/json")
 let pageSize100Param: [String: Any] = ["page[size]": "100"]
 let pageSize200Param: [String: Any] = ["page[size]": "200"]
+
 func filterCategoryParam(categoryId: String) -> [String: Any] {
     return ["filter[category]": categoryId]
 }
+
 func filterCategoryAndPageSize100Params(categoryId: String) -> [String: Any] {
     return ["filter[category]": categoryId, "page[size]": "100"]
 }
+
 func filterTagParam(tagId: String) -> [String: Any] {
     return ["filter[tag]": tagId]
 }
+
 func filterTagAndPageSize100Params(tagId: String) -> [String: Any] {
     return ["filter[tag]": tagId, "page[size]": "100"]
 }
+
 // MARK: - Protocols & Extensions for URLSession Query Parameter Support
+
 protocol URLQueryParameterStringConvertible {
     var queryParameters: String {
         get
     }
 }
+
 extension Dictionary: URLQueryParameterStringConvertible {
     var queryParameters: String {
         var parts: [String] = []
@@ -129,13 +157,16 @@ extension Dictionary: URLQueryParameterStringConvertible {
         return parts.joined(separator: "&")
     }
 }
+
 extension URL {
     func appendingQueryParameters(_ parametersDictionary : Dictionary<String, String>) -> URL {
         let URLString: String = String(format: "%@?%@", self.absoluteString, parametersDictionary.queryParameters)
         return URL(string: URLString)!
     }
 }
+
 // MARK: - Date Formatters
+
 func formatDateAbsolute(dateString: String) -> String {
     if let date = ISO8601DateFormatter().date(from: dateString) {
         let formatter = DateFormatter()
@@ -147,6 +178,7 @@ func formatDateAbsolute(dateString: String) -> String {
         return dateString
     }
 }
+
 func formatDateRelative(dateString: String) -> String {
     if let date = ISO8601DateFormatter().date(from: dateString) {
         let formatter = RelativeDateTimeFormatter()

@@ -3,6 +3,8 @@ import TinyConstraints
 import Rswift
 
 class AccountCollectionViewCell: UICollectionViewCell {
+    // MARK: - Properties
+    
     static let reuseIdentifier = "accountCollectionViewCell"
     
     var account: AccountResource? {
@@ -20,6 +22,8 @@ class AccountCollectionViewCell: UICollectionViewCell {
     private let balanceLabel = UILabel()
     private let displayNameLabel = UILabel()
     private let verticalStack = UIStackView()
+
+    // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,7 +37,21 @@ class AccountCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
     }
+
+    override var isHighlighted: Bool {
+        didSet {
+            balanceLabel.textColor = isHighlighted ? .label : R.color.accentColour()
+        }
+    }
+
+    override var isSelected: Bool {
+        didSet {
+            balanceLabel.textColor = isSelected ? .label : R.color.accentColour()
+        }
+    }
 }
+
+// MARK: - Configuration
 
 private extension AccountCollectionViewCell {
     private func configureCell() {
@@ -70,19 +88,5 @@ private extension AccountCollectionViewCell {
         verticalStack.axis = .vertical
         verticalStack.alignment = .center
         verticalStack.distribution = .fillProportionally
-    }
-}
-
-extension AccountCollectionViewCell {
-    override var isHighlighted: Bool {
-        didSet {
-            balanceLabel.textColor = isHighlighted ? .label : R.color.accentColour()
-        }
-    }
-
-    override var isSelected: Bool {
-        didSet {
-            balanceLabel.textColor = isSelected ? .label : R.color.accentColour()
-        }
     }
 }

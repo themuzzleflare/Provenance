@@ -4,13 +4,17 @@ import TinyConstraints
 import Rswift
 
 class DateStyleTableViewCell: UITableViewCell {
+    // MARK: - Properties
+    
     static let reuseIdentifier = "dateStyleTableViewCell"
 
-    private var dateStyleObserver: NSKeyValueObservation?
-    
     private let label = UILabel()
     private let segmentedControl = UISegmentedControl()
     private let horizontalStack = UIStackView()
+
+    private var dateStyleObserver: NSKeyValueObservation?
+
+    // MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -33,6 +37,8 @@ class DateStyleTableViewCell: UITableViewCell {
         fatalError("Not implemented")
     }
 }
+
+// MARK: - Configuration
 
 private extension DateStyleTableViewCell {
     private func configureCell() {
@@ -63,10 +69,6 @@ private extension DateStyleTableViewCell {
         }
         segmentedControl.addTarget(self, action: #selector(switchDateStyle), for: .valueChanged)
     }
-
-    @objc private func switchDateStyle() {
-        appDefaults.dateStyle = segmentedControl.titleForSegment(at: segmentedControl.selectedSegmentIndex)!
-    }
     
     private func configureHorizontalStackView() {
         horizontalStack.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
@@ -74,5 +76,13 @@ private extension DateStyleTableViewCell {
         horizontalStack.addArrangedSubview(segmentedControl)
         horizontalStack.alignment = .center
         horizontalStack.distribution = .equalSpacing
+    }
+}
+
+// MARK: - Actions
+
+private extension DateStyleTableViewCell {
+    @objc private func switchDateStyle() {
+        appDefaults.dateStyle = segmentedControl.titleForSegment(at: segmentedControl.selectedSegmentIndex)!
     }
 }

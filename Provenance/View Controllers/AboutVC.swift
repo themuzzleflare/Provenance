@@ -2,21 +2,17 @@ import UIKit
 import Rswift
 
 class AboutVC: TableViewController {
+    // MARK: View Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
     }
 }
 
+// MARK: - Configuration
+
 private extension AboutVC {
-    @objc private func openSettings() {
-        present(NavigationController(rootViewController: SettingsVC(style: .grouped)), animated: true)
-    }
-    
-    @objc private func openDiagnostics() {
-        present(NavigationController(rootViewController: DiagnosticTableVC(style: .grouped)), animated: true)
-    }
-    
     private func configure() {
         title = "About"
         navigationItem.title = "About"
@@ -28,6 +24,20 @@ private extension AboutVC {
         tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "basicCell")
     }
 }
+
+// MARK: - Actions
+
+private extension AboutVC {
+    @objc private func openSettings() {
+        present(NavigationController(rootViewController: SettingsVC(style: .grouped)), animated: true)
+    }
+
+    @objc private func openDiagnostics() {
+        present(NavigationController(rootViewController: DiagnosticTableVC(style: .grouped)), animated: true)
+    }
+}
+
+// MARK: - UITableViewDataSource
 
 extension AboutVC {
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -104,7 +114,20 @@ extension AboutVC {
                 fatalError("Unknown section")
         }
     }
-    
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        switch section {
+            case 2:
+                return appCopyright
+            default:
+                return nil
+        }
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension AboutVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
         let row = indexPath.row
@@ -124,15 +147,6 @@ extension AboutVC {
         }
     }
 
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        switch section {
-            case 2:
-                return appCopyright
-            default:
-                return nil
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let section = indexPath.section
         let row = indexPath.row

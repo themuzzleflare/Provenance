@@ -3,6 +3,8 @@ import SwiftyGif
 import TinyConstraints
 
 class StickerCollectionViewCell: UICollectionViewCell {
+    // MARK: - Properties
+    
     static let reuseIdentifier = "stickerCollectionViewCell"
     
     var image: UIImage! {
@@ -13,6 +15,8 @@ class StickerCollectionViewCell: UICollectionViewCell {
     }
     
     private let stickerImageView = UIImageView()
+
+    // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,6 +27,8 @@ class StickerCollectionViewCell: UICollectionViewCell {
         fatalError("Not implemented")
     }
 }
+
+// MARK: - Configuration
 
 private extension StickerCollectionViewCell {
     private func configure() {
