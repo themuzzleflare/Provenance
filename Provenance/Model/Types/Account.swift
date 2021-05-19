@@ -32,7 +32,7 @@ struct AccountResource: Decodable, Hashable, Identifiable {
 struct AccountAttribute: Decodable {
     var displayName: String
     var accountType: AccountTypeEnum
-    enum AccountTypeEnum: String, CaseIterable, Decodable {
+    enum AccountTypeEnum: String, Decodable {
         case saver = "SAVER"
         case transactional = "TRANSACTIONAL"
     }

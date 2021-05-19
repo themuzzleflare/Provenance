@@ -5,7 +5,7 @@ import SwiftyGif
 import Rswift
 
 // MARK: - UserDefaults Suite for Provenance Application Group
-let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance") ?? .standard
+let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
 // MARK: - UserDefaults Extension for Value Observation
 extension UserDefaults {
     @objc dynamic var apiKey: String {
