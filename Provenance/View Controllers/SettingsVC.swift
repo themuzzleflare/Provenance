@@ -6,7 +6,7 @@ import Rswift
 class SettingsVC: TableViewController {
     var displayBanner: NotificationBanner?
 
-    weak var submitActionProxy: UIAlertAction?
+    private weak var submitActionProxy: UIAlertAction?
     
     private var textDidChangeObserver: NSObjectProtocol!
     

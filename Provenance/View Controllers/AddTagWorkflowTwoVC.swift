@@ -6,7 +6,7 @@ import Rswift
 class AddTagWorkflowTwoVC: TableViewController {
     var transaction: TransactionResource!
     
-    weak var submitActionProxy: UIAlertAction?
+    private weak var submitActionProxy: UIAlertAction?
     
     private let tableRefreshControl = RefreshControl(frame: .zero)
     private let searchController = SearchController(searchResultsController: nil)

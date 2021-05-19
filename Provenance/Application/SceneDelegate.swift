@@ -6,7 +6,7 @@ import Rswift
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
-    weak var submitActionProxy: UIAlertAction?
+    private weak var submitActionProxy: UIAlertAction?
 
     private var savedShortcutItem: UIApplicationShortcutItem!
     private var textDidChangeObserver: NSObjectProtocol!

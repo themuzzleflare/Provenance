@@ -12,7 +12,6 @@ class TransactionsVC: TableViewController {
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
 
     private var dateStyleObserver: NSKeyValueObservation?
-    private lazy var filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), menu: filterMenu())
     private var filter: FilterCategory = .all {
         didSet {
             filterButton.menu = filterMenu()
@@ -41,7 +40,8 @@ class TransactionsVC: TableViewController {
     private var transactionsError: String = ""
     private var categories: [CategoryResource] = []
     private var accounts: [AccountResource] = []
-    
+
+    private lazy var filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), menu: filterMenu())
     private lazy var dataSource = makeDataSource()
     
     private enum Section {
