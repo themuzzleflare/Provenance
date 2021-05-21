@@ -7,13 +7,9 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     
     static let reuseIdentifier = "categoryCollectionViewCell"
 
-    var category: CategoryResource? {
+    var category: CategoryResource! {
         didSet {
-            if let category = category {
-                label.text = category.attributes.name
-            } else {
-                label.text = "Name"
-            }
+            label.text = category.attributes.name
         }
     }
     

@@ -13,7 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var savedShortcutItem: UIApplicationShortcutItem!
     private var textDidChangeObserver: NSObjectProtocol!
 
-    private enum ActionType: String {
+    private enum ShortcutActionType: String {
         case accountsAction = "cloud.tavitian.provenance.accounts"
         case tagsAction = "cloud.tavitian.provenance.tags"
         case categoriesAction = "cloud.tavitian.provenance.categories"
@@ -30,7 +30,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = TabBarController()
         self.window = window
         window.makeKeyAndVisible()
-        initialSetup()
+        checkApiKey()
     }
 
     func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
@@ -45,14 +45,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
-        savedShortcutItem = nil
+        if savedShortcutItem != nil {
+            savedShortcutItem = nil
+        }
     }
 }
 
 // MARK: - Actions
 
 private extension SceneDelegate {
-    private func initialSetup() {
+    private func checkApiKey() {
         if appDefaults.apiKey.isEmpty {
             let ac = UIAlertController(title: "API Key Required", message: "You don't have an API Key set. Set one now.", preferredStyle: .alert)
             ac.addTextField { textField in
@@ -130,7 +132,7 @@ private extension SceneDelegate {
 
     private func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
         let tabcontrol = window?.rootViewController as! TabBarController
-        if let actionTypeValue = ActionType(rawValue: shortcutItem.type) {
+        if let actionTypeValue = ShortcutActionType(rawValue: shortcutItem.type) {
             switch actionTypeValue {
                 case .accountsAction:
                     tabcontrol.selectedIndex = 1

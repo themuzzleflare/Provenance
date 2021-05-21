@@ -7,19 +7,12 @@ class TransactionTableViewCell: UITableViewCell {
 
     static let reuseIdentifier = "transactionTableViewCell"
     
-    var transaction: TransactionResource? {
+    var transaction: TransactionResource! {
         didSet {
-            if let transaction = transaction {
-                transactionDescription.text = transaction.attributes.description
-                transactionCreationDate.text = transaction.attributes.creationDate
-                transactionAmount.textColor = transaction.attributes.amount.valueInBaseUnits.signum() == -1 ? .label : R.color.greenColour()
-                transactionAmount.text = transaction.attributes.amount.valueShort
-            } else {
-                transactionDescription.text = "Description"
-                transactionCreationDate.text = "Creation Date"
-                transactionAmount.textColor = .label
-                transactionAmount.text = "Amount"
-            }
+            transactionDescription.text = transaction.attributes.description
+            transactionCreationDate.text = transaction.attributes.creationDate
+            transactionAmount.textColor = transaction.attributes.amount.valueInBaseUnits.signum() == -1 ? .label : R.color.greenColour()
+            transactionAmount.text = transaction.attributes.amount.valueShort
         }
     }
     

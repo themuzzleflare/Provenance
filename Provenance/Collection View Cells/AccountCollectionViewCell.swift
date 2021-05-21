@@ -7,15 +7,10 @@ class AccountCollectionViewCell: UICollectionViewCell {
     
     static let reuseIdentifier = "accountCollectionViewCell"
     
-    var account: AccountResource? {
+    var account: AccountResource! {
         didSet {
-            if let account = account {
-                balanceLabel.text = account.attributes.balance.valueShort
-                displayNameLabel.text = account.attributes.displayName
-            } else {
-                balanceLabel.text = "Balance"
-                displayNameLabel.text = "Display Name"
-            }
+            balanceLabel.text = account.attributes.balance.valueShort
+            displayNameLabel.text = account.attributes.displayName
         }
     }
     

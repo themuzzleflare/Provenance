@@ -19,8 +19,10 @@ struct LatestTransactionProvider: IntentTimelineProvider {
         url = url.appendingQueryParameters(urlParams)
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("Bearer \(appDefaults.apiKey)", forHTTPHeaderField: "Authorization")
+        request.allHTTPHeaderFields = [
+            "Accept": "application/json",
+            "Authorization": "Bearer \(appDefaults.apiKey)"
+        ]
         URLSession.shared.dataTask(with: request) { data, response, error in
             if error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: data!) {
@@ -131,7 +133,7 @@ struct LatestTransactionEntryView: View {
 
 struct LatestTransaction: Widget {
     var body: some WidgetConfiguration {
-        IntentConfiguration(kind: "cloud.tavitian.provenance.widgets.latest-transaction", intent: DateStyleConfigurationIntent.self, provider: LatestTransactionProvider()) { entry in
+        IntentConfiguration(kind: "latestTransactionWidget", intent: DateStyleConfigurationIntent.self, provider: LatestTransactionProvider()) { entry in
             LatestTransactionEntryView(entry: entry)
         }
         .supportedFamilies([.systemSmall, .systemMedium])

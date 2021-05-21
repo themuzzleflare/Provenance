@@ -18,8 +18,10 @@ struct AccountBalanceProvider: TimelineProvider {
         url = url.appendingQueryParameters(urlParams)
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("Bearer \(appDefaults.apiKey)", forHTTPHeaderField: "Authorization")
+        request.allHTTPHeaderFields = [
+            "Accept": "application/json",
+            "Authorization": "Bearer \(appDefaults.apiKey)"
+        ]
         URLSession.shared.dataTask(with: request) { data, response, error in
             if error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(Account.self, from: data!) {
@@ -97,7 +99,7 @@ struct AccountBalanceEntryView: View {
 
 struct AccountBalance: Widget {
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "cloud.tavitian.provenance.widgets.account-balance", provider: AccountBalanceProvider()) { entry in
+        StaticConfiguration(kind: "accountBalanceWidget", provider: AccountBalanceProvider()) { entry in
             AccountBalanceEntryView(entry: entry)
         }
         .supportedFamilies([.systemSmall, .systemMedium])
