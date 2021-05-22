@@ -1,17 +1,16 @@
 import SwiftUI
 import WidgetKit
-import Intents
 
 struct LatestTransactionProvider: IntentTimelineProvider {
     func placeholder(in context: Context) -> LatestTransactionModel {
         return LatestTransactionModel(date: Date(), configuration: DateStyleConfigurationIntent(), transactionValueInBaseUnits: -1, transactionDescription: "Officeworks", transactionDate: "21 hours ago", transactionAmount: "-$79.95", error: "")
     }
-    
+
     func getSnapshot(for configuration: DateStyleConfigurationIntent, in context: Context, completion: @escaping (LatestTransactionModel) -> ()) {
         let entry = LatestTransactionModel(date: Date(), configuration: configuration, transactionValueInBaseUnits: -1, transactionDescription: "Officeworks", transactionDate: "21 hours ago", transactionAmount: "-$79.95", error: "")
         completion(entry)
     }
-    
+
     func getTimeline(for configuration: DateStyleConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [LatestTransactionModel] = []
         var url = URL(string: "https://api.up.com.au/api/v1/transactions")!
@@ -28,9 +27,12 @@ struct LatestTransactionProvider: IntentTimelineProvider {
                 if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: data!) {
                     var creationDate: String {
                         switch configuration.dateStyle {
-                            case .unknown: return decodedResponse.data.first!.attributes.creationDate
-                            case .absolute: return decodedResponse.data.first!.attributes.creationDateAbsolute
-                            case .relative: return decodedResponse.data.first!.attributes.creationDateRelative
+                            case .unknown:
+                                return decodedResponse.data.first!.attributes.creationDate
+                            case .absolute:
+                                return decodedResponse.data.first!.attributes.creationDateAbsolute
+                            case .relative:
+                                return decodedResponse.data.first!.attributes.creationDateRelative
                         }
                     }
                     DispatchQueue.main.async {
@@ -75,9 +77,9 @@ struct LatestTransactionModel: TimelineEntry {
 
 struct LatestTransactionEntryView: View {
     @Environment(\.widgetFamily) private var family
-    
+
     var entry: LatestTransactionModel
-    
+
     var body: some View {
         ZStack {
             VStack(alignment: .center, spacing: 0) {

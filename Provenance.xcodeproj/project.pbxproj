@@ -12,6 +12,14 @@
 		7A14D5F2261AC5BE00C072E3 /* AccountCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A14D5F1261AC5BE00C072E3 /* AccountCollectionViewCell.swift */; };
 		7A14D600261AD5FF00C072E3 /* FilterCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A14D5FF261AD5FF00C072E3 /* FilterCategory.swift */; };
 		7A14D617261AF39400C072E3 /* BasicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A14D616261AF39400C072E3 /* BasicTableViewCell.swift */; };
+		7A17C18C2657940E00E5EA23 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A17C18B2657940E00E5EA23 /* Intents.framework */; };
+		7A17C1932657940E00E5EA23 /* IntentsHandler.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7A17C18A2657940E00E5EA23 /* IntentsHandler.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7A17C19B2657967100E5EA23 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD1277A260455B800A39272 /* ModelData.swift */; };
+		7A17C19C2657967500E5EA23 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A638F5D263251200042E08F /* Account.swift */; };
+		7A17C19F2657984B00E5EA23 /* AvailableAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A17C19D2657984B00E5EA23 /* AvailableAccounts.swift */; };
+		7A17C1A02657984B00E5EA23 /* AvailableAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A17C19D2657984B00E5EA23 /* AvailableAccounts.swift */; };
+		7A17C1A226579B9600E5EA23 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD12781260455E100A39272 /* Transaction.swift */; };
+		7A17C1A326579EFC00E5EA23 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D3F25C7858E000A1E81 /* Error.swift */; };
 		7A202B5D262908EC00D2450A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A202B5C262908EC00D2450A /* SceneDelegate.swift */; };
 		7A2E6D0025DCA06B00BA2AB6 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2E6CFF25DCA06B00BA2AB6 /* ModelData.swift */; };
 		7A2F18FE261D9CC80054A9B6 /* StickerSeven.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F18F6261D9CC60054A9B6 /* StickerSeven.gif */; };
@@ -20,6 +28,9 @@
 		7A2F1902261D9CC80054A9B6 /* StickerThree.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F18FA261D9CC80054A9B6 /* StickerThree.gif */; };
 		7A2F1946261D9E1E0054A9B6 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F1945261D9E1E0054A9B6 /* R.generated.swift */; };
 		7A2F1978261DA6B20054A9B6 /* StickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F1977261DA6B20054A9B6 /* StickerView.swift */; };
+		7A35ECA42657B88400568ECA /* LatestTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A35ECA32657B88400568ECA /* LatestTransaction.swift */; };
+		7A35ECA72657BF2E00568ECA /* AccountBalance.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7A17C1982657948F00E5EA23 /* AccountBalance.intentdefinition */; };
+		7A35ECA82657BF2F00568ECA /* AccountBalance.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7A17C1982657948F00E5EA23 /* AccountBalance.intentdefinition */; };
 		7A438783263AAC9B008C5714 /* StatusIconHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A438782263AAC9B008C5714 /* StatusIconHelpView.swift */; };
 		7A455CA22607FBFE00A7F2B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
 		7A455CD526080F1300A7F2B8 /* LatestTransaction.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7A7DAC6926071702001349FD /* LatestTransaction.intentdefinition */; };
@@ -34,7 +45,6 @@
 		7A638F5E263251200042E08F /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A638F5D263251200042E08F /* Account.swift */; };
 		7A67980D25D3E15D002AA83A /* DiagnosticTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A67980C25D3E15D002AA83A /* DiagnosticTableVC.swift */; };
 		7A767DE3263F8FC5003D9531 /* CategoryNameTransformed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A767DE2263F8FC5003D9531 /* CategoryNameTransformed.swift */; };
-		7A7DAC82260717A2001349FD /* LatestTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7DAC6726071702001349FD /* LatestTransaction.swift */; };
 		7A7DAC8E2607180E001349FD /* LatestTransaction.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7A7DAC6926071702001349FD /* LatestTransaction.intentdefinition */; };
 		7A8DDCA225D138C200EF85B9 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8DDCA125D138C200EF85B9 /* Category.swift */; };
 		7A8DDCA525D1472400EF85B9 /* TagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8DDCA425D1472400EF85B9 /* TagsVC.swift */; };
@@ -82,6 +92,8 @@
 		7AD295F825D3599A00B8A765 /* AccountDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */; };
 		7AD5944C25C8B3AD0018C86E /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */; };
 		7AD6ED9A2604A9180051A235 /* Provenance Stickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7AD6ED932604A9150051A235 /* Provenance Stickers.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7AD739A22657C04D009FF994 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A17C18E2657940E00E5EA23 /* IntentHandler.swift */; };
+		7AD739A32657C82C009FF994 /* SingleAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAC68FF262D6C9E0046494C /* SingleAccount.swift */; };
 		7AE54D082611671D005D38A5 /* AccountBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE54D072611671D005D38A5 /* AccountBalance.swift */; };
 		7AE75E3725FF1C3B00C16AF6 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE75E3625FF1C3B00C16AF6 /* NavigationController.swift */; };
 		7AE75E3B25FF1EF200C16AF6 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE75E3A25FF1EF200C16AF6 /* ActivityIndicator.swift */; };
@@ -94,6 +106,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		7A17C1912657940E00E5EA23 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7AB34D1225C78230000A1E81 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7A17C1892657940E00E5EA23;
+			remoteInfo = IntentsHandler;
+		};
 		7AD127E72604735B00A39272 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7AB34D1225C78230000A1E81 /* Project object */;
@@ -117,6 +136,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				7A17C1932657940E00E5EA23 /* IntentsHandler.appex in Embed App Extensions */,
 				7AD6ED9A2604A9180051A235 /* Provenance Stickers.appex in Embed App Extensions */,
 				7AD127E92604735B00A39272 /* Provenance Widgets.appex in Embed App Extensions */,
 			);
@@ -133,6 +153,13 @@
 		7A14D5F1261AC5BE00C072E3 /* AccountCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollectionViewCell.swift; sourceTree = "<group>"; };
 		7A14D5FF261AD5FF00C072E3 /* FilterCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategory.swift; sourceTree = "<group>"; };
 		7A14D616261AF39400C072E3 /* BasicTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicTableViewCell.swift; sourceTree = "<group>"; };
+		7A17C18A2657940E00E5EA23 /* IntentsHandler.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = IntentsHandler.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A17C18B2657940E00E5EA23 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		7A17C18E2657940E00E5EA23 /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
+		7A17C1902657940E00E5EA23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7A17C1972657942000E5EA23 /* IntentsHandler.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IntentsHandler.entitlements; sourceTree = "<group>"; };
+		7A17C1982657948F00E5EA23 /* AccountBalance.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = AccountBalance.intentdefinition; sourceTree = "<group>"; };
+		7A17C19D2657984B00E5EA23 /* AvailableAccounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableAccounts.swift; sourceTree = "<group>"; };
 		7A202B5C262908EC00D2450A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7A2E6CFF25DCA06B00BA2AB6 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
 		7A2F18F6261D9CC60054A9B6 /* StickerSeven.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerSeven.gif; sourceTree = "<group>"; };
@@ -141,6 +168,7 @@
 		7A2F18FA261D9CC80054A9B6 /* StickerThree.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerThree.gif; sourceTree = "<group>"; };
 		7A2F1945261D9E1E0054A9B6 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		7A2F1977261DA6B20054A9B6 /* StickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerView.swift; sourceTree = "<group>"; };
+		7A35ECA32657B88400568ECA /* LatestTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestTransaction.swift; sourceTree = "<group>"; };
 		7A438782263AAC9B008C5714 /* StatusIconHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusIconHelpView.swift; sourceTree = "<group>"; };
 		7A455CF5260822CC00A7F2B8 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		7A56100E25D219530091396E /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
@@ -153,7 +181,6 @@
 		7A638F5D263251200042E08F /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		7A67980C25D3E15D002AA83A /* DiagnosticTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticTableVC.swift; sourceTree = "<group>"; };
 		7A767DE2263F8FC5003D9531 /* CategoryNameTransformed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryNameTransformed.swift; sourceTree = "<group>"; };
-		7A7DAC6726071702001349FD /* LatestTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestTransaction.swift; sourceTree = "<group>"; };
 		7A7DAC6926071702001349FD /* LatestTransaction.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = LatestTransaction.intentdefinition; sourceTree = "<group>"; };
 		7A8DDCA125D138C200EF85B9 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		7A8DDCA425D1472400EF85B9 /* TagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsVC.swift; sourceTree = "<group>"; };
@@ -215,6 +242,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7A17C1872657940E00E5EA23 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7A17C18C2657940E00E5EA23 /* Intents.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7AB34D1725C78230000A1E81 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -299,6 +334,16 @@
 			path = "Table View Cells";
 			sourceTree = "<group>";
 		};
+		7A17C18D2657940E00E5EA23 /* IntentsHandler */ = {
+			isa = PBXGroup;
+			children = (
+				7A17C1972657942000E5EA23 /* IntentsHandler.entitlements */,
+				7A17C18E2657940E00E5EA23 /* IntentHandler.swift */,
+				7A17C1902657940E00E5EA23 /* Info.plist */,
+			);
+			path = IntentsHandler;
+			sourceTree = "<group>";
+		};
 		7A22F7E625FFF8860014BDC8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -341,6 +386,7 @@
 			children = (
 				7AD12781260455E100A39272 /* Transaction.swift */,
 				7A638F5D263251200042E08F /* Account.swift */,
+				7A17C19D2657984B00E5EA23 /* AvailableAccounts.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -352,6 +398,7 @@
 				7AB34D1C25C78230000A1E81 /* Provenance */,
 				7AD127DE2604735800A39272 /* Widgets */,
 				7AD6ED942604A9150051A235 /* Stickers */,
+				7A17C18D2657940E00E5EA23 /* IntentsHandler */,
 				7AB34D1B25C78230000A1E81 /* Products */,
 				D3A54786F5922BD1BB89FF35 /* Pods */,
 				EAF805222779581B0B1EB216 /* Frameworks */,
@@ -364,6 +411,7 @@
 				7AB34D1A25C78230000A1E81 /* Provenance.app */,
 				7AD127DB2604735800A39272 /* Provenance Widgets.appex */,
 				7AD6ED932604A9150051A235 /* Provenance Stickers.appex */,
+				7A17C18A2657940E00E5EA23 /* IntentsHandler.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -408,10 +456,11 @@
 			children = (
 				7A8E41D52604816B003D0E6A /* Model */,
 				7AD1279A2604702600A39272 /* ProvenanceWidgets.swift */,
+				7A35ECA32657B88400568ECA /* LatestTransaction.swift */,
 				7AE54D072611671D005D38A5 /* AccountBalance.swift */,
-				7A7DAC6726071702001349FD /* LatestTransaction.swift */,
 				7A0557D42604A0170080D2CD /* Info.plist */,
 				7A7DAC6926071702001349FD /* LatestTransaction.intentdefinition */,
+				7A17C1982657948F00E5EA23 /* AccountBalance.intentdefinition */,
 				7AD127EA2604735B00A39272 /* Widgets.entitlements */,
 			);
 			path = Widgets;
@@ -474,6 +523,7 @@
 				54E8AB3886563257C39F757D /* Pods_Provenance.framework */,
 				7AD317952604412000B4E008 /* WidgetKit.framework */,
 				7AD317972604412000B4E008 /* SwiftUI.framework */,
+				7A17C18B2657940E00E5EA23 /* Intents.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -481,6 +531,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		7A17C1892657940E00E5EA23 /* IntentsHandler */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7A17C1942657940E00E5EA23 /* Build configuration list for PBXNativeTarget "IntentsHandler" */;
+			buildPhases = (
+				7A17C1862657940E00E5EA23 /* Sources */,
+				7A17C1872657940E00E5EA23 /* Frameworks */,
+				7A17C1882657940E00E5EA23 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IntentsHandler;
+			productName = IntentsHandler;
+			productReference = 7A17C18A2657940E00E5EA23 /* IntentsHandler.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		7AB34D1925C78230000A1E81 /* Provenance */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7AB34D2E25C78232000A1E81 /* Build configuration list for PBXNativeTarget "Provenance" */;
@@ -500,6 +567,7 @@
 			dependencies = (
 				7AD127E82604735B00A39272 /* PBXTargetDependency */,
 				7AD6ED992604A9180051A235 /* PBXTargetDependency */,
+				7A17C1922657940E00E5EA23 /* PBXTargetDependency */,
 			);
 			name = Provenance;
 			productName = Sample;
@@ -545,10 +613,13 @@
 		7AB34D1225C78230000A1E81 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1240;
+				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "Tavitian Cloud";
 				TargetAttributes = {
+					7A17C1892657940E00E5EA23 = {
+						CreatedOnToolsVersion = 12.5;
+					};
 					7AB34D1925C78230000A1E81 = {
 						CreatedOnToolsVersion = 12.4;
 					};
@@ -576,11 +647,19 @@
 				7AB34D1925C78230000A1E81 /* Provenance */,
 				7AD127DA2604735800A39272 /* Provenance Widgets */,
 				7AD6ED922604A9150051A235 /* Provenance Stickers */,
+				7A17C1892657940E00E5EA23 /* IntentsHandler */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7A17C1882657940E00E5EA23 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7AB34D1825C78230000A1E81 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -717,6 +796,20 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		7A17C1862657940E00E5EA23 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7A17C1A02657984B00E5EA23 /* AvailableAccounts.swift in Sources */,
+				7A17C1A226579B9600E5EA23 /* Transaction.swift in Sources */,
+				7A17C19C2657967500E5EA23 /* Account.swift in Sources */,
+				7A17C1A326579EFC00E5EA23 /* Error.swift in Sources */,
+				7AD739A22657C04D009FF994 /* IntentHandler.swift in Sources */,
+				7A35ECA82657BF2F00568ECA /* AccountBalance.intentdefinition in Sources */,
+				7A17C19B2657967100E5EA23 /* ModelData.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7AB34D1625C78230000A1E81 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -787,17 +880,25 @@
 				7AD127FA2604739B00A39272 /* Error.swift in Sources */,
 				7A8E41F126048320003D0E6A /* ProvenanceWidgets.swift in Sources */,
 				7AE54D082611671D005D38A5 /* AccountBalance.swift in Sources */,
+				7A35ECA72657BF2E00568ECA /* AccountBalance.intentdefinition in Sources */,
 				7AD12803260473FB00A39272 /* Transaction.swift in Sources */,
+				7AD739A32657C82C009FF994 /* SingleAccount.swift in Sources */,
+				7A17C19F2657984B00E5EA23 /* AvailableAccounts.swift in Sources */,
 				7AD12805260473FB00A39272 /* ModelData.swift in Sources */,
 				7A638F5E263251200042E08F /* Account.swift in Sources */,
+				7A35ECA42657B88400568ECA /* LatestTransaction.swift in Sources */,
 				7A7DAC8E2607180E001349FD /* LatestTransaction.intentdefinition in Sources */,
-				7A7DAC82260717A2001349FD /* LatestTransaction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		7A17C1922657940E00E5EA23 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7A17C1892657940E00E5EA23 /* IntentsHandler */;
+			targetProxy = 7A17C1912657940E00E5EA23 /* PBXContainerItemProxy */;
+		};
 		7AD127E82604735B00A39272 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 7AD127DA2604735800A39272 /* Provenance Widgets */;
@@ -822,6 +923,55 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		7A17C1952657940E00E5EA23 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = IntentsHandler/IntentsHandler.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = JDL5FY6SCC;
+				INFOPLIST_FILE = IntentsHandler/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 14.1;
+				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		7A17C1962657940E00E5EA23 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = IntentsHandler/IntentsHandler.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JDL5FY6SCC;
+				INFOPLIST_FILE = IntentsHandler/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 14.1;
+				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		7AB34D2C25C78232000A1E81 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -961,7 +1111,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 14.0;
+				MARKETING_VERSION = 14.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -992,7 +1142,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 14.0;
+				MARKETING_VERSION = 14.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1022,7 +1172,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 14.0;
+				MARKETING_VERSION = 14.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1052,7 +1202,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 14.0;
+				MARKETING_VERSION = 14.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1076,7 +1226,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 14.0;
+				MARKETING_VERSION = 14.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1097,7 +1247,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 14.0;
+				MARKETING_VERSION = 14.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1110,6 +1260,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7A17C1942657940E00E5EA23 /* Build configuration list for PBXNativeTarget "IntentsHandler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7A17C1952657940E00E5EA23 /* Debug */,
+				7A17C1962657940E00E5EA23 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7AB34D1525C78230000A1E81 /* Build configuration list for PBXProject "Provenance" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

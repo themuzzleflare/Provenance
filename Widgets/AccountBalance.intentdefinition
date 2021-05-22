@@ -3,55 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>INEnums</key>
-	<array>
-		<dict>
-			<key>INEnumDisplayName</key>
-			<string>Date Style</string>
-			<key>INEnumDisplayNameID</key>
-			<string>qXSNI3</string>
-			<key>INEnumGeneratesHeader</key>
-			<true/>
-			<key>INEnumName</key>
-			<string>DateStyle</string>
-			<key>INEnumType</key>
-			<string>Regular</string>
-			<key>INEnumValues</key>
-			<array>
-				<dict>
-					<key>INEnumValueDisplayName</key>
-					<string>unknown</string>
-					<key>INEnumValueDisplayNameID</key>
-					<string>3c0nMM</string>
-					<key>INEnumValueName</key>
-					<string>unknown</string>
-				</dict>
-				<dict>
-					<key>INEnumValueDisplayName</key>
-					<string>Absolute</string>
-					<key>INEnumValueDisplayNameID</key>
-					<string>IwZ6JY</string>
-					<key>INEnumValueIndex</key>
-					<integer>1</integer>
-					<key>INEnumValueName</key>
-					<string>Absolute</string>
-				</dict>
-				<dict>
-					<key>INEnumValueDisplayName</key>
-					<string>Relative</string>
-					<key>INEnumValueDisplayNameID</key>
-					<string>yiNVbj</string>
-					<key>INEnumValueIndex</key>
-					<integer>2</integer>
-					<key>INEnumValueName</key>
-					<string>Relative</string>
-				</dict>
-			</array>
-		</dict>
-	</array>
+	<array/>
 	<key>INIntentDefinitionModelVersion</key>
 	<string>1.2</string>
 	<key>INIntentDefinitionNamespace</key>
-	<string>88xZPY</string>
+	<string>sNqiwu</string>
 	<key>INIntentDefinitionSystemVersion</key>
 	<string>20E241</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
@@ -64,17 +20,17 @@
 			<key>INIntentCategory</key>
 			<string>information</string>
 			<key>INIntentDescription</key>
-			<string>The styling of dates displayed thoughout the application.</string>
+			<string>The selected account.</string>
 			<key>INIntentDescriptionID</key>
-			<string>tVvJ9c</string>
+			<string>x4M5DS</string>
 			<key>INIntentEligibleForWidgets</key>
 			<true/>
 			<key>INIntentIneligibleForSuggestions</key>
 			<true/>
 			<key>INIntentLastParameterTag</key>
-			<integer>6</integer>
+			<integer>4</integer>
 			<key>INIntentName</key>
-			<string>DateStyleConfiguration</string>
+			<string>AccountSelection</string>
 			<key>INIntentParameters</key>
 			<array>
 				<dict>
@@ -83,22 +39,17 @@
 					<key>INIntentParameterCustomDisambiguation</key>
 					<true/>
 					<key>INIntentParameterDisplayName</key>
-					<string>Date Style</string>
+					<string>Account</string>
 					<key>INIntentParameterDisplayNameID</key>
-					<string>OOM2PB</string>
+					<string>7Ag7Rg</string>
 					<key>INIntentParameterDisplayPriority</key>
 					<integer>1</integer>
-					<key>INIntentParameterEnumType</key>
-					<string>DateStyle</string>
-					<key>INIntentParameterEnumTypeNamespace</key>
-					<string>88xZPY</string>
-					<key>INIntentParameterMetadata</key>
-					<dict>
-						<key>INIntentParameterMetadataDefaultValue</key>
-						<string>unknown</string>
-					</dict>
 					<key>INIntentParameterName</key>
-					<string>dateStyle</string>
+					<string>account</string>
+					<key>INIntentParameterObjectType</key>
+					<string>AccountType</string>
+					<key>INIntentParameterObjectTypeNamespace</key>
+					<string>sNqiwu</string>
 					<key>INIntentParameterPromptDialogs</key>
 					<array>
 						<dict>
@@ -117,9 +68,9 @@
 							<key>INIntentParameterPromptDialogCustom</key>
 							<true/>
 							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>There are ${count} options matching ‘${dateStyle}’.</string>
+							<string>There are ${count} options matching ‘${account}’.</string>
 							<key>INIntentParameterPromptDialogFormatStringID</key>
-							<string>FZAhTG</string>
+							<string>aZXHKc</string>
 							<key>INIntentParameterPromptDialogType</key>
 							<string>DisambiguationIntroduction</string>
 						</dict>
@@ -127,19 +78,21 @@
 							<key>INIntentParameterPromptDialogCustom</key>
 							<true/>
 							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>Just to confirm, you wanted ‘${dateStyle}’?</string>
+							<string>Just to confirm, you wanted ‘${account}’?</string>
 							<key>INIntentParameterPromptDialogFormatStringID</key>
-							<string>zmHuzi</string>
+							<string>BFGv8M</string>
 							<key>INIntentParameterPromptDialogType</key>
 							<string>Confirmation</string>
 						</dict>
 					</array>
+					<key>INIntentParameterSupportsDynamicEnumeration</key>
+					<true/>
 					<key>INIntentParameterSupportsResolution</key>
 					<true/>
 					<key>INIntentParameterTag</key>
-					<integer>6</integer>
+					<integer>4</integer>
 					<key>INIntentParameterType</key>
-					<string>Integer</string>
+					<string>Object</string>
 				</dict>
 			</array>
 			<key>INIntentResponse</key>
@@ -158,12 +111,12 @@
 					</dict>
 				</array>
 				<key>INIntentResponseLastParameterTag</key>
-				<integer>2</integer>
+				<integer>3</integer>
 			</dict>
 			<key>INIntentTitle</key>
-			<string>Date Style Configuration</string>
+			<string>Account Selection</string>
 			<key>INIntentTitleID</key>
-			<string>gpCwrM</string>
+			<string>vB0eQr</string>
 			<key>INIntentType</key>
 			<string>Custom</string>
 			<key>INIntentVerb</key>
@@ -171,6 +124,70 @@
 		</dict>
 	</array>
 	<key>INTypes</key>
-	<array/>
+	<array>
+		<dict>
+			<key>INTypeDisplayName</key>
+			<string>AccountType</string>
+			<key>INTypeDisplayNameID</key>
+			<string>61p6Rw</string>
+			<key>INTypeLastPropertyTag</key>
+			<integer>103</integer>
+			<key>INTypeName</key>
+			<string>AccountType</string>
+			<key>INTypeProperties</key>
+			<array>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>1</integer>
+					<key>INTypePropertyName</key>
+					<string>identifier</string>
+					<key>INTypePropertyTag</key>
+					<integer>1</integer>
+					<key>INTypePropertyType</key>
+					<string>String</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>2</integer>
+					<key>INTypePropertyName</key>
+					<string>displayString</string>
+					<key>INTypePropertyTag</key>
+					<integer>2</integer>
+					<key>INTypePropertyType</key>
+					<string>String</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>3</integer>
+					<key>INTypePropertyName</key>
+					<string>pronunciationHint</string>
+					<key>INTypePropertyTag</key>
+					<integer>3</integer>
+					<key>INTypePropertyType</key>
+					<string>String</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>4</integer>
+					<key>INTypePropertyName</key>
+					<string>alternativeSpeakableMatches</string>
+					<key>INTypePropertySupportsMultipleValues</key>
+					<true/>
+					<key>INTypePropertyTag</key>
+					<integer>4</integer>
+					<key>INTypePropertyType</key>
+					<string>SpeakableString</string>
+				</dict>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
