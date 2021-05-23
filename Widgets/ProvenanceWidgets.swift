@@ -4,7 +4,7 @@ import WidgetKit
 @main
 struct ProvenanceWidgets: WidgetBundle {
     var body: some Widget {
-        LatestTransaction()
         AccountBalance()
+        LatestTransaction()
     }
 }

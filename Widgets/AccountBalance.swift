@@ -2,17 +2,19 @@ import SwiftUI
 import WidgetKit
 
 struct AccountBalanceProvider: IntentTimelineProvider {
-    func placeholder(in context: Context) -> AccountBalanceModel {
-        AccountBalanceModel(date: Date(), account: AvailableAccount(id: UUID().uuidString, displayName: "Up Account", balance: "$123.95"))
+    typealias Entry = AccountBalanceModel
+    typealias Intent = AccountSelectionIntent
+
+    func placeholder(in context: Context) -> Entry {
+        Entry(date: Date(), account: AvailableAccount(id: UUID().uuidString, displayName: "Up Account", balance: "$123.95"))
     }
 
-    func getSnapshot(for configuration: AccountSelectionIntent, in context: Context, completion: @escaping (AccountBalanceModel) -> Void) {
-        let entry = AccountBalanceModel(date: Date(), account: AvailableAccount(id: UUID().uuidString, displayName: "Up Account", balance: "$123.95"))
-        completion(entry)
+    func getSnapshot(for configuration: Intent, in context: Context, completion: @escaping (Entry) -> Void) {
+        completion(Entry(date: Date(), account: AvailableAccount(id: UUID().uuidString, displayName: "Up Account", balance: "$123.95")))
     }
 
-    func getTimeline(for configuration: AccountSelectionIntent, in context: Context, completion: @escaping (Timeline<AccountBalanceModel>) -> Void) {
-        var entries: [AccountBalanceModel] = []
+    func getTimeline(for configuration: Intent, in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
+        var entries: [Entry] = []
         let url = URL(string: "https://api.up.com.au/api/v1/accounts/\(configuration.account!.identifier!)")!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -24,9 +26,8 @@ struct AccountBalanceProvider: IntentTimelineProvider {
             if error == nil {
                 if let decodedResponse = try? JSONDecoder().decode(SingleAccountResponse.self, from: data!) {
                     DispatchQueue.main.async {
-                        entries.append(AccountBalanceModel(date: Date(), account: AvailableAccount(id: decodedResponse.data.id, displayName: decodedResponse.data.attributes.displayName, balance: decodedResponse.data.attributes.balance.valueShort)))
-                        let timeline = Timeline(entries: entries, policy: .atEnd)
-                        completion(timeline)
+                        entries.append(Entry(date: Date(), account: AvailableAccount(id: decodedResponse.data.id, displayName: decodedResponse.data.attributes.displayName, balance: decodedResponse.data.attributes.balance.valueShort)))
+                        completion(Timeline(entries: entries, policy: .atEnd))
                     }
                 }
             }
@@ -74,7 +75,19 @@ struct AccountBalance: Widget {
             AccountBalanceEntryView(entry: entry)
         }
         .configurationDisplayName("Account Balance")
-        .description("Displays the balance of an account of your choosing.")
+        .description("Displays the balance of your selected account.")
         .supportedFamilies([.systemSmall, .systemMedium])
+    }
+}
+
+struct AccountBalance_Previews: PreviewProvider {
+    static let families: [WidgetFamily] = [.systemSmall, .systemMedium]
+    static var previews: some View {
+        ForEach(families, id: \.self) { family in
+            AccountBalanceEntryView(entry: AccountBalanceModel(date: Date(), account: AvailableAccount(id: UUID().uuidString, displayName: "Up Account", balance: "$123.95")))
+                .previewContext(WidgetPreviewContext(family: family))
+                .previewDisplayName(family.description)
+                .colorScheme(.dark)
+        }
     }
 }

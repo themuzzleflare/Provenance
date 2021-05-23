@@ -19,11 +19,9 @@ class IntentHandler: INExtension, AccountSelectionIntentHandling {
                 if let decodedResponse = try? JSONDecoder().decode(Account.self, from: data!) {
                     DispatchQueue.main.async {
                         let accounts: [AccountType] = decodedResponse.data.map { account in
-                            let act = AccountType(identifier: account.id, display: account.attributes.displayName, subtitle: account.attributes.balance.valueShort, image: nil)
-                            return act
+                            AccountType(identifier: account.id, display: account.attributes.displayName, subtitle: account.attributes.balance.valueShort, image: nil)
                         }
-                        let collection = INObjectCollection(items: accounts)
-                        completion(collection, nil)
+                        completion(INObjectCollection(items: accounts), nil)
                     }
                 }
             }

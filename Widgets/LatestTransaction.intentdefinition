@@ -74,13 +74,11 @@
 			<key>INIntentLastParameterTag</key>
 			<integer>6</integer>
 			<key>INIntentName</key>
-			<string>DateStyleConfiguration</string>
+			<string>DateStyleSelection</string>
 			<key>INIntentParameters</key>
 			<array>
 				<dict>
 					<key>INIntentParameterConfigurable</key>
-					<true/>
-					<key>INIntentParameterCustomDisambiguation</key>
 					<true/>
 					<key>INIntentParameterDisplayName</key>
 					<string>Date Style</string>
@@ -134,8 +132,6 @@
 							<string>Confirmation</string>
 						</dict>
 					</array>
-					<key>INIntentParameterSupportsResolution</key>
-					<true/>
 					<key>INIntentParameterTag</key>
 					<integer>6</integer>
 					<key>INIntentParameterType</key>
@@ -161,7 +157,7 @@
 				<integer>2</integer>
 			</dict>
 			<key>INIntentTitle</key>
-			<string>Date Style Configuration</string>
+			<string>Date Style Selection</string>
 			<key>INIntentTitleID</key>
 			<string>gpCwrM</string>
 			<key>INIntentType</key>

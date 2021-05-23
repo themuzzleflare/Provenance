@@ -2,17 +2,19 @@ import SwiftUI
 import WidgetKit
 
 struct LatestTransactionProvider: IntentTimelineProvider {
-    func placeholder(in context: Context) -> LatestTransactionModel {
-        return LatestTransactionModel(date: Date(), configuration: DateStyleConfigurationIntent(), transactionValueInBaseUnits: -1, transactionDescription: "Officeworks", transactionDate: "21 hours ago", transactionAmount: "-$79.95", error: "")
+    typealias Entry = LatestTransactionModel
+    typealias Intent = DateStyleSelectionIntent
+
+    func placeholder(in context: Context) -> Entry {
+        Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "Officeworks", transactionDate: "21 hours ago", transactionAmount: "-$79.95", error: "")
     }
 
-    func getSnapshot(for configuration: DateStyleConfigurationIntent, in context: Context, completion: @escaping (LatestTransactionModel) -> ()) {
-        let entry = LatestTransactionModel(date: Date(), configuration: configuration, transactionValueInBaseUnits: -1, transactionDescription: "Officeworks", transactionDate: "21 hours ago", transactionAmount: "-$79.95", error: "")
-        completion(entry)
+    func getSnapshot(for configuration: Intent, in context: Context, completion: @escaping (Entry) -> ()) {
+        completion(Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "Officeworks", transactionDate: "21 hours ago", transactionAmount: "-$79.95", error: ""))
     }
 
-    func getTimeline(for configuration: DateStyleConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [LatestTransactionModel] = []
+    func getTimeline(for configuration: Intent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+        var entries: [Entry] = []
         var url = URL(string: "https://api.up.com.au/api/v1/transactions")!
         let urlParams = ["page[size]":"1"]
         url = url.appendingQueryParameters(urlParams)
@@ -36,28 +38,24 @@ struct LatestTransactionProvider: IntentTimelineProvider {
                         }
                     }
                     DispatchQueue.main.async {
-                        entries.append(LatestTransactionModel(date: Date(), configuration: configuration, transactionValueInBaseUnits: decodedResponse.data.first!.attributes.amount.valueInBaseUnits.signum(), transactionDescription: decodedResponse.data.first!.attributes.description, transactionDate: creationDate, transactionAmount: decodedResponse.data.first!.attributes.amount.valueShort, error: ""))
-                        let timeline = Timeline(entries: entries, policy: .atEnd)
-                        completion(timeline)
+                        entries.append(Entry(date: Date(), transactionValueInBaseUnits: decodedResponse.data.first!.attributes.amount.valueInBaseUnits.signum(), transactionDescription: decodedResponse.data.first!.attributes.description, transactionDate: creationDate, transactionAmount: decodedResponse.data.first!.attributes.amount.valueShort, error: ""))
+                        completion(Timeline(entries: entries, policy: .atEnd))
                     }
                 } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
                     DispatchQueue.main.async {
-                        entries.append(LatestTransactionModel(date: Date(), configuration: configuration, transactionValueInBaseUnits: -1, transactionDescription: "", transactionDate: "", transactionAmount: "", error: decodedResponse.errors.first!.detail))
-                        let timeline = Timeline(entries: entries, policy: .atEnd)
-                        completion(timeline)
+                        entries.append(Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "", transactionDate: "", transactionAmount: "", error: decodedResponse.errors.first!.detail))
+                        completion(Timeline(entries: entries, policy: .atEnd))
                     }
                 } else {
                     DispatchQueue.main.async {
-                        entries.append(LatestTransactionModel(date: Date(), configuration: configuration, transactionValueInBaseUnits: -1, transactionDescription: "", transactionDate: "", transactionAmount: "", error: "JSON Decoding Failed!"))
-                        let timeline = Timeline(entries: entries, policy: .atEnd)
-                        completion(timeline)
+                        entries.append(Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "", transactionDate: "", transactionAmount: "", error: "JSON Decoding Failed!"))
+                        completion(Timeline(entries: entries, policy: .atEnd))
                     }
                 }
             } else {
                 DispatchQueue.main.async {
-                    entries.append(LatestTransactionModel(date: Date(), configuration: configuration, transactionValueInBaseUnits: -1, transactionDescription: "", transactionDate: "", transactionAmount: "", error: error?.localizedDescription ?? "Unknown Error!"))
-                    let timeline = Timeline(entries: entries, policy: .atEnd)
-                    completion(timeline)
+                    entries.append(Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "", transactionDate: "", transactionAmount: "", error: error?.localizedDescription ?? "Unknown Error!"))
+                    completion(Timeline(entries: entries, policy: .atEnd))
                 }
             }
         }
@@ -67,7 +65,6 @@ struct LatestTransactionProvider: IntentTimelineProvider {
 
 struct LatestTransactionModel: TimelineEntry {
     let date: Date
-    let configuration: DateStyleConfigurationIntent
     var transactionValueInBaseUnits: Int64
     var transactionDescription: String
     var transactionDate: String
@@ -78,7 +75,7 @@ struct LatestTransactionModel: TimelineEntry {
 struct LatestTransactionEntryView: View {
     @Environment(\.widgetFamily) private var family
 
-    var entry: LatestTransactionModel
+    var entry: LatestTransactionProvider.Entry
 
     var body: some View {
         ZStack {
@@ -135,7 +132,7 @@ struct LatestTransactionEntryView: View {
 
 struct LatestTransaction: Widget {
     var body: some WidgetConfiguration {
-        IntentConfiguration(kind: "latestTransactionWidget", intent: DateStyleConfigurationIntent.self, provider: LatestTransactionProvider()) { entry in
+        IntentConfiguration(kind: "latestTransactionWidget", intent: DateStyleSelectionIntent.self, provider: LatestTransactionProvider()) { entry in
             LatestTransactionEntryView(entry: entry)
         }
         .supportedFamilies([.systemSmall, .systemMedium])
@@ -148,7 +145,7 @@ struct LatestTransaction_Previews: PreviewProvider {
     static let families: [WidgetFamily] = [.systemSmall, .systemMedium]
     static var previews: some View {
         ForEach(families, id: \.self) { family in
-            LatestTransactionEntryView(entry: LatestTransactionModel(date: Date(), configuration: DateStyleConfigurationIntent(), transactionValueInBaseUnits: -1, transactionDescription: "Officeworks", transactionDate: "21 hours ago", transactionAmount: "-$79.95", error: ""))
+            LatestTransactionEntryView(entry: LatestTransactionModel(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "Officeworks", transactionDate: "21 hours ago", transactionAmount: "-$79.95", error: ""))
                 .previewContext(WidgetPreviewContext(family: family))
                 .previewDisplayName(family.description)
                 .colorScheme(.dark)
