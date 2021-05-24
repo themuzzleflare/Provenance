@@ -135,8 +135,8 @@ extension SettingsVC {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
-        tableView.deselectRow(at: indexPath, animated: true)
         if section == 0 {
+            tableView.deselectRow(at: indexPath, animated: true)
             let ac = UIAlertController(title: "API Key", message: "Enter a new API Key.", preferredStyle: .alert)
             ac.addTextField { textField in
                 textField.autocapitalizationType = .none
@@ -210,6 +210,7 @@ extension SettingsVC {
             ac.addAction(submitAction)
             self.present(ac, animated: true)
         } else if section == 2 {
+            tableView.deselectRow(at: indexPath, animated: true)
             UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         }
     }
