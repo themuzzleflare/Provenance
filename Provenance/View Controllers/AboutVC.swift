@@ -2,7 +2,7 @@ import UIKit
 import Rswift
 
 class AboutVC: TableViewController {
-    // MARK: View Life Cycle
+    // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,7 +16,7 @@ private extension AboutVC {
     private func configure() {
         title = "About"
         navigationItem.title = "About"
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.infoCircle())
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftSlashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.gear(), style: .plain, target: self, action: #selector(openSettings))
         tableView.register(AboutTopTableViewCell.self, forCellReuseIdentifier: AboutTopTableViewCell.reuseIdentifier)

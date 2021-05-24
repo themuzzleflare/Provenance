@@ -101,7 +101,7 @@ private extension TransactionsVC {
     
     private func configureNavigation() {
         navigationItem.title = "Loading"
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle(), style: .plain, target: self, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle())
         navigationItem.searchController = searchController
     }
     

@@ -43,6 +43,7 @@ private extension SettingsVC {
     private func configureTableView() {
         tableView.register(APIKeyTableViewCell.self, forCellReuseIdentifier: APIKeyTableViewCell.reuseIdentifier)
         tableView.register(DateStyleTableViewCell.self, forCellReuseIdentifier: DateStyleTableViewCell.reuseIdentifier)
+        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "settingsCell")
     }
 }
 
@@ -58,7 +59,7 @@ private extension SettingsVC {
 
 extension SettingsVC {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -68,11 +69,21 @@ extension SettingsVC {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: APIKeyTableViewCell.reuseIdentifier, for: indexPath) as! APIKeyTableViewCell
         let dateStyleCell = tableView.dequeueReusableCell(withIdentifier: DateStyleTableViewCell.reuseIdentifier, for: indexPath) as! DateStyleTableViewCell
+        let settingsCell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath) as! BasicTableViewCell
+        settingsCell.separatorInset = .zero
+        settingsCell.accessoryType = .disclosureIndicator
+        settingsCell.selectedBackgroundView = selectedBackgroundCellView
+        settingsCell.imageView?.tintColor = .label
+        settingsCell.imageView?.image = R.image.gearshape()
+        settingsCell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+        settingsCell.textLabel?.text = "Settings"
         switch indexPath.section {
             case 0:
                 return apiKeyCell
             case 1:
                 return dateStyleCell
+            case 2:
+                return settingsCell
             default:
                 fatalError("Unknown section")
         }
@@ -93,6 +104,8 @@ extension SettingsVC {
                 return "The personal access token used to communicate with the Up Banking Developer API."
             case 1:
                 return "The styling of dates displayed thoughout the application."
+            case 2:
+                return "Open the Settings application."
             default:
                 return nil
         }
@@ -102,9 +115,28 @@ extension SettingsVC {
 // MARK: - UITableViewDelegate
 
 extension SettingsVC {
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        switch section {
+            case 2:
+                return UIView()
+            default:
+                return nil
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        switch section {
+            case 2:
+                return 80
+            default:
+                return UITableView.automaticDimension
+        }
+    }
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            tableView.deselectRow(at: indexPath, animated: true)
+        let section = indexPath.section
+        tableView.deselectRow(at: indexPath, animated: true)
+        if section == 0 {
             let ac = UIAlertController(title: "API Key", message: "Enter a new API Key.", preferredStyle: .alert)
             ac.addTextField { textField in
                 textField.autocapitalizationType = .none
@@ -177,6 +209,8 @@ extension SettingsVC {
             ac.addAction(cancelAction)
             ac.addAction(submitAction)
             self.present(ac, animated: true)
+        } else if section == 2 {
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         }
     }
 

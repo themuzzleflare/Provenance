@@ -69,7 +69,7 @@ private extension CategoriesCVC {
     
     private func configureNavigation() {
         navigationItem.title = "Loading"
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.arrowUpArrowDownCircle(), style: .plain, target: self, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.arrowUpArrowDownCircle())
         navigationItem.searchController = searchController
     }
     

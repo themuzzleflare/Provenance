@@ -66,7 +66,7 @@ private extension AllTagsVC {
     
     private func configureNavigation() {
         navigationItem.title = "Loading"
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag())
         navigationItem.searchController = searchController
     }
     
@@ -109,6 +109,8 @@ private extension AllTagsVC {
                 cell.selectedBackgroundView = selectedBackgroundCellView
                 cell.separatorInset = .zero
                 cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                cell.textLabel?.textAlignment = .left
+                cell.textLabel?.numberOfLines = 0
                 cell.textLabel?.text = tag.id
                 return cell
             }

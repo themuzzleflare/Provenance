@@ -122,7 +122,7 @@ private extension TagsVC {
     
     private func configureNavigation() {
         navigationItem.title = "Tags"
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag(), style: .plain, target: self, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag())
         navigationItem.rightBarButtonItem = editButtonItem
     }
     
@@ -143,9 +143,11 @@ private extension TagsVC {
             tableView: tableView,
             cellProvider: { tableView, indexPath, tag in
                 let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
+                cell.separatorInset = .zero
                 cell.selectedBackgroundView = selectedBackgroundCellView
                 cell.accessoryType = .disclosureIndicator
                 cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                cell.textLabel?.textAlignment = .left
                 cell.textLabel?.numberOfLines = 0
                 cell.textLabel?.text = tag.id
                 return cell

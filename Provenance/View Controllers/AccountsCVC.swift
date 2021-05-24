@@ -71,7 +71,7 @@ private extension AccountsCVC {
     
     private func configureNavigation() {
         navigationItem.title = "Loading"
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.walletPass(), style: .plain, target: self, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.walletPass())
         navigationItem.searchController = searchController
     }
     

@@ -13,10 +13,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var savedShortcutItem: UIApplicationShortcutItem!
     private var textDidChangeObserver: NSObjectProtocol!
 
-    private enum ShortcutActionType: String {
-        case accountsAction = "cloud.tavitian.provenance.accounts"
-        case tagsAction = "cloud.tavitian.provenance.tags"
-        case categoriesAction = "cloud.tavitian.provenance.categories"
+    private enum ShortcutAction: String {
+        case transactions = "transactionsShortcut"
+        case accounts = "accountsShortcut"
+        case tags = "tagsShortcut"
+        case categories = "categoriesShortcut"
     }
 
     // MARK: - Life Cycle
@@ -34,8 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        let handled = handleShortcutItem(shortcutItem: shortcutItem)
-        completionHandler(handled)
+        completionHandler(handleShortcutItem(shortcutItem: shortcutItem))
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
@@ -61,7 +61,6 @@ private extension SceneDelegate {
                 textField.autocapitalizationType = .none
                 textField.autocorrectionType = .no
                 textField.tintColor = R.color.accentColour()
-                textField.text = appDefaults.apiKey
                 self.textDidChangeObserver = NotificationCenter.default.addObserver(
                     forName: UITextField.textDidChangeNotification,
                     object: textField,
@@ -117,7 +116,6 @@ private extension SceneDelegate {
                 } else {
                     let notificationBanner = NotificationBanner(title: "Failed", subtitle: "The provided API Key was the same as the current one.", style: .danger)
                     notificationBanner.duration = 2
-                    WidgetCenter.shared.reloadAllTimelines()
                     self.window?.rootViewController?.present({let vc = NavigationController(rootViewController: {let vc = SettingsVC(style: .grouped);vc.displayBanner = notificationBanner;return vc}());vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
                 }
             }
@@ -131,15 +129,17 @@ private extension SceneDelegate {
     }
 
     private func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
-        let tabcontrol = window?.rootViewController as! TabBarController
-        if let actionTypeValue = ShortcutActionType(rawValue: shortcutItem.type) {
+        let tabcontroller = window?.rootViewController as! TabBarController
+        if let actionTypeValue = ShortcutAction(rawValue: shortcutItem.type) {
             switch actionTypeValue {
-                case .accountsAction:
-                    tabcontrol.selectedIndex = 1
-                case .tagsAction:
-                    tabcontrol.selectedIndex = 2
-                case .categoriesAction:
-                    tabcontrol.selectedIndex = 3
+                case .transactions:
+                    tabcontroller.selectedIndex = 0
+                case .accounts:
+                    tabcontroller.selectedIndex = 1
+                case .tags:
+                    tabcontroller.selectedIndex = 2
+                case .categories:
+                    tabcontroller.selectedIndex = 3
             }
         }
         return true

@@ -143,7 +143,10 @@ private extension AddTagWorkflowTwoVC {
             cellProvider: { tableView, indexPath, tag in
                 let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
                 cell.selectedBackgroundView = selectedBackgroundCellView
+                cell.separatorInset = .zero
                 cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                cell.textLabel?.textAlignment = .left
+                cell.textLabel?.numberOfLines = 0
                 cell.textLabel?.text = tag.id
                 return cell
             }

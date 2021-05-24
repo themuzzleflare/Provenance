@@ -99,17 +99,16 @@ let stickerGifs = [stickerTwo, stickerThree, stickerSix, stickerSeven]
 
 // MARK: - Animated Application Logo
 
-private let up1 = R.image.upLogoSequence.first()!
-private let up2 = R.image.upLogoSequence.second()!
-private let up3 = R.image.upLogoSequence.third()!
-private let up4 = R.image.upLogoSequence.fourth()!
-private let up5 = R.image.upLogoSequence.fifth()!
-private let up6 = R.image.upLogoSequence.sixth()!
-private let up7 = R.image.upLogoSequence.seventh()!
-private let up8 = R.image.upLogoSequence.eighth()!
-private let upImages = [up1, up2, up3, up4, up5, up6, up7, up8]
-
-let upAnimation = UIImage.animatedImage(with: upImages, duration: 0.65)!
+let upAnimation = UIImage.animatedImage(with: [
+    R.image.upLogoSequence.first()!,
+    R.image.upLogoSequence.second()!,
+    R.image.upLogoSequence.third()!,
+    R.image.upLogoSequence.fourth()!,
+    R.image.upLogoSequence.fifth()!,
+    R.image.upLogoSequence.sixth()!,
+    R.image.upLogoSequence.seventh()!,
+    R.image.upLogoSequence.eighth()!
+], duration: 0.65)!
 
 // MARK: - Alamofire Predicates for Up API
 

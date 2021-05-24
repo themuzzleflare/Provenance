@@ -44,7 +44,7 @@
 			<array>
 				<dict>
 					<key>UISceneConfigurationName</key>
-					<string>Default Configuration</string>
+					<string>Main Configuration</string>
 					<key>UISceneDelegateClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
 				</dict>
@@ -55,11 +55,19 @@
 	<array>
 		<dict>
 			<key>UIApplicationShortcutItemIconFile</key>
+			<string>dollarsign.circle</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Transactions</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>transactionsShortcut</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
 			<string>wallet.pass</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Accounts</string>
 			<key>UIApplicationShortcutItemType</key>
-			<string>cloud.tavitian.provenance.accounts</string>
+			<string>accountsShortcut</string>
 		</dict>
 		<dict>
 			<key>UIApplicationShortcutItemIconFile</key>
@@ -67,7 +75,7 @@
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Tags</string>
 			<key>UIApplicationShortcutItemType</key>
-			<string>cloud.tavitian.provenance.tags</string>
+			<string>tagsShortcut</string>
 		</dict>
 		<dict>
 			<key>UIApplicationShortcutItemIconFile</key>
@@ -75,7 +83,7 @@
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Categories</string>
 			<key>UIApplicationShortcutItemType</key>
-			<string>cloud.tavitian.provenance.categories</string>
+			<string>categoriesShortcut</string>
 		</dict>
 	</array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
