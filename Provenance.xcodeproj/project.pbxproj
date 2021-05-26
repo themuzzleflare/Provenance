@@ -13,7 +13,7 @@
 		7A14D600261AD5FF00C072E3 /* FilterCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A14D5FF261AD5FF00C072E3 /* FilterCategory.swift */; };
 		7A14D617261AF39400C072E3 /* BasicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A14D616261AF39400C072E3 /* BasicTableViewCell.swift */; };
 		7A17C18C2657940E00E5EA23 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A17C18B2657940E00E5EA23 /* Intents.framework */; };
-		7A17C1932657940E00E5EA23 /* IntentsHandler.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7A17C18A2657940E00E5EA23 /* IntentsHandler.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7A17C1932657940E00E5EA23 /* Provenance Intents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7A17C18A2657940E00E5EA23 /* Provenance Intents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7A17C19B2657967100E5EA23 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD1277A260455B800A39272 /* ModelData.swift */; };
 		7A17C19C2657967500E5EA23 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A638F5D263251200042E08F /* Account.swift */; };
 		7A17C19F2657984B00E5EA23 /* AvailableAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A17C19D2657984B00E5EA23 /* AvailableAccount.swift */; };
@@ -135,7 +135,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				7A17C1932657940E00E5EA23 /* IntentsHandler.appex in Embed App Extensions */,
+				7A17C1932657940E00E5EA23 /* Provenance Intents.appex in Embed App Extensions */,
 				7AD6ED9A2604A9180051A235 /* Provenance Stickers.appex in Embed App Extensions */,
 				7AD127E92604735B00A39272 /* Provenance Widgets.appex in Embed App Extensions */,
 			);
@@ -152,11 +152,11 @@
 		7A14D5F1261AC5BE00C072E3 /* AccountCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollectionViewCell.swift; sourceTree = "<group>"; };
 		7A14D5FF261AD5FF00C072E3 /* FilterCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategory.swift; sourceTree = "<group>"; };
 		7A14D616261AF39400C072E3 /* BasicTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicTableViewCell.swift; sourceTree = "<group>"; };
-		7A17C18A2657940E00E5EA23 /* IntentsHandler.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = IntentsHandler.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A17C18A2657940E00E5EA23 /* Provenance Intents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance Intents.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A17C18B2657940E00E5EA23 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		7A17C18E2657940E00E5EA23 /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
 		7A17C1902657940E00E5EA23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7A17C1972657942000E5EA23 /* IntentsHandler.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IntentsHandler.entitlements; sourceTree = "<group>"; };
+		7A17C1972657942000E5EA23 /* Intents.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Intents.entitlements; sourceTree = "<group>"; };
 		7A17C1982657948F00E5EA23 /* AccountBalance.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = AccountBalance.intentdefinition; sourceTree = "<group>"; };
 		7A17C19D2657984B00E5EA23 /* AvailableAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableAccount.swift; sourceTree = "<group>"; };
 		7A202B5C262908EC00D2450A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -333,14 +333,14 @@
 			path = "Table View Cells";
 			sourceTree = "<group>";
 		};
-		7A17C18D2657940E00E5EA23 /* IntentsHandler */ = {
+		7A17C18D2657940E00E5EA23 /* Intents */ = {
 			isa = PBXGroup;
 			children = (
-				7A17C1972657942000E5EA23 /* IntentsHandler.entitlements */,
+				7A17C1972657942000E5EA23 /* Intents.entitlements */,
 				7A17C18E2657940E00E5EA23 /* IntentHandler.swift */,
 				7A17C1902657940E00E5EA23 /* Info.plist */,
 			);
-			path = IntentsHandler;
+			path = Intents;
 			sourceTree = "<group>";
 		};
 		7A22F7E625FFF8860014BDC8 /* Model */ = {
@@ -397,7 +397,7 @@
 				7AB34D1C25C78230000A1E81 /* Provenance */,
 				7AD127DE2604735800A39272 /* Widgets */,
 				7AD6ED942604A9150051A235 /* Stickers */,
-				7A17C18D2657940E00E5EA23 /* IntentsHandler */,
+				7A17C18D2657940E00E5EA23 /* Intents */,
 				7AB34D1B25C78230000A1E81 /* Products */,
 				D3A54786F5922BD1BB89FF35 /* Pods */,
 				EAF805222779581B0B1EB216 /* Frameworks */,
@@ -410,7 +410,7 @@
 				7AB34D1A25C78230000A1E81 /* Provenance.app */,
 				7AD127DB2604735800A39272 /* Provenance Widgets.appex */,
 				7AD6ED932604A9150051A235 /* Provenance Stickers.appex */,
-				7A17C18A2657940E00E5EA23 /* IntentsHandler.appex */,
+				7A17C18A2657940E00E5EA23 /* Provenance Intents.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -530,9 +530,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		7A17C1892657940E00E5EA23 /* IntentsHandler */ = {
+		7A17C1892657940E00E5EA23 /* Provenance Intents */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7A17C1942657940E00E5EA23 /* Build configuration list for PBXNativeTarget "IntentsHandler" */;
+			buildConfigurationList = 7A17C1942657940E00E5EA23 /* Build configuration list for PBXNativeTarget "Provenance Intents" */;
 			buildPhases = (
 				7A17C1862657940E00E5EA23 /* Sources */,
 				7A17C1872657940E00E5EA23 /* Frameworks */,
@@ -542,9 +542,9 @@
 			);
 			dependencies = (
 			);
-			name = IntentsHandler;
+			name = "Provenance Intents";
 			productName = IntentsHandler;
-			productReference = 7A17C18A2657940E00E5EA23 /* IntentsHandler.appex */;
+			productReference = 7A17C18A2657940E00E5EA23 /* Provenance Intents.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		7AB34D1925C78230000A1E81 /* Provenance */ = {
@@ -646,7 +646,7 @@
 				7AB34D1925C78230000A1E81 /* Provenance */,
 				7AD127DA2604735800A39272 /* Provenance Widgets */,
 				7AD6ED922604A9150051A235 /* Provenance Stickers */,
-				7A17C1892657940E00E5EA23 /* IntentsHandler */,
+				7A17C1892657940E00E5EA23 /* Provenance Intents */,
 			);
 		};
 /* End PBXProject section */
@@ -894,7 +894,7 @@
 /* Begin PBXTargetDependency section */
 		7A17C1922657940E00E5EA23 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 7A17C1892657940E00E5EA23 /* IntentsHandler */;
+			target = 7A17C1892657940E00E5EA23 /* Provenance Intents */;
 			targetProxy = 7A17C1912657940E00E5EA23 /* PBXContainerItemProxy */;
 		};
 		7AD127E82604735B00A39272 /* PBXTargetDependency */ = {
@@ -924,20 +924,20 @@
 		7A17C1952657940E00E5EA23 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = IntentsHandler/IntentsHandler.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Intents/Intents.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				INFOPLIST_FILE = IntentsHandler/Info.plist;
+				INFOPLIST_FILE = Intents/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 14.4;
+				MARKETING_VERSION = 14.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -949,19 +949,19 @@
 		7A17C1962657940E00E5EA23 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = IntentsHandler/IntentsHandler.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Intents/Intents.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				INFOPLIST_FILE = IntentsHandler/Info.plist;
+				INFOPLIST_FILE = Intents/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 14.4;
+				MARKETING_VERSION = 14.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1109,7 +1109,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 14.4;
+				MARKETING_VERSION = 14.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1140,7 +1140,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 14.4;
+				MARKETING_VERSION = 14.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1170,7 +1170,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 14.4;
+				MARKETING_VERSION = 14.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1200,7 +1200,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 14.4;
+				MARKETING_VERSION = 14.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1224,7 +1224,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 14.4;
+				MARKETING_VERSION = 14.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1245,7 +1245,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 14.4;
+				MARKETING_VERSION = 14.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1258,7 +1258,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7A17C1942657940E00E5EA23 /* Build configuration list for PBXNativeTarget "IntentsHandler" */ = {
+		7A17C1942657940E00E5EA23 /* Build configuration list for PBXNativeTarget "Provenance Intents" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7A17C1952657940E00E5EA23 /* Debug */,
