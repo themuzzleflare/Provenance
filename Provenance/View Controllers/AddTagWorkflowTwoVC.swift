@@ -172,13 +172,23 @@ private extension AddTagWorkflowTwoVC {
             } else {
                 tableView.backgroundView = {
                     let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
+                    let icon = UIImageView(image: R.image.xmarkDiamond())
+                    icon.tintColor = .secondaryLabel
+                    icon.width(70)
+                    icon.height(64)
                     let label = UILabel()
-                    view.addSubview(label)
-                    label.center(in: view)
+                    label.translatesAutoresizingMaskIntoConstraints = false
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
-                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                    label.font = R.font.circularStdBook(size: 23)
                     label.text = "No Tags"
+                    let vstack = UIStackView(arrangedSubviews: [icon, label])
+                    vstack.axis = .vertical
+                    vstack.alignment = .center
+                    vstack.spacing = 10
+                    view.addSubview(vstack)
+                    vstack.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
+                    vstack.center(in: view)
                     return view
                 }()
             }

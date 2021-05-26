@@ -9,8 +9,8 @@ class AttributeTableViewCell: UITableViewCell {
 
     private let horizontalStack = UIStackView()
     
-    let leftLabel = UILabel()
-    let rightLabel = UILabel()
+    var leftLabel = UILabel()
+    var rightLabel = UILabel()
 
     // MARK: - Life Cycle
     
