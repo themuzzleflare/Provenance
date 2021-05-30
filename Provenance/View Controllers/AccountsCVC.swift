@@ -45,13 +45,17 @@ class AccountsCVC: CollectionViewController {
     
     // MARK: - View Life Cycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(collectionViewLayout layout: UICollectionViewLayout) {
+        super.init(collectionViewLayout: layout)
         configureProperties()
         configureNavigation()
         configureSearch()
         configureRefreshControl()
         configureCollectionView()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewWillAppear(_ animated: Bool) {

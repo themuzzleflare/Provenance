@@ -43,8 +43,8 @@ class CategoriesCVC: CollectionViewController {
     
     // MARK: - View Life Cycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(collectionViewLayout layout: UICollectionViewLayout) {
+        super.init(collectionViewLayout: layout)
         configureProperties()
         configureNavigation()
         configureSearch()
@@ -52,7 +52,11 @@ class CategoriesCVC: CollectionViewController {
         configureCollectionView()
         applySnapshot()
     }
-    
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         fetchCategories()
     }
