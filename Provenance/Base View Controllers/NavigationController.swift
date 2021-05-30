@@ -1,7 +1,8 @@
 import UIKit
+import AsyncDisplayKit
 import Rswift
 
-class NavigationController: UINavigationController {
+class NavigationController: ASNavigationController {
     // MARK: - Life Cycle
 
     override func viewDidLoad() {

@@ -11,5 +11,6 @@ target 'Provenance' do
   pod 'NotificationBannerSwift', '~> 3.0.0'
   pod 'Firebase/Analytics'
   pod 'Firebase/Crashlytics'
+  pod "Texture"
   
 end
