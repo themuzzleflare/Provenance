@@ -117,20 +117,16 @@ class TransactionsByTagVC: TableViewController {
     override init(style: UITableView.Style) {
         super.init(style: style)
         dataSource.parent = self
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("Not implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         configureProperties()
         configureNavigation()
         configureSearch()
         configureRefreshControl()
         configureTableView()
         applySnapshot()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Not implemented")
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -3,9 +3,13 @@ import UIKit
 class ViewController: UIViewController {
     // MARK: - Life Cycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         configure()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

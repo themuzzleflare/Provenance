@@ -5,9 +5,13 @@ import Rswift
 class NavigationController: ASNavigationController {
     // MARK: - Life Cycle
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(rootViewController: UIViewController) {
+        super.init(rootViewController: rootViewController)
         configure()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

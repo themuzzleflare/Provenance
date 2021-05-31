@@ -46,6 +46,7 @@ struct AccountBalanceEntryView: View {
 
     var entry: AccountBalanceProvider.Entry
 
+    @ViewBuilder
     var body: some View {
         ZStack {
             VStack(alignment: .center, spacing: 0) {

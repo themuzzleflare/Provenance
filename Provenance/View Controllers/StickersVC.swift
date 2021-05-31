@@ -3,9 +3,13 @@ import UIKit
 class StickersVC: CollectionViewController {
     // MARK: - View Life Cycle
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(collectionViewLayout layout: UICollectionViewLayout) {
+        super.init(collectionViewLayout: layout)
         configure()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

@@ -3,9 +3,13 @@ import UIKit
 class CollectionViewController: UICollectionViewController {
     // MARK: - Life Cycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(collectionViewLayout layout: UICollectionViewLayout) {
+        super.init(collectionViewLayout: layout)
         configure()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

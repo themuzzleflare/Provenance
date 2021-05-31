@@ -14,11 +14,15 @@ class SettingsVC: TableViewController {
 
     // MARK: - View Life Cycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(style: UITableView.Style) {
+        super.init(style: style)
         configureProperties()
         configureNavigation()
         configureTableView()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidAppear(_ animated: Bool) {

@@ -17,6 +17,7 @@ extension UserDefaults {
         }
         set {
             set(newValue, forKey: "apiKey")
+            print("Set API Key to: \(newValue)")
         }
     }
 
@@ -26,6 +27,7 @@ extension UserDefaults {
         }
         set {
             set(newValue, forKey: "dateStyle")
+            print("Set Date Style to: \(newValue)")
         }
     }
 

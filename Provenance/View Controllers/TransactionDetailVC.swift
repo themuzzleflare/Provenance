@@ -83,9 +83,17 @@ class TransactionDetailVC: TableViewController {
 
     // MARK: - View Life Cycle
 
+    override init(style: UITableView.Style) {
+        super.init(style: style)
+        configureProperties()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureProperties()
         configureScrollingTitle()
         configureNavigation()
         configureTableView()

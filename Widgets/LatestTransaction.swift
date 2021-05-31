@@ -77,6 +77,7 @@ struct LatestTransactionEntryView: View {
 
     var entry: LatestTransactionProvider.Entry
 
+    @ViewBuilder
     var body: some View {
         ZStack {
             VStack(alignment: .center, spacing: 0) {
@@ -135,9 +136,9 @@ struct LatestTransaction: Widget {
         IntentConfiguration(kind: "latestTransactionWidget", intent: DateStyleSelectionIntent.self, provider: LatestTransactionProvider()) { entry in
             LatestTransactionEntryView(entry: entry)
         }
-        .supportedFamilies([.systemSmall, .systemMedium])
         .configurationDisplayName("Latest Transaction")
         .description("Displays the latest transaction.")
+        .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
 

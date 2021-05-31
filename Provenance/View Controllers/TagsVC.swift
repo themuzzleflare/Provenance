@@ -94,17 +94,13 @@ class TagsVC: TableViewController {
     override init(style: UITableView.Style) {
         super.init(style: style)
         dataSource.parent = self
+        configureProperties()
+        configureNavigation()
+        configureTableView()
     }
 
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureProperties()
-        configureNavigation()
-        configureTableView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
