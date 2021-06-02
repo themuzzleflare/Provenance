@@ -20,6 +20,7 @@ class TransactionsVC: TableViewController {
     private let tableRefreshControl = RefreshControl(frame: .zero)
     private let searchController = SearchController(searchResultsController: nil)
 
+    private var loading: Bool = false
     private var dateStyleObserver: NSKeyValueObservation?
     private var searchBarPlaceholder: String {
         "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
@@ -143,8 +144,8 @@ private extension TransactionsVC {
     @objc private func refreshTransactions() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchTransactions()
-            self.fetchCategories()
             self.fetchAccounts()
+            self.fetchCategories()
         }
     }
 
@@ -316,6 +317,26 @@ private extension TransactionsVC {
         }
     }
 
+    private func fetchNextPage(urlString: String) {
+        AF.request(urlString, method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
+            switch response.result {
+                case .success:
+                    if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
+                        self.loading = false
+                        self.transactionsPagination = decodedResponse.links
+                        self.transactions.append(contentsOf: decodedResponse.data)
+                        if self.tableView.tableFooterView != nil {
+                            self.tableView.tableFooterView = nil
+                        }
+                    } else {
+                        print("JSON decoding failed")
+                    }
+                case .failure:
+                    print(response.error?.localizedDescription ?? "Unknown error")
+            }
+        }
+    }
+
     private func fetchCategories() {
         AF.request(UpAPI.Categories().listCategories, method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             switch response.result {
@@ -369,6 +390,31 @@ extension TransactionsVC {
                     UIPasteboard.general.string = transaction.attributes.amount.valueShort
                 }
             ])
+        }
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension TransactionsVC {
+    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
+        if !loading && !transactions.isEmpty && distance < 10 && transactionsPagination.next != nil && searchController.searchBar.text!.isEmpty && filter == .all {
+            loading = true
+            tableView.tableFooterView = {
+                let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 117))
+                let activityIndicator = ActivityIndicator(style: .medium)
+                view.addSubview(activityIndicator)
+                activityIndicator.centerInSuperview()
+                activityIndicator.startAnimating()
+                return view
+            }()
+            DispatchQueue.global(qos: .default).async {
+                sleep(2)
+                DispatchQueue.main.async {
+                    self.fetchNextPage(urlString: self.transactionsPagination.next!)
+                }
+            }
         }
     }
 }

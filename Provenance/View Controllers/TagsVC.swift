@@ -155,7 +155,7 @@ private extension TagsVC {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(transaction.relationships.tags.data, toSection: .main)
-        dataSource.apply(snapshot, animatingDifferences: true)
+        dataSource.apply(snapshot)
     }
 
     private func fetchTags() {

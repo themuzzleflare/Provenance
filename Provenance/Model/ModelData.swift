@@ -11,6 +11,11 @@ let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
 // MARK: - UserDefaults Extension for Value Observation
 
 extension UserDefaults {
+    enum DateStyleType: String {
+        case absolute = "Absolute"
+        case relative = "Relative"
+    }
+
     @objc dynamic var apiKey: String {
         get {
             return string(forKey: "apiKey") ?? ""
@@ -23,7 +28,7 @@ extension UserDefaults {
 
     @objc dynamic var dateStyle: String {
         get {
-            return string(forKey: "dateStyle") ?? "Absolute"
+            return string(forKey: "dateStyle") ?? DateStyleType.absolute.rawValue
         }
         set {
             set(newValue, forKey: "dateStyle")
