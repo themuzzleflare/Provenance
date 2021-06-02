@@ -402,7 +402,7 @@ extension TransactionsVC {
         if !loading && !transactions.isEmpty && distance < 10 && transactionsPagination.next != nil && searchController.searchBar.text!.isEmpty && filter == .all {
             loading = true
             tableView.tableFooterView = {
-                let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 117))
+                let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 43))
                 let activityIndicator = ActivityIndicator(style: .medium)
                 view.addSubview(activityIndicator)
                 activityIndicator.centerInSuperview()
