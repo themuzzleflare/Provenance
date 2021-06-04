@@ -1,7 +1,7 @@
 import UIKit
 import Rswift
 
-class AboutVC: TableViewController {
+final class AboutVC: TableViewController {
     // MARK: - View Life Cycle
 
     override init(style: UITableView.Style) {
@@ -10,7 +10,7 @@ class AboutVC: TableViewController {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Not implemented")
     }
 }
 

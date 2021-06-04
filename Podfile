@@ -6,11 +6,10 @@ target 'Provenance' do
   pod 'MarqueeLabel'
   pod 'TinyConstraints'
   pod 'R.swift'
-  pod 'Alamofire', '~> 5.2'
+  pod 'Alamofire'
   pod 'SwiftyGif'
-  pod 'NotificationBannerSwift', '~> 3.0.0'
+  pod 'NotificationBannerSwift'
   pod 'Firebase/Analytics'
-  pod 'Firebase/Crashlytics'
-  pod "Texture"
+  pod 'Texture'
   
 end

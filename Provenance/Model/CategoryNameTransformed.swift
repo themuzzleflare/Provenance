@@ -9,6 +9,9 @@ func categoryNameTransformed(_ category: FilterCategory) -> String {
         case .tvAndMusic:
             return "TV, Music & Streaming"
         default:
-            return category.rawValue.replacingOccurrences(of: "and", with: "&").replacingOccurrences(of: "-", with: " ").capitalized
+            return category.rawValue
+                .replacingOccurrences(of: "and", with: "&")
+                .replacingOccurrences(of: "-", with: " ")
+                .capitalized
     }
 }

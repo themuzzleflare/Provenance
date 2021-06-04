@@ -4,7 +4,7 @@ import Alamofire
 import TinyConstraints
 import Rswift
 
-class TransactionsVC: TableViewController {
+final class TransactionsVC: TableViewController {
     // MARK: - Properties
 
     private enum Section {
@@ -20,7 +20,6 @@ class TransactionsVC: TableViewController {
     private let tableRefreshControl = RefreshControl(frame: .zero)
     private let searchController = SearchController(searchResultsController: nil)
 
-    private var loading: Bool = false
     private var dateStyleObserver: NSKeyValueObservation?
     private var searchBarPlaceholder: String {
         "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
@@ -53,6 +52,31 @@ class TransactionsVC: TableViewController {
     }
     private var categories: [CategoryResource] = []
     private var accounts: [AccountResource] = []
+    private var loading: Bool = false {
+        didSet {
+            switch loading {
+                case true:
+                    tableView.tableFooterView = {
+                        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 43))
+                        let activityIndicator = ActivityIndicator(style: .medium)
+                        view.addSubview(activityIndicator)
+                        activityIndicator.centerInSuperview()
+                        activityIndicator.startAnimating()
+                        return view
+                    }()
+                    DispatchQueue.global(qos: .default).async {
+                        sleep(2)
+                        DispatchQueue.main.async {
+                            self.fetchNextPage(urlString: self.transactionsPagination.next!)
+                        }
+                    }
+                case false:
+                    if tableView.tableFooterView != nil {
+                        tableView.tableFooterView = nil
+                    }
+            }
+        }
+    }
     private var filter: FilterCategory = .all {
         didSet {
             filterButton.menu = filterMenu()
@@ -81,7 +105,7 @@ class TransactionsVC: TableViewController {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Not implemented")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -322,12 +346,9 @@ private extension TransactionsVC {
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
-                        self.loading = false
                         self.transactionsPagination = decodedResponse.links
                         self.transactions.append(contentsOf: decodedResponse.data)
-                        if self.tableView.tableFooterView != nil {
-                            self.tableView.tableFooterView = nil
-                        }
+                        self.loading = false
                     } else {
                         print("JSON decoding failed")
                     }
@@ -401,20 +422,6 @@ extension TransactionsVC {
         let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
         if !loading && !transactions.isEmpty && distance < 10 && transactionsPagination.next != nil && searchController.searchBar.text!.isEmpty && filter == .all {
             loading = true
-            tableView.tableFooterView = {
-                let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 43))
-                let activityIndicator = ActivityIndicator(style: .medium)
-                view.addSubview(activityIndicator)
-                activityIndicator.centerInSuperview()
-                activityIndicator.startAnimating()
-                return view
-            }()
-            DispatchQueue.global(qos: .default).async {
-                sleep(2)
-                DispatchQueue.main.async {
-                    self.fetchNextPage(urlString: self.transactionsPagination.next!)
-                }
-            }
         }
     }
 }

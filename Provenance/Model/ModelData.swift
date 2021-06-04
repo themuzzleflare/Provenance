@@ -11,11 +11,6 @@ let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
 // MARK: - UserDefaults Extension for Value Observation
 
 extension UserDefaults {
-    enum DateStyleType: String {
-        case absolute = "Absolute"
-        case relative = "Relative"
-    }
-
     @objc dynamic var apiKey: String {
         get {
             return string(forKey: "apiKey") ?? ""
@@ -28,7 +23,7 @@ extension UserDefaults {
 
     @objc dynamic var dateStyle: String {
         get {
-            return string(forKey: "dateStyle") ?? DateStyleType.absolute.rawValue
+            return string(forKey: "dateStyle") ?? "Absolute"
         }
         set {
             set(newValue, forKey: "dateStyle")
@@ -63,15 +58,12 @@ var selectedBackgroundCellView: UIView {
 // MARK: - UICollectionView Layouts
 
 func twoColumnGridLayout() -> UICollectionViewLayout {
-    let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int,
-                                                        layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection in
+    return UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment in
         let columns = 2
         let spacing = CGFloat(10)
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                              heightDimension: .fractionalHeight(1.0))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .absolute(100))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columns)
         group.interItemSpacing = .fixed(spacing)
         let section = NSCollectionLayoutSection(group: group)
@@ -79,17 +71,13 @@ func twoColumnGridLayout() -> UICollectionViewLayout {
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
         return section
     }
-    return layout
 }
 
 func gridLayout() -> UICollectionViewLayout {
-    let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2),
-                                          heightDimension: .fractionalHeight(1.0))
+    let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2), heightDimension: .fractionalHeight(1.0))
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
-    let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                           heightDimension: .fractionalWidth(0.2))
-    let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
-                                                   subitems: [item])
+    let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.2))
+    let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
     let section = NSCollectionLayoutSection(group: group)
     let layout = UICollectionViewCompositionalLayout(section: section)
     return layout
@@ -120,7 +108,7 @@ let upAnimation = UIImage.animatedImage(with: [
 // MARK: - Alamofire Predicates for Up API
 
 var authorisationHeader: HTTPHeader {
-    return .authorization(bearerToken: appDefaults.apiKey)
+    .authorization(bearerToken: appDefaults.apiKey)
 }
 
 let acceptJsonHeader: HTTPHeader = .accept("application/json")

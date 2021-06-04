@@ -3,7 +3,7 @@ import Alamofire
 import TinyConstraints
 import Rswift
 
-class AccountsCVC: CollectionViewController {
+final class AccountsCVC: CollectionViewController {
     // MARK: - Properties
 
     private enum Section {
@@ -55,7 +55,7 @@ class AccountsCVC: CollectionViewController {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Not implemented")
     }
     
     override func viewWillAppear(_ animated: Bool) {

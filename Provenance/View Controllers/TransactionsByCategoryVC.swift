@@ -56,7 +56,7 @@ class TransactionsByCategoryVC: TableViewController {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Not implemented")
     }
 
     override func viewWillAppear(_ animated: Bool) {

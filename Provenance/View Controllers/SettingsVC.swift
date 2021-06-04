@@ -22,7 +22,7 @@ class SettingsVC: TableViewController {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Not implemented")
     }
 
     override func viewDidAppear(_ animated: Bool) {
