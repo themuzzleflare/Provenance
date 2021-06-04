@@ -109,6 +109,7 @@ final class TransactionsVC: TableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         fetchTransactions()
         fetchAccounts()
         fetchCategories()

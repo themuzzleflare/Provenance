@@ -113,7 +113,7 @@ struct LatestTransactionEntryView: View {
                         .multilineTextAlignment(.trailing)
                     Spacer()
                     Text(entry.transactionDate)
-                        .font(.custom("CircularStd-Book", size: 12))
+                        .font(.custom("CircularStd-BookItalic", size: 12))
                         .foregroundColor(.secondary)
                 }
             }
