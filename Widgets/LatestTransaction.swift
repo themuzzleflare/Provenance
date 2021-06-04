@@ -94,7 +94,7 @@ struct LatestTransactionEntryView: View {
                                 .font(.custom("CircularStd-Bold", size: 17))
                                 .foregroundColor(.primary)
                             Text(entry.transactionDate)
-                                .font(.custom("CircularStd-Book", size: 12))
+                                .font(.custom("CircularStd-BookItalic", size: 12))
                                 .foregroundColor(.secondary)
                         }
                         Spacer()

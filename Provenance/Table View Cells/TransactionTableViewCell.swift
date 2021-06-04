@@ -61,7 +61,7 @@ private extension TransactionTableViewCell {
     
     private func configureTransactionCreationDate() {
         transactionCreationDate.translatesAutoresizingMaskIntoConstraints = false
-        transactionCreationDate.font = R.font.circularStdBook(size: UIFont.smallSystemFontSize)
+        transactionCreationDate.font = R.font.circularStdBookItalic(size: UIFont.smallSystemFontSize)
         transactionCreationDate.textAlignment = .left
         transactionCreationDate.numberOfLines = 0
         transactionCreationDate.textColor = .secondaryLabel
