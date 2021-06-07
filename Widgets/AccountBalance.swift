@@ -15,30 +15,35 @@ struct AccountBalanceProvider: IntentTimelineProvider {
 
     func getTimeline(for configuration: Intent, in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
         var entries: [Entry] = []
-        let url = URL(string: "https://api.up.com.au/api/v1/accounts/\(configuration.account!.identifier!)")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.allHTTPHeaderFields = [
-            "Accept": "application/json",
-            "Authorization": "Bearer \(appDefaults.apiKey)"
-        ]
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if error == nil {
-                if let decodedResponse = try? JSONDecoder().decode(SingleAccountResponse.self, from: data!) {
-                    DispatchQueue.main.async {
-                        entries.append(Entry(date: Date(), account: AvailableAccount(id: decodedResponse.data.id, displayName: decodedResponse.data.attributes.displayName, balance: decodedResponse.data.attributes.balance.valueShort)))
-                        completion(Timeline(entries: entries, policy: .atEnd))
+        if let accountId = configuration.account?.identifier {
+            let url = URL(string: "https://api.up.com.au/api/v1/accounts/\(accountId)")!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.allHTTPHeaderFields = [
+                "Accept": "application/json",
+                "Authorization": "Bearer \(appDefaults.apiKey)"
+            ]
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if error == nil {
+                    if let decodedResponse = try? JSONDecoder().decode(SingleAccountResponse.self, from: data!) {
+                        DispatchQueue.main.async {
+                            entries.append(Entry(date: Date(), account: AvailableAccount(id: decodedResponse.data.id, displayName: decodedResponse.data.attributes.displayName, balance: decodedResponse.data.attributes.balance.valueShort)))
+                            completion(Timeline(entries: entries, policy: .atEnd))
+                        }
                     }
                 }
             }
+            .resume()
+        } else {
+            entries.append(Entry(date: Date(), account: nil))
+            completion(Timeline(entries: entries, policy: .atEnd))
         }
-        .resume()
     }
 }
 
 struct AccountBalanceModel: TimelineEntry {
     let date: Date
-    var account: AvailableAccount
+    var account: AvailableAccount?
 }
 
 struct AccountBalanceEntryView: View {
@@ -49,19 +54,27 @@ struct AccountBalanceEntryView: View {
     @ViewBuilder
     var body: some View {
         ZStack {
-            VStack(alignment: .center, spacing: 0) {
-                if family != .systemSmall {
-                    Text("Account Balance")
-                        .font(.custom("CircularStd-Bold", size: 23))
-                        .foregroundColor(Color("AccentColour"))
-                    Spacer()
+            VStack {
+                switch entry.account {
+                    case nil:
+                        Text("Edit widget to choose an account")
+                            .font(.custom("CircularStd-Book", size: 14))
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.secondary)
+                    default:
+                        if family != .systemSmall {
+                            Text("Account Balance")
+                                .font(.custom("CircularStd-Bold", size: 23))
+                                .foregroundColor(Color("AccentColour"))
+                            Spacer()
+                        }
+                        Text(entry.account!.balance)
+                            .font(.custom("CircularStd-Bold", size: 23))
+                            .foregroundColor(family != .systemSmall ? .primary : Color("AccentColour"))
+                        Text(entry.account!.displayName)
+                            .font(.custom("CircularStd-Book", size: 17))
+                            .foregroundColor(.primary)
                 }
-                Text(entry.account.balance)
-                    .font(.custom("CircularStd-Bold", size: 23))
-                    .foregroundColor(family != .systemSmall ? .primary : Color("AccentColour"))
-                Text(entry.account.displayName)
-                    .font(.custom("CircularStd-Book", size: 17))
-                    .foregroundColor(.primary)
             }
             .padding()
         }
@@ -86,8 +99,8 @@ struct AccountBalance_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(families, id: \.self) { family in
             AccountBalanceEntryView(entry: AccountBalanceModel(date: Date(), account: AvailableAccount(id: UUID().uuidString, displayName: "Up Account", balance: "$123.95")))
-                .previewContext(WidgetPreviewContext(family: family))
                 .previewDisplayName(family.description)
+                .previewContext(WidgetPreviewContext(family: family))
                 .colorScheme(.dark)
         }
     }

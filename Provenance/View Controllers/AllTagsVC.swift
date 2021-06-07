@@ -55,6 +55,7 @@ final class AllTagsVC: TableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         fetchTags()
     }
 }

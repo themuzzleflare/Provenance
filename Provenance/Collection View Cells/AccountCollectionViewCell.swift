@@ -82,6 +82,5 @@ private extension AccountCollectionViewCell {
         verticalStack.addArrangedSubview(displayNameLabel)
         verticalStack.axis = .vertical
         verticalStack.alignment = .center
-        verticalStack.distribution = .fillProportionally
     }
 }

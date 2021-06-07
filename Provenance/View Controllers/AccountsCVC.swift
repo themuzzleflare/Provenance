@@ -59,6 +59,7 @@ final class AccountsCVC: CollectionViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         applySnapshot(animate: false)
         fetchAccounts()
     }

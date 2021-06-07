@@ -109,7 +109,7 @@ final class TransactionsVC: TableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         fetchTransactions()
         fetchAccounts()
         fetchCategories()
@@ -359,21 +359,6 @@ private extension TransactionsVC {
         }
     }
 
-    private func fetchCategories() {
-        AF.request(UpAPI.Categories().listCategories, method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
-            switch response.result {
-                case .success:
-                    if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
-                        self.categories = decodedResponse.data
-                    } else {
-                        print("Categories JSON decoding failed")
-                    }
-                case .failure:
-                    print(response.error?.localizedDescription ?? "Unknown error")
-            }
-        }
-    }
-
     private func fetchAccounts() {
         AF.request(UpAPI.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             switch response.result {
@@ -388,6 +373,21 @@ private extension TransactionsVC {
             }
         }
     }
+
+    private func fetchCategories() {
+        AF.request(UpAPI.Categories().listCategories, method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
+            switch response.result {
+                case .success:
+                    if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
+                        self.categories = decodedResponse.data
+                    } else {
+                        print("Categories JSON decoding failed")
+                    }
+                case .failure:
+                    print(response.error?.localizedDescription ?? "Unknown error")
+            }
+        }
+    }
 }
 
 // MARK: - UITableViewDelegate
@@ -395,7 +395,7 @@ private extension TransactionsVC {
 extension TransactionsVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        navigationController?.pushViewController({let vc = TransactionDetailVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);vc.categories = categories;vc.accounts = accounts;return vc}(), animated: true)
+        navigationController?.pushViewController({let vc = TransactionDetailVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);vc.accounts = accounts;vc.categories = categories;return vc}(), animated: true)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

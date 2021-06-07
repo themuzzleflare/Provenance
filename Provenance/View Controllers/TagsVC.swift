@@ -35,9 +35,9 @@ class TagsVC: TableViewController {
         override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
             let tag = itemIdentifier(for: indexPath)!
             if editingStyle == .delete {
-                let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(self.parent.transaction.attributes.description)\"?", preferredStyle: .actionSheet)
+                let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(parent.transaction.attributes.description)\"?", preferredStyle: .actionSheet)
                 let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { [unowned self] _ in
-                    let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(self.parent.transaction.id)/relationships/tags")!
+                    let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(parent.transaction.id)/relationships/tags")!
                     var request = URLRequest(url: url)
                     let bodyObject: [String : Any] = [
                         "data": [
@@ -58,21 +58,21 @@ class TagsVC: TableViewController {
                             let statusCode = (response as! HTTPURLResponse).statusCode
                             if statusCode != 204 {
                                 DispatchQueue.main.async {
-                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(tag.id) was not removed from \(self.parent.transaction.attributes.description).", style: .danger)
+                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(tag.id) was not removed from \(parent.transaction.attributes.description).", style: .danger)
                                     notificationBanner.duration = 2
                                     notificationBanner.show()
                                 }
                             } else {
                                 DispatchQueue.main.async {
-                                    let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(self.parent.transaction.attributes.description).", style: .success)
+                                    let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(parent.transaction.attributes.description).", style: .success)
                                     notificationBanner.duration = 2
                                     notificationBanner.show()
-                                    self.parent.fetchTags()
+                                    parent.fetchTags()
                                 }
                             }
                         } else {
                             DispatchQueue.main.async {
-                                let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(tag.id) was not removed from \(self.parent.transaction.attributes.description).", style: .danger)
+                                let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(tag.id) was not removed from \(parent.transaction.attributes.description).", style: .danger)
                                 notificationBanner.duration = 2
                                 notificationBanner.show()
                             }
@@ -84,7 +84,7 @@ class TagsVC: TableViewController {
                 cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                 ac.addAction(confirmAction)
                 ac.addAction(cancelAction)
-                self.parent.present(ac, animated: true)
+                parent.present(ac, animated: true)
             }
         }
     }
@@ -104,6 +104,7 @@ class TagsVC: TableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         fetchTags()
     }
 }
@@ -200,7 +201,7 @@ extension TagsVC {
                 UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { _ in
                     let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(self.transaction.attributes.description)\"?", preferredStyle: .actionSheet)
                     let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { [unowned self] _ in
-                        let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(self.transaction.id)/relationships/tags")!
+                        let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
                         var request = URLRequest(url: url)
                         let bodyObject: [String : Any] = [
                             "data": [
@@ -221,21 +222,21 @@ extension TagsVC {
                                 let statusCode = (response as! HTTPURLResponse).statusCode
                                 if statusCode != 204 {
                                     DispatchQueue.main.async {
-                                        let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(tag.id) was not removed from \(self.transaction.attributes.description).", style: .danger)
+                                        let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
                                         notificationBanner.duration = 2
                                         notificationBanner.show()
                                     }
                                 } else {
                                     DispatchQueue.main.async {
-                                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(self.transaction.attributes.description).", style: .success)
+                                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success)
                                         notificationBanner.duration = 2
                                         notificationBanner.show()
-                                        self.fetchTags()
+                                        fetchTags()
                                     }
                                 }
                             } else {
                                 DispatchQueue.main.async {
-                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(tag.id) was not removed from \(self.transaction.attributes.description).", style: .danger)
+                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
                                     notificationBanner.duration = 2
                                     notificationBanner.show()
                                 }

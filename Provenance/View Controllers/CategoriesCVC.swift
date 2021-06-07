@@ -58,6 +58,7 @@ final class CategoriesCVC: CollectionViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         fetchCategories()
     }
 }

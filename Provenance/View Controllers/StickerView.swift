@@ -36,6 +36,5 @@ private extension StickerView {
         imageView.width(300)
         imageView.height(300)
         imageView.centerInSuperview()
-        imageView.frame = view.bounds
     }
 }

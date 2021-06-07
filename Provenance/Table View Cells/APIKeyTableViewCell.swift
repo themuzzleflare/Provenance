@@ -26,7 +26,8 @@ class APIKeyTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { object, change in
-            self.apiKeyLabel.text = change.newValue
+            self.apiKeyLabel.text = self.apiKeyDisplay
+            self.apiKeyLabel.textColor = self.apiKeyDisplay == "None" ? .placeholderText : .label
             WidgetCenter.shared.reloadAllTimelines()
         }
         configureCell()
@@ -58,6 +59,7 @@ private extension APIKeyTableViewCell {
         apiKeyLabel.fadeLength = 10
         apiKeyLabel.textAlignment = .left
         apiKeyLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+        apiKeyLabel.textColor = apiKeyDisplay == "None" ? .placeholderText : .label
         apiKeyLabel.text = apiKeyDisplay
     }
 }

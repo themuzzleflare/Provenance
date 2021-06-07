@@ -47,7 +47,7 @@ private extension StatusIconHelpView {
         heldStack.alignment = .center
         heldStack.spacing = 5
         heldImage.translatesAutoresizingMaskIntoConstraints = false
-        heldImage.image = R.image.clock()?.withConfiguration(configuration)
+        heldImage.image = R.image.clock()!.withConfiguration(configuration)
         heldImage.tintColor = .systemYellow
         heldLabel.translatesAutoresizingMaskIntoConstraints = false
         heldLabel.font = R.font.circularStdBook(size: 23)
@@ -58,7 +58,7 @@ private extension StatusIconHelpView {
         settledStack.alignment = .center
         settledStack.spacing = 5
         settledImage.translatesAutoresizingMaskIntoConstraints = false
-        settledImage.image = R.image.checkmarkCircle()?.withConfiguration(configuration)
+        settledImage.image = R.image.checkmarkCircle()!.withConfiguration(configuration)
         settledImage.tintColor = .systemGreen
         settledLabel.translatesAutoresizingMaskIntoConstraints = false
         settledLabel.font = R.font.circularStdBook(size: 23)

@@ -52,9 +52,8 @@ private extension DateStyleTableViewCell {
     
     private func configureLabel() {
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+        label.font = R.font.circularStdMedium(size: UIFont.labelFontSize)
         label.textAlignment = .left
-        label.textColor = .secondaryLabel
         label.text = "Date Style"
     }
     

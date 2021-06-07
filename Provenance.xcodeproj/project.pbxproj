@@ -61,7 +61,6 @@
 		7AA6C4F12623F6BE003F7947 /* AboutTopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA6C4F02623F6BE003F7947 /* AboutTopTableViewCell.swift */; };
 		7AA6C4FC26240732003F7947 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7AA6C4FB26240732003F7947 /* GoogleService-Info.plist */; };
 		7AA6D0F12669FF4700596D53 /* CircularStd-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7AA6D0EE2669FF4700596D53 /* CircularStd-Medium.otf */; };
-		7AA6D0F22669FF4700596D53 /* CircularStd-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7AA6D0EF2669FF4700596D53 /* CircularStd-Black.otf */; };
 		7AA6D0F32669FF4700596D53 /* CircularStd-BookItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AA6D0F02669FF4700596D53 /* CircularStd-BookItalic.ttf */; };
 		7AA6D0F4266A015500596D53 /* CircularStd-BookItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AA6D0F02669FF4700596D53 /* CircularStd-BookItalic.ttf */; };
 		7AAC68FB262D581D0046494C /* SingleTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAC68FA262D581D0046494C /* SingleTransaction.swift */; };
@@ -201,7 +200,6 @@
 		7AA6C4F02623F6BE003F7947 /* AboutTopTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutTopTableViewCell.swift; sourceTree = "<group>"; };
 		7AA6C4FB26240732003F7947 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7AA6D0EE2669FF4700596D53 /* CircularStd-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CircularStd-Medium.otf"; sourceTree = "<group>"; };
-		7AA6D0EF2669FF4700596D53 /* CircularStd-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CircularStd-Black.otf"; sourceTree = "<group>"; };
 		7AA6D0F02669FF4700596D53 /* CircularStd-BookItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CircularStd-BookItalic.ttf"; sourceTree = "<group>"; };
 		7AAC68FA262D581D0046494C /* SingleTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTransaction.swift; sourceTree = "<group>"; };
 		7AAC68FF262D6C9E0046494C /* SingleAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleAccount.swift; sourceTree = "<group>"; };
@@ -507,7 +505,6 @@
 		7AF4C35425DB3668009CF391 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				7AA6D0EF2669FF4700596D53 /* CircularStd-Black.otf */,
 				7AA6D0F02669FF4700596D53 /* CircularStd-BookItalic.ttf */,
 				7AA6D0EE2669FF4700596D53 /* CircularStd-Medium.otf */,
 				7AF4C35825DB3674009CF391 /* CircularStd-Bold.otf */,
@@ -680,7 +677,6 @@
 				7AF4C35925DB3674009CF391 /* CircularStd-Book.otf in Resources */,
 				7AA124FD262682F300F50D6D /* Settings.bundle in Resources */,
 				7AF4C35C25DB3674009CF391 /* CircularStd-Bold.otf in Resources */,
-				7AA6D0F22669FF4700596D53 /* CircularStd-Black.otf in Resources */,
 				7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */,
 				7AA6D0F32669FF4700596D53 /* CircularStd-BookItalic.ttf in Resources */,
 				7AB7FDA8263BC5C300B38BFC /* SF-Mono-Regular.otf in Resources */,
@@ -931,7 +927,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 15.4;
+				MARKETING_VERSION = 15.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -955,7 +951,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 15.4;
+				MARKETING_VERSION = 15.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1103,7 +1099,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 15.4;
+				MARKETING_VERSION = 15.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1134,7 +1130,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 15.4;
+				MARKETING_VERSION = 15.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1164,7 +1160,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 15.4;
+				MARKETING_VERSION = 15.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1194,7 +1190,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 15.4;
+				MARKETING_VERSION = 15.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1218,7 +1214,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 15.4;
+				MARKETING_VERSION = 15.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1239,7 +1235,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 15.4;
+				MARKETING_VERSION = 15.5;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

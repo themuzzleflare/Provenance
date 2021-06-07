@@ -80,7 +80,7 @@ struct LatestTransactionEntryView: View {
     @ViewBuilder
     var body: some View {
         ZStack {
-            VStack(alignment: .center, spacing: 0) {
+            VStack {
                 if entry.error.isEmpty && family != .systemSmall {
                     Text("Latest Transaction")
                         .font(.custom("CircularStd-Bold", size: 23))
@@ -88,8 +88,8 @@ struct LatestTransactionEntryView: View {
                     Spacer()
                 }
                 if family != .systemSmall {
-                    HStack(alignment: .center, spacing: 0) {
-                        VStack(alignment: .leading, spacing: 0) {
+                    HStack {
+                        VStack(alignment: .leading) {
                             Text(entry.transactionDescription)
                                 .font(.custom("CircularStd-Bold", size: 17))
                                 .foregroundColor(.primary)
@@ -120,11 +120,20 @@ struct LatestTransactionEntryView: View {
             .padding()
         }
         .overlay(Group {
-            Text(entry.error)
-                .padding()
-                .fixedSize(horizontal: false, vertical: true)
-                .font(.custom("CircularStd-Book", size: 17))
-                .foregroundColor(.primary)
+            if !entry.error.isEmpty {
+                switch family {
+                    case .systemSmall:
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .font(.largeTitle)
+                            .foregroundColor(.secondary)
+                    default:
+                        Text(entry.error)
+                            .padding()
+                            .fixedSize(horizontal: false, vertical: true)
+                            .font(.custom("CircularStd-Book", size: 14))
+                            .foregroundColor(.secondary)
+                }
+            }
         })
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color("WidgetBackground"))
@@ -137,7 +146,7 @@ struct LatestTransaction: Widget {
             LatestTransactionEntryView(entry: entry)
         }
         .configurationDisplayName("Latest Transaction")
-        .description("Displays the latest transaction.")
+        .description("Displays your latest transaction.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
@@ -147,8 +156,8 @@ struct LatestTransaction_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(families, id: \.self) { family in
             LatestTransactionEntryView(entry: LatestTransactionModel(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "Officeworks", transactionDate: "21 hours ago", transactionAmount: "-$79.95", error: ""))
-                .previewContext(WidgetPreviewContext(family: family))
                 .previewDisplayName(family.description)
+                .previewContext(WidgetPreviewContext(family: family))
                 .colorScheme(.dark)
         }
     }

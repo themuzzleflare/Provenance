@@ -88,10 +88,11 @@ class TransactionsByAccountVC: TableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         fetchAccount()
         fetchTransactions()
-        fetchCategories()
         fetchAccounts()
+        fetchCategories()
     }
 }
 
@@ -134,8 +135,8 @@ private extension TransactionsByAccountVC {
     @objc private func appMovedToForeground() {
         fetchAccount()
         fetchTransactions()
-        fetchCategories()
         fetchAccounts()
+        fetchCategories()
     }
 
     @objc private func openAccountInfo() {
@@ -146,8 +147,8 @@ private extension TransactionsByAccountVC {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchAccount()
             self.fetchTransactions()
-            self.fetchCategories()
             self.fetchAccounts()
+            self.fetchCategories()
         }
     }
 
@@ -253,7 +254,7 @@ private extension TransactionsByAccountVC {
     }
 
     private func fetchAccount() {
-        AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)", method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
+        AF.request(UpAPI.Accounts().retrieveAccount(accountId: account.id), method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(SingleAccountResponse.self, from: response.data!) {
@@ -268,7 +269,7 @@ private extension TransactionsByAccountVC {
     }
 
     private func fetchTransactions() {
-        AF.request(UpAPI.Accounts().listTransactionsByAccount(accountId: account.id), method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
+        AF.request(UpAPI.Transactions().listTransactionsByAccount(accountId: account.id), method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             self.transactionsStatusCode = response.response?.statusCode ?? 0
             switch response.result {
                 case .success:
@@ -309,21 +310,6 @@ private extension TransactionsByAccountVC {
         }
     }
 
-    private func fetchCategories() {
-        AF.request(UpAPI.Categories().listCategories, method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
-            switch response.result {
-                case .success:
-                    if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
-                        self.categories = decodedResponse.data
-                    } else {
-                        print("Categories JSON decoding failed")
-                    }
-                case .failure:
-                    print(response.error?.localizedDescription ?? "Unknown error")
-            }
-        }
-    }
-
     private func fetchAccounts() {
         AF.request(UpAPI.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             switch response.result {
@@ -338,6 +324,21 @@ private extension TransactionsByAccountVC {
             }
         }
     }
+
+    private func fetchCategories() {
+        AF.request(UpAPI.Categories().listCategories, method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
+            switch response.result {
+                case .success:
+                    if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
+                        self.categories = decodedResponse.data
+                    } else {
+                        print("Categories JSON decoding failed")
+                    }
+                case .failure:
+                    print(response.error?.localizedDescription ?? "Unknown error")
+            }
+        }
+    }
 }
 
 // MARK: - UITableViewDelegate
@@ -345,7 +346,7 @@ private extension TransactionsByAccountVC {
 extension TransactionsByAccountVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        navigationController?.pushViewController({let vc = TransactionDetailVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);vc.categories = categories;vc.accounts = accounts;return vc}(), animated: true)
+        navigationController?.pushViewController({let vc = TransactionDetailVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);vc.accounts = accounts;vc.categories = categories;return vc}(), animated: true)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

@@ -26,6 +26,7 @@ class SettingsVC: TableViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         if let displayBanner = displayBanner {
             displayBanner.show()
         }

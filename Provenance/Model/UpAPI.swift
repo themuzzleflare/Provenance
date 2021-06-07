@@ -3,13 +3,20 @@ import Foundation
 struct UpAPI {
     struct Transactions {
         let listTransactions = "https://api.up.com.au/api/v1/transactions"
+        
+        func retrieveTransaction(transactionId: String) -> String {
+            "https://api.up.com.au/api/v1/transactions/\(transactionId)"
+        }
+        func listTransactionsByAccount(accountId: String) -> String {
+            "https://api.up.com.au/api/v1/accounts/\(accountId)/transactions"
+        }
     }
 
     struct Accounts {
         let listAccounts = "https://api.up.com.au/api/v1/accounts"
 
-        func listTransactionsByAccount(accountId: String) -> String {
-            return "https://api.up.com.au/api/v1/accounts/\(accountId)/transactions"
+        func retrieveAccount(accountId: String) -> String {
+            "https://api.up.com.au/api/v1/accounts/\(accountId)"
         }
     }
 

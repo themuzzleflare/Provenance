@@ -42,8 +42,8 @@ class TransactionDetailVC: TableViewController {
         }
     }
     private var transferAccountFilter: [AccountResource]? {
-        accounts?.filter { account in
-            transaction.relationships.transferAccount.data?.id == account.id
+        accounts?.filter { taccount in
+            transaction.relationships.transferAccount.data?.id == taccount.id
         }
     }
     private var holdTransValue: String {
@@ -101,6 +101,7 @@ class TransactionDetailVC: TableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         fetchTransaction()
     }
 }
@@ -265,7 +266,7 @@ private extension TransactionDetailVC {
     }
 
     private func fetchTransaction() {
-        AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)", method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
+        AF.request(UpAPI.Transactions().retrieveTransaction(transactionId: transaction.id), method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(SingleTransactionResponse.self, from: response.data!) {

@@ -28,7 +28,7 @@ class TransactionsByTagVC: TableViewController {
         override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
             let transaction = itemIdentifier(for: indexPath)!
             if editingStyle == .delete {
-                let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(self.parent.tag.id)\" from \"\(transaction.attributes.description)\"?", preferredStyle: .actionSheet)
+                let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(parent.tag.id)\" from \"\(transaction.attributes.description)\"?", preferredStyle: .actionSheet)
                 let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { [unowned self] _ in
                     let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
                     var request = URLRequest(url: url)
@@ -36,7 +36,7 @@ class TransactionsByTagVC: TableViewController {
                         "data": [
                             [
                                 "type": "tags",
-                                "id": self.parent.tag.id
+                                "id": parent.tag.id
                             ]
                         ]
                     ]
@@ -51,21 +51,21 @@ class TransactionsByTagVC: TableViewController {
                             let statusCode = (response as! HTTPURLResponse).statusCode
                             if statusCode != 204 {
                                 DispatchQueue.main.async {
-                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(self.parent.tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
+                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(parent.tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
                                     notificationBanner.duration = 2
                                     notificationBanner.show()
                                 }
                             } else {
                                 DispatchQueue.main.async {
-                                    let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(self.parent.tag.id) was removed from \(transaction.attributes.description).", style: .success)
+                                    let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(parent.tag.id) was removed from \(transaction.attributes.description).", style: .success)
                                     notificationBanner.duration = 2
                                     notificationBanner.show()
-                                    self.parent.fetchTransactions()
+                                    parent.fetchTransactions()
                                 }
                             }
                         } else {
                             DispatchQueue.main.async {
-                                let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(self.parent.tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
+                                let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(parent.tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
                                 notificationBanner.duration = 2
                                 notificationBanner.show()
                             }
@@ -77,7 +77,7 @@ class TransactionsByTagVC: TableViewController {
                 cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                 ac.addAction(confirmAction)
                 ac.addAction(cancelAction)
-                self.parent.present(ac, animated: true)
+                parent.present(ac, animated: true)
             }
         }
     }
@@ -130,9 +130,10 @@ class TransactionsByTagVC: TableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         fetchTransactions()
-        fetchCategories()
         fetchAccounts()
+        fetchCategories()
     }
 }
 
@@ -174,15 +175,15 @@ private extension TransactionsByTagVC {
 private extension TransactionsByTagVC {
     @objc private func appMovedToForeground() {
         fetchTransactions()
-        fetchCategories()
         fetchAccounts()
+        fetchCategories()
     }
 
     @objc private func refreshTransactions() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.fetchTransactions()
-            self.fetchCategories()
             self.fetchAccounts()
+            self.fetchCategories()
         }
     }
 
@@ -329,21 +330,6 @@ private extension TransactionsByTagVC {
         }
     }
 
-    private func fetchCategories() {
-        AF.request(UpAPI.Categories().listCategories, method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
-            switch response.result {
-                case .success:
-                    if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
-                        self.categories = decodedResponse.data
-                    } else {
-                        print("Categories JSON decoding failed")
-                    }
-                case .failure:
-                    print(response.error?.localizedDescription ?? "Unknown error")
-            }
-        }
-    }
-
     private func fetchAccounts() {
         AF.request(UpAPI.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             switch response.result {
@@ -358,6 +344,21 @@ private extension TransactionsByTagVC {
             }
         }
     }
+
+    private func fetchCategories() {
+        AF.request(UpAPI.Categories().listCategories, method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
+            switch response.result {
+                case .success:
+                    if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
+                        self.categories = decodedResponse.data
+                    } else {
+                        print("Categories JSON decoding failed")
+                    }
+                case .failure:
+                    print(response.error?.localizedDescription ?? "Unknown error")
+            }
+        }
+    }
 }
 
 // MARK: - UITableViewDelegate
@@ -365,7 +366,7 @@ private extension TransactionsByTagVC {
 extension TransactionsByTagVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        navigationController?.pushViewController({let vc = TransactionDetailVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);vc.categories = categories;vc.accounts = accounts;return vc}(), animated: true)
+        navigationController?.pushViewController({let vc = TransactionDetailVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);vc.accounts = accounts;vc.categories = categories;return vc}(), animated: true)
     }
 
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
@@ -398,7 +399,7 @@ extension TransactionsByTagVC {
                             "data": [
                                 [
                                     "type": "tags",
-                                    "id": self.tag.id
+                                    "id": tag.id
                                 ]
                             ]
                         ]
@@ -413,21 +414,21 @@ extension TransactionsByTagVC {
                                 let statusCode = (response as! HTTPURLResponse).statusCode
                                 if statusCode != 204 {
                                     DispatchQueue.main.async {
-                                        let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(self.tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
+                                        let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
                                         notificationBanner.duration = 2
                                         notificationBanner.show()
                                     }
                                 } else {
                                     DispatchQueue.main.async {
-                                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(self.tag.id) was removed from \(transaction.attributes.description).", style: .success)
+                                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success)
                                         notificationBanner.duration = 2
                                         notificationBanner.show()
-                                        self.fetchTransactions()
+                                        fetchTransactions()
                                     }
                                 }
                             } else {
                                 DispatchQueue.main.async {
-                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(self.tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
+                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
                                     notificationBanner.duration = 2
                                     notificationBanner.show()
                                 }
