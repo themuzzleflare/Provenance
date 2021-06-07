@@ -1,5 +1,5 @@
 import UIKit
-import SwiftyGif
+import FLAnimatedImage
 import TinyConstraints
 
 class StickerCollectionViewCell: UICollectionViewCell {
@@ -7,14 +7,14 @@ class StickerCollectionViewCell: UICollectionViewCell {
     
     static let reuseIdentifier = "stickerCollectionViewCell"
     
-    var image: UIImage! {
+    var image: FLAnimatedImage! {
         didSet {
-            stickerImageView.setGifImage(image)
-            stickerImageView.startAnimatingGif()
+            stickerImageView.animatedImage = image
+            stickerImageView.startAnimating()
         }
     }
     
-    private let stickerImageView = UIImageView()
+    private let stickerImageView = FLAnimatedImageView()
 
     // MARK: - Life Cycle
     

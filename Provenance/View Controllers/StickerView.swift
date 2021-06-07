@@ -1,18 +1,18 @@
 import UIKit
-import SwiftyGif
+import FLAnimatedImage
 import TinyConstraints
 
 class StickerView: ViewController {
     // MARK: - Properties
 
-    var image: UIImage! {
+    var image: FLAnimatedImage! {
         didSet {
-            imageView.setGifImage(image)
-            imageView.startAnimatingGif()
+            imageView.animatedImage = image
+            imageView.startAnimating()
         }
     }
     
-    private let imageView = UIImageView()
+    private let imageView = FLAnimatedImageView()
 
     // MARK: - View Life Cycle
     

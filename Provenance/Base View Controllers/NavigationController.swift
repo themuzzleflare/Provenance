@@ -1,8 +1,7 @@
 import UIKit
-import AsyncDisplayKit
 import Rswift
 
-class NavigationController: ASNavigationController {
+class NavigationController: UINavigationController {
     // MARK: - Life Cycle
 
     override init(rootViewController: UIViewController) {

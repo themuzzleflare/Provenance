@@ -1,8 +1,7 @@
 import UIKit
-import AsyncDisplayKit
 import Rswift
 
-class TabBarController: ASTabBarController {
+class TabBarController: UITabBarController {
     // MARK: - Life Cycle
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
