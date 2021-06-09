@@ -26,6 +26,11 @@ class StickerCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
     }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        stickerImageView.frame = contentView.bounds
+    }
 }
 
 // MARK: - Configuration
