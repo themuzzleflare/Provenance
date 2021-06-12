@@ -162,7 +162,8 @@ struct MoneyObject: Decodable {
     private var valueString: String {
         switch valueInBaseUnits.signum() {
             case -1:
-                return value.replacingOccurrences(of: "-", with: "")
+                return value
+                    .replacingOccurrences(of: "-", with: "")
             case 1:
                 return value
             default:

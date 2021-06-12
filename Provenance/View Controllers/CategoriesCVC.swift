@@ -38,7 +38,7 @@ final class CategoriesCVC: CollectionViewController {
         }
     }
     private var filteredCategoriesList: Category {
-        return Category(data: filteredCategories)
+        Category(data: filteredCategories)
     }
     
     // MARK: - View Life Cycle
@@ -105,8 +105,8 @@ private extension CategoriesCVC {
     }
 
     private func makeDataSource() -> DataSource {
-        return DataSource(collectionView: collectionView) { collectionView, indexPath, category in
-            return collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: category)
+        DataSource(collectionView: collectionView) { collectionView, indexPath, category in
+            collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: category)
         }
     }
 
@@ -245,9 +245,9 @@ extension CategoriesCVC {
     }
 
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+        UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy Category Name", image: R.image.docOnClipboard()) { _ in
+                UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
                     UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.name
                 }
             ])

@@ -74,7 +74,7 @@
 		7AB34D4025C7858E000A1E81 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D3F25C7858E000A1E81 /* Error.swift */; };
 		7AB34D4525C79BD0000A1E81 /* RightDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D4325C79BD0000A1E81 /* RightDetailTableViewCell.swift */; };
 		7AB34D4D25C7A90E000A1E81 /* TransactionDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D4C25C7A90E000A1E81 /* TransactionDetailVC.swift */; };
-		7AB34D5325C7C30E000A1E81 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D5225C7C30E000A1E81 /* TabBarController.swift */; };
+		7AB34D5325C7C30E000A1E81 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D5225C7C30E000A1E81 /* TabController.swift */; };
 		7AB34D5D25C7CDCB000A1E81 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */; };
 		7AB609B02603F0D80038B85B /* AddTagWorkflowTwoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */; };
 		7AB609B32603F1130038B85B /* AddTagWorkflowThreeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */; };
@@ -215,7 +215,7 @@
 		7AB34D3F25C7858E000A1E81 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		7AB34D4325C79BD0000A1E81 /* RightDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightDetailTableViewCell.swift; sourceTree = "<group>"; };
 		7AB34D4C25C7A90E000A1E81 /* TransactionDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailVC.swift; sourceTree = "<group>"; };
-		7AB34D5225C7C30E000A1E81 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		7AB34D5225C7C30E000A1E81 /* TabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
 		7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagWorkflowTwoVC.swift; sourceTree = "<group>"; };
 		7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagWorkflowThreeVC.swift; sourceTree = "<group>"; };
@@ -286,7 +286,6 @@
 		7A0557D72604A0A30080D2CD /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				7AB34D5225C7C30E000A1E81 /* TabBarController.swift */,
 				7AB34D2125C78230000A1E81 /* TransactionsVC.swift */,
 				7AB34D4C25C7A90E000A1E81 /* TransactionDetailVC.swift */,
 				7A438782263AAC9B008C5714 /* StatusIconHelpView.swift */,
@@ -359,13 +358,13 @@
 				7A14D5FF261AD5FF00C072E3 /* FilterCategory.swift */,
 				7A767DE2263F8FC5003D9531 /* CategoryNameTransformed.swift */,
 				7A9494052629350B00B39E75 /* UpAPI.swift */,
-				7A2E6CFF25DCA06B00BA2AB6 /* ModelData.swift */,
 				7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */,
+				7A2E6CFF25DCA06B00BA2AB6 /* ModelData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
 		};
-		7A22F7E925FFF90E0014BDC8 /* Base View Controllers */ = {
+		7A22F7E925FFF90E0014BDC8 /* Base Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				7AE75E3625FF1C3B00C16AF6 /* NavigationController.swift */,
@@ -375,8 +374,9 @@
 				7AE75E4625FF225900C16AF6 /* ViewController.swift */,
 				7A455CF5260822CC00A7F2B8 /* CollectionViewController.swift */,
 				7A8E9C42262FD7460018BEBE /* SearchController.swift */,
+				7AB34D5225C7C30E000A1E81 /* TabController.swift */,
 			);
-			path = "Base View Controllers";
+			path = "Base Controllers";
 			sourceTree = "<group>";
 		};
 		7A8E41D52604816B003D0E6A /* Model */ = {
@@ -433,7 +433,7 @@
 				7AD96B7C2614322500791DE7 /* Collection View Cells */,
 				7AB609AC2602CAD80038B85B /* Storyboards */,
 				7A0557E12604A0D20080D2CD /* Application */,
-				7A22F7E925FFF90E0014BDC8 /* Base View Controllers */,
+				7A22F7E925FFF90E0014BDC8 /* Base Controllers */,
 				7A0557D72604A0A30080D2CD /* View Controllers */,
 			);
 			path = Provenance;
@@ -450,10 +450,10 @@
 		7ACD45C1261D9920000C8FD2 /* GIF */ = {
 			isa = PBXGroup;
 			children = (
-				7A2F18F6261D9CC60054A9B6 /* StickerSeven.gif */,
-				7A2F18F9261D9CC80054A9B6 /* StickerSix.gif */,
-				7A2F18FA261D9CC80054A9B6 /* StickerThree.gif */,
 				7A2F18F8261D9CC70054A9B6 /* StickerTwo.gif */,
+				7A2F18FA261D9CC80054A9B6 /* StickerThree.gif */,
+				7A2F18F9261D9CC80054A9B6 /* StickerSix.gif */,
+				7A2F18F6261D9CC60054A9B6 /* StickerSeven.gif */,
 			);
 			path = GIF;
 			sourceTree = "<group>";
@@ -480,9 +480,9 @@
 				7AAC68FA262D581D0046494C /* SingleTransaction.swift */,
 				7AFDBEB225C7FEDB002DB208 /* Account.swift */,
 				7AAC68FF262D6C9E0046494C /* SingleAccount.swift */,
-				7AB34D3F25C7858E000A1E81 /* Error.swift */,
-				7A8DDCA125D138C200EF85B9 /* Category.swift */,
 				7A56100E25D219530091396E /* Tag.swift */,
+				7A8DDCA125D138C200EF85B9 /* Category.swift */,
+				7AB34D3F25C7858E000A1E81 /* Error.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -508,10 +508,10 @@
 		7AF4C35425DB3668009CF391 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				7AF4C35525DB3673009CF391 /* CircularStd-Book.otf */,
 				7AA6D0F02669FF4700596D53 /* CircularStd-BookItalic.ttf */,
 				7AA6D0EE2669FF4700596D53 /* CircularStd-Medium.otf */,
 				7AF4C35825DB3674009CF391 /* CircularStd-Bold.otf */,
-				7AF4C35525DB3673009CF391 /* CircularStd-Book.otf */,
 				7AB7FDA7263BC5C300B38BFC /* SF-Mono-Regular.otf */,
 			);
 			path = Fonts;
@@ -622,7 +622,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1250;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1300;
 				ORGANIZATIONNAME = "Tavitian Cloud";
 				TargetAttributes = {
 					7A17C1892657940E00E5EA23 = {
@@ -818,7 +818,7 @@
 				7AA6C4F12623F6BE003F7947 /* AboutTopTableViewCell.swift in Sources */,
 				7AB34D4525C79BD0000A1E81 /* RightDetailTableViewCell.swift in Sources */,
 				7A8DDCA525D1472400EF85B9 /* TagsVC.swift in Sources */,
-				7AB34D5325C7C30E000A1E81 /* TabBarController.swift in Sources */,
+				7AB34D5325C7C30E000A1E81 /* TabController.swift in Sources */,
 				7AB34D4025C7858E000A1E81 /* Error.swift in Sources */,
 				7AAC6900262D6C9E0046494C /* SingleAccount.swift in Sources */,
 				7AE75E3725FF1C3B00C16AF6 /* NavigationController.swift in Sources */,
@@ -931,7 +931,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 15.9;
+				MARKETING_VERSION = 16.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -955,7 +955,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 15.9;
+				MARKETING_VERSION = 16.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1010,6 +1010,7 @@
 					"$(inherited)",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -1023,6 +1024,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SUPPRESS_WARNINGS = YES;
 			};
 			name = Debug;
 		};
@@ -1066,6 +1068,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -1078,6 +1081,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_SUPPRESS_WARNINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1103,7 +1107,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 15.9;
+				MARKETING_VERSION = 16.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1134,7 +1138,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 15.9;
+				MARKETING_VERSION = 16.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1164,7 +1168,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 15.9;
+				MARKETING_VERSION = 16.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1194,7 +1198,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 15.9;
+				MARKETING_VERSION = 16.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1218,7 +1222,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 15.9;
+				MARKETING_VERSION = 16.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1239,7 +1243,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 15.9;
+				MARKETING_VERSION = 16.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

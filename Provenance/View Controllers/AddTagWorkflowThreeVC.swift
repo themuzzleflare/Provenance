@@ -60,7 +60,7 @@ private extension AddTagWorkflowThreeVC {
     @objc private func addTag() {
         let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
         var request = URLRequest(url: url)
-        let bodyObject: [String : Any] = [
+        let bodyObject: [String: Any] = [
             "data": [
                 [
                     "type": "tags",
@@ -73,7 +73,7 @@ private extension AddTagWorkflowThreeVC {
             "Content-Type": "application/json",
             "Authorization": "Bearer \(appDefaults.apiKey)"
         ]
-        request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+        request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject)
         URLSession.shared.dataTask(with: request) { data, response, error in
             if error == nil {
                 let statusCode = (response as! HTTPURLResponse).statusCode
@@ -109,11 +109,11 @@ private extension AddTagWorkflowThreeVC {
 
 extension AddTagWorkflowThreeVC {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        3
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

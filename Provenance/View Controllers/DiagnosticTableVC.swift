@@ -61,7 +61,7 @@ private extension DiagnosticTableVC {
     }
 
     private func makeDataSource() -> DataSource {
-        return DataSource(
+        DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, attribute in
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell

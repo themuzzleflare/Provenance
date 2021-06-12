@@ -41,6 +41,5 @@ private extension StickerCollectionViewCell {
         layer.borderWidth = 1.0
         layer.borderColor = UIColor.separator.cgColor
         contentView.addSubview(stickerImageView)
-        stickerImageView.edges(to: contentView)
     }
 }

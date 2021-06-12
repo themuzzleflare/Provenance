@@ -45,7 +45,7 @@ private extension AboutVC {
 
 extension AboutVC {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        3
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

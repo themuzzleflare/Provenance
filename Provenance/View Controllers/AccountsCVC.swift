@@ -40,7 +40,7 @@ final class AccountsCVC: CollectionViewController {
         }
     }
     private var filteredAccountsList: Account {
-        return Account(data: filteredAccounts, links: accountsPagination)
+        Account(data: filteredAccounts, links: accountsPagination)
     }
     
     // MARK: - View Life Cycle
@@ -107,8 +107,8 @@ private extension AccountsCVC {
     }
 
     private func makeDataSource() -> DataSource {
-        return DataSource(collectionView: collectionView) { collectionView, indexPath, account in
-            return collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: account)
+        DataSource(collectionView: collectionView) { collectionView, indexPath, account in
+            collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: account)
         }
     }
 

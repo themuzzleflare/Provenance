@@ -28,7 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             savedShortcutItem = shortcutItem
         }
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = TabBarController()
+        window.rootViewController = TabController()
         self.window = window
         window.makeKeyAndVisible()
         checkApiKey()
@@ -56,7 +56,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 private extension SceneDelegate {
     private func checkApiKey() {
         if appDefaults.apiKey.isEmpty {
-            let ac = UIAlertController(title: "API Key Required", message: "You don't have an API Key set. Set one now.", preferredStyle: .alert)
+            let ac = UIAlertController(title: "API Key Required", message: "You don't have an API Key set. You can set one now.", preferredStyle: .alert)
             ac.addTextField { textField in
                 textField.autocapitalizationType = .none
                 textField.autocorrectionType = .no
@@ -129,7 +129,7 @@ private extension SceneDelegate {
     }
 
     private func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
-        let tabcontroller = window?.rootViewController as! TabBarController
+        let tabcontroller = window?.rootViewController as! TabController
         if let actionTypeValue = ShortcutAction(rawValue: shortcutItem.type) {
             switch actionTypeValue {
                 case .transactions:

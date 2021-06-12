@@ -27,8 +27,8 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>CircularStd-BookItalic.ttf</string>
 		<string>CircularStd-Book.otf</string>
+		<string>CircularStd-BookItalic.ttf</string>
 		<string>CircularStd-Bold.otf</string>
 	</array>
 </dict>

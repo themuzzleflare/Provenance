@@ -3,7 +3,7 @@ import Intents
 class IntentHandler: INExtension, AccountSelectionIntentHandling {
     func provideAccountOptionsCollection(for intent: AccountSelectionIntent, with completion: @escaping (INObjectCollection<AccountType>?, Error?) -> Void) {
         var url = URL(string: "https://api.up.com.au/api/v1/accounts")!
-        let urlParams = ["page[size]":"100"]
+        let urlParams = ["page[size]": "100"]
         url = url.appendingQueryParameters(urlParams)
         var request = URLRequest(url: url)
         request.httpMethod = "GET"

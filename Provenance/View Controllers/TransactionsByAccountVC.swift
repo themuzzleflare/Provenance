@@ -66,7 +66,7 @@ class TransactionsByAccountVC: TableViewController {
         }
     }
     private var filteredTransactionList: Transaction {
-        return Transaction(data: filteredTransactions, links: transactionsPagination)
+        Transaction(data: filteredTransactions, links: transactionsPagination)
     }
     private var categories: [CategoryResource] = []
     private var accounts: [AccountResource] = []

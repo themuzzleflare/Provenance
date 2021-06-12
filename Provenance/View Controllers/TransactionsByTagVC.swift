@@ -22,7 +22,7 @@ class TransactionsByTagVC: TableViewController {
         weak var parent: TransactionsByTagVC! = nil
 
         override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-            return true
+            true
         }
 
         override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -32,7 +32,7 @@ class TransactionsByTagVC: TableViewController {
                 let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { [unowned self] _ in
                     let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
                     var request = URLRequest(url: url)
-                    let bodyObject: [String : Any] = [
+                    let bodyObject: [String: Any] = [
                         "data": [
                             [
                                 "type": "tags",
@@ -45,7 +45,7 @@ class TransactionsByTagVC: TableViewController {
                         "Content-Type": "application/json",
                         "Authorization": "Bearer \(appDefaults.apiKey)"
                     ]
-                    request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+                    request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject)
                     URLSession.shared.dataTask(with: request) { data, response, error in
                         if error == nil {
                             let statusCode = (response as! HTTPURLResponse).statusCode
@@ -107,7 +107,7 @@ class TransactionsByTagVC: TableViewController {
         }
     }
     private var filteredTransactionList: Transaction {
-        return Transaction(data: filteredTransactions, links: transactionsPagination)
+        Transaction(data: filteredTransactions, links: transactionsPagination)
     }
     private var categories: [CategoryResource] = []
     private var accounts: [AccountResource] = []
@@ -370,11 +370,11 @@ extension TransactionsByTagVC {
     }
 
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .delete
+        .delete
     }
 
     override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        return "Remove"
+        "Remove"
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -395,7 +395,7 @@ extension TransactionsByTagVC {
                     let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { [unowned self] _ in
                         let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
                         var request = URLRequest(url: url)
-                        let bodyObject: [String : Any] = [
+                        let bodyObject: [String: Any] = [
                             "data": [
                                 [
                                     "type": "tags",
@@ -408,7 +408,7 @@ extension TransactionsByTagVC {
                             "Content-Type": "application/json",
                             "Authorization": "Bearer \(appDefaults.apiKey)"
                         ]
-                        request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+                        request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject)
                         URLSession.shared.dataTask(with: request) { data, response, error in
                             if error == nil {
                                 let statusCode = (response as! HTTPURLResponse).statusCode

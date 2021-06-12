@@ -129,7 +129,7 @@ private extension TransactionDetailVC {
     private func configureNavigation() {
         navigationItem.title = transaction.attributes.description
         navigationItem.titleView = scrollingTitle
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: transaction.attributes.statusIcon, style: .plain, target: self, action: #selector(openStatusIconHelpView))
+        navigationItem.setRightBarButton(UIBarButtonItem(image: transaction.attributes.statusIcon, style: .plain, target: self, action: #selector(openStatusIconHelpView)), animated: false)
         navigationItem.rightBarButtonItem?.tintColor = transaction.attributes.isSettled ? .systemGreen : .systemYellow
     }
     
@@ -150,7 +150,7 @@ private extension TransactionDetailVC {
     }
 
     private func makeDataSource() -> DataSource {
-        return DataSource(
+        DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, attribute in
                 let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
@@ -272,6 +272,7 @@ private extension TransactionDetailVC {
                     if let decodedResponse = try? JSONDecoder().decode(SingleTransactionResponse.self, from: response.data!) {
                         self.transaction = decodedResponse.data
                         self.applySnapshot()
+                        self.configureNavigation()
                     } else {
                         print("JSON decoding failed")
                     }

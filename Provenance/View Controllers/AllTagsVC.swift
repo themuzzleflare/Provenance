@@ -35,7 +35,7 @@ final class AllTagsVC: TableViewController {
         }
     }
     private var filteredTagsList: Tag {
-        return Tag(data: filteredTags, links: tagsPagination)
+        Tag(data: filteredTags, links: tagsPagination)
     }
     
     // MARK: - View Life Cycle
@@ -276,9 +276,9 @@ extension AllTagsVC {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+        UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy Tag Name", image: R.image.docOnClipboard()) { _ in
+                UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
                     UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.id
                 }
             ])

@@ -36,7 +36,7 @@ class AddTagWorkflowVC: TableViewController {
         }
     }
     private var filteredTransactionList: Transaction {
-        return Transaction(data: filteredTransactions, links: transactionsPagination)
+        Transaction(data: filteredTransactions, links: transactionsPagination)
     }
     
     // MARK: - View Life Cycle

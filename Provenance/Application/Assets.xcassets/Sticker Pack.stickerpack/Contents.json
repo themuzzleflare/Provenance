@@ -8,28 +8,28 @@
   },
   "stickers" : [
     {
-      "filename" : "UP_STICKERS_LOGO-TEST2-300.sticker"
+      "filename" : "Logo.sticker"
     },
     {
-      "filename" : "UP_STICKERS_SPINCOIN-300.sticker"
+      "filename" : "Spincoin.sticker"
     },
     {
-      "filename" : "UP_STICKERS_spining$-300.sticker"
+      "filename" : "Spinning $.sticker"
     },
     {
-      "filename" : "UP_STICKERS_upyeah-300.sticker"
+      "filename" : "Up Yeah.sticker"
     },
     {
-      "filename" : "UP_STICKERS_ZAPCHILL-300.sticker"
+      "filename" : "Zap Chill.sticker"
     },
     {
-      "filename" : "UP_STICKERS_ZAPCOINTRICKS-300.sticker"
+      "filename" : "Zap Coin Tricks.sticker"
     },
     {
-      "filename" : "UP_STICKERS_ZAPEASY-300v2.sticker"
+      "filename" : "Zap Easy.sticker"
     },
     {
-      "filename" : "UP_STICKERS_ZAPNOTE-300.sticker"
+      "filename" : "Zap Note.sticker"
     }
   ]
 }

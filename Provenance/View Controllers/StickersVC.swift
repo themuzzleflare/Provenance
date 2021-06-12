@@ -27,7 +27,7 @@ private extension StickersVC {
 
 extension StickersVC {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return stickerGifs.count
+        stickerGifs.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

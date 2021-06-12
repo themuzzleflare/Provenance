@@ -29,7 +29,7 @@ class TagsVC: TableViewController {
         weak var parent: TagsVC! = nil
 
         override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-            return true
+            true
         }
 
         override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -39,7 +39,7 @@ class TagsVC: TableViewController {
                 let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { [unowned self] _ in
                     let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(parent.transaction.id)/relationships/tags")!
                     var request = URLRequest(url: url)
-                    let bodyObject: [String : Any] = [
+                    let bodyObject: [String: Any] = [
                         "data": [
                             [
                                 "type": "tags",
@@ -52,7 +52,7 @@ class TagsVC: TableViewController {
                         "Content-Type": "application/json",
                         "Authorization": "Bearer \(appDefaults.apiKey)"
                     ]
-                    request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+                    request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject)
                     URLSession.shared.dataTask(with: request) { data, response, error in
                         if error == nil {
                             let statusCode = (response as! HTTPURLResponse).statusCode
@@ -67,7 +67,7 @@ class TagsVC: TableViewController {
                                     let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(parent.transaction.attributes.description).", style: .success)
                                     notificationBanner.duration = 2
                                     notificationBanner.show()
-                                    parent.fetchTags()
+                                    parent.fetchTransaction()
                                 }
                             }
                         } else {
@@ -105,7 +105,7 @@ class TagsVC: TableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchTags()
+        fetchTransaction()
     }
 }
 
@@ -132,11 +132,11 @@ private extension TagsVC {
 
 private extension TagsVC {
     @objc private func appMovedToForeground() {
-        fetchTags()
+        fetchTransaction()
     }
 
     private func makeDataSource() -> DataSource {
-        return DataSource(
+        DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, tag in
                 let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
@@ -159,8 +159,8 @@ private extension TagsVC {
         dataSource.apply(snapshot)
     }
 
-    private func fetchTags() {
-        AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)", method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
+    private func fetchTransaction() {
+        AF.request(UpAPI.Transactions().retrieveTransaction(transactionId: transaction.id), method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             switch response.result {
                 case .success:
                     if let decodedResponse = try? JSONDecoder().decode(SingleTransactionResponse.self, from: response.data!) {
@@ -195,7 +195,7 @@ extension TagsVC {
         let tag = dataSource.itemIdentifier(for: indexPath)!
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy Tag Name", image: R.image.docOnClipboard()) { _ in
+                UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
                     UIPasteboard.general.string = tag.id
                 },
                 UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { _ in
@@ -203,7 +203,7 @@ extension TagsVC {
                     let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { [unowned self] _ in
                         let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
                         var request = URLRequest(url: url)
-                        let bodyObject: [String : Any] = [
+                        let bodyObject: [String: Any] = [
                             "data": [
                                 [
                                     "type": "tags",
@@ -216,7 +216,7 @@ extension TagsVC {
                             "Content-Type": "application/json",
                             "Authorization": "Bearer \(appDefaults.apiKey)"
                         ]
-                        request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+                        request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject)
                         URLSession.shared.dataTask(with: request) { data, response, error in
                             if error == nil {
                                 let statusCode = (response as! HTTPURLResponse).statusCode
@@ -231,7 +231,7 @@ extension TagsVC {
                                         let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success)
                                         notificationBanner.duration = 2
                                         notificationBanner.show()
-                                        fetchTags()
+                                        fetchTransaction()
                                     }
                                 }
                             } else {

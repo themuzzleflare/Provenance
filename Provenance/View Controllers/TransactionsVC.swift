@@ -48,7 +48,7 @@ final class TransactionsVC: TableViewController {
         }
     }
     private var filteredTransactionList: Transaction {
-        return Transaction(data: filteredTransactions, links: transactionsPagination)
+        Transaction(data: filteredTransactions, links: transactionsPagination)
     }
     private var categories: [CategoryResource] = []
     private var accounts: [AccountResource] = []
@@ -144,6 +144,7 @@ private extension TransactionsVC {
     }
     
     private func configureTableView() {
+        tableView.showsVerticalScrollIndicator = true
         tableView.refreshControl = tableRefreshControl
         tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
     }
@@ -175,7 +176,7 @@ private extension TransactionsVC {
     }
 
     private func filterMenu() -> UIMenu {
-        return UIMenu(image: R.image.sliderHorizontal3(), options: .displayInline, children: [
+        UIMenu(image: R.image.sliderHorizontal3(), options: .displayInline, children: [
             UIMenu(title: "Category", image: R.image.arrowUpArrowDownCircle(), children: FilterCategory.allCases.map { category in
                 UIAction(title: categoryNameTransformed(category), state: filter == category ? .on : .off) { _ in
                     self.filter = category

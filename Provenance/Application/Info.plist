@@ -30,9 +30,9 @@
 	<string>Copyright © 2021 Paul Tavitian</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>CircularStd-Medium.otf</string>
-		<string>CircularStd-BookItalic.ttf</string>
 		<string>CircularStd-Book.otf</string>
+		<string>CircularStd-BookItalic.ttf</string>
+		<string>CircularStd-Medium.otf</string>
 		<string>CircularStd-Bold.otf</string>
 		<string>SF-Mono-Regular.otf</string>
 	</array>
@@ -46,7 +46,7 @@
 			<array>
 				<dict>
 					<key>UISceneConfigurationName</key>
-					<string>Main Configuration</string>
+					<string>Main</string>
 					<key>UISceneDelegateClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
 				</dict>

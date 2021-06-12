@@ -1,7 +1,7 @@
 import UIKit
 import Rswift
 
-class TabBarController: UITabBarController {
+class TabController: UITabBarController {
     // MARK: - Life Cycle
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -16,7 +16,7 @@ class TabBarController: UITabBarController {
 
 // MARK: - Configuration
 
-private extension TabBarController {
+private extension TabController {
     private func configure() {
         viewControllers = TabBarItem.allCases.map { item in
             let vc = item.vc()

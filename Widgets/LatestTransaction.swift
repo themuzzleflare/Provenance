@@ -16,7 +16,7 @@ struct LatestTransactionProvider: IntentTimelineProvider {
     func getTimeline(for configuration: Intent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [Entry] = []
         var url = URL(string: "https://api.up.com.au/api/v1/transactions")!
-        let urlParams = ["page[size]":"1"]
+        let urlParams = ["page[size]": "1"]
         url = url.appendingQueryParameters(urlParams)
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
