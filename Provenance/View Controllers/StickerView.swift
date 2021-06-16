@@ -3,7 +3,7 @@ import FLAnimatedImage
 import TinyConstraints
 
 class StickerView: ViewController {
-    // MARK: - Properties
+        // MARK: - Properties
 
     var image: FLAnimatedImage! {
         didSet {
@@ -14,7 +14,7 @@ class StickerView: ViewController {
     
     private let imageView = FLAnimatedImageView()
 
-    // MARK: - View Life Cycle
+        // MARK: - View Life Cycle
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -26,7 +26,7 @@ class StickerView: ViewController {
     }
 }
 
-// MARK: - Configuration
+    // MARK: - Configuration
 
 private extension StickerView {
     private func configure() {

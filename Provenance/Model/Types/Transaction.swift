@@ -103,10 +103,10 @@ struct Attribute: Decodable {
     }
     private var createdAt: String // The date-time at which this transaction was first encountered.
     private var creationDateAbsolute: String {
-        return formatDateAbsolute(dateString: createdAt)
+        formatDateAbsolute(dateString: createdAt)
     }
     private var creationDateRelative: String {
-        return formatDateRelative(dateString: createdAt)
+        formatDateRelative(dateString: createdAt)
     }
     var creationDate: String {
         switch appDefaults.dateStyle {
@@ -171,10 +171,10 @@ struct MoneyObject: Decodable {
         }
     }
     var valueShort: String {
-        return "\(valueSymbol)\(valueString)"
+        "\(valueSymbol)\(valueString)"
     }
     var valueLong: String {
-        return "\(valueSymbol)\(valueString) \(currencyCode)"
+        "\(valueSymbol)\(valueString) \(currencyCode)"
     }
 }
 

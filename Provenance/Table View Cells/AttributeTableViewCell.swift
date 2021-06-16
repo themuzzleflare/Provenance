@@ -3,7 +3,7 @@ import TinyConstraints
 import Rswift
 
 class AttributeTableViewCell: UITableViewCell {
-    // MARK: - Properties
+        // MARK: - Properties
 
     static let reuseIdentifier = "attributeTableViewCell"
 
@@ -12,7 +12,7 @@ class AttributeTableViewCell: UITableViewCell {
     var leftLabel = UILabel()
     var rightLabel = UILabel()
 
-    // MARK: - Life Cycle
+        // MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -28,7 +28,7 @@ class AttributeTableViewCell: UITableViewCell {
     }
 }
 
-// MARK: - Configuration
+    // MARK: - Configuration
 
 private extension AttributeTableViewCell {
     private func configureCell() {

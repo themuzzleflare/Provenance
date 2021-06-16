@@ -1,10 +1,10 @@
 import Foundation
 
-// MARK: - UserDefaults Suite for Provenance Application Group
+    // MARK: - UserDefaults Suite for Provenance Application Group
 
 let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
 
-// MARK: - UserDefaults Extension for Value Observation
+    // MARK: - UserDefaults Extension for Value Observation
 
 extension UserDefaults {
     var apiKey: String {
@@ -20,7 +20,7 @@ extension UserDefaults {
     }
 }
 
-// MARK: - Protocols & Extensions for URLSession Query Parameter Support
+    // MARK: - Protocols & Extensions for URLSession Query Parameter Support
 
 protocol URLQueryParameterStringConvertible {
     var queryParameters: String {
@@ -46,7 +46,7 @@ extension URL {
     }
 }
 
-// MARK: - Date Formatters
+    // MARK: - Date Formatters
 
 func formatDateAbsolute(dateString: String) -> String {
     if let date = ISO8601DateFormatter().date(from: dateString) {

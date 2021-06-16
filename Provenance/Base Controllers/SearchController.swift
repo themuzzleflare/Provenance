@@ -1,7 +1,7 @@
 import UIKit
 
 class SearchController: UISearchController {
-    // MARK: - Life Cycle
+        // MARK: - Life Cycle
     
     override init(searchResultsController: UIViewController?) {
         super.init(searchResultsController: searchResultsController)
@@ -13,7 +13,7 @@ class SearchController: UISearchController {
     }
 }
 
-// MARK: - Configuration
+    // MARK: - Configuration
 
 private extension SearchController {
     private func configure() {

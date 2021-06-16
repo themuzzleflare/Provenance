@@ -30,7 +30,13 @@ struct AccountBalanceProvider: IntentTimelineProvider {
                             entries.append(Entry(date: Date(), account: AvailableAccount(id: decodedResponse.data.id, displayName: decodedResponse.data.attributes.displayName, balance: decodedResponse.data.attributes.balance.valueShort)))
                             completion(Timeline(entries: entries, policy: .atEnd))
                         }
+                    } else {
+                        entries.append(Entry(date: Date(), account: AvailableAccount(id: accountId, displayName: configuration.account!.subtitleString!, balance: configuration.account!.displayString)))
+                        completion(Timeline(entries: entries, policy: .atEnd))
                     }
+                } else {
+                    entries.append(Entry(date: Date(), account: AvailableAccount(id: accountId, displayName: configuration.account!.subtitleString!, balance: configuration.account!.displayString)))
+                    completion(Timeline(entries: entries, policy: .atEnd))
                 }
             }
             .resume()

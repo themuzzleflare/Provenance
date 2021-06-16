@@ -2,7 +2,7 @@ import UIKit
 import Rswift
 
 class NavigationController: UINavigationController {
-    // MARK: - Life Cycle
+        // MARK: - Life Cycle
 
     override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
@@ -14,7 +14,7 @@ class NavigationController: UINavigationController {
     }
 }
 
-// MARK: - Configuration
+    // MARK: - Configuration
 
 private extension NavigationController {
     private func configure() {

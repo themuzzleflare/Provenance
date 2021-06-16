@@ -39,10 +39,10 @@ struct AccountAttribute: Decodable {
     var balance: MoneyObject
     private var createdAt: String
     private var creationDateAbsolute: String {
-        return formatDateAbsolute(dateString: createdAt)
+        formatDateAbsolute(dateString: createdAt)
     }
     private var creationDateRelative: String {
-        return formatDateRelative(dateString: createdAt)
+        formatDateRelative(dateString: createdAt)
     }
     var creationDate: String {
         switch appDefaults.dateStyle {

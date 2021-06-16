@@ -3,14 +3,14 @@ import NotificationBannerSwift
 import Rswift
 
 class AddTagWorkflowThreeVC: TableViewController {
-    // MARK: - Properties
+        // MARK: - Properties
 
     var transaction: TransactionResource!
     var tag: String!
 
     private var dateStyleObserver: NSKeyValueObservation?
 
-    // MARK: - View Life Cycle
+        // MARK: - View Life Cycle
     
     override init(style: UITableView.Style) {
         super.init(style: style)
@@ -24,7 +24,7 @@ class AddTagWorkflowThreeVC: TableViewController {
     }
 }
 
-// MARK: - Configuration
+    // MARK: - Configuration
 
 private extension AddTagWorkflowThreeVC {
     private func configureProperties() {
@@ -45,7 +45,7 @@ private extension AddTagWorkflowThreeVC {
     }
 }
 
-// MARK: - Actions
+    // MARK: - Actions
 
 private extension AddTagWorkflowThreeVC {
     private func errorAlert(_ statusCode: Int) -> (title: String, content: String) {
@@ -105,7 +105,7 @@ private extension AddTagWorkflowThreeVC {
     }
 }
 
-// MARK: - UITableViewDataSource
+    // MARK: - UITableViewDataSource
 
 extension AddTagWorkflowThreeVC {
     override func numberOfSections(in tableView: UITableView) -> Int {

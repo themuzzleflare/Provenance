@@ -3,7 +3,7 @@ import FLAnimatedImage
 import TinyConstraints
 
 class StickerCollectionViewCell: UICollectionViewCell {
-    // MARK: - Properties
+        // MARK: - Properties
     
     static let reuseIdentifier = "stickerCollectionViewCell"
     
@@ -16,7 +16,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     
     private let stickerImageView = FLAnimatedImageView()
 
-    // MARK: - Life Cycle
+        // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,7 +33,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     }
 }
 
-// MARK: - Configuration
+    // MARK: - Configuration
 
 private extension StickerCollectionViewCell {
     private func configure() {

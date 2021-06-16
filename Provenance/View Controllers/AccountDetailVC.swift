@@ -2,7 +2,7 @@ import UIKit
 import Rswift
 
 class AccountDetailVC: TableViewController {
-    // MARK: - Properties
+        // MARK: - Properties
 
     var account: AccountResource!
     var transaction: TransactionResource?
@@ -15,7 +15,7 @@ class AccountDetailVC: TableViewController {
     private var dateStyleObserver: NSKeyValueObservation?
     private var sections: [Section]!
 
-    // MARK: - View Life Cycle
+        // MARK: - View Life Cycle
     
     override init(style: UITableView.Style) {
         super.init(style: style)
@@ -34,7 +34,7 @@ class AccountDetailVC: TableViewController {
     }
 }
 
-// MARK: - Configuration
+    // MARK: - Configuration
 
 private extension AccountDetailVC {
     private func configureProperties() {
@@ -54,7 +54,7 @@ private extension AccountDetailVC {
     }
 }
 
-// MARK: - Actions
+    // MARK: - Actions
 
 private extension AccountDetailVC {
     @objc private func closeWorkflow() {
@@ -65,12 +65,12 @@ private extension AccountDetailVC {
         DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, attribute in
-                let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-                cell.leftLabel.text = attribute.key
-                cell.rightLabel.font = attribute.key == "Account ID" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
-                cell.rightLabel.text = attribute.value
-                return cell
-            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
+            cell.leftLabel.text = attribute.key
+            cell.rightLabel.font = attribute.key == "Account ID" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
+            cell.rightLabel.text = attribute.value
+            return cell
+        }
         )
     }
 
@@ -106,7 +106,7 @@ private extension AccountDetailVC {
     }
 }
 
-// MARK: - UITableViewDelegate
+    // MARK: - UITableViewDelegate
 
 extension AccountDetailVC {
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -114,8 +114,8 @@ extension AccountDetailVC {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { _ in
-                    UIPasteboard.general.string = attribute.value
-                }
+                UIPasteboard.general.string = attribute.value
+            }
             ])
         }
     }

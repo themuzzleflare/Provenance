@@ -4,7 +4,7 @@ import NotificationBannerSwift
 import Rswift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    // MARK: - Properties
+        // MARK: - Properties
 
     var window: UIWindow?
 
@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         case categories = "categoriesShortcut"
     }
 
-    // MARK: - Life Cycle
+        // MARK: - Life Cycle
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -51,7 +51,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 }
 
-// MARK: - Actions
+    // MARK: - Actions
 
 private extension SceneDelegate {
     private func checkApiKey() {
@@ -112,7 +112,7 @@ private extension SceneDelegate {
                         }
                         WidgetCenter.shared.reloadAllTimelines()
                     }
-                    .resume()
+                    WidgetCenter.shared.reloadAllTimelines()
                 } else {
                     let notificationBanner = NotificationBanner(title: "Failed", subtitle: "The provided API Key was the same as the current one.", style: .danger)
                     notificationBanner.duration = 2

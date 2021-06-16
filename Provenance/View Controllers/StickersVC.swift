@@ -1,7 +1,7 @@
 import UIKit
 
 class StickersVC: CollectionViewController {
-    // MARK: - View Life Cycle
+        // MARK: - View Life Cycle
 
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
@@ -13,7 +13,7 @@ class StickersVC: CollectionViewController {
     }
 }
 
-// MARK: - Configuration
+    // MARK: - Configuration
 
 private extension StickersVC {
     private func configure() {
@@ -23,7 +23,7 @@ private extension StickersVC {
     }
 }
 
-// MARK: - UICollectionViewDataSource
+    // MARK: - UICollectionViewDataSource
 
 extension StickersVC {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -37,7 +37,7 @@ extension StickersVC {
     }
 }
 
-// MARK: - UICollectionViewDelegate
+    // MARK: - UICollectionViewDelegate
 
 extension StickersVC {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

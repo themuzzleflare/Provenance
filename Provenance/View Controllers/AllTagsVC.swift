@@ -4,7 +4,7 @@ import TinyConstraints
 import Rswift
 
 final class AllTagsVC: TableViewController {
-    // MARK: - Properties
+        // MARK: - Properties
 
     private enum Section {
         case main
@@ -38,7 +38,7 @@ final class AllTagsVC: TableViewController {
         Tag(data: filteredTags, links: tagsPagination)
     }
     
-    // MARK: - View Life Cycle
+        // MARK: - View Life Cycle
     
     override init(style: UITableView.Style) {
         super.init(style: style)
@@ -60,7 +60,7 @@ final class AllTagsVC: TableViewController {
     }
 }
 
-// MARK: - Configuration
+    // MARK: - Configuration
 
 private extension AllTagsVC {
     private func configureProperties() {
@@ -89,7 +89,7 @@ private extension AllTagsVC {
     }
 }
 
-// MARK: - Actions
+    // MARK: - Actions
 
 private extension AllTagsVC {
     @objc private func appMovedToForeground() {
@@ -110,15 +110,15 @@ private extension AllTagsVC {
         let dataSource = DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, tag in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
-                cell.selectedBackgroundView = selectedBackgroundCellView
-                cell.separatorInset = .zero
-                cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.numberOfLines = 0
-                cell.textLabel?.text = tag.id
-                return cell
-            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
+            cell.selectedBackgroundView = selectedBackgroundCellView
+            cell.separatorInset = .zero
+            cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+            cell.textLabel?.textAlignment = .left
+            cell.textLabel?.numberOfLines = 0
+            cell.textLabel?.text = tag.id
+            return cell
+        }
         )
         dataSource.defaultRowAnimation = .fade
         return dataSource
@@ -267,7 +267,7 @@ private extension AllTagsVC {
     }
 }
 
-// MARK: - UITableViewDelegate
+    // MARK: - UITableViewDelegate
 
 extension AllTagsVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -279,14 +279,14 @@ extension AllTagsVC {
         UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                    UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.id
-                }
+                UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.id
+            }
             ])
         }
     }
 }
 
-// MARK: - UISearchBarDelegate
+    // MARK: - UISearchBarDelegate
 
 extension AllTagsVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

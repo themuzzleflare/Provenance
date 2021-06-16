@@ -5,7 +5,7 @@ import Rswift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    // MARK: - Life Cycle
+        // MARK: - Life Cycle
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:[UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         registerDefaults()
@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
-// MARK: - Configuration
+    // MARK: - Configuration
 
 private extension AppDelegate {
     private func registerDefaults() {

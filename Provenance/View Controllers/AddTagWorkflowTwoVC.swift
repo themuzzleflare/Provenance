@@ -4,7 +4,7 @@ import TinyConstraints
 import Rswift
 
 class AddTagWorkflowTwoVC: TableViewController {
-    // MARK: - Properties
+        // MARK: - Properties
 
     var transaction: TransactionResource!
 
@@ -43,7 +43,7 @@ class AddTagWorkflowTwoVC: TableViewController {
         Tag(data: filteredTags, links: tagsPagination)
     }
     
-    // MARK: - View Life Cycle
+        // MARK: - View Life Cycle
     
     override init(style: UITableView.Style) {
         super.init(style: style)
@@ -65,7 +65,7 @@ class AddTagWorkflowTwoVC: TableViewController {
     }
 }
 
-// MARK: - Configuration
+    // MARK: - Configuration
 
 private extension AddTagWorkflowTwoVC {
     private func configureProperties() {
@@ -93,7 +93,7 @@ private extension AddTagWorkflowTwoVC {
     }
 }
 
-// MARK: - Actions
+    // MARK: - Actions
 
 private extension AddTagWorkflowTwoVC {
     @objc private func appMovedToForeground() {
@@ -146,15 +146,15 @@ private extension AddTagWorkflowTwoVC {
         let dataSource = DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, tag in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
-                cell.selectedBackgroundView = selectedBackgroundCellView
-                cell.separatorInset = .zero
-                cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.numberOfLines = 0
-                cell.textLabel?.text = tag.id
-                return cell
-            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
+            cell.selectedBackgroundView = selectedBackgroundCellView
+            cell.separatorInset = .zero
+            cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+            cell.textLabel?.textAlignment = .left
+            cell.textLabel?.numberOfLines = 0
+            cell.textLabel?.text = tag.id
+            return cell
+        }
         )
         dataSource.defaultRowAnimation = .fade
         return dataSource
@@ -303,7 +303,7 @@ private extension AddTagWorkflowTwoVC {
     }
 }
 
-// MARK: - UITableViewDelegate
+    // MARK: - UITableViewDelegate
 
 extension AddTagWorkflowTwoVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -315,14 +315,14 @@ extension AddTagWorkflowTwoVC {
         UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy Tag Name", image: R.image.docOnClipboard()) { _ in
-                    UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.id
-                }
+                UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.id
+            }
             ])
         }
     }
 }
 
-// MARK: - UITextFieldDelegate
+    // MARK: - UITextFieldDelegate
 
 extension AddTagWorkflowTwoVC: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -333,7 +333,7 @@ extension AddTagWorkflowTwoVC: UITextFieldDelegate {
     }
 }
 
-// MARK: - UISearchBarDelegate
+    // MARK: - UISearchBarDelegate
 
 extension AddTagWorkflowTwoVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

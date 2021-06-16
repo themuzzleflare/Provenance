@@ -4,7 +4,7 @@ import NotificationBannerSwift
 import Rswift
 
 class SettingsVC: TableViewController {
-    // MARK: - Properties
+        // MARK: - Properties
 
     var displayBanner: NotificationBanner?
 
@@ -12,7 +12,7 @@ class SettingsVC: TableViewController {
     
     private var textDidChangeObserver: NSObjectProtocol!
 
-    // MARK: - View Life Cycle
+        // MARK: - View Life Cycle
     
     override init(style: UITableView.Style) {
         super.init(style: style)
@@ -33,7 +33,7 @@ class SettingsVC: TableViewController {
     }
 }
 
-// MARK: - Configuration
+    // MARK: - Configuration
 
 private extension SettingsVC {
     private func configureProperties() {
@@ -52,7 +52,7 @@ private extension SettingsVC {
     }
 }
 
-// MARK: - Actions
+    // MARK: - Actions
 
 private extension SettingsVC {
     @objc private func closeWorkflow() {
@@ -60,7 +60,7 @@ private extension SettingsVC {
     }
 }
 
-// MARK: - UITableViewDataSource
+    // MARK: - UITableViewDataSource
 
 extension SettingsVC {
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -117,7 +117,7 @@ extension SettingsVC {
     }
 }
 
-// MARK: - UITableViewDelegate
+    // MARK: - UITableViewDelegate
 
 extension SettingsVC {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -230,8 +230,8 @@ extension SettingsVC {
                         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                             UIMenu(children: [
                                 UIAction(title: "Copy API Key", image: R.image.docOnClipboard()) { _ in
-                                    UIPasteboard.general.string = appDefaults.apiKey
-                                }
+                                UIPasteboard.general.string = appDefaults.apiKey
+                            }
                             ])
                         }
                 }

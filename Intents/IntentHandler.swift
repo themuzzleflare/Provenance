@@ -20,7 +20,16 @@ class IntentHandler: INExtension, AccountSelectionIntentHandling {
                         }
                         completion(INObjectCollection(items: accounts), nil)
                     }
+                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
+                    let errors: [AccountType] = decodedResponse.errors.map { error in
+                        AccountType(identifier: error.status, display: error.title, subtitle: error.detail, image: nil)
+                    }
+                    completion(INObjectCollection(items: errors), nil)
+                } else {
+                    completion(INObjectCollection(items: [AccountType(identifier: "decodingError", display: "Error", subtitle: "JSON decoding failed", image: nil)]), nil)
                 }
+            } else {
+                completion(INObjectCollection(items: [AccountType(identifier: "requestError", display: "Error", subtitle: error?.localizedDescription ?? "Unknown error", image: nil)]), nil)
             }
         }
         .resume()

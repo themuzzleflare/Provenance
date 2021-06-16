@@ -5,7 +5,7 @@ import TinyConstraints
 import Rswift
 
 class APIKeyTableViewCell: UITableViewCell {
-    // MARK: - Properties
+        // MARK: - Properties
     
     static let reuseIdentifier = "apiKeyTableViewCell"
 
@@ -21,7 +21,7 @@ class APIKeyTableViewCell: UITableViewCell {
         }
     }
 
-    // MARK: - Life Cycle
+        // MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -40,7 +40,7 @@ class APIKeyTableViewCell: UITableViewCell {
     }
 }
 
-// MARK: - Configuration
+    // MARK: - Configuration
 
 private extension APIKeyTableViewCell {
     private func configureCell() {

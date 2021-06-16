@@ -4,7 +4,7 @@ import TinyConstraints
 import Rswift
 
 final class AccountsCVC: CollectionViewController {
-    // MARK: - Properties
+        // MARK: - Properties
 
     private enum Section {
         case main
@@ -43,7 +43,7 @@ final class AccountsCVC: CollectionViewController {
         Account(data: filteredAccounts, links: accountsPagination)
     }
     
-    // MARK: - View Life Cycle
+        // MARK: - View Life Cycle
     
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
@@ -65,7 +65,7 @@ final class AccountsCVC: CollectionViewController {
     }
 }
 
-// MARK: - Configuration
+    // MARK: - Configuration
 
 private extension AccountsCVC {
     private func configureProperties() {
@@ -93,7 +93,7 @@ private extension AccountsCVC {
     }
 }
 
-// MARK: - Actions
+    // MARK: - Actions
 
 private extension AccountsCVC {
     @objc private func appMovedToForeground() {
@@ -243,7 +243,7 @@ private extension AccountsCVC {
     }
 }
 
-// MARK: - UICollectionViewDelegate
+    // MARK: - UICollectionViewDelegate
 
 extension AccountsCVC {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -254,18 +254,18 @@ extension AccountsCVC {
         let account = dataSource.itemIdentifier(for: indexPath)!
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy Balance", image: R.image.dollarsignCircle()) { _ in
-                    UIPasteboard.general.string = account.attributes.balance.valueShort
-                },
-                UIAction(title: "Copy Display Name", image: R.image.textAlignright()) { _ in
-                    UIPasteboard.general.string = account.attributes.displayName
-                }
+                UIAction(title: "Copy Balance", image: R.image.dollarsignCircle()) { action in
+                UIPasteboard.general.string = account.attributes.balance.valueShort
+            },
+                UIAction(title: "Copy Display Name", image: R.image.textAlignright()) { action in
+                UIPasteboard.general.string = account.attributes.displayName
+            }
             ])
         }
     }
 }
 
-// MARK: - UISearchBarDelegate
+    // MARK: - UISearchBarDelegate
 
 extension AccountsCVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

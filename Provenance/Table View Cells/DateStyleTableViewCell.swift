@@ -4,7 +4,7 @@ import TinyConstraints
 import Rswift
 
 class DateStyleTableViewCell: UITableViewCell {
-    // MARK: - Properties
+        // MARK: - Properties
     
     static let reuseIdentifier = "dateStyleTableViewCell"
 
@@ -14,7 +14,7 @@ class DateStyleTableViewCell: UITableViewCell {
 
     private var dateStyleObserver: NSKeyValueObservation?
 
-    // MARK: - Life Cycle
+        // MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -38,7 +38,7 @@ class DateStyleTableViewCell: UITableViewCell {
     }
 }
 
-// MARK: - Configuration
+    // MARK: - Configuration
 
 private extension DateStyleTableViewCell {
     private func configureCell() {
@@ -78,7 +78,7 @@ private extension DateStyleTableViewCell {
     }
 }
 
-// MARK: - Actions
+    // MARK: - Actions
 
 private extension DateStyleTableViewCell {
     @objc private func switchDateStyle() {

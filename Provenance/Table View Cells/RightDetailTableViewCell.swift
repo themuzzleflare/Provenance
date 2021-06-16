@@ -1,7 +1,7 @@
 import UIKit
 
 class RightDetailTableViewCell: UITableViewCell {
-    // MARK: - Life Cycle
+        // MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
