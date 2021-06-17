@@ -259,7 +259,7 @@ private extension AddTagWorkflowVC {
 extension AddTagWorkflowVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        navigationController?.pushViewController({let vc = AddTagWorkflowTwoVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
+        navigationController?.pushViewController({let vc = AddTagWorkflowTwoVC(style: .insetGrouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

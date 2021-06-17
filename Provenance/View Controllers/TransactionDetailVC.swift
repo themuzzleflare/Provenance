@@ -290,11 +290,11 @@ extension TransactionDetailVC {
         let attribute = dataSource.itemIdentifier(for: indexPath)!
         tableView.deselectRow(at: indexPath, animated: true)
         if attribute.key == "Account" {
-            navigationController?.pushViewController({let vc = TransactionsByAccountVC(style: .grouped);vc.account = accountFilter!.first!;return vc}(), animated: true)
+            navigationController?.pushViewController({let vc = TransactionsByAccountVC(style: .insetGrouped);vc.account = accountFilter!.first!;return vc}(), animated: true)
         } else if attribute.key == "Transfer Account" {
-            navigationController?.pushViewController({let vc = TransactionsByAccountVC(style: .grouped);vc.account = transferAccountFilter!.first!;return vc}(), animated: true)
+            navigationController?.pushViewController({let vc = TransactionsByAccountVC(style: .insetGrouped);vc.account = transferAccountFilter!.first!;return vc}(), animated: true)
         } else if attribute.key == "Parent Category" || attribute.key == "Category" {
-            let vc = TransactionsByCategoryVC(style: .grouped)
+            let vc = TransactionsByCategoryVC(style: .insetGrouped)
             if attribute.key == "Parent Category" {
                 vc.category = parentCategoryFilter!.first
             } else {
@@ -302,7 +302,7 @@ extension TransactionDetailVC {
             }
             navigationController?.pushViewController(vc, animated: true)
         } else if attribute.key == "Tags" {
-            navigationController?.pushViewController({let vc = TagsVC(style: .grouped);vc.transaction = transaction;return vc}(), animated: true)
+            navigationController?.pushViewController({let vc = TagsVC(style: .insetGrouped);vc.transaction = transaction;return vc}(), animated: true)
         }
     }
     

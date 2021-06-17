@@ -31,6 +31,11 @@ class StickerCollectionViewCell: UICollectionViewCell {
         super.layoutSubviews()
         stickerImageView.frame = contentView.bounds
     }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        layer.borderColor = UIColor.separator.cgColor
+    }
 }
 
 // MARK: - Configuration

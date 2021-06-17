@@ -11,5 +11,6 @@ target 'Provenance' do
   pod 'Alamofire'
   pod 'FLAnimatedImage'
   pod 'NotificationBannerSwift'
+  pod 'IGListKit'
   
 end

@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import IGListKit
 import Rswift
 
 struct Transaction: Decodable {
@@ -7,7 +8,7 @@ struct Transaction: Decodable {
     var links: Pagination
 }
 
-struct TransactionResource: Decodable, Hashable, Identifiable {
+class TransactionResource: Decodable, Hashable, Identifiable {
     private var type: String // The type of this resource: transactions
     var id: String // The unique identifier for this transaction.
     var attributes: Attribute
@@ -28,6 +29,19 @@ struct TransactionResource: Decodable, Hashable, Identifiable {
     
     static func == (lhs: TransactionResource, rhs: TransactionResource) -> Bool {
         lhs.id == rhs.id
+    }
+}
+
+extension TransactionResource: ListDiffable {
+    func diffIdentifier() -> NSObjectProtocol {
+        id as NSObjectProtocol
+    }
+
+    func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
+        guard let object = object as? TransactionResource else {
+            return false
+        }
+        return self.id == object.id
     }
 }
 

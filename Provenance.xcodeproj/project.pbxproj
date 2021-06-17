@@ -97,6 +97,9 @@
 		7AD6ED9A2604A9180051A235 /* Provenance Stickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7AD6ED932604A9150051A235 /* Provenance Stickers.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7AD739A22657C04D009FF994 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A17C18E2657940E00E5EA23 /* IntentHandler.swift */; };
 		7AD739A32657C82C009FF994 /* SingleAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAC68FF262D6C9E0046494C /* SingleAccount.swift */; };
+		7ADE3330267AED2B00066823 /* TransactionsCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADE332F267AED2B00066823 /* TransactionsCVC.swift */; };
+		7ADE3332267AEE1F00066823 /* TransactionsSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADE3331267AEE1F00066823 /* TransactionsSectionController.swift */; };
+		7ADE3334267AEEEE00066823 /* TransactionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADE3333267AEEEE00066823 /* TransactionCollectionViewCell.swift */; };
 		7AE54D082611671D005D38A5 /* AccountBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE54D072611671D005D38A5 /* AccountBalance.swift */; };
 		7AE75E3725FF1C3B00C16AF6 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE75E3625FF1C3B00C16AF6 /* NavigationController.swift */; };
 		7AE75E3B25FF1EF200C16AF6 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE75E3A25FF1EF200C16AF6 /* ActivityIndicator.swift */; };
@@ -236,6 +239,9 @@
 		7AD5944B25C8B3AD0018C86E /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
 		7AD6ED932604A9150051A235 /* Provenance Stickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance Stickers.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AD6ED972604A9180051A235 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7ADE332F267AED2B00066823 /* TransactionsCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsCVC.swift; sourceTree = "<group>"; };
+		7ADE3331267AEE1F00066823 /* TransactionsSectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsSectionController.swift; sourceTree = "<group>"; };
+		7ADE3333267AEEEE00066823 /* TransactionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCollectionViewCell.swift; sourceTree = "<group>"; };
 		7AE54D072611671D005D38A5 /* AccountBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountBalance.swift; sourceTree = "<group>"; };
 		7AE75E3625FF1C3B00C16AF6 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		7AE75E3A25FF1EF200C16AF6 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -288,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				7AB34D2125C78230000A1E81 /* TransactionsVC.swift */,
+				7ADE332F267AED2B00066823 /* TransactionsCVC.swift */,
 				7AB34D4C25C7A90E000A1E81 /* TransactionDetailVC.swift */,
 				7A438782263AAC9B008C5714 /* StatusIconHelpView.swift */,
 				7A8DDCA425D1472400EF85B9 /* TagsVC.swift */,
@@ -368,6 +375,7 @@
 		7A22F7E925FFF90E0014BDC8 /* Base Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				7ADE3331267AEE1F00066823 /* TransactionsSectionController.swift */,
 				7AE75E3625FF1C3B00C16AF6 /* NavigationController.swift */,
 				7AE75E3A25FF1EF200C16AF6 /* ActivityIndicator.swift */,
 				7AE75E3E25FF1FEE00C16AF6 /* RefreshControl.swift */,
@@ -502,6 +510,7 @@
 				7A14D5F1261AC5BE00C072E3 /* AccountCollectionViewCell.swift */,
 				7A5BDE7A2616B9E600B5A5F9 /* CategoryCollectionViewCell.swift */,
 				7ACD4575261D9416000C8FD2 /* StickerCollectionViewCell.swift */,
+				7ADE3333267AEEEE00066823 /* TransactionCollectionViewCell.swift */,
 			);
 			path = "Collection View Cells";
 			sourceTree = "<group>";
@@ -826,6 +835,7 @@
 				7AE75E3725FF1C3B00C16AF6 /* NavigationController.swift in Sources */,
 				7AE75E4325FF21D500C16AF6 /* TableViewController.swift in Sources */,
 				7A5BDE7B2616B9E600B5A5F9 /* CategoryCollectionViewCell.swift in Sources */,
+				7ADE3330267AED2B00066823 /* TransactionsCVC.swift in Sources */,
 				7A14D617261AF39400C072E3 /* BasicTableViewCell.swift in Sources */,
 				7A9494062629350B00B39E75 /* UpAPI.swift in Sources */,
 				7AA113C7261550B900386E2D /* Section.swift in Sources */,
@@ -849,9 +859,11 @@
 				7AA113BF26154F3800386E2D /* DetailAttribute.swift in Sources */,
 				7AE75E3F25FF1FEE00C16AF6 /* RefreshControl.swift in Sources */,
 				7A67980D25D3E15D002AA83A /* DiagnosticTableVC.swift in Sources */,
+				7ADE3334267AEEEE00066823 /* TransactionCollectionViewCell.swift in Sources */,
 				7AB609B02603F0D80038B85B /* AddTagWorkflowTwoVC.swift in Sources */,
 				7A14D600261AD5FF00C072E3 /* FilterCategory.swift in Sources */,
 				7A767DE3263F8FC5003D9531 /* CategoryNameTransformed.swift in Sources */,
+				7ADE3332267AEE1F00066823 /* TransactionsSectionController.swift in Sources */,
 				7A8DDCA225D138C200EF85B9 /* Category.swift in Sources */,
 				7A56101A25D22AF10091396E /* AddTagWorkflowVC.swift in Sources */,
 				7A14D5F2261AC5BE00C072E3 /* AccountCollectionViewCell.swift in Sources */,
@@ -933,7 +945,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 16.3;
+				MARKETING_VERSION = 16.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -957,7 +969,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 16.3;
+				MARKETING_VERSION = 16.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1109,7 +1121,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 16.3;
+				MARKETING_VERSION = 16.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1140,7 +1152,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 16.3;
+				MARKETING_VERSION = 16.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1170,7 +1182,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 16.3;
+				MARKETING_VERSION = 16.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1200,7 +1212,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 16.3;
+				MARKETING_VERSION = 16.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1224,7 +1236,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 16.3;
+				MARKETING_VERSION = 16.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1245,7 +1257,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 16.3;
+				MARKETING_VERSION = 16.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

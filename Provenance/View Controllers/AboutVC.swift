@@ -33,11 +33,11 @@ private extension AboutVC {
 
 private extension AboutVC {
     @objc private func openSettings() {
-        present(NavigationController(rootViewController: SettingsVC(style: .grouped)), animated: true)
+        present(NavigationController(rootViewController: SettingsVC(style: .insetGrouped)), animated: true)
     }
 
     @objc private func openDiagnostics() {
-        present(NavigationController(rootViewController: DiagnosticTableVC(style: .grouped)), animated: true)
+        present(NavigationController(rootViewController: DiagnosticTableVC(style: .insetGrouped)), animated: true)
     }
 }
 

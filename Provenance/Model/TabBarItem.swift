@@ -7,15 +7,15 @@ enum TabBarItem: Int, CaseIterable {
     func vc() -> UIViewController {
         switch self {
             case .transactions:
-                return NavigationController(rootViewController: TransactionsVC(style: .grouped))
+                return NavigationController(rootViewController: TransactionsCVC())
             case .accounts:
                 return NavigationController(rootViewController: AccountsCVC(collectionViewLayout: twoColumnGridLayout()))
             case .tags:
-                return NavigationController(rootViewController: AllTagsVC(style: .grouped))
+                return NavigationController(rootViewController: AllTagsVC(style: .insetGrouped))
             case .categories:
                 return NavigationController(rootViewController: CategoriesCVC(collectionViewLayout: twoColumnGridLayout()))
             case .about:
-                return NavigationController(rootViewController: AboutVC(style: .grouped))
+                return NavigationController(rootViewController: AboutVC(style: .insetGrouped))
         }
     }
 

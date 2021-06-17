@@ -101,7 +101,7 @@ private extension AllTagsVC {
     }
 
     @objc private func openAddWorkflow() {
-        present({let vc = NavigationController(rootViewController: AddTagWorkflowVC(style: .grouped));vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
+        present({let vc = NavigationController(rootViewController: AddTagWorkflowVC(style: .insetGrouped));vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
     }
 
     @objc private func refreshTags() {
@@ -276,7 +276,7 @@ private extension AllTagsVC {
 extension AllTagsVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        navigationController?.pushViewController({let vc = TransactionsByTagVC(style: .grouped);vc.tag = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
+        navigationController?.pushViewController({let vc = TransactionsByTagVC(style: .insetGrouped);vc.tag = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

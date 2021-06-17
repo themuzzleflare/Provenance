@@ -122,7 +122,7 @@ private extension AddTagWorkflowTwoVC {
         let submitAction = UIAlertAction(title: "Next", style: .default) { [unowned self] _ in
             let answer = ac.textFields![0]
             if !answer.text!.isEmpty {
-                self.navigationController?.pushViewController({let vc = AddTagWorkflowThreeVC(style: .grouped);vc.transaction = self.transaction;vc.tag = answer.text;return vc}(), animated: true)
+                self.navigationController?.pushViewController({let vc = AddTagWorkflowThreeVC(style: .insetGrouped);vc.transaction = self.transaction;vc.tag = answer.text;return vc}(), animated: true)
             }
         }
         submitAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
@@ -305,7 +305,7 @@ private extension AddTagWorkflowTwoVC {
 extension AddTagWorkflowTwoVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        navigationController?.pushViewController({let vc = AddTagWorkflowThreeVC(style: .grouped);vc.transaction = transaction;vc.tag = dataSource.itemIdentifier(for: indexPath)!.id;return vc}(), animated: true)
+        navigationController?.pushViewController({let vc = AddTagWorkflowThreeVC(style: .insetGrouped);vc.transaction = transaction;vc.tag = dataSource.itemIdentifier(for: indexPath)!.id;return vc}(), animated: true)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

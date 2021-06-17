@@ -140,7 +140,7 @@ private extension TransactionsByAccountVC {
     }
 
     @objc private func openAccountInfo() {
-        present(NavigationController(rootViewController: {let vc = AccountDetailVC(style: .grouped);vc.account = account;vc.transaction = transactions.first;return vc}()), animated: true)
+        present(NavigationController(rootViewController: {let vc = AccountDetailVC(style: .insetGrouped);vc.account = account;vc.transaction = transactions.first;return vc}()), animated: true)
     }
 
     @objc private func refreshTransactions() {
@@ -346,7 +346,7 @@ private extension TransactionsByAccountVC {
 extension TransactionsByAccountVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        navigationController?.pushViewController({let vc = TransactionDetailVC(style: .grouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);vc.accounts = accounts;vc.categories = categories;return vc}(), animated: true)
+        navigationController?.pushViewController({let vc = TransactionDetailVC(style: .insetGrouped);vc.transaction = dataSource.itemIdentifier(for: indexPath);vc.accounts = accounts;vc.categories = categories;return vc}(), animated: true)
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
