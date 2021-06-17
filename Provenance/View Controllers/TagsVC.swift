@@ -4,7 +4,7 @@ import NotificationBannerSwift
 import Rswift
 
 class TagsVC: TableViewController {
-        // MARK: - Properties
+    // MARK: - Properties
 
     var transaction: TransactionResource! {
         didSet {
@@ -24,7 +24,7 @@ class TagsVC: TableViewController {
 
     private lazy var dataSource = makeDataSource()
 
-        // UITableViewDiffableDataSource
+    // UITableViewDiffableDataSource
     private class DataSource: UITableViewDiffableDataSource<Section, RelationshipData> {
         weak var parent: TagsVC! = nil
 
@@ -36,7 +36,7 @@ class TagsVC: TableViewController {
             let tag = itemIdentifier(for: indexPath)!
             if editingStyle == .delete {
                 let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(parent.transaction.attributes.description)\"?", preferredStyle: .actionSheet)
-                let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { [unowned self] _ in
+                let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [unowned self] _ in
                     let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(parent.transaction.id)/relationships/tags")!
                     var request = URLRequest(url: url)
                     let bodyObject: [String: Any] = [
@@ -79,7 +79,7 @@ class TagsVC: TableViewController {
                         }
                     }
                     .resume()
-                })
+                }
                 let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
                 cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
                 ac.addAction(confirmAction)
@@ -89,7 +89,7 @@ class TagsVC: TableViewController {
         }
     }
 
-        // MARK: - View Life Cycle
+    // MARK: - View Life Cycle
 
     override init(style: UITableView.Style) {
         super.init(style: style)
@@ -109,7 +109,7 @@ class TagsVC: TableViewController {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension TagsVC {
     private func configureProperties() {
@@ -128,7 +128,7 @@ private extension TagsVC {
     }
 }
 
-    // MARK: - Actions
+// MARK: - Actions
 
 private extension TagsVC {
     @objc private func appMovedToForeground() {
@@ -139,16 +139,16 @@ private extension TagsVC {
         DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, tag in
-            let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
-            cell.separatorInset = .zero
-            cell.selectedBackgroundView = selectedBackgroundCellView
-            cell.accessoryType = .disclosureIndicator
-            cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-            cell.textLabel?.textAlignment = .left
-            cell.textLabel?.numberOfLines = 0
-            cell.textLabel?.text = tag.id
-            return cell
-        }
+                let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
+                cell.separatorInset = .zero
+                cell.selectedBackgroundView = selectedBackgroundCellView
+                cell.accessoryType = .disclosureIndicator
+                cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                cell.textLabel?.textAlignment = .left
+                cell.textLabel?.numberOfLines = 0
+                cell.textLabel?.text = tag.id
+                return cell
+            }
         )
     }
 
@@ -175,7 +175,7 @@ private extension TagsVC {
     }
 }
 
-    // MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 extension TagsVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -184,72 +184,72 @@ extension TagsVC {
     }
 
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .delete
+        .delete
     }
 
     override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        return "Remove"
+        "Remove"
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let tag = dataSource.itemIdentifier(for: indexPath)!
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                UIPasteboard.general.string = tag.id
-            },
-                UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { _ in
-                let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(self.transaction.attributes.description)\"?", preferredStyle: .actionSheet)
-                let confirmAction = UIAlertAction(title: "Remove", style: .destructive, handler: { [unowned self] _ in
-                    let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
-                    var request = URLRequest(url: url)
-                    let bodyObject: [String: Any] = [
-                        "data": [
-                            [
-                                "type": "tags",
-                                "id": tag.id
+                UIAction(title: "Copy", image: R.image.docOnClipboard()) { action in
+                    UIPasteboard.general.string = tag.id
+                },
+                UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { action in
+                    let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(self.transaction.attributes.description)\"?", preferredStyle: .actionSheet)
+                    let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [unowned self] _ in
+                        let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
+                        var request = URLRequest(url: url)
+                        let bodyObject: [String: Any] = [
+                            "data": [
+                                [
+                                    "type": "tags",
+                                    "id": tag.id
+                                ]
                             ]
                         ]
-                    ]
-                    request.httpMethod = "DELETE"
-                    request.allHTTPHeaderFields = [
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer \(appDefaults.apiKey)"
-                    ]
-                    request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject)
-                    URLSession.shared.dataTask(with: request) { data, response, error in
-                        if error == nil {
-                            let statusCode = (response as! HTTPURLResponse).statusCode
-                            if statusCode != 204 {
-                                DispatchQueue.main.async {
-                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
-                                    notificationBanner.duration = 2
-                                    notificationBanner.show()
+                        request.httpMethod = "DELETE"
+                        request.allHTTPHeaderFields = [
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer \(appDefaults.apiKey)"
+                        ]
+                        request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject)
+                        URLSession.shared.dataTask(with: request) { data, response, error in
+                            if error == nil {
+                                let statusCode = (response as! HTTPURLResponse).statusCode
+                                if statusCode != 204 {
+                                    DispatchQueue.main.async {
+                                        let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
+                                        notificationBanner.duration = 2
+                                        notificationBanner.show()
+                                    }
+                                } else {
+                                    DispatchQueue.main.async {
+                                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success)
+                                        notificationBanner.duration = 2
+                                        notificationBanner.show()
+                                        fetchTransaction()
+                                    }
                                 }
                             } else {
                                 DispatchQueue.main.async {
-                                    let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success)
+                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
                                     notificationBanner.duration = 2
                                     notificationBanner.show()
-                                    fetchTransaction()
                                 }
                             }
-                        } else {
-                            DispatchQueue.main.async {
-                                let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
-                                notificationBanner.duration = 2
-                                notificationBanner.show()
-                            }
                         }
+                        .resume()
                     }
-                    .resume()
-                })
-                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-                cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-                ac.addAction(confirmAction)
-                ac.addAction(cancelAction)
-                self.present(ac, animated: true)
-            }
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                    cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+                    ac.addAction(confirmAction)
+                    ac.addAction(cancelAction)
+                    self.present(ac, animated: true)
+                }
             ])
         }
     }

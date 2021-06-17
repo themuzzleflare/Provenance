@@ -2,7 +2,7 @@ import UIKit
 import Rswift
 
 class TabController: UITabBarController {
-        // MARK: - Life Cycle
+    // MARK: - Life Cycle
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -14,7 +14,7 @@ class TabController: UITabBarController {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension TabController {
     private func configure() {

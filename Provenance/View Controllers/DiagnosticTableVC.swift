@@ -2,7 +2,7 @@ import UIKit
 import Rswift
 
 class DiagnosticTableVC: TableViewController {
-        // MARK: - Properties
+    // MARK: - Properties
 
     private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
@@ -21,7 +21,7 @@ class DiagnosticTableVC: TableViewController {
         ])
     ]
     
-        // MARK: - View Life Cycle
+    // MARK: - View Life Cycle
 
     override init(style: UITableView.Style) {
         super.init(style: style)
@@ -36,7 +36,7 @@ class DiagnosticTableVC: TableViewController {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension DiagnosticTableVC {
     private func configureProperties() {
@@ -53,7 +53,7 @@ private extension DiagnosticTableVC {
     }
 }
 
-    // MARK: - Actions
+// MARK: - Actions
 
 private extension DiagnosticTableVC {
     @objc private func closeWorkflow() {
@@ -64,11 +64,11 @@ private extension DiagnosticTableVC {
         DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, attribute in
-            let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-            cell.leftLabel.text = attribute.key
-            cell.rightLabel.text = attribute.value
-            return cell
-        }
+                let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
+                cell.leftLabel.text = attribute.key
+                cell.rightLabel.text = attribute.value
+                return cell
+            }
         )
     }
 
@@ -82,7 +82,7 @@ private extension DiagnosticTableVC {
     }
 }
 
-    // MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 extension DiagnosticTableVC {
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -93,9 +93,9 @@ extension DiagnosticTableVC {
             default:
                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                     UIMenu(children: [
-                        UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { _ in
-                        UIPasteboard.general.string = attribute.value
-                    }
+                        UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { action in
+                            UIPasteboard.general.string = attribute.value
+                        }
                     ])
                 }
         }

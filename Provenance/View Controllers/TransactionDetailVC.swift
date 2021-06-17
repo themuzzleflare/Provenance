@@ -4,7 +4,7 @@ import MarqueeLabel
 import Rswift
 
 class TransactionDetailVC: TableViewController {
-        // MARK: - Properties
+    // MARK: - Properties
 
     var transaction: TransactionResource!
     var categories: [CategoryResource]?
@@ -81,7 +81,7 @@ class TransactionDetailVC: TableViewController {
         }
     }
 
-        // MARK: - View Life Cycle
+    // MARK: - View Life Cycle
 
     override init(style: UITableView.Style) {
         super.init(style: style)
@@ -106,7 +106,7 @@ class TransactionDetailVC: TableViewController {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension TransactionDetailVC {
     private func configureProperties() {
@@ -138,7 +138,7 @@ private extension TransactionDetailVC {
     }
 }
 
-    // MARK: - Actions
+// MARK: - Actions
 
 private extension TransactionDetailVC {
     @objc private func appMovedToForeground() {
@@ -153,30 +153,30 @@ private extension TransactionDetailVC {
         DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, attribute in
-            let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-            var cellSelectionStyle: UITableViewCell.SelectionStyle {
-                switch attribute.key {
-                    case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
-                        return .default
-                    default:
-                        return .none
+                let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
+                var cellSelectionStyle: UITableViewCell.SelectionStyle {
+                    switch attribute.key {
+                        case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
+                            return .default
+                        default:
+                            return .none
+                    }
                 }
-            }
-            var cellAccessoryType: UITableViewCell.AccessoryType {
-                switch attribute.key {
-                    case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
-                        return .disclosureIndicator
-                    default:
-                        return .none
+                var cellAccessoryType: UITableViewCell.AccessoryType {
+                    switch attribute.key {
+                        case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
+                            return .disclosureIndicator
+                        default:
+                            return .none
+                    }
                 }
+                cell.selectionStyle = cellSelectionStyle
+                cell.accessoryType = cellAccessoryType
+                cell.leftLabel.text = attribute.key
+                cell.rightLabel.font = attribute.key == "Raw Text" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
+                cell.rightLabel.text = attribute.value
+                return cell
             }
-            cell.selectionStyle = cellSelectionStyle
-            cell.accessoryType = cellAccessoryType
-            cell.leftLabel.text = attribute.key
-            cell.rightLabel.font = attribute.key == "Raw Text" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
-            cell.rightLabel.text = attribute.value
-            return cell
-        }
         )
     }
 
@@ -283,7 +283,7 @@ private extension TransactionDetailVC {
     }
 }
 
-    // MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 extension TransactionDetailVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -314,9 +314,9 @@ extension TransactionDetailVC {
             default:
                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                     UIMenu(children: [
-                        UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { _ in
-                        UIPasteboard.general.string = attribute.value
-                    }
+                        UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { action in
+                            UIPasteboard.general.string = attribute.value
+                        }
                     ])
                 }
         }

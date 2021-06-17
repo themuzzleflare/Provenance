@@ -4,11 +4,11 @@ import Alamofire
 import FLAnimatedImage
 import Rswift
 
-    // MARK: - UserDefaults Suite for Provenance Application Group
+// MARK: - UserDefaults Suite for Provenance Application Group
 
 let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
 
-    // MARK: - UserDefaults Extension for Value Observation
+// MARK: - UserDefaults Extension for Value Observation
 
 extension UserDefaults {
     @objc dynamic var apiKey: String {
@@ -44,7 +44,7 @@ extension UserDefaults {
     }
 }
 
-    // MARK: - Application Metadata & Reusable Values
+// MARK: - Application Metadata & Reusable Values
 
 let appName = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "Provenance"
 let appCopyright = Bundle.main.infoDictionary?["NSHumanReadableCopyright"] as? String ?? "Copyright © 2021 Paul Tavitian"
@@ -55,10 +55,10 @@ var selectedBackgroundCellView: UIView {
     return view
 }
 
-    // MARK: - UICollectionView Layouts
+// MARK: - UICollectionView Layouts
 
 func twoColumnGridLayout() -> UICollectionViewLayout {
-    return UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment in
+    UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment in
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
@@ -81,7 +81,7 @@ func gridLayout() -> UICollectionViewLayout {
     return layout
 }
 
-    // MARK: - GIF Stickers Array
+// MARK: - GIF Stickers Array
 
 private let stickerTwo = try! FLAnimatedImage(animatedGIFData: Data(contentsOf: Bundle.main.url(forResource: "StickerTwo", withExtension: "gif")!))
 private let stickerThree = try! FLAnimatedImage(animatedGIFData: Data(contentsOf: Bundle.main.url(forResource: "StickerThree", withExtension: "gif")!))
@@ -90,7 +90,7 @@ private let stickerSeven = try! FLAnimatedImage(animatedGIFData: Data(contentsOf
 
 let stickerGifs = [stickerTwo, stickerThree, stickerSix, stickerSeven]
 
-    // MARK: - Animated Application Logo
+// MARK: - Animated Application Logo
 
 let upAnimation = UIImage.animatedImage(with: [
     R.image.upLogoSequence.first()!,
@@ -103,10 +103,10 @@ let upAnimation = UIImage.animatedImage(with: [
     R.image.upLogoSequence.eighth()!
 ], duration: 0.65)!
 
-    // MARK: - Alamofire Predicates for Up API
+// MARK: - Alamofire Predicates for Up API
 
 var authorisationHeader: HTTPHeader {
-        .authorization(bearerToken: appDefaults.apiKey)
+    .authorization(bearerToken: appDefaults.apiKey)
 }
 
 let acceptJsonHeader: HTTPHeader = .accept("application/json")
@@ -129,7 +129,7 @@ func filterTagAndPageSize100Params(tagId: String) -> [String: Any] {
     return ["filter[tag]": tagId, "page[size]": "100"]
 }
 
-    // MARK: - Protocols & Extensions for URLSession Query Parameter Support
+// MARK: - Protocols & Extensions for URLSession Query Parameter Support
 
 protocol URLQueryParameterStringConvertible {
     var queryParameters: String {
@@ -149,13 +149,13 @@ extension Dictionary: URLQueryParameterStringConvertible {
 }
 
 extension URL {
-    func appendingQueryParameters(_ parametersDictionary : Dictionary<String, String>) -> URL {
+    func appendingQueryParameters(_ parametersDictionary: Dictionary<String, String>) -> URL {
         let URLString: String = String(format: "%@?%@", self.absoluteString, parametersDictionary.queryParameters)
         return URL(string: URLString)!
     }
 }
 
-    // MARK: - Date Formatters
+// MARK: - Date Formatters
 
 func formatDateAbsolute(dateString: String) -> String {
     if let date = ISO8601DateFormatter().date(from: dateString) {

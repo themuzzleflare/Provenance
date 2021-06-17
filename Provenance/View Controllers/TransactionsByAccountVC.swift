@@ -4,7 +4,7 @@ import TinyConstraints
 import Rswift
 
 class TransactionsByAccountVC: TableViewController {
-        // MARK: - Properties
+    // MARK: - Properties
 
     var account: AccountResource! {
         didSet {
@@ -71,7 +71,7 @@ class TransactionsByAccountVC: TableViewController {
     private var categories: [CategoryResource] = []
     private var accounts: [AccountResource] = []
     
-        // MARK: - View Life Cycle
+    // MARK: - View Life Cycle
     
     override init(style: UITableView.Style) {
         super.init(style: style)
@@ -96,7 +96,7 @@ class TransactionsByAccountVC: TableViewController {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension TransactionsByAccountVC {
     private func configureProperties() {
@@ -129,7 +129,7 @@ private extension TransactionsByAccountVC {
     }
 }
 
-    // MARK: - Actions
+// MARK: - Actions
 
 private extension TransactionsByAccountVC {
     @objc private func appMovedToForeground() {
@@ -156,10 +156,10 @@ private extension TransactionsByAccountVC {
         let dataSource = DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, transaction in
-            let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
-            cell.transaction = transaction
-            return cell
-        }
+                let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
+                cell.transaction = transaction
+                return cell
+            }
         )
         dataSource.defaultRowAnimation = .fade
         return dataSource
@@ -341,7 +341,7 @@ private extension TransactionsByAccountVC {
     }
 }
 
-    // MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 extension TransactionsByAccountVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -353,21 +353,21 @@ extension TransactionsByAccountVC {
         let transaction = dataSource.itemIdentifier(for: indexPath)!
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
-                UIPasteboard.general.string = transaction.attributes.description
-            },
-                UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
-                UIPasteboard.general.string = transaction.attributes.creationDate
-            },
-                UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
-                UIPasteboard.general.string = transaction.attributes.amount.valueShort
-            }
+                UIAction(title: "Copy Description", image: R.image.textAlignright()) { action in
+                    UIPasteboard.general.string = transaction.attributes.description
+                },
+                UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { action in
+                    UIPasteboard.general.string = transaction.attributes.creationDate
+                },
+                UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { action in
+                    UIPasteboard.general.string = transaction.attributes.amount.valueShort
+                }
             ])
         }
     }
 }
 
-    // MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension TransactionsByAccountVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

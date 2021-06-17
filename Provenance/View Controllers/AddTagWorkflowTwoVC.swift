@@ -4,7 +4,7 @@ import TinyConstraints
 import Rswift
 
 class AddTagWorkflowTwoVC: TableViewController {
-        // MARK: - Properties
+    // MARK: - Properties
 
     var transaction: TransactionResource!
 
@@ -43,7 +43,7 @@ class AddTagWorkflowTwoVC: TableViewController {
         Tag(data: filteredTags, links: tagsPagination)
     }
     
-        // MARK: - View Life Cycle
+    // MARK: - View Life Cycle
     
     override init(style: UITableView.Style) {
         super.init(style: style)
@@ -65,7 +65,7 @@ class AddTagWorkflowTwoVC: TableViewController {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension AddTagWorkflowTwoVC {
     private func configureProperties() {
@@ -93,7 +93,7 @@ private extension AddTagWorkflowTwoVC {
     }
 }
 
-    // MARK: - Actions
+// MARK: - Actions
 
 private extension AddTagWorkflowTwoVC {
     @objc private func appMovedToForeground() {
@@ -107,10 +107,7 @@ private extension AddTagWorkflowTwoVC {
             textField.autocapitalizationType = .none
             textField.autocorrectionType = .no
             textField.tintColor = R.color.accentColour()
-            self.textDidChangeObserver = NotificationCenter.default.addObserver(
-                forName: UITextField.textDidChangeNotification,
-                object: textField,
-                queue: OperationQueue.main) { (notification) in
+            self.textDidChangeObserver = NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main) { notification in
                 if let textField = notification.object as? UITextField {
                     if let text = textField.text {
                         self.submitActionProxy!.isEnabled = text.count >= 1
@@ -146,15 +143,15 @@ private extension AddTagWorkflowTwoVC {
         let dataSource = DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, tag in
-            let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
-            cell.selectedBackgroundView = selectedBackgroundCellView
-            cell.separatorInset = .zero
-            cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-            cell.textLabel?.textAlignment = .left
-            cell.textLabel?.numberOfLines = 0
-            cell.textLabel?.text = tag.id
-            return cell
-        }
+                let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
+                cell.selectedBackgroundView = selectedBackgroundCellView
+                cell.separatorInset = .zero
+                cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+                cell.textLabel?.textAlignment = .left
+                cell.textLabel?.numberOfLines = 0
+                cell.textLabel?.text = tag.id
+                return cell
+            }
         )
         dataSource.defaultRowAnimation = .fade
         return dataSource
@@ -303,7 +300,7 @@ private extension AddTagWorkflowTwoVC {
     }
 }
 
-    // MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 extension AddTagWorkflowTwoVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -314,15 +311,15 @@ extension AddTagWorkflowTwoVC {
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy Tag Name", image: R.image.docOnClipboard()) { _ in
-                UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.id
-            }
+                UIAction(title: "Copy Tag Name", image: R.image.docOnClipboard()) { action in
+                    UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.id
+                }
             ])
         }
     }
 }
 
-    // MARK: - UITextFieldDelegate
+// MARK: - UITextFieldDelegate
 
 extension AddTagWorkflowTwoVC: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -333,7 +330,7 @@ extension AddTagWorkflowTwoVC: UITextFieldDelegate {
     }
 }
 
-    // MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension AddTagWorkflowTwoVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

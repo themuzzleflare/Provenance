@@ -4,7 +4,7 @@ import TinyConstraints
 import Rswift
 
 class TransactionsByCategoryVC: TableViewController {
-        // MARK: - Properties
+    // MARK: - Properties
 
     var category: CategoryResource!
 
@@ -43,7 +43,7 @@ class TransactionsByCategoryVC: TableViewController {
     private var categories: [CategoryResource] = []
     private var accounts: [AccountResource] = []
     
-        // MARK: - View Life Cycle
+    // MARK: - View Life Cycle
     
     override init(style: UITableView.Style) {
         super.init(style: style)
@@ -67,7 +67,7 @@ class TransactionsByCategoryVC: TableViewController {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension TransactionsByCategoryVC {
     private func configureProperties() {
@@ -99,7 +99,7 @@ private extension TransactionsByCategoryVC {
     }
 }
 
-    // MARK: - Actions
+// MARK: - Actions
 
 private extension TransactionsByCategoryVC {
     @objc private func appMovedToForeground() {
@@ -120,10 +120,10 @@ private extension TransactionsByCategoryVC {
         let dataSource = DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, transaction in
-            let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
-            cell.transaction = transaction
-            return cell
-        }
+                let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
+                cell.transaction = transaction
+                return cell
+            }
         )
         dataSource.defaultRowAnimation = .fade
         return dataSource
@@ -290,7 +290,7 @@ private extension TransactionsByCategoryVC {
     }
 }
 
-    // MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 extension TransactionsByCategoryVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -302,21 +302,21 @@ extension TransactionsByCategoryVC {
         let transaction = dataSource.itemIdentifier(for: indexPath)!
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
-                UIPasteboard.general.string = transaction.attributes.description
-            },
-                UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
-                UIPasteboard.general.string = transaction.attributes.creationDate
-            },
-                UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
-                UIPasteboard.general.string = transaction.attributes.amount.valueShort
-            }
+                UIAction(title: "Copy Description", image: R.image.textAlignright()) { action in
+                    UIPasteboard.general.string = transaction.attributes.description
+                },
+                UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { action in
+                    UIPasteboard.general.string = transaction.attributes.creationDate
+                },
+                UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { action in
+                    UIPasteboard.general.string = transaction.attributes.amount.valueShort
+                }
             ])
         }
     }
 }
 
-    // MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension TransactionsByCategoryVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

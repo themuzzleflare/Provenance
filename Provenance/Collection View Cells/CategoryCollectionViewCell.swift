@@ -3,7 +3,7 @@ import TinyConstraints
 import Rswift
 
 class CategoryCollectionViewCell: UICollectionViewCell {
-        // MARK: - Properties
+    // MARK: - Properties
     
     static let reuseIdentifier = "categoryCollectionViewCell"
 
@@ -15,7 +15,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     
     private let label = UILabel()
 
-        // MARK: - Life Cycle
+    // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,7 +29,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension CategoryCollectionViewCell {
     private func configureCell() {

@@ -5,7 +5,7 @@ import TinyConstraints
 import Rswift
 
 final class TransactionsVC: TableViewController {
-        // MARK: - Properties
+    // MARK: - Properties
 
     private enum Section {
         case main
@@ -39,7 +39,7 @@ final class TransactionsVC: TableViewController {
     private var preFilteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             (!showSettledOnly || transaction.attributes.isSettled)
-            && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
+                && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
         }
     }
     private var filteredTransactions: [TransactionResource] {
@@ -92,7 +92,7 @@ final class TransactionsVC: TableViewController {
         }
     }
 
-        // MARK: - View Life Cycle
+    // MARK: - View Life Cycle
     
     override init(style: UITableView.Style) {
         super.init(style: style)
@@ -116,7 +116,7 @@ final class TransactionsVC: TableViewController {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension TransactionsVC {
     private func configureProperties() {
@@ -150,7 +150,7 @@ private extension TransactionsVC {
     }
 }
 
-    // MARK: - Actions
+// MARK: - Actions
 
 private extension TransactionsVC {
     @objc private func appMovedToForeground() {
@@ -178,13 +178,13 @@ private extension TransactionsVC {
     private func filterMenu() -> UIMenu {
         UIMenu(image: R.image.sliderHorizontal3(), options: .displayInline, children: [
             UIMenu(title: "Category", image: R.image.arrowUpArrowDownCircle(), children: FilterCategory.allCases.map { category in
-            UIAction(title: categoryNameTransformed(category), state: filter == category ? .on : .off) { _ in
-                self.filter = category
+                UIAction(title: categoryNameTransformed(category), state: filter == category ? .on : .off) { action in
+                    self.filter = category
+                }
+            }),
+            UIAction(title: "Settled Only", image: R.image.checkmarkCircle(), state: showSettledOnly ? .on : .off) { action in
+                self.showSettledOnly.toggle()
             }
-        }),
-            UIAction(title: "Settled Only", image: R.image.checkmarkCircle(), state: showSettledOnly ? .on : .off) { _ in
-            self.showSettledOnly.toggle()
-        }
         ])
     }
 
@@ -192,10 +192,10 @@ private extension TransactionsVC {
         let dataSource = DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, transaction in
-            let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
-            cell.transaction = transaction
-            return cell
-        }
+                let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
+                cell.transaction = transaction
+                return cell
+            }
         )
         dataSource.defaultRowAnimation = .fade
         return dataSource
@@ -391,7 +391,7 @@ private extension TransactionsVC {
     }
 }
 
-    // MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 extension TransactionsVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -403,21 +403,21 @@ extension TransactionsVC {
         let transaction = dataSource.itemIdentifier(for: indexPath)!
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
-                UIPasteboard.general.string = transaction.attributes.description
-            },
-                UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
-                UIPasteboard.general.string = transaction.attributes.creationDate
-            },
-                UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
-                UIPasteboard.general.string = transaction.attributes.amount.valueShort
-            }
+                UIAction(title: "Copy Description", image: R.image.textAlignright()) { action in
+                    UIPasteboard.general.string = transaction.attributes.description
+                },
+                UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { action in
+                    UIPasteboard.general.string = transaction.attributes.creationDate
+                },
+                UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { action in
+                    UIPasteboard.general.string = transaction.attributes.amount.valueShort
+                }
             ])
         }
     }
 }
 
-    // MARK: - UIScrollViewDelegate
+// MARK: - UIScrollViewDelegate
 
 extension TransactionsVC {
     override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
@@ -428,7 +428,7 @@ extension TransactionsVC {
     }
 }
 
-    // MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension TransactionsVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

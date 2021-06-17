@@ -3,7 +3,7 @@ import TinyConstraints
 import Rswift
 
 class AccountCollectionViewCell: UICollectionViewCell {
-        // MARK: - Properties
+    // MARK: - Properties
     
     static let reuseIdentifier = "accountCollectionViewCell"
     
@@ -18,7 +18,7 @@ class AccountCollectionViewCell: UICollectionViewCell {
     private let displayNameLabel = UILabel()
     private let verticalStack = UIStackView()
 
-        // MARK: - Life Cycle
+    // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,7 +46,7 @@ class AccountCollectionViewCell: UICollectionViewCell {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension AccountCollectionViewCell {
     private func configureCell() {

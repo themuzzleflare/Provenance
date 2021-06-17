@@ -12,7 +12,7 @@ class UpAPI {
             "https://api.up.com.au/api/v1/accounts/\(accountId)/transactions"
         }
     }
-
+    
     struct Accounts {
         let listAccounts = "https://api.up.com.au/api/v1/accounts"
 

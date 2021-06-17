@@ -1,7 +1,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-        // MARK: - Life Cycle
+    // MARK: - Life Cycle
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension ViewController {
     private func configure() {

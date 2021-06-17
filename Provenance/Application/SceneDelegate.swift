@@ -4,7 +4,7 @@ import NotificationBannerSwift
 import Rswift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-        // MARK: - Properties
+    // MARK: - Properties
 
     var window: UIWindow?
 
@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         case categories = "categoriesShortcut"
     }
 
-        // MARK: - Life Cycle
+    // MARK: - Life Cycle
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -40,7 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidBecomeActive(_ scene: UIScene) {
         if savedShortcutItem != nil {
-            _ = handleShortcutItem(shortcutItem: savedShortcutItem)
+            handleShortcutItem(shortcutItem: savedShortcutItem)
         }
     }
 
@@ -51,7 +51,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 }
 
-    // MARK: - Actions
+// MARK: - Actions
 
 private extension SceneDelegate {
     private func checkApiKey() {
@@ -61,10 +61,7 @@ private extension SceneDelegate {
                 textField.autocapitalizationType = .none
                 textField.autocorrectionType = .no
                 textField.tintColor = R.color.accentColour()
-                self.textDidChangeObserver = NotificationCenter.default.addObserver(
-                    forName: UITextField.textDidChangeNotification,
-                    object: textField,
-                    queue: OperationQueue.main) { (notification) in
+                self.textDidChangeObserver = NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main) { notification in
                     if let textField = notification.object as? UITextField {
                         if let text = textField.text {
                             self.submitActionProxy!.isEnabled = text.count >= 1 && text != appDefaults.apiKey
@@ -112,7 +109,7 @@ private extension SceneDelegate {
                         }
                         WidgetCenter.shared.reloadAllTimelines()
                     }
-                    WidgetCenter.shared.reloadAllTimelines()
+                    .resume()
                 } else {
                     let notificationBanner = NotificationBanner(title: "Failed", subtitle: "The provided API Key was the same as the current one.", style: .danger)
                     notificationBanner.duration = 2

@@ -3,7 +3,7 @@ import TinyConstraints
 import Rswift
 
 class WidgetsVC: ViewController {
-        // MARK: - Properties
+    // MARK: - Properties
 
     private let accountBalanceWidget = UIImageView()
     private let latestTransactionWidget = UIImageView()
@@ -13,7 +13,7 @@ class WidgetsVC: ViewController {
     private let verticalStack = UIStackView()
     private let scrollView = UIScrollView()
 
-        // MARK: - View Life Cycle
+    // MARK: - View Life Cycle
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -25,7 +25,7 @@ class WidgetsVC: ViewController {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension WidgetsVC {
     private func configure() {

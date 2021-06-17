@@ -5,7 +5,7 @@ import Rswift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-        // MARK: - Life Cycle
+    // MARK: - Life Cycle
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:[UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         registerDefaults()
@@ -14,19 +14,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        return UISceneConfiguration(name: "Main", sessionRole: connectingSceneSession.role)
+        UISceneConfiguration(name: "Main", sessionRole: connectingSceneSession.role)
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension AppDelegate {
     private func registerDefaults() {
         let settingsData = try! Data(contentsOf: R.file.settingsBundle()!.appendingPathComponent("Root.plist"))
-        let settingsPlist = try! PropertyListSerialization.propertyList(
-            from: settingsData,
-            options: [],
-            format: nil) as? [String: Any]
+        let settingsPlist = try! PropertyListSerialization.propertyList(from: settingsData, format: nil) as? [String: Any]
         let settingsPreferences = settingsPlist?["PreferenceSpecifiers"] as? [[String: Any]]
         var defaultsToRegister = [String: Any]()
         settingsPreferences?.forEach { preference in

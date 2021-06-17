@@ -3,7 +3,7 @@ import TinyConstraints
 import Rswift
 
 class TransactionTableViewCell: UITableViewCell {
-        // MARK: - Properties
+    // MARK: - Properties
 
     static let reuseIdentifier = "transactionTableViewCell"
     
@@ -22,7 +22,7 @@ class TransactionTableViewCell: UITableViewCell {
     private let verticalStack = UIStackView()
     private let horizontalStack = UIStackView()
 
-        // MARK: - Life Cycle
+    // MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -40,7 +40,7 @@ class TransactionTableViewCell: UITableViewCell {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension TransactionTableViewCell {
     private func configureCell() {

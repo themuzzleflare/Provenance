@@ -4,7 +4,7 @@ import TinyConstraints
 import Rswift
 
 final class CategoriesCVC: CollectionViewController {
-        // MARK: - Properties
+    // MARK: - Properties
 
     private enum Section {
         case main
@@ -41,7 +41,7 @@ final class CategoriesCVC: CollectionViewController {
         Category(data: filteredCategories)
     }
     
-        // MARK: - View Life Cycle
+    // MARK: - View Life Cycle
     
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
@@ -63,7 +63,7 @@ final class CategoriesCVC: CollectionViewController {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension CategoriesCVC {
     private func configureProperties() {
@@ -91,7 +91,7 @@ private extension CategoriesCVC {
     }
 }
 
-    // MARK: - Actions
+// MARK: - Actions
 
 private extension CategoriesCVC {
     @objc private func appMovedToForeground() {
@@ -237,7 +237,7 @@ private extension CategoriesCVC {
     }
 }
 
-    // MARK: - UICollectionViewDelegate
+// MARK: - UICollectionViewDelegate
 
 extension CategoriesCVC {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -247,15 +247,15 @@ extension CategoriesCVC {
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.name
-            }
+                UIAction(title: "Copy", image: R.image.docOnClipboard()) { action in
+                    UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.name
+                }
             ])
         }
     }
 }
 
-    // MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension CategoriesCVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

@@ -3,7 +3,7 @@ import TinyConstraints
 import Rswift
 
 class AboutTopTableViewCell: UITableViewCell {
-        // MARK: - Properties
+    // MARK: - Properties
 
     static let reuseIdentifier = "aboutTopTableViewCell"
 
@@ -12,7 +12,7 @@ class AboutTopTableViewCell: UITableViewCell {
     private let descriptionLabel = UILabel()
     private let verticalStack = UIStackView()
 
-        // MARK: - Life Cycle
+    // MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -24,7 +24,7 @@ class AboutTopTableViewCell: UITableViewCell {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension AboutTopTableViewCell {
     private func configure() {

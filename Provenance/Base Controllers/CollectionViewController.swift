@@ -1,7 +1,7 @@
 import UIKit
 
 class CollectionViewController: UICollectionViewController {
-        // MARK: - Life Cycle
+    // MARK: - Life Cycle
     
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
@@ -13,7 +13,7 @@ class CollectionViewController: UICollectionViewController {
     }
 }
 
-    // MARK: - Configuration
+// MARK: - Configuration
 
 private extension CollectionViewController {
     private func configure() {

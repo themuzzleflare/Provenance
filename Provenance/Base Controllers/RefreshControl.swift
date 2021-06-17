@@ -1,7 +1,7 @@
 import UIKit
 
 class RefreshControl: UIRefreshControl {
-        // MARK: - Life Cycle
+    // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
