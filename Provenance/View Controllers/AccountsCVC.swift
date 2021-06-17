@@ -22,6 +22,7 @@ final class AccountsCVC: CollectionViewController {
         cell.account = account
     }
 
+    private var apiKeyObserver: NSKeyValueObservation?
     private var accountsStatusCode: Int = 0
     private var accounts: [AccountResource] = [] {
         didSet {
@@ -72,6 +73,9 @@ private extension AccountsCVC {
         title = "Accounts"
         definesPresentationContext = true
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { object, change in
+            self.fetchAccounts()
+        }
     }
     
     private func configureNavigation() {

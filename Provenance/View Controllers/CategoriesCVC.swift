@@ -21,7 +21,8 @@ final class CategoriesCVC: CollectionViewController {
     private let cellRegistration = CategoryCell { cell, indexPath, category in
         cell.category = category
     }
-    
+
+    private var apiKeyObserver: NSKeyValueObservation?
     private var categoriesStatusCode: Int = 0
     private var categories: [CategoryResource] = [] {
         didSet {
@@ -70,6 +71,9 @@ private extension CategoriesCVC {
         title = "Categories"
         definesPresentationContext = true
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { object, change in
+            self.fetchCategories()
+        }
     }
     
     private func configureNavigation() {

@@ -20,6 +20,7 @@ final class TransactionsVC: TableViewController {
     private let tableRefreshControl = RefreshControl(frame: .zero)
     private let searchController = SearchController(searchResultsController: nil)
 
+    private var apiKeyObserver: NSKeyValueObservation?
     private var dateStyleObserver: NSKeyValueObservation?
     private var searchBarPlaceholder: String {
         "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
@@ -123,6 +124,9 @@ private extension TransactionsVC {
         title = "Transactions"
         definesPresentationContext = true
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { object, change in
+            self.fetchTransactions()
+        }
         dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
             self.applySnapshot()
             WidgetCenter.shared.reloadAllTimelines()

@@ -17,7 +17,8 @@ final class AllTagsVC: TableViewController {
 
     private let tableRefreshControl = RefreshControl(frame: .zero)
     private let searchController = SearchController(searchResultsController: nil)
-    
+
+    private var apiKeyObserver: NSKeyValueObservation?
     private var tagsStatusCode: Int = 0
     private var tags: [TagResource] = [] {
         didSet {
@@ -67,6 +68,9 @@ private extension AllTagsVC {
         title = "Tags"
         definesPresentationContext = true
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { object, change in
+            self.fetchTags()
+        }
     }
     
     private func configureNavigation() {
