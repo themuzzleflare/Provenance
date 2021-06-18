@@ -5,18 +5,18 @@ import Rswift
 
 class TransactionDetailVC: TableViewController {
     // MARK: - Properties
-
+    
     var transaction: TransactionResource!
     var categories: [CategoryResource]?
     var accounts: [AccountResource]?
-
+    
     private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
-
+    
     private lazy var dataSource = makeDataSource()
-
+    
     private let scrollingTitle = MarqueeLabel()
-
+    
     private var dateStyleObserver: NSKeyValueObservation?
     private var sections: [Section]!
     private var filteredSections: [Section] {
@@ -80,18 +80,18 @@ class TransactionDetailVC: TableViewController {
                 return transaction.attributes.foreignAmount!.valueLong
         }
     }
-
+    
     // MARK: - View Life Cycle
-
+    
     override init(style: UITableView.Style) {
         super.init(style: style)
         configureProperties()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureScrollingTitle()
@@ -99,7 +99,7 @@ class TransactionDetailVC: TableViewController {
         configureTableView()
         applySnapshot()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchTransaction()
@@ -144,11 +144,11 @@ private extension TransactionDetailVC {
     @objc private func appMovedToForeground() {
         fetchTransaction()
     }
-
+    
     @objc private func openStatusIconHelpView() {
         present(NavigationController(rootViewController: StatusIconHelpView()), animated: true)
     }
-
+    
     private func makeDataSource() -> DataSource {
         DataSource(
             tableView: tableView,
@@ -179,7 +179,7 @@ private extension TransactionDetailVC {
             }
         )
     }
-
+    
     private func applySnapshot() {
         sections = [
             Section(title: "Section 1", detailAttributes: [
@@ -264,7 +264,7 @@ private extension TransactionDetailVC {
         }
         dataSource.apply(snapshot, animatingDifferences: false)
     }
-
+    
     private func fetchTransaction() {
         AF.request(UpAPI.Transactions().retrieveTransaction(transactionId: transaction.id), method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             switch response.result {

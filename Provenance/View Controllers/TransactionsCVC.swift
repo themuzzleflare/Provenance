@@ -6,11 +6,13 @@ import TinyConstraints
 import Rswift
 
 final class TransactionsCVC: UIViewController {
-    lazy var adapter: ListAdapter = {
-        return ListAdapter(updater: ListAdapterUpdater(), viewController: self)
+    // MARK: - Properties
+
+    private lazy var adapter: ListAdapter = {
+        ListAdapter(updater: ListAdapterUpdater(), viewController: self)
     }()
 
-    let collectionView: UICollectionView = {
+    private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .systemGroupedBackground
@@ -28,7 +30,6 @@ final class TransactionsCVC: UIViewController {
     private var searchBarPlaceholder: String {
         "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
     }
-
     private var preFilteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             (!showSettledOnly || transaction.attributes.isSettled)
@@ -40,23 +41,20 @@ final class TransactionsCVC: UIViewController {
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-
     private var transactionsStatusCode: Int = 0
     private var transactionsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
     private var transactions: [TransactionResource] = [] {
         didSet {
-            adapter.performUpdates(animated: true) { _ in
-                self.adapter.collectionView?.refreshControl?.endRefreshing()
-                WidgetCenter.shared.reloadAllTimelines()
-                self.searchController.searchBar.placeholder = self.searchBarPlaceholder
-            }
+            adapter.performUpdates(animated: true)
+            adapter.collectionView?.refreshControl?.endRefreshing()
+            WidgetCenter.shared.reloadAllTimelines()
+            searchController.searchBar.placeholder = searchBarPlaceholder
         }
     }
     private var accounts: [AccountResource] = []
     private var categories: [CategoryResource] = []
-
     private var filter: FilterCategory = .all {
         didSet {
             filterButton.menu = filterMenu()
@@ -72,14 +70,15 @@ final class TransactionsCVC: UIViewController {
         }
     }
 
+    // MARK: - Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(collectionView)
         adapter.collectionView = collectionView
         adapter.dataSource = self
-        adapter.collectionView?.refreshControl = tableRefreshControl
         adapter.collectionViewDelegate = self
-
+        adapter.collectionView?.refreshControl = tableRefreshControl
         configureProperties()
         configureNavigation()
         configureSearch()
@@ -98,6 +97,8 @@ final class TransactionsCVC: UIViewController {
         collectionView.frame = view.bounds
     }
 }
+
+// MARK: - Configuration
 
 private extension TransactionsCVC {
     private func configureProperties() {
@@ -128,6 +129,8 @@ private extension TransactionsCVC {
         tableRefreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
     }
 }
+
+// MARK: - Actions
 
 private extension TransactionsCVC {
     @objc private func appMovedToForeground() {
@@ -164,9 +167,7 @@ private extension TransactionsCVC {
             }
         ])
     }
-}
 
-private extension TransactionsCVC {
     private func fetchTransactions() {
         AF.request(UpAPI.Transactions().listTransactions, method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
             self.transactionsStatusCode = response.response?.statusCode ?? 0
@@ -251,6 +252,8 @@ private extension TransactionsCVC {
         }
     }
 }
+
+// MARK: - ListAdapterDataSource
 
 extension TransactionsCVC: ListAdapterDataSource {
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
@@ -339,6 +342,8 @@ extension TransactionsCVC: ListAdapterDataSource {
     }
 }
 
+// MARK: - UICollectionViewDelegate
+
 extension TransactionsCVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let transaction = filteredTransactions[indexPath.item]
@@ -357,6 +362,8 @@ extension TransactionsCVC: UICollectionViewDelegate {
         }
     }
 }
+
+// MARK: - UISearchBarDelegate
 
 extension TransactionsCVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

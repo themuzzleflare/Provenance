@@ -12,5 +12,6 @@ target 'Provenance' do
   pod 'FLAnimatedImage'
   pod 'NotificationBannerSwift'
   pod 'IGListKit'
+  pod 'Texture'
   
 end

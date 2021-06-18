@@ -120,7 +120,7 @@ private extension AccountsCVC {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(filteredAccountsList.data, toSection: .main)
-        if snapshot.itemIdentifiers.isEmpty && accountsError.isEmpty && accountsErrorResponse.isEmpty  {
+        if snapshot.itemIdentifiers.isEmpty && accountsError.isEmpty && accountsErrorResponse.isEmpty {
             if accounts.isEmpty && accountsStatusCode == 0 {
                 collectionView.backgroundView = {
                     let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
