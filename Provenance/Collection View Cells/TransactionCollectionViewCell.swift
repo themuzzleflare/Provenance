@@ -16,17 +16,17 @@ class TransactionCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    private let separator: CALayer = {
-        let layer = CALayer()
-        layer.backgroundColor = UIColor.separator.cgColor
-        return layer
-    }()
-    private let insets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     private let transactionDescription = UILabel()
     private let transactionCreationDate = UILabel()
     private let transactionAmount = UILabel()
     private let verticalStack = UIStackView()
     private let horizontalStack = UIStackView()
+    private let insets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    private let separator: CALayer = {
+        let layer = CALayer()
+        layer.backgroundColor = UIColor.separator.cgColor
+        return layer
+    }()
 
     // MARK: - Life Cycle
 
@@ -64,14 +64,13 @@ class TransactionCollectionViewCell: UICollectionViewCell {
 
 private extension TransactionCollectionViewCell {
     private func configureCell() {
+        backgroundColor = .secondarySystemGroupedBackground
         selectedBackgroundView = selectedBackgroundCellView
     }
 
     private func configureContentView() {
-        contentView.backgroundColor = .clear
         contentView.addSubview(horizontalStack)
         contentView.layer.addSublayer(separator)
-
         NSLayoutConstraint(item: horizontalStack,
                            attribute: .top,
                            relatedBy: .equal,

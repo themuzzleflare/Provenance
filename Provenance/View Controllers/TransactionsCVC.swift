@@ -5,25 +5,20 @@ import IGListKit
 import TinyConstraints
 import Rswift
 
-final class TransactionsCVC: UIViewController {
+final class TransactionsCVC: ViewController {
     // MARK: - Properties
 
-    private lazy var adapter: ListAdapter = {
-        ListAdapter(updater: ListAdapterUpdater(), viewController: self)
-    }()
+    private lazy var filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), menu: filterMenu())
+    private lazy var adapter = ListAdapter(updater: ListAdapterUpdater(), viewController: self)
 
+    private let tableRefreshControl = RefreshControl(frame: .zero)
+    private let searchController = SearchController(searchResultsController: nil)
     private let collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.backgroundColor = .systemGroupedBackground
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
-
-    private lazy var filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), menu: filterMenu())
-
-    private let tableRefreshControl = RefreshControl(frame: .zero)
-    private let searchController = SearchController(searchResultsController: nil)
 
     private var apiKeyObserver: NSKeyValueObservation?
     private var dateStyleObserver: NSKeyValueObservation?
@@ -118,7 +113,6 @@ private extension TransactionsCVC {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle())
         navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
     }
 
     private func configureSearch() {

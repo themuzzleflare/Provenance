@@ -67,7 +67,6 @@
 		7AAC68FB262D581D0046494C /* SingleTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAC68FA262D581D0046494C /* SingleTransaction.swift */; };
 		7AAC6900262D6C9E0046494C /* SingleAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAC68FF262D6C9E0046494C /* SingleAccount.swift */; };
 		7AB34D1E25C78230000A1E81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D1D25C78230000A1E81 /* AppDelegate.swift */; };
-		7AB34D2225C78230000A1E81 /* TransactionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D2125C78230000A1E81 /* TransactionsVC.swift */; };
 		7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
 		7AB34D2A25C78232000A1E81 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2825C78232000A1E81 /* LaunchScreen.storyboard */; };
 		7AB34D3D25C78588000A1E81 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D3C25C78588000A1E81 /* Transaction.swift */; };
@@ -515,10 +514,10 @@
 		7AD96B7C2614322500791DE7 /* Collection View Cells */ = {
 			isa = PBXGroup;
 			children = (
+				7ADE3333267AEEEE00066823 /* TransactionCollectionViewCell.swift */,
 				7A14D5F1261AC5BE00C072E3 /* AccountCollectionViewCell.swift */,
 				7A5BDE7A2616B9E600B5A5F9 /* CategoryCollectionViewCell.swift */,
 				7ACD4575261D9416000C8FD2 /* StickerCollectionViewCell.swift */,
-				7ADE3333267AEEEE00066823 /* TransactionCollectionViewCell.swift */,
 			);
 			path = "Collection View Cells";
 			sourceTree = "<group>";
@@ -859,7 +858,6 @@
 				7AE75E4725FF225900C16AF6 /* ViewController.swift in Sources */,
 				7A5BDE762616B99B00B5A5F9 /* CategoriesCVC.swift in Sources */,
 				7A56101625D21BFE0091396E /* TransactionsByTagVC.swift in Sources */,
-				7AB34D2225C78230000A1E81 /* TransactionsVC.swift in Sources */,
 				7A455CD526080F1300A7F2B8 /* LatestTransaction.intentdefinition in Sources */,
 				7AB34D4D25C7A90E000A1E81 /* TransactionDetailVC.swift in Sources */,
 				7ACD456C261D67A7000C8FD2 /* WidgetsVC.swift in Sources */,
@@ -953,7 +951,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 16.5;
+				MARKETING_VERSION = 16.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -977,7 +975,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 16.5;
+				MARKETING_VERSION = 16.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1129,7 +1127,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 16.5;
+				MARKETING_VERSION = 16.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1160,7 +1158,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 16.5;
+				MARKETING_VERSION = 16.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1190,7 +1188,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 16.5;
+				MARKETING_VERSION = 16.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1220,7 +1218,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 16.5;
+				MARKETING_VERSION = 16.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1244,7 +1242,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 16.5;
+				MARKETING_VERSION = 16.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1265,7 +1263,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 16.5;
+				MARKETING_VERSION = 16.6;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

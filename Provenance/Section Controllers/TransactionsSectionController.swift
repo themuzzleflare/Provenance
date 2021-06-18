@@ -3,13 +3,14 @@ import IGListKit
 
 class TransactionsSectionController: ListSectionController {
     private var object: TransactionResource?
+
     var accounts: [AccountResource]?
     var categories: [CategoryResource]?
 
     override func sizeForItem(at index: Int) -> CGSize {
         CGSize(width: collectionContext!.containerSize.width, height: 90)
     }
-
+    
     override func cellForItem(at index: Int) -> UICollectionViewCell {
         let cell = collectionContext!.dequeueReusableCell(of: TransactionCollectionViewCell.self, for: self, at: index) as! TransactionCollectionViewCell
         cell.transaction = object
