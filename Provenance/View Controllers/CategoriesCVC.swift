@@ -118,7 +118,7 @@ private extension CategoriesCVC {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(filteredCategoriesList.data, toSection: .main)
-        if snapshot.itemIdentifiers.isEmpty && categoriesError.isEmpty && categoriesErrorResponse.isEmpty  {
+        if snapshot.itemIdentifiers.isEmpty && categoriesError.isEmpty && categoriesErrorResponse.isEmpty {
             if categories.isEmpty && categoriesStatusCode == 0 {
                 collectionView.backgroundView = {
                     let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))

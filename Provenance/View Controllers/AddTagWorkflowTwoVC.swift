@@ -161,7 +161,7 @@ private extension AddTagWorkflowTwoVC {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(filteredTagsList.data, toSection: .main)
-        if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty && tagsErrorResponse.isEmpty  {
+        if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty && tagsErrorResponse.isEmpty {
             if tags.isEmpty && tagsStatusCode == 0 {
                 tableView.backgroundView = {
                     let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))

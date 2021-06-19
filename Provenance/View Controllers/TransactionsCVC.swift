@@ -11,7 +11,7 @@ final class TransactionsCVC: ViewController {
     private lazy var filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), menu: filterMenu())
     private lazy var adapter = ListAdapter(updater: ListAdapterUpdater(), viewController: self)
 
-    private let tableRefreshControl = RefreshControl(frame: .zero)
+    private let collectionRefreshControl = RefreshControl(frame: .zero)
     private let searchController = SearchController(searchResultsController: nil)
     private let collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -73,7 +73,7 @@ final class TransactionsCVC: ViewController {
         adapter.collectionView = collectionView
         adapter.dataSource = self
         adapter.collectionViewDelegate = self
-        adapter.collectionView?.refreshControl = tableRefreshControl
+        adapter.collectionView?.refreshControl = collectionRefreshControl
         configureProperties()
         configureNavigation()
         configureSearch()
@@ -102,6 +102,8 @@ private extension TransactionsCVC {
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { object, change in
             self.fetchTransactions()
+            self.fetchAccounts()
+            self.fetchCategories()
         }
         dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
             self.adapter.reloadData()
@@ -120,7 +122,7 @@ private extension TransactionsCVC {
     }
 
     private func configureRefreshControl() {
-        tableRefreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+        collectionRefreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
     }
 }
 
@@ -262,7 +264,7 @@ extension TransactionsCVC: ListAdapterDataSource {
     }
 
     func emptyView(for listAdapter: ListAdapter) -> UIView? {
-        if filteredTransactions.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty  {
+        if filteredTransactions.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty {
             if transactions.isEmpty && transactionsStatusCode == 0 {
                 let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
                 let loadingIndicator = ActivityIndicator(style: .medium)

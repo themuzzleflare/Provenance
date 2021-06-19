@@ -1,5 +1,4 @@
 import UIKit
-import TinyConstraints
 import Rswift
 
 class TransactionCollectionViewCell: UICollectionViewCell {

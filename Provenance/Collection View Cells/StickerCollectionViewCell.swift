@@ -1,6 +1,5 @@
 import UIKit
 import FLAnimatedImage
-import TinyConstraints
 
 class StickerCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
