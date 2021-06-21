@@ -126,6 +126,8 @@ private extension TransactionsVC {
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { object, change in
             self.fetchTransactions()
+            self.fetchAccounts()
+            self.fetchCategories()
         }
         dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
             self.applySnapshot()
@@ -180,13 +182,13 @@ private extension TransactionsVC {
     }
 
     private func filterMenu() -> UIMenu {
-        UIMenu(image: R.image.sliderHorizontal3(), options: .displayInline, children: [
-            UIMenu(title: "Category", image: R.image.arrowUpArrowDownCircle(), children: FilterCategory.allCases.map { category in
+        UIMenu(options: .displayInline, children: [
+            UIMenu(title: "Category", image: filter == .all ? R.image.trayFull() : R.image.trayFullFill(), children: FilterCategory.allCases.map { category in
                 UIAction(title: categoryNameTransformed(category), state: filter == category ? .on : .off) { action in
                     self.filter = category
                 }
             }),
-            UIAction(title: "Settled Only", image: R.image.checkmarkCircle(), state: showSettledOnly ? .on : .off) { action in
+            UIAction(title: "Settled Only", image: showSettledOnly ? R.image.checkmarkCircleFill() : R.image.checkmarkCircle(), state: showSettledOnly ? .on : .off) { action in
                 self.showSettledOnly.toggle()
             }
         ])
@@ -307,7 +309,7 @@ private extension TransactionsVC {
                             self.navigationItem.title = "Transactions"
                         }
                         if self.navigationItem.leftBarButtonItems == nil {
-                            self.navigationItem.setLeftBarButtonItems([UIBarButtonItem(image: R.image.arrowUpArrowDown(), style: .plain, target: self, action: #selector(self.switchDateStyle)), self.filterButton], animated: true)
+                            self.navigationItem.setLeftBarButtonItems([UIBarButtonItem(image: R.image.calendarBadgeClock(), style: .plain, target: self, action: #selector(self.switchDateStyle)), self.filterButton], animated: true)
                         }
                     } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
                         self.transactionsErrorResponse = decodedResponse.errors

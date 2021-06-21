@@ -43,7 +43,7 @@ enum TabBarItem: Int, CaseIterable {
             case .tags:
                 return R.image.tag()
             case .categories:
-                return R.image.arrowUpArrowDownCircle()
+                return R.image.trayFull()
             case .about:
                 return R.image.infoCircle()
         }
@@ -58,7 +58,7 @@ enum TabBarItem: Int, CaseIterable {
             case .tags:
                 return R.image.tagFill()
             case .categories:
-                return R.image.arrowUpArrowDownCircleFill()
+                return R.image.trayFullFill()
             case .about:
                 return R.image.infoCircleFill()
         }
