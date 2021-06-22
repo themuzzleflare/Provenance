@@ -114,10 +114,10 @@ private extension AddTagWorkflowVC {
         let dataSource = DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, transaction in
-                let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
-                cell.transaction = transaction
-                return cell
-            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
+            cell.transaction = transaction
+            return cell
+        }
         )
         dataSource.defaultRowAnimation = .fade
         return dataSource
@@ -267,14 +267,14 @@ extension AddTagWorkflowVC {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy Description", image: R.image.textAlignright()) { action in
-                    UIPasteboard.general.string = transaction.attributes.description
-                },
+                UIPasteboard.general.string = transaction.attributes.description
+            },
                 UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { action in
-                    UIPasteboard.general.string = transaction.attributes.creationDate
-                },
+                UIPasteboard.general.string = transaction.attributes.creationDate
+            },
                 UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { action in
-                    UIPasteboard.general.string = transaction.attributes.amount.valueShort
-                }
+                UIPasteboard.general.string = transaction.attributes.amount.valueShort
+            }
             ])
         }
     }

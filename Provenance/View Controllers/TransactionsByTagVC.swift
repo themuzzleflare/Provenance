@@ -191,10 +191,10 @@ private extension TransactionsByTagVC {
         let dataSource = DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, transaction in
-                let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
-                cell.transaction = transaction
-                return cell
-            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
+            cell.transaction = transaction
+            return cell
+        }
         )
         dataSource.defaultRowAnimation = .fade
         return dataSource
@@ -370,7 +370,7 @@ extension TransactionsByTagVC {
     }
 
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        .delete
+            .delete
     }
 
     override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
@@ -382,66 +382,66 @@ extension TransactionsByTagVC {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy Description", image: R.image.textAlignright()) { action in
-                    UIPasteboard.general.string = transaction.attributes.description
-                },
+                UIPasteboard.general.string = transaction.attributes.description
+            },
                 UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { action in
-                    UIPasteboard.general.string = transaction.attributes.creationDate
-                },
+                UIPasteboard.general.string = transaction.attributes.creationDate
+            },
                 UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { action in
-                    UIPasteboard.general.string = transaction.attributes.amount.valueShort
-                },
+                UIPasteboard.general.string = transaction.attributes.amount.valueShort
+            },
                 UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { action in
-                    let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(self.tag.id)\" from \"\(transaction.attributes.description)\"?", preferredStyle: .actionSheet)
-                    let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [unowned self] _ in
-                        let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
-                        var request = URLRequest(url: url)
-                        let bodyObject: [String: Any] = [
-                            "data": [
-                                [
-                                    "type": "tags",
-                                    "id": tag.id
-                                ]
+                let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(self.tag.id)\" from \"\(transaction.attributes.description)\"?", preferredStyle: .actionSheet)
+                let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [unowned self] _ in
+                    let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
+                    var request = URLRequest(url: url)
+                    let bodyObject: [String: Any] = [
+                        "data": [
+                            [
+                                "type": "tags",
+                                "id": tag.id
                             ]
                         ]
-                        request.httpMethod = "DELETE"
-                        request.allHTTPHeaderFields = [
-                            "Content-Type": "application/json",
-                            "Authorization": "Bearer \(appDefaults.apiKey)"
-                        ]
-                        request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject)
-                        URLSession.shared.dataTask(with: request) { data, response, error in
-                            if error == nil {
-                                let statusCode = (response as! HTTPURLResponse).statusCode
-                                if statusCode != 204 {
-                                    DispatchQueue.main.async {
-                                        let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
-                                        notificationBanner.duration = 2
-                                        notificationBanner.show()
-                                    }
-                                } else {
-                                    DispatchQueue.main.async {
-                                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success)
-                                        notificationBanner.duration = 2
-                                        notificationBanner.show()
-                                        fetchTransactions()
-                                    }
-                                }
-                            } else {
+                    ]
+                    request.httpMethod = "DELETE"
+                    request.allHTTPHeaderFields = [
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer \(appDefaults.apiKey)"
+                    ]
+                    request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject)
+                    URLSession.shared.dataTask(with: request) { data, response, error in
+                        if error == nil {
+                            let statusCode = (response as! HTTPURLResponse).statusCode
+                            if statusCode != 204 {
                                 DispatchQueue.main.async {
-                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
+                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: "\(tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
                                     notificationBanner.duration = 2
                                     notificationBanner.show()
                                 }
+                            } else {
+                                DispatchQueue.main.async {
+                                    let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success)
+                                    notificationBanner.duration = 2
+                                    notificationBanner.show()
+                                    fetchTransactions()
+                                }
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(tag.id) was not removed from \(transaction.attributes.description).", style: .danger)
+                                notificationBanner.duration = 2
+                                notificationBanner.show()
                             }
                         }
-                        .resume()
                     }
-                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-                    cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-                    ac.addAction(confirmAction)
-                    ac.addAction(cancelAction)
-                    self.present(ac, animated: true)
+                    .resume()
                 }
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+                ac.addAction(confirmAction)
+                ac.addAction(cancelAction)
+                self.present(ac, animated: true)
+            }
             ])
         }
     }

@@ -259,11 +259,11 @@ extension AccountsCVC {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy Balance", image: R.image.dollarsignCircle()) { action in
-                    UIPasteboard.general.string = account.attributes.balance.valueShort
-                },
+                UIPasteboard.general.string = account.attributes.balance.valueShort
+            },
                 UIAction(title: "Copy Display Name", image: R.image.textAlignright()) { action in
-                    UIPasteboard.general.string = account.attributes.displayName
-                }
+                UIPasteboard.general.string = account.attributes.displayName
+            }
             ])
         }
     }

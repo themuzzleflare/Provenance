@@ -64,11 +64,11 @@ private extension DiagnosticTableVC {
         DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, attribute in
-                let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-                cell.leftLabel.text = attribute.key
-                cell.rightLabel.text = attribute.value
-                return cell
-            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
+            cell.leftLabel.text = attribute.key
+            cell.rightLabel.text = attribute.value
+            return cell
+        }
         )
     }
 
@@ -94,8 +94,8 @@ extension DiagnosticTableVC {
                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                     UIMenu(children: [
                         UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { action in
-                            UIPasteboard.general.string = attribute.value
-                        }
+                        UIPasteboard.general.string = attribute.value
+                    }
                     ])
                 }
         }

@@ -5,7 +5,7 @@ struct Tag: Decodable {
     var links: Pagination
 }
 
-struct TagResource: Decodable, Hashable, Identifiable {
+struct TagResource: Decodable, Identifiable {
     var type: String
     var id: String
     var relationships: AccountRelationship?
@@ -15,11 +15,13 @@ struct TagResource: Decodable, Hashable, Identifiable {
         self.id = id
         self.relationships = relationships
     }
-    
+}
+
+extension TagResource: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
+
     static func == (lhs: TagResource, rhs: TagResource) -> Bool {
         lhs.id == rhs.id
     }

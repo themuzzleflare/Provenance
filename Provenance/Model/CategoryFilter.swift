@@ -1,6 +1,6 @@
 import Foundation
 
-enum FilterCategory: String, CaseIterable {
+enum CategoryFilter: String, CaseIterable {
     case all = "All"
     case gamesAndSoftware = "games-and-software"
     case carInsuranceAndMaintenance = "car-insurance-and-maintenance"

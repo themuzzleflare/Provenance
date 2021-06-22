@@ -1,6 +1,6 @@
 import Foundation
 
-func categoryNameTransformed(_ category: FilterCategory) -> String {
+func categoryName(category: CategoryFilter) -> String {
     switch category {
         case .gamesAndSoftware:
             return "Apps, Games & Software"

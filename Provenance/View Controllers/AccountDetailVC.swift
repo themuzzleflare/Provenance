@@ -65,12 +65,12 @@ private extension AccountDetailVC {
         DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, attribute in
-                let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-                cell.leftLabel.text = attribute.key
-                cell.rightLabel.font = attribute.key == "Account ID" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
-                cell.rightLabel.text = attribute.value
-                return cell
-            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
+            cell.leftLabel.text = attribute.key
+            cell.rightLabel.font = attribute.key == "Account ID" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
+            cell.rightLabel.text = attribute.value
+            return cell
+        }
         )
     }
 
@@ -114,8 +114,8 @@ extension AccountDetailVC {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { action in
-                    UIPasteboard.general.string = attribute.value
-                }
+                UIPasteboard.general.string = attribute.value
+            }
             ])
         }
     }

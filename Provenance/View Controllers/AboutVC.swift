@@ -165,8 +165,8 @@ extension AboutVC {
                                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                                     UIMenu(children: [
                                         UIAction(title: "Copy Version", image: R.image.docOnClipboard()) { action in
-                                            UIPasteboard.general.string = appDefaults.appVersion
-                                        }
+                                        UIPasteboard.general.string = appDefaults.appVersion
+                                    }
                                     ])
                                 }
                         }
@@ -178,8 +178,8 @@ extension AboutVC {
                                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                                     UIMenu(children: [
                                         UIAction(title: "Copy Build", image: R.image.docOnClipboard()) { action in
-                                            UIPasteboard.general.string = appDefaults.appBuild
-                                        }
+                                        UIPasteboard.general.string = appDefaults.appBuild
+                                    }
                                     ])
                                 }
                         }
@@ -192,16 +192,16 @@ extension AboutVC {
                         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                             UIMenu(children: [
                                 UIAction(title: "Copy Email", image: R.image.docOnClipboard()) { action in
-                                    UIPasteboard.general.string = "feedback@tavitian.cloud"
-                                }
+                                UIPasteboard.general.string = "feedback@tavitian.cloud"
+                            }
                             ])
                         }
                     case 1:
                         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                             UIMenu(children: [
                                 UIAction(title: "Copy Link", image: R.image.docOnClipboard()) { action in
-                                    UIPasteboard.general.string = "https://github.com/themuzzleflare/Provenance"
-                                }
+                                UIPasteboard.general.string = "https://github.com/themuzzleflare/Provenance"
+                            }
                             ])
                         }
                     default:

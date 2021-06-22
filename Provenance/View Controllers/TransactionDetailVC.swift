@@ -153,30 +153,30 @@ private extension TransactionDetailVC {
         DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, attribute in
-                let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-                var cellSelectionStyle: UITableViewCell.SelectionStyle {
-                    switch attribute.key {
-                        case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
-                            return .default
-                        default:
-                            return .none
-                    }
+            let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
+            var cellSelectionStyle: UITableViewCell.SelectionStyle {
+                switch attribute.key {
+                    case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
+                        return .default
+                    default:
+                        return .none
                 }
-                var cellAccessoryType: UITableViewCell.AccessoryType {
-                    switch attribute.key {
-                        case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
-                            return .disclosureIndicator
-                        default:
-                            return .none
-                    }
-                }
-                cell.selectionStyle = cellSelectionStyle
-                cell.accessoryType = cellAccessoryType
-                cell.leftLabel.text = attribute.key
-                cell.rightLabel.font = attribute.key == "Raw Text" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
-                cell.rightLabel.text = attribute.value
-                return cell
             }
+            var cellAccessoryType: UITableViewCell.AccessoryType {
+                switch attribute.key {
+                    case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
+                        return .disclosureIndicator
+                    default:
+                        return .none
+                }
+            }
+            cell.selectionStyle = cellSelectionStyle
+            cell.accessoryType = cellAccessoryType
+            cell.leftLabel.text = attribute.key
+            cell.rightLabel.font = attribute.key == "Raw Text" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
+            cell.rightLabel.text = attribute.value
+            return cell
+        }
         )
     }
     
@@ -315,8 +315,8 @@ extension TransactionDetailVC {
                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                     UIMenu(children: [
                         UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { action in
-                            UIPasteboard.general.string = attribute.value
-                        }
+                        UIPasteboard.general.string = attribute.value
+                    }
                     ])
                 }
         }

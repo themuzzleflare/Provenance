@@ -8,13 +8,13 @@ struct Transaction: Decodable {
     var links: Pagination
 }
 
-class TransactionResource: Decodable, Hashable, Identifiable {
+class TransactionResource: Decodable, Identifiable {
     private var type: String // The type of this resource: transactions
     var id: String // The unique identifier for this transaction.
     var attributes: Attribute
     var relationships: Relationship
     var links: SelfLink?
-    
+
     init(type: String, id: String, attributes: Attribute, relationships: Relationship, links: SelfLink? = nil) {
         self.type = type
         self.id = id
@@ -22,11 +22,13 @@ class TransactionResource: Decodable, Hashable, Identifiable {
         self.relationships = relationships
         self.links = links
     }
-    
+}
+
+extension TransactionResource: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
+
     static func == (lhs: TransactionResource, rhs: TransactionResource) -> Bool {
         lhs.id == rhs.id
     }

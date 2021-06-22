@@ -4,46 +4,6 @@ import Alamofire
 import FLAnimatedImage
 import Rswift
 
-// MARK: - UserDefaults Suite for Provenance Application Group
-
-let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
-
-// MARK: - UserDefaults Extension for Value Observation
-
-extension UserDefaults {
-    @objc dynamic var apiKey: String {
-        get {
-            return string(forKey: "apiKey") ?? ""
-        }
-        set {
-            set(newValue, forKey: "apiKey")
-            print("Set API Key to: \(newValue)")
-        }
-    }
-
-    @objc dynamic var dateStyle: String {
-        get {
-            return string(forKey: "dateStyle") ?? "Absolute"
-        }
-        set {
-            set(newValue, forKey: "dateStyle")
-            print("Set Date Style to: \(newValue)")
-        }
-    }
-
-    var appVersion: String {
-        get {
-            return string(forKey: "appVersion") ?? "Unknown"
-        }
-    }
-
-    var appBuild: String {
-        get {
-            return string(forKey: "appBuild") ?? "Unknown"
-        }
-    }
-}
-
 // MARK: - Application Metadata & Reusable Values
 
 let appName = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "Provenance"
@@ -106,7 +66,7 @@ let upAnimation = UIImage.animatedImage(with: [
 // MARK: - Alamofire Predicates for Up API
 
 var authorisationHeader: HTTPHeader {
-    .authorization(bearerToken: appDefaults.apiKey)
+        .authorization(bearerToken: appDefaults.apiKey)
 }
 
 let acceptJsonHeader: HTTPHeader = .accept("application/json")
@@ -127,54 +87,4 @@ func filterTagParam(tagId: String) -> [String: Any] {
 
 func filterTagAndPageSize100Params(tagId: String) -> [String: Any] {
     return ["filter[tag]": tagId, "page[size]": "100"]
-}
-
-// MARK: - Protocols & Extensions for URLSession Query Parameter Support
-
-protocol URLQueryParameterStringConvertible {
-    var queryParameters: String {
-        get
-    }
-}
-
-extension Dictionary: URLQueryParameterStringConvertible {
-    var queryParameters: String {
-        var parts: [String] = []
-        for (key, value) in self {
-            let part = String(format: "%@=%@", String(describing: key).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!, String(describing: value).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
-            parts.append(part as String)
-        }
-        return parts.joined(separator: "&")
-    }
-}
-
-extension URL {
-    func appendingQueryParameters(_ parametersDictionary: Dictionary<String, String>) -> URL {
-        let URLString: String = String(format: "%@?%@", self.absoluteString, parametersDictionary.queryParameters)
-        return URL(string: URLString)!
-    }
-}
-
-// MARK: - Date Formatters
-
-func formatDateAbsolute(dateString: String) -> String {
-    if let date = ISO8601DateFormatter().date(from: dateString) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/yyyy hh:mm:ss a"
-        formatter.amSymbol = "AM"
-        formatter.pmSymbol = "PM"
-        return formatter.string(from: date)
-    } else {
-        return dateString
-    }
-}
-
-func formatDateRelative(dateString: String) -> String {
-    if let date = ISO8601DateFormatter().date(from: dateString) {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.dateTimeStyle = .numeric
-        return formatter.string(for: date)!
-    } else {
-        return dateString
-    }
 }

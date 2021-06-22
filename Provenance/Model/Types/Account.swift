@@ -5,7 +5,7 @@ struct Account: Decodable {
     var links: Pagination
 }
 
-struct AccountResource: Decodable, Hashable, Identifiable {
+struct AccountResource: Decodable, Identifiable {
     private var type: String
     var id: String
     var attributes: AccountAttribute
@@ -19,11 +19,13 @@ struct AccountResource: Decodable, Hashable, Identifiable {
         self.relationships = relationships
         self.links = links
     }
-    
+}
+
+extension AccountResource: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
+
     static func == (lhs: AccountResource, rhs: AccountResource) -> Bool {
         lhs.id == rhs.id
     }

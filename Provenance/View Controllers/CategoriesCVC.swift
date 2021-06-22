@@ -252,8 +252,8 @@ extension CategoriesCVC {
         UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy", image: R.image.docOnClipboard()) { action in
-                    UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.name
-                }
+                UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.name
+            }
             ])
         }
     }

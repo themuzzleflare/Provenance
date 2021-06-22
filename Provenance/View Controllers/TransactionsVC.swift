@@ -40,7 +40,7 @@ final class TransactionsVC: TableViewController {
     private var preFilteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             (!showSettledOnly || transaction.attributes.isSettled)
-                && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
+            && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
         }
     }
     private var filteredTransactions: [TransactionResource] {
@@ -78,7 +78,7 @@ final class TransactionsVC: TableViewController {
             }
         }
     }
-    private var filter: FilterCategory = .all {
+    private var filter: CategoryFilter = .all {
         didSet {
             filterButton.menu = filterMenu()
             searchController.searchBar.placeholder = searchBarPlaceholder
@@ -183,14 +183,14 @@ private extension TransactionsVC {
 
     private func filterMenu() -> UIMenu {
         UIMenu(options: .displayInline, children: [
-            UIMenu(title: "Category", image: filter == .all ? R.image.trayFull() : R.image.trayFullFill(), children: FilterCategory.allCases.map { category in
-                UIAction(title: categoryNameTransformed(category), state: filter == category ? .on : .off) { action in
-                    self.filter = category
-                }
-            }),
-            UIAction(title: "Settled Only", image: showSettledOnly ? R.image.checkmarkCircleFill() : R.image.checkmarkCircle(), state: showSettledOnly ? .on : .off) { action in
-                self.showSettledOnly.toggle()
+            UIMenu(title: "Category", image: filter == .all ? R.image.trayFull() : R.image.trayFullFill(), children: CategoryFilter.allCases.map { category in
+            UIAction(title: categoryName(category: category), state: filter == category ? .on : .off) { action in
+                self.filter = category
             }
+        }),
+            UIAction(title: "Settled Only", image: showSettledOnly ? R.image.checkmarkCircleFill() : R.image.checkmarkCircle(), state: showSettledOnly ? .on : .off) { action in
+            self.showSettledOnly.toggle()
+        }
         ])
     }
 
@@ -198,10 +198,10 @@ private extension TransactionsVC {
         let dataSource = DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, transaction in
-                let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
-                cell.transaction = transaction
-                return cell
-            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
+            cell.transaction = transaction
+            return cell
+        }
         )
         dataSource.defaultRowAnimation = .fade
         return dataSource
@@ -410,14 +410,14 @@ extension TransactionsVC {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy Description", image: R.image.textAlignright()) { action in
-                    UIPasteboard.general.string = transaction.attributes.description
-                },
+                UIPasteboard.general.string = transaction.attributes.description
+            },
                 UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { action in
-                    UIPasteboard.general.string = transaction.attributes.creationDate
-                },
+                UIPasteboard.general.string = transaction.attributes.creationDate
+            },
                 UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { action in
-                    UIPasteboard.general.string = transaction.attributes.amount.valueShort
-                }
+                UIPasteboard.general.string = transaction.attributes.amount.valueShort
+            }
             ])
         }
     }

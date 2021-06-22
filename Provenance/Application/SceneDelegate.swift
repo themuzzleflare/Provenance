@@ -13,13 +13,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var savedShortcutItem: UIApplicationShortcutItem!
     private var textDidChangeObserver: NSObjectProtocol!
 
-    private enum ShortcutAction: String {
-        case transactions = "transactionsShortcut"
-        case accounts = "accountsShortcut"
-        case tags = "tagsShortcut"
-        case categories = "categoriesShortcut"
-    }
-
     // MARK: - Life Cycle
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -127,7 +120,7 @@ private extension SceneDelegate {
 
     private func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
         let tabcontroller = window?.rootViewController as! TabController
-        if let actionTypeValue = ShortcutAction(rawValue: shortcutItem.type) {
+        if let actionTypeValue = ShortcutType(rawValue: shortcutItem.type) {
             switch actionTypeValue {
                 case .transactions:
                     tabcontroller.selectedIndex = 0
@@ -137,6 +130,8 @@ private extension SceneDelegate {
                     tabcontroller.selectedIndex = 2
                 case .categories:
                     tabcontroller.selectedIndex = 3
+                case .about:
+                    tabcontroller.selectedIndex = 4
             }
         }
         return true

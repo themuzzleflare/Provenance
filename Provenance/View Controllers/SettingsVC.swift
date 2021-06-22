@@ -227,8 +227,8 @@ extension SettingsVC {
                         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                             UIMenu(children: [
                                 UIAction(title: "Copy API Key", image: R.image.docOnClipboard()) { action in
-                                    UIPasteboard.general.string = appDefaults.apiKey
-                                }
+                                UIPasteboard.general.string = appDefaults.apiKey
+                            }
                             ])
                         }
                 }

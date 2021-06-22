@@ -143,15 +143,15 @@ private extension AddTagWorkflowTwoVC {
         let dataSource = DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, tag in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
-                cell.selectedBackgroundView = selectedBackgroundCellView
-                cell.separatorInset = .zero
-                cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.numberOfLines = 0
-                cell.textLabel?.text = tag.id
-                return cell
-            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
+            cell.selectedBackgroundView = selectedBackgroundCellView
+            cell.separatorInset = .zero
+            cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+            cell.textLabel?.textAlignment = .left
+            cell.textLabel?.numberOfLines = 0
+            cell.textLabel?.text = tag.id
+            return cell
+        }
         )
         dataSource.defaultRowAnimation = .fade
         return dataSource
@@ -312,8 +312,8 @@ extension AddTagWorkflowTwoVC {
         UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy Tag Name", image: R.image.docOnClipboard()) { action in
-                    UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.id
-                }
+                UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.id
+            }
             ])
         }
     }

@@ -4,7 +4,7 @@ struct Category: Decodable {
     var data: [CategoryResource]
 }
 
-struct CategoryResource: Decodable, Hashable, Identifiable {
+struct CategoryResource: Decodable, Identifiable {
     var type: String
     var id: String
     var attributes: CategoryAttribute
@@ -18,11 +18,13 @@ struct CategoryResource: Decodable, Hashable, Identifiable {
         self.relationships = relationships
         self.links = links
     }
-    
+}
+
+extension CategoryResource: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
+
     static func == (lhs: CategoryResource, rhs: CategoryResource) -> Bool {
         lhs.id == rhs.id
     }
