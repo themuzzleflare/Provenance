@@ -9,7 +9,6 @@ class StickerCollectionViewCell: UICollectionViewCell {
     var image: FLAnimatedImage! {
         didSet {
             stickerImageView.animatedImage = image
-            stickerImageView.startAnimating()
         }
     }
     

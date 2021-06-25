@@ -1,5 +1,5 @@
 import UIKit
-import Alamofire
+import FLAnimatedImage
 import TinyConstraints
 import Rswift
 
@@ -19,16 +19,16 @@ final class AllTagsVC: TableViewController {
     private let searchController = SearchController(searchResultsController: nil)
 
     private var apiKeyObserver: NSKeyValueObservation?
-    private var tagsStatusCode: Int = 0
+    private var noTags: Bool = false
     private var tags: [TagResource] = [] {
         didSet {
+            noTags = tags.isEmpty
             applySnapshot()
             refreshControl?.endRefreshing()
             searchController.searchBar.placeholder = "Search \(tags.count.description) \(tags.count == 1 ? "Tag" : "Tags")"
         }
     }
     private var tagsPagination: Pagination = Pagination(prev: nil, next: nil)
-    private var tagsErrorResponse: [ErrorObject] = []
     private var tagsError: String = ""
     private var filteredTags: [TagResource] {
         tags.filter { tag in
@@ -132,14 +132,16 @@ private extension AllTagsVC {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(filteredTagsList.data, toSection: .main)
-        if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty && tagsErrorResponse.isEmpty {
-            if tags.isEmpty && tagsStatusCode == 0 {
+        if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty {
+            if tags.isEmpty && !noTags {
                 tableView.backgroundView = {
                     let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
-                    let loadingIndicator = ActivityIndicator(style: .medium)
+                    let loadingIndicator = FLAnimatedImageView()
+                    loadingIndicator.animatedImage = upZapSpinTransparentBackground
+                    loadingIndicator.width(100)
+                    loadingIndicator.height(100)
                     view.addSubview(loadingIndicator)
                     loadingIndicator.center(in: view)
-                    loadingIndicator.startAnimating()
                     return view
                 }()
             } else {
@@ -180,33 +182,6 @@ private extension AllTagsVC {
                     label.text = tagsError
                     return view
                 }()
-            } else if !tagsErrorResponse.isEmpty {
-                tableView.backgroundView = {
-                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
-                    let titleLabel = UILabel()
-                    let detailLabel = UILabel()
-                    let verticalStack = UIStackView()
-                    view.addSubview(verticalStack)
-                    titleLabel.translatesAutoresizingMaskIntoConstraints = false
-                    titleLabel.textAlignment = .center
-                    titleLabel.textColor = .systemRed
-                    titleLabel.font = R.font.circularStdBold(size: UIFont.labelFontSize)
-                    titleLabel.numberOfLines = 0
-                    titleLabel.text = tagsErrorResponse.first?.title
-                    detailLabel.translatesAutoresizingMaskIntoConstraints = false
-                    detailLabel.textAlignment = .center
-                    detailLabel.textColor = .secondaryLabel
-                    detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                    detailLabel.numberOfLines = 0
-                    detailLabel.text = tagsErrorResponse.first?.detail
-                    verticalStack.addArrangedSubview(titleLabel)
-                    verticalStack.addArrangedSubview(detailLabel)
-                    verticalStack.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
-                    verticalStack.center(in: view)
-                    verticalStack.axis = .vertical
-                    verticalStack.alignment = .center
-                    return view
-                }()
             } else {
                 if tableView.backgroundView != nil {
                     tableView.backgroundView = nil
@@ -217,25 +192,22 @@ private extension AllTagsVC {
     }
 
     private func fetchTags() {
-        AF.request(UpAPI.Tags().listTags, method: .get, parameters: pageSize200Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
-            self.tagsStatusCode = response.response?.statusCode ?? 0
-            switch response.result {
-                case .success:
-                    if let decodedResponse = try? JSONDecoder().decode(Tag.self, from: response.data!) {
+        upApi.listTags { result in
+            switch result {
+                case .success(let tags):
+                    DispatchQueue.main.async {
                         self.tagsError = ""
-                        self.tagsErrorResponse = []
-                        self.tagsPagination = decodedResponse.links
-                        self.tags = decodedResponse.data
+                        self.tags = tags
                         if self.navigationItem.title != "Tags" {
                             self.navigationItem.title = "Tags"
                         }
                         if self.navigationItem.rightBarButtonItem == nil {
                             self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.openAddWorkflow)), animated: true)
                         }
-                    } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
-                        self.tagsErrorResponse = decodedResponse.errors
-                        self.tagsError = ""
-                        self.tagsPagination = Pagination(prev: nil, next: nil)
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.tagsError = errorString(for: error)
                         self.tags = []
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
@@ -243,28 +215,6 @@ private extension AllTagsVC {
                         if self.navigationItem.rightBarButtonItem != nil {
                             self.navigationItem.setRightBarButton(nil, animated: true)
                         }
-                    } else {
-                        self.tagsError = "JSON Decoding Failed!"
-                        self.tagsErrorResponse = []
-                        self.tagsPagination = Pagination(prev: nil, next: nil)
-                        self.tags = []
-                        if self.navigationItem.title != "Error" {
-                            self.navigationItem.title = "Error"
-                        }
-                        if self.navigationItem.rightBarButtonItem != nil {
-                            self.navigationItem.setRightBarButton(nil, animated: true)
-                        }
-                    }
-                case .failure:
-                    self.tagsError = response.error?.localizedDescription ?? "Unknown Error!"
-                    self.tagsErrorResponse = []
-                    self.tagsPagination = Pagination(prev: nil, next: nil)
-                    self.tags = []
-                    if self.navigationItem.title != "Error" {
-                        self.navigationItem.title = "Error"
-                    }
-                    if self.navigationItem.rightBarButtonItem != nil {
-                        self.navigationItem.setRightBarButton(nil, animated: true)
                     }
             }
         }

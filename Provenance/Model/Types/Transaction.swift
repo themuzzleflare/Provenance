@@ -91,7 +91,7 @@ struct Attribute: Decodable {
             case nil:
                 return nil
             default:
-                return formatDateAbsolute(dateString: settledAt!)
+                return formatDateAbsolute(for: settledAt!)
         }
     }
     private var settlementDateRelative: String? {
@@ -99,7 +99,7 @@ struct Attribute: Decodable {
             case nil:
                 return nil
             default:
-                return formatDateRelative(dateString: settledAt!)
+                return formatDateRelative(for: settledAt!)
         }
     }
     var settlementDate: String? {
@@ -119,10 +119,10 @@ struct Attribute: Decodable {
     }
     private var createdAt: String // The date-time at which this transaction was first encountered.
     private var creationDateAbsolute: String {
-        formatDateAbsolute(dateString: createdAt)
+        formatDateAbsolute(for: createdAt)
     }
     private var creationDateRelative: String {
-        formatDateRelative(dateString: createdAt)
+        formatDateRelative(for: createdAt)
     }
     var creationDate: String {
         switch appDefaults.dateStyle {

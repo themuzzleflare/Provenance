@@ -8,7 +8,6 @@ target 'Provenance' do
   pod 'MarqueeLabel'
   pod 'TinyConstraints'
   pod 'R.swift'
-  pod 'Alamofire'
   pod 'FLAnimatedImage'
   pod 'NotificationBannerSwift'
   pod 'IGListKit'

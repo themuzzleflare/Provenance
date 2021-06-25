@@ -9,7 +9,8 @@ class SettingsVC: TableViewController {
     var displayBanner: NotificationBanner?
 
     private weak var submitActionProxy: UIAlertAction?
-    
+
+    private var apiKeyObserver: NSKeyValueObservation?
     private var textDidChangeObserver: NSObjectProtocol!
 
     // MARK: - View Life Cycle
@@ -38,6 +39,12 @@ class SettingsVC: TableViewController {
 private extension SettingsVC {
     private func configureProperties() {
         title = "Settings"
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { object, change in
+            if let alert = self.presentedViewController as? UIAlertController {
+                alert.textFields?[0].text = change.newValue
+                alert.dismiss(animated: true)
+            }
+        }
     }
     
     private func configureNavigation() {
@@ -163,46 +170,28 @@ extension SettingsVC {
             let submitAction = UIAlertAction(title: "Save", style: .default) { _ in
                 let answer = ac.textFields![0]
                 if !answer.text!.isEmpty && answer.text != appDefaults.apiKey {
-                    let url = URL(string: "https://api.up.com.au/api/v1/util/ping")!
-                    var request = URLRequest(url: url)
-                    request.httpMethod = "GET"
-                    request.allHTTPHeaderFields = [
-                        "Accept": "application/json",
-                        "Authorization": "Bearer \(answer.text!)"
-                    ]
-                    URLSession.shared.dataTask(with: request) { data, response, error in
-                        if error == nil {
-                            let statusCode = (response as! HTTPURLResponse).statusCode
-                            if statusCode == 200 {
+                    upApi.ping(with: answer.text!) { error in
+                        switch error {
+                            case .none:
                                 DispatchQueue.main.async {
                                     let notificationBanner = NotificationBanner(title: "Success", subtitle: "The API Key was verified and saved.", style: .success)
                                     notificationBanner.duration = 2
                                     notificationBanner.show()
                                     appDefaults.apiKey = answer.text!
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: "The API Key could not be verified.", style: .danger)
-                                    notificationBanner.duration = 2
-                                    notificationBanner.show()
                                     WidgetCenter.shared.reloadAllTimelines()
                                 }
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "The API Key could not be verified.", style: .danger)
-                                notificationBanner.duration = 2
-                                notificationBanner.show()
-                                WidgetCenter.shared.reloadAllTimelines()
-                            }
+                            default:
+                                DispatchQueue.main.async {
+                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                                    notificationBanner.duration = 2
+                                    notificationBanner.show()
+                                }
                         }
                     }
-                    .resume()
                 } else {
                     let notificationBanner = NotificationBanner(title: "Failed", subtitle: "The provided API Key was the same as the current one.", style: .danger)
                     notificationBanner.duration = 2
                     notificationBanner.show()
-                    WidgetCenter.shared.reloadAllTimelines()
                 }
             }
             submitAction.setValue(R.color.accentColour(), forKey: "titleTextColor")

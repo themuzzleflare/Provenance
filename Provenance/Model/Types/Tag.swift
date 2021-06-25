@@ -26,3 +26,12 @@ extension TagResource: Hashable {
         lhs.id == rhs.id
     }
 }
+
+struct ModifyTags: Codable {
+    var data: [TagInputResourceIdentifier] // The tags to add to or remove from the transaction.
+}
+
+struct TagInputResourceIdentifier: Codable, Identifiable {
+    var type = "tags" // The type of this resource: tags
+    var id: String // The label of the tag, which also acts as the tag’s unique identifier.
+}

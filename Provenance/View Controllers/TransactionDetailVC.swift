@@ -1,5 +1,4 @@
 import UIKit
-import Alamofire
 import MarqueeLabel
 import Rswift
 
@@ -14,7 +13,8 @@ class TransactionDetailVC: TableViewController {
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
     
     private lazy var dataSource = makeDataSource()
-    
+
+    private let tableRefreshControl = RefreshControl(frame: .zero)
     private let scrollingTitle = MarqueeLabel()
     
     private var dateStyleObserver: NSKeyValueObservation?
@@ -95,6 +95,7 @@ class TransactionDetailVC: TableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureScrollingTitle()
+        configureRefreshControl()
         configureNavigation()
         configureTableView()
         applySnapshot()
@@ -125,6 +126,10 @@ private extension TransactionDetailVC {
         scrollingTitle.font = .boldSystemFont(ofSize: UIFont.labelFontSize)
         scrollingTitle.text = transaction.attributes.description
     }
+
+    private func configureRefreshControl() {
+        tableRefreshControl.addTarget(self, action: #selector(refreshTransaction), for: .valueChanged)
+    }
     
     private func configureNavigation() {
         navigationItem.title = transaction.attributes.description
@@ -134,6 +139,7 @@ private extension TransactionDetailVC {
     }
     
     private func configureTableView() {
+        tableView.refreshControl = tableRefreshControl
         tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
     }
 }
@@ -147,6 +153,12 @@ private extension TransactionDetailVC {
     
     @objc private func openStatusIconHelpView() {
         present(NavigationController(rootViewController: StatusIconHelpView()), animated: true)
+    }
+
+    @objc private func refreshTransaction() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.fetchTransaction()
+        }
     }
     
     private func makeDataSource() -> DataSource {
@@ -266,18 +278,20 @@ private extension TransactionDetailVC {
     }
     
     private func fetchTransaction() {
-        AF.request(UpAPI.Transactions().retrieveTransaction(transactionId: transaction.id), method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
-            switch response.result {
-                case .success:
-                    if let decodedResponse = try? JSONDecoder().decode(SingleTransactionResponse.self, from: response.data!) {
-                        self.transaction = decodedResponse.data
+        upApi.retrieveTransaction(for: transaction) { result in
+            switch result {
+                case .success(let transaction):
+                    DispatchQueue.main.async {
+                        self.transaction = transaction
                         self.applySnapshot()
+                        self.refreshControl?.endRefreshing()
                         self.configureNavigation()
-                    } else {
-                        print("JSON decoding failed")
                     }
-                case .failure:
-                    print(response.error?.localizedDescription ?? "Unknown error")
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.refreshControl?.endRefreshing()
+                    }
+                    print(errorString(for: error))
             }
         }
     }

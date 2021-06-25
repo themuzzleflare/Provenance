@@ -8,7 +8,6 @@ class StickerView: ViewController {
     var image: FLAnimatedImage! {
         didSet {
             imageView.animatedImage = image
-            imageView.startAnimating()
         }
     }
     

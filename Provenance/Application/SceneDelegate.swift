@@ -69,40 +69,24 @@ private extension SceneDelegate {
             let submitAction = UIAlertAction(title: "Save", style: .default) { [unowned self] _ in
                 let answer = ac.textFields![0]
                 if !answer.text!.isEmpty && answer.text != appDefaults.apiKey {
-                    let url = URL(string: "https://api.up.com.au/api/v1/util/ping")!
-                    var request = URLRequest(url: url)
-                    request.httpMethod = "GET"
-                    request.allHTTPHeaderFields = [
-                        "Accept": "application/json",
-                        "Authorization": "Bearer \(answer.text!)"
-                    ]
-                    URLSession.shared.dataTask(with: request) { data, response, error in
-                        if error == nil {
-                            let statusCode = (response as! HTTPURLResponse).statusCode
-                            if statusCode == 200 {
+                    upApi.ping(with: answer.text!) { error in
+                        switch error {
+                            case .none:
                                 DispatchQueue.main.async {
                                     let notificationBanner = NotificationBanner(title: "Success", subtitle: "The API Key was verified and saved.", style: .success)
                                     notificationBanner.duration = 2
                                     appDefaults.apiKey = answer.text!
                                     window?.rootViewController?.present({let vc = NavigationController(rootViewController: {let vc = SettingsVC(style: .grouped);vc.displayBanner = notificationBanner;return vc}());vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
+                                    WidgetCenter.shared.reloadAllTimelines()
                                 }
-                            } else {
+                            default:
                                 DispatchQueue.main.async {
-                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: "The API Key could not be verified.", style: .danger)
+                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
                                     notificationBanner.duration = 2
                                     window?.rootViewController?.present({let vc = NavigationController(rootViewController: {let vc = SettingsVC(style: .grouped);vc.displayBanner = notificationBanner;return vc}());vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
                                 }
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "The API Key could not be verified.", style: .danger)
-                                notificationBanner.duration = 2
-                                window?.rootViewController?.present({let vc = NavigationController(rootViewController: {let vc = SettingsVC(style: .grouped);vc.displayBanner = notificationBanner;return vc}());vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
-                            }
                         }
-                        WidgetCenter.shared.reloadAllTimelines()
                     }
-                    .resume()
                 } else {
                     let notificationBanner = NotificationBanner(title: "Failed", subtitle: "The provided API Key was the same as the current one.", style: .danger)
                     notificationBanner.duration = 2

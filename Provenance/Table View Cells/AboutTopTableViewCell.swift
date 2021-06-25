@@ -1,4 +1,5 @@
 import UIKit
+import FLAnimatedImage
 import TinyConstraints
 import Rswift
 
@@ -7,7 +8,7 @@ class AboutTopTableViewCell: UITableViewCell {
 
     static let reuseIdentifier = "aboutTopTableViewCell"
 
-    private let logoImageView = UIImageView()
+    private let logoImageView = FLAnimatedImageView()
     private let nameLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let verticalStack = UIStackView()
@@ -38,10 +39,12 @@ private extension AboutTopTableViewCell {
         verticalStack.axis = .vertical
         verticalStack.alignment = .center
         verticalStack.spacing = 5
-        logoImageView.translatesAutoresizingMaskIntoConstraints = false
         logoImageView.clipsToBounds = true
+        logoImageView.width(100)
+        logoImageView.height(100)
         logoImageView.layer.cornerRadius = 20
-        logoImageView.image = upAnimation
+        logoImageView.backgroundColor = R.color.accentColour()
+        logoImageView.animatedImage = upLogoDrawMidnightYellowTransparentBackground
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.font = R.font.circularStdBold(size: 32)
         nameLabel.textAlignment = .center

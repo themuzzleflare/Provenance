@@ -14,10 +14,10 @@ struct Attribute: Decodable {
     var amount: MoneyObject
     private var createdAt: String
     var creationDateAbsolute: String {
-        formatDateAbsolute(dateString: createdAt)
+        formatDateAbsolute(for: createdAt)
     }
     var creationDateRelative: String {
-        formatDateRelative(dateString: createdAt)
+        formatDateRelative(for: createdAt)
     }
     var creationDate: String {
         switch appDefaults.dateStyle {

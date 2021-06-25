@@ -4,7 +4,7 @@ class TableViewController: UITableViewController {
     // MARK: - Life Cycle
 
     override init(style: UITableView.Style) {
-        super.init(style: .insetGrouped)
+        super.init(style: .grouped)
     }
 
     required init?(coder: NSCoder) {

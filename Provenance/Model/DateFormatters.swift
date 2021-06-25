@@ -1,6 +1,6 @@
 import Foundation
 
-func formatDateAbsolute(dateString: String) -> String {
+func formatDateAbsolute(for dateString: String) -> String {
     if let date = ISO8601DateFormatter().date(from: dateString) {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy hh:mm:ss a"
@@ -12,7 +12,7 @@ func formatDateAbsolute(dateString: String) -> String {
     }
 }
 
-func formatDateRelative(dateString: String) -> String {
+func formatDateRelative(for dateString: String) -> String {
     if let date = ISO8601DateFormatter().date(from: dateString) {
         let formatter = RelativeDateTimeFormatter()
         formatter.dateTimeStyle = .numeric

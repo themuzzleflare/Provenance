@@ -1,6 +1,5 @@
 import Foundation
 import UIKit
-import Alamofire
 import FLAnimatedImage
 import Rswift
 
@@ -8,6 +7,7 @@ import Rswift
 
 let appName = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "Provenance"
 let appCopyright = Bundle.main.infoDictionary?["NSHumanReadableCopyright"] as? String ?? "Copyright © 2021 Paul Tavitian"
+let upApi = APIFacade()
 
 var selectedBackgroundCellView: UIView {
     let view = UIView()
@@ -48,6 +48,10 @@ private let stickerThree = try! FLAnimatedImage(animatedGIFData: Data(contentsOf
 private let stickerSix = try! FLAnimatedImage(animatedGIFData: Data(contentsOf: Bundle.main.url(forResource: "StickerSix", withExtension: "gif")!))
 private let stickerSeven = try! FLAnimatedImage(animatedGIFData: Data(contentsOf: Bundle.main.url(forResource: "StickerSeven", withExtension: "gif")!))
 
+let upLogoWhiteSunsetTransparentBackground = try! FLAnimatedImage(animatedGIFData: Data(contentsOf: Bundle.main.url(forResource: "up-logo-white-sunset-transparent-bg", withExtension: "gif")!))
+let upLogoDrawMidnightYellowTransparentBackground = try! FLAnimatedImage(animatedGIFData: Data(contentsOf: Bundle.main.url(forResource: "up-logo-draw-midnight-yellow-transparent-bg", withExtension: "gif")!))
+let upZapSpinTransparentBackground = try! FLAnimatedImage(animatedGIFData: Data(contentsOf: Bundle.main.url(forResource: "up-zap-spin-transparent-bg", withExtension: "gif")!))
+
 let stickerGifs = [stickerTwo, stickerThree, stickerSix, stickerSeven]
 
 // MARK: - Animated Application Logo
@@ -62,29 +66,3 @@ let upAnimation = UIImage.animatedImage(with: [
     R.image.upLogoSequence.seventh()!,
     R.image.upLogoSequence.eighth()!
 ], duration: 0.65)!
-
-// MARK: - Alamofire Predicates for Up API
-
-var authorisationHeader: HTTPHeader {
-        .authorization(bearerToken: appDefaults.apiKey)
-}
-
-let acceptJsonHeader: HTTPHeader = .accept("application/json")
-let pageSize100Param: [String: Any] = ["page[size]": "100"]
-let pageSize200Param: [String: Any] = ["page[size]": "200"]
-
-func filterCategoryParam(categoryId: String) -> [String: Any] {
-    return ["filter[category]": categoryId]
-}
-
-func filterCategoryAndPageSize100Params(categoryId: String) -> [String: Any] {
-    return ["filter[category]": categoryId, "page[size]": "100"]
-}
-
-func filterTagParam(tagId: String) -> [String: Any] {
-    return ["filter[tag]": tagId]
-}
-
-func filterTagAndPageSize100Params(tagId: String) -> [String: Any] {
-    return ["filter[tag]": tagId, "page[size]": "100"]
-}

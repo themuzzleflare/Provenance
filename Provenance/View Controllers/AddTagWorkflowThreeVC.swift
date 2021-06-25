@@ -6,8 +6,13 @@ class AddTagWorkflowThreeVC: TableViewController {
     // MARK: - Properties
 
     var transaction: TransactionResource!
-    var tag: String!
+    var tags: [TagResource]!
 
+    private var tagIds: String {
+        tags.map { tag in
+            tag.id
+        }.joined(separator: ", ")
+    }
     private var dateStyleObserver: NSKeyValueObservation?
 
     // MARK: - View Life Cycle
@@ -48,60 +53,35 @@ private extension AddTagWorkflowThreeVC {
 // MARK: - Actions
 
 private extension AddTagWorkflowThreeVC {
-    private func errorAlert(_ statusCode: Int) -> (title: String, content: String) {
-        switch statusCode {
-            case 403:
-                return (title: "Forbidden", content: "Too many tags added to this transaction. Each transaction may have up to 6 tags.")
-            default:
-                return (title: "Failed", content: "The tag was not added to the transaction.")
-        }
-    }
-
     @objc private func addTag() {
-        let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
-        var request = URLRequest(url: url)
-        let bodyObject: [String: Any] = [
-            "data": [
-                [
-                    "type": "tags",
-                    "id": tag
-                ]
-            ]
-        ]
-        request.httpMethod = "POST"
-        request.allHTTPHeaderFields = [
-            "Content-Type": "application/json",
-            "Authorization": "Bearer \(appDefaults.apiKey)"
-        ]
-        request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject)
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if error == nil {
-                let statusCode = (response as! HTTPURLResponse).statusCode
-                if statusCode != 204 {
-                    DispatchQueue.main.async {
-                        let notificationBanner = NotificationBanner(title: self.errorAlert(statusCode).title, subtitle: self.errorAlert(statusCode).content, style: .danger)
-                        notificationBanner.duration = 2
-                        notificationBanner.show()
-                        self.navigationController?.popViewController(animated: true)
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(self.tag!) was added to \(self.transaction.attributes.description).", style: .success)
-                        notificationBanner.duration = 2
-                        notificationBanner.show()
-                        self.navigationController?.popViewController(animated: true)
-                    }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: error?.localizedDescription ?? "\(self.tag!) was not added to \(self.transaction.attributes.description).", style: .danger)
-                    notificationBanner.duration = 2
-                    notificationBanner.show()
-                    self.navigationController?.popToRootViewController(animated: true)
+        let activityIndicator = ActivityIndicator(style: .medium)
+        activityIndicator.startAnimating()
+        navigationItem.setRightBarButton(UIBarButtonItem(customView: activityIndicator), animated: false)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            upApi.modifyTags(adding: self.tags, to: self.transaction) { error in
+                switch error {
+                    case .none:
+                        DispatchQueue.main.async {
+                            let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(self.tagIds) was added to \(self.transaction.attributes.description).", style: .success)
+                            notificationBanner.duration = 2
+                            notificationBanner.show()
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                    default:
+                        DispatchQueue.main.async {
+                            let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                            notificationBanner.duration = 2
+                            notificationBanner.show()
+                            switch error {
+                                case .transportError:
+                                    self.navigationController?.popToRootViewController(animated: true)
+                                default:
+                                    self.navigationController?.popViewController(animated: true)
+                            }
+                        }
                 }
             }
         }
-        .resume()
     }
 }
 
@@ -113,7 +93,16 @@ extension AddTagWorkflowThreeVC {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        switch section {
+            case 0:
+                return tags.count
+            case 1:
+                return 1
+            case 2:
+                return 1
+            default:
+                fatalError("Unknown section")
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -128,13 +117,13 @@ extension AddTagWorkflowThreeVC {
         transactionCell.selectionStyle = .none
         switch section {
             case 0:
-                cell.textLabel?.text = tag
+                cell.textLabel?.text = tags[indexPath.row].id
                 return cell
             case 1:
                 transactionCell.transaction = transaction
                 return transactionCell
             case 2:
-                cell.textLabel?.text = "You are adding the tag \"\(tag!)\" to the transaction \"\(transaction.attributes.description)\", which was created \(transaction.attributes.creationDate)."
+                cell.textLabel?.text = "You are adding the \(tags.count == 1 ? "tag" : "tags") \"\(tagIds)\" to the transaction \"\(transaction.attributes.description)\", which was \(appDefaults.dateStyle == "Absolute" ? "created on" : "created") \(transaction.attributes.creationDate)."
                 return cell
             default:
                 fatalError("Unknown section")
@@ -144,7 +133,7 @@ extension AddTagWorkflowThreeVC {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
             case 0:
-                return "Adding Tag"
+                return "Adding \(tags.count == 1 ? "Tag" : "Tags")"
             case 1:
                 return "To Transaction"
             case 2:

@@ -1,7 +1,7 @@
 import UIKit
 import WidgetKit
-import Alamofire
 import IGListKit
+import FLAnimatedImage
 import TinyConstraints
 import Rswift
 
@@ -13,18 +13,14 @@ final class TransactionsCVC: ViewController {
 
     private let collectionRefreshControl = RefreshControl(frame: .zero)
     private let searchController = SearchController(searchResultsController: nil)
-    private let collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView.backgroundColor = .systemGroupedBackground
-        collectionView.showsHorizontalScrollIndicator = false
-        return collectionView
-    }()
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 
     private var apiKeyObserver: NSKeyValueObservation?
     private var dateStyleObserver: NSKeyValueObservation?
     private var searchBarPlaceholder: String {
         "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
     }
+    private var noTransactions: Bool = false
     private var preFilteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             (!showSettledOnly || transaction.attributes.isSettled)
@@ -36,12 +32,11 @@ final class TransactionsCVC: ViewController {
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    private var transactionsStatusCode: Int = 0
     private var transactionsPagination: Pagination = Pagination(prev: nil, next: nil)
-    private var transactionsErrorResponse: [ErrorObject] = []
     private var transactionsError: String = ""
     private var transactions: [TransactionResource] = [] {
         didSet {
+            noTransactions = transactions.isEmpty
             adapter.performUpdates(animated: true)
             adapter.collectionView?.refreshControl?.endRefreshing()
             WidgetCenter.shared.reloadAllTimelines()
@@ -70,10 +65,8 @@ final class TransactionsCVC: ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(collectionView)
-        adapter.collectionView = collectionView
-        adapter.dataSource = self
-        adapter.collectionViewDelegate = self
-        adapter.collectionView?.refreshControl = collectionRefreshControl
+        configureAdapter()
+        configureCollectionView()
         configureProperties()
         configureNavigation()
         configureSearch()
@@ -96,6 +89,18 @@ final class TransactionsCVC: ViewController {
 // MARK: - Configuration
 
 private extension TransactionsCVC {
+    private func configureAdapter() {
+        adapter.collectionView = collectionView
+        adapter.dataSource = self
+        adapter.collectionViewDelegate = self
+        adapter.collectionView?.refreshControl = collectionRefreshControl
+    }
+
+    private func configureCollectionView() {
+        collectionView.backgroundColor = .systemGroupedBackground
+        collectionView.showsHorizontalScrollIndicator = false
+    }
+
     private func configureProperties() {
         title = "Transactions"
         definesPresentationContext = true
@@ -154,7 +159,7 @@ private extension TransactionsCVC {
     private func filterMenu() -> UIMenu {
         UIMenu(options: .displayInline, children: [
             UIMenu(title: "Category", image: filter == .all ? R.image.trayFull() : R.image.trayFullFill(), children: CategoryFilter.allCases.map { category in
-            UIAction(title: categoryName(category: category), state: filter == category ? .on : .off) { action in
+            UIAction(title: categoryName(for: category), state: filter == category ? .on : .off) { action in
                 self.filter = category
             }
         }),
@@ -165,25 +170,22 @@ private extension TransactionsCVC {
     }
 
     private func fetchTransactions() {
-        AF.request(UpAPI.Transactions().listTransactions, method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
-            self.transactionsStatusCode = response.response?.statusCode ?? 0
-            switch response.result {
-                case .success:
-                    if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: response.data!) {
+        upApi.listTransactions { result in
+            switch result {
+                case .success(let transactions):
+                    DispatchQueue.main.async {
                         self.transactionsError = ""
-                        self.transactionsErrorResponse = []
-                        self.transactionsPagination = decodedResponse.links
-                        self.transactions = decodedResponse.data
+                        self.transactions = transactions
                         if self.navigationItem.title != "Transactions" {
                             self.navigationItem.title = "Transactions"
                         }
                         if self.navigationItem.leftBarButtonItems == nil {
                             self.navigationItem.setLeftBarButtonItems([UIBarButtonItem(image: R.image.calendarBadgeClock(), style: .plain, target: self, action: #selector(self.switchDateStyle)), self.filterButton], animated: true)
                         }
-                    } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data!) {
-                        self.transactionsErrorResponse = decodedResponse.errors
-                        self.transactionsError = ""
-                        self.transactionsPagination = Pagination(prev: nil, next: nil)
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.transactionsError = errorString(for: error)
                         self.transactions = []
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
@@ -191,59 +193,33 @@ private extension TransactionsCVC {
                         if self.navigationItem.leftBarButtonItems != nil {
                             self.navigationItem.setLeftBarButtonItems(nil, animated: true)
                         }
-                    } else {
-                        self.transactionsError = "JSON Decoding Failed!"
-                        self.transactionsErrorResponse = []
-                        self.transactionsPagination = Pagination(prev: nil, next: nil)
-                        self.transactions = []
-                        if self.navigationItem.title != "Error" {
-                            self.navigationItem.title = "Error"
-                        }
-                        if self.navigationItem.leftBarButtonItems != nil {
-                            self.navigationItem.setLeftBarButtonItems(nil, animated: true)
-                        }
-                    }
-                case .failure:
-                    self.transactionsError = response.error?.localizedDescription ?? "Unknown Error!"
-                    self.transactionsErrorResponse = []
-                    self.transactionsPagination = Pagination(prev: nil, next: nil)
-                    self.transactions = []
-                    if self.navigationItem.title != "Error" {
-                        self.navigationItem.title = "Error"
-                    }
-                    if self.navigationItem.leftBarButtonItems != nil {
-                        self.navigationItem.setLeftBarButtonItems(nil, animated: true)
                     }
             }
         }
     }
 
     private func fetchAccounts() {
-        AF.request(UpAPI.Accounts().listAccounts, method: .get, parameters: pageSize100Param, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
-            switch response.result {
-                case .success:
-                    if let decodedResponse = try? JSONDecoder().decode(Account.self, from: response.data!) {
-                        self.accounts = decodedResponse.data
-                    } else {
-                        print("Accounts JSON decoding failed")
+        upApi.listAccounts { result in
+            switch result {
+                case .success(let accounts):
+                    DispatchQueue.main.async {
+                        self.accounts = accounts
                     }
-                case .failure:
-                    print(response.error?.localizedDescription ?? "Unknown error")
+                case .failure(let error):
+                    print(errorString(for: error))
             }
         }
     }
 
     private func fetchCategories() {
-        AF.request(UpAPI.Categories().listCategories, method: .get, headers: [acceptJsonHeader, authorisationHeader]).responseJSON { response in
-            switch response.result {
-                case .success:
-                    if let decodedResponse = try? JSONDecoder().decode(Category.self, from: response.data!) {
-                        self.categories = decodedResponse.data
-                    } else {
-                        print("Categories JSON decoding failed")
+        upApi.listCategories { result in
+            switch result {
+                case .success(let categories):
+                    DispatchQueue.main.async {
+                        self.categories = categories
                     }
-                case .failure:
-                    print(response.error?.localizedDescription ?? "Unknown error")
+                case .failure(let error):
+                    print(errorString(for: error))
             }
         }
     }
@@ -264,13 +240,15 @@ extension TransactionsCVC: ListAdapterDataSource {
     }
 
     func emptyView(for listAdapter: ListAdapter) -> UIView? {
-        if filteredTransactions.isEmpty && transactionsError.isEmpty && transactionsErrorResponse.isEmpty {
-            if transactions.isEmpty && transactionsStatusCode == 0 {
+        if filteredTransactions.isEmpty && transactionsError.isEmpty {
+            if transactions.isEmpty && !noTransactions {
                 let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
-                let loadingIndicator = ActivityIndicator(style: .medium)
+                let loadingIndicator = FLAnimatedImageView()
+                loadingIndicator.animatedImage = upZapSpinTransparentBackground
+                loadingIndicator.width(100)
+                loadingIndicator.height(100)
                 view.addSubview(loadingIndicator)
                 loadingIndicator.center(in: view)
-                loadingIndicator.startAnimating()
                 return view
             } else {
                 let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
@@ -305,31 +283,6 @@ extension TransactionsCVC: ListAdapterDataSource {
                 label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                 label.numberOfLines = 0
                 label.text = transactionsError
-                return view
-            } else if !transactionsErrorResponse.isEmpty {
-                let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
-                let titleLabel = UILabel()
-                let detailLabel = UILabel()
-                let verticalStack = UIStackView()
-                view.addSubview(verticalStack)
-                titleLabel.translatesAutoresizingMaskIntoConstraints = false
-                titleLabel.textAlignment = .center
-                titleLabel.textColor = .systemRed
-                titleLabel.font = R.font.circularStdBold(size: UIFont.labelFontSize)
-                titleLabel.numberOfLines = 0
-                titleLabel.text = transactionsErrorResponse.first?.title
-                detailLabel.translatesAutoresizingMaskIntoConstraints = false
-                detailLabel.textAlignment = .center
-                detailLabel.textColor = .secondaryLabel
-                detailLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                detailLabel.numberOfLines = 0
-                detailLabel.text = transactionsErrorResponse.first?.detail
-                verticalStack.addArrangedSubview(titleLabel)
-                verticalStack.addArrangedSubview(detailLabel)
-                verticalStack.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
-                verticalStack.center(in: view)
-                verticalStack.axis = .vertical
-                verticalStack.alignment = .center
                 return view
             } else {
                 return nil

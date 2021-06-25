@@ -21,6 +21,7 @@ enum CategoryFilter: String, CaseIterable {
     case giftsAndCharity = "gifts-and-charity"
     case holidaysAndTravel = "holidays-and-travel"
     case pets = "pets"
+    case transport = "transport"
     case publicTransport = "public-transport"
     case hairAndBeauty = "hair-and-beauty"
     case lotteryAndGambling = "lottery-and-gambling"
