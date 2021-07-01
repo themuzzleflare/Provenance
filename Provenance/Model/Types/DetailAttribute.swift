@@ -1,4 +1,5 @@
 import Foundation
+import IGListKit
 
 class DetailAttribute {
     var id = UUID()
@@ -18,5 +19,18 @@ extension DetailAttribute: Hashable {
 
     static func == (lhs: DetailAttribute, rhs: DetailAttribute) -> Bool {
         lhs.id == rhs.id
+    }
+}
+
+extension DetailAttribute: ListDiffable {
+    func diffIdentifier() -> NSObjectProtocol {
+        id as NSObjectProtocol
+    }
+
+    func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
+        guard let object = object as? DetailAttribute else {
+            return false
+        }
+        return self.id == object.id
     }
 }

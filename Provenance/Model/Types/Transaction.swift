@@ -1,7 +1,13 @@
 import Foundation
 import UIKit
+
+#if canImport(IGListKit)
 import IGListKit
+#endif
+
+#if canImport(Rswift)
 import Rswift
+#endif
 
 struct Transaction: Decodable {
     var data: [TransactionResource] // The list of transactions returned in this response.
@@ -34,6 +40,7 @@ extension TransactionResource: Hashable {
     }
 }
 
+#if canImport(IGListKit)
 extension TransactionResource: ListDiffable {
     func diffIdentifier() -> NSObjectProtocol {
         id as NSObjectProtocol
@@ -46,6 +53,7 @@ extension TransactionResource: ListDiffable {
         return self.id == object.id
     }
 }
+#endif
 
 struct Attribute: Decodable {
     private var status: TransactionStatusEnum // The current processing status of this transaction, according to whether or not this transaction has settled or is still held.
@@ -61,6 +69,8 @@ struct Attribute: Decodable {
                 return false
         }
     }
+
+    #if canImport(Rswift)
     var statusIcon: UIImage {
         switch isSettled {
             case true:
@@ -69,6 +79,8 @@ struct Attribute: Decodable {
                 return R.image.clock()!
         }
     }
+    #endif
+
     var statusString: String {
         switch isSettled {
             case true:
@@ -118,10 +130,20 @@ struct Attribute: Decodable {
         }
     }
     private var createdAt: String // The date-time at which this transaction was first encountered.
-    private var creationDateAbsolute: String {
+    var createdAtDay: Int {
+        let date = ISO8601DateFormatter().date(from: createdAt)!
+        return dayOfYear(for: date)
+    }
+    var createdAtDMY: String {
+        let date = ISO8601DateFormatter().date(from: createdAt)!
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        return formatter.string(from: date)
+    }
+    var creationDateAbsolute: String {
         formatDateAbsolute(for: createdAt)
     }
-    private var creationDateRelative: String {
+    var creationDateRelative: String {
         formatDateRelative(for: createdAt)
     }
     var creationDate: String {
@@ -212,10 +234,35 @@ struct RelationshipTransferAccount: Decodable {
     var links: RelationshipLink?
 }
 
-struct RelationshipData: Decodable, Hashable, Identifiable {
+class RelationshipData: Decodable, Identifiable {
     var type: String
     var id: String
 }
+
+extension RelationshipData: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    static func == (lhs: RelationshipData, rhs: RelationshipData) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+#if canImport(IGListKit)
+extension RelationshipData: ListDiffable {
+    func diffIdentifier() -> NSObjectProtocol {
+        id as NSObjectProtocol
+    }
+
+    func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
+        guard let object = object as? RelationshipData else {
+            return false
+        }
+        return self.id == object.id
+    }
+}
+#endif
 
 struct RelationshipLink: Decodable {
     var related: String
@@ -239,3 +286,39 @@ struct Pagination: Decodable {
     var prev: String? // The link to the previous page in the results. If this value is null there is no previous page.
     var next: String? // The link to the next page in the results. If this value is null there is no next page.
 }
+
+class SortedTransactions {
+    var id = UUID().uuidString
+    var day: Int
+    var transactions: [TransactionResource]
+    
+    init(day: Int, transactions: [TransactionResource]) {
+        self.day = day
+        self.transactions = transactions
+    }
+}
+
+extension SortedTransactions: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    static func == (lhs: SortedTransactions, rhs: SortedTransactions) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+#if canImport(IGListKit)
+extension SortedTransactions: ListDiffable {
+    func diffIdentifier() -> NSObjectProtocol {
+        id as NSObjectProtocol
+    }
+
+    func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
+        guard let object = object as? SortedTransactions else {
+            return false
+        }
+        return self.id == object.id
+    }
+}
+#endif

@@ -1,51 +1,96 @@
 import UIKit
+import IGListKit
+import FLAnimatedImage
 import MarqueeLabel
+import TinyConstraints
 import Rswift
 
-class TransactionDetailVC: TableViewController {
+final class TransactionDetailCVC: UIViewController {
     // MARK: - Properties
-    
-    var transaction: TransactionResource!
-    var categories: [CategoryResource]?
-    var accounts: [AccountResource]?
-    
-    private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
-    
-    private lazy var dataSource = makeDataSource()
 
-    private let tableRefreshControl = RefreshControl(frame: .zero)
+    private var transaction: TransactionResource {
+        didSet {
+            upApi.retrieveAccount(for: transaction.relationships.account.data.id) { result in
+                switch result {
+                    case .success(let account):
+                        DispatchQueue.main.async {
+                            self.account = account
+                        }
+                    case .failure:
+                        break
+                }
+            }
+
+            if let tAccount = transaction.relationships.transferAccount.data {
+                upApi.retrieveAccount(for: tAccount.id) { result in
+                    switch result {
+                        case .success(let account):
+                            DispatchQueue.main.async {
+                                self.transferAccount = account
+                            }
+                        case .failure:
+                            break
+                    }
+                }
+            }
+
+            if let pCategory = transaction.relationships.parentCategory.data {
+                upApi.retrieveCategory(for: pCategory.id) { result in
+                    switch result {
+                        case .success(let category):
+                            DispatchQueue.main.async {
+                                self.parentCategory = category
+                            }
+                        case .failure:
+                            break
+                    }
+                }
+            }
+
+            if let category = transaction.relationships.category.data {
+                upApi.retrieveCategory(for: category.id) { result in
+                    switch result {
+                        case .success(let category):
+                            DispatchQueue.main.async {
+                                self.category = category
+                            }
+                        case .failure:
+                            break
+                    }
+                }
+            }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+                transactionUpdate(animate: false)
+                collectionView.refreshControl?.endRefreshing()
+                configureNavigation()
+            }
+        }
+    }
+
+    private lazy var adapter = ListAdapter(updater: ListAdapterUpdater(), viewController: self)
+
+    private let collectionRefreshControl = RefreshControl(frame: .zero)
     private let scrollingTitle = MarqueeLabel()
-    
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+
     private var dateStyleObserver: NSKeyValueObservation?
-    private var sections: [Section]!
+    private var sections: [Section] = []
     private var filteredSections: [Section] {
         sections.filter { section in
             !section.detailAttributes.allSatisfy { attribute in
                 attribute.value.isEmpty || (attribute.key == "Tags" && attribute.value == "0")
             }
+        }.map { section in
+            Section(title: section.title, detailAttributes: section.detailAttributes.filter { attribute in
+                !attribute.value.isEmpty
+            })
         }
     }
-    private var categoryFilter: [CategoryResource]? {
-        categories?.filter { category in
-            transaction.relationships.category.data?.id == category.id
-        }
-    }
-    private var parentCategoryFilter: [CategoryResource]? {
-        categories?.filter { pcategory in
-            transaction.relationships.parentCategory.data?.id == pcategory.id
-        }
-    }
-    private var accountFilter: [AccountResource]? {
-        accounts?.filter { account in
-            transaction.relationships.account.data.id == account.id
-        }
-    }
-    private var transferAccountFilter: [AccountResource]? {
-        accounts?.filter { taccount in
-            transaction.relationships.transferAccount.data?.id == taccount.id
-        }
-    }
+    private var account: AccountResource?
+    private var transferAccount: AccountResource?
+    private var parentCategory: CategoryResource?
+    private var category: CategoryResource?
     private var holdTransValue: String {
         switch transaction.attributes.holdInfo {
             case nil:
@@ -80,44 +125,67 @@ class TransactionDetailVC: TableViewController {
                 return transaction.attributes.foreignAmount!.valueLong
         }
     }
-    
-    // MARK: - View Life Cycle
-    
-    override init(style: UITableView.Style) {
-        super.init(style: style)
-        configureProperties()
+
+    // MARK: - Life Cycle
+
+    init(transaction: TransactionResource) {
+        self.transaction = transaction
+
+        super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.addSubview(collectionView)
+
+        adapter.collectionView = collectionView
+        adapter.dataSource = self
+        adapter.collectionViewDelegate = self
+
+        configureProperties()
+        configureCollectionView()
         configureScrollingTitle()
         configureRefreshControl()
-        configureNavigation()
-        configureTableView()
-        applySnapshot()
     }
-    
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        collectionView.frame = view.bounds
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         fetchTransaction()
     }
 }
 
 // MARK: - Configuration
 
-private extension TransactionDetailVC {
+private extension TransactionDetailCVC {
     private func configureProperties() {
         title = "Transaction Details"
+
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
-            self.applySnapshot()
+
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
+            adapter.reloadData()
         }
     }
-    
+
+    private func configureCollectionView() {
+        collectionView.refreshControl = collectionRefreshControl
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+    }
+
     private func configureScrollingTitle() {
         scrollingTitle.translatesAutoresizingMaskIntoConstraints = false
         scrollingTitle.speed = .rate(65)
@@ -128,71 +196,35 @@ private extension TransactionDetailVC {
     }
 
     private func configureRefreshControl() {
-        tableRefreshControl.addTarget(self, action: #selector(refreshTransaction), for: .valueChanged)
+        collectionRefreshControl.addTarget(self, action: #selector(refreshTransaction), for: .valueChanged)
     }
-    
+
     private func configureNavigation() {
         navigationItem.title = transaction.attributes.description
         navigationItem.titleView = scrollingTitle
         navigationItem.setRightBarButton(UIBarButtonItem(image: transaction.attributes.statusIcon, style: .plain, target: self, action: #selector(openStatusIconHelpView)), animated: false)
         navigationItem.rightBarButtonItem?.tintColor = transaction.attributes.isSettled ? .systemGreen : .systemYellow
     }
-    
-    private func configureTableView() {
-        tableView.refreshControl = tableRefreshControl
-        tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
-    }
 }
 
 // MARK: - Actions
 
-private extension TransactionDetailVC {
+private extension TransactionDetailCVC {
     @objc private func appMovedToForeground() {
         fetchTransaction()
     }
-    
+
     @objc private func openStatusIconHelpView() {
         present(NavigationController(rootViewController: StatusIconHelpView()), animated: true)
     }
 
     @objc private func refreshTransaction() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.fetchTransaction()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+            fetchTransaction()
         }
     }
-    
-    private func makeDataSource() -> DataSource {
-        DataSource(
-            tableView: tableView,
-            cellProvider: { tableView, indexPath, attribute in
-            let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-            var cellSelectionStyle: UITableViewCell.SelectionStyle {
-                switch attribute.key {
-                    case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
-                        return .default
-                    default:
-                        return .none
-                }
-            }
-            var cellAccessoryType: UITableViewCell.AccessoryType {
-                switch attribute.key {
-                    case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
-                        return .disclosureIndicator
-                    default:
-                        return .none
-                }
-            }
-            cell.selectionStyle = cellSelectionStyle
-            cell.accessoryType = cellAccessoryType
-            cell.leftLabel.text = attribute.key
-            cell.rightLabel.font = attribute.key == "Raw Text" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
-            cell.rightLabel.text = attribute.value
-            return cell
-        }
-        )
-    }
-    
-    private func applySnapshot() {
+
+    private func transactionUpdate(animate: Bool = false) {
         sections = [
             Section(title: "Section 1", detailAttributes: [
                 DetailAttribute(
@@ -201,11 +233,11 @@ private extension TransactionDetailVC {
                 ),
                 DetailAttribute(
                     key: "Account",
-                    value: accountFilter?.first?.attributes.displayName ?? ""
+                    value: account?.attributes.displayName ?? ""
                 ),
                 DetailAttribute(
                     key: "Transfer Account",
-                    value: transferAccountFilter?.first?.attributes.displayName ?? ""
+                    value: transferAccount?.attributes.displayName ?? ""
                 )
             ]),
             Section(title: "Section 2", detailAttributes: [
@@ -253,11 +285,11 @@ private extension TransactionDetailVC {
             Section(title: "Section 5", detailAttributes: [
                 DetailAttribute(
                     key: "Parent Category",
-                    value: parentCategoryFilter?.first?.attributes.name ?? ""
+                    value: parentCategory?.attributes.name ?? ""
                 ),
                 DetailAttribute(
                     key: "Category",
-                    value: categoryFilter?.first?.attributes.name ?? ""
+                    value: category?.attributes.name ?? ""
                 )
             ]),
             Section(title: "Section 6", detailAttributes: [
@@ -267,29 +299,20 @@ private extension TransactionDetailVC {
                 )
             ])
         ]
-        var snapshot = Snapshot()
-        snapshot.appendSections(filteredSections)
-        filteredSections.forEach { section in
-            snapshot.appendItems(section.detailAttributes.filter { attribute in
-                !attribute.value.isEmpty
-            }, toSection: section)
-        }
-        dataSource.apply(snapshot, animatingDifferences: false)
+
+        adapter.performUpdates(animated: animate)
     }
-    
+
     private func fetchTransaction() {
         upApi.retrieveTransaction(for: transaction) { result in
             switch result {
                 case .success(let transaction):
                     DispatchQueue.main.async {
                         self.transaction = transaction
-                        self.applySnapshot()
-                        self.refreshControl?.endRefreshing()
-                        self.configureNavigation()
                     }
                 case .failure(let error):
-                    DispatchQueue.main.async {
-                        self.refreshControl?.endRefreshing()
+                    DispatchQueue.main.async { [self] in
+                        collectionView.refreshControl?.endRefreshing()
                     }
                     print(errorString(for: error))
             }
@@ -297,40 +320,52 @@ private extension TransactionDetailVC {
     }
 }
 
-// MARK: - UITableViewDelegate
-
-extension TransactionDetailVC {
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let attribute = dataSource.itemIdentifier(for: indexPath)!
-        tableView.deselectRow(at: indexPath, animated: true)
-        if attribute.key == "Account" {
-            navigationController?.pushViewController({let vc = TransactionsByAccountVC(style: .insetGrouped);vc.account = accountFilter!.first!;return vc}(), animated: true)
-        } else if attribute.key == "Transfer Account" {
-            navigationController?.pushViewController({let vc = TransactionsByAccountVC(style: .insetGrouped);vc.account = transferAccountFilter!.first!;return vc}(), animated: true)
-        } else if attribute.key == "Parent Category" || attribute.key == "Category" {
-            let vc = TransactionsByCategoryVC(style: .insetGrouped)
-            if attribute.key == "Parent Category" {
-                vc.category = parentCategoryFilter!.first
-            } else {
-                vc.category = categoryFilter!.first
-            }
-            navigationController?.pushViewController(vc, animated: true)
-        } else if attribute.key == "Tags" {
-            navigationController?.pushViewController({let vc = TagsVC(style: .insetGrouped);vc.transaction = transaction;return vc}(), animated: true)
-        }
+extension TransactionDetailCVC: ListAdapterDataSource {
+    func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
+        filteredSections
     }
-    
-    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let attribute = dataSource.itemIdentifier(for: indexPath)!
+
+    func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
+        let controller = TransactionDetailSC()
+        
+        controller.transaction = transaction
+        controller.account = account
+        controller.transferAccount = transferAccount
+        controller.parentCategory = parentCategory
+        controller.category = category
+
+        return controller
+    }
+
+    func emptyView(for listAdapter: ListAdapter) -> UIView? {
+        let view = UIView(frame: collectionView.bounds)
+
+        let loadingIndicator = FLAnimatedImageView()
+
+        view.addSubview(loadingIndicator)
+        
+        loadingIndicator.centerInSuperview()
+        loadingIndicator.width(100)
+        loadingIndicator.height(100)
+        loadingIndicator.animatedImage = upZapSpinTransparentBackground
+
+        return view
+    }
+}
+
+extension TransactionDetailCVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let attribute = filteredSections[indexPath.section].detailAttributes[indexPath.item]
+
         switch attribute.key {
             case "Tags":
                 return nil
             default:
                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                     UIMenu(children: [
-                        UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { action in
-                        UIPasteboard.general.string = attribute.value
-                    }
+                        UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { _ in
+                            UIPasteboard.general.string = attribute.value
+                        }
                     ])
                 }
         }

@@ -1,7 +1,7 @@
 import UIKit
 import Rswift
 
-class DiagnosticTableVC: TableViewController {
+final class DiagnosticTableVC: UIViewController {
     // MARK: - Properties
 
     private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
@@ -20,19 +20,27 @@ class DiagnosticTableVC: TableViewController {
             )
         ])
     ]
+
+    private let tableView = UITableView(frame: .zero, style: .grouped)
     
     // MARK: - View Life Cycle
 
-    override init(style: UITableView.Style) {
-        super.init(style: style)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.addSubview(tableView)
+
         configureProperties()
         configureNavigation()
         configureTableView()
+
         applySnapshot()
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        tableView.frame = view.bounds
     }
 }
 
@@ -49,7 +57,10 @@ private extension DiagnosticTableVC {
     }
     
     private func configureTableView() {
+        tableView.dataSource = dataSource
+        tableView.delegate = self
         tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
+        tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
 }
 
@@ -64,38 +75,45 @@ private extension DiagnosticTableVC {
         DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, attribute in
-            let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-            cell.leftLabel.text = attribute.key
-            cell.rightLabel.text = attribute.value
-            return cell
-        }
+                let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
+
+                cell.leftLabel.text = attribute.key
+                cell.rightLabel.text = attribute.value
+
+                return cell
+            }
         )
     }
 
     private func applySnapshot() {
         var snapshot = Snapshot()
+
         snapshot.appendSections(sections)
         sections.forEach { section in
             snapshot.appendItems(section.detailAttributes, toSection: section)
         }
+
         dataSource.apply(snapshot, animatingDifferences: false)
     }
 }
 
 // MARK: - UITableViewDelegate
 
-extension DiagnosticTableVC {
-    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let attribute = dataSource.itemIdentifier(for: indexPath)!
+extension DiagnosticTableVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let attribute = dataSource.itemIdentifier(for: indexPath) else {
+            return nil
+        }
+
         switch attribute.value {
             case "Unknown":
                 return nil
             default:
                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                     UIMenu(children: [
-                        UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { action in
-                        UIPasteboard.general.string = attribute.value
-                    }
+                        UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { _ in
+                            UIPasteboard.general.string = attribute.value
+                        }
                     ])
                 }
         }

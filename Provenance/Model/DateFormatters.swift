@@ -21,3 +21,7 @@ func formatDateRelative(for dateString: String) -> String {
         return dateString
     }
 }
+
+func dayOfYear(for date: Date) -> Int {
+    Calendar.current.ordinality(of: .day, in: .year, for: date)!
+}

@@ -2,7 +2,7 @@ import UIKit
 import TinyConstraints
 import Rswift
 
-class TransactionTableViewCell: UITableViewCell {
+final class TransactionTableViewCell: UITableViewCell {
     // MARK: - Properties
 
     static let reuseIdentifier = "transactionTableViewCell"
@@ -23,9 +23,10 @@ class TransactionTableViewCell: UITableViewCell {
     private let horizontalStack = UIStackView()
 
     // MARK: - Life Cycle
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+
         configureCell()
         configureContentView()
         configureTransactionDescription()
@@ -34,9 +35,15 @@ class TransactionTableViewCell: UITableViewCell {
         configureVerticalStackView()
         configureHorizontalStackView()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        horizontalStack.frame = contentView.bounds
     }
 }
 
@@ -44,7 +51,6 @@ class TransactionTableViewCell: UITableViewCell {
 
 private extension TransactionTableViewCell {
     private func configureCell() {
-        separatorInset = .zero
         selectedBackgroundView = selectedBackgroundCellView
     }
     
@@ -83,7 +89,7 @@ private extension TransactionTableViewCell {
     }
     
     private func configureHorizontalStackView() {
-        horizontalStack.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
+        horizontalStack.edgesToSuperview(insets: .horizontal(16) + .vertical(13))
         horizontalStack.addArrangedSubview(verticalStack)
         horizontalStack.addArrangedSubview(transactionAmount)
         horizontalStack.alignment = .center

@@ -1,16 +1,25 @@
 import UIKit
 import Rswift
 
-final class AboutVC: TableViewController {
+final class AboutVC: UIViewController {
+    // MARK: - Properties
+
+    private let tableView = UITableView(frame: .zero, style: .grouped)
+
     // MARK: - View Life Cycle
 
-    override init(style: UITableView.Style) {
-        super.init(style: style)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.addSubview(tableView)
+
         configure()
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        tableView.frame = view.bounds
     }
 }
 
@@ -19,13 +28,18 @@ final class AboutVC: TableViewController {
 private extension AboutVC {
     private func configure() {
         title = "About"
+
         navigationItem.title = "About"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.infoCircle())
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftSlashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.gear(), style: .plain, target: self, action: #selector(openSettings))
+
+        tableView.dataSource = self
+        tableView.delegate = self
         tableView.register(AboutTopTableViewCell.self, forCellReuseIdentifier: AboutTopTableViewCell.reuseIdentifier)
         tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
         tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "basicCell")
+        tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
 }
 
@@ -33,22 +47,22 @@ private extension AboutVC {
 
 private extension AboutVC {
     @objc private func openSettings() {
-        present(NavigationController(rootViewController: SettingsVC(style: .insetGrouped)), animated: true)
+        present(NavigationController(rootViewController: SettingsVC()), animated: true)
     }
 
     @objc private func openDiagnostics() {
-        present(NavigationController(rootViewController: DiagnosticTableVC(style: .insetGrouped)), animated: true)
+        present(NavigationController(rootViewController: DiagnosticTableVC()), animated: true)
     }
 }
 
 // MARK: - UITableViewDataSource
 
-extension AboutVC {
-    override func numberOfSections(in tableView: UITableView) -> Int {
+extension AboutVC: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
         3
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
             case 0:
                 return 3
@@ -61,16 +75,19 @@ extension AboutVC {
         }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
         let row = indexPath.row
+
         let topCell = tableView.dequeueReusableCell(withIdentifier: AboutTopTableViewCell.reuseIdentifier, for: indexPath) as! AboutTopTableViewCell
         let sectionOneAttributeCell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
         let basicCell = tableView.dequeueReusableCell(withIdentifier: "basicCell", for: indexPath) as! BasicTableViewCell
+
         basicCell.separatorInset = .zero
         basicCell.selectedBackgroundView = selectedBackgroundCellView
         basicCell.imageView?.tintColor = .label
         basicCell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+
         switch section {
             case 0:
                 switch row {
@@ -79,10 +96,12 @@ extension AboutVC {
                     case 1:
                         sectionOneAttributeCell.leftLabel.text = "Version"
                         sectionOneAttributeCell.rightLabel.text = appDefaults.appVersion
+
                         return sectionOneAttributeCell
                     case 2:
                         sectionOneAttributeCell.leftLabel.text = "Build"
                         sectionOneAttributeCell.rightLabel.text = appDefaults.appBuild
+
                         return sectionOneAttributeCell
                     default:
                         fatalError("Unknown row")
@@ -90,26 +109,32 @@ extension AboutVC {
             case 1:
                 basicCell.accessoryType = .disclosureIndicator
                 basicCell.imageView?.image = nil
+
                 switch row {
                     case 0:
                         basicCell.textLabel?.text = "Widgets"
+
                         return basicCell
                     case 1:
                         basicCell.textLabel?.text = "Stickers"
+
                         return basicCell
                     default:
                         fatalError("Unknown row")
                 }
             case 2:
                 basicCell.accessoryType = .none
+
                 switch row {
                     case 0:
                         basicCell.imageView?.image = R.image.envelope()
                         basicCell.textLabel?.text = "Contact Developer"
+
                         return basicCell
                     case 1:
                         basicCell.imageView?.image = R.image.linkCircle()
                         basicCell.textLabel?.text = "GitHub"
+
                         return basicCell
                     default:
                         fatalError("Unknown row")
@@ -119,7 +144,7 @@ extension AboutVC {
         }
     }
 
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         switch section {
             case 2:
                 return appCopyright
@@ -131,29 +156,41 @@ extension AboutVC {
 
 // MARK: - UITableViewDelegate
 
-extension AboutVC {
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+extension AboutVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
         let row = indexPath.row
-        if section == 1 {
-            if row == 0 {
-                navigationController?.pushViewController(WidgetsVC(), animated: true)
-            } else {
-                navigationController?.pushViewController(StickersVC(collectionViewLayout: gridLayout()), animated: true)
-            }
-        } else if section == 2 {
-            tableView.deselectRow(at: indexPath, animated: true)
-            if row == 0 {
-                UIApplication.shared.open(URL(string: "mailto:feedback@tavitian.cloud?subject=Feedback%20for%20Provenance")!)
-            } else {
-                UIApplication.shared.open(URL(string: "https://github.com/themuzzleflare/Provenance")!)
-            }
+
+        switch section {
+            case 1:
+                switch row {
+                    case 0:
+                        navigationController?.pushViewController(WidgetsVC(), animated: true)
+                    case 1:
+                        navigationController?.pushViewController(StickersVC(), animated: true)
+                    default:
+                        break
+                }
+            case 2:
+                tableView.deselectRow(at: indexPath, animated: true)
+
+                switch row {
+                    case 0:
+                        UIApplication.shared.open(URL(string: "mailto:feedback@tavitian.cloud?subject=Feedback%20for%20Provenance")!)
+                    case 1:
+                        UIApplication.shared.open(URL(string: "https://github.com/themuzzleflare/Provenance")!)
+                    default:
+                        break
+                }
+            default:
+                break
         }
     }
 
-    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let section = indexPath.section
         let row = indexPath.row
+
         switch section {
             case 0:
                 switch row {
@@ -164,9 +201,9 @@ extension AboutVC {
                             default:
                                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                                     UIMenu(children: [
-                                        UIAction(title: "Copy Version", image: R.image.docOnClipboard()) { action in
-                                        UIPasteboard.general.string = appDefaults.appVersion
-                                    }
+                                        UIAction(title: "Copy Version", image: R.image.docOnClipboard()) { _ in
+                                            UIPasteboard.general.string = appDefaults.appVersion
+                                        }
                                     ])
                                 }
                         }
@@ -177,9 +214,9 @@ extension AboutVC {
                             default:
                                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                                     UIMenu(children: [
-                                        UIAction(title: "Copy Build", image: R.image.docOnClipboard()) { action in
-                                        UIPasteboard.general.string = appDefaults.appBuild
-                                    }
+                                        UIAction(title: "Copy Build", image: R.image.docOnClipboard()) { _ in
+                                            UIPasteboard.general.string = appDefaults.appBuild
+                                        }
                                     ])
                                 }
                         }
@@ -191,17 +228,17 @@ extension AboutVC {
                     case 0:
                         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                             UIMenu(children: [
-                                UIAction(title: "Copy Email", image: R.image.docOnClipboard()) { action in
-                                UIPasteboard.general.string = "feedback@tavitian.cloud"
-                            }
+                                UIAction(title: "Copy Email", image: R.image.docOnClipboard()) { _ in
+                                    UIPasteboard.general.string = "feedback@tavitian.cloud"
+                                }
                             ])
                         }
                     case 1:
                         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                             UIMenu(children: [
-                                UIAction(title: "Copy Link", image: R.image.docOnClipboard()) { action in
-                                UIPasteboard.general.string = "https://github.com/themuzzleflare/Provenance"
-                            }
+                                UIAction(title: "Copy Link", image: R.image.docOnClipboard()) { _ in
+                                    UIPasteboard.general.string = "https://github.com/themuzzleflare/Provenance"
+                                }
                             ])
                         }
                     default:

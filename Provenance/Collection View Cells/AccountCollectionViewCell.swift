@@ -2,7 +2,7 @@ import UIKit
 import TinyConstraints
 import Rswift
 
-class AccountCollectionViewCell: UICollectionViewCell {
+final class AccountCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     
     static let reuseIdentifier = "accountCollectionViewCell"
@@ -22,6 +22,7 @@ class AccountCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+
         configureCell()
         configureContentView()
         configureBalanceLabel()
@@ -47,6 +48,7 @@ class AccountCollectionViewCell: UICollectionViewCell {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+        
         layer.borderColor = UIColor.separator.cgColor
     }
 }
@@ -56,9 +58,11 @@ class AccountCollectionViewCell: UICollectionViewCell {
 private extension AccountCollectionViewCell {
     private func configureCell() {
         clipsToBounds = true
+
         layer.cornerRadius = 12.5
         layer.borderColor = UIColor.separator.cgColor
         layer.borderWidth = 1.0
+
         backgroundColor = .secondarySystemGroupedBackground
         selectedBackgroundView = selectedBackgroundCellView
     }
@@ -81,8 +85,8 @@ private extension AccountCollectionViewCell {
     }
     
     private func configureStackView() {
-        verticalStack.edges(to: contentView, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
-        verticalStack.center(in: contentView)
+        verticalStack.horizontalToSuperview(insets: .horizontal(16))
+        verticalStack.centerInSuperview()
         verticalStack.addArrangedSubview(balanceLabel)
         verticalStack.addArrangedSubview(displayNameLabel)
         verticalStack.axis = .vertical

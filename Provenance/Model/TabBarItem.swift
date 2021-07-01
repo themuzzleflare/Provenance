@@ -2,20 +2,24 @@ import UIKit
 import Rswift
 
 enum TabBarItem: Int, CaseIterable {
-    case transactions, accounts, tags, categories, about
+    case transactions
+    case accounts
+    case tags
+    case categories
+    case about
 
     func vc() -> UIViewController {
         switch self {
             case .transactions:
                 return NavigationController(rootViewController: TransactionsCVC())
             case .accounts:
-                return NavigationController(rootViewController: AccountsCVC(collectionViewLayout: twoColumnGridLayout()))
+                return NavigationController(rootViewController: AccountsCVC())
             case .tags:
-                return NavigationController(rootViewController: AllTagsVC(style: .insetGrouped))
+                return NavigationController(rootViewController: AllTagsVC())
             case .categories:
-                return NavigationController(rootViewController: CategoriesCVC(collectionViewLayout: twoColumnGridLayout()))
+                return NavigationController(rootViewController: CategoriesCVC())
             case .about:
-                return NavigationController(rootViewController: AboutVC(style: .insetGrouped))
+                return NavigationController(rootViewController: AboutVC())
         }
     }
 

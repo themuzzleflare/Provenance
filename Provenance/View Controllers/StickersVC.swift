@@ -1,15 +1,24 @@
 import UIKit
 
-class StickersVC: CollectionViewController {
+final class StickersVC: UIViewController {
+    // MARK: - Properties
+
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: gridLayout())
+
     // MARK: - View Life Cycle
 
-    override init(collectionViewLayout layout: UICollectionViewLayout) {
-        super.init(collectionViewLayout: layout)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.addSubview(collectionView)
+
         configure()
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        collectionView.frame = view.bounds
     }
 }
 
@@ -18,29 +27,40 @@ class StickersVC: CollectionViewController {
 private extension StickersVC {
     private func configure() {
         title = "Stickers"
+
         navigationItem.title = "Stickers"
+
+        collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.register(StickerCollectionViewCell.self, forCellWithReuseIdentifier: StickerCollectionViewCell.reuseIdentifier)
+        collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
 }
 
 // MARK: - UICollectionViewDataSource
 
-extension StickersVC {
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+extension StickersVC: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         stickerGifs.count
     }
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StickerCollectionViewCell.reuseIdentifier, for: indexPath) as! StickerCollectionViewCell
+        
         cell.image = stickerGifs[indexPath.item]
+
         return cell
     }
 }
 
 // MARK: - UICollectionViewDelegate
 
-extension StickersVC {
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        navigationController?.pushViewController({let vc = StickerView();vc.image = stickerGifs[indexPath.item];return vc}(), animated: true)
+extension StickersVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = StickerView()
+
+        vc.image = stickerGifs[indexPath.item]
+
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

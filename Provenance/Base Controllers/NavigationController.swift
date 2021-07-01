@@ -1,17 +1,13 @@
 import UIKit
-import AsyncDisplayKit
 import Rswift
 
-class NavigationController: ASNavigationController {
+final class NavigationController: UINavigationController {
     // MARK: - Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-    override init(rootViewController: UIViewController) {
-        super.init(rootViewController: rootViewController)
         configure()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("Not implemented")
     }
 }
 

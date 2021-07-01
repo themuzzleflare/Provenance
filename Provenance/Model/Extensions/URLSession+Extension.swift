@@ -9,7 +9,7 @@ extension URLSession {
                 resultHandler(.failure(networkError))
                 return
             }
-
+            
             resultHandler(.success(data!))
         }
     }

@@ -2,7 +2,7 @@ import UIKit
 import NotificationBannerSwift
 import Rswift
 
-final class TagsVC: TableViewController {
+final class TagsCVC: UIViewController {
     // MARK: - Properties
 
     var transaction: TransactionResource! {
@@ -12,7 +12,7 @@ final class TagsVC: TableViewController {
             } else {
                 applySnapshot()
                 updateToolbarItems()
-                refreshControl?.endRefreshing()
+                collectionView.refreshControl?.endRefreshing()
             }
         }
     }
@@ -21,7 +21,9 @@ final class TagsVC: TableViewController {
         case main
     }
 
+    private typealias DataSource = UICollectionViewDiffableDataSource<Section, RelationshipData>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, RelationshipData>
+    private typealias TagCell = UICollectionView.CellRegistration<TagCollectionViewListCell, RelationshipData>
 
     private lazy var dataSource = makeDataSource()
     private lazy var addItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow))
@@ -29,78 +31,41 @@ final class TagsVC: TableViewController {
     private lazy var removeAllItem = UIBarButtonItem(title: "Remove All" , style: .plain, target: self, action: #selector(removeAllTags))
     private lazy var removeItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(removeTags))
 
-    private let tableRefreshControl = RefreshControl(frame: .zero)
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let collectionRefreshControl = RefreshControl(frame: .zero)
+    private let cellRegistration = TagCell { cell, indexPath, tag in
+        var content = cell.defaultContentConfiguration()
 
-    // UITableViewDiffableDataSource
-    private class DataSource: UITableViewDiffableDataSource<Section, RelationshipData> {
-        weak var parent: TagsVC! = nil
+        content.textProperties.font = R.font.circularStdBook(size: UIFont.labelFontSize)!
+        content.textProperties.numberOfLines = 0
+        content.text = tag.id
 
-        override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-            true
-        }
+        cell.contentConfiguration = content
 
-        override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-            let tag = itemIdentifier(for: indexPath)!
-
-            switch editingStyle {
-                case .delete:
-                    let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(parent.transaction.attributes.description)\"?", preferredStyle: .actionSheet)
-
-                    let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [unowned self] _ in
-                        let tagObject = TagResource(id: tag.id)
-
-                        upApi.modifyTags(removing: tagObject, from: parent.transaction) { error in
-                            switch error {
-                                case .none:
-                                    DispatchQueue.main.async {
-                                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(parent.transaction.attributes.description).", style: .success)
-
-                                        notificationBanner.duration = 2
-
-                                        notificationBanner.show()
-                                        parent.fetchTransaction()
-                                    }
-                                default:
-                                    DispatchQueue.main.async {
-                                        let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
-
-                                        notificationBanner.duration = 2
-
-                                        notificationBanner.show()
-                                    }
-                            }
-                        }
-                    }
-
-                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-                    cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
-
-                    ac.addAction(confirmAction)
-                    ac.addAction(cancelAction)
-
-                    parent.present(ac, animated: true)
-                default:
-                    break
-            }
-        }
+        cell.selectedBackgroundView = selectedBackgroundCellView
+        cell.accessories = [.disclosureIndicator(displayed: .whenNotEditing), .multiselect(displayed: .whenEditing)]
     }
+
+    private var listConfig = UICollectionLayoutListConfiguration(appearance: .grouped)
 
     // MARK: - View Life Cycle
 
-    override init(style: UITableView.Style) {
-        super.init(style: style)
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-        dataSource.parent = self
-
+        view.addSubview(collectionView)
+        
         configureProperties()
         configureNavigation()
         configureToolbar()
         configureRefreshControl()
-        configureTableView()
+        configureCollectionView()
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        collectionView.frame = view.bounds
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -123,23 +88,25 @@ final class TagsVC: TableViewController {
 
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
+        
+        collectionView.isEditing = editing
 
         updateToolbarItems()
         addItem.isEnabled = !editing
-        
+
         navigationController?.setToolbarHidden(!editing, animated: true)
     }
 }
 
 // MARK: - Configuration
 
-private extension TagsVC {
+private extension TagsCVC {
     private func configureProperties() {
         title = "Transaction Tags"
 
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
-    
+
     private func configureNavigation() {
         navigationItem.title = "Tags"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag())
@@ -155,19 +122,74 @@ private extension TagsVC {
     }
 
     private func configureRefreshControl() {
-        tableRefreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+        collectionRefreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
     }
-    
-    private func configureTableView() {
-        tableView.refreshControl = tableRefreshControl
-        tableView.allowsMultipleSelectionDuringEditing = true
-        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagCell")
+
+    private func configureCollectionView() {
+        collectionView.dataSource = dataSource
+        collectionView.delegate = self
+        collectionView.refreshControl = collectionRefreshControl
+        collectionView.allowsMultipleSelectionDuringEditing = true
+        collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+
+        listConfig.trailingSwipeActionsConfigurationProvider = { [self] indexPath in
+            guard let tag = dataSource.itemIdentifier(for: indexPath) else {
+                return nil
+            }
+
+            return UISwipeActionsConfiguration(actions: [
+                UIContextualAction(style: .destructive, title: "Remove") { action, sourceView, completionHandler in
+                    let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(transaction.attributes.description)\"?", preferredStyle: .actionSheet)
+
+                    let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { _ in
+                        let tagObject = TagResource(id: tag.id)
+
+                        upApi.modifyTags(removing: tagObject, from: transaction) { error in
+                            switch error {
+                                case .none:
+                                    DispatchQueue.main.async {
+                                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success)
+
+                                        notificationBanner.duration = 2
+
+                                        notificationBanner.show()
+                                        completionHandler(true)
+                                        fetchTransaction()
+                                    }
+                                default:
+                                    DispatchQueue.main.async {
+                                        let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+
+                                        notificationBanner.duration = 2
+
+                                        notificationBanner.show()
+                                        completionHandler(false)
+                                    }
+                            }
+                        }
+                    }
+
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                        completionHandler(false)
+                    }
+
+                    cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+
+                    ac.addAction(confirmAction)
+                    ac.addAction(cancelAction)
+
+                    present(ac, animated: true)
+                }
+            ])
+        }
+
+        collectionView.collectionViewLayout = UICollectionViewCompositionalLayout.list(using: listConfig)
     }
 }
 
 // MARK: - Actions
 
-private extension TagsVC {
+private extension TagsCVC {
     @objc private func appMovedToForeground() {
         fetchTransaction()
     }
@@ -186,16 +208,16 @@ private extension TagsVC {
     }
 
     @objc private func refreshTags() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.fetchTransaction()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+            fetchTransaction()
         }
     }
 
     @objc private func selectionAction() {
-        switch tableView.indexPathsForSelectedRows?.count {
+        switch collectionView.indexPathsForSelectedItems?.count {
             case transaction.relationships.tags.data.count:
-                tableView.indexPathsForSelectedRows?.forEach { path in
-                    tableView.deselectRow(at: path, animated: false)
+                collectionView.indexPathsForSelectedItems?.forEach { path in
+                    collectionView.deselectItem(at: path, animated: false)
                 }
             default:
                 let indexes = transaction.relationships.tags.data.map { tag in
@@ -203,14 +225,15 @@ private extension TagsVC {
                 }
 
                 indexes.forEach { index in
-                    tableView.selectRow(at: index, animated: false, scrollPosition: .none)
+                    collectionView.selectItem(at: index, animated: false, scrollPosition: .top)
                 }
         }
+
         updateToolbarItems()
     }
 
     @objc private func removeTags() {
-        if let tags = tableView.indexPathsForSelectedRows?.map { index in
+        if let tags = collectionView.indexPathsForSelectedItems?.map { index in
             dataSource.itemIdentifier(for: index)
         } {
             let tagIds = tags.map { tag in
@@ -219,7 +242,7 @@ private extension TagsVC {
 
             let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tagIds)\" from \"\(transaction.attributes.description)\"?", preferredStyle: .actionSheet)
 
-            let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [unowned self] _ in
+            let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [self] _ in
                 let tagsObject = tags.map { tag in
                     TagResource(id: tag!.id)
                 }
@@ -248,6 +271,7 @@ private extension TagsVC {
             }
 
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+
             cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
 
             ac.addAction(confirmAction)
@@ -265,11 +289,11 @@ private extension TagsVC {
 
         let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tagIds)\" from \"\(transaction.attributes.description)\"?", preferredStyle: .actionSheet)
 
-        let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [unowned self] _ in
+        let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [self] _ in
             let tagsObject = tags.map { tag in
                 TagResource(id: tag.id)
             }
-            
+
             upApi.modifyTags(removing: tagsObject, from: transaction) { error in
                 switch error {
                     case .none:
@@ -294,6 +318,7 @@ private extension TagsVC {
         }
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+
         cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
 
         ac.addAction(confirmAction)
@@ -303,36 +328,23 @@ private extension TagsVC {
     }
 
     private func updateToolbarItems() {
-        selectionItem.title = tableView.indexPathsForSelectedRows?.count == transaction.relationships.tags.data.count ? "Deselect All" : "Select All"
-        removeItem.isEnabled = tableView.indexPathsForSelectedRows != nil
+        selectionItem.title = collectionView.indexPathsForSelectedItems?.count == transaction.relationships.tags.data.count ? "Deselect All" : "Select All"
+        removeItem.isEnabled = collectionView.indexPathsForSelectedItems != nil && collectionView.indexPathsForSelectedItems != []
     }
 
     private func makeDataSource() -> DataSource {
-        DataSource(
-            tableView: tableView,
-            cellProvider: { tableView, indexPath, tag in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
-
-                cell.separatorInset = .zero
-                cell.selectedBackgroundView = selectedBackgroundCellView
-                cell.accessoryType = .disclosureIndicator
-                cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.numberOfLines = 0
-                cell.textLabel?.text = tag.id
-
-                return cell
-            }
-        )
+        DataSource(collectionView: collectionView) { [self] collectionView, indexPath, tag in
+            collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: tag)
+        }
     }
 
-    private func applySnapshot() {
+    private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
 
         snapshot.appendSections([.main])
         snapshot.appendItems(transaction.relationships.tags.data, toSection: .main)
 
-        dataSource.apply(snapshot)
+        dataSource.apply(snapshot, animatingDifferences: animate)
     }
 
     private func fetchTransaction() {
@@ -343,8 +355,8 @@ private extension TagsVC {
                         self.transaction = transaction
                     }
                 case .failure(let error):
-                    DispatchQueue.main.async {
-                        self.refreshControl?.endRefreshing()
+                    DispatchQueue.main.async { [self] in
+                        collectionView.refreshControl?.endRefreshing()
                     }
                     print(errorString(for: error))
             }
@@ -352,25 +364,31 @@ private extension TagsVC {
     }
 }
 
-// MARK: - UITableViewDelegate
+// MARK: - UICollectionViewDelegate
 
-extension TagsVC {
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+extension TagsCVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, canEditItemAt indexPath: IndexPath) -> Bool {
+        true
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch isEditing {
             case true:
                 updateToolbarItems()
             case false:
-                tableView.deselectRow(at: indexPath, animated: true)
+                collectionView.deselectItem(at: indexPath, animated: true)
 
-                let vc = TransactionsByTagVC()
+                if let tag = dataSource.itemIdentifier(for: indexPath)?.id {
+                    let vc = TransactionsByTagVC()
 
-                vc.tag = TagResource(id: dataSource.itemIdentifier(for: indexPath)!.id)
+                    vc.tag = TagResource(id: tag)
 
-                navigationController?.pushViewController(vc, animated: true)
+                    navigationController?.pushViewController(vc, animated: true)
+                }
         }
     }
 
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         switch isEditing {
             case true:
                 updateToolbarItems()
@@ -379,30 +397,24 @@ extension TagsVC {
         }
     }
 
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        .delete
-    }
-
-    override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        "Remove"
-    }
-    
-    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         switch isEditing {
             case true:
                 return nil
             case false:
-                let tag = dataSource.itemIdentifier(for: indexPath)!
+                guard let tag = dataSource.itemIdentifier(for: indexPath) else {
+                    return nil
+                }
 
                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                     UIMenu(children: [
-                        UIAction(title: "Copy", image: R.image.docOnClipboard()) { action in
+                        UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
                             UIPasteboard.general.string = tag.id
                         },
-                        UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { action in
-                            let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(self.transaction.attributes.description)\"?", preferredStyle: .actionSheet)
+                        UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { [self] _ in
+                            let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(transaction.attributes.description)\"?", preferredStyle: .actionSheet)
 
-                            let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [unowned self] _ in
+                            let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { _ in
                                 let tagObject = TagResource(id: tag.id)
 
                                 upApi.modifyTags(removing: tagObject, from: transaction) { error in
@@ -412,14 +424,14 @@ extension TagsVC {
                                                 let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success)
 
                                                 notificationBanner.duration = 2
-
+                                                
                                                 notificationBanner.show()
                                                 fetchTransaction()
                                             }
                                         default:
                                             DispatchQueue.main.async {
                                                 let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
-
+                                                
                                                 notificationBanner.duration = 2
 
                                                 notificationBanner.show()
@@ -429,12 +441,13 @@ extension TagsVC {
                             }
 
                             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+
                             cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
 
                             ac.addAction(confirmAction)
                             ac.addAction(cancelAction)
-
-                            self.present(ac, animated: true)
+                            
+                            present(ac, animated: true)
                         }
                     ])
                 }

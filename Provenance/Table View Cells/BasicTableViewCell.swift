@@ -1,6 +1,6 @@
 import UIKit
 
-class BasicTableViewCell: UITableViewCell {
+final class BasicTableViewCell: UITableViewCell {
     // MARK: - Life Cycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

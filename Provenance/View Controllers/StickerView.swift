@@ -2,7 +2,7 @@ import UIKit
 import FLAnimatedImage
 import TinyConstraints
 
-class StickerView: ViewController {
+final class StickerView: UIViewController {
     // MARK: - Properties
 
     var image: FLAnimatedImage! {
@@ -15,13 +15,10 @@ class StickerView: ViewController {
 
     // MARK: - View Life Cycle
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        configure()
-    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-    required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+        configure()
     }
 }
 
@@ -30,10 +27,13 @@ class StickerView: ViewController {
 private extension StickerView {
     private func configure() {
         title = "Sticker View"
+
         navigationItem.title = "Sticker"
+
         view.addSubview(imageView)
+
+        imageView.centerInSuperview()
         imageView.width(300)
         imageView.height(300)
-        imageView.centerInSuperview()
     }
 }

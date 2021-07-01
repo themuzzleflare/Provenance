@@ -2,7 +2,7 @@ import UIKit
 import TinyConstraints
 import Rswift
 
-class CategoryCollectionViewCell: UICollectionViewCell {
+final class CategoryCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     
     static let reuseIdentifier = "categoryCollectionViewCell"
@@ -19,6 +19,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+
         configureCell()
         configureContentView()
         configureLabel()
@@ -30,6 +31,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+        
         layer.borderColor = UIColor.separator.cgColor
     }
 }
@@ -39,9 +41,11 @@ class CategoryCollectionViewCell: UICollectionViewCell {
 private extension CategoryCollectionViewCell {
     private func configureCell() {
         clipsToBounds = true
+        
         layer.cornerRadius = 12.5
         layer.borderColor = UIColor.separator.cgColor
         layer.borderWidth = 1.0
+
         backgroundColor = .secondarySystemGroupedBackground
         selectedBackgroundView = selectedBackgroundCellView
     }
@@ -51,7 +55,7 @@ private extension CategoryCollectionViewCell {
     }
     
     private func configureLabel() {
-        label.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
+        label.edgesToSuperview(insets: .horizontal(16) + .vertical(13))
         label.textAlignment = .center
         label.numberOfLines = 0
         label.font = R.font.circularStdBook(size: UIFont.labelFontSize)

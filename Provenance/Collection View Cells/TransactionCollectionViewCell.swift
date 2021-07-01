@@ -1,7 +1,8 @@
 import UIKit
+import TinyConstraints
 import Rswift
 
-class TransactionCollectionViewCell: UICollectionViewCell {
+final class TransactionCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
 
     static let reuseIdentifier = "transactionCollectionViewCell"
@@ -20,7 +21,7 @@ class TransactionCollectionViewCell: UICollectionViewCell {
     private let transactionAmount = UILabel()
     private let verticalStack = UIStackView()
     private let horizontalStack = UIStackView()
-    private let insets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    private let insets: UIEdgeInsets = .zero
     private let separator: CALayer = {
         let layer = CALayer()
         layer.backgroundColor = UIColor.separator.cgColor
@@ -31,6 +32,7 @@ class TransactionCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         configureCell()
         configureContentView()
         configureTransactionDescription()
@@ -46,15 +48,14 @@ class TransactionCollectionViewCell: UICollectionViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        let bounds = contentView.bounds
-        horizontalStack.frame = bounds.inset(by: insets)
-        let height: CGFloat = 0.5
-        let left = insets.left
-        separator.frame = CGRect(x: left, y: bounds.height - height, width: bounds.width - left, height: height)
+
+        horizontalStack.frame = contentView.bounds.inset(by: insets)
+        separator.frame = CGRect(x: insets.left, y: contentView.bounds.height - 0.5, width: contentView.bounds.width - insets.left, height: 0.5)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+        
         separator.backgroundColor = UIColor.separator.cgColor
     }
 }
@@ -63,41 +64,13 @@ class TransactionCollectionViewCell: UICollectionViewCell {
 
 private extension TransactionCollectionViewCell {
     private func configureCell() {
-        backgroundColor = .secondarySystemGroupedBackground
+        backgroundColor = .clear
         selectedBackgroundView = selectedBackgroundCellView
     }
 
     private func configureContentView() {
         contentView.addSubview(horizontalStack)
         contentView.layer.addSublayer(separator)
-        NSLayoutConstraint(item: horizontalStack,
-                           attribute: .top,
-                           relatedBy: .equal,
-                           toItem: contentView,
-                           attribute: .top,
-                           multiplier: 1,
-                           constant: 15).isActive = true
-        NSLayoutConstraint(item: horizontalStack,
-                           attribute: .leading,
-                           relatedBy: .equal,
-                           toItem: contentView,
-                           attribute: .leading,
-                           multiplier: 1,
-                           constant: 15).isActive = true
-        NSLayoutConstraint(item: contentView,
-                           attribute: .bottom,
-                           relatedBy: .equal,
-                           toItem: horizontalStack,
-                           attribute: .bottom,
-                           multiplier: 1,
-                           constant: 15).isActive = true
-        NSLayoutConstraint(item: contentView,
-                           attribute: .trailing,
-                           relatedBy: .equal,
-                           toItem: horizontalStack,
-                           attribute: .trailing,
-                           multiplier: 1,
-                           constant: 15).isActive = true
     }
 
     private func configureTransactionDescription() {
@@ -114,7 +87,7 @@ private extension TransactionCollectionViewCell {
         transactionCreationDate.numberOfLines = 0
         transactionCreationDate.textColor = .secondaryLabel
     }
-
+    
     private func configureTransactionAmount() {
         transactionAmount.translatesAutoresizingMaskIntoConstraints = false
         transactionAmount.font = R.font.circularStdBook(size: UIFont.labelFontSize)
@@ -131,7 +104,7 @@ private extension TransactionCollectionViewCell {
     }
 
     private func configureHorizontalStackView() {
-        horizontalStack.translatesAutoresizingMaskIntoConstraints = false
+        horizontalStack.edgesToSuperview(insets: .horizontal(16) + .vertical(13))
         horizontalStack.addArrangedSubview(verticalStack)
         horizontalStack.addArrangedSubview(transactionAmount)
         horizontalStack.alignment = .center

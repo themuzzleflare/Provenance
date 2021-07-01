@@ -15,34 +15,22 @@ struct AccountBalanceProvider: IntentTimelineProvider {
 
     func getTimeline(for configuration: Intent, in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
         var entries: [Entry] = []
-        if let accountId = configuration.account?.identifier {
-            let url = URL(string: "https://api.up.com.au/api/v1/accounts/\(accountId)")!
-            var request = URLRequest(url: url)
-            request.httpMethod = "GET"
-            request.allHTTPHeaderFields = [
-                "Accept": "application/json",
-                "Authorization": "Bearer \(appDefaults.apiKey)"
-            ]
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                if error == nil {
-                    if let decodedResponse = try? JSONDecoder().decode(SingleAccountResponse.self, from: data!) {
-                        DispatchQueue.main.async {
-                            entries.append(Entry(date: Date(), account: AvailableAccount(id: decodedResponse.data.id, displayName: decodedResponse.data.attributes.displayName, balance: decodedResponse.data.attributes.balance.valueShort)))
-                            completion(Timeline(entries: entries, policy: .atEnd))
-                        }
-                    } else {
-                        entries.append(Entry(date: Date(), account: AvailableAccount(id: accountId, displayName: configuration.account!.subtitleString!, balance: configuration.account!.displayString)))
-                        completion(Timeline(entries: entries, policy: .atEnd))
-                    }
-                } else {
-                    entries.append(Entry(date: Date(), account: AvailableAccount(id: accountId, displayName: configuration.account!.subtitleString!, balance: configuration.account!.displayString)))
-                    completion(Timeline(entries: entries, policy: .atEnd))
-                }
-            }
-            .resume()
-        } else {
+
+        guard let accountId = configuration.account?.identifier else {
             entries.append(Entry(date: Date(), account: nil))
             completion(Timeline(entries: entries, policy: .atEnd))
+            return
+        }
+
+        upApi.retrieveAccount(for: accountId) { result in
+            switch result {
+                case .success(let account):
+                    entries.append(Entry(date: Date(), account: AvailableAccount(id: account.id, displayName: account.attributes.displayName, balance: account.attributes.balance.valueShort)))
+                    completion(Timeline(entries: entries, policy: .atEnd))
+                case .failure(let error):
+                    entries.append(Entry(date: Date(), account: AvailableAccount(id: UUID().uuidString, displayName: errorString(for: error), balance: "Error")))
+                    completion(Timeline(entries: entries, policy: .atEnd))
+            }
         }
     }
 }

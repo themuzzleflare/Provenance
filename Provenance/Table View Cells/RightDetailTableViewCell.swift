@@ -1,6 +1,6 @@
 import UIKit
 
-class RightDetailTableViewCell: UITableViewCell {
+final class RightDetailTableViewCell: UITableViewCell {
     // MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

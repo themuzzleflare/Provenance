@@ -5,7 +5,7 @@ import FLAnimatedImage
 import TinyConstraints
 import Rswift
 
-final class TransactionsCVC: ViewController {
+final class TransactionsCVC: UIViewController {
     // MARK: - Properties
 
     private lazy var filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), menu: filterMenu())
@@ -13,7 +13,12 @@ final class TransactionsCVC: ViewController {
 
     private let collectionRefreshControl = RefreshControl(frame: .zero)
     private let searchController = SearchController(searchResultsController: nil)
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let transactionsPagination = Pagination(prev: nil, next: nil)
+    private let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionHeadersPinToVisibleBounds = true
+        return UICollectionView(frame: .zero, collectionViewLayout: layout)
+    }()
 
     private var apiKeyObserver: NSKeyValueObservation?
     private var dateStyleObserver: NSKeyValueObservation?
@@ -21,10 +26,16 @@ final class TransactionsCVC: ViewController {
         "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
     }
     private var noTransactions: Bool = false
+    private var transactionsError: String = ""
+    private var transactions: [TransactionResource] = [] {
+        didSet {
+            transactionsUpdates()
+        }
+    }
     private var preFilteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             (!showSettledOnly || transaction.attributes.isSettled)
-            && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
+                && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
         }
     }
     private var filteredTransactions: [TransactionResource] {
@@ -32,39 +43,33 @@ final class TransactionsCVC: ViewController {
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    private var transactionsPagination: Pagination = Pagination(prev: nil, next: nil)
-    private var transactionsError: String = ""
-    private var transactions: [TransactionResource] = [] {
-        didSet {
-            noTransactions = transactions.isEmpty
-            adapter.performUpdates(animated: true)
-            adapter.collectionView?.refreshControl?.endRefreshing()
-            WidgetCenter.shared.reloadAllTimelines()
-            searchController.searchBar.placeholder = searchBarPlaceholder
-        }
-    }
-    private var accounts: [AccountResource] = []
-    private var categories: [CategoryResource] = []
     private var filter: CategoryFilter = .all {
         didSet {
-            filterButton.menu = filterMenu()
-            searchController.searchBar.placeholder = searchBarPlaceholder
-            adapter.performUpdates(animated: true)
+            filterUpdates()
         }
     }
     private var showSettledOnly: Bool = false {
         didSet {
-            filterButton.menu = filterMenu()
-            searchController.searchBar.placeholder = searchBarPlaceholder
-            adapter.performUpdates(animated: true)
+            filterUpdates()
         }
+    }
+    private var groupedTransactions: [Int: [TransactionResource]] {
+        Dictionary(
+            grouping: filteredTransactions,
+            by: { $0.attributes.createdAtDay }
+        )
+    }
+    private var sortedTransactions: Array<(key: Int, value: Array<TransactionResource>)> {
+        groupedTransactions.sorted { $0.key > $1.key }
     }
 
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         view.addSubview(collectionView)
+
         configureAdapter()
         configureCollectionView()
         configureProperties()
@@ -73,16 +78,16 @@ final class TransactionsCVC: ViewController {
         configureRefreshControl()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        fetchTransactions()
-        fetchAccounts()
-        fetchCategories()
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         collectionView.frame = view.bounds
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        fetchingTasks()
     }
 }
 
@@ -93,25 +98,25 @@ private extension TransactionsCVC {
         adapter.collectionView = collectionView
         adapter.dataSource = self
         adapter.collectionViewDelegate = self
-        adapter.collectionView?.refreshControl = collectionRefreshControl
     }
 
     private func configureCollectionView() {
+        collectionView.refreshControl = collectionRefreshControl
+        collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         collectionView.backgroundColor = .systemGroupedBackground
-        collectionView.showsHorizontalScrollIndicator = false
     }
 
     private func configureProperties() {
         title = "Transactions"
         definesPresentationContext = true
+
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { object, change in
-            self.fetchTransactions()
-            self.fetchAccounts()
-            self.fetchCategories()
+
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] object, change in
+            fetchingTasks()
         }
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
-            self.adapter.reloadData()
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
+            adapter.reloadData()
             WidgetCenter.shared.reloadAllTimelines()
         }
     }
@@ -135,9 +140,7 @@ private extension TransactionsCVC {
 
 private extension TransactionsCVC {
     @objc private func appMovedToForeground() {
-        fetchTransactions()
-        fetchAccounts()
-        fetchCategories()
+        fetchingTasks()
     }
 
     @objc private func switchDateStyle() {
@@ -149,23 +152,39 @@ private extension TransactionsCVC {
     }
 
     @objc private func refreshTransactions() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.fetchTransactions()
-            self.fetchAccounts()
-            self.fetchCategories()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+            fetchingTasks()
         }
+    }
+
+    private func transactionsUpdates() {
+        noTransactions = transactions.isEmpty
+        adapter.performUpdates(animated: false)
+        collectionView.refreshControl?.endRefreshing()
+        searchController.searchBar.placeholder = searchBarPlaceholder
+        WidgetCenter.shared.reloadAllTimelines()
+    }
+
+    private func filterUpdates() {
+        filterButton.menu = filterMenu()
+        searchController.searchBar.placeholder = searchBarPlaceholder
+        adapter.performUpdates(animated: false)
+    }
+
+    private func fetchingTasks() {
+        fetchTransactions()
     }
 
     private func filterMenu() -> UIMenu {
         UIMenu(options: .displayInline, children: [
             UIMenu(title: "Category", image: filter == .all ? R.image.trayFull() : R.image.trayFullFill(), children: CategoryFilter.allCases.map { category in
-            UIAction(title: categoryName(for: category), state: filter == category ? .on : .off) { action in
-                self.filter = category
+                UIAction(title: categoryName(for: category), state: filter == category ? .on : .off) { [self] _ in
+                    filter = category
+                }
+            }),
+            UIAction(title: "Settled Only", image: showSettledOnly ? R.image.checkmarkCircleFill() : R.image.checkmarkCircle(), state: showSettledOnly ? .on : .off) { [self] _ in
+                showSettledOnly.toggle()
             }
-        }),
-            UIAction(title: "Settled Only", image: showSettledOnly ? R.image.checkmarkCircleFill() : R.image.checkmarkCircle(), state: showSettledOnly ? .on : .off) { action in
-            self.showSettledOnly.toggle()
-        }
         ])
     }
 
@@ -173,53 +192,29 @@ private extension TransactionsCVC {
         upApi.listTransactions { result in
             switch result {
                 case .success(let transactions):
-                    DispatchQueue.main.async {
-                        self.transactionsError = ""
+                    DispatchQueue.main.async { [self] in
+                        transactionsError = ""
                         self.transactions = transactions
-                        if self.navigationItem.title != "Transactions" {
-                            self.navigationItem.title = "Transactions"
-                        }
-                        if self.navigationItem.leftBarButtonItems == nil {
-                            self.navigationItem.setLeftBarButtonItems([UIBarButtonItem(image: R.image.calendarBadgeClock(), style: .plain, target: self, action: #selector(self.switchDateStyle)), self.filterButton], animated: true)
-                        }
-                    }
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        self.transactionsError = errorString(for: error)
-                        self.transactions = []
-                        if self.navigationItem.title != "Error" {
-                            self.navigationItem.title = "Error"
-                        }
-                        if self.navigationItem.leftBarButtonItems != nil {
-                            self.navigationItem.setLeftBarButtonItems(nil, animated: true)
-                        }
-                    }
-            }
-        }
-    }
 
-    private func fetchAccounts() {
-        upApi.listAccounts { result in
-            switch result {
-                case .success(let accounts):
-                    DispatchQueue.main.async {
-                        self.accounts = accounts
+                        if navigationItem.title != "Transactions" {
+                            navigationItem.title = "Transactions"
+                        }
+                        if navigationItem.leftBarButtonItems == nil {
+                            navigationItem.setLeftBarButtonItems([UIBarButtonItem(image: R.image.calendarBadgeClock(), style: .plain, target: self, action: #selector(switchDateStyle)), filterButton], animated: true)
+                        }
                     }
                 case .failure(let error):
-                    print(errorString(for: error))
-            }
-        }
-    }
+                    DispatchQueue.main.async { [self] in
+                        transactionsError = errorString(for: error)
+                        transactions = []
 
-    private func fetchCategories() {
-        upApi.listCategories { result in
-            switch result {
-                case .success(let categories):
-                    DispatchQueue.main.async {
-                        self.categories = categories
+                        if navigationItem.title != "Error" {
+                            navigationItem.title = "Error"
+                        }
+                        if navigationItem.leftBarButtonItems != nil {
+                            navigationItem.setLeftBarButtonItems(nil, animated: true)
+                        }
                     }
-                case .failure(let error):
-                    print(errorString(for: error))
             }
         }
     }
@@ -229,60 +224,73 @@ private extension TransactionsCVC {
 
 extension TransactionsCVC: ListAdapterDataSource {
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
-        filteredTransactions
+        sortedTransactions.map { SortedTransactions(day: $0.key, transactions: $0.value) }
     }
 
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
-        let controller = TransactionsSectionController()
-        controller.accounts = accounts
-        controller.categories = categories
-        return controller
+        TransactionsSC()
     }
 
     func emptyView(for listAdapter: ListAdapter) -> UIView? {
         if filteredTransactions.isEmpty && transactionsError.isEmpty {
             if transactions.isEmpty && !noTransactions {
-                let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
+                let view = UIView(frame: collectionView.bounds)
+
                 let loadingIndicator = FLAnimatedImageView()
-                loadingIndicator.animatedImage = upZapSpinTransparentBackground
+
+                view.addSubview(loadingIndicator)
+
+                loadingIndicator.centerInSuperview()
                 loadingIndicator.width(100)
                 loadingIndicator.height(100)
-                view.addSubview(loadingIndicator)
-                loadingIndicator.center(in: view)
+                loadingIndicator.animatedImage = upZapSpinTransparentBackground
+
                 return view
             } else {
-                let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
+                let view = UIView(frame: collectionView.bounds)
+
                 let icon = UIImageView(image: R.image.xmarkDiamond())
-                icon.tintColor = .secondaryLabel
+
                 icon.width(70)
                 icon.height(64)
+                icon.tintColor = .secondaryLabel
+
                 let label = UILabel()
+
                 label.translatesAutoresizingMaskIntoConstraints = false
                 label.textAlignment = .center
                 label.textColor = .secondaryLabel
-                label.font = R.font.circularStdBook(size: 23)
+                label.font = R.font.circularStdMedium(size: 23)
                 label.text = "No Transactions"
-                let vstack = UIStackView(arrangedSubviews: [icon, label])
-                vstack.axis = .vertical
-                vstack.alignment = .center
-                vstack.spacing = 10
-                view.addSubview(vstack)
-                vstack.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
-                vstack.center(in: view)
+
+                let vStack = UIStackView(arrangedSubviews: [icon, label])
+
+                view.addSubview(vStack)
+
+                vStack.horizontalToSuperview(insets: .horizontal(16))
+                vStack.centerInSuperview()
+                vStack.axis = .vertical
+                vStack.alignment = .center
+                vStack.spacing = 10
+
                 return view
             }
         } else {
             if !transactionsError.isEmpty {
-                let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
+                let view = UIView(frame: collectionView.bounds)
+
                 let label = UILabel()
+
                 view.addSubview(label)
-                label.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
-                label.center(in: view)
+
+                label.horizontalToSuperview(insets: .horizontal(16))
+                label.centerInSuperview()
                 label.textAlignment = .center
                 label.textColor = .secondaryLabel
                 label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                 label.numberOfLines = 0
                 label.text = transactionsError
+
                 return view
             } else {
                 return nil
@@ -295,18 +303,19 @@ extension TransactionsCVC: ListAdapterDataSource {
 
 extension TransactionsCVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let transaction = filteredTransactions[indexPath.item]
+        let transaction = sortedTransactions[indexPath.section].value[indexPath.item]
+
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy Description", image: R.image.textAlignright()) { action in
-                UIPasteboard.general.string = transaction.attributes.description
-            },
-                UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { action in
-                UIPasteboard.general.string = transaction.attributes.creationDate
-            },
-                UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { action in
-                UIPasteboard.general.string = transaction.attributes.amount.valueShort
-            }
+                UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
+                    UIPasteboard.general.string = transaction.attributes.description
+                },
+                UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
+                    UIPasteboard.general.string = transaction.attributes.creationDate
+                },
+                UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
+                    UIPasteboard.general.string = transaction.attributes.amount.valueShort
+                }
             ])
         }
     }
@@ -316,13 +325,13 @@ extension TransactionsCVC: UICollectionViewDelegate {
 
 extension TransactionsCVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        adapter.performUpdates(animated: true)
+        adapter.performUpdates(animated: false)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if !searchBar.text!.isEmpty {
             searchBar.text = ""
-            adapter.performUpdates(animated: true)
+            adapter.performUpdates(animated: false)
         }
     }
 }

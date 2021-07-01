@@ -1,7 +1,7 @@
 import UIKit
 import FLAnimatedImage
 
-class StickerCollectionViewCell: UICollectionViewCell {
+final class StickerCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     
     static let reuseIdentifier = "stickerCollectionViewCell"
@@ -18,6 +18,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         configure()
     }
     
@@ -27,11 +28,13 @@ class StickerCollectionViewCell: UICollectionViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+
         stickerImageView.frame = contentView.bounds
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+
         layer.borderColor = UIColor.separator.cgColor
     }
 }
@@ -41,8 +44,10 @@ class StickerCollectionViewCell: UICollectionViewCell {
 private extension StickerCollectionViewCell {
     private func configure() {
         backgroundColor = .secondarySystemGroupedBackground
+
         layer.borderWidth = 1.0
         layer.borderColor = UIColor.separator.cgColor
+
         contentView.addSubview(stickerImageView)
     }
 }

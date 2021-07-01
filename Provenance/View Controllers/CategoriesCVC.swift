@@ -3,7 +3,7 @@ import FLAnimatedImage
 import TinyConstraints
 import Rswift
 
-final class CategoriesCVC: CollectionViewController {
+final class CategoriesCVC: UIViewController {
     // MARK: - Properties
 
     private enum Section {
@@ -11,11 +11,12 @@ final class CategoriesCVC: CollectionViewController {
     }
 
     private typealias DataSource = UICollectionViewDiffableDataSource<Section, CategoryResource>
-    private typealias CategoryCell = UICollectionView.CellRegistration<CategoryCollectionViewCell, CategoryResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, CategoryResource>
+    private typealias CategoryCell = UICollectionView.CellRegistration<CategoryCollectionViewCell, CategoryResource>
 
     private lazy var dataSource = makeDataSource()
 
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: twoColumnGridLayout())
     private let searchController = SearchController(searchResultsController: nil)
     private let collectionRefreshControl = RefreshControl(frame: .zero)
     private let cellRegistration = CategoryCell { cell, indexPath, category in
@@ -44,22 +45,29 @@ final class CategoriesCVC: CollectionViewController {
     
     // MARK: - View Life Cycle
     
-    override init(collectionViewLayout layout: UICollectionViewLayout) {
-        super.init(collectionViewLayout: layout)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.addSubview(collectionView)
+
         configureProperties()
         configureNavigation()
         configureSearch()
         configureRefreshControl()
         configureCollectionView()
+
         applySnapshot()
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        collectionView.frame = view.bounds
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         fetchCategories()
     }
 }
@@ -70,7 +78,9 @@ private extension CategoriesCVC {
     private func configureProperties() {
         title = "Categories"
         definesPresentationContext = true
+
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+
         apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { object, change in
             self.fetchCategories()
         }
@@ -91,7 +101,10 @@ private extension CategoriesCVC {
     }
     
     private func configureCollectionView() {
+        collectionView.dataSource = dataSource
+        collectionView.delegate = self
         collectionView.refreshControl = collectionRefreshControl
+        collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
 }
 
@@ -116,40 +129,56 @@ private extension CategoriesCVC {
 
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
+
         snapshot.appendSections([.main])
         snapshot.appendItems(filteredCategoriesList.data, toSection: .main)
+
         if snapshot.itemIdentifiers.isEmpty && categoriesError.isEmpty {
             if categories.isEmpty && !noCategories {
                 collectionView.backgroundView = {
                     let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
+
                     let loadingIndicator = FLAnimatedImageView()
+
                     loadingIndicator.animatedImage = upZapSpinTransparentBackground
                     loadingIndicator.width(100)
                     loadingIndicator.height(100)
+
                     view.addSubview(loadingIndicator)
+
                     loadingIndicator.center(in: view)
+
                     return view
                 }()
             } else {
                 collectionView.backgroundView = {
                     let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
+
                     let icon = UIImageView(image: R.image.xmarkDiamond())
+
                     icon.tintColor = .secondaryLabel
                     icon.width(70)
                     icon.height(64)
+
                     let label = UILabel()
+
                     label.translatesAutoresizingMaskIntoConstraints = false
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
                     label.font = R.font.circularStdBook(size: 23)
                     label.text = "No Categories"
+
                     let vstack = UIStackView(arrangedSubviews: [icon, label])
+
                     vstack.axis = .vertical
                     vstack.alignment = .center
                     vstack.spacing = 10
+
                     view.addSubview(vstack)
+
                     vstack.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
                     vstack.center(in: view)
+
                     return view
                 }()
             }
@@ -157,8 +186,11 @@ private extension CategoriesCVC {
             if !categoriesError.isEmpty {
                 collectionView.backgroundView = {
                     let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
+
                     let label = UILabel()
+
                     view.addSubview(label)
+
                     label.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
                     label.center(in: view)
                     label.textAlignment = .center
@@ -166,6 +198,7 @@ private extension CategoriesCVC {
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = categoriesError
+
                     return view
                 }()
             } else {
@@ -174,6 +207,7 @@ private extension CategoriesCVC {
                 }
             }
         }
+
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
 
@@ -184,6 +218,7 @@ private extension CategoriesCVC {
                     DispatchQueue.main.async {
                         self.categoriesError = ""
                         self.categories = categories
+
                         if self.navigationItem.title != "Categories" {
                             self.navigationItem.title = "Categories"
                         }
@@ -192,6 +227,7 @@ private extension CategoriesCVC {
                     DispatchQueue.main.async {
                         self.categoriesError = errorString(for: error)
                         self.categories = []
+
                         if self.navigationItem.title != "Error" {
                             self.navigationItem.title = "Error"
                         }
@@ -203,17 +239,27 @@ private extension CategoriesCVC {
 
 // MARK: - UICollectionViewDelegate
 
-extension CategoriesCVC {
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        navigationController?.pushViewController({let vc = TransactionsByCategoryVC(style: .insetGrouped);vc.category = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
+extension CategoriesCVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+
+        let vc = TransactionsByCategoryVC()
+        
+        vc.category = dataSource.itemIdentifier(for: indexPath)
+
+        navigationController?.pushViewController(vc, animated: true)
     }
 
-    override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let category = dataSource.itemIdentifier(for: indexPath)?.attributes.name else {
+            return nil
+        }
+
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy", image: R.image.docOnClipboard()) { action in
-                UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.attributes.name
-            }
+                    UIPasteboard.general.string = category
+                }
             ])
         }
     }

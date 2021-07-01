@@ -3,20 +3,33 @@ import FLAnimatedImage
 import TinyConstraints
 import Rswift
 
-final class AllTagsVC: TableViewController {
+final class AllTagsVC: UIViewController {
     // MARK: - Properties
 
     private enum Section {
         case main
     }
 
-    private typealias DataSource = UITableViewDiffableDataSource<Section, TagResource>
+    private typealias DataSource = UICollectionViewDiffableDataSource<Section, TagResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TagResource>
+    private typealias TagCell = UICollectionView.CellRegistration<TagCollectionViewListCell, TagResource>
 
     private lazy var dataSource = makeDataSource()
 
-    private let tableRefreshControl = RefreshControl(frame: .zero)
+    private let collectionRefreshControl = RefreshControl(frame: .zero)
     private let searchController = SearchController(searchResultsController: nil)
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout.list(using: UICollectionLayoutListConfiguration(appearance: .grouped)))
+    private let cellRegistration = TagCell { cell, indexPath, tag in
+        var content = cell.defaultContentConfiguration()
+
+        content.textProperties.font = R.font.circularStdBook(size: UIFont.labelFontSize)!
+        content.textProperties.numberOfLines = 0
+        content.text = tag.id
+
+        cell.contentConfiguration = content
+
+        cell.selectedBackgroundView = selectedBackgroundCellView
+    }
 
     private var apiKeyObserver: NSKeyValueObservation?
     private var noTags: Bool = false
@@ -24,7 +37,7 @@ final class AllTagsVC: TableViewController {
         didSet {
             noTags = tags.isEmpty
             applySnapshot()
-            refreshControl?.endRefreshing()
+            collectionView.refreshControl?.endRefreshing()
             searchController.searchBar.placeholder = "Search \(tags.count.description) \(tags.count == 1 ? "Tag" : "Tags")"
         }
     }
@@ -41,22 +54,29 @@ final class AllTagsVC: TableViewController {
     
     // MARK: - View Life Cycle
     
-    override init(style: UITableView.Style) {
-        super.init(style: style)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.addSubview(collectionView)
+
         configureProperties()
         configureNavigation()
         configureSearch()
         configureRefreshControl()
-        configureTableView()
+        configureCollectionView()
+
         applySnapshot()
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        collectionView.frame = view.bounds
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         fetchTags()
     }
 }
@@ -67,9 +87,11 @@ private extension AllTagsVC {
     private func configureProperties() {
         title = "Tags"
         definesPresentationContext = true
+
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { object, change in
-            self.fetchTags()
+
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] object, change in
+            fetchTags()
         }
     }
     
@@ -84,12 +106,14 @@ private extension AllTagsVC {
     }
     
     private func configureRefreshControl() {
-        tableRefreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+        collectionRefreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
     }
     
-    private func configureTableView() {
-        tableView.refreshControl = tableRefreshControl
-        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "tagCell")
+    private func configureCollectionView() {
+        collectionView.dataSource = dataSource
+        collectionView.delegate = self
+        collectionView.refreshControl = collectionRefreshControl
+        collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
 }
 
@@ -101,93 +125,104 @@ private extension AllTagsVC {
     }
 
     @objc private func openAddWorkflow() {
-        present({let vc = NavigationController(rootViewController: AddTagWorkflowVC(style: .insetGrouped));vc.modalPresentationStyle = .fullScreen;return vc}(), animated: true)
+        let vc = NavigationController(rootViewController: AddTagWorkflowVC())
+
+        vc.modalPresentationStyle = .fullScreen
+
+        present(vc, animated: true)
     }
 
     @objc private func refreshTags() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.fetchTags()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+            fetchTags()
         }
     }
 
     private func makeDataSource() -> DataSource {
-        let dataSource = DataSource(
-            tableView: tableView,
-            cellProvider: { tableView, indexPath, tag in
-            let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath) as! BasicTableViewCell
-            cell.selectedBackgroundView = selectedBackgroundCellView
-            cell.separatorInset = .zero
-            cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-            cell.textLabel?.textAlignment = .left
-            cell.textLabel?.numberOfLines = 0
-            cell.textLabel?.text = tag.id
-            return cell
+        DataSource(collectionView: collectionView) { [self] collectionView, indexPath, tag in
+            collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: tag)
         }
-        )
-        dataSource.defaultRowAnimation = .fade
-        return dataSource
     }
 
     private func applySnapshot(animate: Bool = false) {
         var snapshot = Snapshot()
+
         snapshot.appendSections([.main])
         snapshot.appendItems(filteredTagsList.data, toSection: .main)
+
         if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty {
             if tags.isEmpty && !noTags {
-                tableView.backgroundView = {
-                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
+                collectionView.backgroundView = {
+                    let view = UIView(frame: collectionView.bounds)
+
                     let loadingIndicator = FLAnimatedImageView()
-                    loadingIndicator.animatedImage = upZapSpinTransparentBackground
+
+                    view.addSubview(loadingIndicator)
+
+                    loadingIndicator.centerInSuperview()
                     loadingIndicator.width(100)
                     loadingIndicator.height(100)
-                    view.addSubview(loadingIndicator)
-                    loadingIndicator.center(in: view)
+                    loadingIndicator.animatedImage = upZapSpinTransparentBackground
+
                     return view
                 }()
             } else {
-                tableView.backgroundView = {
-                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
+                collectionView.backgroundView = {
+                    let view = UIView(frame: collectionView.bounds)
+
                     let icon = UIImageView(image: R.image.xmarkDiamond())
-                    icon.tintColor = .secondaryLabel
+
                     icon.width(70)
                     icon.height(64)
+                    icon.tintColor = .secondaryLabel
+
                     let label = UILabel()
+
                     label.translatesAutoresizingMaskIntoConstraints = false
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
                     label.font = R.font.circularStdBook(size: 23)
                     label.text = "No Tags"
-                    let vstack = UIStackView(arrangedSubviews: [icon, label])
-                    vstack.axis = .vertical
-                    vstack.alignment = .center
-                    vstack.spacing = 10
-                    view.addSubview(vstack)
-                    vstack.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
-                    vstack.center(in: view)
+
+                    let vStack = UIStackView(arrangedSubviews: [icon, label])
+
+                    view.addSubview(vStack)
+
+                    vStack.horizontalToSuperview(insets: .horizontal(16))
+                    vStack.centerInSuperview()
+                    vStack.axis = .vertical
+                    vStack.alignment = .center
+                    vStack.spacing = 10
+
                     return view
                 }()
             }
         } else {
             if !tagsError.isEmpty {
-                tableView.backgroundView = {
-                    let view = UIView(frame: CGRect(x: tableView.bounds.midX, y: tableView.bounds.midY, width: tableView.bounds.width, height: tableView.bounds.height))
+                collectionView.backgroundView = {
+                    let view = UIView(frame: collectionView.bounds)
+
                     let label = UILabel()
+
                     view.addSubview(label)
-                    label.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
-                    label.center(in: view)
+
+                    label.horizontalToSuperview(insets: .horizontal(16))
+                    label.centerInSuperview()
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = tagsError
+
                     return view
                 }()
             } else {
-                if tableView.backgroundView != nil {
-                    tableView.backgroundView = nil
+                if collectionView.backgroundView != nil {
+                    collectionView.backgroundView = nil
                 }
             }
         }
+
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
 
@@ -195,25 +230,27 @@ private extension AllTagsVC {
         upApi.listTags { result in
             switch result {
                 case .success(let tags):
-                    DispatchQueue.main.async {
-                        self.tagsError = ""
+                    DispatchQueue.main.async { [self] in
+                        tagsError = ""
                         self.tags = tags
-                        if self.navigationItem.title != "Tags" {
-                            self.navigationItem.title = "Tags"
+                        
+                        if navigationItem.title != "Tags" {
+                            navigationItem.title = "Tags"
                         }
-                        if self.navigationItem.rightBarButtonItem == nil {
-                            self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.openAddWorkflow)), animated: true)
+                        if navigationItem.rightBarButtonItem == nil {
+                            navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow)), animated: true)
                         }
                     }
                 case .failure(let error):
-                    DispatchQueue.main.async {
-                        self.tagsError = errorString(for: error)
-                        self.tags = []
-                        if self.navigationItem.title != "Error" {
-                            self.navigationItem.title = "Error"
+                    DispatchQueue.main.async { [self] in
+                        tagsError = errorString(for: error)
+                        tags = []
+
+                        if navigationItem.title != "Error" {
+                            navigationItem.title = "Error"
                         }
-                        if self.navigationItem.rightBarButtonItem != nil {
-                            self.navigationItem.setRightBarButton(nil, animated: true)
+                        if navigationItem.rightBarButtonItem != nil {
+                            navigationItem.setRightBarButton(nil, animated: true)
                         }
                     }
             }
@@ -221,20 +258,29 @@ private extension AllTagsVC {
     }
 }
 
-// MARK: - UITableViewDelegate
+// MARK: - UICollectionViewDelegate
 
-extension AllTagsVC {
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        navigationController?.pushViewController({let vc = TransactionsByTagVC(style: .insetGrouped);vc.tag = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
+extension AllTagsVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+
+        let vc = TransactionsByTagVC()
+
+        vc.tag = dataSource.itemIdentifier(for: indexPath)
+
+        navigationController?.pushViewController(vc, animated: true)
     }
     
-    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let tag = dataSource.itemIdentifier(for: indexPath)?.id else {
+            return nil
+        }
+
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy", image: R.image.docOnClipboard()) { action in
-                UIPasteboard.general.string = self.dataSource.itemIdentifier(for: indexPath)!.id
-            }
+                UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
+                    UIPasteboard.general.string = tag
+                }
             ])
         }
     }

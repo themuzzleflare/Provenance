@@ -3,7 +3,7 @@ import WidgetKit
 import TinyConstraints
 import Rswift
 
-class DateStyleTableViewCell: UITableViewCell {
+final class DateStyleTableViewCell: UITableViewCell {
     // MARK: - Properties
     
     static let reuseIdentifier = "dateStyleTableViewCell"
@@ -18,14 +18,17 @@ class DateStyleTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { object, change in
+        
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
             if change.newValue == "Absolute" {
-                self.segmentedControl.selectedSegmentIndex = 0
+                segmentedControl.selectedSegmentIndex = 0
             } else if change.newValue == "Relative" {
-                self.segmentedControl.selectedSegmentIndex = 1
+                segmentedControl.selectedSegmentIndex = 1
             }
+
             WidgetCenter.shared.reloadAllTimelines()
         }
+
         configureCell()
         configureContentView()
         configureLabel()
@@ -43,7 +46,6 @@ class DateStyleTableViewCell: UITableViewCell {
 private extension DateStyleTableViewCell {
     private func configureCell() {
         selectionStyle = .none
-        separatorInset = .zero
     }
     
     private func configureContentView() {
@@ -61,16 +63,18 @@ private extension DateStyleTableViewCell {
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.insertSegment(withTitle: "Absolute", at: 0, animated: false)
         segmentedControl.insertSegment(withTitle: "Relative", at: 1, animated: false)
+
         if appDefaults.dateStyle == "Absolute" {
             segmentedControl.selectedSegmentIndex = 0
         } else if appDefaults.dateStyle == "Relative" {
             segmentedControl.selectedSegmentIndex = 1
         }
+
         segmentedControl.addTarget(self, action: #selector(switchDateStyle), for: .valueChanged)
     }
     
     private func configureHorizontalStackView() {
-        horizontalStack.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
+        horizontalStack.edgesToSuperview(insets: .horizontal(16) + .vertical(13))
         horizontalStack.addArrangedSubview(label)
         horizontalStack.addArrangedSubview(segmentedControl)
         horizontalStack.alignment = .center

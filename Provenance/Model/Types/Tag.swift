@@ -1,19 +1,21 @@
 import Foundation
 
+#if canImport(IGListKit)
+import IGListKit
+#endif
+
 struct Tag: Decodable {
     var data: [TagResource]
     var links: Pagination
 }
 
-struct TagResource: Decodable, Identifiable {
-    var type: String
+class TagResource: Decodable, Identifiable {
+    var type = "tags"
     var id: String
     var relationships: AccountRelationship?
     
-    init(type: String, id: String, relationships: AccountRelationship? = nil) {
-        self.type = type
+    init(id: String) {
         self.id = id
-        self.relationships = relationships
     }
 }
 
@@ -26,6 +28,21 @@ extension TagResource: Hashable {
         lhs.id == rhs.id
     }
 }
+
+#if canImport(IGListKit)
+extension TagResource: ListDiffable {
+    func diffIdentifier() -> NSObjectProtocol {
+        id as NSObjectProtocol
+    }
+
+    func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
+        guard let object = object as? TagResource else {
+            return false
+        }
+        return self.id == object.id
+    }
+}
+#endif
 
 struct ModifyTags: Codable {
     var data: [TagInputResourceIdentifier] // The tags to add to or remove from the transaction.

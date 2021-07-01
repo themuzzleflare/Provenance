@@ -3,7 +3,7 @@ import FLAnimatedImage
 import TinyConstraints
 import Rswift
 
-class AboutTopTableViewCell: UITableViewCell {
+final class AboutTopTableViewCell: UITableViewCell {
     // MARK: - Properties
 
     static let reuseIdentifier = "aboutTopTableViewCell"
@@ -17,6 +17,7 @@ class AboutTopTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         configure()
     }
 
@@ -30,25 +31,29 @@ class AboutTopTableViewCell: UITableViewCell {
 private extension AboutTopTableViewCell {
     private func configure() {
         selectionStyle = .none
-        separatorInset = .zero
+
         contentView.addSubview(verticalStack)
-        verticalStack.edges(to: contentView, insets: .horizontal(16) + .vertical(13))
+
+        verticalStack.edgesToSuperview(insets: .horizontal(16) + .vertical(13))
         verticalStack.addArrangedSubview(logoImageView)
         verticalStack.addArrangedSubview(nameLabel)
         verticalStack.addArrangedSubview(descriptionLabel)
         verticalStack.axis = .vertical
         verticalStack.alignment = .center
         verticalStack.spacing = 5
-        logoImageView.clipsToBounds = true
+
         logoImageView.width(100)
         logoImageView.height(100)
-        logoImageView.layer.cornerRadius = 20
+        logoImageView.clipsToBounds = true
         logoImageView.backgroundColor = R.color.accentColour()
+        logoImageView.layer.cornerRadius = 20
         logoImageView.animatedImage = upLogoDrawMidnightYellowTransparentBackground
+
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.font = R.font.circularStdBold(size: 32)
         nameLabel.textAlignment = .center
         nameLabel.text = appName
+
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         descriptionLabel.textAlignment = .left

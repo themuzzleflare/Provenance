@@ -15,51 +15,28 @@ struct LatestTransactionProvider: IntentTimelineProvider {
 
     func getTimeline(for configuration: Intent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [Entry] = []
-        var url = URL(string: "https://api.up.com.au/api/v1/transactions")!
-        let urlParams = ["page[size]": "1"]
-        url = url.appendingQueryParameters(urlParams)
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.allHTTPHeaderFields = [
-            "Accept": "application/json",
-            "Authorization": "Bearer \(appDefaults.apiKey)"
-        ]
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if error == nil {
-                if let decodedResponse = try? JSONDecoder().decode(Transaction.self, from: data!) {
+
+        upApi.retrieveLatestTransaction { result in
+            switch result {
+                case .success(let transactions):
                     var creationDate: String {
                         switch configuration.dateStyle {
                             case .unknown:
-                                return decodedResponse.data.first!.attributes.creationDate
+                                return transactions.first!.attributes.creationDate
                             case .absolute:
-                                return decodedResponse.data.first!.attributes.creationDateAbsolute
+                                return transactions.first!.attributes.creationDateAbsolute
                             case .relative:
-                                return decodedResponse.data.first!.attributes.creationDateRelative
+                                return transactions.first!.attributes.creationDateRelative
                         }
                     }
-                    DispatchQueue.main.async {
-                        entries.append(Entry(date: Date(), transactionValueInBaseUnits: decodedResponse.data.first!.attributes.amount.valueInBaseUnits.signum(), transactionDescription: decodedResponse.data.first!.attributes.description, transactionDate: creationDate, transactionAmount: decodedResponse.data.first!.attributes.amount.valueShort, error: ""))
-                        completion(Timeline(entries: entries, policy: .atEnd))
-                    }
-                } else if let decodedResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data!) {
-                    DispatchQueue.main.async {
-                        entries.append(Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "", transactionDate: "", transactionAmount: "", error: decodedResponse.errors.first!.detail))
-                        completion(Timeline(entries: entries, policy: .atEnd))
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        entries.append(Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "", transactionDate: "", transactionAmount: "", error: "JSON Decoding Failed!"))
-                        completion(Timeline(entries: entries, policy: .atEnd))
-                    }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    entries.append(Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "", transactionDate: "", transactionAmount: "", error: error?.localizedDescription ?? "Unknown Error!"))
+
+                    entries.append(Entry(date: Date(), transactionValueInBaseUnits: transactions.first!.attributes.amount.valueInBaseUnits.signum(), transactionDescription: transactions.first!.attributes.description, transactionDate: creationDate, transactionAmount: transactions.first!.attributes.amount.valueShort, error: ""))
                     completion(Timeline(entries: entries, policy: .atEnd))
-                }
+                case .failure(let error):
+                    entries.append(Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "", transactionDate: "", transactionAmount: "", error: errorString(for: error)))
+                    completion(Timeline(entries: entries, policy: .atEnd))
             }
         }
-        .resume()
     }
 }
 

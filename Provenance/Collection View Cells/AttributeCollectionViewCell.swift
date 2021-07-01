@@ -2,45 +2,65 @@ import UIKit
 import TinyConstraints
 import Rswift
 
-final class AttributeTableViewCell: UITableViewCell {
+final class AttributeCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
 
-    static let reuseIdentifier = "attributeTableViewCell"
+    static let reuseIdentifier = "attributeCollectionViewCell"
 
     var leftLabel = UILabel()
     var rightLabel = UILabel()
 
     private let horizontalStack = UIStackView()
+    private let insets: UIEdgeInsets = .zero
+    private let separator: CALayer = {
+        let layer = CALayer()
+        layer.backgroundColor = UIColor.separator.cgColor
+        return layer
+    }()
 
     // MARK: - Life Cycle
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
         configureCell()
         configureContentView()
         configureLeftLabel()
         configureRightLabel()
         configureHorizontalStackView()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        horizontalStack.frame = contentView.bounds.inset(by: insets)
+        separator.frame = CGRect(x: insets.left, y: contentView.bounds.height - 0.5, width: contentView.bounds.width - insets.left, height: 0.5)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        separator.backgroundColor = UIColor.separator.cgColor
     }
 }
 
 // MARK: - Configuration
 
-private extension AttributeTableViewCell {
+private extension AttributeCollectionViewCell {
     private func configureCell() {
-        selectionStyle = .none
         selectedBackgroundView = selectedBackgroundCellView
+        backgroundColor = .clear
     }
-    
+
     private func configureContentView() {
         contentView.addSubview(horizontalStack)
+        contentView.layer.addSublayer(separator)
     }
-    
+
     private func configureLeftLabel() {
         leftLabel.translatesAutoresizingMaskIntoConstraints = false
         leftLabel.font = R.font.circularStdMedium(size: UIFont.labelFontSize)
@@ -48,7 +68,7 @@ private extension AttributeTableViewCell {
         leftLabel.textColor = .secondaryLabel
         leftLabel.numberOfLines = 0
     }
-    
+
     private func configureRightLabel() {
         rightLabel.translatesAutoresizingMaskIntoConstraints = false
         rightLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)

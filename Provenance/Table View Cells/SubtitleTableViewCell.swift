@@ -1,6 +1,6 @@
 import UIKit
 
-class SubtitleTableViewCell: UITableViewCell {
+final class SubtitleTableViewCell: UITableViewCell {
     // MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

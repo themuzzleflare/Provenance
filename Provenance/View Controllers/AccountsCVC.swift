@@ -3,7 +3,7 @@ import FLAnimatedImage
 import TinyConstraints
 import Rswift
 
-final class AccountsCVC: CollectionViewController {
+final class AccountsCVC: UIViewController {
     // MARK: - Properties
 
     private enum Section {
@@ -11,11 +11,13 @@ final class AccountsCVC: CollectionViewController {
     }
 
     private typealias DataSource = UICollectionViewDiffableDataSource<Section, AccountResource>
-    private typealias AccountCell = UICollectionView.CellRegistration<AccountCollectionViewCell, AccountResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, AccountResource>
+    private typealias AccountCell = UICollectionView.CellRegistration<AccountCollectionViewCell, AccountResource>
 
     private lazy var dataSource = makeDataSource()
 
+    private let accountsPagination = Pagination(prev: nil, next: nil)
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: twoColumnGridLayout())
     private let searchController = SearchController(searchResultsController: nil)
     private let collectionRefreshControl = RefreshControl(frame: .zero)
     private let cellRegistration = AccountCell { cell, indexPath, account in
@@ -33,7 +35,6 @@ final class AccountsCVC: CollectionViewController {
             searchController.searchBar.placeholder = "Search \(accounts.count.description) \(accounts.count == 1 ? "Account" : "Accounts")"
         }
     }
-    private var accountsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var accountsError: String = ""
     private var filteredAccounts: [AccountResource] {
         accounts.filter { account in
@@ -46,8 +47,11 @@ final class AccountsCVC: CollectionViewController {
     
     // MARK: - View Life Cycle
     
-    override init(collectionViewLayout layout: UICollectionViewLayout) {
-        super.init(collectionViewLayout: layout)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.addSubview(collectionView)
+
         configureProperties()
         configureNavigation()
         configureSearch()
@@ -55,12 +59,15 @@ final class AccountsCVC: CollectionViewController {
         configureCollectionView()
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        collectionView.frame = view.bounds
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         applySnapshot(animate: false)
         fetchAccounts()
     }
@@ -72,9 +79,11 @@ private extension AccountsCVC {
     private func configureProperties() {
         title = "Accounts"
         definesPresentationContext = true
+
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { object, change in
-            self.fetchAccounts()
+
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] object, change in
+            fetchAccounts()
         }
     }
     
@@ -93,7 +102,10 @@ private extension AccountsCVC {
     }
     
     private func configureCollectionView() {
+        collectionView.dataSource = dataSource
+        collectionView.delegate = self
         collectionView.refreshControl = collectionRefreshControl
+        collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
 }
 
@@ -105,69 +117,87 @@ private extension AccountsCVC {
     }
 
     @objc private func refreshCategories() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.fetchAccounts()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+            fetchAccounts()
         }
     }
 
     private func makeDataSource() -> DataSource {
-        DataSource(collectionView: collectionView) { collectionView, indexPath, account in
-            collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: account)
+        DataSource(collectionView: collectionView) { [self] collectionView, indexPath, account in
+            collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: account)
         }
     }
 
     private func applySnapshot(animate: Bool = true) {
         var snapshot = Snapshot()
+
         snapshot.appendSections([.main])
         snapshot.appendItems(filteredAccountsList.data, toSection: .main)
+
         if snapshot.itemIdentifiers.isEmpty && accountsError.isEmpty {
             if accounts.isEmpty && !noAccounts {
                 collectionView.backgroundView = {
-                    let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
+                    let view = UIView(frame: collectionView.bounds)
+
                     let loadingIndicator = FLAnimatedImageView()
-                    loadingIndicator.animatedImage = upZapSpinTransparentBackground
+
+                    view.addSubview(loadingIndicator)
+
+                    loadingIndicator.centerInSuperview()
                     loadingIndicator.width(100)
                     loadingIndicator.height(100)
-                    view.addSubview(loadingIndicator)
-                    loadingIndicator.center(in: view)
+                    loadingIndicator.animatedImage = upZapSpinTransparentBackground
+
                     return view
                 }()
             } else {
                 collectionView.backgroundView = {
-                    let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
+                    let view = UIView(frame: collectionView.bounds)
+
                     let icon = UIImageView(image: R.image.xmarkDiamond())
-                    icon.tintColor = .secondaryLabel
+
                     icon.width(70)
                     icon.height(64)
+                    icon.tintColor = .secondaryLabel
+
                     let label = UILabel()
+
                     label.translatesAutoresizingMaskIntoConstraints = false
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
                     label.font = R.font.circularStdBook(size: 23)
                     label.text = "No Accounts"
-                    let vstack = UIStackView(arrangedSubviews: [icon, label])
-                    vstack.axis = .vertical
-                    vstack.alignment = .center
-                    vstack.spacing = 10
-                    view.addSubview(vstack)
-                    vstack.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
-                    vstack.center(in: view)
+
+                    let vStack = UIStackView(arrangedSubviews: [icon, label])
+
+                    view.addSubview(vStack)
+
+                    vStack.horizontalToSuperview(insets: .horizontal(16))
+                    vStack.centerInSuperview()
+                    vStack.axis = .vertical
+                    vStack.alignment = .center
+                    vStack.spacing = 10
+
                     return view
                 }()
             }
         } else {
             if !accountsError.isEmpty {
                 collectionView.backgroundView = {
-                    let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
+                    let view = UIView(frame: collectionView.bounds)
+
                     let label = UILabel()
+
                     view.addSubview(label)
-                    label.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
-                    label.center(in: view)
+
+                    label.horizontalToSuperview(insets: .horizontal(16))
+                    label.centerInSuperview()
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
                     label.text = accountsError
+
                     return view
                 }()
             } else {
@@ -176,6 +206,7 @@ private extension AccountsCVC {
                 }
             }
         }
+
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
 
@@ -183,19 +214,21 @@ private extension AccountsCVC {
         upApi.listAccounts { result in
             switch result {
                 case .success(let accounts):
-                    DispatchQueue.main.async {
-                        self.accountsError = ""
+                    DispatchQueue.main.async { [self] in
+                        accountsError = ""
                         self.accounts = accounts
-                        if self.navigationItem.title != "Accounts" {
-                            self.navigationItem.title = "Accounts"
+
+                        if navigationItem.title != "Accounts" {
+                            navigationItem.title = "Accounts"
                         }
                     }
                 case .failure(let error):
-                    DispatchQueue.main.async {
-                        self.accountsError = errorString(for: error)
-                        self.accounts = []
-                        if self.navigationItem.title != "Error" {
-                            self.navigationItem.title = "Error"
+                    DispatchQueue.main.async { [self] in
+                        accountsError = errorString(for: error)
+                        accounts = []
+                        
+                        if navigationItem.title != "Error" {
+                            navigationItem.title = "Error"
                         }
                     }
             }
@@ -205,21 +238,28 @@ private extension AccountsCVC {
 
 // MARK: - UICollectionViewDelegate
 
-extension AccountsCVC {
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        navigationController?.pushViewController({let vc = TransactionsByAccountVC(style: .insetGrouped);vc.account = dataSource.itemIdentifier(for: indexPath);return vc}(), animated: true)
+extension AccountsCVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = TransactionsByAccountVC()
+
+        vc.account = dataSource.itemIdentifier(for: indexPath)
+
+        navigationController?.pushViewController(vc, animated: true)
     }
     
-    override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let account = dataSource.itemIdentifier(for: indexPath)!
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let account = dataSource.itemIdentifier(for: indexPath) else {
+            return nil
+        }
+
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy Balance", image: R.image.dollarsignCircle()) { action in
-                UIPasteboard.general.string = account.attributes.balance.valueShort
-            },
-                UIAction(title: "Copy Display Name", image: R.image.textAlignright()) { action in
-                UIPasteboard.general.string = account.attributes.displayName
-            }
+                UIAction(title: "Copy Balance", image: R.image.dollarsignCircle()) { _ in
+                    UIPasteboard.general.string = account.attributes.balance.valueShort
+                },
+                UIAction(title: "Copy Display Name", image: R.image.textAlignright()) { _ in
+                    UIPasteboard.general.string = account.attributes.displayName
+                }
             ])
         }
     }
