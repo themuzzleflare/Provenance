@@ -182,6 +182,7 @@ private extension TransactionDetailCVC {
     private func configureCollectionView() {
         collectionView.refreshControl = collectionRefreshControl
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.backgroundColor = .systemGroupedBackground
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
     }

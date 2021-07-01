@@ -28,6 +28,8 @@ private extension StickerView {
     private func configure() {
         title = "Sticker View"
 
+        view.backgroundColor = .systemGroupedBackground
+
         navigationItem.title = "Sticker"
 
         view.addSubview(imageView)

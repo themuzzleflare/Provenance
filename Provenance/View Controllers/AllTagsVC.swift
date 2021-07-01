@@ -16,6 +16,7 @@ final class AllTagsVC: UIViewController {
 
     private lazy var dataSource = makeDataSource()
 
+    private let tagsPagination = Pagination(prev: nil, next: nil)
     private let collectionRefreshControl = RefreshControl(frame: .zero)
     private let searchController = SearchController(searchResultsController: nil)
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout.list(using: UICollectionLayoutListConfiguration(appearance: .grouped)))
@@ -41,7 +42,6 @@ final class AllTagsVC: UIViewController {
             searchController.searchBar.placeholder = "Search \(tags.count.description) \(tags.count == 1 ? "Tag" : "Tags")"
         }
     }
-    private var tagsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var tagsError: String = ""
     private var filteredTags: [TagResource] {
         tags.filter { tag in

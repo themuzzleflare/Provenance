@@ -28,6 +28,8 @@ private extension WidgetsVC {
     private func configure() {
         title = "Widgets"
 
+        view.backgroundColor = .systemGroupedBackground
+
         navigationItem.title = "Widgets"
 
         accountBalanceWidget.image = R.image.actbalsmall()

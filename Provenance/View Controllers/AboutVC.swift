@@ -83,7 +83,6 @@ extension AboutVC: UITableViewDataSource {
         let sectionOneAttributeCell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
         let basicCell = tableView.dequeueReusableCell(withIdentifier: "basicCell", for: indexPath) as! BasicTableViewCell
 
-        basicCell.separatorInset = .zero
         basicCell.selectedBackgroundView = selectedBackgroundCellView
         basicCell.imageView?.tintColor = .label
         basicCell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
@@ -163,6 +162,8 @@ extension AboutVC: UITableViewDelegate {
 
         switch section {
             case 1:
+                tableView.deselectRow(at: indexPath, animated: true)
+
                 switch row {
                     case 0:
                         navigationController?.pushViewController(WidgetsVC(), animated: true)

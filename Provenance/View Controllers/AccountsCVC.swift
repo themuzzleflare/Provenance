@@ -106,6 +106,7 @@ private extension AccountsCVC {
         collectionView.delegate = self
         collectionView.refreshControl = collectionRefreshControl
         collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        collectionView.backgroundColor = .systemGroupedBackground
     }
 }
 

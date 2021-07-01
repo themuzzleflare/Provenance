@@ -34,6 +34,7 @@ private extension StickersVC {
         collectionView.delegate = self
         collectionView.register(StickerCollectionViewCell.self, forCellWithReuseIdentifier: StickerCollectionViewCell.reuseIdentifier)
         collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        collectionView.backgroundColor = .systemGroupedBackground
     }
 }
 

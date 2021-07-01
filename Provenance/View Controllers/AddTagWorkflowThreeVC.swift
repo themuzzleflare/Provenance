@@ -131,7 +131,6 @@ extension AddTagWorkflowThreeVC: UITableViewDataSource {
         let transactionCell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
 
         cell.selectionStyle = .none
-        cell.separatorInset = .zero
         cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         cell.textLabel?.textAlignment = .left
         cell.textLabel?.numberOfLines = 0

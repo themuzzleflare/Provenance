@@ -49,6 +49,7 @@ final class TransactionsByAccountVC: UIViewController {
 
     private lazy var dataSource = makeDataSource()
 
+    private let transactionsPagination = Pagination(prev: nil, next: nil)
     private let searchController = SearchController(searchResultsController: nil)
     private let tableRefreshControl = RefreshControl(frame: .zero)
     private let tableView = UITableView(frame: .zero, style: .grouped)
@@ -60,7 +61,6 @@ final class TransactionsByAccountVC: UIViewController {
             transactionsUpdates()
         }
     }
-    private var transactionsPagination: Pagination = Pagination(prev: nil, next: nil)
     private var transactionsError: String = ""
     private var filteredTransactions: [TransactionResource] {
         transactions.filter { transaction in

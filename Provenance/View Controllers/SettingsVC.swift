@@ -95,7 +95,6 @@ extension SettingsVC: UITableViewDataSource {
         let dateStyleCell = tableView.dequeueReusableCell(withIdentifier: DateStyleTableViewCell.reuseIdentifier, for: indexPath) as! DateStyleTableViewCell
         let settingsCell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath) as! BasicTableViewCell
 
-        settingsCell.separatorInset = .zero
         settingsCell.accessoryType = .disclosureIndicator
         settingsCell.selectedBackgroundView = selectedBackgroundCellView
         settingsCell.imageView?.tintColor = .label
@@ -166,13 +165,13 @@ extension SettingsVC: UITableViewDelegate {
 
                 let ac = UIAlertController(title: "API Key", message: "Enter a new API Key.", preferredStyle: .alert)
                 
-                ac.addTextField { textField in
+                ac.addTextField { [self] textField in
                     textField.autocapitalizationType = .none
                     textField.autocorrectionType = .no
                     textField.tintColor = R.color.accentColour()
                     textField.text = appDefaults.apiKey
 
-                    self.textDidChangeObserver = NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main) { [self] notification in
+                    textDidChangeObserver = NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main) { notification in
                         if let textField = notification.object as? UITextField {
                             if let text = textField.text {
                                 submitActionProxy!.isEnabled = text.count >= 1 && text != appDefaults.apiKey

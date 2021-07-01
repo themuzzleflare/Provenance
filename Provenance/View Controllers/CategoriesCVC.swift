@@ -81,8 +81,8 @@ private extension CategoriesCVC {
 
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
-        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { object, change in
-            self.fetchCategories()
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] object, change in
+            fetchCategories()
         }
     }
     
@@ -105,6 +105,7 @@ private extension CategoriesCVC {
         collectionView.delegate = self
         collectionView.refreshControl = collectionRefreshControl
         collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        collectionView.backgroundColor = .systemGroupedBackground
     }
 }
 
@@ -116,14 +117,14 @@ private extension CategoriesCVC {
     }
 
     @objc private func refreshCategories() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.fetchCategories()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+            fetchCategories()
         }
     }
 
     private func makeDataSource() -> DataSource {
-        DataSource(collectionView: collectionView) { collectionView, indexPath, category in
-            collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: category)
+        DataSource(collectionView: collectionView) { [self] collectionView, indexPath, category in
+            collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: category)
         }
     }
 
@@ -136,29 +137,28 @@ private extension CategoriesCVC {
         if snapshot.itemIdentifiers.isEmpty && categoriesError.isEmpty {
             if categories.isEmpty && !noCategories {
                 collectionView.backgroundView = {
-                    let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
+                    let view = UIView(frame: collectionView.bounds)
 
                     let loadingIndicator = FLAnimatedImageView()
 
-                    loadingIndicator.animatedImage = upZapSpinTransparentBackground
-                    loadingIndicator.width(100)
-                    loadingIndicator.height(100)
-
                     view.addSubview(loadingIndicator)
 
-                    loadingIndicator.center(in: view)
+                    loadingIndicator.centerInSuperview()
+                    loadingIndicator.width(100)
+                    loadingIndicator.height(100)
+                    loadingIndicator.animatedImage = upZapSpinTransparentBackground
 
                     return view
                 }()
             } else {
                 collectionView.backgroundView = {
-                    let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
+                    let view = UIView(frame: collectionView.bounds)
 
                     let icon = UIImageView(image: R.image.xmarkDiamond())
 
-                    icon.tintColor = .secondaryLabel
                     icon.width(70)
                     icon.height(64)
+                    icon.tintColor = .secondaryLabel
 
                     let label = UILabel()
 
@@ -168,16 +168,15 @@ private extension CategoriesCVC {
                     label.font = R.font.circularStdBook(size: 23)
                     label.text = "No Categories"
 
-                    let vstack = UIStackView(arrangedSubviews: [icon, label])
+                    let vStack = UIStackView(arrangedSubviews: [icon, label])
 
-                    vstack.axis = .vertical
-                    vstack.alignment = .center
-                    vstack.spacing = 10
+                    view.addSubview(vStack)
 
-                    view.addSubview(vstack)
-
-                    vstack.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
-                    vstack.center(in: view)
+                    vStack.horizontalToSuperview(insets: .horizontal(16))
+                    vStack.centerInSuperview()
+                    vStack.axis = .vertical
+                    vStack.alignment = .center
+                    vStack.spacing = 10
 
                     return view
                 }()
@@ -185,14 +184,14 @@ private extension CategoriesCVC {
         } else {
             if !categoriesError.isEmpty {
                 collectionView.backgroundView = {
-                    let view = UIView(frame: CGRect(x: collectionView.bounds.midX, y: collectionView.bounds.midY, width: collectionView.bounds.width, height: collectionView.bounds.height))
+                    let view = UIView(frame: collectionView.bounds)
 
                     let label = UILabel()
 
                     view.addSubview(label)
 
-                    label.edges(to: view, excluding: [.top, .bottom, .leading, .trailing], insets: .horizontal(16))
-                    label.center(in: view)
+                    label.horizontalToSuperview(insets: .horizontal(16))
+                    label.centerInSuperview()
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
@@ -215,21 +214,21 @@ private extension CategoriesCVC {
         upApi.listCategories { result in
             switch result {
                 case .success(let categories):
-                    DispatchQueue.main.async {
-                        self.categoriesError = ""
+                    DispatchQueue.main.async { [self] in
+                        categoriesError = ""
                         self.categories = categories
 
-                        if self.navigationItem.title != "Categories" {
-                            self.navigationItem.title = "Categories"
+                        if navigationItem.title != "Categories" {
+                            navigationItem.title = "Categories"
                         }
                     }
                 case .failure(let error):
-                    DispatchQueue.main.async {
-                        self.categoriesError = errorString(for: error)
-                        self.categories = []
+                    DispatchQueue.main.async { [self] in
+                        categoriesError = errorString(for: error)
+                        categories = []
 
-                        if self.navigationItem.title != "Error" {
-                            self.navigationItem.title = "Error"
+                        if navigationItem.title != "Error" {
+                            navigationItem.title = "Error"
                         }
                     }
             }
@@ -257,7 +256,7 @@ extension CategoriesCVC: UICollectionViewDelegate {
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy", image: R.image.docOnClipboard()) { action in
+                UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
                     UIPasteboard.general.string = category
                 }
             ])

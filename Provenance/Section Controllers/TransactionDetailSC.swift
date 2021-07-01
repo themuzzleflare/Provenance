@@ -21,7 +21,7 @@ final class TransactionDetailSC: ListSectionController {
     }
 
     override func sizeForItem(at index: Int) -> CGSize {
-        CGSize(width: collectionContext!.containerSize.width, height: 90)
+        CGSize(width: collectionContext!.containerSize.width, height: 100)
     }
 
     override func cellForItem(at index: Int) -> UICollectionViewCell {
