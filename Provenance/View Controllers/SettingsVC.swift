@@ -15,7 +15,7 @@ final class SettingsVC: UIViewController {
     private var apiKeyObserver: NSKeyValueObservation?
     private var textDidChangeObserver: NSObjectProtocol!
 
-    // MARK: - View Life Cycle
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()

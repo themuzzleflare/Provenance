@@ -52,7 +52,7 @@ final class AllTagsVC: UIViewController {
         Tag(data: filteredTags, links: tagsPagination)
     }
     
-    // MARK: - View Life Cycle
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,6 +99,7 @@ private extension AllTagsVC {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag())
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func configureSearch() {
@@ -227,33 +228,50 @@ private extension AllTagsVC {
     }
 
     private func fetchTags() {
-        upApi.listTags { result in
-            switch result {
-                case .success(let tags):
-                    DispatchQueue.main.async { [self] in
-                        tagsError = ""
-                        self.tags = tags
-                        
-                        if navigationItem.title != "Tags" {
-                            navigationItem.title = "Tags"
-                        }
-                        if navigationItem.rightBarButtonItem == nil {
-                            navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow)), animated: true)
-                        }
-                    }
-                case .failure(let error):
-                    DispatchQueue.main.async { [self] in
-                        tagsError = errorString(for: error)
-                        tags = []
-
-                        if navigationItem.title != "Error" {
-                            navigationItem.title = "Error"
-                        }
-                        if navigationItem.rightBarButtonItem != nil {
-                            navigationItem.setRightBarButton(nil, animated: true)
-                        }
-                    }
+        if #available(iOS 15.0, *) {
+            async {
+                do {
+                    let tags = try await Up.listTags()
+                    display(tags)
+                } catch {
+                    display(error as! NetworkError)
+                }
             }
+        } else {
+            Up.listTags { [self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                        case .success(let tags):
+                            display(tags)
+                        case .failure(let error):
+                            display(error)
+                    }
+                }
+            }
+        }
+    }
+
+    private func display(_ tags: [TagResource]) {
+        tagsError = ""
+        self.tags = tags
+
+        if navigationItem.title != "Tags" {
+            navigationItem.title = "Tags"
+        }
+        if navigationItem.rightBarButtonItem == nil {
+            navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow)), animated: true)
+        }
+    }
+
+    private func display(_ error: NetworkError) {
+        tagsError = errorString(for: error)
+        tags = []
+
+        if navigationItem.title != "Error" {
+            navigationItem.title = "Error"
+        }
+        if navigationItem.rightBarButtonItem != nil {
+            navigationItem.setRightBarButton(nil, animated: true)
         }
     }
 }

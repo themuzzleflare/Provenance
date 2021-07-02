@@ -43,7 +43,7 @@ final class CategoriesCVC: UIViewController {
         Category(data: filteredCategories)
     }
     
-    // MARK: - View Life Cycle
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,6 +90,7 @@ private extension CategoriesCVC {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.trayFull())
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func configureSearch() {
@@ -211,27 +212,44 @@ private extension CategoriesCVC {
     }
 
     private func fetchCategories() {
-        upApi.listCategories { result in
-            switch result {
-                case .success(let categories):
-                    DispatchQueue.main.async { [self] in
-                        categoriesError = ""
-                        self.categories = categories
-
-                        if navigationItem.title != "Categories" {
-                            navigationItem.title = "Categories"
-                        }
-                    }
-                case .failure(let error):
-                    DispatchQueue.main.async { [self] in
-                        categoriesError = errorString(for: error)
-                        categories = []
-
-                        if navigationItem.title != "Error" {
-                            navigationItem.title = "Error"
-                        }
-                    }
+        if #available(iOS 15.0, *) {
+            async {
+                do {
+                    let categories = try await Up.listCategories()
+                    display(categories)
+                } catch {
+                    display(error as! NetworkError)
+                }
             }
+        } else {
+            upApi.listCategories { [self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                        case .success(let categories):
+                            display(categories)
+                        case .failure(let error):
+                            display(error)
+                    }
+                }
+            }
+        }
+    }
+
+    private func display(_ categories: [CategoryResource]) {
+        categoriesError = ""
+        self.categories = categories
+
+        if navigationItem.title != "Categories" {
+            navigationItem.title = "Categories"
+        }
+    }
+
+    private func display(_ error: NetworkError) {
+        categoriesError = errorString(for: error)
+        categories = []
+
+        if navigationItem.title != "Error" {
+            navigationItem.title = "Error"
         }
     }
 }

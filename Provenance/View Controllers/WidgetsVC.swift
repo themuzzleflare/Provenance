@@ -13,7 +13,7 @@ final class WidgetsVC: UIViewController {
     private let verticalStack = UIStackView()
     private let scrollView = UIScrollView()
 
-    // MARK: - View Life Cycle
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()

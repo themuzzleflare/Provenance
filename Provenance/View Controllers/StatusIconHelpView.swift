@@ -14,7 +14,7 @@ final class StatusIconHelpView: UIViewController {
     private let heldLabel = UILabel()
     private let settledLabel = UILabel()
 
-    // MARK: - View Life Cycle
+    // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -22,14 +22,32 @@ struct AccountBalanceProvider: IntentTimelineProvider {
             return
         }
 
-        upApi.retrieveAccount(for: accountId) { result in
-            switch result {
-                case .success(let account):
-                    entries.append(Entry(date: Date(), account: AvailableAccount(id: account.id, displayName: account.attributes.displayName, balance: account.attributes.balance.valueShort)))
-                    completion(Timeline(entries: entries, policy: .atEnd))
-                case .failure(let error):
-                    entries.append(Entry(date: Date(), account: AvailableAccount(id: UUID().uuidString, displayName: errorString(for: error), balance: "Error")))
-                    completion(Timeline(entries: entries, policy: .atEnd))
+        if #available(iOS 15.0, *) {
+            async {
+                do {
+                    let account = try await Up.retrieveAccount(for: accountId)
+
+                    let entry = [Entry(date: Date(), account: AvailableAccount(id: account.id, displayName: account.attributes.displayName, balance: account.attributes.balance.valueShort))]
+
+                    completion(Timeline(entries: entry, policy: .atEnd))
+                } catch {
+                    let entry = [Entry(date: Date(), account: AvailableAccount(id: UUID().uuidString, displayName: errorString(for: error as! NetworkError), balance: "Error"))]
+
+                    completion(Timeline(entries: entry, policy: .atEnd))
+                }
+            }
+        } else {
+            Up.retrieveAccount(for: accountId) { result in
+                switch result {
+                    case .success(let account):
+                        entries.append(Entry(date: Date(), account: AvailableAccount(id: account.id, displayName: account.attributes.displayName, balance: account.attributes.balance.valueShort)))
+
+                        completion(Timeline(entries: entries, policy: .atEnd))
+                    case .failure(let error):
+                        entries.append(Entry(date: Date(), account: AvailableAccount(id: UUID().uuidString, displayName: errorString(for: error), balance: "Error")))
+
+                        completion(Timeline(entries: entries, policy: .atEnd))
+                }
             }
         }
     }

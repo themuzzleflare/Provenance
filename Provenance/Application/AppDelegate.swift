@@ -1,6 +1,7 @@
 import UIKit
 import Firebase
 import FirebaseAnalytics
+import SwiftDate
 import Rswift
 
 @main
@@ -10,6 +11,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:[UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         registerDefaults()
         configureFirebase()
+
+        SwiftDate.defaultRegion = .current
 
         return true
     }

@@ -17,7 +17,7 @@ final class AccountDetailVC: UIViewController {
     private var dateStyleObserver: NSKeyValueObservation?
     private var sections: [Section]!
 
-    // MARK: - View Life Cycle
+    // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()

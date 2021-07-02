@@ -1,5 +1,7 @@
 import Foundation
 import UIKit
+import SwiftUI
+import SwiftDate
 
 #if canImport(IGListKit)
 import IGListKit
@@ -15,18 +17,16 @@ struct Transaction: Decodable {
 }
 
 class TransactionResource: Decodable, Identifiable {
-    private var type: String // The type of this resource: transactions
+    var type = "transactions" // The type of this resource: transactions
     var id: String // The unique identifier for this transaction.
     var attributes: Attribute
     var relationships: Relationship
     var links: SelfLink?
 
-    init(type: String, id: String, attributes: Attribute, relationships: Relationship, links: SelfLink? = nil) {
-        self.type = type
+    init(id: String, attributes: Attribute, relationships: Relationship) {
         self.id = id
         self.attributes = attributes
         self.relationships = relationships
-        self.links = links
     }
 }
 
@@ -57,16 +57,27 @@ extension TransactionResource: ListDiffable {
 
 struct Attribute: Decodable {
     private var status: TransactionStatusEnum // The current processing status of this transaction, according to whether or not this transaction has settled or is still held.
+
     private enum TransactionStatusEnum: String, Decodable {
         case held = "HELD"
         case settled = "SETTLED"
     }
+
     var isSettled: Bool {
         switch status {
             case .settled:
                 return true
             case .held:
                 return false
+        }
+    }
+
+    var statusString: String {
+        switch isSettled {
+            case true:
+                return "Settled"
+            case false:
+                return "Held"
         }
     }
 
@@ -81,14 +92,15 @@ struct Attribute: Decodable {
     }
     #endif
 
-    var statusString: String {
+    var statusIconImage: Image {
         switch isSettled {
             case true:
-                return "Settled"
+                return Image(systemName: "checkmark.circle")
             case false:
-                return "Held"
+                return Image(systemName: "clock")
         }
     }
+
     var rawText: String? // The original, unprocessed text of the transaction. This is often not a perfect indicator of the actual merchant, but it is useful for reconciliation purposes in some cases.
     var description: String // A short description for this transaction. Usually the merchant name for purchases.
     var message: String? // Attached message for this transaction, such as a payment message, or a transfer note.
@@ -97,7 +109,9 @@ struct Attribute: Decodable {
     var cashback: CashbackObject? // If all or part of this transaction was instantly reimbursed in the form of cashback, details of the reimbursement.
     var amount: MoneyObject // The amount of this transaction in Australian dollars. For transactions that were once HELD but are now SETTLED, refer to the holdInfo field for the original amount the transaction was HELD at.
     var foreignAmount: MoneyObject? // The foreign currency amount of this transaction. This field will be null for domestic transactions. The amount was converted to the AUD amount reflected in the amount of this transaction. Refer to the holdInfo field for the original foreignAmount the transaction was HELD at.
+
     private var settledAt: String? // The date-time at which this transaction settled. This field will be null for transactions that are currently in the HELD status.
+    
     private var settlementDateAbsolute: String? {
         switch settledAt {
             case nil:
@@ -106,6 +120,7 @@ struct Attribute: Decodable {
                 return formatDateAbsolute(for: settledAt!)
         }
     }
+
     private var settlementDateRelative: String? {
         switch settledAt {
             case nil:
@@ -114,6 +129,7 @@ struct Attribute: Decodable {
                 return formatDateRelative(for: settledAt!)
         }
     }
+
     var settlementDate: String? {
         switch settledAt {
             case nil:
@@ -129,23 +145,26 @@ struct Attribute: Decodable {
                 }
         }
     }
+
     private var createdAt: String // The date-time at which this transaction was first encountered.
-    var createdAtDay: Int {
-        let date = ISO8601DateFormatter().date(from: createdAt)!
-        return dayOfYear(for: date)
+
+    var createdAtDate: Date {
+        let date = createdAt.toDate()!
+        return date.dateAt(.startOfDay).date
     }
-    var createdAtDMY: String {
-        let date = ISO8601DateFormatter().date(from: createdAt)!
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/yyyy"
-        return formatter.string(from: date)
+
+    var creationDayMonthYear: String {
+        createdAtDate.toString(.date(.medium))
     }
+
     var creationDateAbsolute: String {
         formatDateAbsolute(for: createdAt)
     }
+
     var creationDateRelative: String {
         formatDateRelative(for: createdAt)
     }
+
     var creationDate: String {
         switch appDefaults.dateStyle {
             case "Absolute":
@@ -289,10 +308,10 @@ struct Pagination: Decodable {
 
 class SortedTransactions {
     var id = UUID().uuidString
-    var day: Int
+    var day: Date
     var transactions: [TransactionResource]
     
-    init(day: Int, transactions: [TransactionResource]) {
+    init(day: Date, transactions: [TransactionResource]) {
         self.day = day
         self.transactions = transactions
     }

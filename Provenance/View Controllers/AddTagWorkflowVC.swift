@@ -40,7 +40,7 @@ final class AddTagWorkflowVC: UIViewController {
         Transaction(data: filteredTransactions, links: transactionsPagination)
     }
     
-    // MARK: - View Life Cycle
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,6 +87,7 @@ private extension AddTagWorkflowVC {
         navigationItem.title = "Loading"
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func configureSearch() {
@@ -219,27 +220,44 @@ private extension AddTagWorkflowVC {
     }
 
     private func fetchTransactions() {
-        upApi.listTransactions { result in
-            switch result {
-                case .success(let transactions):
-                    DispatchQueue.main.async { [self] in
-                        transactionsError = ""
-                        self.transactions = transactions
-
-                        if navigationItem.title != "Select Transaction" {
-                            navigationItem.title = "Select Transaction"
-                        }
-                    }
-                case .failure(let error):
-                    DispatchQueue.main.async { [self] in
-                        transactionsError = errorString(for: error)
-                        transactions = []
-
-                        if navigationItem.title != "Error" {
-                            navigationItem.title = "Error"
-                        }
-                    }
+        if #available(iOS 15.0, *) {
+            async {
+                do {
+                    let transactions = try await Up.listTransactions()
+                    display(transactions)
+                } catch {
+                    display(error as! NetworkError)
+                }
             }
+        } else {
+            Up.listTransactions { [self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                        case .success(let transactions):
+                            display(transactions)
+                        case .failure(let error):
+                            display(error)
+                    }
+                }
+            }
+        }
+    }
+
+    private func display(_ transactions: [TransactionResource]) {
+        transactionsError = ""
+        self.transactions = transactions
+
+        if navigationItem.title != "Select Transaction" {
+            navigationItem.title = "Select Transaction"
+        }
+    }
+
+    private func display(_ error: NetworkError) {
+        transactionsError = errorString(for: error)
+        transactions = []
+
+        if navigationItem.title != "Error" {
+            navigationItem.title = "Error"
         }
     }
 }

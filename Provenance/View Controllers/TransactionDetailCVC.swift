@@ -305,19 +305,36 @@ private extension TransactionDetailCVC {
     }
 
     private func fetchTransaction() {
-        upApi.retrieveTransaction(for: transaction) { result in
-            switch result {
-                case .success(let transaction):
-                    DispatchQueue.main.async {
-                        self.transaction = transaction
+        if #available(iOS 15.0, *) {
+            async {
+                do {
+                    let transaction = try await Up.retrieveTransaction(for: transaction)
+                    display(transaction)
+                } catch {
+                    display(error as! NetworkError)
+                }
+            }
+        } else {
+            upApi.retrieveTransaction(for: transaction) { [self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                        case .success(let transaction):
+                            display(transaction)
+                        case .failure(let error):
+                            display(error)
                     }
-                case .failure(let error):
-                    DispatchQueue.main.async { [self] in
-                        collectionView.refreshControl?.endRefreshing()
-                    }
-                    print(errorString(for: error))
+                }
             }
         }
+    }
+
+    private func display(_ transaction: TransactionResource) {
+        self.transaction = transaction
+    }
+
+    private func display(_ error: NetworkError) {
+        collectionView.refreshControl?.endRefreshing()
+        print(errorString(for: error))
     }
 }
 

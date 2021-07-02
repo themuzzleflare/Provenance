@@ -45,7 +45,7 @@ final class AccountsCVC: UIViewController {
         Account(data: filteredAccounts, links: accountsPagination)
     }
     
-    // MARK: - View Life Cycle
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,6 +91,7 @@ private extension AccountsCVC {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.walletPass())
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func configureSearch() {
@@ -212,27 +213,44 @@ private extension AccountsCVC {
     }
 
     private func fetchAccounts() {
-        upApi.listAccounts { result in
-            switch result {
-                case .success(let accounts):
-                    DispatchQueue.main.async { [self] in
-                        accountsError = ""
-                        self.accounts = accounts
-
-                        if navigationItem.title != "Accounts" {
-                            navigationItem.title = "Accounts"
-                        }
-                    }
-                case .failure(let error):
-                    DispatchQueue.main.async { [self] in
-                        accountsError = errorString(for: error)
-                        accounts = []
-                        
-                        if navigationItem.title != "Error" {
-                            navigationItem.title = "Error"
-                        }
-                    }
+        if #available(iOS 15.0, *) {
+            async {
+                do {
+                    let accounts = try await Up.listAccounts()
+                    display(accounts)
+                } catch {
+                    display(error as! NetworkError)
+                }
             }
+        } else {
+            Up.listAccounts { [self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                        case .success(let accounts):
+                            display(accounts)
+                        case .failure(let error):
+                            display(error)
+                    }
+                }
+            }
+        }
+    }
+
+    private func display(_ accounts: [AccountResource]) {
+        accountsError = ""
+        self.accounts = accounts
+
+        if navigationItem.title != "Accounts" {
+            navigationItem.title = "Accounts"
+        }
+    }
+
+    private func display(_ error: NetworkError) {
+        accountsError = errorString(for: error)
+        accounts = []
+
+        if navigationItem.title != "Error" {
+            navigationItem.title = "Error"
         }
     }
 }

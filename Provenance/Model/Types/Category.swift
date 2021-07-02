@@ -5,18 +5,16 @@ struct Category: Decodable {
 }
 
 struct CategoryResource: Decodable, Identifiable {
-    var type: String
+    var type = "categories"
     var id: String
     var attributes: CategoryAttribute
     var relationships: CategoryRelationship
     var links: SelfLink?
     
-    init(type: String, id: String, attributes: CategoryAttribute, relationships: CategoryRelationship, links: SelfLink? = nil) {
-        self.type = type
+    init(id: String, attributes: CategoryAttribute, relationships: CategoryRelationship) {
         self.id = id
         self.attributes = attributes
         self.relationships = relationships
-        self.links = links
     }
 }
 

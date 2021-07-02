@@ -1,27 +1,18 @@
 import Foundation
+import SwiftDate
 
 func formatDateAbsolute(for dateString: String) -> String {
-    if let date = ISO8601DateFormatter().date(from: dateString) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/yyyy hh:mm:ss a"
-        formatter.amSymbol = "AM"
-        formatter.pmSymbol = "PM"
-        return formatter.string(from: date)
-    } else {
+    guard let date = dateString.toDate() else {
         return dateString
     }
+
+    return date.toString(.dateTime(.medium))
 }
 
 func formatDateRelative(for dateString: String) -> String {
-    if let date = ISO8601DateFormatter().date(from: dateString) {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.dateTimeStyle = .numeric
-        return formatter.string(for: date)!
-    } else {
+    guard let date = dateString.toDate() else {
         return dateString
     }
-}
 
-func dayOfYear(for date: Date) -> Int {
-    Calendar.current.ordinality(of: .day, in: .year, for: date)!
+    return date.toString(.relative(style: nil))
 }

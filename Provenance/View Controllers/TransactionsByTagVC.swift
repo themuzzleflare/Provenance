@@ -166,6 +166,7 @@ private extension TransactionsByTagVC {
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle())
         navigationItem.rightBarButtonItem = editButtonItem
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func configureSearch() {
@@ -294,27 +295,44 @@ private extension TransactionsByTagVC {
     }
 
     private func fetchTransactions() {
-        upApi.listTransactions(filterBy: tag) { result in
-            switch result {
-                case .success(let transactions):
-                    DispatchQueue.main.async { [self] in
-                        transactionsError = ""
-                        self.transactions = transactions
-
-                        if navigationItem.title != tag.id {
-                            navigationItem.title = tag.id
-                        }
-                    }
-                case .failure(let error):
-                    DispatchQueue.main.async { [self] in
-                        transactionsError = errorString(for: error)
-                        transactions = []
-
-                        if navigationItem.title != "Error" {
-                            navigationItem.title = "Error"
-                        }
-                    }
+        if #available(iOS 15.0, *) {
+            async {
+                do {
+                    let transactions = try await Up.listTransactions(filterBy: tag)
+                    display(transactions)
+                } catch {
+                    display(error as! NetworkError)
+                }
             }
+        } else {
+            Up.listTransactions(filterBy: tag) { [self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                        case .success(let transactions):
+                            display(transactions)
+                        case .failure(let error):
+                            display(error)
+                    }
+                }
+            }
+        }
+    }
+
+    private func display(_ transactions: [TransactionResource]) {
+        transactionsError = ""
+        self.transactions = transactions
+
+        if navigationItem.title != tag.id {
+            navigationItem.title = tag.id
+        }
+    }
+
+    private func display(_ error: NetworkError) {
+        transactionsError = errorString(for: error)
+        transactions = []
+
+        if navigationItem.title != "Error" {
+            navigationItem.title = "Error"
         }
     }
 }

@@ -13,7 +13,7 @@ final class StickerView: UIViewController {
     
     private let imageView = FLAnimatedImageView()
 
-    // MARK: - View Life Cycle
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()

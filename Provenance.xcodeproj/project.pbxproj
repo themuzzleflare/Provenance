@@ -155,6 +155,8 @@
 		7AF4C35925DB3674009CF391 /* CircularStd-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7AF4C35525DB3673009CF391 /* CircularStd-Book.otf */; };
 		7AF4C35C25DB3674009CF391 /* CircularStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7AF4C35825DB3674009CF391 /* CircularStd-Bold.otf */; };
 		7AFDBEB325C7FEDB002DB208 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFDBEB225C7FEDB002DB208 /* Account.swift */; };
+		D7C2D006CEAE6951E554C9BF /* Pods_Provenance_Widgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1DF222DED4E8F0252200D9C /* Pods_Provenance_Widgets.framework */; };
+		E1252480AC5A66A260CCA218 /* Pods_Provenance_Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C63A5A26159750E4D4F74828 /* Pods_Provenance_Intents.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -199,6 +201,7 @@
 
 /* Begin PBXFileReference section */
 		0D092E02E7CA483DD8D5DE38 /* Pods-Provenance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Provenance.release.xcconfig"; path = "Target Support Files/Pods-Provenance/Pods-Provenance.release.xcconfig"; sourceTree = "<group>"; };
+		46176A5C77FA0CFAB8C42136 /* Pods-Provenance Widgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Provenance Widgets.debug.xcconfig"; path = "Target Support Files/Pods-Provenance Widgets/Pods-Provenance Widgets.debug.xcconfig"; sourceTree = "<group>"; };
 		54E8AB3886563257C39F757D /* Pods_Provenance.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Provenance.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A0557D42604A0170080D2CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A09E4B42686E30600C9F299 /* TransactionDetailCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailCVC.swift; sourceTree = "<group>"; };
@@ -312,6 +315,11 @@
 		7AF4C35825DB3674009CF391 /* CircularStd-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CircularStd-Bold.otf"; sourceTree = "<group>"; };
 		7AFDBEB225C7FEDB002DB208 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		807F847AFD560FFD17AA96DA /* Pods-Provenance.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Provenance.debug.xcconfig"; path = "Target Support Files/Pods-Provenance/Pods-Provenance.debug.xcconfig"; sourceTree = "<group>"; };
+		964B0AFF552941F193B1E0FD /* Pods-Provenance Intents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Provenance Intents.debug.xcconfig"; path = "Target Support Files/Pods-Provenance Intents/Pods-Provenance Intents.debug.xcconfig"; sourceTree = "<group>"; };
+		BFFD3DC6104CD7F7D32B02CB /* Pods-Provenance Widgets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Provenance Widgets.release.xcconfig"; path = "Target Support Files/Pods-Provenance Widgets/Pods-Provenance Widgets.release.xcconfig"; sourceTree = "<group>"; };
+		C63A5A26159750E4D4F74828 /* Pods_Provenance_Intents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Provenance_Intents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1DF222DED4E8F0252200D9C /* Pods_Provenance_Widgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Provenance_Widgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F44CAF287D724CA2FDCB35F0 /* Pods-Provenance Intents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Provenance Intents.release.xcconfig"; path = "Target Support Files/Pods-Provenance Intents/Pods-Provenance Intents.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -320,6 +328,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A17C18C2657940E00E5EA23 /* Intents.framework in Frameworks */,
+				E1252480AC5A66A260CCA218 /* Pods_Provenance_Intents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,6 +346,7 @@
 			files = (
 				7AD127DD2604735800A39272 /* SwiftUI.framework in Frameworks */,
 				7AD127DC2604735800A39272 /* WidgetKit.framework in Frameworks */,
+				D7C2D006CEAE6951E554C9BF /* Pods_Provenance_Widgets.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -639,6 +649,10 @@
 			children = (
 				807F847AFD560FFD17AA96DA /* Pods-Provenance.debug.xcconfig */,
 				0D092E02E7CA483DD8D5DE38 /* Pods-Provenance.release.xcconfig */,
+				964B0AFF552941F193B1E0FD /* Pods-Provenance Intents.debug.xcconfig */,
+				F44CAF287D724CA2FDCB35F0 /* Pods-Provenance Intents.release.xcconfig */,
+				46176A5C77FA0CFAB8C42136 /* Pods-Provenance Widgets.debug.xcconfig */,
+				BFFD3DC6104CD7F7D32B02CB /* Pods-Provenance Widgets.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -650,6 +664,8 @@
 				7AD317952604412000B4E008 /* WidgetKit.framework */,
 				7AD317972604412000B4E008 /* SwiftUI.framework */,
 				7A17C18B2657940E00E5EA23 /* Intents.framework */,
+				C63A5A26159750E4D4F74828 /* Pods_Provenance_Intents.framework */,
+				D1DF222DED4E8F0252200D9C /* Pods_Provenance_Widgets.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -661,6 +677,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7A17C1942657940E00E5EA23 /* Build configuration list for PBXNativeTarget "Provenance Intents" */;
 			buildPhases = (
+				2932682CEF0CBABA67322B7B /* [CP] Check Pods Manifest.lock */,
 				7A17C1862657940E00E5EA23 /* Sources */,
 				7A17C1872657940E00E5EA23 /* Frameworks */,
 				7A17C1882657940E00E5EA23 /* Resources */,
@@ -695,8 +712,6 @@
 				7A17C1922657940E00E5EA23 /* PBXTargetDependency */,
 			);
 			name = Provenance;
-			packageProductDependencies = (
-			);
 			productName = Sample;
 			productReference = 7AB34D1A25C78230000A1E81 /* Provenance.app */;
 			productType = "com.apple.product-type.application";
@@ -705,6 +720,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7AD127EB2604735B00A39272 /* Build configuration list for PBXNativeTarget "Provenance Widgets" */;
 			buildPhases = (
+				22A9D7083F3E45DA16140D2D /* [CP] Check Pods Manifest.lock */,
 				7AD127D72604735800A39272 /* Sources */,
 				7AD127D82604735800A39272 /* Frameworks */,
 				7AD127D92604735800A39272 /* Resources */,
@@ -767,8 +783,6 @@
 				Base,
 			);
 			mainGroup = 7AB34D1125C78230000A1E81;
-			packageReferences = (
-			);
 			productRefGroup = 7AB34D1B25C78230000A1E81 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -834,6 +848,50 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		22A9D7083F3E45DA16140D2D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Provenance Widgets-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2932682CEF0CBABA67322B7B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Provenance Intents-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7A7E167225FF12FA00418EEA /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1087,6 +1145,7 @@
 /* Begin XCBuildConfiguration section */
 		7A17C1952657940E00E5EA23 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 964B0AFF552941F193B1E0FD /* Pods-Provenance Intents.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Intents/Intents.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -1101,7 +1160,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 17.3;
+				MARKETING_VERSION = 17.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1112,6 +1171,7 @@
 		};
 		7A17C1962657940E00E5EA23 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F44CAF287D724CA2FDCB35F0 /* Pods-Provenance Intents.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Intents/Intents.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -1125,7 +1185,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 17.3;
+				MARKETING_VERSION = 17.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1277,7 +1337,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 17.3;
+				MARKETING_VERSION = 17.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1308,7 +1368,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 17.3;
+				MARKETING_VERSION = 17.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1321,6 +1381,7 @@
 		};
 		7AD127EC2604735B00A39272 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 46176A5C77FA0CFAB8C42136 /* Pods-Provenance Widgets.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColour;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -1338,7 +1399,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 17.3;
+				MARKETING_VERSION = 17.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1352,6 +1413,7 @@
 		};
 		7AD127ED2604735B00A39272 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BFFD3DC6104CD7F7D32B02CB /* Pods-Provenance Widgets.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColour;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -1368,7 +1430,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 17.3;
+				MARKETING_VERSION = 17.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1392,7 +1454,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 17.3;
+				MARKETING_VERSION = 17.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1413,7 +1475,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 17.3;
+				MARKETING_VERSION = 17.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

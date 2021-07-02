@@ -53,13 +53,13 @@ final class TransactionsCVC: UIViewController {
             filterUpdates()
         }
     }
-    private var groupedTransactions: [Int: [TransactionResource]] {
+    private var groupedTransactions: [Date: [TransactionResource]] {
         Dictionary(
             grouping: filteredTransactions,
-            by: { $0.attributes.createdAtDay }
+            by: { $0.attributes.createdAtDate }
         )
     }
-    private var sortedTransactions: Array<(key: Int, value: Array<TransactionResource>)> {
+    private var sortedTransactions: Array<(key: Date, value: Array<TransactionResource>)> {
         groupedTransactions.sorted { $0.key > $1.key }
     }
 
@@ -125,6 +125,7 @@ private extension TransactionsCVC {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle())
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
 
     private func configureSearch() {
@@ -189,33 +190,50 @@ private extension TransactionsCVC {
     }
 
     private func fetchTransactions() {
-        upApi.listTransactions { result in
-            switch result {
-                case .success(let transactions):
-                    DispatchQueue.main.async { [self] in
-                        transactionsError = ""
-                        self.transactions = transactions
-
-                        if navigationItem.title != "Transactions" {
-                            navigationItem.title = "Transactions"
-                        }
-                        if navigationItem.leftBarButtonItems == nil {
-                            navigationItem.setLeftBarButtonItems([UIBarButtonItem(image: R.image.calendarBadgeClock(), style: .plain, target: self, action: #selector(switchDateStyle)), filterButton], animated: true)
-                        }
-                    }
-                case .failure(let error):
-                    DispatchQueue.main.async { [self] in
-                        transactionsError = errorString(for: error)
-                        transactions = []
-
-                        if navigationItem.title != "Error" {
-                            navigationItem.title = "Error"
-                        }
-                        if navigationItem.leftBarButtonItems != nil {
-                            navigationItem.setLeftBarButtonItems(nil, animated: true)
-                        }
-                    }
+        if #available(iOS 15.0, *) {
+            async {
+                do {
+                    let transactions = try await Up.listTransactions()
+                    display(transactions)
+                } catch {
+                    display(error as! NetworkError)
+                }
             }
+        } else {
+            Up.listTransactions { [self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                        case .success(let transactions):
+                            display(transactions)
+                        case .failure(let error):
+                            display(error)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func display(_ transactions: [TransactionResource]) {
+        transactionsError = ""
+        self.transactions = transactions
+
+        if navigationItem.title != "Transactions" {
+            navigationItem.title = "Transactions"
+        }
+        if navigationItem.leftBarButtonItems == nil {
+            navigationItem.setLeftBarButtonItems([UIBarButtonItem(image: R.image.calendarBadgeClock(), style: .plain, target: self, action: #selector(switchDateStyle)), filterButton], animated: true)
+        }
+    }
+
+    private func display(_ error: NetworkError) {
+        transactionsError = errorString(for: error)
+        transactions = []
+
+        if navigationItem.title != "Error" {
+            navigationItem.title = "Error"
+        }
+        if navigationItem.leftBarButtonItems != nil {
+            navigationItem.setLeftBarButtonItems(nil, animated: true)
         }
     }
 }
@@ -224,7 +242,9 @@ private extension TransactionsCVC {
 
 extension TransactionsCVC: ListAdapterDataSource {
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
-        sortedTransactions.map { SortedTransactions(day: $0.key, transactions: $0.value) }
+        sortedTransactions.map { transaction in
+            SortedTransactions(day: transaction.key, transactions: transaction.value)
+        }
     }
 
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {

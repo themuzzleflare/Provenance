@@ -6,18 +6,16 @@ struct Account: Decodable {
 }
 
 struct AccountResource: Decodable, Identifiable {
-    private var type: String
+    var type = "accounts"
     var id: String
     var attributes: AccountAttribute
     var relationships: AccountRelationship
     var links: SelfLink?
     
-    init(type: String, id: String, attributes: AccountAttribute, relationships: AccountRelationship, links: SelfLink? = nil) {
-        self.type = type
+    init(id: String, attributes: AccountAttribute, relationships: AccountRelationship) {
         self.id = id
         self.attributes = attributes
         self.relationships = relationships
-        self.links = links
     }
 }
 

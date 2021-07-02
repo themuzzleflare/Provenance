@@ -17,7 +17,7 @@ final class AddTagWorkflowThreeVC: UIViewController {
     }
     private var dateStyleObserver: NSKeyValueObservation?
 
-    // MARK: - View Life Cycle
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()

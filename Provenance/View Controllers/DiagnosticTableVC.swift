@@ -23,7 +23,7 @@ final class DiagnosticTableVC: UIViewController {
 
     private let tableView = UITableView(frame: .zero, style: .grouped)
     
-    // MARK: - View Life Cycle
+    // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()

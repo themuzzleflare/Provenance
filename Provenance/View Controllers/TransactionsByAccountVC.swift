@@ -71,7 +71,7 @@ final class TransactionsByAccountVC: UIViewController {
         Transaction(data: filteredTransactions, links: transactionsPagination)
     }
     
-    // MARK: - View Life Cycle
+    // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,6 +119,7 @@ private extension TransactionsByAccountVC {
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle())
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo))
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func configureSearch() {
@@ -268,40 +269,72 @@ private extension TransactionsByAccountVC {
     }
 
     private func fetchAccount() {
-        upApi.retrieveAccount(for: account) { result in
-            switch result {
-                case .success(let account):
-                    DispatchQueue.main.async {
-                        self.account = account
+        if #available(iOS 15.0, *) {
+            async {
+                do {
+                    let account = try await Up.retrieveAccount(for: account)
+                    display(account)
+                } catch {
+                    print(errorString(for: error as! NetworkError))
+                }
+            }
+        } else {
+            Up.retrieveAccount(for: account) { [self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                        case .success(let account):
+                            display(account)
+                        case .failure(let error):
+                            print(errorString(for: error))
                     }
-                case .failure(let error):
-                    print(errorString(for: error))
+                }
             }
         }
     }
 
     private func fetchTransactions() {
-        upApi.listTransactions(filterBy: account) { result in
-            switch result {
-                case .success(let transactions):
-                    DispatchQueue.main.async { [self] in
-                        transactionsError = ""
-                        self.transactions = transactions
-
-                        if navigationItem.title != account.attributes.displayName {
-                            navigationItem.title = account.attributes.displayName
-                        }
-                    }
-                case .failure(let error):
-                    DispatchQueue.main.async { [self] in
-                        transactionsError = errorString(for: error)
-                        transactions = []
-
-                        if navigationItem.title != "Error" {
-                            navigationItem.title = "Error"
-                        }
-                    }
+        if #available(iOS 15.0, *) {
+            async {
+                do {
+                    let transactions = try await Up.listTransactions(filterBy: account)
+                    display(transactions)
+                } catch {
+                    display(error as! NetworkError)
+                }
             }
+        } else {
+            Up.listTransactions(filterBy: account) { [self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                        case .success(let transactions):
+                            display(transactions)
+                        case .failure(let error):
+                            display(error)
+                    }
+                }
+            }
+        }
+    }
+
+    private func display(_ account: AccountResource) {
+        self.account = account
+    }
+    
+    private func display(_ transactions: [TransactionResource]) {
+        transactionsError = ""
+        self.transactions = transactions
+
+        if navigationItem.title != account.attributes.displayName {
+            navigationItem.title = account.attributes.displayName
+        }
+    }
+
+    private func display(_ error: NetworkError) {
+        transactionsError = errorString(for: error)
+        transactions = []
+
+        if navigationItem.title != "Error" {
+            navigationItem.title = "Error"
         }
     }
 }

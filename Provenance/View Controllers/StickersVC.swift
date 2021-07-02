@@ -5,7 +5,7 @@ final class StickersVC: UIViewController {
 
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: gridLayout())
 
-    // MARK: - View Life Cycle
+    // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()

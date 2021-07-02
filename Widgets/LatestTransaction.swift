@@ -16,9 +16,11 @@ struct LatestTransactionProvider: IntentTimelineProvider {
     func getTimeline(for configuration: Intent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [Entry] = []
 
-        upApi.retrieveLatestTransaction { result in
-            switch result {
-                case .success(let transactions):
+        if #available(iOS 15.0, *) {
+            async {
+                do {
+                    let transactions = try await Up.retrieveLatestTransaction()
+
                     var creationDate: String {
                         switch configuration.dateStyle {
                             case .unknown:
@@ -30,11 +32,38 @@ struct LatestTransactionProvider: IntentTimelineProvider {
                         }
                     }
 
-                    entries.append(Entry(date: Date(), transactionValueInBaseUnits: transactions.first!.attributes.amount.valueInBaseUnits.signum(), transactionDescription: transactions.first!.attributes.description, transactionDate: creationDate, transactionAmount: transactions.first!.attributes.amount.valueShort, error: ""))
-                    completion(Timeline(entries: entries, policy: .atEnd))
-                case .failure(let error):
-                    entries.append(Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "", transactionDate: "", transactionAmount: "", error: errorString(for: error)))
-                    completion(Timeline(entries: entries, policy: .atEnd))
+                    let entry = [Entry(date: Date(), transactionValueInBaseUnits: transactions.first!.attributes.amount.valueInBaseUnits.signum(), transactionDescription: transactions.first!.attributes.description, transactionDate: creationDate, transactionAmount: transactions.first!.attributes.amount.valueShort, error: "")]
+
+                    completion(Timeline(entries: entry, policy: .atEnd))
+                } catch {
+                    let entry = [Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "", transactionDate: "", transactionAmount: "", error: errorString(for: error as! NetworkError))]
+
+                    completion(Timeline(entries: entry, policy: .atEnd))
+                }
+            }
+        } else {
+            Up.retrieveLatestTransaction { result in
+                switch result {
+                    case .success(let transactions):
+                        var creationDate: String {
+                            switch configuration.dateStyle {
+                                case .unknown:
+                                    return transactions.first!.attributes.creationDate
+                                case .absolute:
+                                    return transactions.first!.attributes.creationDateAbsolute
+                                case .relative:
+                                    return transactions.first!.attributes.creationDateRelative
+                            }
+                        }
+
+                        entries.append(Entry(date: Date(), transactionValueInBaseUnits: transactions.first!.attributes.amount.valueInBaseUnits.signum(), transactionDescription: transactions.first!.attributes.description, transactionDate: creationDate, transactionAmount: transactions.first!.attributes.amount.valueShort, error: ""))
+
+                        completion(Timeline(entries: entries, policy: .atEnd))
+                    case .failure(let error):
+                        entries.append(Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "", transactionDate: "", transactionAmount: "", error: errorString(for: error)))
+
+                        completion(Timeline(entries: entries, policy: .atEnd))
+                }
             }
         }
     }

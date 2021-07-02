@@ -58,7 +58,7 @@ extension TransactionsSC: ListSupplementaryViewSource {
             at: index
         ) as! TransactionsHeaderView
         
-        view.date = model.transactions[0].attributes.createdAtDMY
+        view.date = model.transactions[0].attributes.creationDayMonthYear
 
         return view
     }

@@ -53,7 +53,6 @@ final class AttributeCollectionViewCell: UICollectionViewCell {
 private extension AttributeCollectionViewCell {
     private func configureCell() {
         selectedBackgroundView = selectedBackgroundCellView
-        backgroundColor = .clear
     }
 
     private func configureContentView() {
