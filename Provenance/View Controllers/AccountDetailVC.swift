@@ -4,8 +4,8 @@ import Rswift
 final class AccountDetailVC: UIViewController {
     // MARK: - Properties
 
-    var account: AccountResource!
-    var transaction: TransactionResource?
+    private var account: AccountResource
+    private var transaction: TransactionResource?
     
     private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
@@ -18,6 +18,17 @@ final class AccountDetailVC: UIViewController {
     private var sections: [Section]!
 
     // MARK: - Life Cycle
+
+    init(account: AccountResource, transaction: TransactionResource? = nil) {
+        self.account = account
+        self.transaction = transaction
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Not implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,6 +133,10 @@ private extension AccountDetailVC {
 // MARK: - UITableViewDelegate
 
 extension AccountDetailVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let attribute = dataSource.itemIdentifier(for: indexPath) else {
             return nil

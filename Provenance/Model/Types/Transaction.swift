@@ -81,7 +81,7 @@ struct Attribute: Decodable {
         }
     }
 
-    #if canImport(Rswift)
+#if canImport(Rswift)
     var statusIcon: UIImage {
         switch isSettled {
             case true:
@@ -90,7 +90,7 @@ struct Attribute: Decodable {
                 return R.image.clock()!
         }
     }
-    #endif
+#endif
 
     var statusIconImage: Image {
         switch isSettled {

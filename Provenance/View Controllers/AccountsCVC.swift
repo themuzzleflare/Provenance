@@ -217,6 +217,7 @@ private extension AccountsCVC {
             async {
                 do {
                     let accounts = try await Up.listAccounts()
+                    
                     display(accounts)
                 } catch {
                     display(error as! NetworkError)
@@ -259,11 +260,9 @@ private extension AccountsCVC {
 
 extension AccountsCVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = TransactionsByAccountVC()
-
-        vc.account = dataSource.itemIdentifier(for: indexPath)
-
-        navigationController?.pushViewController(vc, animated: true)
+        if let account = dataSource.itemIdentifier(for: indexPath) {
+            navigationController?.pushViewController(TransactionsByAccountVC(account: account), animated: true)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

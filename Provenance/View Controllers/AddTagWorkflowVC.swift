@@ -224,6 +224,7 @@ private extension AddTagWorkflowVC {
             async {
                 do {
                     let transactions = try await Up.listTransactions()
+                    
                     display(transactions)
                 } catch {
                     display(error as! NetworkError)
@@ -265,14 +266,16 @@ private extension AddTagWorkflowVC {
 // MARK: - UITableViewDelegate
 
 extension AddTagWorkflowVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        let vc = AddTagWorkflowTwoVC()
-
-        vc.transaction = dataSource.itemIdentifier(for: indexPath)
-
-        navigationController?.pushViewController(vc, animated: true)
+        if let transaction = dataSource.itemIdentifier(for: indexPath) {
+            navigationController?.pushViewController(AddTagWorkflowTwoVC(transaction: transaction), animated: true)
+        }
     }
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

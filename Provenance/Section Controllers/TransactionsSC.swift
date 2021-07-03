@@ -6,6 +6,7 @@ final class TransactionsSC: ListSectionController {
 
     override init() {
         super.init()
+        
         supplementaryViewSource = self
     }
 
@@ -36,10 +37,8 @@ final class TransactionsSC: ListSectionController {
 
     override func didSelectItem(at index: Int) {
         collectionContext?.deselectItem(at: index, sectionController: self, animated: true)
-
-        let vc = TransactionDetailCVC(transaction: model.transactions[index])
         
-        viewController?.navigationController?.pushViewController(vc, animated: true)
+        viewController?.navigationController?.pushViewController(TransactionDetailCVC(transaction: model.transactions[index]), animated: true)
     }
 }
 

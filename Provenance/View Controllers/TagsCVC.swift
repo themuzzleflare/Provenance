@@ -5,7 +5,7 @@ import Rswift
 final class TagsCVC: UIViewController {
     // MARK: - Properties
 
-    var transaction: TransactionResource! {
+    private var transaction: TransactionResource {
         didSet {
             if transaction.relationships.tags.data.isEmpty {
                 navigationController?.popViewController(animated: true)
@@ -49,6 +49,16 @@ final class TagsCVC: UIViewController {
     private var listConfig = UICollectionLayoutListConfiguration(appearance: .grouped)
 
     // MARK: - Life Cycle
+
+    init(transaction: TransactionResource) {
+        self.transaction = transaction
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Not implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,9 +124,9 @@ private extension TagsCVC {
     }
 
     private func configureToolbar() {
-        selectionItem.tintColor = R.color.accentColour()
-        removeAllItem.tintColor = R.color.accentColour()
-        removeItem.tintColor = R.color.accentColour()
+        selectionItem.tintColor = R.color.accentColor()
+        removeAllItem.tintColor = R.color.accentColor()
+        removeItem.tintColor = R.color.accentColor()
 
         setToolbarItems([selectionItem, removeAllItem, .flexibleSpace(), removeItem], animated: false)
     }
@@ -173,7 +183,7 @@ private extension TagsCVC {
                         completionHandler(false)
                     }
 
-                    cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+                    cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
 
                     ac.addAction(confirmAction)
                     ac.addAction(cancelAction)
@@ -195,12 +205,7 @@ private extension TagsCVC {
     }
 
     @objc private func openAddWorkflow() {
-        let vc = AddTagWorkflowTwoVC()
-
-        vc.transaction = transaction
-        vc.fromTransactionTags = true
-
-        let vcNav = NavigationController(rootViewController: vc)
+        let vcNav = NavigationController(rootViewController: AddTagWorkflowTwoVC(transaction: transaction, fromTransactionTags: true))
 
         vcNav.modalPresentationStyle = .fullScreen
 
@@ -272,7 +277,7 @@ private extension TagsCVC {
 
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 
-            cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+            cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
 
             ac.addAction(confirmAction)
             ac.addAction(cancelAction)
@@ -319,7 +324,7 @@ private extension TagsCVC {
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 
-        cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+        cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
 
         ac.addAction(confirmAction)
         ac.addAction(cancelAction)
@@ -352,6 +357,7 @@ private extension TagsCVC {
             async {
                 do {
                     let transaction = try await Up.retrieveTransaction(for: transaction)
+                    
                     display(transaction)
                 } catch {
                     display(error as! NetworkError)
@@ -396,11 +402,7 @@ extension TagsCVC: UICollectionViewDelegate {
                 collectionView.deselectItem(at: indexPath, animated: true)
 
                 if let tag = dataSource.itemIdentifier(for: indexPath)?.id {
-                    let vc = TransactionsByTagVC()
-
-                    vc.tag = TagResource(id: tag)
-
-                    navigationController?.pushViewController(vc, animated: true)
+                    navigationController?.pushViewController(TransactionsByTagVC(tag: TagResource(id: tag)), animated: true)
                 }
         }
     }
@@ -459,7 +461,7 @@ extension TagsCVC: UICollectionViewDelegate {
 
                             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 
-                            cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+                            cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
 
                             ac.addAction(confirmAction)
                             ac.addAction(cancelAction)

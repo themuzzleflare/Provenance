@@ -14,7 +14,7 @@ let appCopyright = Bundle.main.infoDictionary?["NSHumanReadableCopyright"] as? S
 var selectedBackgroundCellView: UIView {
     let view = UIView()
     
-    view.backgroundColor = R.color.accentColour()
+    view.backgroundColor = R.color.accentColor()
     
     return view
 }

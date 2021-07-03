@@ -6,8 +6,8 @@ import Rswift
 final class AddTagWorkflowTwoVC: UIViewController {
     // MARK: - Properties
 
-    var transaction: TransactionResource!
-    var fromTransactionTags: Bool = false
+    private var transaction: TransactionResource
+    private var fromTransactionTags: Bool
 
     private enum Section {
         case main
@@ -62,6 +62,17 @@ final class AddTagWorkflowTwoVC: UIViewController {
     }
     
     // MARK: - Life Cycle
+
+    init(transaction: TransactionResource, fromTransactionTags: Bool = false) {
+        self.transaction = transaction
+        self.fromTransactionTags = fromTransactionTags
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Not implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -138,9 +149,9 @@ private extension AddTagWorkflowTwoVC {
     }
 
     private func configureToolbar() {
-        selectionItem.tintColor = R.color.accentColour()
+        selectionItem.tintColor = R.color.accentColor()
         selectionLabelItem.tintColor = .label
-        nextItem.tintColor = R.color.accentColour()
+        nextItem.tintColor = R.color.accentColor()
 
         setToolbarItems([selectionItem, .flexibleSpace(), selectionLabelItem, .flexibleSpace(), nextItem], animated: false)
     }
@@ -189,12 +200,7 @@ private extension AddTagWorkflowTwoVC {
                 TagResource(id: tag!.id)
             }
 
-            let vc = AddTagWorkflowThreeVC()
-
-            vc.transaction = transaction
-            vc.tags = tagsObject
-
-            navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(AddTagWorkflowThreeVC(transaction: transaction, tags: tagsObject), animated: true)
         }
     }
 
@@ -219,14 +225,14 @@ private extension AddTagWorkflowTwoVC {
                 textField.delegate = self
                 textField.autocapitalizationType = .none
                 textField.autocorrectionType = .no
-                textField.tintColor = R.color.accentColour()
+                textField.tintColor = R.color.accentColor()
                 textField.addTarget(self, action: #selector(addTagsTextFieldChanged), for: .editingChanged)
             }
         }
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 
-        cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+        cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
 
         let submitAction = UIAlertAction(title: "Next", style: .default) { [self] _ in
             let answers = ac.textFields?.map { tfield in
@@ -236,16 +242,11 @@ private extension AddTagWorkflowTwoVC {
             if let fanswers = answers?.filter { answer in
                 !answer.id.isEmpty
             } {
-                let vc = AddTagWorkflowThreeVC()
-
-                vc.transaction = transaction
-                vc.tags = fanswers
-
-                navigationController?.pushViewController(vc, animated: true)
+                navigationController?.pushViewController(AddTagWorkflowThreeVC(transaction: transaction, tags: fanswers), animated: true)
             }
         }
 
-        submitAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+        submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
         submitAction.isEnabled = false
 
         ac.addAction(cancelAction)
@@ -363,6 +364,7 @@ private extension AddTagWorkflowTwoVC {
             async {
                 do {
                     let tags = try await Up.listTags()
+                    
                     display(tags)
                 } catch {
                     display(error as! NetworkError)
@@ -419,12 +421,7 @@ extension AddTagWorkflowTwoVC: UICollectionViewDelegate {
                 collectionView.deselectItem(at: indexPath, animated: true)
 
                 if let tag = dataSource.itemIdentifier(for: indexPath)?.id {
-                    let vc = AddTagWorkflowThreeVC()
-
-                    vc.transaction = transaction
-                    vc.tags = [TagResource(id: tag)]
-
-                    navigationController?.pushViewController(vc, animated: true)
+                    navigationController?.pushViewController(AddTagWorkflowThreeVC(transaction: transaction, tags: [TagResource(id: tag)]), animated: true)
                 }
         }
     }

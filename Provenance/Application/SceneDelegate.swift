@@ -62,7 +62,7 @@ private extension SceneDelegate {
             ac.addTextField { [self] textField in
                 textField.autocapitalizationType = .none
                 textField.autocorrectionType = .no
-                textField.tintColor = R.color.accentColour()
+                textField.tintColor = R.color.accentColor()
 
                 textDidChangeObserver = NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main) { notification in
                     if let textField = notification.object as? UITextField {
@@ -77,7 +77,7 @@ private extension SceneDelegate {
 
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 
-            cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+            cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
 
             let submitAction = UIAlertAction(title: "Save", style: .default) { [self] _ in
                 let answer = ac.textFields![0]
@@ -94,11 +94,7 @@ private extension SceneDelegate {
                                     appDefaults.apiKey = answer.text!
                                     WidgetCenter.shared.reloadAllTimelines()
 
-                                    let vc = SettingsVC()
-
-                                    vc.displayBanner = notificationBanner
-
-                                    let vcNav = NavigationController(rootViewController: vc)
+                                    let vcNav = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
 
                                     vcNav.modalPresentationStyle = .fullScreen
 
@@ -110,11 +106,7 @@ private extension SceneDelegate {
 
                                     notificationBanner.duration = 2
 
-                                    let vc = SettingsVC()
-
-                                    vc.displayBanner = notificationBanner
-
-                                    let vcNav = NavigationController(rootViewController: vc)
+                                    let vcNav = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
 
                                     vcNav.modalPresentationStyle = .fullScreen
 
@@ -127,11 +119,7 @@ private extension SceneDelegate {
 
                     notificationBanner.duration = 2
 
-                    let vc = SettingsVC()
-
-                    vc.displayBanner = notificationBanner
-
-                    let vcNav = NavigationController(rootViewController: vc)
+                    let vcNav = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
 
                     vcNav.modalPresentationStyle = .fullScreen
 
@@ -139,7 +127,7 @@ private extension SceneDelegate {
                 }
             }
 
-            submitAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+            submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
             submitAction.isEnabled = false
             submitActionProxy = submitAction
 

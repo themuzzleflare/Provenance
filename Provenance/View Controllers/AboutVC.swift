@@ -31,7 +31,7 @@ private extension AboutVC {
 
         navigationItem.title = "About"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.infoCircle())
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftSlashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftForwardslashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.gear(), style: .plain, target: self, action: #selector(openSettings))
 
         tableView.dataSource = self
@@ -156,6 +156,10 @@ extension AboutVC: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension AboutVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
         let row = indexPath.row

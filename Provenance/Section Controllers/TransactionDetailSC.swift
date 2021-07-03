@@ -5,14 +5,23 @@ import Rswift
 final class TransactionDetailSC: ListSectionController {
     private var model: Section!
 
-    var transaction: TransactionResource!
-    var account: AccountResource?
-    var transferAccount: AccountResource?
-    var parentCategory: CategoryResource?
-    var category: CategoryResource?
+    private var transaction: TransactionResource
 
-    override init() {
+    private var account: AccountResource?
+    private var transferAccount: AccountResource?
+    private var parentCategory: CategoryResource?
+    private var category: CategoryResource?
+
+    required init(transaction: TransactionResource, account: AccountResource? = nil, transferAccount: AccountResource? = nil, parentCategory: CategoryResource? = nil, category: CategoryResource? = nil) {
+        self.transaction = transaction
+
+        self.account = account
+        self.transferAccount = transferAccount
+        self.parentCategory = parentCategory
+        self.category = category
+        
         super.init()
+        
         inset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
     }
 
@@ -51,36 +60,15 @@ final class TransactionDetailSC: ListSectionController {
 
         switch attribute.key {
             case "Account":
-                let vc = TransactionsByAccountVC()
-
-                vc.account = account
-                
-                viewController?.navigationController?.pushViewController(vc, animated: true)
+                viewController?.navigationController?.pushViewController(TransactionsByAccountVC(account: account!), animated: true)
             case "Transfer Account":
-                let vc = TransactionsByAccountVC()
-
-                vc.account = transferAccount
-                
-                viewController?.navigationController?.pushViewController(vc, animated: true)
-            case "Parent Category", "Category":
-                let vc = TransactionsByCategoryVC()
-                
-                switch attribute.key {
-                    case "Parent Category":
-                        vc.category = parentCategory
-                    case "Category":
-                        vc.category = category
-                    default:
-                        break
-                }
-
-                viewController?.navigationController?.pushViewController(vc, animated: true)
+                viewController?.navigationController?.pushViewController(TransactionsByAccountVC(account: transferAccount!), animated: true)
+            case "Parent Category":
+                viewController?.navigationController?.pushViewController(TransactionsByCategoryVC(category: parentCategory!), animated: true)
+            case "Category":
+                viewController?.navigationController?.pushViewController(TransactionsByCategoryVC(category: category!), animated: true)
             case "Tags":
-                let vc = TagsCVC()
-
-                vc.transaction = transaction
-
-                viewController?.navigationController?.pushViewController(vc, animated: true)
+                viewController?.navigationController?.pushViewController(TagsCVC(transaction: transaction), animated: true)
             default:
                 break
         }

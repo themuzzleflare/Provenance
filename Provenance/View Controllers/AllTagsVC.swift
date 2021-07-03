@@ -232,6 +232,7 @@ private extension AllTagsVC {
             async {
                 do {
                     let tags = try await Up.listTags()
+                    
                     display(tags)
                 } catch {
                     display(error as! NetworkError)
@@ -282,11 +283,9 @@ extension AllTagsVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
 
-        let vc = TransactionsByTagVC()
-
-        vc.tag = dataSource.itemIdentifier(for: indexPath)
-
-        navigationController?.pushViewController(vc, animated: true)
+        if let tag = dataSource.itemIdentifier(for: indexPath) {
+            navigationController?.pushViewController(TransactionsByTagVC(tag: tag), animated: true)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

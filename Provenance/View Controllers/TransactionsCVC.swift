@@ -194,6 +194,7 @@ private extension TransactionsCVC {
             async {
                 do {
                     let transactions = try await Up.listTransactions()
+                    
                     display(transactions)
                 } catch {
                     display(error as! NetworkError)

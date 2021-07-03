@@ -6,7 +6,7 @@ import Rswift
 final class TransactionsByCategoryVC: UIViewController {
     // MARK: - Properties
 
-    var category: CategoryResource!
+    private var category: CategoryResource
 
     private enum Section {
         case main
@@ -43,6 +43,16 @@ final class TransactionsByCategoryVC: UIViewController {
     }
     
     // MARK: - Life Cycle
+
+    init(category: CategoryResource) {
+        self.category = category
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Not implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -222,6 +232,7 @@ private extension TransactionsByCategoryVC {
             async {
                 do {
                     let transactions = try await Up.listTransactions(filterBy: category)
+
                     display(transactions)
                 } catch {
                     display(error as! NetworkError)
@@ -271,9 +282,7 @@ extension TransactionsByCategoryVC: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
 
         if let transaction = dataSource.itemIdentifier(for: indexPath) {
-            let vc = TransactionDetailCVC(transaction: transaction)
-
-            navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(TransactionDetailCVC(transaction: transaction), animated: true)
         }
     }
     

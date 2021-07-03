@@ -4,16 +4,20 @@ import TinyConstraints
 
 final class StickerView: UIViewController {
     // MARK: - Properties
-
-    var image: FLAnimatedImage! {
-        didSet {
-            imageView.animatedImage = image
-        }
-    }
     
     private let imageView = FLAnimatedImageView()
 
     // MARK: - Life Cycle
+
+    init(image: FLAnimatedImage) {
+        imageView.animatedImage = image
+
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("Not implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

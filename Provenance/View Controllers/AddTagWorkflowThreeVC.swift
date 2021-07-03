@@ -5,8 +5,8 @@ import Rswift
 final class AddTagWorkflowThreeVC: UIViewController {
     // MARK: - Properties
 
-    var transaction: TransactionResource!
-    var tags: [TagResource]!
+    private var transaction: TransactionResource
+    private var tags: [TagResource]
 
     private let tableView = UITableView(frame: .zero, style: .grouped)
 
@@ -18,6 +18,17 @@ final class AddTagWorkflowThreeVC: UIViewController {
     private var dateStyleObserver: NSKeyValueObservation?
 
     // MARK: - Life Cycle
+
+    init(transaction: TransactionResource, tags: [TagResource]) {
+        self.transaction = transaction
+        self.tags = tags
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Not implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

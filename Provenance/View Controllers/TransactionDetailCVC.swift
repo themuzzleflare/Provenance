@@ -10,52 +10,100 @@ final class TransactionDetailCVC: UIViewController {
 
     private var transaction: TransactionResource {
         didSet {
-            upApi.retrieveAccount(for: transaction.relationships.account.data.id) { result in
-                switch result {
-                    case .success(let account):
-                        DispatchQueue.main.async {
-                            self.account = account
-                        }
-                    case .failure:
-                        break
+            if #available(iOS 15.0, *) {
+                async {
+                    do {
+                        let account = try await Up.retrieveAccount(for: transaction.relationships.account.data.id)
+
+                        self.account = account
+                    } catch {
+                        return
+                    }
+                }
+            } else {
+                Up.retrieveAccount(for: transaction.relationships.account.data.id) { result in
+                    switch result {
+                        case .success(let account):
+                            DispatchQueue.main.async {
+                                self.account = account
+                            }
+                        case .failure:
+                            break
+                    }
                 }
             }
 
             if let tAccount = transaction.relationships.transferAccount.data {
-                upApi.retrieveAccount(for: tAccount.id) { result in
-                    switch result {
-                        case .success(let account):
-                            DispatchQueue.main.async {
-                                self.transferAccount = account
-                            }
-                        case .failure:
-                            break
+                if #available(iOS 15.0, *) {
+                    async {
+                        do {
+                            let transferAccount = try await Up.retrieveAccount(for: tAccount.id)
+
+                            self.transferAccount = transferAccount
+                        } catch {
+                            return
+                        }
+                    }
+                } else {
+                    Up.retrieveAccount(for: tAccount.id) { result in
+                        switch result {
+                            case .success(let account):
+                                DispatchQueue.main.async {
+                                    self.transferAccount = account
+                                }
+                            case .failure:
+                                break
+                        }
                     }
                 }
             }
 
             if let pCategory = transaction.relationships.parentCategory.data {
-                upApi.retrieveCategory(for: pCategory.id) { result in
-                    switch result {
-                        case .success(let category):
-                            DispatchQueue.main.async {
-                                self.parentCategory = category
-                            }
-                        case .failure:
-                            break
+                if #available(iOS 15.0, *) {
+                    async {
+                        do {
+                            let parentCategory = try await Up.retrieveCategory(for: pCategory.id)
+
+                            self.parentCategory = parentCategory
+                        } catch {
+                            return
+                        }
+                    }
+                } else {
+                    Up.retrieveCategory(for: pCategory.id) { result in
+                        switch result {
+                            case .success(let category):
+                                DispatchQueue.main.async {
+                                    self.parentCategory = category
+                                }
+                            case .failure:
+                                break
+                        }
                     }
                 }
             }
 
             if let category = transaction.relationships.category.data {
-                upApi.retrieveCategory(for: category.id) { result in
-                    switch result {
-                        case .success(let category):
-                            DispatchQueue.main.async {
-                                self.category = category
-                            }
-                        case .failure:
-                            break
+                if #available(iOS 15.0, *) {
+                    async {
+                        do {
+                            let category = try await Up.retrieveCategory(for: category.id)
+
+                            self.category = category
+                        } catch {
+                            return
+                        }
+                    }
+                } else {
+                    Up.retrieveCategory(for: category.id) { result in
+                        switch result {
+                            case .success(let category):
+                                DispatchQueue.main.async {
+                                    self.category = category
+                                }
+                            case .failure:
+                                break
+                        }
                     }
                 }
             }
@@ -87,10 +135,12 @@ final class TransactionDetailCVC: UIViewController {
             })
         }
     }
+
     private var account: AccountResource?
     private var transferAccount: AccountResource?
     private var parentCategory: CategoryResource?
     private var category: CategoryResource?
+    
     private var holdTransValue: String {
         switch transaction.attributes.holdInfo {
             case nil:
@@ -309,6 +359,7 @@ private extension TransactionDetailCVC {
             async {
                 do {
                     let transaction = try await Up.retrieveTransaction(for: transaction)
+                    
                     display(transaction)
                 } catch {
                     display(error as! NetworkError)
@@ -338,21 +389,15 @@ private extension TransactionDetailCVC {
     }
 }
 
+// MARK: - ListAdapterDataSource
+
 extension TransactionDetailCVC: ListAdapterDataSource {
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
         filteredSections
     }
 
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
-        let controller = TransactionDetailSC()
-        
-        controller.transaction = transaction
-        controller.account = account
-        controller.transferAccount = transferAccount
-        controller.parentCategory = parentCategory
-        controller.category = category
-
-        return controller
+        TransactionDetailSC(transaction: transaction, account: account, transferAccount: transferAccount, parentCategory: parentCategory, category: category)
     }
 
     func emptyView(for listAdapter: ListAdapter) -> UIView? {
@@ -370,6 +415,8 @@ extension TransactionDetailCVC: ListAdapterDataSource {
         return view
     }
 }
+
+// MARK: - UICollectionViewDelegate
 
 extension TransactionDetailCVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

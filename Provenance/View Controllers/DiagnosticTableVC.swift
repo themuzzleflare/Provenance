@@ -100,6 +100,10 @@ private extension DiagnosticTableVC {
 // MARK: - UITableViewDelegate
 
 extension DiagnosticTableVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let attribute = dataSource.itemIdentifier(for: indexPath) else {
             return nil

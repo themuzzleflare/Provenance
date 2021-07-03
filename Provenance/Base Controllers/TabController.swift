@@ -15,8 +15,6 @@ final class TabController: UITabBarController {
 
 private extension TabController {
     private func configure() {
-        tabBar.tintColor = R.color.accentColour()
-        
         viewControllers = TabBarItem.allCases.map { item in
             let vc = item.vc()
 

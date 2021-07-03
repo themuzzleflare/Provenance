@@ -216,6 +216,7 @@ private extension CategoriesCVC {
             async {
                 do {
                     let categories = try await Up.listCategories()
+                    
                     display(categories)
                 } catch {
                     display(error as! NetworkError)
@@ -260,11 +261,9 @@ extension CategoriesCVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
 
-        let vc = TransactionsByCategoryVC()
-        
-        vc.category = dataSource.itemIdentifier(for: indexPath)
-
-        navigationController?.pushViewController(vc, animated: true)
+        if let category = dataSource.itemIdentifier(for: indexPath) {
+            navigationController?.pushViewController(TransactionsByCategoryVC(category: category), animated: true)
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

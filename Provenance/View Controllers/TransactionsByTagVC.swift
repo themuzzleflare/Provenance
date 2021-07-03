@@ -7,7 +7,7 @@ import Rswift
 final class TransactionsByTagVC: UIViewController {
     // MARK: - Properties
 
-    var tag: TagResource!
+    private var tag: TagResource
 
     private enum Section {
         case main
@@ -60,7 +60,7 @@ final class TransactionsByTagVC: UIViewController {
 
                     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 
-                    cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+                    cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
 
                     ac.addAction(confirmAction)
                     ac.addAction(cancelAction)
@@ -104,8 +104,10 @@ final class TransactionsByTagVC: UIViewController {
     
     // MARK: - Life Cycle
 
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    init(tag: TagResource) {
+        self.tag = tag
+
+        super.init(nibName: nil, bundle: nil)
 
         dataSource.parent = self
     }
@@ -299,6 +301,7 @@ private extension TransactionsByTagVC {
             async {
                 do {
                     let transactions = try await Up.listTransactions(filterBy: tag)
+
                     display(transactions)
                 } catch {
                     display(error as! NetworkError)
@@ -348,9 +351,7 @@ extension TransactionsByTagVC: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
 
         if let transaction = dataSource.itemIdentifier(for: indexPath) {
-            let vc = TransactionDetailCVC(transaction: transaction)
-
-            navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(TransactionDetailCVC(transaction: transaction), animated: true)
         }
     }
 
@@ -407,7 +408,7 @@ extension TransactionsByTagVC: UITableViewDelegate {
 
                     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
                     
-                    cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+                    cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                     
                     ac.addAction(confirmAction)
                     ac.addAction(cancelAction)

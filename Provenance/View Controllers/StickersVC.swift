@@ -58,10 +58,8 @@ extension StickersVC: UICollectionViewDataSource {
 
 extension StickersVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = StickerView()
-
-        vc.image = stickerGifs[indexPath.item]
-
-        navigationController?.pushViewController(vc, animated: true)
+        if let image = stickerGifs[indexPath.item] {
+            navigationController?.pushViewController(StickerView(image: image), animated: true)
+        }
     }
 }

@@ -77,12 +77,12 @@ struct AccountBalanceEntryView: View {
                         if family != .systemSmall {
                             Text("Account Balance")
                                 .font(.custom("CircularStd-Bold", size: 23))
-                                .foregroundColor(Color("AccentColour"))
+                                .foregroundColor(Color("AccentColor"))
                             Spacer()
                         }
                         Text(entry.account!.balance)
                             .font(.custom("CircularStd-Bold", size: 23))
-                            .foregroundColor(family != .systemSmall ? .primary : Color("AccentColour"))
+                            .foregroundColor(family != .systemSmall ? .primary : Color("AccentColor"))
                         Text(entry.account!.displayName)
                             .font(.custom("CircularStd-Book", size: 17))
                             .foregroundColor(.primary)

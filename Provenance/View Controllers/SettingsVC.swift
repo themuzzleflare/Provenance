@@ -6,7 +6,7 @@ import Rswift
 final class SettingsVC: UIViewController {
     // MARK: - Properties
 
-    var displayBanner: NotificationBanner?
+    private var displayBanner: NotificationBanner?
 
     private weak var submitActionProxy: UIAlertAction?
 
@@ -16,6 +16,16 @@ final class SettingsVC: UIViewController {
     private var textDidChangeObserver: NSObjectProtocol!
 
     // MARK: - Life Cycle
+
+    init(displayBanner: NotificationBanner? = nil) {
+        self.displayBanner = displayBanner
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Not implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,6 +150,10 @@ extension SettingsVC: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension SettingsVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch section {
             case 2:
@@ -168,7 +182,7 @@ extension SettingsVC: UITableViewDelegate {
                 ac.addTextField { [self] textField in
                     textField.autocapitalizationType = .none
                     textField.autocorrectionType = .no
-                    textField.tintColor = R.color.accentColour()
+                    textField.tintColor = R.color.accentColor()
                     textField.text = appDefaults.apiKey
 
                     textDidChangeObserver = NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main) { notification in
@@ -184,7 +198,7 @@ extension SettingsVC: UITableViewDelegate {
 
                 let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 
-                cancelAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+                cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
 
                 let submitAction = UIAlertAction(title: "Save", style: .default) { _ in
                     let answer = ac.textFields![0]
@@ -221,7 +235,7 @@ extension SettingsVC: UITableViewDelegate {
                     }
                 }
 
-                submitAction.setValue(R.color.accentColour(), forKey: "titleTextColor")
+                submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
                 submitAction.isEnabled = false
                 submitActionProxy = submitAction
 

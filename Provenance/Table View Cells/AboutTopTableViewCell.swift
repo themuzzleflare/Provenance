@@ -45,7 +45,7 @@ private extension AboutTopTableViewCell {
         logoImageView.width(100)
         logoImageView.height(100)
         logoImageView.clipsToBounds = true
-        logoImageView.backgroundColor = R.color.accentColour()
+        logoImageView.backgroundColor = R.color.accentColor()
         logoImageView.layer.cornerRadius = 20
         logoImageView.animatedImage = upLogoDrawMidnightYellowTransparentBackground
 

@@ -6,7 +6,7 @@ import Rswift
 final class TransactionsByAccountVC: UIViewController {
     // MARK: - Properties
 
-    var account: AccountResource! {
+    private var account: AccountResource {
         didSet {
             tableView.tableHeaderView = {
                 let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 117))
@@ -22,7 +22,7 @@ final class TransactionsByAccountVC: UIViewController {
                 verticalStack.alignment = .center
 
                 balanceLabel.translatesAutoresizingMaskIntoConstraints = false
-                balanceLabel.textColor = R.color.accentColour()
+                balanceLabel.textColor = R.color.accentColor()
                 balanceLabel.font = R.font.circularStdBold(size: 32)
                 balanceLabel.textAlignment = .center
                 balanceLabel.numberOfLines = 0
@@ -72,6 +72,16 @@ final class TransactionsByAccountVC: UIViewController {
     }
     
     // MARK: - Life Cycle
+
+    init(account: AccountResource) {
+        self.account = account
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Not implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -147,12 +157,7 @@ private extension TransactionsByAccountVC {
     }
 
     @objc private func openAccountInfo() {
-        let vc = AccountDetailVC()
-
-        vc.account = account
-        vc.transaction = transactions.first
-
-        present(NavigationController(rootViewController: vc), animated: true)
+        present(NavigationController(rootViewController: AccountDetailVC(account: account, transaction: transactions.first)), animated: true)
     }
 
     @objc private func refreshTransactions() {
@@ -273,6 +278,7 @@ private extension TransactionsByAccountVC {
             async {
                 do {
                     let account = try await Up.retrieveAccount(for: account)
+
                     display(account)
                 } catch {
                     print(errorString(for: error as! NetworkError))
@@ -297,6 +303,7 @@ private extension TransactionsByAccountVC {
             async {
                 do {
                     let transactions = try await Up.listTransactions(filterBy: account)
+
                     display(transactions)
                 } catch {
                     display(error as! NetworkError)
@@ -350,9 +357,7 @@ extension TransactionsByAccountVC: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
 
         if let transactionId = dataSource.itemIdentifier(for: indexPath) {
-            let vc = TransactionDetailCVC(transaction: transactionId)
-
-            navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(TransactionDetailCVC(transaction: transactionId), animated: true)
         }
     }
     

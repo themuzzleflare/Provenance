@@ -90,7 +90,7 @@ struct LatestTransactionEntryView: View {
                 if entry.error.isEmpty && family != .systemSmall {
                     Text("Latest Transaction")
                         .font(.custom("CircularStd-Bold", size: 23))
-                        .foregroundColor(Color("AccentColour"))
+                        .foregroundColor(Color("AccentColor"))
                     Spacer()
                 }
                 if family != .systemSmall {
@@ -112,7 +112,7 @@ struct LatestTransactionEntryView: View {
                 } else {
                     Text(entry.transactionDescription)
                         .font(.custom("CircularStd-Bold", size: 17))
-                        .foregroundColor(Color("AccentColour"))
+                        .foregroundColor(Color("AccentColor"))
                     Text(entry.transactionAmount)
                         .foregroundColor(entry.transactionValueInBaseUnits == -1 ? .primary : Color("greenColour"))
                         .font(.custom("CircularStd-Book", size: 14))
