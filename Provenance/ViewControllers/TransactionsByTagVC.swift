@@ -163,7 +163,9 @@ private extension TransactionsByTagVC {
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
         dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
-            applySnapshot()
+            DispatchQueue.main.async {
+                applySnapshot()
+            }
         }
     }
     

@@ -4,14 +4,25 @@ import Rswift
 final class AccountDetailVC: UIViewController {
     // MARK: - Properties
 
-    private var account: AccountResource
-    private var transaction: TransactionResource?
+    private var account: AccountResource {
+        didSet {
+            applySnapshot()
+            tableView.refreshControl?.endRefreshing()
+        }
+    }
+    private var transaction: TransactionResource? {
+        didSet {
+            applySnapshot()
+            tableView.refreshControl?.endRefreshing()
+        }
+    }
     
     private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
 
     private lazy var dataSource = makeDataSource()
 
+    private let tableRefreshControl = RefreshControl(frame: .zero)
     private let tableView = UITableView(frame: .zero, style: .grouped)
 
     private var dateStyleObserver: NSKeyValueObservation?
@@ -37,15 +48,21 @@ final class AccountDetailVC: UIViewController {
 
         configureProperties()
         configureNavigation()
-        configureTableView()
-        
-        applySnapshot()
+        configureRefreshControl()
+        configureTableView()        
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
         tableView.frame = view.bounds
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        fetchAccount()
+        fetchTransaction()
     }
 }
 
@@ -55,8 +72,12 @@ private extension AccountDetailVC {
     private func configureProperties() {
         title = "Account Details"
 
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+
         dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
-            applySnapshot()
+            DispatchQueue.main.async {
+                applySnapshot()
+            }
         }
     }
     
@@ -64,11 +85,16 @@ private extension AccountDetailVC {
         navigationItem.title = account.attributes.displayName
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
     }
+
+    private func configureRefreshControl() {
+        tableRefreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+    }
     
     private func configureTableView() {
         tableView.dataSource = dataSource
         tableView.delegate = self
         tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
+        tableView.refreshControl = tableRefreshControl
         tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
 }
@@ -76,6 +102,18 @@ private extension AccountDetailVC {
 // MARK: - Actions
 
 private extension AccountDetailVC {
+    @objc private func appMovedToForeground() {
+        fetchAccount()
+        fetchTransaction()
+    }
+
+    @objc private func refreshData() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+            fetchAccount()
+            fetchTransaction()
+        }
+    }
+
     @objc private func closeWorkflow() {
         navigationController?.dismiss(animated: true)
     }
@@ -127,6 +165,56 @@ private extension AccountDetailVC {
         }
 
         dataSource.apply(snapshot, animatingDifferences: false)
+    }
+
+    private func fetchAccount() {
+        if #available(iOS 15.0, *) {
+            async {
+                do {
+                    let account = try await Up.retrieveAccount(for: account)
+
+                    self.account = account
+                } catch {
+                    print(errorString(for: error as! NetworkError))
+                }
+            }
+        } else {
+            Up.retrieveAccount(for: account) { [self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                        case .success(let account):
+                            self.account = account
+                        case .failure(let error):
+                            print(errorString(for: error))
+                    }
+                }
+            }
+        }
+    }
+
+    private func fetchTransaction() {
+        if #available(iOS 15.0, *) {
+            async {
+                do {
+                    let transactions = try await Up.retrieveLatestTransaction(for: account)
+
+                    transaction = transactions.first
+                } catch {
+                    print(errorString(for: error as! NetworkError))
+                }
+            }
+        } else {
+            Up.retrieveLatestTransaction(for: account) { [self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                        case .success(let transactions):
+                            transaction = transactions.first
+                        case .failure(let error):
+                            print(errorString(for: error))
+                    }
+                }
+            }
+        }
     }
 }
 

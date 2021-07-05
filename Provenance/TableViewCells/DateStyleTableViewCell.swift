@@ -20,10 +20,12 @@ final class DateStyleTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
-            if change.newValue == "Absolute" {
-                segmentedControl.selectedSegmentIndex = 0
-            } else if change.newValue == "Relative" {
-                segmentedControl.selectedSegmentIndex = 1
+            DispatchQueue.main.async {
+                if change.newValue == "Absolute" {
+                    segmentedControl.selectedSegmentIndex = 0
+                } else if change.newValue == "Relative" {
+                    segmentedControl.selectedSegmentIndex = 1
+                }
             }
 
             WidgetCenter.shared.reloadAllTimelines()

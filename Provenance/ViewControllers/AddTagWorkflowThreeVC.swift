@@ -54,7 +54,9 @@ private extension AddTagWorkflowThreeVC {
         title = "Add Tag Confirmation"
 
         dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
-            tableView.reloadData()
+            DispatchQueue.main.async {
+                tableView.reloadData()
+            }
         }
     }
 

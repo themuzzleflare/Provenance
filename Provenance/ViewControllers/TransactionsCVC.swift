@@ -125,8 +125,10 @@ extension TransactionsCVC {
             fetchingTasks()
         }
         dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
-            adapter.reloadData()
-            WidgetCenter.shared.reloadAllTimelines()
+            DispatchQueue.main.async {
+                adapter.reloadData()
+                WidgetCenter.shared.reloadAllTimelines()
+            }
         }
     }
 

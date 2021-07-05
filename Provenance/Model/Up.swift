@@ -159,6 +159,29 @@ struct Up {
         .resume()
     }
 
+    @available(iOS 15.0, *) static func retrieveLatestTransaction(for account: AccountResource) async throws -> [TransactionResource] {
+        try await withCheckedThrowingContinuation { continuation in
+            retrieveLatestTransaction(for: account) { result in
+                switch result {
+                    case .success(let transactions):
+                        continuation.resume(returning: transactions)
+                    case .failure(let error):
+                        continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    static func retrieveLatestTransaction(for account: AccountResource, completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
+        let url = URL(string: "https://api.up.com.au/api/v1/accounts/\(account.id)/transactions")!.appendingQueryParameters(["page[size]": "1"])
+        let request = authorisedRequest(url: url)
+
+        URLSession.shared.dataTask(with: request) { result in
+            completion(self.transactionsDecoder.decode(result))
+        }
+        .resume()
+    }
+
     @available(iOS 15.0, *) static func retrieveTransaction(for transaction: TransactionResource) async throws -> TransactionResource {
         try await withCheckedThrowingContinuation { continuation in
             retrieveTransaction(for: transaction) { result in
