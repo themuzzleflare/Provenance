@@ -22,13 +22,13 @@ final class TransactionDetailCVC: UIViewController {
                 }
             } else {
                 Up.retrieveAccount(for: transaction.relationships.account.data.id) { result in
-                    switch result {
-                        case .success(let account):
-                            DispatchQueue.main.async {
+                    DispatchQueue.main.async {
+                        switch result {
+                            case .success(let account):
                                 self.account = account
-                            }
-                        case .failure:
-                            break
+                            case .failure:
+                                break
+                        }
                     }
                 }
             }
@@ -46,13 +46,13 @@ final class TransactionDetailCVC: UIViewController {
                     }
                 } else {
                     Up.retrieveAccount(for: tAccount.id) { result in
-                        switch result {
-                            case .success(let account):
-                                DispatchQueue.main.async {
+                        DispatchQueue.main.async {
+                            switch result {
+                                case .success(let account):
                                     self.transferAccount = account
-                                }
-                            case .failure:
-                                break
+                                case .failure:
+                                    break
+                            }
                         }
                     }
                 }
@@ -71,13 +71,13 @@ final class TransactionDetailCVC: UIViewController {
                     }
                 } else {
                     Up.retrieveCategory(for: pCategory.id) { result in
-                        switch result {
-                            case .success(let category):
-                                DispatchQueue.main.async {
+                        DispatchQueue.main.async {
+                            switch result {
+                                case .success(let category):
                                     self.parentCategory = category
-                                }
-                            case .failure:
-                                break
+                                case .failure:
+                                    break
+                            }
                         }
                     }
                 }
@@ -96,13 +96,13 @@ final class TransactionDetailCVC: UIViewController {
                     }
                 } else {
                     Up.retrieveCategory(for: category.id) { result in
-                        switch result {
-                            case .success(let category):
-                                DispatchQueue.main.async {
+                        DispatchQueue.main.async {
+                            switch result {
+                                case .success(let category):
                                     self.category = category
-                                }
-                            case .failure:
-                                break
+                                case .failure:
+                                    break
+                            }
                         }
                     }
                 }
@@ -154,6 +154,7 @@ final class TransactionDetailCVC: UIViewController {
                 }
         }
     }
+
     private var holdForeignTransValue: String {
         switch transaction.attributes.holdInfo?.foreignAmount {
             case nil:
@@ -167,6 +168,7 @@ final class TransactionDetailCVC: UIViewController {
                 }
         }
     }
+    
     private var foreignTransValue: String {
         switch transaction.attributes.foreignAmount {
             case nil:
@@ -366,7 +368,7 @@ private extension TransactionDetailCVC {
                 }
             }
         } else {
-            upApi.retrieveTransaction(for: transaction) { [self] result in
+            Up.retrieveTransaction(for: transaction) { [self] result in
                 DispatchQueue.main.async {
                     switch result {
                         case .success(let transaction):

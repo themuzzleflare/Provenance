@@ -1,115 +1,86 @@
 import UIKit
 import FLAnimatedImage
-import NotificationBannerSwift
 import TinyConstraints
 import Rswift
 
-final class TransactionsByTagVC: UIViewController {
+final class TransactionsByAccountVC: UIViewController {
     // MARK: - Properties
 
-    private var tag: TagResource
+    private var account: AccountResource {
+        didSet {
+            tableView.tableHeaderView = {
+                let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 117))
+
+                let balanceLabel = UILabel()
+                let displayNameLabel = UILabel()
+                let verticalStack = UIStackView(arrangedSubviews: [balanceLabel, displayNameLabel])
+
+                view.addSubview(verticalStack)
+
+                verticalStack.centerInSuperview()
+                verticalStack.axis = .vertical
+                verticalStack.alignment = .center
+
+                balanceLabel.translatesAutoresizingMaskIntoConstraints = false
+                balanceLabel.textColor = R.color.accentColor()
+                balanceLabel.font = R.font.circularStdBold(size: 32)
+                balanceLabel.textAlignment = .center
+                balanceLabel.numberOfLines = 0
+                balanceLabel.text = account.attributes.balance.valueShort
+
+                displayNameLabel.translatesAutoresizingMaskIntoConstraints = false
+                displayNameLabel.textColor = .secondaryLabel
+                displayNameLabel.font = R.font.circularStdBook(size: 14)
+                displayNameLabel.textAlignment = .center
+                displayNameLabel.numberOfLines = 0
+                displayNameLabel.text = account.attributes.displayName
+
+                return view
+            }()
+        }
+    }
 
     private enum Section {
         case main
     }
 
+    private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
 
     private lazy var dataSource = makeDataSource()
 
-    // UITableViewDiffableDataSource
-    private class DataSource: UITableViewDiffableDataSource<Section, TransactionResource> {
-        weak var parent: TransactionsByTagVC! = nil
-
-        override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-            true
-        }
-
-        override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-            guard let transaction = itemIdentifier(for: indexPath) else {
-                return
-            }
-
-            switch editingStyle {
-                case .delete:
-                    let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(parent.tag.id)\" from \"\(transaction.attributes.description)\"?", preferredStyle: .actionSheet)
-
-                    let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [self] _ in
-                        upApi.modifyTags(removing: parent.tag, from: transaction) { error in
-                            switch error {
-                                case .none:
-                                    DispatchQueue.main.async {
-                                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(parent.tag.id) was removed from \(transaction.attributes.description).", style: .success)
-
-                                        notificationBanner.duration = 2
-
-                                        notificationBanner.show()
-                                        parent.fetchTransactions()
-                                    }
-                                default:
-                                    DispatchQueue.main.async {
-                                        let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
-
-                                        notificationBanner.duration = 2
-
-                                        notificationBanner.show()
-                                    }
-                            }
-                        }
-                    }
-
-                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-
-                    cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-
-                    ac.addAction(confirmAction)
-                    ac.addAction(cancelAction)
-
-                    parent.present(ac, animated: true)
-                default:
-                    break
-            }
-        }
-    }
-
     private let transactionsPagination = Pagination(prev: nil, next: nil)
-    private let tableRefreshControl = RefreshControl(frame: .zero)
     private let searchController = SearchController(searchResultsController: nil)
+    private let tableRefreshControl = RefreshControl(frame: .zero)
     private let tableView = UITableView(frame: .zero, style: .grouped)
 
     private var dateStyleObserver: NSKeyValueObservation?
     private var noTransactions: Bool = false
+
     private var transactions: [TransactionResource] = [] {
         didSet {
-            noTransactions = transactions.isEmpty
-
-            if transactions.isEmpty {
-                navigationController?.popViewController(animated: true)
-            } else {
-                applySnapshot(animate: isEditing)
-                tableView.refreshControl?.endRefreshing()
-                searchController.searchBar.placeholder = "Search \(transactions.count.description) \(transactions.count == 1 ? "Transaction" : "Transactions")"
-            }
+            transactionsUpdates()
         }
     }
+
     private var transactionsError: String = ""
+
     private var filteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
         }
     }
+
     private var filteredTransactionList: Transaction {
         Transaction(data: filteredTransactions, links: transactionsPagination)
     }
     
     // MARK: - Life Cycle
 
-    init(tag: TagResource) {
-        self.tag = tag
+    init(account: AccountResource) {
+        self.account = account
 
         super.init(nibName: nil, bundle: nil)
-
-        dataSource.parent = self
     }
 
     required init?(coder: NSCoder) {
@@ -135,25 +106,19 @@ final class TransactionsByTagVC: UIViewController {
 
         tableView.frame = view.bounds
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        fetchTransactions()
-    }
-
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-
-        tableView.setEditing(editing, animated: animated)
+        fetchingTasks()
     }
 }
 
 // MARK: - Configuration
 
-private extension TransactionsByTagVC {
+private extension TransactionsByAccountVC {
     private func configureProperties() {
-        title = "Transactions by Tag"
+        title = "Transactions by Account"
         definesPresentationContext = true
 
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -166,7 +131,7 @@ private extension TransactionsByTagVC {
     private func configureNavigation() {
         navigationItem.title = "Loading"
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle())
-        navigationItem.rightBarButtonItem = editButtonItem
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.infoCircle(), style: .plain, target: self, action: #selector(openAccountInfo))
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
     }
@@ -190,15 +155,31 @@ private extension TransactionsByTagVC {
 
 // MARK: - Actions
 
-private extension TransactionsByTagVC {
+private extension TransactionsByAccountVC {
     @objc private func appMovedToForeground() {
-        fetchTransactions()
+        fetchingTasks()
+    }
+
+    @objc private func openAccountInfo() {
+        present(NavigationController(rootViewController: AccountDetailVC(account: account, transaction: transactions.first)), animated: true)
     }
 
     @objc private func refreshTransactions() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-            fetchTransactions()
+            fetchingTasks()
         }
+    }
+
+    private func fetchingTasks() {
+        fetchAccount()
+        fetchTransactions()
+    }
+
+    private func transactionsUpdates() {
+        noTransactions = transactions.isEmpty
+        applySnapshot()
+        tableView.refreshControl?.endRefreshing()
+        searchController.searchBar.placeholder = "Search \(transactions.count.description) \(transactions.count == 1 ? "Transaction" : "Transactions")"
     }
 
     private func makeDataSource() -> DataSource {
@@ -229,7 +210,7 @@ private extension TransactionsByTagVC {
 
                     view.addSubview(loadingIndicator)
 
-                    loadingIndicator.center(in: view)
+                    loadingIndicator.centerInSuperview()
                     loadingIndicator.width(100)
                     loadingIndicator.height(100)
                     loadingIndicator.animatedImage = upZapSpinTransparentBackground
@@ -296,11 +277,36 @@ private extension TransactionsByTagVC {
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
 
+    private func fetchAccount() {
+        if #available(iOS 15.0, *) {
+            async {
+                do {
+                    let account = try await Up.retrieveAccount(for: account)
+
+                    display(account)
+                } catch {
+                    print(errorString(for: error as! NetworkError))
+                }
+            }
+        } else {
+            Up.retrieveAccount(for: account) { [self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                        case .success(let account):
+                            display(account)
+                        case .failure(let error):
+                            print(errorString(for: error))
+                    }
+                }
+            }
+        }
+    }
+
     private func fetchTransactions() {
         if #available(iOS 15.0, *) {
             async {
                 do {
-                    let transactions = try await Up.listTransactions(filterBy: tag)
+                    let transactions = try await Up.listTransactions(filterBy: account)
 
                     display(transactions)
                 } catch {
@@ -308,7 +314,7 @@ private extension TransactionsByTagVC {
                 }
             }
         } else {
-            Up.listTransactions(filterBy: tag) { [self] result in
+            Up.listTransactions(filterBy: account) { [self] result in
                 DispatchQueue.main.async {
                     switch result {
                         case .success(let transactions):
@@ -321,12 +327,16 @@ private extension TransactionsByTagVC {
         }
     }
 
+    private func display(_ account: AccountResource) {
+        self.account = account
+    }
+    
     private func display(_ transactions: [TransactionResource]) {
         transactionsError = ""
         self.transactions = transactions
 
-        if navigationItem.title != tag.id {
-            navigationItem.title = tag.id
+        if navigationItem.title != account.attributes.displayName {
+            navigationItem.title = account.attributes.displayName
         }
     }
 
@@ -342,7 +352,7 @@ private extension TransactionsByTagVC {
 
 // MARK: - UITableViewDelegate
 
-extension TransactionsByTagVC: UITableViewDelegate {
+extension TransactionsByAccountVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
     }
@@ -350,17 +360,9 @@ extension TransactionsByTagVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        if let transaction = dataSource.itemIdentifier(for: indexPath) {
-            navigationController?.pushViewController(TransactionDetailCVC(transaction: transaction), animated: true)
+        if let transactionId = dataSource.itemIdentifier(for: indexPath) {
+            navigationController?.pushViewController(TransactionDetailCVC(transaction: transactionId), animated: true)
         }
-    }
-
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        .delete
-    }
-
-    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        "Remove"
     }
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -378,42 +380,6 @@ extension TransactionsByTagVC: UITableViewDelegate {
                 },
                 UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
                     UIPasteboard.general.string = transaction.attributes.amount.valueShort
-                },
-                UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { [self] _ in
-                    let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(transaction.attributes.description)\"?", preferredStyle: .actionSheet)
-
-                    let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { _ in
-                        upApi.modifyTags(removing: tag, from: transaction) { error in
-                            switch error {
-                                case .none:
-                                    DispatchQueue.main.async {
-                                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success)
-
-                                        notificationBanner.duration = 2
-
-                                        notificationBanner.show()
-                                        fetchTransactions()
-                                    }
-                                default:
-                                    DispatchQueue.main.async {
-                                        let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
-
-                                        notificationBanner.duration = 2
-
-                                        notificationBanner.show()
-                                    }
-                            }
-                        }
-                    }
-
-                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-                    
-                    cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-                    
-                    ac.addAction(confirmAction)
-                    ac.addAction(cancelAction)
-
-                    present(ac, animated: true)
                 }
             ])
         }
@@ -422,7 +388,7 @@ extension TransactionsByTagVC: UITableViewDelegate {
 
 // MARK: - UISearchBarDelegate
 
-extension TransactionsByTagVC: UISearchBarDelegate {
+extension TransactionsByAccountVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         applySnapshot(animate: true)
     }

@@ -1,5 +1,5 @@
 import Foundation
 
-struct SingleAccountResponse: Decodable {
+struct SingleAccount: Decodable {
     var data: AccountResource
 }

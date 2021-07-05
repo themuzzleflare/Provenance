@@ -20,12 +20,14 @@ final class AccountsCVC: UIViewController {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: twoColumnGridLayout())
     private let searchController = SearchController(searchResultsController: nil)
     private let collectionRefreshControl = RefreshControl(frame: .zero)
+
     private let cellRegistration = AccountCell { cell, indexPath, account in
         cell.account = account
     }
 
     private var apiKeyObserver: NSKeyValueObservation?
     private var noAccounts: Bool = false
+
     private var accounts: [AccountResource] = [] {
         didSet {
             noAccounts = accounts.isEmpty
@@ -35,12 +37,15 @@ final class AccountsCVC: UIViewController {
             searchController.searchBar.placeholder = "Search \(accounts.count.description) \(accounts.count == 1 ? "Account" : "Accounts")"
         }
     }
+
     private var accountsError: String = ""
+
     private var filteredAccounts: [AccountResource] {
         accounts.filter { account in
             searchController.searchBar.text!.isEmpty || account.attributes.displayName.localizedStandardContains(searchController.searchBar.text!)
         }
     }
+    
     private var filteredAccountsList: Account {
         Account(data: filteredAccounts, links: accountsPagination)
     }

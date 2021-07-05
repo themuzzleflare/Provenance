@@ -3,7 +3,9 @@ import IGListKit
 
 class DetailAttribute {
     var id = UUID()
+
     var key: String
+
     var value: String
     
     init(key: String, value: String) {

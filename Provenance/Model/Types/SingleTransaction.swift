@@ -1,5 +1,5 @@
 import Foundation
 
-struct SingleTransactionResponse: Decodable {
+struct SingleTransaction: Decodable {
     var data: TransactionResource
 }

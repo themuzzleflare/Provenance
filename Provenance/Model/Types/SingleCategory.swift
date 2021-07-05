@@ -1,5 +1,5 @@
 import Foundation
 
-struct SingleCategoryResponse: Decodable {
+struct SingleCategory: Decodable {
     var data: CategoryResource
 }

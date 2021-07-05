@@ -8,7 +8,7 @@ struct Up {
     }
     
     private static let transactionDecoder = ResultDecoder<TransactionResource> { data in
-        try JSONDecoder().decode(SingleTransactionResponse.self, from: data).data
+        try JSONDecoder().decode(SingleTransaction.self, from: data).data
     }
     
     private static let accountsDecoder = ResultDecoder<[AccountResource]> { data in
@@ -16,7 +16,7 @@ struct Up {
     }
     
     private static let accountDecoder = ResultDecoder<AccountResource> { data in
-        try JSONDecoder().decode(SingleAccountResponse.self, from: data).data
+        try JSONDecoder().decode(SingleAccount.self, from: data).data
     }
     
     private static let tagsDecoder = ResultDecoder<[TagResource]> { data in
@@ -28,7 +28,7 @@ struct Up {
     }
 
     private static let categoryDecoder = ResultDecoder<CategoryResource> { data in
-        try JSONDecoder().decode(SingleCategoryResponse.self, from: data).data
+        try JSONDecoder().decode(SingleCategory.self, from: data).data
     }
     
     // MARK: - Methods

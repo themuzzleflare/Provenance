@@ -82,7 +82,7 @@ private extension AddTagWorkflowThreeVC {
         navigationItem.setRightBarButton(UIBarButtonItem(customView: activityIndicator), animated: false)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-            upApi.modifyTags(adding: tags, to: transaction) { error in
+            Up.modifyTags(adding: tags, to: transaction) { error in
                 switch error {
                     case .none:
                         DispatchQueue.main.async {

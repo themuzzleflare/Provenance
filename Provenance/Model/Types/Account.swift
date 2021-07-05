@@ -1,21 +1,25 @@
 import Foundation
 
 struct Account: Decodable {
-    var data: [AccountResource]
+    var data: [AccountResource] // The list of accounts returned in this response.
+
     var links: Pagination
 }
 
 struct AccountResource: Decodable, Identifiable {
-    var type = "accounts"
-    var id: String
+    var type = "accounts" // The type of this resource: accounts
+
+    var id: String // The unique identifier for this account.
+
     var attributes: AccountAttribute
-    var relationships: AccountRelationship
+
+    var relationships: AccountRelationship?
+
     var links: SelfLink?
     
-    init(id: String, attributes: AccountAttribute, relationships: AccountRelationship) {
+    init(id: String, attributes: AccountAttribute) {
         self.id = id
         self.attributes = attributes
-        self.relationships = relationships
     }
 }
 
@@ -30,20 +34,27 @@ extension AccountResource: Hashable {
 }
 
 struct AccountAttribute: Decodable {
-    var displayName: String
-    var accountType: AccountTypeEnum
+    var displayName: String // The name associated with the account in the Up application.
+
+    var accountType: AccountTypeEnum // The bank account type of this account.
+
     enum AccountTypeEnum: String, Decodable {
         case saver = "SAVER"
         case transactional = "TRANSACTIONAL"
     }
-    var balance: MoneyObject
-    private var createdAt: String
+
+    var balance: MoneyObject // The available balance of the account, taking into account any amounts that are currently on hold.
+
+    private var createdAt: String // The date-time at which this account was first opened.
+
     private var creationDateAbsolute: String {
         formatDateAbsolute(for: createdAt)
     }
+
     private var creationDateRelative: String {
         formatDateRelative(for: createdAt)
     }
+
     var creationDate: String {
         switch appDefaults.dateStyle {
             case "Absolute":
@@ -57,13 +68,5 @@ struct AccountAttribute: Decodable {
 }
 
 struct AccountRelationship: Decodable {
-    var transactions: TransactionsObject
-}
-
-struct TransactionsObject: Decodable {
-    var links: AccountRelationshipsLink?
-}
-
-struct AccountRelationshipsLink: Decodable {
-    var related: String
+    var transactions: TransactionsLinksObject
 }

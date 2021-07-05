@@ -19,7 +19,9 @@ final class AllTagsVC: UIViewController {
     private let tagsPagination = Pagination(prev: nil, next: nil)
     private let collectionRefreshControl = RefreshControl(frame: .zero)
     private let searchController = SearchController(searchResultsController: nil)
+
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout.list(using: UICollectionLayoutListConfiguration(appearance: .grouped)))
+
     private let cellRegistration = TagCell { cell, indexPath, tag in
         var content = cell.defaultContentConfiguration()
 
@@ -34,6 +36,7 @@ final class AllTagsVC: UIViewController {
 
     private var apiKeyObserver: NSKeyValueObservation?
     private var noTags: Bool = false
+
     private var tags: [TagResource] = [] {
         didSet {
             noTags = tags.isEmpty
@@ -42,12 +45,15 @@ final class AllTagsVC: UIViewController {
             searchController.searchBar.placeholder = "Search \(tags.count.description) \(tags.count == 1 ? "Tag" : "Tags")"
         }
     }
+
     private var tagsError: String = ""
+
     private var filteredTags: [TagResource] {
         tags.filter { tag in
             searchController.searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchController.searchBar.text!)
         }
     }
+    
     private var filteredTagsList: Tag {
         Tag(data: filteredTags, links: tagsPagination)
     }

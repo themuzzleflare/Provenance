@@ -3,7 +3,9 @@ import IGListKit
 
 class Section {
     var id = UUID()
+
     var title: String
+    
     var detailAttributes: [DetailAttribute]
     
     init(title: String, detailAttributes: [DetailAttribute]) {

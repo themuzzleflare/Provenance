@@ -83,7 +83,7 @@ private extension SceneDelegate {
                 let answer = ac.textFields![0]
 
                 if !answer.text!.isEmpty && answer.text != appDefaults.apiKey {
-                    upApi.ping(with: answer.text!) { error in
+                    Up.ping(with: answer.text!) { error in
                         switch error {
                             case .none:
                                 DispatchQueue.main.async {

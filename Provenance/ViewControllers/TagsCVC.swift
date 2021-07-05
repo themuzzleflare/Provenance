@@ -33,6 +33,7 @@ final class TagsCVC: UIViewController {
 
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let collectionRefreshControl = RefreshControl(frame: .zero)
+
     private let cellRegistration = TagCell { cell, indexPath, tag in
         var content = cell.defaultContentConfiguration()
 
@@ -154,7 +155,7 @@ private extension TagsCVC {
                     let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { _ in
                         let tagObject = TagResource(id: tag.id)
 
-                        upApi.modifyTags(removing: tagObject, from: transaction) { error in
+                        Up.modifyTags(removing: tagObject, from: transaction) { error in
                             switch error {
                                 case .none:
                                     DispatchQueue.main.async {
@@ -252,7 +253,7 @@ private extension TagsCVC {
                     TagResource(id: tag!.id)
                 }
 
-                upApi.modifyTags(removing: tagsObject, from: transaction) { error in
+                Up.modifyTags(removing: tagsObject, from: transaction) { error in
                     switch error {
                         case .none:
                             DispatchQueue.main.async {
@@ -299,7 +300,7 @@ private extension TagsCVC {
                 TagResource(id: tag.id)
             }
 
-            upApi.modifyTags(removing: tagsObject, from: transaction) { error in
+            Up.modifyTags(removing: tagsObject, from: transaction) { error in
                 switch error {
                     case .none:
                         DispatchQueue.main.async {
@@ -436,7 +437,7 @@ extension TagsCVC: UICollectionViewDelegate {
                             let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { _ in
                                 let tagObject = TagResource(id: tag.id)
 
-                                upApi.modifyTags(removing: tagObject, from: transaction) { error in
+                                Up.modifyTags(removing: tagObject, from: transaction) { error in
                                     switch error {
                                         case .none:
                                             DispatchQueue.main.async {

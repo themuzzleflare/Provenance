@@ -1,20 +1,23 @@
 import Foundation
 
 struct Category: Decodable {
-    var data: [CategoryResource]
+    var data: [CategoryResource] // The list of categories returned in this response.
 }
 
 struct CategoryResource: Decodable, Identifiable {
-    var type = "categories"
-    var id: String
+    var type = "categories" // The type of this resource: categories
+
+    var id: String // The unique identifier for this category. This is a human-readable but URL-safe value.
+
     var attributes: CategoryAttribute
-    var relationships: CategoryRelationship
+
+    var relationships: CategoryRelationship?
+
     var links: SelfLink?
     
-    init(id: String, attributes: CategoryAttribute, relationships: CategoryRelationship) {
+    init(id: String, attributes: CategoryAttribute) {
         self.id = id
         self.attributes = attributes
-        self.relationships = relationships
     }
 }
 
@@ -29,20 +32,23 @@ extension CategoryResource: Hashable {
 }
 
 struct CategoryAttribute: Decodable {
-    var name: String
+    var name: String // The name of this category as seen in the Up application.
 }
 
 struct CategoryRelationship: Decodable {
     var parent: CategoryRelationshipParent
+
     var children: CategoryRelationshipChildren
 }
 
 struct CategoryRelationshipParent: Decodable {
     var data: RelationshipData?
-    var links: RelationshipLink?
+    
+    var links: RelatedLink?
 }
 
 struct CategoryRelationshipChildren: Decodable {
     var data: [RelationshipData]
-    var links: RelationshipLink?
+
+    var links: RelatedLink?
 }

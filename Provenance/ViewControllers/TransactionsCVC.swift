@@ -5,60 +5,69 @@ import FLAnimatedImage
 import TinyConstraints
 import Rswift
 
-final class TransactionsCVC: UIViewController {
+final class TransactionsCVC: UIViewController, TransactionsProtocol {
     // MARK: - Properties
 
     private lazy var filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), menu: filterMenu())
     private lazy var adapter = ListAdapter(updater: ListAdapterUpdater(), viewController: self)
 
     private let collectionRefreshControl = RefreshControl(frame: .zero)
-    private let searchController = SearchController(searchResultsController: nil)
-    private let transactionsPagination = Pagination(prev: nil, next: nil)
+
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.sectionHeadersPinToVisibleBounds = true
         return UICollectionView(frame: .zero, collectionViewLayout: layout)
     }()
 
-    private var apiKeyObserver: NSKeyValueObservation?
-    private var dateStyleObserver: NSKeyValueObservation?
-    private var searchBarPlaceholder: String {
-        "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
-    }
-    private var noTransactions: Bool = false
-    private var transactionsError: String = ""
-    private var transactions: [TransactionResource] = [] {
+    var searchController = SearchController(searchResultsController: nil)
+    var transactionsPagination = Pagination(prev: nil, next: nil)
+    var apiKeyObserver: NSKeyValueObservation?
+    var dateStyleObserver: NSKeyValueObservation?
+    var noTransactions: Bool = false
+    var transactionsError: String = ""
+
+    var transactions: [TransactionResource] = [] {
         didSet {
             transactionsUpdates()
         }
     }
+
+    var filteredTransactions: [TransactionResource] {
+        preFilteredTransactions.filter { transaction in
+            searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
+        }
+    }
+
+    private var searchBarPlaceholder: String {
+        "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
+    }
+
     private var preFilteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             (!showSettledOnly || transaction.attributes.isSettled)
                 && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
         }
     }
-    private var filteredTransactions: [TransactionResource] {
-        preFilteredTransactions.filter { transaction in
-            searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
-        }
-    }
+
     private var filter: CategoryFilter = .all {
         didSet {
             filterUpdates()
         }
     }
+
     private var showSettledOnly: Bool = false {
         didSet {
             filterUpdates()
         }
     }
+
     private var groupedTransactions: [Date: [TransactionResource]] {
         Dictionary(
             grouping: filteredTransactions,
             by: { $0.attributes.createdAtDate }
         )
     }
+    
     private var sortedTransactions: Array<(key: Date, value: Array<TransactionResource>)> {
         groupedTransactions.sorted { $0.key > $1.key }
     }
@@ -93,7 +102,7 @@ final class TransactionsCVC: UIViewController {
 
 // MARK: - Configuration
 
-private extension TransactionsCVC {
+extension TransactionsCVC {
     private func configureAdapter() {
         adapter.collectionView = collectionView
         adapter.dataSource = self
@@ -139,7 +148,7 @@ private extension TransactionsCVC {
 
 // MARK: - Actions
 
-private extension TransactionsCVC {
+extension TransactionsCVC {
     @objc private func appMovedToForeground() {
         fetchingTasks()
     }
@@ -158,7 +167,7 @@ private extension TransactionsCVC {
         }
     }
 
-    private func transactionsUpdates() {
+    func transactionsUpdates() {
         noTransactions = transactions.isEmpty
         adapter.performUpdates(animated: false)
         collectionView.refreshControl?.endRefreshing()
@@ -166,13 +175,13 @@ private extension TransactionsCVC {
         WidgetCenter.shared.reloadAllTimelines()
     }
 
-    private func filterUpdates() {
+    func filterUpdates() {
         filterButton.menu = filterMenu()
         searchController.searchBar.placeholder = searchBarPlaceholder
         adapter.performUpdates(animated: false)
     }
 
-    private func fetchingTasks() {
+    func fetchingTasks() {
         fetchTransactions()
     }
 
@@ -189,7 +198,7 @@ private extension TransactionsCVC {
         ])
     }
 
-    private func fetchTransactions() {
+    func fetchTransactions() {
         if #available(iOS 15.0, *) {
             async {
                 do {
@@ -214,7 +223,7 @@ private extension TransactionsCVC {
         }
     }
     
-    private func display(_ transactions: [TransactionResource]) {
+    func display(_ transactions: [TransactionResource]) {
         transactionsError = ""
         self.transactions = transactions
 
@@ -226,7 +235,7 @@ private extension TransactionsCVC {
         }
     }
 
-    private func display(_ error: NetworkError) {
+    func display(_ error: NetworkError) {
         transactionsError = errorString(for: error)
         transactions = []
 
