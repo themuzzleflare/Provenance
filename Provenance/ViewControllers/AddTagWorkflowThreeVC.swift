@@ -1,5 +1,6 @@
 import UIKit
 import NotificationBannerSwift
+import SwiftyBeaver
 import Rswift
 
 final class AddTagWorkflowThreeVC: UIViewController {
@@ -15,6 +16,7 @@ final class AddTagWorkflowThreeVC: UIViewController {
             tag.id
         }.joined(separator: ", ")
     }
+
     private var dateStyleObserver: NSKeyValueObservation?
 
     // MARK: - Life Cycle
@@ -22,19 +24,22 @@ final class AddTagWorkflowThreeVC: UIViewController {
     init(transaction: TransactionResource, tags: [TagResource]) {
         self.transaction = transaction
         self.tags = tags
-
         super.init(nibName: nil, bundle: nil)
+        log.debug("init(transaction: \(transaction.attributes.description), tags: \(tags.count.description))")
     }
 
     required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+        fatalError("init(coder:) has not been implemented")
     }
-    
+
+    deinit {
+        log.debug("deinit")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        log.debug("viewDidLoad")
         view.addSubview(tableView)
-
         configureProperties()
         configureNavigation()
         configureTableView()
@@ -42,7 +47,7 @@ final class AddTagWorkflowThreeVC: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
+        log.debug("viewDidLayoutSubviews")
         tableView.frame = view.bounds
     }
 }
@@ -51,6 +56,8 @@ final class AddTagWorkflowThreeVC: UIViewController {
 
 private extension AddTagWorkflowThreeVC {
     private func configureProperties() {
+        log.verbose("configureProperties")
+
         title = "Add Tag Confirmation"
 
         dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
@@ -61,13 +68,19 @@ private extension AddTagWorkflowThreeVC {
     }
 
     private func configureNavigation() {
+        log.verbose("configureNavigation")
+
         navigationItem.title = "Confirmation"
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.checkmark(), style: .plain, target: self, action: #selector(addTag))
     }
 
     private func configureTableView() {
+        log.verbose("configureTableView")
+
         tableView.dataSource = self
-        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "attributeCell")
+        tableView.delegate = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "attributeCell")
         tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
         tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
@@ -77,17 +90,21 @@ private extension AddTagWorkflowThreeVC {
 
 private extension AddTagWorkflowThreeVC {
     @objc private func addTag() {
-        let activityIndicator = ActivityIndicator(style: .medium)
+        log.verbose("addTag")
 
-        activityIndicator.startAnimating()
+        let activityIndicator: UIActivityIndicatorView = {
+            let aiv = UIActivityIndicatorView()
+            aiv.startAnimating()
+            return aiv
+        }()
 
         navigationItem.setRightBarButton(UIBarButtonItem(customView: activityIndicator), animated: false)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
             Up.modifyTags(adding: tags, to: transaction) { error in
-                switch error {
-                    case .none:
-                        DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    switch error {
+                        case .none:
                             let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tagIds) was added to \(transaction.attributes.description).", style: .success)
 
                             notificationBanner.duration = 2
@@ -95,9 +112,7 @@ private extension AddTagWorkflowThreeVC {
                             notificationBanner.show()
 
                             navigationController?.popViewController(animated: true)
-                        }
-                    default:
-                        DispatchQueue.main.async {
+                        default:
                             let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
 
                             notificationBanner.duration = 2
@@ -110,7 +125,7 @@ private extension AddTagWorkflowThreeVC {
                                 default:
                                     navigationController?.popViewController(animated: true)
                             }
-                        }
+                    }
                 }
             }
         }
@@ -121,7 +136,7 @@ private extension AddTagWorkflowThreeVC {
 
 extension AddTagWorkflowThreeVC: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        3
+        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -140,7 +155,7 @@ extension AddTagWorkflowThreeVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! BasicTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath)
         let transactionCell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
 
         cell.selectionStyle = .none
@@ -188,5 +203,13 @@ extension AddTagWorkflowThreeVC: UITableViewDataSource {
             default:
                 return nil
         }
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension AddTagWorkflowThreeVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
 }

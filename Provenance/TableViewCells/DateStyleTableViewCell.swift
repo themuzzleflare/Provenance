@@ -1,5 +1,4 @@
 import UIKit
-import WidgetKit
 import TinyConstraints
 import Rswift
 
@@ -27,8 +26,6 @@ final class DateStyleTableViewCell: UITableViewCell {
                     segmentedControl.selectedSegmentIndex = 1
                 }
             }
-
-            WidgetCenter.shared.reloadAllTimelines()
         }
 
         configureCell()

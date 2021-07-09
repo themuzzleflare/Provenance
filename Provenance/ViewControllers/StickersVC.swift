@@ -1,4 +1,5 @@
 import UIKit
+import SwiftyBeaver
 
 final class StickersVC: UIViewController {
     // MARK: - Properties
@@ -9,15 +10,14 @@ final class StickersVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        log.debug("viewDidLoad")
         view.addSubview(collectionView)
-
         configure()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
+        log.debug("viewDidLayoutSubviews")
         collectionView.frame = view.bounds
     }
 }
@@ -26,9 +26,12 @@ final class StickersVC: UIViewController {
 
 private extension StickersVC {
     private func configure() {
+        log.verbose("configure")
+
         title = "Stickers"
 
         navigationItem.title = "Stickers"
+        navigationItem.largeTitleDisplayMode = .never
 
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -58,6 +61,8 @@ extension StickersVC: UICollectionViewDataSource {
 
 extension StickersVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        log.debug("collectionView(didSelectItemAt indexPath: \(indexPath))")
+
         if let image = stickerGifs[indexPath.item] {
             navigationController?.pushViewController(StickerView(image: image), animated: true)
         }

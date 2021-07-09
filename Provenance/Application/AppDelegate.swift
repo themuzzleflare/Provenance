@@ -2,6 +2,7 @@ import UIKit
 import Firebase
 import FirebaseAnalytics
 import SwiftDate
+import SwiftyBeaver
 import Rswift
 
 @main
@@ -9,10 +10,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Life Cycle
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:[UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        SwiftDate.defaultRegion = .current
+
+        #if DEBUG
+        log.addDestination(console)
+        #endif
+
         registerDefaults()
         configureFirebase()
-
-        SwiftDate.defaultRegion = .current
 
         return true
     }
@@ -40,12 +45,18 @@ private extension AppDelegate {
             }
 
             appDefaults.register(defaults: defaultsToRegister)
+            
+            log.debug("registerDefaults succeeded")
         } catch {
+            log.error("registerDefaults failed")
+            
             return
         }
     }
 
     private func configureFirebase() {
+        log.debug("configureFirebase")
+
         FirebaseApp.configure()
         Analytics.load()
     }

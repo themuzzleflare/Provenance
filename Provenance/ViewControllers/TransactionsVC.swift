@@ -1,17 +1,18 @@
 import UIKit
+import WidgetKit
 import FLAnimatedImage
+import Hero
 import SwiftyBeaver
 import TinyConstraints
 import Rswift
 
-final class TransactionsByCategoryVC: UIViewController {
+final class TransactionsVC: UIViewController {
     // MARK: - Properties
-
-    private var category: CategoryResource
 
     private typealias Snapshot = NSDiffableDataSourceSnapshot<SortedTransactions, TransactionResource>
 
     private lazy var dataSource = makeDataSource()
+    private lazy var filterButton = UIBarButtonItem(image: R.image.sliderHorizontal3(), menu: filterMenu())
 
     private let tableRefreshControl: UIRefreshControl = {
         let rc = UIRefreshControl()
@@ -19,30 +20,56 @@ final class TransactionsByCategoryVC: UIViewController {
         return rc
     }()
 
+    private let tableView = UITableView(frame: .zero, style: .grouped)
+
     private let searchController = SearchController(searchResultsController: nil)
 
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private var apiKeyObserver: NSKeyValueObservation?
 
     private var dateStyleObserver: NSKeyValueObservation?
 
     private var noTransactions: Bool = false
 
+    private var transactionsError: String = ""
+
     private var transactions: [TransactionResource] = [] {
         didSet {
             log.info("didSet transactions: \(transactions.count.description)")
 
-            noTransactions = transactions.isEmpty
-            applySnapshot()
-            tableView.refreshControl?.endRefreshing()
-            searchController.searchBar.placeholder = "Search \(transactions.count.description) \(transactions.count == 1 ? "Transaction" : "Transactions")"
+            transactionsUpdates()
         }
     }
 
-    private var transactionsError: String = ""
-
     private var filteredTransactions: [TransactionResource] {
-        transactions.filter { transaction in
+        preFilteredTransactions.filter { transaction in
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
+        }
+    }
+
+    private var searchBarPlaceholder: String {
+        "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
+    }
+
+    private var preFilteredTransactions: [TransactionResource] {
+        transactions.filter { transaction in
+            (!showSettledOnly || transaction.attributes.isSettled)
+            && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
+        }
+    }
+
+    private var filter: CategoryFilter = .all {
+        didSet {
+            log.info("didSet filter: \(categoryName(for: filter))")
+
+            filterUpdates()
+        }
+    }
+
+    private var showSettledOnly: Bool = false {
+        didSet {
+            log.info("didSet showSettledOnly: \(showSettledOnly.description)")
+
+            filterUpdates()
         }
     }
 
@@ -68,31 +95,21 @@ final class TransactionsByCategoryVC: UIViewController {
             return firstTransaction.attributes.creationDayMonthYear
         }
     }
-    
-    // MARK: - Life Cycle
 
-    init(category: CategoryResource) {
-        self.category = category
-        super.init(nibName: nil, bundle: nil)
-        log.debug("init(category: \(category.attributes.name))")
-    }
+    // MARK: - Life Cycle
 
     deinit {
         log.debug("deinit")
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("Not implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         log.debug("viewDidLoad")
         view.addSubview(tableView)
+        configureTableView()
         configureProperties()
         configureNavigation()
         configureSearch()
-        configureTableView()
         applySnapshot()
     }
 
@@ -105,44 +122,13 @@ final class TransactionsByCategoryVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         log.debug("viewWillAppear(animated: \(animated.description))")
-        fetchTransactions()
+        fetchingTasks()
     }
 }
 
 // MARK: - Configuration
 
-private extension TransactionsByCategoryVC {
-    private func configureProperties() {
-        log.verbose("configureProperties")
-
-        title = "Transactions by Category"
-        definesPresentationContext = true
-
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
-            DispatchQueue.main.async {
-                reloadSnapshot()
-            }
-        }
-    }
-    
-    private func configureNavigation() {
-        log.verbose("configureNavigation")
-
-        navigationItem.title = "Loading"
-        navigationItem.largeTitleDisplayMode = .never
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle())
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-    }
-    
-    private func configureSearch() {
-        log.verbose("configureSearch")
-
-        searchController.searchBar.delegate = self
-    }
-    
+extension TransactionsVC {
     private func configureTableView() {
         log.verbose("configureTableView")
 
@@ -152,35 +138,104 @@ private extension TransactionsByCategoryVC {
         tableView.refreshControl = tableRefreshControl
         tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
+
+    private func configureProperties() {
+        log.verbose("configureProperties")
+
+        title = "Transactions"
+        definesPresentationContext = true
+
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] object, change in
+            fetchingTasks()
+        }
+        
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
+            DispatchQueue.main.async {
+                reloadSnapshot()
+            }
+        }
+    }
+
+    private func configureNavigation() {
+        log.verbose("configureNavigation")
+
+        navigationItem.title = "Loading"
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle())
+        navigationItem.searchController = searchController
+        navigationItem.largeTitleDisplayMode = .always
+    }
+
+    private func configureSearch() {
+        log.verbose("configureSearch")
+
+        searchController.searchBar.delegate = self
+    }
 }
 
 // MARK: - Actions
 
-private extension TransactionsByCategoryVC {
+extension TransactionsVC {
     @objc private func appMovedToForeground() {
         log.verbose("appMovedToForeground")
 
-        fetchTransactions()
+        fetchingTasks()
+    }
+
+    @objc private func switchDateStyle() {
+        log.verbose("switchDateStyle")
+
+        if appDefaults.dateStyle == "Absolute" {
+            appDefaults.dateStyle = "Relative"
+        } else if appDefaults.dateStyle == "Relative" {
+            appDefaults.dateStyle = "Absolute"
+        }
     }
 
     @objc private func refreshTransactions() {
         log.verbose("refreshTransactions")
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-            fetchTransactions()
+            fetchingTasks()
         }
     }
 
-    private func reloadSnapshot() {
-        var snap = dataSource.snapshot()
+    private func transactionsUpdates() {
+        log.verbose("transactionsUpdates")
 
-        if #available(iOS 15.0, *) {
-            snap.reconfigureItems(snap.itemIdentifiers)
-        } else {
-            snap.reloadItems(snap.itemIdentifiers)
+        noTransactions = transactions.isEmpty
+        applySnapshot(animate: true)
+        tableView.refreshControl?.endRefreshing()
+        searchController.searchBar.placeholder = searchBarPlaceholder
+        WidgetCenter.shared.reloadAllTimelines()
+    }
+
+    private func filterUpdates() {
+        log.verbose("filterUpdates")
+
+        filterButton.menu = filterMenu()
+        searchController.searchBar.placeholder = searchBarPlaceholder
+        applySnapshot(animate: true)
+    }
+
+    private func fetchingTasks() {
+        log.verbose("fetchingTasks")
+
+        fetchTransactions()
+    }
+
+    private func filterMenu() -> UIMenu {
+        return UIMenu(options: .displayInline, children: [
+            UIMenu(title: "Category", image: filter == .all ? R.image.trayFull() : R.image.trayFullFill(), children: CategoryFilter.allCases.map { category in
+            UIAction(title: categoryName(for: category), state: filter == category ? .on : .off) { [self] _ in
+                filter = category
+            }
+        }),
+            UIAction(title: "Settled Only", image: showSettledOnly ? R.image.checkmarkCircleFill() : R.image.checkmarkCircle(), state: showSettledOnly ? .on : .off) { [self] _ in
+            showSettledOnly.toggle()
         }
-
-        dataSource.apply(snap, animatingDifferences: false)
+        ])
     }
 
     private func makeDataSource() -> DataSource {
@@ -241,7 +296,7 @@ private extension TransactionsByCategoryVC {
                     label.translatesAutoresizingMaskIntoConstraints = false
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
-                    label.font = R.font.circularStdBook(size: 23)
+                    label.font = R.font.circularStdMedium(size: 23)
                     label.text = "No Transactions"
 
                     let vStack = UIStackView(arrangedSubviews: [icon, label])
@@ -286,21 +341,33 @@ private extension TransactionsByCategoryVC {
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
 
+    private func reloadSnapshot() {
+        var snap = dataSource.snapshot()
+
+        if #available(iOS 15.0, *) {
+            snap.reconfigureItems(snap.itemIdentifiers)
+        } else {
+            snap.reloadItems(snap.itemIdentifiers)
+        }
+
+        dataSource.apply(snap, animatingDifferences: false)
+    }
+
     private func fetchTransactions() {
         log.verbose("fetchTransactions")
 
         if #available(iOS 15.0, *) {
             async {
                 do {
-                    let transactions = try await Up.listTransactions(filterBy: category)
-
+                    let transactions = try await Up.listTransactions()
+                    
                     display(transactions)
                 } catch {
                     display(error as! NetworkError)
                 }
             }
         } else {
-            Up.listTransactions(filterBy: category) { [self] result in
+            Up.listTransactions { [self] result in
                 DispatchQueue.main.async {
                     switch result {
                         case .success(let transactions):
@@ -312,15 +379,18 @@ private extension TransactionsByCategoryVC {
             }
         }
     }
-
+    
     private func display(_ transactions: [TransactionResource]) {
         log.verbose("display(transactions: \(transactions.count.description))")
 
         transactionsError = ""
         self.transactions = transactions
 
-        if navigationItem.title != category.attributes.name {
-            navigationItem.title = category.attributes.name
+        if navigationItem.title != "Transactions" {
+            navigationItem.title = "Transactions"
+        }
+        if navigationItem.leftBarButtonItems == nil {
+            navigationItem.setLeftBarButtonItems([UIBarButtonItem(image: R.image.calendarBadgeClock(), style: .plain, target: self, action: #selector(switchDateStyle)), filterButton], animated: true)
         }
     }
 
@@ -333,26 +403,29 @@ private extension TransactionsByCategoryVC {
         if navigationItem.title != "Error" {
             navigationItem.title = "Error"
         }
+        if navigationItem.leftBarButtonItems != nil {
+            navigationItem.setLeftBarButtonItems(nil, animated: true)
+        }
     }
 }
 
 // MARK: - UITableViewDelegate
 
-extension TransactionsByCategoryVC: UITableViewDelegate {
+extension TransactionsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        UITableView.automaticDimension
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
-
-        tableView.deselectRow(at: indexPath, animated: true)
-
+        
         if let transaction = dataSource.itemIdentifier(for: indexPath) {
+            tableView.deselectRow(at: indexPath, animated: true)
+            
             navigationController?.pushViewController(TransactionDetailVC(transaction: transaction), animated: true)
         }
     }
-    
+
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let transaction = dataSource.itemIdentifier(for: indexPath) else {
             return nil
@@ -376,7 +449,19 @@ extension TransactionsByCategoryVC: UITableViewDelegate {
 
 // MARK: - UISearchBarDelegate
 
-extension TransactionsByCategoryVC: UISearchBarDelegate {
+extension TransactionsVC: UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        log.debug("searchBarTextDidBeginEditing")
+    }
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        log.debug("searchBarTextDidEndEditing")
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        log.debug("searchBarSearchButtonClicked")
+    }
+
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         log.debug("searchBar(textDidChange searchText: \(searchText))")
 

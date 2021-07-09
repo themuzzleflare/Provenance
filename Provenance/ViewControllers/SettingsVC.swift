@@ -1,6 +1,7 @@
 import UIKit
 import WidgetKit
 import NotificationBannerSwift
+import SwiftyBeaver
 import Rswift
 
 final class SettingsVC: UIViewController {
@@ -8,19 +9,22 @@ final class SettingsVC: UIViewController {
 
     private var displayBanner: NotificationBanner?
 
-    private weak var submitActionProxy: UIAlertAction?
-
-    private let tableView = UITableView(frame: .zero, style: .grouped)
-
+    private var submitActionProxy: UIAlertAction?
     private var apiKeyObserver: NSKeyValueObservation?
     private var textDidChangeObserver: NSObjectProtocol!
+
+    private let tableView = UITableView(frame: .zero, style: .grouped)
 
     // MARK: - Life Cycle
 
     init(displayBanner: NotificationBanner? = nil) {
         self.displayBanner = displayBanner
-
         super.init(nibName: nil, bundle: nil)
+        log.debug("init(displayBanner: \(displayBanner?.titleLabel?.text ?? "nil"))")
+    }
+
+    deinit {
+        log.debug("deinit")
     }
 
     required init?(coder: NSCoder) {
@@ -29,7 +33,7 @@ final class SettingsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        log.debug("viewDidLoad")
         view.addSubview(tableView)
 
         configureProperties()
@@ -39,13 +43,13 @@ final class SettingsVC: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
+        log.debug("viewDidLayoutSubviews")
         tableView.frame = view.bounds
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        log.debug("viewDidAppear(animated: \(animated.description))")
         if let displayBanner = displayBanner {
             displayBanner.show()
         }
@@ -56,6 +60,8 @@ final class SettingsVC: UIViewController {
 
 private extension SettingsVC {
     private func configureProperties() {
+        log.verbose("configureProperties")
+
         title = "Settings"
 
         apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] object, change in
@@ -67,16 +73,21 @@ private extension SettingsVC {
     }
     
     private func configureNavigation() {
+        log.verbose("configureNavigation")
+
         navigationItem.title = "Settings"
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
     }
     
     private func configureTableView() {
+        log.verbose("configureTableView")
+        
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(APIKeyTableViewCell.self, forCellReuseIdentifier: APIKeyTableViewCell.reuseIdentifier)
         tableView.register(DateStyleTableViewCell.self, forCellReuseIdentifier: DateStyleTableViewCell.reuseIdentifier)
-        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "settingsCell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "settingsCell")
         tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
 }
@@ -85,6 +96,7 @@ private extension SettingsVC {
 
 private extension SettingsVC {
     @objc private func closeWorkflow() {
+        log.verbose("closeWorkflow")
         navigationController?.dismiss(animated: true)
     }
 }
@@ -93,17 +105,17 @@ private extension SettingsVC {
 
 extension SettingsVC: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        3
+        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let apiKeyCell = tableView.dequeueReusableCell(withIdentifier: APIKeyTableViewCell.reuseIdentifier, for: indexPath) as! APIKeyTableViewCell
         let dateStyleCell = tableView.dequeueReusableCell(withIdentifier: DateStyleTableViewCell.reuseIdentifier, for: indexPath) as! DateStyleTableViewCell
-        let settingsCell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath) as! BasicTableViewCell
+        let settingsCell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath)
 
         settingsCell.accessoryType = .disclosureIndicator
         settingsCell.selectedBackgroundView = selectedBackgroundCellView
@@ -173,6 +185,8 @@ extension SettingsVC: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
+        
         switch indexPath.section {
             case 0:
                 tableView.deselectRow(at: indexPath, animated: true)

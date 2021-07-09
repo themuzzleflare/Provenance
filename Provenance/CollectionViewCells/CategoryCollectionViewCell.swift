@@ -31,7 +31,6 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        
         layer.borderColor = UIColor.separator.cgColor
     }
 }

@@ -67,6 +67,14 @@ struct Up {
         .resume()
     }
 
+    /**
+     Retrieve a list of all transactions for a specific account. Results are ordered newest first to oldest last.
+
+     - parameter account: The account object.
+     - returns: An array of `TransactionResource` objects.
+
+     */
+
     @available(iOS 15.0, *) static func listTransactions(filterBy account: AccountResource) async throws -> [TransactionResource] {
         try await withCheckedThrowingContinuation { continuation in
             listTransactions(filterBy: account) { result in
@@ -79,7 +87,16 @@ struct Up {
             }
         }
     }
-    
+
+    /**
+     Retrieve a list of all transactions for a specific account. Results are ordered newest first to oldest last.
+
+     - parameter account: The account object.
+     - returns: An array of `TransactionResource` objects.
+     - throws: A `NetworkError` object.
+
+     */
+
     static func listTransactions(filterBy account: AccountResource, completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
         let url = URL(string: "https://api.up.com.au/api/v1/accounts/\(account.id)/transactions")!.appendingQueryParameters(["page[size]": "100"])
         let request = authorisedRequest(url: url)
@@ -89,6 +106,14 @@ struct Up {
         }
         .resume()
     }
+
+    /**
+     Retrieve a list of all transactions across all accounts for a specific tag for the currently authenticated user. Results are ordered newest first to oldest last.
+
+     - parameter tag: The tag object.
+     - returns: An array of `TransactionResource` objects.
+
+     */
 
     @available(iOS 15.0, *) static func listTransactions(filterBy tag: TagResource) async throws -> [TransactionResource] {
         try await withCheckedThrowingContinuation { continuation in
@@ -102,6 +127,15 @@ struct Up {
             }
         }
     }
+
+    /**
+     Retrieve a list of all transactions across all accounts for a specific tag for the currently authenticated user. Results are ordered newest first to oldest last.
+
+     - parameter tag: The tag object.
+     - returns: An array of `TransactionResource` objects.
+     - throws: A `NetworkError` object.
+
+     */
     
     static func listTransactions(filterBy tag: TagResource, completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
         let url = URL(string: "https://api.up.com.au/api/v1/transactions")!.appendingQueryParameters(["filter[tag]": tag.id, "page[size]": "100"])
@@ -112,6 +146,14 @@ struct Up {
         }
         .resume()
     }
+
+    /**
+     Retrieve a list of all transactions across all accounts for a specific category for the currently authenticated user. Results are ordered newest first to oldest last.
+
+     - parameter category: The category object.
+     - returns: An array of `TransactionResource` objects.
+
+     */
 
     @available(iOS 15.0, *) static func listTransactions(filterBy category: CategoryResource) async throws -> [TransactionResource] {
         try await withCheckedThrowingContinuation { continuation in
@@ -125,6 +167,15 @@ struct Up {
             }
         }
     }
+
+    /**
+     Retrieve a list of all transactions across all accounts for a specific category for the currently authenticated user. Results are ordered newest first to oldest last.
+
+     - parameter category: The category object.
+     - returns: An array of `TransactionResource` objects.
+     - throws: A `NetworkError` object.
+
+     */
     
     static func listTransactions(filterBy category: CategoryResource, completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
         let url = URL(string: "https://api.up.com.au/api/v1/transactions")!.appendingQueryParameters(["filter[category]": category.id, "page[size]": "100"])
@@ -182,6 +233,14 @@ struct Up {
         .resume()
     }
 
+    /**
+     Retrieve a specific transaction.
+
+     - parameter transaction: The transaction object.
+     - returns: A `TransactionResource` object.
+
+     */
+
     @available(iOS 15.0, *) static func retrieveTransaction(for transaction: TransactionResource) async throws -> TransactionResource {
         try await withCheckedThrowingContinuation { continuation in
             retrieveTransaction(for: transaction) { result in
@@ -195,6 +254,15 @@ struct Up {
         }
     }
 
+    /**
+     Retrieve a specific transaction.
+
+     - parameter transaction: The transaction object.
+     - returns: A `TransactionResource` object.
+     - throws: A `NetworkError` object.
+
+     */
+
     static func retrieveTransaction(for transaction: TransactionResource, completion: @escaping (Result<TransactionResource, NetworkError>) -> Void) {
         let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)")!
         let request = authorisedRequest(url: url)
@@ -204,6 +272,14 @@ struct Up {
         }
         .resume()
     }
+
+    /**
+     Retrieve a specific transaction by providing its unique identifier.
+
+     - parameter transactionId: The unique identifier for the transaction.
+     - returns: A `TransactionResource` object.
+
+     */
 
     @available(iOS 15.0, *) static func retrieveTransaction(for transactionId: String) async throws -> TransactionResource {
         try await withCheckedThrowingContinuation { continuation in
@@ -217,6 +293,15 @@ struct Up {
             }
         }
     }
+
+    /**
+     Retrieve a specific transaction by providing its unique identifier.
+
+     - parameter transactionId: The unique identifier for the transaction.
+     - returns: A `TransactionResource` object.
+     - throws: A `NetworkError` object.
+
+     */
 
     static func retrieveTransaction(for transactionId: String, completion: @escaping (Result<TransactionResource, NetworkError>) -> Void) {
         let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transactionId)")!

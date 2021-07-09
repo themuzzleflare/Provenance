@@ -1,16 +1,12 @@
 import Foundation
 
-#if canImport(IGListKit)
-import IGListKit
-#endif
-
 struct Tag: Decodable {
     var data: [TagResource] // The list of tags returned in this response.
 
     var links: Pagination
 }
 
-class TagResource: Decodable, Identifiable {
+struct TagResource: Decodable, Identifiable {
     var type = "tags" // The type of this resource: tags
 
     var id: String // The label of the tag, which also acts as the tag’s unique identifier.
@@ -32,21 +28,6 @@ extension TagResource: Hashable {
     }
 }
 
-#if canImport(IGListKit)
-extension TagResource: ListDiffable {
-    func diffIdentifier() -> NSObjectProtocol {
-        id as NSObjectProtocol
-    }
-
-    func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
-        guard let object = object as? TagResource else {
-            return false
-        }
-        return self.id == object.id
-    }
-}
-#endif
-
 struct TagRelationship: Decodable {
     var transactions: TransactionsLinksObject
 }
@@ -59,4 +40,25 @@ struct TagInputResourceIdentifier: Codable, Identifiable {
     var type = "tags" // The type of this resource: tags
     
     var id: String // The label of the tag, which also acts as the tag’s unique identifier.
+}
+
+struct SortedTags: Identifiable {
+    var id: String
+
+    var tags: [TagResource]
+
+    init(id: String, tags: [TagResource]) {
+        self.id = id
+        self.tags = tags
+    }
+}
+
+extension SortedTags: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    static func == (lhs: SortedTags, rhs: SortedTags) -> Bool {
+        lhs.id == rhs.id
+    }
 }

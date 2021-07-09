@@ -4,95 +4,102 @@ import SwiftyBeaver
 import TinyConstraints
 import Rswift
 
-final class TransactionsByCategoryVC: UIViewController {
+final class TagsVC: UIViewController {
     // MARK: - Properties
 
-    private var category: CategoryResource
-
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<SortedTransactions, TransactionResource>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<SortedTags, TagResource>
 
     private lazy var dataSource = makeDataSource()
 
     private let tableRefreshControl: UIRefreshControl = {
         let rc = UIRefreshControl()
-        rc.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+        rc.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
         return rc
     }()
 
     private let searchController = SearchController(searchResultsController: nil)
 
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let tableView = UITableView(frame: .zero, style: .plain)
 
-    private var dateStyleObserver: NSKeyValueObservation?
+    private var apiKeyObserver: NSKeyValueObservation?
+    
+    private var noTags: Bool = false
 
-    private var noTransactions: Bool = false
-
-    private var transactions: [TransactionResource] = [] {
+    private var tags: [TagResource] = [] {
         didSet {
-            log.info("didSet transactions: \(transactions.count.description)")
+            log.info("didSet tags: \(tags.count.description)")
 
-            noTransactions = transactions.isEmpty
+            noTags = tags.isEmpty
             applySnapshot()
             tableView.refreshControl?.endRefreshing()
-            searchController.searchBar.placeholder = "Search \(transactions.count.description) \(transactions.count == 1 ? "Transaction" : "Transactions")"
+            searchController.searchBar.placeholder = "Search \(tags.count.description) \(tags.count == 1 ? "Tag" : "Tags")"
         }
     }
 
-    private var transactionsError: String = ""
+    private var tagsError: String = ""
 
-    private var filteredTransactions: [TransactionResource] {
-        transactions.filter { transaction in
-            searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
+    private var filteredTags: [TagResource] {
+        tags.filter { tag in
+            searchController.searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchController.searchBar.text!)
         }
     }
 
-    private var groupedTransactions: [Date: [TransactionResource]] {
+    private var groupedTags: [String: [TagResource]] {
         Dictionary(
-            grouping: filteredTransactions,
-            by: { $0.attributes.createdAtDate }
+            grouping: filteredTags,
+            by: { String($0.id.prefix(1)) }
         )
     }
 
-    private var sortedTransactions: Array<(key: Date, value: Array<TransactionResource>)> {
-        groupedTransactions.sorted { $0.key > $1.key }
+    private var keys: [String] {
+        groupedTags.keys.sorted()
     }
 
-    private var sections: [SortedTransactions] = []
+    private var sortedTags: Array<(key: String, value: Array<TagResource>)> {
+        groupedTags.sorted { $0.key < $1.key }
+    }
 
-    private class DataSource: UITableViewDiffableDataSource<SortedTransactions, TransactionResource> {
+    private var sections: [SortedTags] = []
+
+    private class DataSource: UITableViewDiffableDataSource<SortedTags, TagResource> {
+        weak var parent: TagsVC! = nil
+
         override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-            guard let firstTransaction = itemIdentifier(for: IndexPath(item: 0, section: section)) else {
+            guard let firstTag = itemIdentifier(for: IndexPath(item: 0, section: section)) else {
                 return nil
             }
 
-            return firstTransaction.attributes.creationDayMonthYear
+            guard let section = snapshot().sectionIdentifier(containingItem: firstTag) else {
+                return nil
+            }
+
+            return section.id.capitalized
+        }
+
+        override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+            return parent.keys.map { $0.capitalized }
         }
     }
-    
+
     // MARK: - Life Cycle
 
-    init(category: CategoryResource) {
-        self.category = category
-        super.init(nibName: nil, bundle: nil)
-        log.debug("init(category: \(category.attributes.name))")
-    }
-
-    deinit {
-        log.debug("deinit")
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        dataSource.parent = self
     }
 
     required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+        fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         log.debug("viewDidLoad")
         view.addSubview(tableView)
+        configureTableView()
         configureProperties()
         configureNavigation()
         configureSearch()
-        configureTableView()
         applySnapshot()
     }
 
@@ -105,25 +112,23 @@ final class TransactionsByCategoryVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         log.debug("viewWillAppear(animated: \(animated.description))")
-        fetchTransactions()
+        fetchTags()
     }
 }
 
 // MARK: - Configuration
 
-private extension TransactionsByCategoryVC {
+private extension TagsVC {
     private func configureProperties() {
         log.verbose("configureProperties")
 
-        title = "Transactions by Category"
+        title = "Tags"
         definesPresentationContext = true
 
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
-            DispatchQueue.main.async {
-                reloadSnapshot()
-            }
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] object, change in
+            fetchTags()
         }
     }
     
@@ -131,10 +136,9 @@ private extension TransactionsByCategoryVC {
         log.verbose("configureNavigation")
 
         navigationItem.title = "Loading"
-        navigationItem.largeTitleDisplayMode = .never
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle())
+        navigationItem.largeTitleDisplayMode = .always
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag())
         navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func configureSearch() {
@@ -148,7 +152,7 @@ private extension TransactionsByCategoryVC {
 
         tableView.dataSource = dataSource
         tableView.delegate = self
-        tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")
         tableView.refreshControl = tableRefreshControl
         tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
@@ -156,31 +160,29 @@ private extension TransactionsByCategoryVC {
 
 // MARK: - Actions
 
-private extension TransactionsByCategoryVC {
+private extension TagsVC {
     @objc private func appMovedToForeground() {
         log.verbose("appMovedToForeground")
 
-        fetchTransactions()
+        fetchTags()
     }
 
-    @objc private func refreshTransactions() {
-        log.verbose("refreshTransactions")
+    @objc private func openAddWorkflow() {
+        log.verbose("openAddWorkflow")
+
+        let vc = NavigationController(rootViewController: AddTagWorkflowVC())
+
+        vc.modalPresentationStyle = .fullScreen
+
+        present(vc, animated: true)
+    }
+
+    @objc private func refreshTags() {
+        log.verbose("refreshTags")
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-            fetchTransactions()
+            fetchTags()
         }
-    }
-
-    private func reloadSnapshot() {
-        var snap = dataSource.snapshot()
-
-        if #available(iOS 15.0, *) {
-            snap.reconfigureItems(snap.itemIdentifiers)
-        } else {
-            snap.reloadItems(snap.itemIdentifiers)
-        }
-
-        dataSource.apply(snap, animatingDifferences: false)
     }
 
     private func makeDataSource() -> DataSource {
@@ -188,10 +190,14 @@ private extension TransactionsByCategoryVC {
 
         let dataSource = DataSource(
             tableView: tableView,
-            cellProvider: { tableView, indexPath, transaction in
-            let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
+            cellProvider: { tableView, indexPath, tag in
+            let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath)
 
-            cell.transaction = transaction
+            cell.selectedBackgroundView = selectedBackgroundCellView
+            cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+            cell.textLabel?.textAlignment = .left
+            cell.textLabel?.numberOfLines = 0
+            cell.textLabel?.text = tag.id
 
             return cell
         }
@@ -203,15 +209,15 @@ private extension TransactionsByCategoryVC {
     private func applySnapshot(animate: Bool = true) {
         log.verbose("applySnapshot(animate: \(animate.description))")
 
-        sections = sortedTransactions.map { SortedTransactions(id: $0.key, transactions: $0.value) }
+        sections = sortedTags.map { SortedTags(id: $0.key, tags: $0.value) }
 
         var snapshot = Snapshot()
 
         snapshot.appendSections(sections)
-        sections.forEach { snapshot.appendItems($0.transactions, toSection: $0) }
+        sections.forEach { snapshot.appendItems($0.tags, toSection: $0) }
 
-        if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty {
-            if transactions.isEmpty && !noTransactions {
+        if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty {
+            if tags.isEmpty && !noTags {
                 tableView.backgroundView = {
                     let view = UIView(frame: tableView.bounds)
 
@@ -242,7 +248,7 @@ private extension TransactionsByCategoryVC {
                     label.textAlignment = .center
                     label.textColor = .secondaryLabel
                     label.font = R.font.circularStdBook(size: 23)
-                    label.text = "No Transactions"
+                    label.text = "No Tags"
 
                     let vStack = UIStackView(arrangedSubviews: [icon, label])
 
@@ -258,7 +264,7 @@ private extension TransactionsByCategoryVC {
                 }()
             }
         } else {
-            if !transactionsError.isEmpty {
+            if !tagsError.isEmpty {
                 tableView.backgroundView = {
                     let view = UIView(frame: tableView.bounds)
 
@@ -272,7 +278,7 @@ private extension TransactionsByCategoryVC {
                     label.textColor = .secondaryLabel
                     label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
                     label.numberOfLines = 0
-                    label.text = transactionsError
+                    label.text = tagsError
 
                     return view
                 }()
@@ -286,25 +292,25 @@ private extension TransactionsByCategoryVC {
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
 
-    private func fetchTransactions() {
-        log.verbose("fetchTransactions")
+    private func fetchTags() {
+        log.verbose("fetchTags")
 
         if #available(iOS 15.0, *) {
             async {
                 do {
-                    let transactions = try await Up.listTransactions(filterBy: category)
-
-                    display(transactions)
+                    let tags = try await Up.listTags()
+                    
+                    display(tags)
                 } catch {
                     display(error as! NetworkError)
                 }
             }
         } else {
-            Up.listTransactions(filterBy: category) { [self] result in
+            Up.listTags { [self] result in
                 DispatchQueue.main.async {
                     switch result {
-                        case .success(let transactions):
-                            display(transactions)
+                        case .success(let tags):
+                            display(tags)
                         case .failure(let error):
                             display(error)
                     }
@@ -313,61 +319,61 @@ private extension TransactionsByCategoryVC {
         }
     }
 
-    private func display(_ transactions: [TransactionResource]) {
-        log.verbose("display(transactions: \(transactions.count.description))")
+    private func display(_ tags: [TagResource]) {
+        log.verbose("display(tags: \(tags.count.description))")
 
-        transactionsError = ""
-        self.transactions = transactions
+        tagsError = ""
+        self.tags = tags
 
-        if navigationItem.title != category.attributes.name {
-            navigationItem.title = category.attributes.name
+        if navigationItem.title != "Tags" {
+            navigationItem.title = "Tags"
+        }
+        if navigationItem.rightBarButtonItem == nil {
+            navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow)), animated: true)
         }
     }
 
     private func display(_ error: NetworkError) {
         log.verbose("display(error: \(errorString(for: error)))")
 
-        transactionsError = errorString(for: error)
-        transactions = []
+        tagsError = errorString(for: error)
+        tags = []
 
         if navigationItem.title != "Error" {
             navigationItem.title = "Error"
+        }
+        if navigationItem.rightBarButtonItem != nil {
+            navigationItem.setRightBarButton(nil, animated: true)
         }
     }
 }
 
 // MARK: - UITableViewDelegate
 
-extension TransactionsByCategoryVC: UITableViewDelegate {
+extension TagsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        UITableView.automaticDimension
+        return UITableView.automaticDimension
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
 
         tableView.deselectRow(at: indexPath, animated: true)
 
-        if let transaction = dataSource.itemIdentifier(for: indexPath) {
-            navigationController?.pushViewController(TransactionDetailVC(transaction: transaction), animated: true)
+        if let tag = dataSource.itemIdentifier(for: indexPath) {
+            navigationController?.pushViewController(TransactionsByTagVC(tag: tag), animated: true)
         }
     }
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard let transaction = dataSource.itemIdentifier(for: indexPath) else {
+        guard let tag = dataSource.itemIdentifier(for: indexPath)?.id else {
             return nil
         }
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
-                UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
-                UIPasteboard.general.string = transaction.attributes.description
-            },
-                UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
-                UIPasteboard.general.string = transaction.attributes.creationDate
-            },
-                UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
-                UIPasteboard.general.string = transaction.attributes.amount.valueShort
+                UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
+                UIPasteboard.general.string = tag
             }
             ])
         }
@@ -376,10 +382,10 @@ extension TransactionsByCategoryVC: UITableViewDelegate {
 
 // MARK: - UISearchBarDelegate
 
-extension TransactionsByCategoryVC: UISearchBarDelegate {
+extension TagsVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         log.debug("searchBar(textDidChange searchText: \(searchText))")
-
+        
         applySnapshot(animate: true)
     }
     

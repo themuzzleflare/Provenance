@@ -1,5 +1,6 @@
 import UIKit
 import FLAnimatedImage
+import SwiftyBeaver
 import TinyConstraints
 import Rswift
 
@@ -9,56 +10,86 @@ final class AddTagWorkflowTwoVC: UIViewController {
     private var transaction: TransactionResource
     private var fromTransactionTags: Bool
 
-    private enum Section {
-        case main
-    }
-
-    private typealias DataSource = UICollectionViewDiffableDataSource<Section, TagResource>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TagResource>
-    private typealias TagCell = UICollectionView.CellRegistration<TagCollectionViewListCell, TagResource>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<SortedTags, TagResource>
 
     private lazy var dataSource = makeDataSource()
-    private lazy var editingItem = UIBarButtonItem(title: isEditing ? "Cancel" : "Select", style: .plain, target: self, action: #selector(toggleEditing))
+    private lazy var editingItem = UIBarButtonItem(title: isEditing ? "Cancel" : "Select", style: isEditing ? .done : .plain, target: self, action: #selector(toggleEditing))
     private lazy var addItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow))
     private lazy var selectionItem = UIBarButtonItem(title: "Deselect All" , style: .plain, target: self, action: #selector(selectionAction))
-    private lazy var selectionLabelItem = UIBarButtonItem(title: "\(collectionView.indexPathsForSelectedItems?.count.description ?? "0") of 6 selected")
+    private lazy var selectionLabelItem = UIBarButtonItem(title: "\(tableView.indexPathsForSelectedRows?.count.description ?? "0") of 6 selected")
     private lazy var nextItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextAction))
 
-    private let tagsPagination = Pagination(prev: nil, next: nil)
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout.list(using: UICollectionLayoutListConfiguration(appearance: .grouped)))
-    private let collectionRefreshControl = RefreshControl(frame: .zero)
+    private let tableView = UITableView(frame: .zero, style: .plain)
+
+    private let tableRefreshControl: UIRefreshControl = {
+        let rc = UIRefreshControl()
+        rc.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+        return rc
+    }()
+
     private let searchController = SearchController(searchResultsController: nil)
-    private let cellRegistration = TagCell { cell, indexPath, tag in
-        var content = cell.defaultContentConfiguration()
-
-        content.textProperties.font = R.font.circularStdBook(size: UIFont.labelFontSize)!
-        content.textProperties.numberOfLines = 0
-        content.text = tag.id
-
-        cell.contentConfiguration = content
-
-        cell.selectedBackgroundView = selectedBackgroundCellView
-        cell.accessories = [.multiselect(displayed: .whenEditing)]
-    }
 
     private var noTags: Bool = false
+
     private var tags: [TagResource] = [] {
         didSet {
+            log.info("didSet tags: \(tags.count.description)")
+
             noTags = tags.isEmpty
             applySnapshot()
             updateToolbarItems()
-            collectionView.refreshControl?.endRefreshing()
+            tableView.refreshControl?.endRefreshing()
             searchController.searchBar.placeholder = "Search \(tags.count.description) \(tags.count == 1 ? "Tag" : "Tags")"
         }
     }
+
     private var tagsError: String = ""
+
     private var filteredTags: [TagResource] {
         tags.filter { tag in
             searchController.searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    private var filteredTagsList: Tag {
-        Tag(data: filteredTags, links: tagsPagination)
+
+    private var groupedTags: [String: [TagResource]] {
+        Dictionary(
+            grouping: filteredTags,
+            by: { String($0.id.prefix(1)) }
+        )
+    }
+
+    private var keys: [String] {
+        groupedTags.keys.sorted()
+    }
+
+    private var sortedTags: Array<(key: String, value: Array<TagResource>)> {
+        groupedTags.sorted { $0.key < $1.key }
+    }
+
+    private var sections: [SortedTags] = []
+
+    private class DataSource: UITableViewDiffableDataSource<SortedTags, TagResource> {
+        weak var parent: AddTagWorkflowTwoVC! = nil
+
+        override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+            true
+        }
+
+        override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+            guard let firstTag = itemIdentifier(for: IndexPath(item: 0, section: section)) else {
+                return nil
+            }
+
+            guard let section = snapshot().sectionIdentifier(containingItem: firstTag) else {
+                return nil
+            }
+
+            return section.id.capitalized
+        }
+
+        override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+            return parent.keys.map { $0.capitalized }
+        }
     }
     
     // MARK: - Life Cycle
@@ -66,38 +97,40 @@ final class AddTagWorkflowTwoVC: UIViewController {
     init(transaction: TransactionResource, fromTransactionTags: Bool = false) {
         self.transaction = transaction
         self.fromTransactionTags = fromTransactionTags
-
         super.init(nibName: nil, bundle: nil)
+        log.debug("init(transaction: \(transaction.attributes.description), fromTransactionTags: \(fromTransactionTags.description))")
+        dataSource.parent = self
     }
 
     required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+        fatalError("init(coder:) has not been implemented")
     }
-    
+
+    deinit {
+        log.debug("deinit")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.addSubview(collectionView)
-
+        log.debug("viewDidLoad")
+        view.addSubview(tableView)
         configureProperties()
         configureNavigation()
         configureToolbar()
         configureSearch()
-        configureRefreshControl()
-        configureCollectionView()
-
+        configureTableView()
         applySnapshot()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
-        collectionView.frame = view.bounds
+        log.debug("viewDidLayoutSubviews")
+        tableView.frame = view.bounds
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        log.debug("viewWillAppear(animated: \(animated.description))")
         fetchTags()
         
         if fromTransactionTags {
@@ -107,24 +140,24 @@ final class AddTagWorkflowTwoVC: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        log.debug("viewDidAppear(animated: \(animated.description))")
         navigationController?.setToolbarHidden(!isEditing, animated: true)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
+        log.debug("viewWillDisappear(animated: \(animated.description))")
         navigationController?.setToolbarHidden(true, animated: false)
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-
-        collectionView.isEditing = editing
+        log.debug("setEditing(editing: \(editing.description), animated: \(animated.description))")
+        tableView.setEditing(editing, animated: animated)
 
         updateToolbarItems()
-        editingItem = UIBarButtonItem(title: editing ? "Cancel" : "Select", style: .plain, target: self, action: #selector(toggleEditing))
         addItem.isEnabled = !editing
+        editingItem = UIBarButtonItem(title: editing ? "Cancel" : "Select", style: editing ? .done : .plain, target: self, action: #selector(toggleEditing))
 
         navigationItem.rightBarButtonItems = [addItem, editingItem]
         navigationItem.title = editing ? "Select Tags" : "Select Tag"
@@ -136,6 +169,8 @@ final class AddTagWorkflowTwoVC: UIViewController {
 
 private extension AddTagWorkflowTwoVC {
     private func configureProperties() {
+        log.verbose("configureProperties")
+
         title = "Tag Selection"
         definesPresentationContext = true
 
@@ -143,12 +178,17 @@ private extension AddTagWorkflowTwoVC {
     }
     
     private func configureNavigation() {
+        log.verbose("configureNavigation")
+
         navigationItem.title = "Loading"
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
     }
 
     private func configureToolbar() {
+        log.verbose("configureToolbar")
+
         selectionItem.tintColor = R.color.accentColor()
         selectionLabelItem.tintColor = .label
         nextItem.tintColor = R.color.accentColor()
@@ -157,19 +197,20 @@ private extension AddTagWorkflowTwoVC {
     }
     
     private func configureSearch() {
+        log.verbose("configureSearch")
+
         searchController.searchBar.delegate = self
     }
     
-    private func configureRefreshControl() {
-        collectionRefreshControl.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
-    }
-    
-    private func configureCollectionView() {
-        collectionView.dataSource = dataSource
-        collectionView.delegate = self
-        collectionView.refreshControl = collectionRefreshControl
-        collectionView.allowsMultipleSelectionDuringEditing = true
-        collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    private func configureTableView() {
+        log.verbose("configureTableView")
+
+        tableView.dataSource = dataSource
+        tableView.delegate = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")
+        tableView.refreshControl = tableRefreshControl
+        tableView.allowsMultipleSelectionDuringEditing = true
+        tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
 }
 
@@ -177,26 +218,34 @@ private extension AddTagWorkflowTwoVC {
 
 private extension AddTagWorkflowTwoVC {
     @objc private func appMovedToForeground() {
+        log.verbose("appMovedToForeground")
+
         fetchTags()
     }
 
     @objc private func closeWorkflow() {
+        log.verbose("closeWorkflow")
+
         navigationController?.dismiss(animated: true)
     }
 
     @objc private func selectionAction() {
-        collectionView.indexPathsForSelectedItems?.forEach { path in
-            collectionView.deselectItem(at: path, animated: false)
+        log.verbose("selectionAction")
+
+        tableView.indexPathsForSelectedRows?.forEach { path in
+            tableView.deselectRow(at: path, animated: false)
         }
 
         updateToolbarItems()
     }
 
     @objc private func nextAction() {
-        if let tags = collectionView.indexPathsForSelectedItems?.map { index in
+        log.verbose("nextAction")
+
+        if let tags = tableView.indexPathsForSelectedRows?.map { index in
             dataSource.itemIdentifier(for: index)
         } {
-            let tagsObject = tags.map { tag in
+            let tagsObject: [TagResource] = tags.map { tag in
                 TagResource(id: tag!.id)
             }
 
@@ -205,6 +254,8 @@ private extension AddTagWorkflowTwoVC {
     }
 
     @objc private func addTagsTextFieldChanged() {
+        log.verbose("addTagsTextFieldChanged")
+
         if let alert = presentedViewController as? UIAlertController,
            let action = alert.actions.last {
             let text = alert.textFields?.map { field in
@@ -216,6 +267,8 @@ private extension AddTagWorkflowTwoVC {
     }
 
     @objc private func openAddWorkflow() {
+        log.verbose("openAddWorkflow")
+
         let ac = UIAlertController(title: "Create Tags", message: "You can add a maximum of six tags to a transaction.", preferredStyle: .alert)
 
         let fields = Array(0...5)
@@ -256,37 +309,62 @@ private extension AddTagWorkflowTwoVC {
     }
 
     @objc private func refreshTags() {
+        log.verbose("refreshTags")
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
             fetchTags()
         }
     }
 
     @objc private func toggleEditing() {
+        log.verbose("toggleEditing")
+
         setEditing(!isEditing, animated: true)
     }
 
     private func updateToolbarItems() {
-        selectionItem.isEnabled = collectionView.indexPathsForSelectedItems != nil && collectionView.indexPathsForSelectedItems != []
-        selectionLabelItem.title = "\(collectionView.indexPathsForSelectedItems?.count.description ?? "0") of 6 selected"
-        nextItem.isEnabled = collectionView.indexPathsForSelectedItems != nil && collectionView.indexPathsForSelectedItems != []
+        log.verbose("updateToolbarItems")
+
+        selectionItem.isEnabled = tableView.indexPathsForSelectedRows != nil
+        selectionLabelItem.title = "\(tableView.indexPathsForSelectedRows?.count.description ?? "0") of 6 selected"
+        nextItem.isEnabled = tableView.indexPathsForSelectedRows != nil
     }
 
     private func makeDataSource() -> DataSource {
-        DataSource(collectionView: collectionView) { [self] collectionView, indexPath, tag in
-            collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: tag)
+        log.verbose("makeDataSource")
+
+        let dataSource = DataSource(
+            tableView: tableView,
+            cellProvider: { tableView, indexPath, tag in
+            let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath)
+
+            cell.selectedBackgroundView = selectedBackgroundCellView
+            cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+            cell.textLabel?.textAlignment = .left
+            cell.textLabel?.numberOfLines = 0
+            cell.textLabel?.text = tag.id
+
+            return cell
         }
+        )
+        dataSource.defaultRowAnimation = .middle
+        return dataSource
     }
 
-    private func applySnapshot(animate: Bool = false) {
+    private func applySnapshot(animate: Bool = true) {
+        log.verbose("applySnapshot(animate: \(animate.description))")
+
+        sections = sortedTags.map { SortedTags(id: $0.key, tags: $0.value) }
+
         var snapshot = Snapshot()
 
-        snapshot.appendSections([.main])
-        snapshot.appendItems(filteredTagsList.data, toSection: .main)
+        snapshot.appendSections(sections)
+        sections.forEach { snapshot.appendItems($0.tags, toSection: $0) }
 
         if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty {
             if tags.isEmpty && !noTags {
-                collectionView.backgroundView = {
-                    let view = UIView(frame: collectionView.bounds)
+                tableView.backgroundView = {
+                    let view = UIView(frame: tableView.bounds)
 
                     let loadingIndicator = FLAnimatedImageView()
 
@@ -300,8 +378,8 @@ private extension AddTagWorkflowTwoVC {
                     return view
                 }()
             } else {
-                collectionView.backgroundView = {
-                    let view = UIView(frame: collectionView.bounds)
+                tableView.backgroundView = {
+                    let view = UIView(frame: tableView.bounds)
 
                     let icon = UIImageView(image: R.image.xmarkDiamond())
 
@@ -332,8 +410,8 @@ private extension AddTagWorkflowTwoVC {
             }
         } else {
             if !tagsError.isEmpty {
-                collectionView.backgroundView = {
-                    let view = UIView(frame: collectionView.bounds)
+                tableView.backgroundView = {
+                    let view = UIView(frame: tableView.bounds)
 
                     let label = UILabel()
 
@@ -350,8 +428,8 @@ private extension AddTagWorkflowTwoVC {
                     return view
                 }()
             } else {
-                if collectionView.backgroundView != nil {
-                    collectionView.backgroundView = nil
+                if tableView.backgroundView != nil {
+                    tableView.backgroundView = nil
                 }
             }
         }
@@ -360,6 +438,8 @@ private extension AddTagWorkflowTwoVC {
     }
 
     private func fetchTags() {
+        log.verbose("fetchTags")
+
         if #available(iOS 15.0, *) {
             async {
                 do {
@@ -385,6 +465,8 @@ private extension AddTagWorkflowTwoVC {
     }
 
     private func display(_ tags: [TagResource]) {
+        log.verbose("display(tags: \(tags.count.description))")
+
         tagsError = ""
         self.tags = tags
 
@@ -397,6 +479,8 @@ private extension AddTagWorkflowTwoVC {
     }
 
     private func display(_ error: NetworkError) {
+        log.verbose("display(error: \(errorString(for: error)))")
+
         tagsError = errorString(for: error)
         tags = []
         setEditing(false, animated: false)
@@ -410,15 +494,33 @@ private extension AddTagWorkflowTwoVC {
     }
 }
 
-// MARK: - UICollectionViewDelegate
+// MARK: - UITableViewDelegate
 
-extension AddTagWorkflowTwoVC: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+extension AddTagWorkflowTwoVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        log.debug("tableView(willSelectRowAt indexPath: \(indexPath))")
+
+        if let paths = tableView.indexPathsForSelectedRows {
+            if paths.count == 6 {
+                return nil
+            }
+            return indexPath
+        }
+        return indexPath
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
+
         switch isEditing {
             case true:
                 updateToolbarItems()
             case false:
-                collectionView.deselectItem(at: indexPath, animated: true)
+                tableView.deselectRow(at: indexPath, animated: true)
 
                 if let tag = dataSource.itemIdentifier(for: indexPath)?.id {
                     navigationController?.pushViewController(AddTagWorkflowThreeVC(transaction: transaction, tags: [TagResource(id: tag)]), animated: true)
@@ -426,7 +528,9 @@ extension AddTagWorkflowTwoVC: UICollectionViewDelegate {
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        log.debug("tableView(didDeselectRowAt indexPath: \(indexPath))")
+
         switch isEditing {
             case true:
                 updateToolbarItems()
@@ -435,7 +539,7 @@ extension AddTagWorkflowTwoVC: UICollectionViewDelegate {
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         switch isEditing {
             case true:
                 return nil
@@ -447,8 +551,8 @@ extension AddTagWorkflowTwoVC: UICollectionViewDelegate {
                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                     UIMenu(children: [
                         UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                            UIPasteboard.general.string = tag
-                        }
+                        UIPasteboard.general.string = tag
+                    }
                     ])
                 }
         }
@@ -475,11 +579,15 @@ extension AddTagWorkflowTwoVC: UITextFieldDelegate {
 
 extension AddTagWorkflowTwoVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        log.debug("searchBar(textDidChange searchText: \(searchText))")
+
         applySnapshot(animate: true)
         updateToolbarItems()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        log.debug("searchBarCancelButtonClicked")
+
         if !searchBar.text!.isEmpty {
             searchBar.text = ""
             applySnapshot(animate: true)

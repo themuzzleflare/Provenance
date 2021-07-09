@@ -1,4 +1,5 @@
 import UIKit
+import SwiftyBeaver
 import TinyConstraints
 import Rswift
 
@@ -18,7 +19,7 @@ final class StatusIconHelpView: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        log.debug("viewDidLoad")
         configure()
     }
 }
@@ -27,11 +28,14 @@ final class StatusIconHelpView: UIViewController {
 
 private extension StatusIconHelpView {
     private func configure() {
+        log.verbose("configure")
+
         title = "Transaction Status Icons"
 
         view.backgroundColor = .systemGroupedBackground
 
         navigationItem.title = "Transaction Status Icons"
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
 
         view.addSubview(verticalStack)
@@ -78,6 +82,8 @@ private extension StatusIconHelpView {
 
 private extension StatusIconHelpView {
     @objc private func closeWorkflow() {
+        log.verbose("closeWorkflow")
+
         navigationController?.dismiss(animated: true)
     }
 }

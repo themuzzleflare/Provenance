@@ -1,13 +1,18 @@
 import UIKit
+import Hero
+import SwiftyBeaver
 import Rswift
 
 final class NavigationController: UINavigationController {
     // MARK: - Life Cycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    override init(rootViewController: UIViewController) {
+        super.init(rootViewController: rootViewController)
         configure()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
@@ -15,6 +20,9 @@ final class NavigationController: UINavigationController {
 
 private extension NavigationController {
     private func configure() {
+        log.verbose("configure")
+
         navigationBar.tintColor = R.color.accentColor()
+        navigationBar.prefersLargeTitles = true
     }
 }

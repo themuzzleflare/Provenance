@@ -11,13 +11,13 @@ enum TabBarItem: Int, CaseIterable {
     func vc() -> UIViewController {
         switch self {
             case .transactions:
-                return NavigationController(rootViewController: TransactionsCVC())
+                return NavigationController(rootViewController: TransactionsVC())
             case .accounts:
-                return NavigationController(rootViewController: AccountsCVC())
+                return NavigationController(rootViewController: AccountsVC())
             case .tags:
-                return NavigationController(rootViewController: AllTagsVC())
+                return NavigationController(rootViewController: TagsVC())
             case .categories:
-                return NavigationController(rootViewController: CategoriesCVC())
+                return NavigationController(rootViewController: CategoriesVC())
             case .about:
                 return NavigationController(rootViewController: AboutVC())
         }

@@ -8,7 +8,7 @@ final class AttributeTableViewCell: UITableViewCell {
     static let reuseIdentifier = "attributeTableViewCell"
 
     var leftLabel = UILabel()
-    var rightLabel = UILabel()
+    var rightLabel = SRCopyableLabel()
 
     private let horizontalStack = UIStackView()
 
@@ -16,16 +16,15 @@ final class AttributeTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         configureCell()
         configureContentView()
         configureLeftLabel()
         configureRightLabel()
         configureHorizontalStackView()
     }
-    
+
     required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

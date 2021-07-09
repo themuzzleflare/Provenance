@@ -1,70 +1,98 @@
 import UIKit
 import FLAnimatedImage
+import SwiftyBeaver
 import TinyConstraints
 import Rswift
 
 final class AddTagWorkflowVC: UIViewController {
     // MARK: - Properties
 
-    private enum Section {
-        case main
-    }
-
-    private typealias DataSource = UITableViewDiffableDataSource<Section, TransactionResource>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionResource>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<SortedTransactions, TransactionResource>
 
     private lazy var dataSource = makeDataSource()
 
-    private let transactionsPagination = Pagination(prev: nil, next: nil)
-    private let tableRefreshControl = RefreshControl(frame: .zero)
+    private let tableRefreshControl: UIRefreshControl = {
+        let rc = UIRefreshControl()
+        rc.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+        return rc
+    }()
+
     private let searchController = SearchController(searchResultsController: nil)
+
     private let tableView = UITableView(frame: .zero, style: .grouped)
 
     private var dateStyleObserver: NSKeyValueObservation?
+
     private var noTransactions: Bool = false
+
     private var transactions: [TransactionResource] = [] {
         didSet {
+            log.info("didSet transactions: \(transactions.count.description)")
+
             noTransactions = transactions.isEmpty
             applySnapshot()
             tableView.refreshControl?.endRefreshing()
             searchController.searchBar.placeholder = "Search \(transactions.count.description) \(transactions.count == 1 ? "Transaction" : "Transactions")"
         }
     }
+
     private var transactionsError: String = ""
+
     private var filteredTransactions: [TransactionResource] {
         transactions.filter { transaction in
             searchController.searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    private var filteredTransactionList: Transaction {
-        Transaction(data: filteredTransactions, links: transactionsPagination)
+
+    private var groupedTransactions: [Date: [TransactionResource]] {
+        Dictionary(
+            grouping: filteredTransactions,
+            by: { $0.attributes.createdAtDate }
+        )
+    }
+
+    private var sortedTransactions: Array<(key: Date, value: Array<TransactionResource>)> {
+        groupedTransactions.sorted { $0.key > $1.key }
+    }
+
+    private var sections: [SortedTransactions] = []
+
+    private class DataSource: UITableViewDiffableDataSource<SortedTransactions, TransactionResource> {
+        override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+            guard let firstTransaction = itemIdentifier(for: IndexPath(item: 0, section: section)) else {
+                return nil
+            }
+
+            return firstTransaction.attributes.creationDayMonthYear
+        }
     }
     
     // MARK: - Life Cycle
+
+    deinit {
+        log.debug("deinit")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        log.debug("viewDidLoad")
         view.addSubview(tableView)
-
         configureProperties()
         configureNavigation()
         configureSearch()
-        configureRefreshControl()
         configureTableView()
-
         applySnapshot()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
+        log.debug("viewDidLayoutSubviews")
         tableView.frame = view.bounds
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        log.debug("viewWillAppear(animated: \(animated.description))")
         fetchTransactions()
     }
 }
@@ -73,6 +101,8 @@ final class AddTagWorkflowVC: UIViewController {
 
 private extension AddTagWorkflowVC {
     private func configureProperties() {
+        log.verbose("configureProperties")
+
         title = "Transaction Selection"
         definesPresentationContext = true
 
@@ -80,27 +110,30 @@ private extension AddTagWorkflowVC {
 
         dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
             DispatchQueue.main.async {
-                applySnapshot()
+                reloadSnapshot()
             }
         }
     }
     
     private func configureNavigation() {
+        log.verbose("configureNavigation")
+
         navigationItem.title = "Loading"
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func configureSearch() {
+        log.verbose("configureSearch")
+
         searchController.searchBar.delegate = self
     }
     
-    private func configureRefreshControl() {
-        tableRefreshControl.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
-    }
-    
     private func configureTableView() {
+        log.verbose("configureTableView")
+
         tableView.dataSource = dataSource
         tableView.delegate = self
         tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
@@ -113,37 +146,63 @@ private extension AddTagWorkflowVC {
 
 private extension AddTagWorkflowVC {
     @objc private func appMovedToForeground() {
+        log.verbose("appMovedToForeground")
+
         fetchTransactions()
     }
 
     @objc private func refreshTransactions() {
+        log.verbose("fetchTransactions")
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
             fetchTransactions()
         }
     }
 
     @objc private func closeWorkflow() {
+        log.verbose("closeWorkflow")
+
         navigationController?.dismiss(animated: true)
     }
 
-    private func makeDataSource() -> DataSource {
-        DataSource(
-            tableView: tableView,
-            cellProvider: { tableView, indexPath, transaction in
-                let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
+    private func reloadSnapshot() {
+        var snap = dataSource.snapshot()
 
-                cell.transaction = transaction
+        if #available(iOS 15.0, *) {
+            snap.reconfigureItems(snap.itemIdentifiers)
+        } else {
+            snap.reloadItems(snap.itemIdentifiers)
+        }
 
-                return cell
-            }
-        )
+        dataSource.apply(snap, animatingDifferences: false)
     }
 
-    private func applySnapshot(animate: Bool = false) {
+    private func makeDataSource() -> DataSource {
+        log.verbose("makeDataSource")
+
+        let dataSource = DataSource(
+            tableView: tableView,
+            cellProvider: { tableView, indexPath, transaction in
+            let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
+
+            cell.transaction = transaction
+
+            return cell
+        }
+        )
+        dataSource.defaultRowAnimation = .middle
+        return dataSource
+    }
+
+    private func applySnapshot(animate: Bool = true) {
+        log.verbose("applySnapshot(animate: \(animate.description))")
+
+        sections = sortedTransactions.map { SortedTransactions(id: $0.key, transactions: $0.value) }
+
         var snapshot = Snapshot()
 
-        snapshot.appendSections([.main])
-        snapshot.appendItems(filteredTransactionList.data, toSection: .main)
+        snapshot.appendSections(sections)
+        sections.forEach { snapshot.appendItems($0.transactions, toSection: $0) }
 
         if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty {
             if transactions.isEmpty && !noTransactions {
@@ -222,6 +281,8 @@ private extension AddTagWorkflowVC {
     }
 
     private func fetchTransactions() {
+        log.verbose("fetchTransactions")
+
         if #available(iOS 15.0, *) {
             async {
                 do {
@@ -247,6 +308,8 @@ private extension AddTagWorkflowVC {
     }
 
     private func display(_ transactions: [TransactionResource]) {
+        log.verbose("display(transactions: \(transactions.count.description))")
+
         transactionsError = ""
         self.transactions = transactions
 
@@ -256,6 +319,8 @@ private extension AddTagWorkflowVC {
     }
 
     private func display(_ error: NetworkError) {
+        log.verbose("display(error: \(errorString(for: error)))")
+
         transactionsError = errorString(for: error)
         transactions = []
 
@@ -273,6 +338,8 @@ extension AddTagWorkflowVC: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
+
         tableView.deselectRow(at: indexPath, animated: true)
 
         if let transaction = dataSource.itemIdentifier(for: indexPath) {
@@ -288,14 +355,14 @@ extension AddTagWorkflowVC: UITableViewDelegate {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(children: [
                 UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
-                    UIPasteboard.general.string = transaction.attributes.description
-                },
+                UIPasteboard.general.string = transaction.attributes.description
+            },
                 UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
-                    UIPasteboard.general.string = transaction.attributes.creationDate
-                },
+                UIPasteboard.general.string = transaction.attributes.creationDate
+            },
                 UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
-                    UIPasteboard.general.string = transaction.attributes.amount.valueShort
-                }
+                UIPasteboard.general.string = transaction.attributes.amount.valueShort
+            }
             ])
         }
     }
@@ -305,10 +372,14 @@ extension AddTagWorkflowVC: UITableViewDelegate {
 
 extension AddTagWorkflowVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        log.debug("searchBar(textDidChange searchText: \(searchText))")
+
         applySnapshot(animate: true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        log.debug("searchBarCancelButtonClicked")
+
         if !searchBar.text!.isEmpty {
             searchBar.text = ""
             applySnapshot(animate: true)

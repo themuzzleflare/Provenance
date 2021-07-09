@@ -1,5 +1,6 @@
 import UIKit
 import FLAnimatedImage
+import SwiftyBeaver
 import TinyConstraints
 
 final class StickerView: UIViewController {
@@ -11,8 +12,9 @@ final class StickerView: UIViewController {
 
     init(image: FLAnimatedImage) {
         imageView.animatedImage = image
-
         super.init(nibName: nil, bundle: nil)
+        log.debug("init(image: \(image.description))")
+
     }
     
     required init?(coder: NSCoder) {
@@ -21,7 +23,7 @@ final class StickerView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        log.debug("viewDidLoad")
         configure()
     }
 }
@@ -30,11 +32,14 @@ final class StickerView: UIViewController {
 
 private extension StickerView {
     private func configure() {
+        log.verbose("configure")
+        
         title = "Sticker View"
 
         view.backgroundColor = .systemGroupedBackground
 
         navigationItem.title = "Sticker"
+        navigationItem.largeTitleDisplayMode = .never
 
         view.addSubview(imageView)
 

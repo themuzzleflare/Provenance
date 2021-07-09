@@ -1,14 +1,14 @@
 import UIKit
+import SwiftyBeaver
 
 final class SearchController: UISearchController {
     // MARK: - Life Cycle
     
     override init(searchResultsController: UIViewController?) {
         super.init(searchResultsController: searchResultsController)
-        
         configure()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -18,6 +18,8 @@ final class SearchController: UISearchController {
 
 private extension SearchController {
     private func configure() {
+        log.verbose("configure")
+
         obscuresBackgroundDuringPresentation = false
 
         searchBar.searchBarStyle = .minimal

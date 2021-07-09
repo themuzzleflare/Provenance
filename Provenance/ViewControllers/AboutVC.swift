@@ -1,4 +1,5 @@
 import UIKit
+import SwiftyBeaver
 import Rswift
 
 final class AboutVC: UIViewController {
@@ -10,7 +11,7 @@ final class AboutVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        log.debug("viewDidLoad")
         view.addSubview(tableView)
 
         configure()
@@ -18,7 +19,7 @@ final class AboutVC: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
+        log.debug("viewDidLayoutSubviews")
         tableView.frame = view.bounds
     }
 }
@@ -27,9 +28,12 @@ final class AboutVC: UIViewController {
 
 private extension AboutVC {
     private func configure() {
+        log.verbose("configure")
+
         title = "About"
 
         navigationItem.title = "About"
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.infoCircle())
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: R.image.chevronLeftForwardslashChevronRight(), style: .plain, target: self, action: #selector(openDiagnostics))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.gear(), style: .plain, target: self, action: #selector(openSettings))
@@ -38,7 +42,7 @@ private extension AboutVC {
         tableView.delegate = self
         tableView.register(AboutTopTableViewCell.self, forCellReuseIdentifier: AboutTopTableViewCell.reuseIdentifier)
         tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
-        tableView.register(BasicTableViewCell.self, forCellReuseIdentifier: "basicCell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "basicCell")
         tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
 }
@@ -47,10 +51,14 @@ private extension AboutVC {
 
 private extension AboutVC {
     @objc private func openSettings() {
+        log.verbose("openSettings")
+
         present(NavigationController(rootViewController: SettingsVC()), animated: true)
     }
 
     @objc private func openDiagnostics() {
+        log.verbose("openDiagnostics")
+
         present(NavigationController(rootViewController: DiagnosticTableVC()), animated: true)
     }
 }
@@ -59,7 +67,7 @@ private extension AboutVC {
 
 extension AboutVC: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        3
+        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -81,7 +89,7 @@ extension AboutVC: UITableViewDataSource {
 
         let topCell = tableView.dequeueReusableCell(withIdentifier: AboutTopTableViewCell.reuseIdentifier, for: indexPath) as! AboutTopTableViewCell
         let sectionOneAttributeCell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
-        let basicCell = tableView.dequeueReusableCell(withIdentifier: "basicCell", for: indexPath) as! BasicTableViewCell
+        let basicCell = tableView.dequeueReusableCell(withIdentifier: "basicCell", for: indexPath)
 
         basicCell.selectedBackgroundView = selectedBackgroundCellView
         basicCell.imageView?.tintColor = .label
@@ -161,6 +169,8 @@ extension AboutVC: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
+
         let section = indexPath.section
         let row = indexPath.row
 

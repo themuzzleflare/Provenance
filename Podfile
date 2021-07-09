@@ -10,8 +10,10 @@ target 'Provenance' do
   pod 'R.swift'
   pod 'FLAnimatedImage'
   pod 'NotificationBannerSwift'
-  pod 'IGListKit'
   pod 'SwiftDate'
+  pod 'Hero'
+  pod 'SwiftyBeaver'
+  pod 'KeychainAccess'
   
 end
   
@@ -19,6 +21,8 @@ target 'Provenance Intents' do
   use_frameworks!
   
   pod 'SwiftDate'
+  pod 'SwiftyBeaver'
+  pod 'KeychainAccess'
   
 end
 
@@ -26,5 +30,7 @@ target 'Provenance Widgets' do
   use_frameworks!
   
   pod 'SwiftDate'
+  pod 'SwiftyBeaver'
+  pod 'KeychainAccess'
   
 end

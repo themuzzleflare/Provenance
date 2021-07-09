@@ -3,10 +3,6 @@ import UIKit
 import SwiftUI
 import SwiftDate
 
-#if canImport(IGListKit)
-import IGListKit
-#endif
-
 #if canImport(Rswift)
 import Rswift
 #endif
@@ -17,7 +13,7 @@ struct Transaction: Decodable {
     var links: Pagination
 }
 
-class TransactionResource: Decodable, Identifiable {
+struct TransactionResource: Decodable, Identifiable {
     var type = "transactions" // The type of this resource: transactions
 
     var id: String // The unique identifier for this transaction.
@@ -27,6 +23,10 @@ class TransactionResource: Decodable, Identifiable {
     var relationships: TransactionRelationship
 
     var links: SelfLink?
+
+    var creationDate: String {
+        return attributes.creationDate
+    }
     
     init(id: String, attributes: TransactionAttribute, relationships: TransactionRelationship) {
         self.id = id
@@ -44,21 +44,6 @@ extension TransactionResource: Hashable {
         lhs.id == rhs.id
     }
 }
-
-#if canImport(IGListKit)
-extension TransactionResource: ListDiffable {
-    func diffIdentifier() -> NSObjectProtocol {
-        id as NSObjectProtocol
-    }
-    
-    func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
-        guard let object = object as? TransactionResource else {
-            return false
-        }
-        return self.id == object.id
-    }
-}
-#endif
 
 struct TransactionAttribute: Decodable {
     private var status: TransactionStatusEnum // The current processing status of this transaction, according to whether or not this transaction has settled or is still held.
@@ -239,19 +224,17 @@ struct TransactionRelationshipCategory: Decodable {
 
 struct TransactionRelationshipTag: Decodable {
     var data: [RelationshipData]
-
+    
     var links: SelfLink?
 }
 
-class SortedTransactions {
-    var id = UUID().uuidString
-
-    var day: Date
+struct SortedTransactions: Identifiable {
+    var id: Date
     
     var transactions: [TransactionResource]
     
-    init(day: Date, transactions: [TransactionResource]) {
-        self.day = day
+    init(id: Date, transactions: [TransactionResource]) {
+        self.id = id
         self.transactions = transactions
     }
 }
@@ -265,18 +248,3 @@ extension SortedTransactions: Hashable {
         lhs.id == rhs.id
     }
 }
-
-#if canImport(IGListKit)
-extension SortedTransactions: ListDiffable {
-    func diffIdentifier() -> NSObjectProtocol {
-        id as NSObjectProtocol
-    }
-    
-    func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
-        guard let object = object as? SortedTransactions else {
-            return false
-        }
-        return self.id == object.id
-    }
-}
-#endif

@@ -1,6 +1,7 @@
 import UIKit
 import WidgetKit
 import NotificationBannerSwift
+import SwiftyBeaver
 import Rswift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -9,9 +10,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     private weak var submitActionProxy: UIAlertAction?
-
+    private weak var textDidChangeObserver: NSObjectProtocol!
+    
     private var savedShortcutItem: UIApplicationShortcutItem!
-    private var textDidChangeObserver: NSObjectProtocol!
 
     // MARK: - Life Cycle
 
@@ -40,12 +41,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
+        log.debug("sceneDidBecomeActive")
+
         if savedShortcutItem != nil {
             handleShortcutItem(shortcutItem: savedShortcutItem)
         }
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
+        log.debug("sceneWillResignActive")
+
         if savedShortcutItem != nil {
             savedShortcutItem = nil
         }
@@ -56,6 +61,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 private extension SceneDelegate {
     private func checkApiKey() {
+        log.verbose("checkApiKey")
+
         if appDefaults.apiKey.isEmpty {
             let ac = UIAlertController(title: "API Key Required", message: "You don't have an API Key set. You can set one now.", preferredStyle: .alert)
 
@@ -139,6 +146,8 @@ private extension SceneDelegate {
     }
     
     private func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
+        log.info("handleShortcutItem(shortcutItem: \(shortcutItem.localizedTitle))")
+
         if let tabcontroller = window?.rootViewController as? TabController,
            let actionTypeValue = ShortcutType(rawValue: shortcutItem.type) {
             switch actionTypeValue {

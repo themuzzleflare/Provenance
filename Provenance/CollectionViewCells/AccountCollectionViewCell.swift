@@ -48,7 +48,6 @@ final class AccountCollectionViewCell: UICollectionViewCell {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        
         layer.borderColor = UIColor.separator.cgColor
     }
 }

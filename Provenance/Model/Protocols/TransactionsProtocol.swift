@@ -10,7 +10,7 @@ protocol TransactionsProtocol {
     var transactionsError: String { get set }
 
     var transactions: [TransactionResource] { get set }
-
+    
     var dateStyleObserver: NSKeyValueObservation? { get }
 
     var filteredTransactions: [TransactionResource] { get }

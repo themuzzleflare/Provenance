@@ -10,7 +10,7 @@ final class TransactionTableViewCell: UITableViewCell {
     var transaction: TransactionResource! {
         didSet {
             transactionDescription.text = transaction.attributes.description
-            transactionCreationDate.text = transaction.attributes.creationDate
+            transactionCreationDate.text = transaction.creationDate
             transactionAmount.textColor = transaction.attributes.amount.valueInBaseUnits.signum() == -1 ? .label : R.color.greenColour()
             transactionAmount.text = transaction.attributes.amount.valueShort
         }
@@ -26,7 +26,6 @@ final class TransactionTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
         configureCell()
         configureContentView()
         configureTransactionDescription()
@@ -35,14 +34,13 @@ final class TransactionTableViewCell: UITableViewCell {
         configureVerticalStackView()
         configureHorizontalStackView()
     }
-
+    
     required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-
         horizontalStack.frame = contentView.bounds
     }
 }

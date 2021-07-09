@@ -18,7 +18,6 @@ final class StickerCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         configure()
     }
     
@@ -28,13 +27,11 @@ final class StickerCollectionViewCell: UICollectionViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-
         stickerImageView.frame = contentView.bounds
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
         layer.borderColor = UIColor.separator.cgColor
     }
 }

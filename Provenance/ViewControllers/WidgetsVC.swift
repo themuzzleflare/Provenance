@@ -1,4 +1,5 @@
 import UIKit
+import SwiftyBeaver
 import TinyConstraints
 import Rswift
 
@@ -17,7 +18,7 @@ final class WidgetsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        log.debug("viewDidLoad")
         configure()
     }
 }
@@ -26,11 +27,14 @@ final class WidgetsVC: UIViewController {
 
 private extension WidgetsVC {
     private func configure() {
+        log.verbose("configure")
+
         title = "Widgets"
 
         view.backgroundColor = .systemGroupedBackground
 
         navigationItem.title = "Widgets"
+        navigationItem.largeTitleDisplayMode = .never
 
         accountBalanceWidget.image = R.image.actbalsmall()
         accountBalanceWidget.clipsToBounds = true

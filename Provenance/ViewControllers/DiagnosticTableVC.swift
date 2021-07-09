@@ -1,21 +1,22 @@
 import UIKit
+import SwiftyBeaver
 import Rswift
 
 final class DiagnosticTableVC: UIViewController {
     // MARK: - Properties
 
-    private typealias DataSource = UITableViewDiffableDataSource<Section, DetailAttribute>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DetailAttribute>
+    private typealias DataSource = UITableViewDiffableDataSource<DetailSection, DetailAttribute>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailAttribute>
 
     private lazy var dataSource = makeDataSource()
-    private lazy var sections: [Section] = [
-        Section(title: "Section 1", detailAttributes: [
+    private lazy var sections: [DetailSection] = [
+        DetailSection(id: 1, attributes: [
             DetailAttribute(
-                key: "Version",
+                id: "Version",
                 value: appDefaults.appVersion
             ),
             DetailAttribute(
-                key: "Build",
+                id: "Build",
                 value: appDefaults.appBuild
             )
         ])
@@ -27,7 +28,7 @@ final class DiagnosticTableVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        log.debug("viewDidLoad")
         view.addSubview(tableView)
 
         configureProperties()
@@ -39,7 +40,7 @@ final class DiagnosticTableVC: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
+        log.debug("viewDidLayoutSubviews")
         tableView.frame = view.bounds
     }
 }
@@ -48,15 +49,22 @@ final class DiagnosticTableVC: UIViewController {
 
 private extension DiagnosticTableVC {
     private func configureProperties() {
+        log.verbose("configureProperties")
+
         title = "Diagnostics"
     }
     
     private func configureNavigation() {
+        log.verbose("configureNavigation")
+
         navigationItem.title = "Diagnostics"
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
     }
     
     private func configureTableView() {
+        log.verbose("configureTableView")
+
         tableView.dataSource = dataSource
         tableView.delegate = self
         tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
@@ -68,31 +76,35 @@ private extension DiagnosticTableVC {
 
 private extension DiagnosticTableVC {
     @objc private func closeWorkflow() {
+        log.verbose("closeWorkflow")
+
         navigationController?.dismiss(animated: true)
     }
 
     private func makeDataSource() -> DataSource {
-        DataSource(
+        log.verbose("makeDataSource")
+
+        return DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, attribute in
-                let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as! AttributeTableViewCell
 
-                cell.leftLabel.text = attribute.key
-                cell.rightLabel.text = attribute.value
+            cell.leftLabel.text = attribute.id
+            cell.rightLabel.text = attribute.value
 
-                return cell
-            }
+            return cell
+        }
         )
     }
 
     private func applySnapshot() {
+        log.verbose("applySnapshot")
+
         var snapshot = Snapshot()
 
         snapshot.appendSections(sections)
-        sections.forEach { section in
-            snapshot.appendItems(section.detailAttributes, toSection: section)
-        }
-
+        sections.forEach { snapshot.appendItems($0.attributes, toSection: $0) }
+        
         dataSource.apply(snapshot, animatingDifferences: false)
     }
 }
@@ -109,15 +121,15 @@ extension DiagnosticTableVC: UITableViewDelegate {
             return nil
         }
 
-        switch attribute.value {
+        switch attribute.id {
             case "Unknown":
                 return nil
             default:
                 return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                     UIMenu(children: [
-                        UIAction(title: "Copy \(attribute.key)", image: R.image.docOnClipboard()) { _ in
-                            UIPasteboard.general.string = attribute.value
-                        }
+                        UIAction(title: "Copy \(attribute.id)", image: R.image.docOnClipboard()) { _ in
+                        UIPasteboard.general.string = attribute.value
+                    }
                     ])
                 }
         }
