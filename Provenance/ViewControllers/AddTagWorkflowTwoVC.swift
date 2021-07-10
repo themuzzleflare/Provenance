@@ -1,6 +1,7 @@
 import UIKit
 import FLAnimatedImage
 import SwiftyBeaver
+import NotificationBannerSwift
 import TinyConstraints
 import Rswift
 
@@ -8,15 +9,21 @@ final class AddTagWorkflowTwoVC: UIViewController {
     // MARK: - Properties
 
     private var transaction: TransactionResource
+
     private var fromTransactionTags: Bool
 
     private typealias Snapshot = NSDiffableDataSourceSnapshot<SortedTags, TagResource>
 
     private lazy var dataSource = makeDataSource()
+
     private lazy var editingItem = UIBarButtonItem(title: isEditing ? "Cancel" : "Select", style: isEditing ? .done : .plain, target: self, action: #selector(toggleEditing))
+
     private lazy var addItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow))
+
     private lazy var selectionItem = UIBarButtonItem(title: "Deselect All" , style: .plain, target: self, action: #selector(selectionAction))
+
     private lazy var selectionLabelItem = UIBarButtonItem(title: "\(tableView.indexPathsForSelectedRows?.count.description ?? "0") of 6 selected")
+
     private lazy var nextItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextAction))
 
     private let tableView = UITableView(frame: .zero, style: .plain)
@@ -68,6 +75,7 @@ final class AddTagWorkflowTwoVC: UIViewController {
 
     private var sections: [SortedTags] = []
 
+    // UITableViewDiffableDataSource
     private class DataSource: UITableViewDiffableDataSource<SortedTags, TagResource> {
         weak var parent: AddTagWorkflowTwoVC! = nil
 
@@ -189,9 +197,7 @@ private extension AddTagWorkflowTwoVC {
     private func configureToolbar() {
         log.verbose("configureToolbar")
 
-        selectionItem.tintColor = R.color.accentColor()
         selectionLabelItem.tintColor = .label
-        nextItem.tintColor = R.color.accentColor()
 
         setToolbarItems([selectionItem, .flexibleSpace(), selectionLabelItem, .flexibleSpace(), nextItem], animated: false)
     }
@@ -506,6 +512,9 @@ extension AddTagWorkflowTwoVC: UITableViewDelegate {
 
         if let paths = tableView.indexPathsForSelectedRows {
             if paths.count == 6 {
+                let nb = FloatingNotificationBanner(title: "Forbidden", subtitle: "You can select a maximum of 6 tags.", style: .danger)
+                nb.duration = 0.5
+                nb.show()
                 return nil
             }
             return indexPath

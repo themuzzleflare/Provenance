@@ -13,7 +13,6 @@ final class AboutVC: UIViewController {
         super.viewDidLoad()
         log.debug("viewDidLoad")
         view.addSubview(tableView)
-
         configure()
     }
 
@@ -44,6 +43,7 @@ private extension AboutVC {
         tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "basicCell")
         tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        tableView.showsVerticalScrollIndicator = false
     }
 }
 

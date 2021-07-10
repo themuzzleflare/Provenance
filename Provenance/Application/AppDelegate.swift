@@ -11,11 +11,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:[UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         SwiftDate.defaultRegion = .current
-
+        
         #if DEBUG
         log.addDestination(console)
         #endif
-
+        
         registerDefaults()
         configureFirebase()
 
@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        UISceneConfiguration(name: "Main", sessionRole: connectingSceneSession.role)
+        UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 }
 
@@ -37,13 +37,13 @@ private extension AppDelegate {
             let settingsPreferences = settingsPlist?["PreferenceSpecifiers"] as? [[String: Any]]
             
             var defaultsToRegister = [String: Any]()
-
+            
             settingsPreferences?.forEach { preference in
                 if let key = preference["Key"] as? String {
                     defaultsToRegister[key] = preference["DefaultValue"]
                 }
             }
-
+            
             appDefaults.register(defaults: defaultsToRegister)
             
             log.debug("registerDefaults succeeded")
@@ -53,10 +53,10 @@ private extension AppDelegate {
             return
         }
     }
-
+    
     private func configureFirebase() {
         log.debug("configureFirebase")
-
+        
         FirebaseApp.configure()
         Analytics.load()
     }

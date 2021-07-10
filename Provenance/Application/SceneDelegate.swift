@@ -9,9 +9,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-    private weak var submitActionProxy: UIAlertAction?
-    private weak var textDidChangeObserver: NSObjectProtocol!
-    
+    private var submitActionProxy: UIAlertAction?
+    private var textDidChangeObserver: NSObjectProtocol!
     private var savedShortcutItem: UIApplicationShortcutItem!
 
     // MARK: - Life Cycle
@@ -27,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
 
-        window.rootViewController = TabController()
+        window.rootViewController = TabBarController()
 
         self.window = window
 
@@ -46,6 +45,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if savedShortcutItem != nil {
             handleShortcutItem(shortcutItem: savedShortcutItem)
         }
+
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
@@ -91,42 +92,39 @@ private extension SceneDelegate {
 
                 if !answer.text!.isEmpty && answer.text != appDefaults.apiKey {
                     Up.ping(with: answer.text!) { error in
-                        switch error {
-                            case .none:
-                                DispatchQueue.main.async {
-                                    let notificationBanner = NotificationBanner(title: "Success", subtitle: "The API Key was verified and saved.", style: .success)
+                        DispatchQueue.main.async {
+                            switch error {
+                                case .none:
+                                    let nb = GrowingNotificationBanner(title: "Success", subtitle: "The API Key was verified and saved.", style: .success)
 
-                                    notificationBanner.duration = 2
+                                    nb.duration = 2
 
                                     appDefaults.apiKey = answer.text!
-                                    WidgetCenter.shared.reloadAllTimelines()
 
-                                    let vcNav = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
-
-                                    vcNav.modalPresentationStyle = .fullScreen
-
-                                    window?.rootViewController?.present(vcNav, animated: true)
-                                }
-                            default:
-                                DispatchQueue.main.async {
-                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
-
-                                    notificationBanner.duration = 2
-
-                                    let vcNav = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
+                                    let vcNav = NavigationController(rootViewController: SettingsVC(displayBanner: nb))
 
                                     vcNav.modalPresentationStyle = .fullScreen
 
                                     window?.rootViewController?.present(vcNav, animated: true)
-                                }
+                                default:
+                                    let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+
+                                    nb.duration = 2
+
+                                    let vcNav = NavigationController(rootViewController: SettingsVC(displayBanner: nb))
+
+                                    vcNav.modalPresentationStyle = .fullScreen
+
+                                    window?.rootViewController?.present(vcNav, animated: true)
+                            }
                         }
                     }
                 } else {
-                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: "The provided API Key was the same as the current one.", style: .danger)
+                    let nb = GrowingNotificationBanner(title: "Failed", subtitle: "The provided API Key was the same as the current one.", style: .danger)
 
-                    notificationBanner.duration = 2
+                    nb.duration = 2
 
-                    let vcNav = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
+                    let vcNav = NavigationController(rootViewController: SettingsVC(displayBanner: nb))
 
                     vcNav.modalPresentationStyle = .fullScreen
 
@@ -147,20 +145,20 @@ private extension SceneDelegate {
     
     private func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
         log.info("handleShortcutItem(shortcutItem: \(shortcutItem.localizedTitle))")
-
-        if let tabcontroller = window?.rootViewController as? TabController,
+        
+        if let tbc = window?.rootViewController as? TabBarController,
            let actionTypeValue = ShortcutType(rawValue: shortcutItem.type) {
             switch actionTypeValue {
                 case .transactions:
-                    tabcontroller.selectedIndex = 0
+                    tbc.selectedIndex = 0
                 case .accounts:
-                    tabcontroller.selectedIndex = 1
+                    tbc.selectedIndex = 1
                 case .tags:
-                    tabcontroller.selectedIndex = 2
+                    tbc.selectedIndex = 2
                 case .categories:
-                    tabcontroller.selectedIndex = 3
+                    tbc.selectedIndex = 3
                 case .about:
-                    tabcontroller.selectedIndex = 4
+                    tbc.selectedIndex = 4
             }
         }
 

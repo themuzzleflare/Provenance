@@ -1,4 +1,5 @@
 import Foundation
+import WidgetKit
 import SwiftyBeaver
 
 let appDefaults = UserDefaults(suiteName: "group.cloud.tavitian.provenance")!
@@ -8,6 +9,7 @@ extension UserDefaults {
         get { string(forKey: "apiKey") ?? "" }
         set {
             setValue(newValue, forKey: "apiKey")
+            WidgetCenter.shared.reloadAllTimelines()
             log.info("set apiKey: \(newValue)")
         }
     }
@@ -16,6 +18,7 @@ extension UserDefaults {
         get { string(forKey: "dateStyle") ?? "Absolute" }
         set {
             setValue(newValue, forKey: "dateStyle")
+            WidgetCenter.shared.reloadTimelines(ofKind: "latestTransactionWidget")
             log.info("set dateStyle: \(newValue)")
         }
     }

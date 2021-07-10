@@ -61,6 +61,7 @@ final class TagsVC: UIViewController {
 
     private var sections: [SortedTags] = []
 
+    // UITableViewDiffableDataSource
     private class DataSource: UITableViewDiffableDataSource<SortedTags, TagResource> {
         weak var parent: TagsVC! = nil
 

@@ -46,18 +46,18 @@ final class TransactionsByTagVC: UIViewController {
                             DispatchQueue.main.async {
                                 switch error {
                                     case .none:
-                                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(parent.tag.id) was removed from \(transaction.attributes.description).", style: .success)
+                                        let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(parent.tag.id) was removed from \(transaction.attributes.description).", style: .success)
 
-                                        notificationBanner.duration = 2
+                                        nb.duration = 2
 
-                                        notificationBanner.show()
+                                        nb.show()
                                         parent.fetchTransactions()
                                     default:
-                                        let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                                        let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
 
-                                        notificationBanner.duration = 2
+                                        nb.duration = 2
 
-                                        notificationBanner.show()
+                                        nb.show()
                                 }
                             }
                         }
@@ -137,12 +137,12 @@ final class TransactionsByTagVC: UIViewController {
         dataSource.parent = self
     }
 
-    deinit {
-        log.debug("deinit")
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+    deinit {
+        log.debug("deinit")
     }
 
     override func viewDidLoad() {
@@ -452,18 +452,18 @@ extension TransactionsByTagVC: UITableViewDelegate {
                         DispatchQueue.main.async {
                             switch error {
                                 case .none:
-                                    let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success)
+                                    let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success)
 
-                                    notificationBanner.duration = 2
+                                    nb.duration = 2
 
-                                    notificationBanner.show()
+                                    nb.show()
                                     fetchTransactions()
                                 default:
-                                    let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                                    let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
 
-                                    notificationBanner.duration = 2
+                                    nb.duration = 2
 
-                                    notificationBanner.show()
+                                    nb.show()
                             }
                         }
                     }

@@ -26,10 +26,15 @@ final class TransactionTagsVC: UIViewController {
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, RelationshipData>
 
     private lazy var dataSource = makeDataSource()
+
     private lazy var addItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow))
+
     private lazy var selectionItem = UIBarButtonItem(title: "Select All" , style: .plain, target: self, action: #selector(selectionAction))
+
     private lazy var removeAllItem = UIBarButtonItem(title: "Remove All" , style: .plain, target: self, action: #selector(removeAllTags))
+
     private lazy var removeItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(removeTags))
+
 
     private let tableView = UITableView(frame: .zero, style: .grouped)
 
@@ -65,18 +70,18 @@ final class TransactionTagsVC: UIViewController {
                             DispatchQueue.main.async {
                                 switch error {
                                     case .none:
-                                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(parent.transaction.attributes.description).", style: .success)
+                                        let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(parent.transaction.attributes.description).", style: .success)
 
-                                        notificationBanner.duration = 2
+                                        nb.duration = 2
 
-                                        notificationBanner.show()
+                                        nb.show()
                                         parent.fetchTransaction()
                                     default:
-                                        let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                                        let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
 
-                                        notificationBanner.duration = 2
+                                        nb.duration = 2
 
-                                        notificationBanner.show()
+                                        nb.show()
                                 }
                             }
                         }
@@ -105,19 +110,18 @@ final class TransactionTagsVC: UIViewController {
         dataSource.parent = self
     }
 
-    deinit {
-        log.debug("deinit")
-    }
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        log.debug("deinit")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         log.debug("viewDidLoad")
         view.addSubview(tableView)
-
         configureProperties()
         configureNavigation()
         configureToolbar()
@@ -167,6 +171,7 @@ private extension TransactionTagsVC {
         log.verbose("configureProperties")
 
         title = "Transaction Tags"
+
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 
@@ -182,10 +187,6 @@ private extension TransactionTagsVC {
     private func configureToolbar() {
         log.verbose("configureToolbar")
 
-        selectionItem.tintColor = R.color.accentColor()
-        removeAllItem.tintColor = R.color.accentColor()
-        removeItem.tintColor = R.color.accentColor()
-
         setToolbarItems([selectionItem, removeAllItem, .flexibleSpace(), removeItem], animated: false)
     }
 
@@ -198,6 +199,7 @@ private extension TransactionTagsVC {
         tableView.refreshControl = tableRefreshControl
         tableView.allowsMultipleSelectionDuringEditing = true
         tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        tableView.showsVerticalScrollIndicator = false
     }
 }
 
@@ -269,18 +271,18 @@ private extension TransactionTagsVC {
                     DispatchQueue.main.async {
                         switch error {
                             case .none:
-                                let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tagIds) was removed from \(transaction.attributes.description).", style: .success)
+                                let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tagIds) was removed from \(transaction.attributes.description).", style: .success)
 
-                                notificationBanner.duration = 2
+                                nb.duration = 2
 
-                                notificationBanner.show()
+                                nb.show()
                                 fetchTransaction()
                             default:
-                                let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                                let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
 
-                                notificationBanner.duration = 2
+                                nb.duration = 2
 
-                                notificationBanner.show()
+                                nb.show()
                         }
                     }
                 }
@@ -317,18 +319,18 @@ private extension TransactionTagsVC {
                 DispatchQueue.main.async {
                     switch error {
                         case .none:
-                            let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tagIds) was removed from \(transaction.attributes.description).", style: .success)
+                            let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tagIds) was removed from \(transaction.attributes.description).", style: .success)
 
-                            notificationBanner.duration = 2
+                            nb.duration = 2
 
-                            notificationBanner.show()
+                            nb.show()
                             fetchTransaction()
                         default:
-                            let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                            let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
 
-                            notificationBanner.duration = 2
+                            nb.duration = 2
 
-                            notificationBanner.show()
+                            nb.show()
                     }
                 }
             }
@@ -467,18 +469,18 @@ extension TransactionTagsVC: UITableViewDelegate {
                                 DispatchQueue.main.async {
                                     switch error {
                                         case .none:
-                                            let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success)
+                                            let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success)
 
-                                            notificationBanner.duration = 2
+                                            nb.duration = 2
 
-                                            notificationBanner.show()
+                                            nb.show()
                                             fetchTransaction()
                                         default:
-                                            let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                                            let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
 
-                                            notificationBanner.duration = 2
+                                            nb.duration = 2
                                             
-                                            notificationBanner.show()
+                                            nb.show()
                                     }
                                 }
                             }

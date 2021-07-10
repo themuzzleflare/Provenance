@@ -24,6 +24,7 @@ final class AccountDetailVC: UIViewController {
     }
     
     private typealias DataSource = UITableViewDiffableDataSource<DetailSection, DetailAttribute>
+    
     private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailAttribute>
 
     private lazy var dataSource = makeDataSource()
@@ -105,6 +106,7 @@ private extension AccountDetailVC {
         tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
         tableView.refreshControl = tableRefreshControl
         tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        tableView.showsVerticalScrollIndicator = false
     }
 }
 

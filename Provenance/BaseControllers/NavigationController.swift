@@ -1,5 +1,4 @@
 import UIKit
-import Hero
 import SwiftyBeaver
 import Rswift
 

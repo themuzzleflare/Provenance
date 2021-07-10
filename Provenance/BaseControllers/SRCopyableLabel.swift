@@ -1,6 +1,6 @@
 import UIKit
 
-class SRCopyableLabel: UILabel {
+final class SRCopyableLabel: UILabel {
     override public var canBecomeFirstResponder: Bool {
         get { return true }
     }

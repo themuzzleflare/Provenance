@@ -31,7 +31,7 @@ final class CategoriesVC: UIViewController {
         cell.category = category
     }
 
-    private weak var apiKeyObserver: NSKeyValueObservation?
+    private var apiKeyObserver: NSKeyValueObservation?
 
     private var noCategories: Bool = false
 

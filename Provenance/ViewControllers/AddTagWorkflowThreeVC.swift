@@ -7,6 +7,7 @@ final class AddTagWorkflowThreeVC: UIViewController {
     // MARK: - Properties
 
     private var transaction: TransactionResource
+    
     private var tags: [TagResource]
 
     private let tableView = UITableView(frame: .zero, style: .grouped)
@@ -83,6 +84,7 @@ private extension AddTagWorkflowThreeVC {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "attributeCell")
         tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
         tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        tableView.showsVerticalScrollIndicator = false
     }
 }
 
@@ -105,19 +107,19 @@ private extension AddTagWorkflowThreeVC {
                 DispatchQueue.main.async {
                     switch error {
                         case .none:
-                            let notificationBanner = NotificationBanner(title: "Success", subtitle: "\(tagIds) was added to \(transaction.attributes.description).", style: .success)
+                            let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tagIds) was added to \(transaction.attributes.description).", style: .success)
 
-                            notificationBanner.duration = 2
+                            nb.duration = 2
 
-                            notificationBanner.show()
+                            nb.show()
 
                             navigationController?.popViewController(animated: true)
                         default:
-                            let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                            let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
 
-                            notificationBanner.duration = 2
+                            nb.duration = 2
 
-                            notificationBanner.show()
+                            nb.show()
 
                             switch error {
                                 case .transportError:

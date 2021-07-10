@@ -1,5 +1,4 @@
 import UIKit
-import SwiftyBeaver
 
 final class SearchController: UISearchController {
     // MARK: - Life Cycle

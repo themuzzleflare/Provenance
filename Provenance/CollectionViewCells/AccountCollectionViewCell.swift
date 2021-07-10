@@ -22,7 +22,6 @@ final class AccountCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
         configureCell()
         configureContentView()
         configureBalanceLabel()
@@ -31,9 +30,9 @@ final class AccountCollectionViewCell: UICollectionViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+        fatalError("init(coder:) has not been implemented")
     }
-
+    
     override var isHighlighted: Bool {
         didSet {
             balanceLabel.textColor = isHighlighted ? .label : R.color.accentColor()

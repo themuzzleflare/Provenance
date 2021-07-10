@@ -64,6 +64,7 @@ final class TransactionsByAccountVC: UIViewController {
 
     private var sections: [SortedTransactions] = []
 
+    // UITableViewDiffableDataSource
     private class DataSource: UITableViewDiffableDataSource<SortedTransactions, TransactionResource> {
         override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
             guard let firstTransaction = itemIdentifier(for: IndexPath(item: 0, section: section)) else {
@@ -82,12 +83,12 @@ final class TransactionsByAccountVC: UIViewController {
         log.debug("init(account: \(account.attributes.displayName))")
     }
 
-    deinit {
-        log.debug("deinit")
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+    deinit {
+        log.debug("deinit")
     }
 
     override func viewDidLoad() {
@@ -164,6 +165,7 @@ private extension TransactionsByAccountVC {
 private extension TransactionsByAccountVC {
     @objc private func appMovedToForeground() {
         log.verbose("appMovedToForeground")
+
         fetchingTasks()
     }
 
@@ -227,6 +229,7 @@ private extension TransactionsByAccountVC {
 
     private func fetchingTasks() {
         log.verbose("fetchingTasks")
+
         fetchAccount()
         fetchTransactions()
     }
@@ -340,7 +343,7 @@ private extension TransactionsByAccountVC {
             }
         }
 
-        dataSource.apply(snapshot)
+        dataSource.apply(snapshot, animatingDifferences: animate)
     }
 
     private func fetchAccount() {

@@ -1,8 +1,7 @@
 import UIKit
-import Hero
 import SwiftyBeaver
 
-final class TabController: UITabBarController {
+final class TabBarController: UITabBarController {
     // MARK: - Properties
 
     let controllers = TabBarItem.allCases.map { item -> UIViewController in
@@ -25,7 +24,7 @@ final class TabController: UITabBarController {
 
 // MARK: - Configuration
 
-private extension TabController {
+private extension TabBarController {
     private func configure() {
         log.verbose("configure")
         
@@ -35,7 +34,7 @@ private extension TabController {
 
 // MARK: - UITabBarDelegate
 
-extension TabController {
+extension TabBarController {
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         if let title = item.title {
             log.debug("tabBar(didSelect item: \(title))")

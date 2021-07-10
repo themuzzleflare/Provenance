@@ -1,5 +1,6 @@
 import UIKit
 import FLAnimatedImage
+import SwiftyBeaver
 import TinyConstraints
 import Rswift
 
@@ -277,6 +278,7 @@ private extension AccountsVC {
 
     private func display(_ accounts: [AccountResource]) {
         log.verbose("display(accounts: \(accounts.count.description))")
+        
         accountsError = ""
         self.accounts = accounts
 

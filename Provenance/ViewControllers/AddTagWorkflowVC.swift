@@ -57,6 +57,7 @@ final class AddTagWorkflowVC: UIViewController {
 
     private var sections: [SortedTransactions] = []
 
+    // UITableViewDiffableDataSource
     private class DataSource: UITableViewDiffableDataSource<SortedTransactions, TransactionResource> {
         override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
             guard let firstTransaction = itemIdentifier(for: IndexPath(item: 0, section: section)) else {
@@ -68,10 +69,6 @@ final class AddTagWorkflowVC: UIViewController {
     }
     
     // MARK: - Life Cycle
-
-    deinit {
-        log.debug("deinit")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

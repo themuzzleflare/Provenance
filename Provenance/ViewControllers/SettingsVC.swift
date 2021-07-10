@@ -1,5 +1,4 @@
 import UIKit
-import WidgetKit
 import NotificationBannerSwift
 import SwiftyBeaver
 import Rswift
@@ -7,7 +6,7 @@ import Rswift
 final class SettingsVC: UIViewController {
     // MARK: - Properties
 
-    private var displayBanner: NotificationBanner?
+    private var displayBanner: GrowingNotificationBanner?
 
     private var submitActionProxy: UIAlertAction?
     private var apiKeyObserver: NSKeyValueObservation?
@@ -17,25 +16,24 @@ final class SettingsVC: UIViewController {
 
     // MARK: - Life Cycle
 
-    init(displayBanner: NotificationBanner? = nil) {
+    init(displayBanner: GrowingNotificationBanner? = nil) {
         self.displayBanner = displayBanner
         super.init(nibName: nil, bundle: nil)
         log.debug("init(displayBanner: \(displayBanner?.titleLabel?.text ?? "nil"))")
     }
 
-    deinit {
-        log.debug("deinit")
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+    deinit {
+        log.debug("deinit")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         log.debug("viewDidLoad")
         view.addSubview(tableView)
-
         configureProperties()
         configureNavigation()
         configureTableView()
@@ -65,9 +63,10 @@ private extension SettingsVC {
         title = "Settings"
 
         apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] object, change in
-            if let alert = presentedViewController as? UIAlertController {
-                alert.textFields?[0].text = change.newValue
-                alert.dismiss(animated: true)
+            DispatchQueue.main.async {
+                if let alert = presentedViewController as? UIAlertController {
+                    alert.dismiss(animated: true)
+                }
             }
         }
     }
@@ -89,6 +88,7 @@ private extension SettingsVC {
         tableView.register(DateStyleTableViewCell.self, forCellReuseIdentifier: DateStyleTableViewCell.reuseIdentifier)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "settingsCell")
         tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        tableView.showsVerticalScrollIndicator = false
     }
 }
 
@@ -152,7 +152,7 @@ extension SettingsVC: UITableViewDataSource {
             case 1:
                 return "The styling of dates displayed thoughout the application."
             case 2:
-                return "Open the Settings application."
+                return "Open in the Settings application."
             default:
                 return nil
         }
@@ -163,7 +163,7 @@ extension SettingsVC: UITableViewDataSource {
 
 extension SettingsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        UITableView.automaticDimension
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -186,11 +186,11 @@ extension SettingsVC: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
-        
+
+        tableView.deselectRow(at: indexPath, animated: true)
+
         switch indexPath.section {
             case 0:
-                tableView.deselectRow(at: indexPath, animated: true)
-
                 let ac = UIAlertController(title: "API Key", message: "Enter a new API Key.", preferredStyle: .alert)
                 
                 ac.addTextField { [self] textField in
@@ -219,33 +219,30 @@ extension SettingsVC: UITableViewDelegate {
 
                     if !answer.text!.isEmpty && answer.text != appDefaults.apiKey {
                         Up.ping(with: answer.text!) { error in
-                            switch error {
-                                case .none:
-                                    DispatchQueue.main.async {
-                                        let notificationBanner = NotificationBanner(title: "Success", subtitle: "The API Key was verified and saved.", style: .success)
+                            DispatchQueue.main.async {
+                                switch error {
+                                    case .none:
+                                        let nb = GrowingNotificationBanner(title: "Success", subtitle: "The API Key was verified and saved.", style: .success)
 
-                                        notificationBanner.duration = 2
+                                        nb.duration = 2
 
-                                        notificationBanner.show()
+                                        nb.show()
                                         appDefaults.apiKey = answer.text!
-                                        WidgetCenter.shared.reloadAllTimelines()
-                                    }
-                                default:
-                                    DispatchQueue.main.async {
-                                        let notificationBanner = NotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                                    default:
+                                        let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
 
-                                        notificationBanner.duration = 2
+                                        nb.duration = 2
 
-                                        notificationBanner.show()
-                                    }
+                                        nb.show()
+                                }
                             }
                         }
                     } else {
-                        let notificationBanner = NotificationBanner(title: "Failed", subtitle: "The provided API Key was the same as the current one.", style: .danger)
+                        let nb = GrowingNotificationBanner(title: "Failed", subtitle: "The provided API Key was the same as the current one.", style: .danger)
 
-                        notificationBanner.duration = 2
+                        nb.duration = 2
 
-                        notificationBanner.show()
+                        nb.show()
                     }
                 }
 
@@ -258,8 +255,6 @@ extension SettingsVC: UITableViewDelegate {
 
                 present(ac, animated: true)
             case 2:
-                tableView.deselectRow(at: indexPath, animated: true)
-                
                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
             default:
                 break
@@ -276,8 +271,8 @@ extension SettingsVC: UITableViewDelegate {
                         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
                             UIMenu(children: [
                                 UIAction(title: "Copy API Key", image: R.image.docOnClipboard()) { _ in
-                                    UIPasteboard.general.string = appDefaults.apiKey
-                                }
+                                UIPasteboard.general.string = appDefaults.apiKey
+                            }
                             ])
                         }
                 }

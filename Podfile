@@ -11,9 +11,7 @@ target 'Provenance' do
   pod 'FLAnimatedImage'
   pod 'NotificationBannerSwift'
   pod 'SwiftDate'
-  pod 'Hero'
   pod 'SwiftyBeaver'
-  pod 'KeychainAccess'
   
 end
   
@@ -22,7 +20,6 @@ target 'Provenance Intents' do
   
   pod 'SwiftDate'
   pod 'SwiftyBeaver'
-  pod 'KeychainAccess'
   
 end
 
@@ -31,6 +28,5 @@ target 'Provenance Widgets' do
   
   pod 'SwiftDate'
   pod 'SwiftyBeaver'
-  pod 'KeychainAccess'
   
 end

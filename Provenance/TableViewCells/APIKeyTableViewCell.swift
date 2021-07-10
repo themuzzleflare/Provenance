@@ -1,5 +1,4 @@
 import UIKit
-import WidgetKit
 import MarqueeLabel
 import TinyConstraints
 import Rswift
@@ -27,10 +26,10 @@ final class APIKeyTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] object, change in
-            apiKeyLabel.text = apiKeyDisplay
-            apiKeyLabel.textColor = apiKeyDisplay == "None" ? .placeholderText : .label
-
-            WidgetCenter.shared.reloadAllTimelines()
+            DispatchQueue.main.async {
+                apiKeyLabel.text = apiKeyDisplay
+                apiKeyLabel.textColor = apiKeyDisplay == "None" ? .placeholderText : .label
+            }
         }
 
         configureCell()
@@ -39,7 +38,7 @@ final class APIKeyTableViewCell: UITableViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

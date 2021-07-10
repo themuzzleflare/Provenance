@@ -21,7 +21,7 @@ final class AboutTopTableViewCell: UITableViewCell {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("Not implemented")
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

@@ -21,9 +21,9 @@ func categoryName(for category: CategoryFilter) -> String {
         case .tvAndMusic:
             return "TV, Music & Streaming"
         default:
-            @Capitalised var cat = category.rawValue
-            return cat
-                .replacingOccurrences(of: "And", with: "&")
+            return category.rawValue
+                .replacingOccurrences(of: "and", with: "&")
                 .replacingOccurrences(of: "-", with: " ")
+                .capitalized
     }
 }

@@ -30,11 +30,9 @@ final class DiagnosticTableVC: UIViewController {
         super.viewDidLoad()
         log.debug("viewDidLoad")
         view.addSubview(tableView)
-
         configureProperties()
         configureNavigation()
         configureTableView()
-
         applySnapshot()
     }
 
@@ -69,6 +67,7 @@ private extension DiagnosticTableVC {
         tableView.delegate = self
         tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
         tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        tableView.showsVerticalScrollIndicator = false
     }
 }
 

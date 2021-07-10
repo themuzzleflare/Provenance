@@ -1,7 +1,6 @@
 import UIKit
 import FLAnimatedImage
 import MarqueeLabel
-import Hero
 import SwiftyBeaver
 import TinyConstraints
 import Rswift
@@ -18,6 +17,7 @@ final class TransactionDetailVC: UIViewController {
     }
 
     private typealias DataSource = UITableViewDiffableDataSource<DetailSection, DetailAttribute>
+
     private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailAttribute>
 
     private lazy var dataSource = makeDataSource()
@@ -158,7 +158,6 @@ private extension TransactionDetailVC {
         tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
         tableView.refreshControl = tableRefreshControl
         tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        tableView.showsHorizontalScrollIndicator = false
         tableView.showsVerticalScrollIndicator = false
     }
 
@@ -438,7 +437,7 @@ private extension TransactionDetailVC {
         ]
     }
 
-    private func applySnapshot() {
+    private func applySnapshot(animate: Bool = true) {
         log.verbose("applySnapshot")
 
         applySections()
@@ -468,7 +467,7 @@ private extension TransactionDetailVC {
             tableView.backgroundView = nil
         }
 
-        dataSource.apply(snapshot, animatingDifferences: true)
+        dataSource.apply(snapshot, animatingDifferences: animate)
     }
 
     private func fetchTransaction() {
@@ -523,18 +522,26 @@ extension TransactionDetailVC: UITableViewDelegate {
         log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
 
         if let attribute = dataSource.itemIdentifier(for: indexPath) {
-            tableView.deselectRow(at: indexPath, animated: true)
-
             switch attribute.id {
                 case "Account":
+                    tableView.deselectRow(at: indexPath, animated: true)
+
                     navigationController?.pushViewController(TransactionsByAccountVC(account: account!), animated: true)
                 case "Transfer Account":
+                    tableView.deselectRow(at: indexPath, animated: true)
+
                     navigationController?.pushViewController(TransactionsByAccountVC(account: transferAccount!), animated: true)
                 case "Parent Category":
+                    tableView.deselectRow(at: indexPath, animated: true)
+
                     navigationController?.pushViewController(TransactionsByCategoryVC(category: parentCategory!), animated: true)
                 case "Category":
+                    tableView.deselectRow(at: indexPath, animated: true)
+
                     navigationController?.pushViewController(TransactionsByCategoryVC(category: category!), animated: true)
                 case "Tags":
+                    tableView.deselectRow(at: indexPath, animated: true)
+
                     navigationController?.pushViewController(TransactionTagsVC(transaction: transaction), animated: true)
                 default:
                     break
