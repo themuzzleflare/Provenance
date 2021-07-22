@@ -486,7 +486,7 @@
 			isa = PBXGroup;
 			children = (
 				7ADC819126A7F68B009D4E4E /* Fonts */,
-				7A9082F826927B8D005CCB26 /* IntentDefinitions */,
+				7A9082F826927B8D005CCB26 /* Intents */,
 				7AB34D2625C78232000A1E81 /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -561,13 +561,13 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		7A9082F826927B8D005CCB26 /* IntentDefinitions */ = {
+		7A9082F826927B8D005CCB26 /* Intents */ = {
 			isa = PBXGroup;
 			children = (
 				7A17C1982657948F00E5EA23 /* AccountBalance.intentdefinition */,
 				7A7DAC6926071702001349FD /* LatestTransaction.intentdefinition */,
 			);
-			path = IntentDefinitions;
+			path = Intents;
 			sourceTree = "<group>";
 		};
 		7AB34D1125C78230000A1E81 = {
@@ -1222,7 +1222,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 18.0;
+				MARKETING_VERSION = 18.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Intents Development";
@@ -1248,7 +1248,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 18.0;
+				MARKETING_VERSION = 18.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Intents Development";
@@ -1393,7 +1393,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Provenance/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 18.0;
+				MARKETING_VERSION = 18.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Development";
@@ -1416,7 +1416,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Provenance/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 18.0;
+				MARKETING_VERSION = 18.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Development";
@@ -1446,7 +1446,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 18.0;
+				MARKETING_VERSION = 18.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Widgets Development";
@@ -1477,7 +1477,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 18.0;
+				MARKETING_VERSION = 18.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Widgets Development";
@@ -1501,7 +1501,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 18.0;
+				MARKETING_VERSION = 18.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Stickers Development";
@@ -1522,7 +1522,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 18.0;
+				MARKETING_VERSION = 18.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Stickers Development";
