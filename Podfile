@@ -12,6 +12,7 @@ target 'Provenance' do
   pod 'NotificationBannerSwift'
   pod 'SwiftDate'
   pod 'SwiftyBeaver'
+  pod 'Texture'
   
 end
   
