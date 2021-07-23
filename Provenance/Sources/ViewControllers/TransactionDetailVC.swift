@@ -61,41 +61,41 @@ final class TransactionDetailVC: UIViewController {
             applySnapshot()
         }
     }
-    
+
     private var holdTransValue: String {
         switch transaction.attributes.holdInfo {
-            case nil:
+        case nil:
+            return ""
+        default:
+            switch transaction.attributes.holdInfo!.amount.value {
+            case transaction.attributes.amount.value:
                 return ""
             default:
-                switch transaction.attributes.holdInfo!.amount.value {
-                    case transaction.attributes.amount.value:
-                        return ""
-                    default:
-                        return transaction.attributes.holdInfo!.amount.valueLong
-                }
+                return transaction.attributes.holdInfo!.amount.valueLong
+            }
         }
     }
 
     private var holdForeignTransValue: String {
         switch transaction.attributes.holdInfo?.foreignAmount {
-            case nil:
+        case nil:
+            return ""
+        default:
+            switch transaction.attributes.holdInfo!.foreignAmount!.value {
+            case transaction.attributes.foreignAmount!.value:
                 return ""
             default:
-                switch transaction.attributes.holdInfo!.foreignAmount!.value {
-                    case transaction.attributes.foreignAmount!.value:
-                        return ""
-                    default:
-                        return transaction.attributes.holdInfo!.foreignAmount!.valueLong
-                }
+                return transaction.attributes.holdInfo!.foreignAmount!.valueLong
+            }
         }
     }
-    
+
     private var foreignTransValue: String {
         switch transaction.attributes.foreignAmount {
-            case nil:
-                return ""
-            default:
-                return transaction.attributes.foreignAmount!.valueLong
+        case nil:
+            return ""
+        default:
+            return transaction.attributes.foreignAmount!.valueLong
         }
     }
 
@@ -212,10 +212,10 @@ private extension TransactionDetailVC {
         Up.retrieveAccount(for: transaction.relationships.account.data.id) { result in
             DispatchQueue.main.async {
                 switch result {
-                    case .success(let account):
-                        self.account = account
-                    case .failure:
-                        break
+                case .success(let account):
+                    self.account = account
+                case .failure:
+                    break
                 }
             }
         }
@@ -224,10 +224,10 @@ private extension TransactionDetailVC {
             Up.retrieveAccount(for: tAccount.id) { result in
                 DispatchQueue.main.async {
                     switch result {
-                        case .success(let account):
-                            self.transferAccount = account
-                        case .failure:
-                            break
+                    case .success(let account):
+                        self.transferAccount = account
+                    case .failure:
+                        break
                     }
                 }
             }
@@ -237,10 +237,10 @@ private extension TransactionDetailVC {
             Up.retrieveCategory(for: pCategory.id) { result in
                 DispatchQueue.main.async {
                     switch result {
-                        case .success(let category):
-                            self.parentCategory = category
-                        case .failure:
-                            break
+                    case .success(let category):
+                        self.parentCategory = category
+                    case .failure:
+                        break
                     }
                 }
             }
@@ -252,10 +252,10 @@ private extension TransactionDetailVC {
             Up.retrieveCategory(for: category.id) { result in
                 DispatchQueue.main.async {
                     switch result {
-                        case .success(let category):
-                            self.category = category
-                        case .failure:
-                            break
+                    case .success(let category):
+                        self.category = category
+                    case .failure:
+                        break
                     }
                 }
             }
@@ -282,19 +282,19 @@ private extension TransactionDetailVC {
 
                 var cellSelectionStyle: UITableViewCell.SelectionStyle {
                     switch attribute.id {
-                        case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
-                            return .default
-                        default:
-                            return .none
+                    case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
+                        return .default
+                    default:
+                        return .none
                     }
                 }
 
                 var cellAccessoryType: UITableViewCell.AccessoryType {
                     switch attribute.id {
-                        case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
-                            return .disclosureIndicator
-                        default:
-                            return .none
+                    case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
+                        return .disclosureIndicator
+                    default:
+                        return .none
                     }
                 }
 
@@ -433,10 +433,10 @@ private extension TransactionDetailVC {
         Up.retrieveTransaction(for: transaction) { [self] result in
             DispatchQueue.main.async {
                 switch result {
-                    case .success(let transaction):
-                        display(transaction)
-                    case .failure(let error):
-                        display(error)
+                case .success(let transaction):
+                    display(transaction)
+                case .failure(let error):
+                    display(error)
                 }
             }
         }
@@ -467,36 +467,36 @@ extension TransactionDetailVC: UITableViewDelegate {
 
         if let attribute = dataSource.itemIdentifier(for: indexPath) {
             switch attribute.id {
-                case "Account":
-                    tableView.deselectRow(at: indexPath, animated: true)
+            case "Account":
+                tableView.deselectRow(at: indexPath, animated: true)
 
-                    if let account = account {
-                        navigationController?.pushViewController(TransactionsByAccountVC(account: account), animated: true)
-                    }
-                case "Transfer Account":
-                    tableView.deselectRow(at: indexPath, animated: true)
+                if let account = account {
+                    navigationController?.pushViewController(TransactionsByAccountVC(account: account), animated: true)
+                }
+            case "Transfer Account":
+                tableView.deselectRow(at: indexPath, animated: true)
 
-                    if let transferAccount = transferAccount {
-                        navigationController?.pushViewController(TransactionsByAccountVC(account: transferAccount), animated: true)
-                    }
-                case "Parent Category":
-                    tableView.deselectRow(at: indexPath, animated: true)
+                if let transferAccount = transferAccount {
+                    navigationController?.pushViewController(TransactionsByAccountVC(account: transferAccount), animated: true)
+                }
+            case "Parent Category":
+                tableView.deselectRow(at: indexPath, animated: true)
 
-                    if let parentCategory = parentCategory {
-                        navigationController?.pushViewController(TransactionsByCategoryVC(category: parentCategory), animated: true)
-                    }
-                case "Category":
-                    tableView.deselectRow(at: indexPath, animated: true)
+                if let parentCategory = parentCategory {
+                    navigationController?.pushViewController(TransactionsByCategoryVC(category: parentCategory), animated: true)
+                }
+            case "Category":
+                tableView.deselectRow(at: indexPath, animated: true)
 
-                    if let category = category {
-                        navigationController?.pushViewController(TransactionsByCategoryVC(category: category), animated: true)
-                    }
-                case "Tags":
-                    tableView.deselectRow(at: indexPath, animated: true)
+                if let category = category {
+                    navigationController?.pushViewController(TransactionsByCategoryVC(category: category), animated: true)
+                }
+            case "Tags":
+                tableView.deselectRow(at: indexPath, animated: true)
 
-                    navigationController?.pushViewController(TransactionTagsVC(transaction: transaction), animated: true)
-                default:
-                    break
+                navigationController?.pushViewController(TransactionTagsVC(transaction: transaction), animated: true)
+            default:
+                break
             }
         }
     }
@@ -505,16 +505,16 @@ extension TransactionDetailVC: UITableViewDelegate {
         guard let attribute = dataSource.itemIdentifier(for: indexPath) else { return nil }
 
         switch attribute.id {
-            case "Tags":
-                return nil
-            default:
-                return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                    UIMenu(children: [
-                        UIAction(title: "Copy \(attribute.id)", image: R.image.docOnClipboard()) { _ in
-                            UIPasteboard.general.string = attribute.value
-                        }
-                    ])
-                }
+        case "Tags":
+            return nil
+        default:
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(children: [
+                    UIAction(title: "Copy \(attribute.id)", image: R.image.docOnClipboard()) { _ in
+                        UIPasteboard.general.string = attribute.value
+                    }
+                ])
+            }
         }
     }
 }

@@ -13,11 +13,11 @@ final class AboutTopTableViewCell: UITableViewCell {
     private let nameLabel = UILabel()
 
     private let descriptionLabel = UILabel()
-    
+
     private let verticalStack = UIStackView()
 
     // MARK: - Life Cycle
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
@@ -61,6 +61,7 @@ private extension AboutTopTableViewCell {
         descriptionLabel.textAlignment = .left
         descriptionLabel.textColor = .secondaryLabel
         descriptionLabel.numberOfLines = 0
+
         descriptionLabel.text = "Provenance is a lightweight application that interacts with the Up Banking Developer API to display information about your bank accounts, transactions, categories, tags, and more."
     }
 }

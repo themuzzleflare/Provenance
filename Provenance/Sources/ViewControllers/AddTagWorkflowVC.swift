@@ -55,7 +55,7 @@ final class AddTagWorkflowVC: UIViewController {
         )
     }
 
-    private var sortedTransactions: Array<(key: Date, value: Array<TransactionResource>)> {
+    private var sortedTransactions: [(key: Date, value: [TransactionResource])] {
         return groupedTransactions.sorted { $0.key > $1.key }
     }
 
@@ -69,9 +69,9 @@ final class AddTagWorkflowVC: UIViewController {
             return firstTransaction.attributes.creationDayMonthYear
         }
     }
-    
+
     // MARK: - Life Cycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         log.debug("viewDidLoad")
@@ -87,7 +87,7 @@ final class AddTagWorkflowVC: UIViewController {
         log.debug("viewDidLayoutSubviews")
         tableView.frame = view.bounds
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         log.debug("viewWillAppear(animated: \(animated.description))")
@@ -106,13 +106,13 @@ private extension AddTagWorkflowVC {
 
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] _, _ in
             DispatchQueue.main.async {
                 reloadSnapshot()
             }
         }
     }
-    
+
     private func configureNavigation() {
         log.verbose("configureNavigation")
 
@@ -123,7 +123,7 @@ private extension AddTagWorkflowVC {
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.backButtonDisplayMode = .minimal
     }
-    
+
     private func configureTableView() {
         log.verbose("configureTableView")
 
@@ -197,7 +197,7 @@ private extension AddTagWorkflowVC {
         var snapshot = Snapshot()
 
         snapshot.appendSections(sections)
-        
+
         sections.forEach { snapshot.appendItems($0.transactions, toSection: $0) }
 
         if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty {
@@ -282,10 +282,10 @@ private extension AddTagWorkflowVC {
         Up.listTransactions { [self] result in
             DispatchQueue.main.async {
                 switch result {
-                    case .success(let transactions):
-                        display(transactions)
-                    case .failure(let error):
-                        display(error)
+                case .success(let transactions):
+                    display(transactions)
+                case .failure(let error):
+                    display(error)
                 }
             }
         }
@@ -320,7 +320,7 @@ extension AddTagWorkflowVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
 
@@ -330,7 +330,7 @@ extension AddTagWorkflowVC: UITableViewDelegate {
             navigationController?.pushViewController(AddTagWorkflowTwoVC(transaction: transaction), animated: true)
         }
     }
-    
+
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let transaction = dataSource.itemIdentifier(for: indexPath) else { return nil }
 
@@ -358,10 +358,10 @@ extension AddTagWorkflowVC: UISearchBarDelegate {
 
         applySnapshot()
     }
-    
+
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         log.debug("searchBarCancelButtonClicked")
-        
+
         if !searchBar.text!.isEmpty {
             searchBar.text = ""
 

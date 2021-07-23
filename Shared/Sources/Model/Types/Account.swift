@@ -16,7 +16,7 @@ struct AccountResource: Codable, Identifiable {
     var relationships: AccountRelationship?
 
     var links: SelfLink?
-    
+
     init(id: String, attributes: AccountAttribute) {
         self.id = id
         self.attributes = attributes
@@ -43,8 +43,9 @@ struct AccountAttribute: Codable {
         case transactional = "TRANSACTIONAL"
     }
 
-    var balance: MoneyObject // The available balance of the account, taking into account any amounts that are currently on hold.
-    
+    // The available balance of the account, taking into account any amounts that are currently on hold.
+    var balance: MoneyObject
+
     private var createdAt: String // The date-time at which this account was first opened.
 
     private var creationDateAbsolute: String {
@@ -57,12 +58,12 @@ struct AccountAttribute: Codable {
 
     var creationDate: String {
         switch appDefaults.dateStyle {
-            case "Absolute":
-                return creationDateAbsolute
-            case "Relative":
-                return creationDateRelative
-            default:
-                return creationDateAbsolute
+        case "Absolute":
+            return creationDateAbsolute
+        case "Relative":
+            return creationDateRelative
+        default:
+            return creationDateAbsolute
         }
     }
 }

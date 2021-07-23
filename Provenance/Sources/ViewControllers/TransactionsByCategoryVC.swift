@@ -57,7 +57,7 @@ final class TransactionsByCategoryVC: UIViewController {
         )
     }
 
-    private var sortedTransactions: Array<(key: Date, value: Array<TransactionResource>)> {
+    private var sortedTransactions: [(key: Date, value: [TransactionResource])] {
         return groupedTransactions.sorted { $0.key > $1.key }
     }
 
@@ -71,7 +71,7 @@ final class TransactionsByCategoryVC: UIViewController {
             return firstTransaction.attributes.creationDayMonthYear
         }
     }
-    
+
     // MARK: - Life Cycle
 
     init(category: CategoryResource) {
@@ -87,7 +87,7 @@ final class TransactionsByCategoryVC: UIViewController {
     deinit {
         log.debug("deinit")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         log.debug("viewDidLoad")
@@ -122,13 +122,13 @@ private extension TransactionsByCategoryVC {
 
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] _, _ in
             DispatchQueue.main.async {
                 reloadSnapshot()
             }
         }
     }
-    
+
     private func configureNavigation() {
         log.verbose("configureNavigation")
 
@@ -138,7 +138,7 @@ private extension TransactionsByCategoryVC {
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
     }
-    
+
     private func configureTableView() {
         log.verbose("configureTableView")
 
@@ -291,10 +291,10 @@ private extension TransactionsByCategoryVC {
         Up.listTransactions(filterBy: category) { [self] result in
             DispatchQueue.main.async {
                 switch result {
-                    case .success(let transactions):
-                        display(transactions)
-                    case .failure(let error):
-                        display(error)
+                case .success(let transactions):
+                    display(transactions)
+                case .failure(let error):
+                    display(error)
                 }
             }
         }
@@ -339,7 +339,7 @@ extension TransactionsByCategoryVC: UITableViewDelegate {
             navigationController?.pushViewController(TransactionDetailVC(transaction: transaction), animated: true)
         }
     }
-    
+
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let transaction = dataSource.itemIdentifier(for: indexPath) else { return nil }
 
@@ -367,13 +367,13 @@ extension TransactionsByCategoryVC: UISearchBarDelegate {
 
         applySnapshot()
     }
-    
+
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         log.debug("searchBarCancelButtonClicked")
 
         if !searchBar.text!.isEmpty {
             searchBar.text = ""
-            
+
             applySnapshot()
         }
     }

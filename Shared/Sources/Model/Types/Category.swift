@@ -14,7 +14,7 @@ struct CategoryResource: Codable, Identifiable {
     var relationships: CategoryRelationship?
 
     var links: SelfLink?
-    
+
     init(id: String, attributes: CategoryAttribute) {
         self.id = id
         self.attributes = attributes
@@ -43,7 +43,7 @@ struct CategoryRelationship: Codable {
 
 struct CategoryRelationshipParent: Codable {
     var data: RelationshipData?
-    
+
     var links: RelatedLink?
 }
 

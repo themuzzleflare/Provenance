@@ -5,7 +5,7 @@ import Rswift
 
 final class NavigationController: ASNavigationController {
     // MARK: - Life Cycle
-    
+
     override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
         log.debug("init(rootViewController: \(rootViewController.description))")

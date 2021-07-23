@@ -8,13 +8,13 @@ final class AttributeTableViewCell: UITableViewCell {
     static let reuseIdentifier = "attributeTableViewCell"
 
     var leftLabel = UILabel()
-    
+
     var rightLabel = SRCopyableLabel()
 
     private let horizontalStack = UIStackView()
 
     // MARK: - Life Cycle
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureCell()
@@ -36,11 +36,11 @@ private extension AttributeTableViewCell {
         selectionStyle = .none
         selectedBackgroundView = selectedBackgroundCellView
     }
-    
+
     private func configureContentView() {
         contentView.addSubview(horizontalStack)
     }
-    
+
     private func configureLeftLabel() {
         leftLabel.translatesAutoresizingMaskIntoConstraints = false
         leftLabel.font = R.font.circularStdMedium(size: UIFont.labelFontSize)
@@ -48,14 +48,14 @@ private extension AttributeTableViewCell {
         leftLabel.textColor = .secondaryLabel
         leftLabel.numberOfLines = 0
     }
-    
+
     private func configureRightLabel() {
         rightLabel.translatesAutoresizingMaskIntoConstraints = false
         rightLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         rightLabel.textAlignment = .right
         rightLabel.numberOfLines = 0
     }
-    
+
     private func configureHorizontalStackView() {
         horizontalStack.edgesToSuperview(insets: .horizontal(16) + .vertical(13))
         horizontalStack.addArrangedSubview(leftLabel)

@@ -3,4 +3,3 @@ Podfile.lock
 *.xcworkspace
 *.generated.swift
 Pods
-Package.resolved

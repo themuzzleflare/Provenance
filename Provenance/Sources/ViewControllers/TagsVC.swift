@@ -26,7 +26,7 @@ final class TagsVC: UIViewController {
     private let tableView = UITableView(frame: .zero, style: .plain)
 
     private var apiKeyObserver: NSKeyValueObservation?
-    
+
     private var noTags: Bool = false
 
     private var tags: [TagResource] = [] {
@@ -59,7 +59,7 @@ final class TagsVC: UIViewController {
         return groupedTags.keys.sorted()
     }
 
-    private var sortedTags: Array<(key: String, value: Array<TagResource>)> {
+    private var sortedTags: [(key: String, value: [TagResource])] {
         return groupedTags.sorted { $0.key < $1.key }
     }
 
@@ -127,11 +127,11 @@ private extension TagsVC {
 
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
-        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] object, change in
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] _, _ in
             fetchTags()
         }
     }
-    
+
     private func configureNavigation() {
         log.verbose("configureNavigation")
 
@@ -140,7 +140,7 @@ private extension TagsVC {
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag())
         navigationItem.searchController = searchController
     }
-    
+
     private func configureTableView() {
         log.verbose("configureTableView")
 
@@ -212,7 +212,7 @@ private extension TagsVC {
         var snapshot = Snapshot()
 
         snapshot.appendSections(sections)
-        
+
         sections.forEach { snapshot.appendItems($0.tags, toSection: $0) }
 
         if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty {
@@ -297,10 +297,10 @@ private extension TagsVC {
         Up.listTags { [self] result in
             DispatchQueue.main.async {
                 switch result {
-                    case .success(let tags):
-                        display(tags)
-                    case .failure(let error):
-                        display(error)
+                case .success(let tags):
+                    display(tags)
+                case .failure(let error):
+                    display(error)
                 }
             }
         }
@@ -343,7 +343,7 @@ extension TagsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
 
@@ -353,7 +353,7 @@ extension TagsVC: UITableViewDelegate {
             navigationController?.pushViewController(TransactionsByTagVC(tag: tag), animated: true)
         }
     }
-    
+
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let tag = dataSource.itemIdentifier(for: indexPath)?.id else { return nil }
 
@@ -372,10 +372,10 @@ extension TagsVC: UITableViewDelegate {
 extension TagsVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         log.debug("searchBar(textDidChange searchText: \(searchText))")
-        
+
         applySnapshot()
     }
-    
+
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         log.debug("searchBarCancelButtonClicked")
 

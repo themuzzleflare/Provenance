@@ -1,0 +1,15 @@
+disabled_rules:
+- identifier_name
+- cyclomatic_complexity
+- function_body_length
+- line_length
+- type_name
+opt_in_rules:
+- empty_count
+- empty_string
+excluded:
+- Pods
+- R.generated.swift
+file_length:
+    ignore_comment_only_lines: true
+reporter: "xcode"

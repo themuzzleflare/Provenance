@@ -13,7 +13,7 @@ final class AccountDetailVC: UIViewController {
             tableView.refreshControl?.endRefreshing()
         }
     }
-    
+
     private var transaction: TransactionResource? {
         didSet {
             log.info("didSet transaction: \(transaction?.attributes.transactionDescription ?? "nil")")
@@ -22,9 +22,9 @@ final class AccountDetailVC: UIViewController {
             tableView.refreshControl?.endRefreshing()
         }
     }
-    
+
     private typealias DataSource = UITableViewDiffableDataSource<DetailSection, DetailAttribute>
-    
+
     private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailAttribute>
 
     private lazy var dataSource = makeDataSource()
@@ -89,7 +89,7 @@ private extension AccountDetailVC {
 
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
-    
+
     private func configureNavigation() {
         log.verbose("configureNavigation")
 
@@ -97,7 +97,7 @@ private extension AccountDetailVC {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
     }
-    
+
     private func configureTableView() {
         log.verbose("configureTableView")
 
@@ -191,7 +191,7 @@ private extension AccountDetailVC {
         var snapshot = Snapshot()
 
         snapshot.appendSections(sections)
-        
+
         sections.forEach { snapshot.appendItems($0.attributes.filter { !$0.value.isEmpty }, toSection: $0) }
 
         dataSource.apply(snapshot, animatingDifferences: animate)
@@ -203,10 +203,10 @@ private extension AccountDetailVC {
         Up.retrieveAccount(for: account) { [self] result in
             DispatchQueue.main.async {
                 switch result {
-                    case .success(let account):
-                        self.account = account
-                    case .failure(let error):
-                        print(errorString(for: error))
+                case .success(let account):
+                    self.account = account
+                case .failure(let error):
+                    print(errorString(for: error))
                 }
             }
         }
@@ -218,10 +218,10 @@ private extension AccountDetailVC {
         Up.retrieveLatestTransaction(for: account) { [self] result in
             DispatchQueue.main.async {
                 switch result {
-                    case .success(let transactions):
-                        transaction = transactions.first
-                    case .failure(let error):
-                        print(errorString(for: error))
+                case .success(let transactions):
+                    transaction = transactions.first
+                case .failure(let error):
+                    print(errorString(for: error))
                 }
             }
         }

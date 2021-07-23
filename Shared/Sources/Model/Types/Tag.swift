@@ -12,7 +12,7 @@ struct TagResource: Codable, Identifiable {
     var id: String // The label of the tag, which also acts as the tag’s unique identifier.
 
     var relationships: TagRelationship?
-    
+
     init(id: String) {
         self.id = id
     }
@@ -38,7 +38,7 @@ struct ModifyTags: Codable {
 
 struct TagInputResourceIdentifier: Codable, Identifiable {
     var type = "tags" // The type of this resource: tags
-    
+
     var id: String // The label of the tag, which also acts as the tag’s unique identifier.
 }
 

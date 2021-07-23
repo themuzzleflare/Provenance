@@ -5,28 +5,28 @@ import Rswift
 
 final class APIKeyTableViewCell: UITableViewCell {
     // MARK: - Properties
-    
+
     static let reuseIdentifier = "apiKeyTableViewCell"
 
     private let apiKeyLabel = MarqueeLabel()
 
     private var apiKeyObserver: NSKeyValueObservation?
-    
+
     private var apiKeyDisplay: String {
         switch appDefaults.apiKey {
-            case "":
-                return "None"
-            default:
-                return appDefaults.apiKey
+        case "":
+            return "None"
+        default:
+            return appDefaults.apiKey
         }
     }
 
     // MARK: - Life Cycle
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] object, change in
+
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] _, _ in
             DispatchQueue.main.async {
                 apiKeyLabel.text = apiKeyDisplay
                 apiKeyLabel.textColor = apiKeyDisplay == "None" ? .placeholderText : .label
@@ -37,7 +37,7 @@ final class APIKeyTableViewCell: UITableViewCell {
         configureContentView()
         configureApiKeyLabel()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -50,11 +50,11 @@ private extension APIKeyTableViewCell {
         accessoryType = .disclosureIndicator
         selectedBackgroundView = selectedBackgroundCellView
     }
-    
+
     private func configureContentView() {
         contentView.addSubview(apiKeyLabel)
     }
-    
+
     private func configureApiKeyLabel() {
         apiKeyLabel.edgesToSuperview(insets: .horizontal(16) + .vertical(13))
         apiKeyLabel.speed = .rate(65)

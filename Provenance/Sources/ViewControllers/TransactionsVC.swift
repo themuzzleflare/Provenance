@@ -45,7 +45,8 @@ final class TransactionsVC: UIViewController {
 
     private var filteredTransactions: [TransactionResource] {
         preFilteredTransactions.filter { transaction in
-            searchController.searchBar.text!.isEmpty || transaction.attributes.transactionDescription.localizedStandardContains(searchController.searchBar.text!)
+            searchController.searchBar.text!.isEmpty || transaction.attributes.transactionDescription
+                .localizedStandardContains(searchController.searchBar.text!)
         }
     }
 
@@ -83,7 +84,7 @@ final class TransactionsVC: UIViewController {
         )
     }
 
-    private var sortedTransactions: Array<(key: Date, value: Array<TransactionResource>)> {
+    private var sortedTransactions: [(key: Date, value: [TransactionResource])] {
         return groupedTransactions.sorted { $0.key > $1.key }
     }
 
@@ -131,7 +132,8 @@ extension TransactionsVC {
 
         tableView.dataSource = dataSource
         tableView.delegate = self
-        tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
+        tableView.register(TransactionTableViewCell.self,
+                           forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
         tableView.refreshControl = tableRefreshControl
         tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
@@ -142,13 +144,16 @@ extension TransactionsVC {
         title = "Transactions"
         definesPresentationContext = true
 
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(appMovedToForeground),
+                                               name: UIApplication.willEnterForegroundNotification,
+                                               object: nil)
 
-        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] object, change in
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] _, _ in
             fetchingTasks()
         }
-        
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] object, change in
+
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] _, _ in
             DispatchQueue.main.async {
                 reloadSnapshot()
             }
@@ -216,16 +221,28 @@ extension TransactionsVC {
     }
 
     private func filterMenu() -> UIMenu {
-        return UIMenu(options: .displayInline, children: [
-            UIMenu(title: "Category", image: filter == .all ? R.image.trayFull() : R.image.trayFullFill(), children: CategoryFilter.allCases.map { category in
-                UIAction(title: categoryName(for: category), state: filter == category ? .on : .off) { [self] _ in
-                    filter = category
+        return UIMenu(
+            options: .displayInline,
+            children: [
+                UIMenu(
+                title: "Category",
+                image: filter == .all ? R.image.trayFull() : R.image.trayFullFill(),
+                children: CategoryFilter.allCases.map { category in
+                    UIAction(
+                        title: categoryName(for: category),
+                        state: filter == category ? .on : .off) { [self] _ in
+                            filter = category
+                        }
+                    }
+                ),
+                UIAction(
+                    title: "Settled Only",
+                    image: showSettledOnly ? R.image.checkmarkCircleFill() : R.image.checkmarkCircle(),
+                    state: showSettledOnly ? .on : .off) { [self] _ in
+                        showSettledOnly.toggle()
                 }
-            }),
-            UIAction(title: "Settled Only", image: showSettledOnly ? R.image.checkmarkCircleFill() : R.image.checkmarkCircle(), state: showSettledOnly ? .on : .off) { [self] _ in
-                showSettledOnly.toggle()
-            }
-        ])
+            ]
+        )
     }
 
     private func makeDataSource() -> DataSource {
@@ -234,7 +251,10 @@ extension TransactionsVC {
         let dataSource = DataSource(
             tableView: tableView,
             cellProvider: { tableView, indexPath, transaction in
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as? TransactionTableViewCell else {
+                guard let cell = tableView.dequeueReusableCell(
+                        withIdentifier: TransactionTableViewCell.reuseIdentifier,
+                        for: indexPath
+                ) as? TransactionTableViewCell else {
                     fatalError("Unable to dequeue reusable cell with identifier: \(TransactionTableViewCell.reuseIdentifier)")
                 }
 
@@ -257,7 +277,7 @@ extension TransactionsVC {
         var snapshot = Snapshot()
 
         snapshot.appendSections(sections)
-        
+
         sections.forEach { snapshot.appendItems($0.transactions, toSection: $0) }
 
         if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty {
@@ -352,15 +372,15 @@ extension TransactionsVC {
         Up.listTransactions { [self] result in
             DispatchQueue.main.async {
                 switch result {
-                    case .success(let transactions):
-                        display(transactions)
-                    case .failure(let error):
-                        display(error)
+                case .success(let transactions):
+                    display(transactions)
+                case .failure(let error):
+                    display(error)
                 }
             }
         }
     }
-    
+
     private func display(_ transactions: [TransactionResource]) {
         log.verbose("display(transactions: \(transactions.count.description))")
 
@@ -403,7 +423,7 @@ extension TransactionsVC: UITableViewDelegate {
         log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
 
         tableView.deselectRow(at: indexPath, animated: true)
-        
+
         if let transaction = dataSource.itemIdentifier(for: indexPath) {
             navigationController?.pushViewController(TransactionDetailVC(transaction: transaction), animated: true)
         }
@@ -436,13 +456,13 @@ extension TransactionsVC: UISearchBarDelegate {
 
         applySnapshot()
     }
-    
+
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         log.debug("searchBarCancelButtonClicked")
 
         if !searchBar.text!.isEmpty {
             searchBar.text = ""
-            
+
             applySnapshot()
         }
     }

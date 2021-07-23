@@ -20,7 +20,7 @@ final class AddTagWorkflowTwoVC: UIViewController {
 
     private lazy var addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow))
 
-    private lazy var selectionBarButtonItem = UIBarButtonItem(title: "Deselect All" , style: .plain, target: self, action: #selector(selectionAction))
+    private lazy var selectionBarButtonItem = UIBarButtonItem(title: "Deselect All", style: .plain, target: self, action: #selector(selectionAction))
 
     private lazy var selectionLabelBarButtonItem = UIBarButtonItem(title: "\(tableView.indexPathsForSelectedRows?.count.description ?? "0") of 6 selected")
 
@@ -71,7 +71,7 @@ final class AddTagWorkflowTwoVC: UIViewController {
         return groupedTags.keys.sorted()
     }
 
-    private var sortedTags: Array<(key: String, value: Array<TagResource>)> {
+    private var sortedTags: [(key: String, value: [TagResource])] {
         return groupedTags.sorted { $0.key < $1.key }
     }
 
@@ -97,7 +97,7 @@ final class AddTagWorkflowTwoVC: UIViewController {
             return parent.keys.map { $0.capitalized }
         }
     }
-    
+
     // MARK: - Life Cycle
 
     init(transaction: TransactionResource, fromTransactionTags: Bool = false) {
@@ -133,12 +133,12 @@ final class AddTagWorkflowTwoVC: UIViewController {
         log.debug("viewDidLayoutSubviews")
         tableView.frame = view.bounds
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         log.debug("viewWillAppear(animated: \(animated.description))")
         fetchTags()
-        
+
         if fromTransactionTags {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
         }
@@ -183,7 +183,7 @@ private extension AddTagWorkflowTwoVC {
 
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
-    
+
     private func configureNavigation() {
         log.verbose("configureNavigation")
 
@@ -201,13 +201,13 @@ private extension AddTagWorkflowTwoVC {
 
         setToolbarItems([selectionBarButtonItem, .flexibleSpace(), selectionLabelBarButtonItem, .flexibleSpace(), nextBarButtonItem], animated: false)
     }
-    
+
     private func configureSearch() {
         log.verbose("configureSearch")
 
         searchController.searchBar.delegate = self
     }
-    
+
     private func configureTableView() {
         log.verbose("configureTableView")
 
@@ -260,7 +260,7 @@ private extension AddTagWorkflowTwoVC {
         if let alert = presentedViewController as? UIAlertController, let action = alert.actions.last {
             let text = alert.textFields?.map { $0.text ?? "" }.joined() ?? ""
 
-            action.isEnabled = text.count > 0
+            action.isEnabled = text.isEmpty
         }
     }
 
@@ -441,10 +441,10 @@ private extension AddTagWorkflowTwoVC {
         Up.listTags { [self] result in
             DispatchQueue.main.async {
                 switch result {
-                    case .success(let tags):
-                        display(tags)
-                    case .failure(let error):
-                        display(error)
+                case .success(let tags):
+                    display(tags)
+                case .failure(let error):
+                    display(error)
                 }
             }
         }
@@ -495,19 +495,19 @@ extension AddTagWorkflowTwoVC: UITableViewDelegate {
         guard let paths = tableView.indexPathsForSelectedRows else { return indexPath }
 
         switch paths.count {
-            case 6:
-                if !showingBanner {
-                    let nb = FloatingNotificationBanner(title: "Forbidden", subtitle: "You can only select a maximum of 6 tags.", style: .danger)
+        case 6:
+            if !showingBanner {
+                let nb = FloatingNotificationBanner(title: "Forbidden", subtitle: "You can only select a maximum of 6 tags.", style: .danger)
 
-                    nb.delegate = self
-                    nb.duration = 0.5
+                nb.delegate = self
+                nb.duration = 0.5
 
-                    nb.show(bannerPosition: .bottom, cornerRadius: 10, shadowBlurRadius: 5, shadowCornerRadius: 20)
-                }
+                nb.show(bannerPosition: .bottom, cornerRadius: 10, shadowBlurRadius: 5, shadowCornerRadius: 20)
+            }
 
-                return nil
-            default:
-                return indexPath
+            return nil
+        default:
+            return indexPath
         }
     }
 
@@ -515,14 +515,14 @@ extension AddTagWorkflowTwoVC: UITableViewDelegate {
         log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
 
         switch isEditing {
-            case true:
-                updateToolbarItems()
-            case false:
-                tableView.deselectRow(at: indexPath, animated: true)
+        case true:
+            updateToolbarItems()
+        case false:
+            tableView.deselectRow(at: indexPath, animated: true)
 
-                if let tag = dataSource.itemIdentifier(for: indexPath)?.id {
-                    navigationController?.pushViewController(AddTagWorkflowThreeVC(transaction: transaction, tags: [TagResource(id: tag)]), animated: true)
-                }
+            if let tag = dataSource.itemIdentifier(for: indexPath)?.id {
+                navigationController?.pushViewController(AddTagWorkflowThreeVC(transaction: transaction, tags: [TagResource(id: tag)]), animated: true)
+            }
         }
     }
 
@@ -530,31 +530,31 @@ extension AddTagWorkflowTwoVC: UITableViewDelegate {
         log.debug("tableView(didDeselectRowAt indexPath: \(indexPath))")
 
         switch isEditing {
-            case true:
-                updateToolbarItems()
-            case false:
-                break
+        case true:
+            updateToolbarItems()
+        case false:
+            break
         }
     }
 
     func tableView(_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
         return isEditing
     }
-    
+
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         switch isEditing {
-            case true:
-                return nil
-            case false:
-                guard let tag = dataSource.itemIdentifier(for: indexPath)?.id else { return nil }
+        case true:
+            return nil
+        case false:
+            guard let tag = dataSource.itemIdentifier(for: indexPath)?.id else { return nil }
 
-                return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                    UIMenu(children: [
-                        UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                            UIPasteboard.general.string = tag
-                        }
-                    ])
-                }
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(children: [
+                    UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
+                        UIPasteboard.general.string = tag
+                    }
+                ])
+            }
         }
     }
 }
@@ -582,10 +582,10 @@ extension AddTagWorkflowTwoVC: UISearchBarDelegate {
         applySnapshot()
         updateToolbarItems()
     }
-    
+
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         log.debug("searchBarCancelButtonClicked")
-        
+
         if !searchBar.text!.isEmpty {
             searchBar.text = ""
             applySnapshot()
@@ -605,7 +605,7 @@ extension AddTagWorkflowTwoVC: NotificationBannerDelegate {
     func notificationBannerWillDisappear(_ banner: BaseNotificationBanner) {
         log.debug("notificationBannerWillDisappear(banner: \(banner.titleLabel))")
     }
-    
+
     func notificationBannerDidAppear(_ banner: BaseNotificationBanner) {
         log.debug("notificationBannerDidAppear(banner: \(banner.titleLabel))")
     }

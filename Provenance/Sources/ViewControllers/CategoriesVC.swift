@@ -14,7 +14,7 @@ final class CategoriesVC: UIViewController {
     private typealias DataSource = UICollectionViewDiffableDataSource<Section, CategoryResource>
 
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, CategoryResource>
-    
+
     private typealias CategoryCell = UICollectionView.CellRegistration<CategoryCollectionViewCell, CategoryResource>
 
     private lazy var dataSource = makeDataSource()
@@ -33,7 +33,7 @@ final class CategoriesVC: UIViewController {
         return rc
     }()
 
-    private let cellRegistration = CategoryCell { cell, indexPath, category in
+    private let cellRegistration = CategoryCell { cell, _, category in
         cell.category = category
     }
 
@@ -59,9 +59,9 @@ final class CategoriesVC: UIViewController {
             searchController.searchBar.text!.isEmpty || category.attributes.name.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    
+
     // MARK: - Life Cycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         log.debug("viewDidLoad")
@@ -96,11 +96,11 @@ private extension CategoriesVC {
 
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
-        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] object, change in
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] _, _ in
             fetchCategories()
         }
     }
-    
+
     private func configureNavigation() {
         log.verbose("configureNavigation")
 
@@ -109,7 +109,7 @@ private extension CategoriesVC {
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.trayFull())
         navigationItem.searchController = searchController
     }
-    
+
     private func configureCollectionView() {
         log.verbose("configureCollectionView")
 
@@ -152,7 +152,7 @@ private extension CategoriesVC {
         var snapshot = Snapshot()
 
         snapshot.appendSections([.main])
-        
+
         snapshot.appendItems(filteredCategories, toSection: .main)
 
         if snapshot.itemIdentifiers.isEmpty && categoriesError.isEmpty {
@@ -237,10 +237,10 @@ private extension CategoriesVC {
         Up.listCategories { [self] result in
             DispatchQueue.main.async {
                 switch result {
-                    case .success(let categories):
-                        display(categories)
-                    case .failure(let error):
-                        display(error)
+                case .success(let categories):
+                    display(categories)
+                case .failure(let error):
+                    display(error)
                 }
             }
         }
@@ -303,7 +303,7 @@ extension CategoriesVC: UISearchBarDelegate {
 
         applySnapshot()
     }
-    
+
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         log.debug("searchBarCancelButtonClicked")
 

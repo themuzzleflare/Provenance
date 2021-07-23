@@ -2,9 +2,9 @@ import Foundation
 
 struct DetailSection: Identifiable {
     var id: Int
-    
+
     var attributes: [DetailAttribute]
-    
+
     init(id: Int, attributes: [DetailAttribute]) {
         self.id = id
         self.attributes = attributes

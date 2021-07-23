@@ -4,7 +4,7 @@ struct DetailAttribute: Identifiable {
     var id: String
 
     var value: String
-    
+
     init(id: String, value: String) {
         self.id = id
         self.value = value

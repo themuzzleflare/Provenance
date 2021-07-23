@@ -47,12 +47,12 @@ extension StickersVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return stickerGifs.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StickerCollectionViewCell.reuseIdentifier, for: indexPath) as? StickerCollectionViewCell else {
             fatalError("Unable to dequeue reusable cell with identifier: \(StickerCollectionViewCell.reuseIdentifier)")
         }
-        
+
         cell.image = stickerGifs[indexPath.item]
 
         return cell

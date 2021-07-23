@@ -30,9 +30,9 @@ final class TransactionTagsVC: UIViewController {
 
     private lazy var addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow))
 
-    private lazy var selectionBarButtonItem = UIBarButtonItem(title: "Select All" , style: .plain, target: self, action: #selector(selectionAction))
+    private lazy var selectionBarButtonItem = UIBarButtonItem(title: "Select All", style: .plain, target: self, action: #selector(selectionAction))
 
-    private lazy var removeAllBarButtonItem = UIBarButtonItem(title: "Remove All" , style: .plain, target: self, action: #selector(removeAllTags))
+    private lazy var removeAllBarButtonItem = UIBarButtonItem(title: "Remove All", style: .plain, target: self, action: #selector(removeAllTags))
 
     private lazy var removeBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(removeTags))
 
@@ -58,44 +58,44 @@ final class TransactionTagsVC: UIViewController {
             guard let tag = itemIdentifier(for: indexPath) else { return }
 
             switch editingStyle {
-                case .delete:
-                    let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(parent.transaction.attributes.transactionDescription)\"?", preferredStyle: .actionSheet)
+            case .delete:
+                let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(parent.transaction.attributes.transactionDescription)\"?", preferredStyle: .actionSheet)
 
-                    let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [self] _ in
-                        let tagObject = TagResource(id: tag.id)
+                let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [self] _ in
+                    let tagObject = TagResource(id: tag.id)
 
-                        Up.modifyTags(removing: tagObject, from: parent.transaction) { error in
-                            DispatchQueue.main.async {
-                                switch error {
-                                    case .none:
-                                        let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(parent.transaction.attributes.transactionDescription).", style: .success)
+                    Up.modifyTags(removing: tagObject, from: parent.transaction) { error in
+                        DispatchQueue.main.async {
+                            switch error {
+                            case .none:
+                                let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(parent.transaction.attributes.transactionDescription).", style: .success)
 
-                                        nb.duration = 2
+                                nb.duration = 2
 
-                                        nb.show()
+                                nb.show()
 
-                                        parent.fetchTransaction()
-                                    default:
-                                        let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                                parent.fetchTransaction()
+                            default:
+                                let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
 
-                                        nb.duration = 2
+                                nb.duration = 2
 
-                                        nb.show()
-                                }
+                                nb.show()
                             }
                         }
                     }
+                }
 
-                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 
-                    cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
 
-                    ac.addAction(confirmAction)
-                    ac.addAction(cancelAction)
+                ac.addAction(confirmAction)
+                ac.addAction(cancelAction)
 
-                    parent.present(ac, animated: true)
-                default:
-                    break
+                parent.present(ac, animated: true)
+            default:
+                break
             }
         }
     }
@@ -235,12 +235,12 @@ private extension TransactionTagsVC {
         log.verbose("selectionAction")
 
         switch tableView.indexPathsForSelectedRows?.count {
-            case transaction.relationships.tags.data.count:
-                tableView.indexPathsForSelectedRows?.forEach { tableView.deselectRow(at: $0, animated: false) }
-            default:
-                let indexes = transaction.relationships.tags.data.map { dataSource.indexPath(for: $0) }
+        case transaction.relationships.tags.data.count:
+            tableView.indexPathsForSelectedRows?.forEach { tableView.deselectRow(at: $0, animated: false) }
+        default:
+            let indexes = transaction.relationships.tags.data.map { dataSource.indexPath(for: $0) }
 
-                indexes.forEach { tableView.selectRow(at: $0, animated: false, scrollPosition: .none) }
+            indexes.forEach { tableView.selectRow(at: $0, animated: false, scrollPosition: .none) }
         }
 
         updateToolbarItems()
@@ -260,20 +260,20 @@ private extension TransactionTagsVC {
                 Up.modifyTags(removing: tagsObject, from: transaction) { error in
                     DispatchQueue.main.async {
                         switch error {
-                            case .none:
-                                let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tagIds) was removed from \(transaction.attributes.transactionDescription).", style: .success)
+                        case .none:
+                            let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tagIds) was removed from \(transaction.attributes.transactionDescription).", style: .success)
 
-                                nb.duration = 2
+                            nb.duration = 2
 
-                                nb.show()
+                            nb.show()
 
-                                fetchTransaction()
-                            default:
-                                let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                            fetchTransaction()
+                        default:
+                            let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
 
-                                nb.duration = 2
+                            nb.duration = 2
 
-                                nb.show()
+                            nb.show()
                         }
                     }
                 }
@@ -305,20 +305,20 @@ private extension TransactionTagsVC {
             Up.modifyTags(removing: tagsObject, from: transaction) { error in
                 DispatchQueue.main.async {
                     switch error {
-                        case .none:
-                            let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tagIds) was removed from \(transaction.attributes.transactionDescription).", style: .success)
+                    case .none:
+                    let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tagIds) was removed from \(transaction.attributes.transactionDescription).", style: .success)
 
-                            nb.duration = 2
+                        nb.duration = 2
 
-                            nb.show()
+                        nb.show()
 
-                            fetchTransaction()
-                        default:
-                            let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                        fetchTransaction()
+                    default:
+                        let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
 
-                            nb.duration = 2
+                        nb.duration = 2
 
-                            nb.show()
+                        nb.show()
                     }
                 }
             }
@@ -382,10 +382,10 @@ private extension TransactionTagsVC {
         Up.retrieveTransaction(for: transaction) { result in
             DispatchQueue.main.async {
                 switch result {
-                    case .success(let transaction):
-                        self.transaction = transaction
-                    case .failure(let error):
-                        self.tableView.refreshControl?.endRefreshing()
+                case .success(let transaction):
+                    self.transaction = transaction
+                case .failure(let error):
+                    self.tableView.refreshControl?.endRefreshing()
                 }
             }
         }
@@ -403,14 +403,14 @@ extension TransactionTagsVC: UITableViewDelegate {
         log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
 
         switch isEditing {
-            case true:
-                updateToolbarItems()
-            case false:
-                tableView.deselectRow(at: indexPath, animated: true)
+        case true:
+            updateToolbarItems()
+        case false:
+            tableView.deselectRow(at: indexPath, animated: true)
 
-                if let tag = dataSource.itemIdentifier(for: indexPath)?.id {
-                    navigationController?.pushViewController(TransactionsByTagVC(tag: TagResource(id: tag)), animated: true)
-                }
+            if let tag = dataSource.itemIdentifier(for: indexPath)?.id {
+                navigationController?.pushViewController(TransactionsByTagVC(tag: TagResource(id: tag)), animated: true)
+            }
         }
     }
 
@@ -418,10 +418,10 @@ extension TransactionTagsVC: UITableViewDelegate {
         log.debug("didDeselectRowAt indexPath: \(indexPath))")
 
         switch isEditing {
-            case true:
-                updateToolbarItems()
-            case false:
-                break
+        case true:
+            updateToolbarItems()
+        case false:
+            break
         }
     }
 
@@ -439,55 +439,55 @@ extension TransactionTagsVC: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         switch isEditing {
-            case true:
-                return nil
-            case false:
-                guard let tag = dataSource.itemIdentifier(for: indexPath) else { return nil }
+        case true:
+            return nil
+        case false:
+            guard let tag = dataSource.itemIdentifier(for: indexPath) else { return nil }
 
-                return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                    UIMenu(children: [
-                        UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                            UIPasteboard.general.string = tag.id
-                        },
-                        UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { [self] _ in
-                            let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(transaction.attributes.transactionDescription)\"?", preferredStyle: .actionSheet)
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(children: [
+                    UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
+                        UIPasteboard.general.string = tag.id
+                    },
+                    UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { [self] _ in
+                        let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(transaction.attributes.transactionDescription)\"?", preferredStyle: .actionSheet)
 
-                            let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { _ in
-                                let tagObject = TagResource(id: tag.id)
+                        let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { _ in
+                            let tagObject = TagResource(id: tag.id)
 
-                                Up.modifyTags(removing: tagObject, from: transaction) { error in
-                                    DispatchQueue.main.async {
-                                        switch error {
-                                            case .none:
-                                                let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.transactionDescription).", style: .success)
-                                                
-                                                nb.duration = 2
+                            Up.modifyTags(removing: tagObject, from: transaction) { error in
+                                DispatchQueue.main.async {
+                                    switch error {
+                                    case .none:
+                                        let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.transactionDescription).", style: .success)
 
-                                                nb.show()
+                                        nb.duration = 2
 
-                                                fetchTransaction()
-                                            default:
-                                                let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                                        nb.show()
 
-                                                nb.duration = 2
+                                        fetchTransaction()
+                                    default:
+                                        let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
 
-                                                nb.show()
-                                        }
+                                        nb.duration = 2
+
+                                        nb.show()
                                     }
                                 }
                             }
-
-                            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-
-                            cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-                            
-                            ac.addAction(confirmAction)
-                            ac.addAction(cancelAction)
-
-                            present(ac, animated: true)
                         }
-                    ])
-                }
+
+                        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+
+                        cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+
+                        ac.addAction(confirmAction)
+                        ac.addAction(cancelAction)
+
+                        present(ac, animated: true)
+                    }
+                ])
+            }
         }
     }
 }

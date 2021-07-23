@@ -3,8 +3,10 @@ inhibit_all_warnings!
 
 target 'Provenance' do
   use_frameworks!
-
+  
+  pod 'Firebase/Crashlytics'
   pod 'Firebase/Analytics'
+  pod 'Firebase/AppCheck'
   pod 'MarqueeLabel'
   pod 'TinyConstraints'
   pod 'R.swift'

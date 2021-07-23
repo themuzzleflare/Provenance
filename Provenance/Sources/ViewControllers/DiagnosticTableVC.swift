@@ -10,7 +10,7 @@ final class DiagnosticTableVC: UIViewController {
     private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailAttribute>
 
     private lazy var dataSource = makeDataSource()
-    
+
     private lazy var sections: [DetailSection] = [
         DetailSection(id: 1, attributes: [
             DetailAttribute(
@@ -25,7 +25,7 @@ final class DiagnosticTableVC: UIViewController {
     ]
 
     private let tableView = UITableView(frame: .zero, style: .grouped)
-    
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -53,7 +53,7 @@ private extension DiagnosticTableVC {
 
         title = "Diagnostics"
     }
-    
+
     private func configureNavigation() {
         log.verbose("configureNavigation")
 
@@ -61,7 +61,7 @@ private extension DiagnosticTableVC {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
     }
-    
+
     private func configureTableView() {
         log.verbose("configureTableView")
 
@@ -108,7 +108,7 @@ private extension DiagnosticTableVC {
         snapshot.appendSections(sections)
 
         sections.forEach { snapshot.appendItems($0.attributes, toSection: $0) }
-        
+
         dataSource.apply(snapshot, animatingDifferences: animate)
     }
 }
@@ -119,23 +119,23 @@ extension DiagnosticTableVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-    
+
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let attribute = dataSource.itemIdentifier(for: indexPath) else {
             return nil
         }
 
         switch attribute.id {
-            case "Unknown":
-                return nil
-            default:
-                return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                    UIMenu(children: [
-                        UIAction(title: "Copy \(attribute.id)", image: R.image.docOnClipboard()) { _ in
-                            UIPasteboard.general.string = attribute.value
-                        }
-                    ])
-                }
+        case "Unknown":
+            return nil
+        default:
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(children: [
+                    UIAction(title: "Copy \(attribute.id)", image: R.image.docOnClipboard()) { _ in
+                        UIPasteboard.general.string = attribute.value
+                    }
+                ])
+            }
         }
     }
 }

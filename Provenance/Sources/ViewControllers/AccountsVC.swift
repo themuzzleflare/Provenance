@@ -33,7 +33,7 @@ final class AccountsVC: UIViewController {
         return rc
     }()
 
-    private let cellRegistration = AccountCell { cell, indexPath, account in
+    private let cellRegistration = AccountCell { cell, _, account in
         cell.account = account
     }
 
@@ -60,9 +60,9 @@ final class AccountsVC: UIViewController {
             searchController.searchBar.text!.isEmpty || account.attributes.displayName.localizedStandardContains(searchController.searchBar.text!)
         }
     }
-    
+
     // MARK: - Life Cycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         log.debug("viewDidLoad")
@@ -78,7 +78,7 @@ final class AccountsVC: UIViewController {
         log.debug("viewDidLayoutSubviews")
         collectionView.frame = view.bounds
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         log.debug("viewWillAppear(animated: \(animated.description))")
@@ -97,11 +97,11 @@ private extension AccountsVC {
 
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
-        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] object, change in
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] _, _ in
             fetchAccounts()
         }
     }
-    
+
     private func configureNavigation() {
         log.verbose("configureNavigation")
 
@@ -110,7 +110,7 @@ private extension AccountsVC {
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.walletPass())
         navigationItem.searchController = searchController
     }
-    
+
     private func configureCollectionView() {
         log.verbose("configureCollectionView")
 
@@ -153,7 +153,7 @@ private extension AccountsVC {
         var snapshot = Snapshot()
 
         snapshot.appendSections([.main])
-        
+
         snapshot.appendItems(filteredAccounts, toSection: .main)
 
         if snapshot.itemIdentifiers.isEmpty && accountsError.isEmpty {
@@ -234,7 +234,7 @@ private extension AccountsVC {
 
     private func reloadSnapshot() {
         log.verbose("reloadSnapshot")
-        
+
         var snap = dataSource.snapshot()
 
         snap.reloadItems(snap.itemIdentifiers)
@@ -248,10 +248,10 @@ private extension AccountsVC {
         Up.listAccounts { [self] result in
             DispatchQueue.main.async {
                 switch result {
-                    case .success(let accounts):
-                        display(accounts)
-                    case .failure(let error):
-                        display(error)
+                case .success(let accounts):
+                    display(accounts)
+                case .failure(let error):
+                    display(error)
                 }
             }
         }
@@ -259,7 +259,7 @@ private extension AccountsVC {
 
     private func display(_ accounts: [AccountResource]) {
         log.verbose("display(accounts: \(accounts.count.description))")
-        
+
         accountsError = ""
         self.accounts = accounts
 
@@ -292,7 +292,7 @@ extension AccountsVC: UICollectionViewDelegate {
             navigationController?.pushViewController(TransactionsByAccountVC(account: account), animated: true)
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let account = dataSource.itemIdentifier(for: indexPath) else { return nil }
 
@@ -317,10 +317,10 @@ extension AccountsVC: UISearchBarDelegate {
 
         applySnapshot()
     }
-    
+
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         log.debug("searchBarCancelButtonClicked")
-        
+
         if !searchBar.text!.isEmpty {
             searchBar.text = ""
 

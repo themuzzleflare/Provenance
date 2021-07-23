@@ -9,34 +9,34 @@ struct LatestTransactionProvider: IntentTimelineProvider {
         Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "Officeworks", transactionDate: "21 hours ago", transactionAmount: "-$79.95", error: "")
     }
 
-    func getSnapshot(for configuration: Intent, in context: Context, completion: @escaping (Entry) -> ()) {
+    func getSnapshot(for configuration: Intent, in context: Context, completion: @escaping (Entry) -> Void) {
         completion(Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "Officeworks", transactionDate: "21 hours ago", transactionAmount: "-$79.95", error: ""))
     }
 
-    func getTimeline(for configuration: Intent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+    func getTimeline(for configuration: Intent, in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
         var entries: [Entry] = []
 
         Up.retrieveLatestTransaction { result in
             switch result {
-                case .success(let transactions):
-                    var creationDate: String {
-                        switch configuration.dateStyle {
-                            case .unknown:
-                                return transactions.first!.attributes.creationDate
-                            case .absolute:
-                                return transactions.first!.attributes.creationDateAbsolute
-                            case .relative:
-                                return transactions.first!.attributes.creationDateRelative
-                        }
+            case .success(let transactions):
+                var creationDate: String {
+                    switch configuration.dateStyle {
+                    case .unknown:
+                        return transactions.first!.attributes.creationDate
+                    case .absolute:
+                        return transactions.first!.attributes.creationDateAbsolute
+                    case .relative:
+                        return transactions.first!.attributes.creationDateRelative
                     }
+                }
 
-                    entries.append(Entry(date: Date(), transactionValueInBaseUnits: transactions.first!.attributes.amount.valueInBaseUnits.signum(), transactionDescription: transactions.first!.attributes.transactionDescription, transactionDate: creationDate, transactionAmount: transactions.first!.attributes.amount.valueShort, error: ""))
+                entries.append(Entry(date: Date(), transactionValueInBaseUnits: transactions.first!.attributes.amount.valueInBaseUnits.signum(), transactionDescription: transactions.first!.attributes.transactionDescription, transactionDate: creationDate, transactionAmount: transactions.first!.attributes.amount.valueShort, error: ""))
 
-                    completion(Timeline(entries: entries, policy: .atEnd))
-                case .failure(let error):
-                    entries.append(Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "", transactionDate: "", transactionAmount: "", error: errorString(for: error)))
+                completion(Timeline(entries: entries, policy: .atEnd))
+            case .failure(let error):
+                entries.append(Entry(date: Date(), transactionValueInBaseUnits: -1, transactionDescription: "", transactionDate: "", transactionAmount: "", error: errorString(for: error)))
 
-                    completion(Timeline(entries: entries, policy: .atEnd))
+                completion(Timeline(entries: entries, policy: .atEnd))
             }
         }
     }
@@ -101,16 +101,16 @@ struct LatestTransactionEntryView: View {
         .overlay(Group {
             if !entry.error.isEmpty {
                 switch family {
-                    case .systemSmall:
-                        Image(systemName: "exclamationmark.triangle.fill")
-                            .font(.largeTitle)
-                            .foregroundColor(.secondary)
-                    default:
-                        Text(entry.error)
-                            .padding()
-                            .fixedSize(horizontal: false, vertical: true)
-                            .font(.custom("CircularStd-Book", size: 14))
-                            .foregroundColor(.secondary)
+                case .systemSmall:
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.largeTitle)
+                        .foregroundColor(.secondary)
+                default:
+                    Text(entry.error)
+                        .padding()
+                        .fixedSize(horizontal: false, vertical: true)
+                        .font(.custom("CircularStd-Book", size: 14))
+                        .foregroundColor(.secondary)
                 }
             }
         })

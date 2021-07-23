@@ -21,7 +21,7 @@ final class WidgetsVC: UIViewController {
     private let scrollView = UIScrollView()
 
     // MARK: - Life Cycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         log.debug("viewDidLoad")
@@ -68,7 +68,7 @@ private extension WidgetsVC {
         instructionLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
         instructionLabel.numberOfLines = 0
         instructionLabel.text = "1. Long-press an empty area on your Home Screen until the apps jiggle.\n\n2. Tap the plus button in the upper-right corner to bring up the widget picker.\n\n3. Find Provenance in the list.\n\n4. Tap the Add Widget button or drag the widget to the desired spot on your Home Screen."
-        
+
         view.addSubview(scrollView)
 
         scrollView.edgesToSuperview()
@@ -76,7 +76,7 @@ private extension WidgetsVC {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.alwaysBounceVertical = true
         scrollView.addSubview(verticalStack)
-        
+
         verticalStack.edges(to: scrollView, insets: .horizontal(16) + .vertical(13))
         verticalStack.width(to: scrollView, offset: -32)
         verticalStack.addArrangedSubview(horizontalStack)

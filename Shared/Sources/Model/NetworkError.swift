@@ -28,7 +28,7 @@ extension NetworkError {
             self = .noData
             log.error(errorString(for: .noData))
         }
-        
+
         return nil
     }
 }

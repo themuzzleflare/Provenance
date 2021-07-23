@@ -5,7 +5,7 @@ import TinyConstraints
 
 final class StickerView: UIViewController {
     // MARK: - Properties
-    
+
     private let imageView = FLAnimatedImageView()
 
     // MARK: - Life Cycle
@@ -33,9 +33,9 @@ final class StickerView: UIViewController {
 private extension StickerView {
     private func configure() {
         log.verbose("configure")
-        
+
         title = "Sticker View"
-        
+
         view.backgroundColor = .systemGroupedBackground
 
         navigationItem.title = "Sticker"

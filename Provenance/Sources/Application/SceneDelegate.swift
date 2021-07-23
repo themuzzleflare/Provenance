@@ -93,28 +93,28 @@ private extension SceneDelegate {
                         Up.ping(with: answer) { error in
                             DispatchQueue.main.async {
                                 switch error {
-                                    case .none:
-                                        let nb = GrowingNotificationBanner(title: "Success", subtitle: "The API Key was verified and saved.", style: .success)
+                                case .none:
+                                    let nb = GrowingNotificationBanner(title: "Success", subtitle: "The API Key was verified and saved.", style: .success)
 
-                                        nb.duration = 2
+                                    nb.duration = 2
 
-                                        appDefaults.apiKey = answer
+                                    appDefaults.apiKey = answer
 
-                                        let vcNav = NavigationController(rootViewController: SettingsVC(displayBanner: nb))
+                                    let vcNav = NavigationController(rootViewController: SettingsVC(displayBanner: nb))
 
-                                        vcNav.modalPresentationStyle = .fullScreen
+                                    vcNav.modalPresentationStyle = .fullScreen
 
-                                        window?.rootViewController?.present(vcNav, animated: true)
-                                    default:
-                                        let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                                    window?.rootViewController?.present(vcNav, animated: true)
+                                default:
+                                    let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
 
-                                        nb.duration = 2
+                                    nb.duration = 2
 
-                                        let vcNav = NavigationController(rootViewController: SettingsVC(displayBanner: nb))
+                                    let vcNav = NavigationController(rootViewController: SettingsVC(displayBanner: nb))
 
-                                        vcNav.modalPresentationStyle = .fullScreen
+                                    vcNav.modalPresentationStyle = .fullScreen
 
-                                        window?.rootViewController?.present(vcNav, animated: true)
+                                    window?.rootViewController?.present(vcNav, animated: true)
                                 }
                             }
                         }
@@ -143,22 +143,22 @@ private extension SceneDelegate {
 
         }
     }
-    
+
     private func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
         log.info("handleShortcutItem(shortcutItem: \(shortcutItem.localizedTitle))")
-        
+
         if let tbc = window?.rootViewController as? TabBarController, let actionTypeValue = ShortcutType(rawValue: shortcutItem.type) {
             switch actionTypeValue {
-                case .transactions:
-                    tbc.selectedIndex = 0
-                case .accounts:
-                    tbc.selectedIndex = 1
-                case .tags:
-                    tbc.selectedIndex = 2
-                case .categories:
-                    tbc.selectedIndex = 3
-                case .about:
-                    tbc.selectedIndex = 4
+            case .transactions:
+                tbc.selectedIndex = 0
+            case .accounts:
+                tbc.selectedIndex = 1
+            case .tags:
+                tbc.selectedIndex = 2
+            case .categories:
+                tbc.selectedIndex = 3
+            case .about:
+                tbc.selectedIndex = 4
             }
         }
 

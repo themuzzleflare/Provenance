@@ -24,10 +24,10 @@ extension UserDefaults {
     }
 
     var appVersion: String {
-        get { string(forKey: "appVersion") ?? "Unknown" }
+        string(forKey: "appVersion") ?? "Unknown"
     }
 
     var appBuild: String {
-        get { string(forKey: "appBuild") ?? "Unknown" }
+        string(forKey: "appBuild") ?? "Unknown"
     }
 }

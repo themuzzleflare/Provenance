@@ -19,7 +19,7 @@ final class TabBarController: ASTabBarController {
         log.debug("init(nibName: \(nibNameOrNil ?? "nil"), bundle: \(nibBundleOrNil?.bundlePath ?? "nil"))")
         configure()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

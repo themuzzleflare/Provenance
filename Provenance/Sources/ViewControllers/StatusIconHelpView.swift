@@ -19,7 +19,7 @@ final class StatusIconHelpView: UIViewController {
     private let settledImage = UIImageView()
 
     private let heldLabel = UILabel()
-    
+
     private let settledLabel = UILabel()
 
     // MARK: - Life Cycle

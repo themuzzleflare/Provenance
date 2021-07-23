@@ -24,14 +24,14 @@ struct AccountBalanceProvider: IntentTimelineProvider {
 
         Up.retrieveAccount(for: accountId) { result in
             switch result {
-                case .success(let account):
-                    entries.append(Entry(date: Date(), account: AvailableAccount(id: account.id, displayName: account.attributes.displayName, balance: account.attributes.balance.valueShort)))
+            case .success(let account):
+                entries.append(Entry(date: Date(), account: AvailableAccount(id: account.id, displayName: account.attributes.displayName, balance: account.attributes.balance.valueShort)))
 
-                    completion(Timeline(entries: entries, policy: .atEnd))
-                case .failure(let error):
-                    entries.append(Entry(date: Date(), account: AvailableAccount(id: UUID().uuidString, displayName: errorString(for: error), balance: "Error")))
+                completion(Timeline(entries: entries, policy: .atEnd))
+            case .failure(let error):
+                entries.append(Entry(date: Date(), account: AvailableAccount(id: UUID().uuidString, displayName: errorString(for: error), balance: "Error")))
 
-                    completion(Timeline(entries: entries, policy: .atEnd))
+                completion(Timeline(entries: entries, policy: .atEnd))
             }
         }
     }
@@ -52,24 +52,24 @@ struct AccountBalanceEntryView: View {
         ZStack {
             VStack {
                 switch entry.account {
-                    case nil:
-                        Text("Edit widget to choose an account")
-                            .font(.custom("CircularStd-Book", size: 14))
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.secondary)
-                    default:
-                        if family != .systemSmall {
-                            Text("Account Balance")
-                                .font(.custom("CircularStd-Bold", size: 23))
-                                .foregroundColor(Color("AccentColor"))
-                            Spacer()
-                        }
-                        Text(entry.account!.balance)
+                case nil:
+                    Text("Edit widget to choose an account")
+                        .font(.custom("CircularStd-Book", size: 14))
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.secondary)
+                default:
+                    if family != .systemSmall {
+                        Text("Account Balance")
                             .font(.custom("CircularStd-Bold", size: 23))
-                            .foregroundColor(family != .systemSmall ? .primary : Color("AccentColor"))
-                        Text(entry.account!.displayName)
-                            .font(.custom("CircularStd-Book", size: 17))
-                            .foregroundColor(.primary)
+                            .foregroundColor(Color("AccentColor"))
+                        Spacer()
+                    }
+                    Text(entry.account!.balance)
+                        .font(.custom("CircularStd-Bold", size: 23))
+                        .foregroundColor(family != .systemSmall ? .primary : Color("AccentColor"))
+                    Text(entry.account!.displayName)
+                        .font(.custom("CircularStd-Book", size: 17))
+                        .foregroundColor(.primary)
                 }
             }
             .padding()
