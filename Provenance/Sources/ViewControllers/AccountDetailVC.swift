@@ -10,6 +10,7 @@ final class AccountDetailVC: UIViewController {
             log.info("didSet account: \(account.attributes.displayName)")
 
             applySnapshot()
+
             tableView.refreshControl?.endRefreshing()
         }
     }
@@ -19,6 +20,7 @@ final class AccountDetailVC: UIViewController {
             log.info("didSet transaction: \(transaction?.attributes.transactionDescription ?? "nil")")
 
             applySnapshot()
+
             tableView.refreshControl?.endRefreshing()
         }
     }
@@ -31,11 +33,20 @@ final class AccountDetailVC: UIViewController {
 
     private let tableRefreshControl: UIRefreshControl = {
         let rc = UIRefreshControl()
-        rc.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+
+        rc.addTarget(
+            self,
+            action: #selector(refreshData),
+            for: .valueChanged
+        )
+
         return rc
     }()
 
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let tableView = UITableView(
+        frame: .zero,
+        style: .grouped
+    )
 
     private var sections: [DetailSection] = []
 
@@ -43,38 +54,47 @@ final class AccountDetailVC: UIViewController {
 
     init(account: AccountResource, transaction: TransactionResource? = nil) {
         self.account = account
+
         self.transaction = transaction
+
         super.init(nibName: nil, bundle: nil)
+
         log.debug("init(account: \(account.attributes.displayName), transaction: \(transaction?.attributes.transactionDescription ?? "nil"))")
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError("Not implemented") }
 
-    deinit {
-        log.debug("deinit")
-    }
+    deinit { log.debug("deinit") }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         log.debug("viewDidLoad")
+
         view.addSubview(tableView)
+
         configureProperties()
+
         configureNavigation()
+
         configureTableView()
+
         applySnapshot(animate: false)
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         log.debug("viewDidLayoutSubviews")
+
         tableView.frame = view.bounds
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         log.debug("viewWillAppear(animated: \(animated.description))")
+
         fetchingTasks()
     }
 }
@@ -87,25 +107,47 @@ private extension AccountDetailVC {
 
         title = "Account Details"
 
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appMovedToForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
     }
 
     private func configureNavigation() {
         log.verbose("configureNavigation")
 
         navigationItem.title = account.attributes.displayName
+
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .close,
+            target: self,
+            action: #selector(closeWorkflow)
+        )
     }
 
     private func configureTableView() {
         log.verbose("configureTableView")
 
         tableView.dataSource = dataSource
+
         tableView.delegate = self
-        tableView.register(AttributeTableViewCell.self, forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier)
+
+        tableView.register(
+            AttributeTableViewCell.self,
+            forCellReuseIdentifier: AttributeTableViewCell.reuseIdentifier
+        )
+
         tableView.refreshControl = tableRefreshControl
-        tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+
+        tableView.autoresizingMask = [
+            .flexibleHeight,
+            .flexibleWidth
+        ]
+
         tableView.showsVerticalScrollIndicator = false
     }
 }
@@ -122,7 +164,8 @@ private extension AccountDetailVC {
     @objc private func refreshData() {
         log.verbose("refreshData")
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            [self] in
             fetchingTasks()
         }
     }
@@ -137,6 +180,7 @@ private extension AccountDetailVC {
         log.verbose("fetchingTasks")
 
         fetchAccount()
+
         fetchTransaction()
     }
 
@@ -145,14 +189,21 @@ private extension AccountDetailVC {
 
         let dataSource = DataSource(
             tableView: tableView,
-            cellProvider: { tableView, indexPath, attribute in
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: AttributeTableViewCell.reuseIdentifier, for: indexPath) as? AttributeTableViewCell else {
+            cellProvider: {
+                (tableView, indexPath, attribute) in
+                guard let cell = tableView.dequeueReusableCell(
+                        withIdentifier: AttributeTableViewCell.reuseIdentifier,
+                        for: indexPath
+                ) as? AttributeTableViewCell else {
                     fatalError("Unable to dequeue reusable cell with identifier: \(AttributeTableViewCell.reuseIdentifier)")
                 }
 
                 cell.leftLabel.text = attribute.id
 
-                cell.rightLabel.font = attribute.id == "Account ID" ? R.font.sfMonoRegular(size: UIFont.labelFontSize)! : R.font.circularStdBook(size: UIFont.labelFontSize)!
+                cell.rightLabel.font = attribute.id == "Account ID"
+                    ? R.font.sfMonoRegular(size: UIFont.labelFontSize)
+                    : R.font.circularStdBook(size: UIFont.labelFontSize)
+
                 cell.rightLabel.text = attribute.value
 
                 return cell
@@ -168,45 +219,55 @@ private extension AccountDetailVC {
         log.verbose("applySnapshot(animate: \(animate.description))")
 
         sections = [
-            DetailSection(id: 1, attributes: [
-                DetailAttribute(
-                    id: "Account Balance",
-                    value: account.attributes.balance.valueLong
-                ),
-                DetailAttribute(
-                    id: "Latest Transaction",
-                    value: transaction?.attributes.transactionDescription ?? ""
-                ),
-                DetailAttribute(
-                    id: "Account ID",
-                    value: account.id
-                ),
-                DetailAttribute(
-                    id: "Creation Date",
-                    value: account.attributes.creationDate
-                )
-            ])
+            DetailSection(
+                id: 1,
+                attributes: [
+                    DetailAttribute(
+                        id: "Account Balance",
+                        value: account.attributes.balance.valueLong
+                    ),
+                    DetailAttribute(
+                        id: "Latest Transaction",
+                        value: transaction?.attributes.transactionDescription ?? ""
+                    ),
+                    DetailAttribute(
+                        id: "Account ID",
+                        value: account.id
+                    ),
+                    DetailAttribute(
+                        id: "Creation Date",
+                        value: account.attributes.creationDate
+                    )
+                ]
+            )
         ]
 
         var snapshot = Snapshot()
 
         snapshot.appendSections(sections)
 
-        sections.forEach { snapshot.appendItems($0.attributes.filter { !$0.value.isEmpty }, toSection: $0) }
+        sections.forEach {
+            snapshot.appendItems(
+                $0.attributes.filter { !$0.value.isEmpty },
+                toSection: $0
+            )
+        }
 
-        dataSource.apply(snapshot, animatingDifferences: animate)
+        dataSource.apply(
+            snapshot,
+            animatingDifferences: animate
+        )
     }
 
     private func fetchAccount() {
         log.verbose("fetchAccount")
 
-        Up.retrieveAccount(for: account) { [self] result in
+        UpFacade.retrieveAccount(for: account) {
+            [self] (result) in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let account):
-                    self.account = account
-                case .failure(let error):
-                    print(errorString(for: error))
+                case .success(let account): self.account = account
+                case .failure(let error): print(errorString(for: error))
                 }
             }
         }
@@ -215,13 +276,12 @@ private extension AccountDetailVC {
     private func fetchTransaction() {
         log.verbose("fetchTransaction")
 
-        Up.retrieveLatestTransaction(for: account) { [self] result in
+        UpFacade.retrieveLatestTransaction(for: account) {
+            [self] (result) in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let transactions):
-                    transaction = transactions.first
-                case .failure(let error):
-                    print(errorString(for: error))
+                case .success(let transactions): transaction = transactions.first
+                case .failure(let error): print(errorString(for: error))
                 }
             }
         }

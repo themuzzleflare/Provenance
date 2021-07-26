@@ -18,20 +18,21 @@ final class StickerCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+
         configure()
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError("Not implemented") }
 
     override func layoutSubviews() {
         super.layoutSubviews()
+
         stickerImageView.frame = contentView.bounds
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+
         layer.borderColor = UIColor.separator.cgColor
     }
 }
@@ -41,10 +42,8 @@ final class StickerCollectionViewCell: UICollectionViewCell {
 private extension StickerCollectionViewCell {
     private func configure() {
         backgroundColor = .secondarySystemGroupedBackground
-
         layer.borderWidth = 1.0
         layer.borderColor = UIColor.separator.cgColor
-
         contentView.addSubview(stickerImageView)
     }
 }

@@ -8,7 +8,8 @@ struct ResultDecoder<T> {
     }
 
     func decode(_ result: DataResult) -> Result<T, NetworkError> {
-        result.flatMap { (data) -> Result<T, NetworkError> in
+        result.flatMap {
+            (data) -> Result<T, NetworkError> in
             Result { try transform(data) }
                 .mapError { NetworkError.decodingError($0) }
         }

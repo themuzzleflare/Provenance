@@ -22,7 +22,7 @@ struct AccountBalanceProvider: IntentTimelineProvider {
             return
         }
 
-        Up.retrieveAccount(for: accountId) { result in
+        UpFacade.retrieveAccount(for: accountId) { result in
             switch result {
             case .success(let account):
                 entries.append(Entry(date: Date(), account: AvailableAccount(id: account.id, displayName: account.attributes.displayName, balance: account.attributes.balance.valueShort)))

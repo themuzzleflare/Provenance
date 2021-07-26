@@ -29,8 +29,8 @@
 		7A1BA63F268D2E580032F9CB /* ErrorDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD272532682C25D004D0EB3 /* ErrorDetail.swift */; };
 		7A1BA640268D2E5C0032F9CB /* ResultDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A16B5742683F8BB005428E0 /* ResultDecoder.swift */; };
 		7A1BA641268D2E5C0032F9CB /* ResultDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A16B5742683F8BB005428E0 /* ResultDecoder.swift */; };
-		7A1BA642268D2E5F0032F9CB /* Up.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9494052629350B00B39E75 /* Up.swift */; };
-		7A1BA643268D2E5F0032F9CB /* Up.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9494052629350B00B39E75 /* Up.swift */; };
+		7A1BA642268D2E5F0032F9CB /* UpFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9494052629350B00B39E75 /* UpFacade.swift */; };
+		7A1BA643268D2E5F0032F9CB /* UpFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9494052629350B00B39E75 /* UpFacade.swift */; };
 		7A1BA644268D2F480032F9CB /* SingleTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAC68FA262D581D0046494C /* SingleTransaction.swift */; };
 		7A1BA645268D2F480032F9CB /* SingleTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAC68FA262D581D0046494C /* SingleTransaction.swift */; };
 		7A1BA646268D2F510032F9CB /* SingleAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAC68FF262D6C9E0046494C /* SingleAccount.swift */; };
@@ -109,7 +109,7 @@
 		7A908302269296E4005CCB26 /* MoneyObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A908301269296E4005CCB26 /* MoneyObject.swift */; };
 		7A908303269296E4005CCB26 /* MoneyObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A908301269296E4005CCB26 /* MoneyObject.swift */; };
 		7A908304269296E4005CCB26 /* MoneyObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A908301269296E4005CCB26 /* MoneyObject.swift */; };
-		7A9494062629350B00B39E75 /* Up.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9494052629350B00B39E75 /* Up.swift */; };
+		7A9494062629350B00B39E75 /* UpFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9494052629350B00B39E75 /* UpFacade.swift */; };
 		7AA1137E2614876C00386E2D /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA1137D2614876C00386E2D /* TransactionTableViewCell.swift */; };
 		7AA113882615181700386E2D /* AttributeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA113872615181700386E2D /* AttributeTableViewCell.swift */; };
 		7AA1139026152CBE00386E2D /* DateStyleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA1138F26152CBE00386E2D /* DateStyleTableViewCell.swift */; };
@@ -129,6 +129,7 @@
 		7AB34D5D25C7CDCB000A1E81 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */; };
 		7AB609B02603F0D80038B85B /* AddTagWorkflowTwoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */; };
 		7AB609B32603F1130038B85B /* AddTagWorkflowThreeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */; };
+		7AC9F7D326AE4E9C0096D486 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC9F7D226AE4E9C0096D486 /* ViewController.swift */; };
 		7ACA1A4E26AA448C00DE1645 /* AppAttest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACA1A4D26AA448C00DE1645 /* AppAttest.swift */; };
 		7ACA1A5126AA4BDE00DE1645 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7ACA1A5026AA4BDE00DE1645 /* GoogleService-Info.plist */; };
 		7ACD456C261D67A7000C8FD2 /* WidgetsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD456B261D67A7000C8FD2 /* WidgetsVC.swift */; };
@@ -263,7 +264,7 @@
 		7A9082F3269279BB005CCB26 /* RelationshipData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationshipData.swift; sourceTree = "<group>"; };
 		7A9082FD26929431005CCB26 /* TransactionsLinksObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsLinksObject.swift; sourceTree = "<group>"; };
 		7A908301269296E4005CCB26 /* MoneyObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyObject.swift; sourceTree = "<group>"; };
-		7A9494052629350B00B39E75 /* Up.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Up.swift; sourceTree = "<group>"; };
+		7A9494052629350B00B39E75 /* UpFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpFacade.swift; sourceTree = "<group>"; };
 		7A9DE23C25DE35AB00175697 /* Provenance.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Provenance.entitlements; sourceTree = "<group>"; };
 		7AA1137D2614876C00386E2D /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
 		7AA113872615181700386E2D /* AttributeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeTableViewCell.swift; sourceTree = "<group>"; };
@@ -286,6 +287,7 @@
 		7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		7AB609AF2603F0D80038B85B /* AddTagWorkflowTwoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagWorkflowTwoVC.swift; sourceTree = "<group>"; };
 		7AB609B22603F1130038B85B /* AddTagWorkflowThreeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagWorkflowThreeVC.swift; sourceTree = "<group>"; };
+		7AC9F7D226AE4E9C0096D486 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		7ACA1A4D26AA448C00DE1645 /* AppAttest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAttest.swift; sourceTree = "<group>"; };
 		7ACA1A5026AA4BDE00DE1645 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7ACD456B261D67A7000C8FD2 /* WidgetsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetsVC.swift; sourceTree = "<group>"; };
@@ -457,6 +459,7 @@
 				7AB34D5225C7C30E000A1E81 /* TabBarController.swift */,
 				7AE75E3625FF1C3B00C16AF6 /* NavigationController.swift */,
 				7A8E9C42262FD7460018BEBE /* SearchController.swift */,
+				7AC9F7D226AE4E9C0096D486 /* ViewController.swift */,
 			);
 			path = BaseControllers;
 			sourceTree = "<group>";
@@ -499,7 +502,7 @@
 				7AD272532682C25D004D0EB3 /* ErrorDetail.swift */,
 				7AED68922682B13C00C1795E /* NetworkError.swift */,
 				7A16B5742683F8BB005428E0 /* ResultDecoder.swift */,
-				7A9494052629350B00B39E75 /* Up.swift */,
+				7A9494052629350B00B39E75 /* UpFacade.swift */,
 				7A2E6CFF25DCA06B00BA2AB6 /* Model.swift */,
 			);
 			path = Model;
@@ -954,7 +957,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 		7A7E167225FF12FA00418EEA /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1067,7 +1070,7 @@
 				7A1BA654268D50490032F9CB /* DateFormatters.swift in Sources */,
 				7A22713D268178AF001F63FF /* Dictionary+Extension.swift in Sources */,
 				7A9082EE269278AA005CCB26 /* SelfLink.swift in Sources */,
-				7A1BA643268D2E5F0032F9CB /* Up.swift in Sources */,
+				7A1BA643268D2E5F0032F9CB /* UpFacade.swift in Sources */,
 				7A9082F226927967005CCB26 /* RelatedLink.swift in Sources */,
 				7A1BA63B268D2E480032F9CB /* URLSession+Extension.swift in Sources */,
 				7A1BA64A268D2F570032F9CB /* Category.swift in Sources */,
@@ -1121,7 +1124,7 @@
 				7A5BDE7B2616B9E600B5A5F9 /* CategoryCollectionViewCell.swift in Sources */,
 				7A09E4B52686E30600C9F299 /* TransactionDetailVC.swift in Sources */,
 				7ADE3330267AED2B00066823 /* TransactionsVC.swift in Sources */,
-				7A9494062629350B00B39E75 /* Up.swift in Sources */,
+				7A9494062629350B00B39E75 /* UpFacade.swift in Sources */,
 				7A9082F4269279BB005CCB26 /* RelationshipData.swift in Sources */,
 				7AA113C7261550B900386E2D /* DetailSection.swift in Sources */,
 				7A040C8226994F09000CCFF3 /* TransactionCellNode.swift in Sources */,
@@ -1152,6 +1155,7 @@
 				7A8DDCA225D138C200EF85B9 /* Category.swift in Sources */,
 				7A56101A25D22AF10091396E /* AddTagWorkflowVC.swift in Sources */,
 				7A14D5F2261AC5BE00C072E3 /* AccountCollectionViewCell.swift in Sources */,
+				7AC9F7D326AE4E9C0096D486 /* ViewController.swift in Sources */,
 				7AB34D1E25C78230000A1E81 /* AppDelegate.swift in Sources */,
 				7A202B5D262908EC00D2450A /* SceneDelegate.swift in Sources */,
 				7A14D5EA261AC37100C072E3 /* AccountsVC.swift in Sources */,
@@ -1168,7 +1172,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7A1BA642268D2E5F0032F9CB /* Up.swift in Sources */,
+				7A1BA642268D2E5F0032F9CB /* UpFacade.swift in Sources */,
 				7A9082FF26929431005CCB26 /* TransactionsLinksObject.swift in Sources */,
 				7A1BA63C268D2E540032F9CB /* NetworkError.swift in Sources */,
 				7A8E41F126048320003D0E6A /* ProvenanceWidgets.swift in Sources */,
@@ -1250,7 +1254,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 18.2;
+				MARKETING_VERSION = 18.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Intents Development";
@@ -1276,7 +1280,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 18.2;
+				MARKETING_VERSION = 18.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Intents Development";
@@ -1419,7 +1423,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Provenance/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 18.2;
+				MARKETING_VERSION = 18.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Development";
@@ -1442,7 +1446,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Provenance/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 18.2;
+				MARKETING_VERSION = 18.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Development";
@@ -1472,7 +1476,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 18.2;
+				MARKETING_VERSION = 18.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Widgets Development";
@@ -1503,7 +1507,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 18.2;
+				MARKETING_VERSION = 18.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Widgets Development";
@@ -1527,7 +1531,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 18.2;
+				MARKETING_VERSION = 18.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Stickers Development";
@@ -1548,7 +1552,7 @@
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				MARKETING_VERSION = 18.2;
+				MARKETING_VERSION = 18.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Stickers Development";

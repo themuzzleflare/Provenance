@@ -12,25 +12,28 @@ final class TransactionTableViewCell: UITableViewCell {
             transactionDescription.text = transaction.attributes.transactionDescription
             transactionCreationDate.text = transaction.attributes.creationDate
             transactionAmount.textColor = transaction.attributes.amount.valueInBaseUnits.signum() == -1
-                ? .label : R.color.greenColour()
+                ? .label
+                : R.color.greenColour()
+
             transactionAmount.text = transaction.attributes.amount.valueShort
         }
     }
 
     private let transactionDescription = UILabel()
-
     private let transactionCreationDate = UILabel()
-
     private let transactionAmount = UILabel()
 
     private let verticalStack = UIStackView()
-
     private let horizontalStack = UIStackView()
 
     // MARK: - Life Cycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(
+            style: style,
+            reuseIdentifier: reuseIdentifier
+        )
+
         configureCell()
         configureContentView()
         configureTransactionDescription()
@@ -40,12 +43,11 @@ final class TransactionTableViewCell: UITableViewCell {
         configureHorizontalStackView()
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError("Not implemented") }
 
     override func layoutSubviews() {
         super.layoutSubviews()
+
         horizontalStack.frame = contentView.bounds
     }
 }

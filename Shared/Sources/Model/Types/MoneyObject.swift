@@ -11,43 +11,29 @@ struct MoneyObject: Codable {
 
     var transactionType: String {
         switch valueInBaseUnits.signum() {
-        case -1:
-            return "Debit"
-        case 1:
-            return "Credit"
-        default:
-            return "Amount"
+        case -1: return "Debit"
+        case 1: return "Credit"
+        default: return "Amount"
         }
     }
 
     private var valueSymbol: String {
         switch valueInBaseUnits.signum() {
-        case -1:
-            return "-$"
-        case 1:
-            return "$"
-        default:
-            return "$"
+        case -1: return "-$"
+        case 1: return "$"
+        default: return "$"
         }
     }
 
     private var valueString: String {
         switch valueInBaseUnits.signum() {
-        case -1:
-            return value
-                .replacingOccurrences(of: "-", with: "")
-        case 1:
-            return value
-        default:
-            return value
+        case -1: return value.replacingOccurrences(of: "-", with: "")
+        case 1: return value
+        default: return value
         }
     }
 
-    var valueShort: String {
-        "\(valueSymbol)\(valueString)"
-    }
+    var valueShort: String { return "\(valueSymbol)\(valueString)" }
 
-    var valueLong: String {
-        "\(valueSymbol)\(valueString) \(currencyCode)"
-    }
+    var valueLong: String { return "\(valueSymbol)\(valueString) \(currencyCode)" }
 }

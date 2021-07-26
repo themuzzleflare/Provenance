@@ -28,19 +28,46 @@ final class TransactionTagsVC: UIViewController {
 
     private lazy var dataSource = makeDataSource()
 
-    private lazy var addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow))
+    private lazy var addBarButtonItem = UIBarButtonItem(
+        barButtonSystemItem: .add,
+        target: self,
+        action: #selector(openAddWorkflow)
+    )
 
-    private lazy var selectionBarButtonItem = UIBarButtonItem(title: "Select All", style: .plain, target: self, action: #selector(selectionAction))
+    private lazy var selectionBarButtonItem = UIBarButtonItem(
+        title: "Select All",
+        style: .plain,
+        target: self,
+        action: #selector(selectionAction)
+    )
 
-    private lazy var removeAllBarButtonItem = UIBarButtonItem(title: "Remove All", style: .plain, target: self, action: #selector(removeAllTags))
+    private lazy var removeAllBarButtonItem = UIBarButtonItem(
+        title: "Remove All",
+        style: .plain,
+        target: self,
+        action: #selector(removeAllTags)
+    )
 
-    private lazy var removeBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(removeTags))
+    private lazy var removeBarButtonItem = UIBarButtonItem(
+        barButtonSystemItem: .trash,
+        target: self,
+        action: #selector(removeTags)
+    )
 
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let tableView = UITableView(
+        frame: .zero,
+        style: .grouped
+    )
 
     private let tableRefreshControl: UIRefreshControl = {
         let rc = UIRefreshControl()
-        rc.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+
+        rc.addTarget(
+            self,
+            action: #selector(refreshTags),
+            for: .valueChanged
+        )
+
         return rc
     }()
 
@@ -59,43 +86,73 @@ final class TransactionTagsVC: UIViewController {
 
             switch editingStyle {
             case .delete:
-                let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(parent.transaction.attributes.transactionDescription)\"?", preferredStyle: .actionSheet)
+                let ac = UIAlertController(
+                    title: nil,
+                    message: "Are you sure you want to remove \"\(tag.id)\" from \"\(parent.transaction.attributes.transactionDescription)\"?",
+                    preferredStyle: .actionSheet
+                )
 
-                let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [self] _ in
-                    let tagObject = TagResource(id: tag.id)
+                let confirmAction = UIAlertAction(
+                    title: "Remove",
+                    style: .destructive,
+                    handler: {
+                        [self] (_) in
+                        let tagObject = TagResource(id: tag.id)
 
-                    Up.modifyTags(removing: tagObject, from: parent.transaction) { error in
-                        DispatchQueue.main.async {
-                            switch error {
-                            case .none:
-                                let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(parent.transaction.attributes.transactionDescription).", style: .success)
+                        UpFacade.modifyTags(
+                            removing: tagObject,
+                            from: parent.transaction,
+                            completion: {
+                                (error) in
+                                DispatchQueue.main.async {
+                                    switch error {
+                                    case .none:
+                                        let nb = GrowingNotificationBanner(
+                                            title: "Success",
+                                            subtitle: "\(tag.id) was removed from \(parent.transaction.attributes.transactionDescription).",
+                                            style: .success
+                                        )
 
-                                nb.duration = 2
+                                        nb.duration = 2
 
-                                nb.show()
+                                        nb.show()
 
-                                parent.fetchTransaction()
-                            default:
-                                let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                                        parent.fetchTransaction()
+                                    default:
+                                        let nb = GrowingNotificationBanner(
+                                            title: "Failed",
+                                            subtitle: errorString(for: error!),
+                                            style: .danger
+                                        )
 
-                                nb.duration = 2
+                                        nb.duration = 2
 
-                                nb.show()
+                                        nb.show()
+                                    }
+                                }
                             }
-                        }
+                        )
                     }
-                }
+                )
 
-                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                let cancelAction = UIAlertAction(
+                    title: "Cancel",
+                    style: .cancel
+                )
 
-                cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                cancelAction.setValue(
+                    R.color.accentColor(),
+                    forKey: "titleTextColor"
+                )
 
                 ac.addAction(confirmAction)
                 ac.addAction(cancelAction)
 
-                parent.present(ac, animated: true)
-            default:
-                break
+                parent.present(
+                    ac,
+                    animated: true
+                )
+            default: break
             }
         }
     }
@@ -104,23 +161,28 @@ final class TransactionTagsVC: UIViewController {
 
     init(transaction: TransactionResource) {
         self.transaction = transaction
-        super.init(nibName: nil, bundle: nil)
+
+        super.init(
+            nibName: nil,
+            bundle: nil
+        )
+
         log.debug("init(transaction: \(transaction.attributes.transactionDescription))")
+
         dataSource.parent = self
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError("Not implemented") }
 
-    deinit {
-        log.debug("deinit")
-    }
+    deinit { log.debug("deinit") }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         log.debug("viewDidLoad")
+
         view.addSubview(tableView)
+
         configureProperties()
         configureNavigation()
         configureToolbar()
@@ -130,37 +192,60 @@ final class TransactionTagsVC: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         log.debug("viewDidLayoutSubviews")
+
         tableView.frame = view.bounds
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         log.debug("viewWillAppear(animated: \(animated.description))")
+
         fetchTransaction()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
         log.debug("viewDidAppear(animated: \(animated.description))")
-        navigationController?.setToolbarHidden(!isEditing, animated: true)
+
+        navigationController?.setToolbarHidden(
+            !isEditing,
+            animated: true
+        )
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         log.debug("viewWillDisappear(animated: \(animated.description))")
-        navigationController?.setToolbarHidden(true, animated: false)
+
+        navigationController?.setToolbarHidden(
+            true,
+            animated: false
+        )
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
+
         log.debug("setEditing(editing: \(editing.description), animated: \(animated.description))")
-        tableView.setEditing(editing, animated: animated)
+
+        tableView.setEditing(
+            editing,
+            animated: animated
+        )
 
         updateToolbarItems()
+
         addBarButtonItem.isEnabled = !editing
 
-        navigationController?.setToolbarHidden(!editing, animated: true)
+        navigationController?.setToolbarHidden(
+            !editing,
+            animated: true
+        )
     }
 }
 
@@ -172,7 +257,12 @@ private extension TransactionTagsVC {
 
         title = "Transaction Tags"
 
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appMovedToForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
     }
 
     private func configureNavigation() {
@@ -181,13 +271,27 @@ private extension TransactionTagsVC {
         navigationItem.title = "Tags"
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag())
-        navigationItem.rightBarButtonItems = [addBarButtonItem, editButtonItem]
+
+        navigationItem.rightBarButtonItems = [
+            addBarButtonItem,
+            editButtonItem
+        ]
     }
 
     private func configureToolbar() {
         log.verbose("configureToolbar")
 
-        setToolbarItems([selectionBarButtonItem, removeAllBarButtonItem, .flexibleSpace(), removeBarButtonItem], animated: false)
+        let toolbarItems = [
+            selectionBarButtonItem,
+            removeAllBarButtonItem,
+            .flexibleSpace(),
+            removeBarButtonItem
+        ]
+
+        setToolbarItems(
+            toolbarItems,
+            animated: false
+        )
     }
 
     private func configureTableView() {
@@ -195,10 +299,20 @@ private extension TransactionTagsVC {
 
         tableView.dataSource = dataSource
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")
+
+        tableView.register(
+            UITableViewCell.self,
+            forCellReuseIdentifier: "tagCell"
+        )
+
         tableView.refreshControl = tableRefreshControl
         tableView.allowsMultipleSelectionDuringEditing = true
-        tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+
+        tableView.autoresizingMask = [
+            .flexibleHeight,
+            .flexibleWidth
+        ]
+
         tableView.showsVerticalScrollIndicator = false
         tableView.tintColor = R.color.accentColor()
     }
@@ -216,19 +330,31 @@ private extension TransactionTagsVC {
     @objc private func openAddWorkflow() {
         log.verbose("openAddWorkflow")
 
-        let vcNav = NavigationController(rootViewController: AddTagWorkflowTwoVC(transaction: transaction, fromTransactionTags: true))
+        let vcNav = NavigationController(
+            rootViewController: AddTagWorkflowTwoVC(
+                transaction: transaction,
+                fromTransactionTags: true
+            )
+        )
 
         vcNav.modalPresentationStyle = .fullScreen
 
-        present(vcNav, animated: true)
+        present(
+            vcNav,
+            animated: true
+        )
     }
 
     @objc private func refreshTags() {
         log.verbose("refreshTags")
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-            fetchTransaction()
-        }
+        DispatchQueue.main.asyncAfter(
+            deadline: .now() + 1,
+            execute: {
+                [self] in
+                fetchTransaction()
+            }
+        )
     }
 
     @objc private func selectionAction() {
@@ -236,11 +362,22 @@ private extension TransactionTagsVC {
 
         switch tableView.indexPathsForSelectedRows?.count {
         case transaction.relationships.tags.data.count:
-            tableView.indexPathsForSelectedRows?.forEach { tableView.deselectRow(at: $0, animated: false) }
+            tableView.indexPathsForSelectedRows?.forEach {
+                tableView.deselectRow(
+                    at: $0,
+                    animated: false
+                )
+            }
         default:
             let indexes = transaction.relationships.tags.data.map { dataSource.indexPath(for: $0) }
 
-            indexes.forEach { tableView.selectRow(at: $0, animated: false, scrollPosition: .none) }
+            indexes.forEach {
+                tableView.selectRow(
+                    at: $0,
+                    animated: false,
+                    scrollPosition: .none
+                )
+            }
         }
 
         updateToolbarItems()
@@ -250,43 +387,75 @@ private extension TransactionTagsVC {
         log.verbose("removeTags")
 
         if let tags = tableView.indexPathsForSelectedRows?.map { dataSource.itemIdentifier(for: $0) } {
-            let tagIds = tags.map { $0!.id }.joined(separator: ", ")
+            let tagIds = tags.map { $0!.id }
+                .joined(separator: ", ")
 
-            let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tagIds)\" from \"\(transaction.attributes.transactionDescription)\"?", preferredStyle: .actionSheet)
+            let ac = UIAlertController(
+                title: nil,
+                message: "Are you sure you want to remove \"\(tagIds)\" from \"\(transaction.attributes.transactionDescription)\"?",
+                preferredStyle: .actionSheet
+            )
 
-            let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [self] _ in
-                let tagsObject = tags.map { TagResource(id: $0!.id) }
+            let confirmAction = UIAlertAction(
+                title: "Remove",
+                style: .destructive,
+                handler: {
+                    [self] (_) in
+                    let tagsObject = tags.map { TagResource(id: $0!.id) }
 
-                Up.modifyTags(removing: tagsObject, from: transaction) { error in
-                    DispatchQueue.main.async {
-                        switch error {
-                        case .none:
-                            let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tagIds) was removed from \(transaction.attributes.transactionDescription).", style: .success)
+                    UpFacade.modifyTags(
+                        removing: tagsObject,
+                        from: transaction,
+                        completion: {
+                            (error) in
+                            DispatchQueue.main.async {
+                                switch error {
+                                case .none:
+                                    let nb = GrowingNotificationBanner(
+                                        title: "Success",
+                                        subtitle: "\(tagIds) was removed from \(transaction.attributes.transactionDescription).",
+                                        style: .success
+                                    )
 
-                            nb.duration = 2
+                                    nb.duration = 2
 
-                            nb.show()
+                                    nb.show()
 
-                            fetchTransaction()
-                        default:
-                            let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                                    fetchTransaction()
+                                default:
+                                    let nb = GrowingNotificationBanner(
+                                        title: "Failed",
+                                        subtitle: errorString(for: error!),
+                                        style: .danger
+                                    )
 
-                            nb.duration = 2
+                                    nb.duration = 2
 
-                            nb.show()
+                                    nb.show()
+                                }
+                            }
                         }
-                    }
+                    )
                 }
-            }
+            )
 
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            let cancelAction = UIAlertAction(
+                title: "Cancel",
+                style: .cancel
+            )
 
-            cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+            cancelAction.setValue(
+                R.color.accentColor(),
+                forKey: "titleTextColor"
+            )
 
             ac.addAction(confirmAction)
             ac.addAction(cancelAction)
 
-            present(ac, animated: true)
+            present(
+                ac,
+                animated: true
+            )
         }
     }
 
@@ -295,60 +464,100 @@ private extension TransactionTagsVC {
 
         let tags = transaction.relationships.tags.data
 
-        let tagIds = tags.map { $0.id }.joined(separator: ", ")
+        let tagIds = tags.map { $0.id }
+            .joined(separator: ", ")
 
-        let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tagIds)\" from \"\(transaction.attributes.transactionDescription)\"?", preferredStyle: .actionSheet)
+        let ac = UIAlertController(
+            title: nil,
+            message: "Are you sure you want to remove \"\(tagIds)\" from \"\(transaction.attributes.transactionDescription)\"?",
+            preferredStyle: .actionSheet
+        )
 
-        let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [self] _ in
-            let tagsObject = tags.map { TagResource(id: $0.id) }
+        let confirmAction = UIAlertAction(
+            title: "Remove",
+            style: .destructive,
+            handler: {
+                [self] (_) in
+                let tagsObject = tags.map { TagResource(id: $0.id) }
 
-            Up.modifyTags(removing: tagsObject, from: transaction) { error in
-                DispatchQueue.main.async {
-                    switch error {
-                    case .none:
-                    let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tagIds) was removed from \(transaction.attributes.transactionDescription).", style: .success)
+                UpFacade.modifyTags(
+                    removing: tagsObject,
+                    from: transaction,
+                    completion: {
+                        (error) in
+                        DispatchQueue.main.async {
+                            switch error {
+                            case .none:
+                                let nb = GrowingNotificationBanner(
+                                    title: "Success",
+                                    subtitle: "\(tagIds) was removed from \(transaction.attributes.transactionDescription).",
+                                    style: .success
+                                )
 
-                        nb.duration = 2
+                                nb.duration = 2
 
-                        nb.show()
+                                nb.show()
 
-                        fetchTransaction()
-                    default:
-                        let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
+                                fetchTransaction()
+                            default:
+                                let nb = GrowingNotificationBanner(
+                                    title: "Failed",
+                                    subtitle: errorString(for: error!),
+                                    style: .danger
+                                )
 
-                        nb.duration = 2
+                                nb.duration = 2
 
-                        nb.show()
+                                nb.show()
+                            }
+                        }
                     }
-                }
+                )
             }
-        }
+        )
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let cancelAction = UIAlertAction(
+            title: "Cancel",
+            style: .cancel
+        )
 
-        cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+        cancelAction.setValue(
+            R.color.accentColor(),
+            forKey: "titleTextColor"
+        )
 
         ac.addAction(confirmAction)
         ac.addAction(cancelAction)
 
-        present(ac, animated: true)
+        present(
+            ac,
+            animated: true
+        )
     }
 
     private func updateToolbarItems() {
         log.verbose("updateToolbarItems")
 
-        selectionBarButtonItem.title = tableView.indexPathsForSelectedRows?.count == transaction.relationships.tags.data.count ? "Deselect All" : "Select All"
+        selectionBarButtonItem.title = tableView.indexPathsForSelectedRows?.count == transaction.relationships.tags.data.count
+            ? "Deselect All"
+            : "Select All"
+
         removeAllBarButtonItem.isEnabled = tableView.indexPathsForSelectedRows?.count != transaction.relationships.tags.data.count
+
         removeBarButtonItem.isEnabled = tableView.indexPathsForSelectedRows != nil
     }
 
     private func makeDataSource() -> DataSource {
         log.verbose("makeDataSource")
 
-        let dataSource = DataSource(
+        return DataSource(
             tableView: tableView,
-            cellProvider: { tableView, indexPath, tag in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath)
+            cellProvider: {
+                (tableView, indexPath, tag) in
+                let cell = tableView.dequeueReusableCell(
+                    withIdentifier: "tagCell",
+                    for: indexPath
+                )
 
                 cell.selectedBackgroundView = selectedBackgroundCellView
                 cell.accessoryType = .disclosureIndicator
@@ -360,8 +569,6 @@ private extension TransactionTagsVC {
                 return cell
             }
         )
-        dataSource.defaultRowAnimation = .automatic
-        return dataSource
     }
 
     private func applySnapshot(animate: Bool = true) {
@@ -371,21 +578,26 @@ private extension TransactionTagsVC {
 
         snapshot.appendSections([.main])
 
-        snapshot.appendItems(transaction.relationships.tags.data, toSection: .main)
+        snapshot.appendItems(
+            transaction.relationships.tags.data,
+            toSection: .main
+        )
 
-        dataSource.apply(snapshot, animatingDifferences: animate)
+        dataSource.apply(
+            snapshot,
+            animatingDifferences: animate
+        )
     }
 
     private func fetchTransaction() {
         log.verbose("fetchTransaction")
 
-        Up.retrieveTransaction(for: transaction) { result in
+        UpFacade.retrieveTransaction(for: transaction) {
+            (result) in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let transaction):
-                    self.transaction = transaction
-                case .failure(let error):
-                    self.tableView.refreshControl?.endRefreshing()
+                case .success(let transaction): self.transaction = transaction
+                case .failure(let error): self.tableView.refreshControl?.endRefreshing()
                 }
             }
         }
@@ -403,13 +615,18 @@ extension TransactionTagsVC: UITableViewDelegate {
         log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
 
         switch isEditing {
-        case true:
-            updateToolbarItems()
+        case true: updateToolbarItems()
         case false:
-            tableView.deselectRow(at: indexPath, animated: true)
+            tableView.deselectRow(
+                at: indexPath,
+                animated: true
+            )
 
             if let tag = dataSource.itemIdentifier(for: indexPath)?.id {
-                navigationController?.pushViewController(TransactionsByTagVC(tag: TagResource(id: tag)), animated: true)
+                navigationController?.pushViewController(
+                    TransactionsByTagVC(tag: TagResource(id: tag)),
+                    animated: true
+                )
             }
         }
     }
@@ -418,10 +635,8 @@ extension TransactionTagsVC: UITableViewDelegate {
         log.debug("didDeselectRowAt indexPath: \(indexPath))")
 
         switch isEditing {
-        case true:
-            updateToolbarItems()
-        case false:
-            break
+        case true: updateToolbarItems()
+        case false: break
         }
     }
 
@@ -439,55 +654,103 @@ extension TransactionTagsVC: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         switch isEditing {
-        case true:
-            return nil
+        case true: return nil
         case false:
             guard let tag = dataSource.itemIdentifier(for: indexPath) else { return nil }
 
-            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                UIMenu(children: [
-                    UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                        UIPasteboard.general.string = tag.id
-                    },
-                    UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { [self] _ in
-                        let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(transaction.attributes.transactionDescription)\"?", preferredStyle: .actionSheet)
-
-                        let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { _ in
-                            let tagObject = TagResource(id: tag.id)
-
-                            Up.modifyTags(removing: tagObject, from: transaction) { error in
-                                DispatchQueue.main.async {
-                                    switch error {
-                                    case .none:
-                                        let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.transactionDescription).", style: .success)
-
-                                        nb.duration = 2
-
-                                        nb.show()
-
-                                        fetchTransaction()
-                                    default:
-                                        let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
-
-                                        nb.duration = 2
-
-                                        nb.show()
-                                    }
+            return UIContextMenuConfiguration(
+                identifier: nil,
+                previewProvider: nil,
+                actionProvider: {
+                    (_) in
+                    UIMenu(
+                        children: [
+                            UIAction(
+                                title: "Copy",
+                                image: R.image.docOnClipboard(),
+                                handler: {
+                                    (_) in
+                                    UIPasteboard.general.string = tag.id
                                 }
-                            }
-                        }
+                            ),
+                            UIAction(
+                                title: "Remove",
+                                image: R.image.trash(),
+                                attributes: .destructive,
+                                handler: {
+                                    [self] (_) in
+                                    let ac = UIAlertController(
+                                        title: nil,
+                                        message: "Are you sure you want to remove \"\(tag.id)\" from \"\(transaction.attributes.transactionDescription)\"?",
+                                        preferredStyle: .actionSheet
+                                    )
 
-                        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                                    let confirmAction = UIAlertAction(
+                                        title: "Remove",
+                                        style: .destructive,
+                                        handler: {
+                                            (_) in
+                                            let tagObject = TagResource(id: tag.id)
 
-                        cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+                                            UpFacade.modifyTags(
+                                                removing: tagObject,
+                                                from: transaction,
+                                                completion: {
+                                                    (error) in
+                                                    DispatchQueue.main.async {
+                                                        switch error {
+                                                        case .none:
+                                                            let nb = GrowingNotificationBanner(
+                                                                title: "Success",
+                                                                subtitle: "\(tag.id) was removed from \(transaction.attributes.transactionDescription).",
+                                                                style: .success
+                                                            )
 
-                        ac.addAction(confirmAction)
-                        ac.addAction(cancelAction)
+                                                            nb.duration = 2
 
-                        present(ac, animated: true)
-                    }
-                ])
-            }
+                                                            nb.show()
+
+                                                            fetchTransaction()
+                                                        default:
+                                                            let nb = GrowingNotificationBanner(
+                                                                title: "Failed",
+                                                                subtitle: errorString(for: error!),
+                                                                style: .danger
+                                                            )
+
+                                                            nb.duration = 2
+
+                                                            nb.show()
+                                                        }
+                                                    }
+                                                }
+                                            )
+                                        }
+                                    )
+
+                                    let cancelAction = UIAlertAction(
+                                        title: "Cancel",
+                                        style: .cancel
+                                    )
+
+                                    cancelAction.setValue(
+                                        R.color.accentColor(),
+                                        forKey: "titleTextColor"
+                                    )
+
+                                    ac.addAction(confirmAction)
+                                    ac.addAction(cancelAction)
+
+                                    present(
+                                        ac,
+                                        animated: true
+                                    )
+                                }
+                            )
+                        ]
+                    )
+                }
+            )
         }
     }
 }

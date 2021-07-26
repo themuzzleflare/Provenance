@@ -7,6 +7,7 @@ target 'Provenance' do
   pod 'Firebase/Crashlytics'
   pod 'Firebase/Analytics'
   pod 'Firebase/AppCheck'
+  pod 'SwiftLint'
   pod 'MarqueeLabel'
   pod 'TinyConstraints'
   pod 'R.swift'

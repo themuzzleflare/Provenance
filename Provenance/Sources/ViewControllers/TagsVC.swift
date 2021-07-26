@@ -13,17 +13,28 @@ final class TagsVC: UIViewController {
 
     private lazy var searchController: UISearchController = {
         let sc = SearchController(searchResultsController: nil)
+
         sc.searchBar.delegate = self
+
         return sc
     }()
 
     private let tableRefreshControl: UIRefreshControl = {
         let rc = UIRefreshControl()
-        rc.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+
+        rc.addTarget(
+            self,
+            action: #selector(refreshTags),
+            for: .valueChanged
+        )
+
         return rc
     }()
 
-    private let tableView = UITableView(frame: .zero, style: .plain)
+    private let tableView = UITableView(
+        frame: .zero,
+        style: .plain
+    )
 
     private var apiKeyObserver: NSKeyValueObservation?
 
@@ -34,8 +45,11 @@ final class TagsVC: UIViewController {
             log.info("didSet tags: \(tags.count.description)")
 
             noTags = tags.isEmpty
+
             applySnapshot()
+
             tableView.refreshControl?.endRefreshing()
+
             searchController.searchBar.placeholder = "Search \(tags.count.description) \(tags.count == 1 ? "Tag" : "Tags")"
         }
     }
@@ -43,13 +57,15 @@ final class TagsVC: UIViewController {
     private var tagsError: String = ""
 
     private var filteredTags: [TagResource] {
-        tags.filter { tag in
-            searchController.searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchController.searchBar.text!)
+        return tags.filter { tag in
+            searchController.searchBar.text!.isEmpty
+                || tag.id
+                .localizedStandardContains(searchController.searchBar.text!)
         }
     }
 
     private var groupedTags: [String: [TagResource]] {
-        Dictionary(
+        return Dictionary(
             grouping: filteredTags,
             by: { String($0.id.prefix(1)) }
         )
@@ -70,11 +86,17 @@ final class TagsVC: UIViewController {
         weak var parent: TagsVC! = nil
 
         override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-            guard let firstTag = itemIdentifier(for: IndexPath(item: 0, section: section)) else { return nil }
+            guard let firstTag = itemIdentifier(
+                    for: IndexPath(
+                        item: 0,
+                        section: section
+                    )
+            ) else { return nil }
 
             guard let section = snapshot().sectionIdentifier(containingItem: firstTag) else { return nil }
 
-            return section.id.capitalized
+            return section.id
+                .capitalized
         }
 
         override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
@@ -86,32 +108,41 @@ final class TagsVC: UIViewController {
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+
         dataSource.parent = self
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError("Not implemented") }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         log.debug("viewDidLoad")
+
         view.addSubview(tableView)
+
         configureTableView()
+
         configureProperties()
+
         configureNavigation()
+
         applySnapshot()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         log.debug("viewDidLayoutSubviews")
+
         tableView.frame = view.bounds
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         log.debug("viewWillAppear(animated: \(animated.description))")
+
         fetchTags()
     }
 }
@@ -123,11 +154,18 @@ private extension TagsVC {
         log.verbose("configureProperties")
 
         title = "Tags"
+
         definesPresentationContext = true
 
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appMovedToForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
 
-        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] _, _ in
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) {
+            [self] (_, _) in
             fetchTags()
         }
     }
@@ -136,8 +174,11 @@ private extension TagsVC {
         log.verbose("configureNavigation")
 
         navigationItem.title = "Loading"
+
         navigationItem.largeTitleDisplayMode = .always
+
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.tag())
+
         navigationItem.searchController = searchController
     }
 
@@ -145,10 +186,21 @@ private extension TagsVC {
         log.verbose("configureTableView")
 
         tableView.dataSource = dataSource
+
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")
+
+        tableView.register(
+            UITableViewCell.self,
+            forCellReuseIdentifier: "tagCell"
+        )
+
         tableView.refreshControl = tableRefreshControl
-        tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+
+        tableView.autoresizingMask = [
+            .flexibleHeight,
+            .flexibleWidth
+        ]
+
         tableView.tintColor = R.color.accentColor()
     }
 }
@@ -169,13 +221,17 @@ private extension TagsVC {
 
         vc.modalPresentationStyle = .fullScreen
 
-        present(vc, animated: true)
+        present(
+            vc,
+            animated: true
+        )
     }
 
     @objc private func refreshTags() {
         log.verbose("refreshTags")
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            [self] in
             fetchTags()
         }
     }
@@ -183,37 +239,50 @@ private extension TagsVC {
     private func makeDataSource() -> DataSource {
         log.verbose("makeDataSource")
 
-        let dataSource = DataSource(
+        return DataSource(
             tableView: tableView,
-            cellProvider: { tableView, indexPath, tag in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath)
+            cellProvider: {
+                (tableView, indexPath, tag) in
+                let cell = tableView.dequeueReusableCell(
+                    withIdentifier: "tagCell",
+                    for: indexPath
+                )
 
                 cell.selectedBackgroundView = selectedBackgroundCellView
 
                 cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
+
                 cell.textLabel?.textAlignment = .left
+
                 cell.textLabel?.numberOfLines = 0
+
                 cell.textLabel?.text = tag.id
 
                 return cell
             }
         )
-
-        dataSource.defaultRowAnimation = .automatic
-
-        return dataSource
     }
 
     private func applySnapshot(animate: Bool = true) {
         log.verbose("applySnapshot(animate: \(animate.description))")
 
-        sections = sortedTags.map { SortedTags(id: $0.key, tags: $0.value) }
+        sections = sortedTags.map {
+            SortedTags(
+                id: $0.key,
+                tags: $0.value
+            )
+        }
 
         var snapshot = Snapshot()
 
         snapshot.appendSections(sections)
 
-        sections.forEach { snapshot.appendItems($0.tags, toSection: $0) }
+        sections.forEach {
+            snapshot.appendItems(
+                $0.tags,
+                toSection: $0
+            )
+        }
 
         if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty {
             if tags.isEmpty && !noTags {
@@ -249,7 +318,12 @@ private extension TagsVC {
                     label.font = R.font.circularStdBook(size: 23)
                     label.text = "No Tags"
 
-                    let vStack = UIStackView(arrangedSubviews: [icon, label])
+                    let vStack = UIStackView(
+                        arrangedSubviews: [
+                            icon,
+                            label
+                        ]
+                    )
 
                     view.addSubview(vStack)
 
@@ -288,19 +362,21 @@ private extension TagsVC {
             }
         }
 
-        dataSource.apply(snapshot, animatingDifferences: animate)
+        dataSource.apply(
+            snapshot,
+            animatingDifferences: animate
+        )
     }
 
     private func fetchTags() {
         log.verbose("fetchTags")
 
-        Up.listTags { [self] result in
+        UpFacade.listTags {
+            [self] (result) in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let tags):
-                    display(tags)
-                case .failure(let error):
-                    display(error)
+                case .success(let tags): display(tags)
+                case .failure(let error): display(error)
                 }
             }
         }
@@ -310,6 +386,7 @@ private extension TagsVC {
         log.verbose("display(tags: \(tags.count.description))")
 
         tagsError = ""
+
         self.tags = tags
 
         if navigationItem.title != "Tags" {
@@ -317,7 +394,14 @@ private extension TagsVC {
         }
 
         if navigationItem.rightBarButtonItem == nil {
-            navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow)), animated: true)
+            navigationItem.setRightBarButton(
+                UIBarButtonItem(
+                    barButtonSystemItem: .add,
+                    target: self,
+                    action: #selector(openAddWorkflow)
+                ),
+                animated: true
+            )
         }
     }
 
@@ -325,6 +409,7 @@ private extension TagsVC {
         log.verbose("display(error: \(errorString(for: error)))")
 
         tagsError = errorString(for: error)
+
         tags = []
 
         if navigationItem.title != "Error" {
@@ -332,7 +417,10 @@ private extension TagsVC {
         }
 
         if navigationItem.rightBarButtonItem != nil {
-            navigationItem.setRightBarButton(nil, animated: true)
+            navigationItem.setRightBarButton(
+                nil,
+                animated: true
+            )
         }
     }
 }
@@ -347,22 +435,38 @@ extension TagsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
 
-        tableView.deselectRow(at: indexPath, animated: true)
+        tableView.deselectRow(
+            at: indexPath,
+            animated: true
+        )
 
         if let tag = dataSource.itemIdentifier(for: indexPath) {
-            navigationController?.pushViewController(TransactionsByTagVC(tag: tag), animated: true)
+            navigationController?.pushViewController(
+                TransactionsByTagVC(tag: tag),
+                animated: true
+            )
         }
     }
 
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let tag = dataSource.itemIdentifier(for: indexPath)?.id else { return nil }
 
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            UIMenu(children: [
-                UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                    UIPasteboard.general.string = tag
-                }
-            ])
+        return UIContextMenuConfiguration(
+            identifier: nil,
+            previewProvider: nil
+        ) {
+            (_) in
+            UIMenu(
+                children: [
+                    UIAction(
+                        title: "Copy",
+                        image: R.image.docOnClipboard()
+                    ) {
+                        (_) in
+                        UIPasteboard.general.string = tag
+                    }
+                ]
+            )
         }
     }
 }

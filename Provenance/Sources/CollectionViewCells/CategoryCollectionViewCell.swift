@@ -19,17 +19,17 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+
         configureCell()
         configureContentView()
         configureLabel()
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError("Not implemented") }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+
         layer.borderColor = UIColor.separator.cgColor
     }
 }
@@ -39,11 +39,9 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
 private extension CategoryCollectionViewCell {
     private func configureCell() {
         clipsToBounds = true
-
         layer.cornerRadius = 12.5
         layer.borderColor = UIColor.separator.cgColor
         layer.borderWidth = 1.0
-
         backgroundColor = .secondarySystemGroupedBackground
         selectedBackgroundView = selectedBackgroundCellView
     }

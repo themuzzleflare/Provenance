@@ -16,7 +16,7 @@ struct LatestTransactionProvider: IntentTimelineProvider {
     func getTimeline(for configuration: Intent, in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
         var entries: [Entry] = []
 
-        Up.retrieveLatestTransaction { result in
+        UpFacade.retrieveLatestTransaction { result in
             switch result {
             case .success(let transactions):
                 var creationDate: String {

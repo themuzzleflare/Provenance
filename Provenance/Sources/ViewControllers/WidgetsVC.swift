@@ -3,19 +3,16 @@ import SwiftyBeaver
 import TinyConstraints
 import Rswift
 
-final class WidgetsVC: UIViewController {
+final class WidgetsVC: ViewController {
     // MARK: - Properties
 
     private let accountBalanceWidget = UIImageView()
-
     private let latestTransactionWidget = UIImageView()
 
     private let instructionTitle = UILabel()
-
     private let instructionLabel = UILabel()
 
     private let horizontalStack = UIStackView()
-
     private let verticalStack = UIStackView()
 
     private let scrollView = UIScrollView()
@@ -24,7 +21,11 @@ final class WidgetsVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         log.debug("viewDidLoad")
+
+        view.addSubview(scrollView)
+
         configure()
     }
 }
@@ -37,20 +38,18 @@ private extension WidgetsVC {
 
         title = "Widgets"
 
-        view.backgroundColor = .systemGroupedBackground
-
         navigationItem.title = "Widgets"
         navigationItem.largeTitleDisplayMode = .never
 
-        accountBalanceWidget.image = R.image.actbalsmall()
-        accountBalanceWidget.clipsToBounds = true
         accountBalanceWidget.width(150)
         accountBalanceWidget.height(150)
+        accountBalanceWidget.clipsToBounds = true
+        accountBalanceWidget.image = R.image.actbalsmall()
 
-        latestTransactionWidget.image = R.image.lttrnssmall()
-        latestTransactionWidget.clipsToBounds = true
         latestTransactionWidget.width(150)
         latestTransactionWidget.height(150)
+        latestTransactionWidget.clipsToBounds = true
+        latestTransactionWidget.image = R.image.lttrnssmall()
 
         horizontalStack.translatesAutoresizingMaskIntoConstraints = false
         horizontalStack.addArrangedSubview(accountBalanceWidget)
@@ -69,22 +68,36 @@ private extension WidgetsVC {
         instructionLabel.numberOfLines = 0
         instructionLabel.text = "1. Long-press an empty area on your Home Screen until the apps jiggle.\n\n2. Tap the plus button in the upper-right corner to bring up the widget picker.\n\n3. Find Provenance in the list.\n\n4. Tap the Add Widget button or drag the widget to the desired spot on your Home Screen."
 
-        view.addSubview(scrollView)
-
         scrollView.edgesToSuperview()
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
         scrollView.alwaysBounceVertical = true
         scrollView.addSubview(verticalStack)
 
-        verticalStack.edges(to: scrollView, insets: .horizontal(16) + .vertical(13))
-        verticalStack.width(to: scrollView, offset: -32)
+        verticalStack.edges(
+            to: scrollView,
+            insets: .horizontal(16) + .vertical(13)
+        )
+
+        verticalStack.width(
+            to: scrollView,
+            offset: -32
+        )
+
         verticalStack.addArrangedSubview(horizontalStack)
         verticalStack.addArrangedSubview(instructionTitle)
         verticalStack.addArrangedSubview(instructionLabel)
         verticalStack.axis = .vertical
         verticalStack.alignment = .center
-        verticalStack.setCustomSpacing(30, after: horizontalStack)
-        verticalStack.setCustomSpacing(5, after: instructionTitle)
+
+        verticalStack.setCustomSpacing(
+            30,
+            after: horizontalStack
+        )
+
+        verticalStack.setCustomSpacing(
+            5,
+            after: instructionTitle
+        )
     }
 }

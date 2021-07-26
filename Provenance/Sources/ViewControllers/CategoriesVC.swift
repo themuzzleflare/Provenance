@@ -21,19 +21,31 @@ final class CategoriesVC: UIViewController {
 
     private lazy var searchController: UISearchController = {
         let sc = SearchController(searchResultsController: nil)
+
         sc.searchBar.delegate = self
+
         return sc
     }()
 
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: twoColumnGridLayout())
+    private let collectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: twoColumnGridLayout()
+    )
 
     private let collectionRefreshControl: UIRefreshControl = {
         let rc = UIRefreshControl()
-        rc.addTarget(self, action: #selector(refreshCategories), for: .valueChanged)
+
+        rc.addTarget(
+            self,
+            action: #selector(refreshCategories),
+            for: .valueChanged
+        )
+
         return rc
     }()
 
-    private let cellRegistration = CategoryCell { cell, _, category in
+    private let cellRegistration = CategoryCell {
+        (cell, _, category) in
         cell.category = category
     }
 
@@ -46,8 +58,11 @@ final class CategoriesVC: UIViewController {
             log.info("didSet categories: \(categories.count.description)")
 
             noCategories = categories.isEmpty
+
             applySnapshot()
+
             collectionView.refreshControl?.endRefreshing()
+
             searchController.searchBar.placeholder = "Search \(categories.count.description) \(categories.count == 1 ? "Category" : "Categories")"
         }
     }
@@ -55,8 +70,10 @@ final class CategoriesVC: UIViewController {
     private var categoriesError: String = ""
 
     private var filteredCategories: [CategoryResource] {
-        categories.filter { category in
-            searchController.searchBar.text!.isEmpty || category.attributes.name.localizedStandardContains(searchController.searchBar.text!)
+        return categories.filter { category in
+            searchController.searchBar.text!.isEmpty
+                || category.attributes.name
+                .localizedStandardContains(searchController.searchBar.text!)
         }
     }
 
@@ -64,23 +81,33 @@ final class CategoriesVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         log.debug("viewDidLoad")
+
         view.addSubview(collectionView)
+
         configureProperties()
+
         configureNavigation()
+
         configureCollectionView()
+
         applySnapshot()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         log.debug("viewDidLayoutSubviews")
+
         collectionView.frame = view.bounds
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         log.debug("viewWillAppear(animated: \(animated.description))")
+
         fetchCategories()
     }
 }
@@ -92,11 +119,18 @@ private extension CategoriesVC {
         log.verbose("configureProperties")
 
         title = "Categories"
+
         definesPresentationContext = true
 
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appMovedToForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
 
-        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] _, _ in
+        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) {
+            [self] ( _, _) in
             fetchCategories()
         }
     }
@@ -105,8 +139,11 @@ private extension CategoriesVC {
         log.verbose("configureNavigation")
 
         navigationItem.title = "Loading"
+
         navigationItem.largeTitleDisplayMode = .always
+
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.trayFull())
+
         navigationItem.searchController = searchController
     }
 
@@ -114,9 +151,16 @@ private extension CategoriesVC {
         log.verbose("configureCollectionView")
 
         collectionView.dataSource = dataSource
+
         collectionView.delegate = self
+
         collectionView.refreshControl = collectionRefreshControl
-        collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+
+        collectionView.autoresizingMask = [
+            .flexibleHeight,
+            .flexibleWidth
+        ]
+
         collectionView.backgroundColor = .systemGroupedBackground
     }
 }
@@ -133,7 +177,8 @@ private extension CategoriesVC {
     @objc private func refreshCategories() {
         log.verbose("refreshCategories")
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            [self] in
             fetchCategories()
         }
     }
@@ -141,8 +186,13 @@ private extension CategoriesVC {
     private func makeDataSource() -> DataSource {
         log.verbose("makeDataSource")
 
-        return DataSource(collectionView: collectionView) { [self] collectionView, indexPath, category in
-            collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: category)
+        return DataSource(collectionView: collectionView) { [self]
+            (collectionView, indexPath, category) in
+            collectionView.dequeueConfiguredReusableCell(
+                using: cellRegistration,
+                for: indexPath,
+                item: category
+            )
         }
     }
 
@@ -153,7 +203,10 @@ private extension CategoriesVC {
 
         snapshot.appendSections([.main])
 
-        snapshot.appendItems(filteredCategories, toSection: .main)
+        snapshot.appendItems(
+            filteredCategories,
+            toSection: .main
+        )
 
         if snapshot.itemIdentifiers.isEmpty && categoriesError.isEmpty {
             if categories.isEmpty && !noCategories {
@@ -189,7 +242,12 @@ private extension CategoriesVC {
                     label.font = R.font.circularStdBook(size: 23)
                     label.text = "No Categories"
 
-                    let vStack = UIStackView(arrangedSubviews: [icon, label])
+                    let vStack = UIStackView(
+                        arrangedSubviews: [
+                            icon,
+                            label
+                        ]
+                    )
 
                     view.addSubview(vStack)
 
@@ -228,19 +286,21 @@ private extension CategoriesVC {
             }
         }
 
-        dataSource.apply(snapshot, animatingDifferences: animate)
+        dataSource.apply(
+            snapshot,
+            animatingDifferences: animate
+        )
     }
 
     private func fetchCategories() {
         log.verbose("fetchCategories")
 
-        Up.listCategories { [self] result in
+        UpFacade.listCategories {
+            [self] (result) in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let categories):
-                    display(categories)
-                case .failure(let error):
-                    display(error)
+                case .success(let categories): display(categories)
+                case .failure(let error): display(error)
                 }
             }
         }
@@ -250,6 +310,7 @@ private extension CategoriesVC {
         log.verbose("display(categories: \(categories.count.description))")
 
         categoriesError = ""
+
         self.categories = categories
 
         if navigationItem.title != "Categories" {
@@ -261,6 +322,7 @@ private extension CategoriesVC {
         log.verbose("display(error: \(errorString(for: error)))")
 
         categoriesError = errorString(for: error)
+
         categories = []
 
         if navigationItem.title != "Error" {
@@ -275,22 +337,38 @@ extension CategoriesVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         log.debug("collectionView(didSelectItemAt indexPath: \(indexPath))")
 
-        collectionView.deselectItem(at: indexPath, animated: true)
+        collectionView.deselectItem(
+            at: indexPath,
+            animated: true
+        )
 
         if let category = dataSource.itemIdentifier(for: indexPath) {
-            navigationController?.pushViewController(TransactionsByCategoryVC(category: category), animated: true)
+            navigationController?.pushViewController(
+                TransactionsByCategoryVC(category: category),
+                animated: true
+            )
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let category = dataSource.itemIdentifier(for: indexPath)?.attributes.name else { return nil }
 
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            UIMenu(children: [
-                UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                    UIPasteboard.general.string = category
-                }
-            ])
+        return UIContextMenuConfiguration(
+            identifier: nil,
+            previewProvider: nil
+        ) {
+            (_) in
+            UIMenu(
+                children: [
+                    UIAction(
+                        title: "Copy",
+                        image: R.image.docOnClipboard()
+                    ) {
+                        (_) in
+                        UIPasteboard.general.string = category
+                    }
+                ]
+            )
         }
     }
 }

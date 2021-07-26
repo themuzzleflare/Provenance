@@ -15,17 +15,28 @@ final class TransactionsByCategoryVC: UIViewController {
 
     private lazy var searchController: UISearchController = {
         let sc = SearchController(searchResultsController: nil)
+
         sc.searchBar.delegate = self
+
         return sc
     }()
 
     private let tableRefreshControl: UIRefreshControl = {
         let rc = UIRefreshControl()
-        rc.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
+
+        rc.addTarget(
+            self,
+            action: #selector(refreshTransactions),
+            for: .valueChanged
+        )
+
         return rc
     }()
 
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let tableView = UITableView(
+        frame: .zero,
+        style: .grouped
+    )
 
     private var dateStyleObserver: NSKeyValueObservation?
 
@@ -36,8 +47,11 @@ final class TransactionsByCategoryVC: UIViewController {
             log.info("didSet transactions: \(transactions.count.description)")
 
             noTransactions = transactions.isEmpty
+
             applySnapshot()
+
             tableView.refreshControl?.endRefreshing()
+
             searchController.searchBar.placeholder = "Search \(transactions.count.description) \(transactions.count == 1 ? "Transaction" : "Transactions")"
         }
     }
@@ -45,13 +59,15 @@ final class TransactionsByCategoryVC: UIViewController {
     private var transactionsError: String = ""
 
     private var filteredTransactions: [TransactionResource] {
-        transactions.filter { transaction in
-            searchController.searchBar.text!.isEmpty || transaction.attributes.transactionDescription.localizedStandardContains(searchController.searchBar.text!)
+        return transactions.filter { transaction in
+            searchController.searchBar.text!.isEmpty
+                || transaction.attributes.transactionDescription
+                .localizedStandardContains(searchController.searchBar.text!)
         }
     }
 
     private var groupedTransactions: [Date: [TransactionResource]] {
-        Dictionary(
+        return Dictionary(
             grouping: filteredTransactions,
             by: { $0.attributes.createdAtDate }
         )
@@ -66,7 +82,12 @@ final class TransactionsByCategoryVC: UIViewController {
     // UITableViewDiffableDataSource
     private class DataSource: UITableViewDiffableDataSource<SortedTransactions, TransactionResource> {
         override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-            guard let firstTransaction = itemIdentifier(for: IndexPath(item: 0, section: section)) else { return nil }
+            guard let firstTransaction = itemIdentifier(
+                    for: IndexPath(
+                        item: 0,
+                        section: section
+                    )
+            ) else { return nil }
 
             return firstTransaction.attributes.creationDayMonthYear
         }
@@ -76,37 +97,45 @@ final class TransactionsByCategoryVC: UIViewController {
 
     init(category: CategoryResource) {
         self.category = category
+
         super.init(nibName: nil, bundle: nil)
+
         log.debug("init(category: \(category.attributes.name))")
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError("Not implemented") }
 
-    deinit {
-        log.debug("deinit")
-    }
+    deinit { log.debug("deinit") }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         log.debug("viewDidLoad")
+
         view.addSubview(tableView)
+
         configureProperties()
+
         configureNavigation()
+
         configureTableView()
+
         applySnapshot()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         log.debug("viewDidLayoutSubviews")
+
         tableView.frame = view.bounds
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         log.debug("viewWillAppear(animated: \(animated.description))")
+
         fetchTransactions()
     }
 }
@@ -118,11 +147,18 @@ private extension TransactionsByCategoryVC {
         log.verbose("configureProperties")
 
         title = "Transactions by Category"
+
         definesPresentationContext = true
 
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appMovedToForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
 
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] _, _ in
+        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) {
+            [self] (_, _) in
             DispatchQueue.main.async {
                 reloadSnapshot()
             }
@@ -133,9 +169,13 @@ private extension TransactionsByCategoryVC {
         log.verbose("configureNavigation")
 
         navigationItem.title = "Loading"
+
         navigationItem.largeTitleDisplayMode = .never
+
         navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle())
+
         navigationItem.searchController = searchController
+
         navigationItem.hidesSearchBarWhenScrolling = false
     }
 
@@ -143,10 +183,20 @@ private extension TransactionsByCategoryVC {
         log.verbose("configureTableView")
 
         tableView.dataSource = dataSource
+
         tableView.delegate = self
-        tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
+
+        tableView.register(
+            TransactionTableViewCell.self,
+            forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier
+        )
+
         tableView.refreshControl = tableRefreshControl
-        tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+
+        tableView.autoresizingMask = [
+            .flexibleHeight,
+            .flexibleWidth
+        ]
     }
 }
 
@@ -162,7 +212,8 @@ private extension TransactionsByCategoryVC {
     @objc private func refreshTransactions() {
         log.verbose("refreshTransactions")
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            [self] in
             fetchTransactions()
         }
     }
@@ -174,7 +225,10 @@ private extension TransactionsByCategoryVC {
 
         snap.reloadItems(snap.itemIdentifiers)
 
-        dataSource.apply(snap, animatingDifferences: false)
+        dataSource.apply(
+            snap,
+            animatingDifferences: false
+        )
     }
 
     private func makeDataSource() -> DataSource {
@@ -182,8 +236,12 @@ private extension TransactionsByCategoryVC {
 
         let dataSource = DataSource(
             tableView: tableView,
-            cellProvider: { tableView, indexPath, transaction in
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as? TransactionTableViewCell else {
+            cellProvider: {
+                (tableView, indexPath, transaction) in
+                guard let cell = tableView.dequeueReusableCell(
+                        withIdentifier: TransactionTableViewCell.reuseIdentifier,
+                        for: indexPath
+                ) as? TransactionTableViewCell else {
                     fatalError("Unable to dequeue reusable cell with identifier: \(TransactionTableViewCell.reuseIdentifier)")
                 }
 
@@ -201,13 +259,23 @@ private extension TransactionsByCategoryVC {
     private func applySnapshot(animate: Bool = true) {
         log.verbose("applySnapshot(animate: \(animate.description))")
 
-        sections = sortedTransactions.map { SortedTransactions(id: $0.key, transactions: $0.value) }
+        sections = sortedTransactions.map {
+            SortedTransactions(
+                id: $0.key,
+                transactions: $0.value
+            )
+        }
 
         var snapshot = Snapshot()
 
         snapshot.appendSections(sections)
 
-        sections.forEach { snapshot.appendItems($0.transactions, toSection: $0) }
+        sections.forEach {
+            snapshot.appendItems(
+                $0.transactions,
+                toSection: $0
+            )
+        }
 
         if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty {
             if transactions.isEmpty && !noTransactions {
@@ -243,7 +311,12 @@ private extension TransactionsByCategoryVC {
                     label.font = R.font.circularStdBook(size: 23)
                     label.text = "No Transactions"
 
-                    let vStack = UIStackView(arrangedSubviews: [icon, label])
+                    let vStack = UIStackView(
+                        arrangedSubviews: [
+                            icon,
+                            label
+                        ]
+                    )
 
                     view.addSubview(vStack)
 
@@ -282,19 +355,21 @@ private extension TransactionsByCategoryVC {
             }
         }
 
-        dataSource.apply(snapshot, animatingDifferences: animate)
+        dataSource.apply(
+            snapshot,
+            animatingDifferences: animate
+        )
     }
 
     private func fetchTransactions() {
         log.verbose("fetchTransactions")
 
-        Up.listTransactions(filterBy: category) { [self] result in
+        UpFacade.listTransactions(filterBy: category) {
+            [self] (result) in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let transactions):
-                    display(transactions)
-                case .failure(let error):
-                    display(error)
+                case .success(let transactions): display(transactions)
+                case .failure(let error): display(error)
                 }
             }
         }
@@ -304,6 +379,7 @@ private extension TransactionsByCategoryVC {
         log.verbose("display(transactions: \(transactions.count.description))")
 
         transactionsError = ""
+
         self.transactions = transactions
 
         if navigationItem.title != category.attributes.name {
@@ -315,6 +391,7 @@ private extension TransactionsByCategoryVC {
         log.verbose("display(error: \(errorString(for: error)))")
 
         transactionsError = errorString(for: error)
+
         transactions = []
 
         if navigationItem.title != "Error" {
@@ -333,28 +410,52 @@ extension TransactionsByCategoryVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
 
-        tableView.deselectRow(at: indexPath, animated: true)
+        tableView.deselectRow(
+            at: indexPath,
+            animated: true
+        )
 
         if let transaction = dataSource.itemIdentifier(for: indexPath) {
-            navigationController?.pushViewController(TransactionDetailVC(transaction: transaction), animated: true)
+            navigationController?.pushViewController(
+                TransactionDetailVC(transaction: transaction),
+                animated: true
+            )
         }
     }
 
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let transaction = dataSource.itemIdentifier(for: indexPath) else { return nil }
 
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            UIMenu(children: [
-                UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
-                    UIPasteboard.general.string = transaction.attributes.transactionDescription
-                },
-                UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
-                    UIPasteboard.general.string = transaction.attributes.creationDate
-                },
-                UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
-                    UIPasteboard.general.string = transaction.attributes.amount.valueShort
-                }
-            ])
+        return UIContextMenuConfiguration(
+            identifier: nil,
+            previewProvider: nil
+        ) {
+            (_) in
+            UIMenu(
+                children: [
+                    UIAction(
+                        title: "Copy Description",
+                        image: R.image.textAlignright()
+                    ) {
+                        (_) in
+                        UIPasteboard.general.string = transaction.attributes.transactionDescription
+                    },
+                    UIAction(
+                        title: "Copy Creation Date",
+                        image: R.image.calendarCircle()
+                    ) {
+                        (_) in
+                        UIPasteboard.general.string = transaction.attributes.creationDate
+                    },
+                    UIAction(
+                        title: "Copy Amount",
+                        image: R.image.dollarsignCircle()
+                    ) {
+                        (_) in
+                        UIPasteboard.general.string = transaction.attributes.amount.valueShort
+                    }
+                ]
+            )
         }
     }
 }

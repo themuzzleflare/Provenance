@@ -1,34 +1,70 @@
 import Foundation
 
-struct Up {
+struct UpFacade {
     // MARK: - Decoders
 
-    private static let transactionsDecoder = ResultDecoder<[TransactionResource]> { data in
-        try Array(JSONDecoder().decode(Transaction.self, from: data).data)
+    private static let transactionsDecoder = ResultDecoder<[TransactionResource]> {
+        (data) in
+        try Array(
+            JSONDecoder().decode(
+                Transaction.self,
+                from: data
+            ).data
+        )
     }
 
-    private static let transactionDecoder = ResultDecoder<TransactionResource> { data in
-        try JSONDecoder().decode(SingleTransaction.self, from: data).data
+    private static let transactionDecoder = ResultDecoder<TransactionResource> {
+        (data) in
+        try JSONDecoder().decode(
+            SingleTransaction.self,
+            from: data
+        ).data
     }
 
-    private static let accountsDecoder = ResultDecoder<[AccountResource]> { data in
-        try Array(JSONDecoder().decode(Account.self, from: data).data)
+    private static let accountsDecoder = ResultDecoder<[AccountResource]> {
+        (data) in
+        try Array(
+            JSONDecoder().decode(
+                Account.self,
+                from: data
+            ).data
+        )
     }
 
-    private static let accountDecoder = ResultDecoder<AccountResource> { data in
-        try JSONDecoder().decode(SingleAccount.self, from: data).data
+    private static let accountDecoder = ResultDecoder<AccountResource> {
+        (data) in
+        try JSONDecoder().decode(
+            SingleAccount.self,
+            from: data
+        ).data
     }
 
-    private static let tagsDecoder = ResultDecoder<[TagResource]> { data in
-        try Array(JSONDecoder().decode(Tag.self, from: data).data)
+    private static let tagsDecoder = ResultDecoder<[TagResource]> {
+        (data) in
+        try Array(
+            JSONDecoder().decode(
+                Tag.self,
+                from: data
+            ).data
+        )
     }
 
-    private static let categoriesDecoder = ResultDecoder<[CategoryResource]> { data in
-        try Array(JSONDecoder().decode(Category.self, from: data).data)
+    private static let categoriesDecoder = ResultDecoder<[CategoryResource]> {
+        (data) in
+        try Array(
+            JSONDecoder().decode(
+                Category.self,
+                from: data
+            ).data
+        )
     }
 
-    private static let categoryDecoder = ResultDecoder<CategoryResource> { data in
-        try JSONDecoder().decode(SingleCategory.self, from: data).data
+    private static let categoryDecoder = ResultDecoder<CategoryResource> {
+        (data) in
+        try JSONDecoder().decode(
+            SingleCategory.self,
+            from: data
+        ).data
     }
 
     // MARK: - Methods
@@ -38,20 +74,29 @@ struct Up {
 
         var request = URLRequest(url: url)
 
-        request.addValue("Bearer \(key)", forHTTPHeaderField: "Authorization")
+        request.addValue(
+            "Bearer \(key)",
+            forHTTPHeaderField: "Authorization"
+        )
 
-        URLSession.shared.dataTask(with: request, errorHandler: completion)
-            .resume()
+        URLSession.shared.dataTask(
+            with: request,
+            errorHandler: completion
+        ).resume()
     }
 
     static func listTransactions(completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
-        let url = URL(string: "https://api.up.com.au/api/v1/transactions")!.appendingQueryParameters(["page[size]": "100"])
+        let url = URL(string: "https://api.up.com.au/api/v1/transactions")!
+            .appendingQueryParameters(["page[size]": "100"])
+
         let request = authorisedRequest(url: url)
 
-        URLSession.shared.dataTask(with: request) { result in
-            completion(self.transactionsDecoder.decode(result))
-        }
-        .resume()
+        URLSession.shared.dataTask(with: request) {
+            (result) in
+            completion(
+                self.transactionsDecoder.decode(result)
+            )
+        }.resume()
     }
 
     /**
@@ -64,23 +109,32 @@ struct Up {
      */
 
     static func listTransactions(filterBy account: AccountResource, completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
-        let url = URL(string: "https://api.up.com.au/api/v1/accounts/\(account.id)/transactions")!.appendingQueryParameters(["page[size]": "100"])
+        let url = URL(string: "https://api.up.com.au/api/v1/accounts/\(account.id)/transactions")!
+            .appendingQueryParameters(["page[size]": "100"])
+
         let request = authorisedRequest(url: url)
 
-        URLSession.shared.dataTask(with: request) { result in
-            completion(self.transactionsDecoder.decode(result))
-        }
-        .resume()
+        URLSession.shared.dataTask(with: request) {
+            (result) in
+            completion(
+                self.transactionsDecoder.decode(result)
+            )
+        }.resume()
     }
 
     static func listTransactions(filterBy tag: TagResource, completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
-        let url = URL(string: "https://api.up.com.au/api/v1/transactions")!.appendingQueryParameters(["filter[tag]": tag.id, "page[size]": "100"])
+        let url = URL(string: "https://api.up.com.au/api/v1/transactions")!
+            .appendingQueryParameters(["filter[tag]": tag.id,
+                                       "page[size]": "100"])
+
         let request = authorisedRequest(url: url)
 
-        URLSession.shared.dataTask(with: request) { result in
-            completion(self.transactionsDecoder.decode(result))
-        }
-        .resume()
+        URLSession.shared.dataTask(with: request) {
+            (result) in
+            completion(
+                self.transactionsDecoder.decode(result)
+            )
+        }.resume()
     }
 
     /**
@@ -93,33 +147,46 @@ struct Up {
      */
 
     static func listTransactions(filterBy category: CategoryResource, completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
-        let url = URL(string: "https://api.up.com.au/api/v1/transactions")!.appendingQueryParameters(["filter[category]": category.id, "page[size]": "100"])
+        let url = URL(string: "https://api.up.com.au/api/v1/transactions")!
+            .appendingQueryParameters(["filter[category]": category.id,
+                                       "page[size]": "100"])
+
         let request = authorisedRequest(url: url)
 
-        URLSession.shared.dataTask(with: request) { result in
-            completion(self.transactionsDecoder.decode(result))
-        }
-        .resume()
+        URLSession.shared.dataTask(with: request) {
+            (result) in
+            completion(
+                self.transactionsDecoder.decode(result)
+            )
+        }.resume()
     }
 
     static func retrieveLatestTransaction(completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
-        let url = URL(string: "https://api.up.com.au/api/v1/transactions")!.appendingQueryParameters(["page[size]": "1"])
+        let url = URL(string: "https://api.up.com.au/api/v1/transactions")!
+            .appendingQueryParameters(["page[size]": "1"])
+
         let request = authorisedRequest(url: url)
 
-        URLSession.shared.dataTask(with: request) { result in
-            completion(self.transactionsDecoder.decode(result))
-        }
-        .resume()
+        URLSession.shared.dataTask(with: request) {
+            (result) in
+            completion(
+                self.transactionsDecoder.decode(result)
+            )
+        }.resume()
     }
 
     static func retrieveLatestTransaction(for account: AccountResource, completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
-        let url = URL(string: "https://api.up.com.au/api/v1/accounts/\(account.id)/transactions")!.appendingQueryParameters(["page[size]": "1"])
+        let url = URL(string: "https://api.up.com.au/api/v1/accounts/\(account.id)/transactions")!
+            .appendingQueryParameters(["page[size]": "1"])
+
         let request = authorisedRequest(url: url)
 
-        URLSession.shared.dataTask(with: request) { result in
-            completion(self.transactionsDecoder.decode(result))
-        }
-        .resume()
+        URLSession.shared.dataTask(with: request) {
+            (result) in
+            completion(
+                self.transactionsDecoder.decode(result)
+            )
+        }.resume()
     }
 
     /**
@@ -133,12 +200,15 @@ struct Up {
 
     static func retrieveTransaction(for transaction: TransactionResource, completion: @escaping (Result<TransactionResource, NetworkError>) -> Void) {
         let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)")!
+
         let request = authorisedRequest(url: url)
 
-        URLSession.shared.dataTask(with: request) { result in
-            completion(self.transactionDecoder.decode(result))
-        }
-        .resume()
+        URLSession.shared.dataTask(with: request) {
+            (result) in
+            completion(
+                self.transactionDecoder.decode(result)
+            )
+        }.resume()
     }
 
     /**
@@ -152,32 +222,42 @@ struct Up {
 
     static func retrieveTransaction(for transactionId: String, completion: @escaping (Result<TransactionResource, NetworkError>) -> Void) {
         let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transactionId)")!
+
         let request = authorisedRequest(url: url)
 
-        URLSession.shared.dataTask(with: request) { result in
-            completion(self.transactionDecoder.decode(result))
-        }
-        .resume()
+        URLSession.shared.dataTask(with: request) {
+            (result) in
+            completion(
+                self.transactionDecoder.decode(result)
+            )
+        }.resume()
     }
 
     static func listAccounts(completion: @escaping (Result<[AccountResource], NetworkError>) -> Void) {
-        let url = URL(string: "https://api.up.com.au/api/v1/accounts")!.appendingQueryParameters(["page[size]": "100"])
+        let url = URL(string: "https://api.up.com.au/api/v1/accounts")!
+            .appendingQueryParameters(["page[size]": "100"])
+
         let request = authorisedRequest(url: url)
 
-        URLSession.shared.dataTask(with: request) { result in
-            completion(self.accountsDecoder.decode(result))
-        }
-        .resume()
+        URLSession.shared.dataTask(with: request) {
+            (result) in
+            completion(
+                self.accountsDecoder.decode(result)
+            )
+        }.resume()
     }
 
     static func retrieveAccount(for account: AccountResource, completion: @escaping (Result<AccountResource, NetworkError>) -> Void) {
         let url = URL(string: "https://api.up.com.au/api/v1/accounts/\(account.id)")!
+
         let request = authorisedRequest(url: url)
 
-        URLSession.shared.dataTask(with: request) { result in
-            completion(self.accountDecoder.decode(result))
-        }
-        .resume()
+        URLSession.shared.dataTask(with: request) {
+            (result) in
+            completion(
+                self.accountDecoder.decode(result)
+            )
+        }.resume()
     }
 
     static func retrieveAccount(for accountId: String, completion: @escaping (Result<AccountResource, NetworkError>) -> Void) {
@@ -327,7 +407,7 @@ struct Up {
     }
 }
 
-private extension Up {
+private extension UpFacade {
     private static func authorisedRequest(url: URL) -> URLRequest {
         var request = URLRequest(url: url)
 

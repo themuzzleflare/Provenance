@@ -18,17 +18,25 @@ final class DateStyleTableViewCell: UITableViewCell {
     // MARK: - Life Cycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(
+            style: style,
+            reuseIdentifier: reuseIdentifier
+        )
 
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] _, change in
-            DispatchQueue.main.async {
-                if change.newValue == "Absolute" {
-                    segmentedControl.selectedSegmentIndex = 0
-                } else if change.newValue == "Relative" {
-                    segmentedControl.selectedSegmentIndex = 1
+        dateStyleObserver = appDefaults.observe(
+            \.dateStyle,
+            options: .new,
+            changeHandler: {
+                [self] (_, change) in
+                DispatchQueue.main.async {
+                    if change.newValue == "Absolute" {
+                        segmentedControl.selectedSegmentIndex = 0
+                    } else if change.newValue == "Relative" {
+                        segmentedControl.selectedSegmentIndex = 1
+                    }
                 }
             }
-        }
+        )
 
         configureCell()
         configureContentView()
@@ -37,9 +45,7 @@ final class DateStyleTableViewCell: UITableViewCell {
         configureHorizontalStackView()
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError("Not implemented") }
 }
 
 // MARK: - Configuration
@@ -62,8 +68,18 @@ private extension DateStyleTableViewCell {
 
     private func configureSegmentedControl() {
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        segmentedControl.insertSegment(withTitle: "Absolute", at: 0, animated: false)
-        segmentedControl.insertSegment(withTitle: "Relative", at: 1, animated: false)
+
+        segmentedControl.insertSegment(
+            withTitle: "Absolute",
+            at: 0,
+            animated: false
+        )
+
+        segmentedControl.insertSegment(
+            withTitle: "Relative",
+            at: 1,
+            animated: false
+        )
 
         if appDefaults.dateStyle == "Absolute" {
             segmentedControl.selectedSegmentIndex = 0
@@ -71,7 +87,11 @@ private extension DateStyleTableViewCell {
             segmentedControl.selectedSegmentIndex = 1
         }
 
-        segmentedControl.addTarget(self, action: #selector(switchDateStyle), for: .valueChanged)
+        segmentedControl.addTarget(
+            self,
+            action: #selector(switchDateStyle),
+            for: .valueChanged
+        )
     }
 
     private func configureHorizontalStackView() {

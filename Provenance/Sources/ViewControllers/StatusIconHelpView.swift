@@ -3,30 +3,28 @@ import SwiftyBeaver
 import TinyConstraints
 import Rswift
 
-final class StatusIconHelpView: UIViewController {
+final class StatusIconHelpView: ViewController {
     // MARK: - Properties
 
     private let configuration = UIImage.SymbolConfiguration(pointSize: 21)
 
     private let verticalStack = UIStackView()
-
     private let heldStack = UIStackView()
-
     private let settledStack = UIStackView()
 
     private let heldImage = UIImageView()
-
     private let settledImage = UIImageView()
 
     private let heldLabel = UILabel()
-
     private let settledLabel = UILabel()
 
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         log.debug("viewDidLoad")
+
         configure()
     }
 }
@@ -39,11 +37,14 @@ private extension StatusIconHelpView {
 
         title = "Transaction Status Icons"
 
-        view.backgroundColor = .systemGroupedBackground
-
         navigationItem.title = "Transaction Status Icons"
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .close,
+            target: self,
+            action: #selector(closeWorkflow)
+        )
 
         view.addSubview(verticalStack)
 
@@ -62,7 +63,10 @@ private extension StatusIconHelpView {
         heldStack.spacing = 5
 
         heldImage.translatesAutoresizingMaskIntoConstraints = false
-        heldImage.image = R.image.clock()?.withConfiguration(configuration)
+
+        heldImage.image = R.image.clock()?
+            .withConfiguration(configuration)
+
         heldImage.tintColor = .systemYellow
 
         heldLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -76,7 +80,10 @@ private extension StatusIconHelpView {
         settledStack.spacing = 5
 
         settledImage.translatesAutoresizingMaskIntoConstraints = false
-        settledImage.image = R.image.checkmarkCircle()?.withConfiguration(configuration)
+
+        settledImage.image = R.image.checkmarkCircle()?
+            .withConfiguration(configuration)
+
         settledImage.tintColor = .systemGreen
 
         settledLabel.translatesAutoresizingMaskIntoConstraints = false

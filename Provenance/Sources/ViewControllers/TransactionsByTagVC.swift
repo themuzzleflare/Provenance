@@ -93,7 +93,7 @@ final class TransactionsByTagVC: UIViewController {
                 let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(parent.tag.id)\" from \"\(transaction.attributes.transactionDescription)\"?", preferredStyle: .actionSheet)
 
                 let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [self] _ in
-                    Up.modifyTags(removing: parent.tag, from: transaction) { error in
+                    UpFacade.modifyTags(removing: parent.tag, from: transaction) { error in
                         DispatchQueue.main.async {
                             switch error {
                             case .none:
@@ -353,7 +353,7 @@ private extension TransactionsByTagVC {
     private func fetchTransactions() {
         log.verbose("fetchTransactions")
 
-        Up.listTransactions(filterBy: tag) { [self] result in
+        UpFacade.listTransactions(filterBy: tag) { [self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let transactions):
@@ -435,7 +435,7 @@ extension TransactionsByTagVC: UITableViewDelegate {
                         let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(transaction.attributes.transactionDescription)\"?", preferredStyle: .actionSheet)
 
                         let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { _ in
-                            Up.modifyTags(removing: tag, from: transaction) { error in
+                            UpFacade.modifyTags(removing: tag, from: transaction) { error in
                                 DispatchQueue.main.async {
                                     switch error {
                                     case .none:

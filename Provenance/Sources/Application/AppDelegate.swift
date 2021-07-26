@@ -23,7 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+        return UISceneConfiguration(
+            name: "Default Configuration",
+            sessionRole: connectingSceneSession.role
+        )
     }
 }
 
@@ -32,24 +35,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 private extension AppDelegate {
     private func registerDefaults() {
         do {
-            let settingsData = try Data(contentsOf: R.file.settingsBundle()!.appendingPathComponent("Root.plist"))
+            let settingsData = try Data(
+                contentsOf: R.file.settingsBundle()!
+                    .appendingPathComponent("Root.plist")
+            )
 
             let settingsPlist = try PropertyListSerialization.propertyList(
                 from: settingsData,
-                format: nil
-            ) as? [String: Any]
+                format: nil) as? [String: Any]
 
             let settingsPreferences = settingsPlist?["PreferenceSpecifiers"] as? [[String: Any]]
 
-            var defaultsToRegister = [String: Any]()
+            var defaults = [String: Any]()
 
-            settingsPreferences?.forEach { preference in
+            settingsPreferences?.forEach {
+                (preference) in
                 if let key = preference["Key"] as? String {
-                    defaultsToRegister[key] = preference["DefaultValue"]
+                    defaults[key] = preference["DefaultValue"]
                 }
             }
 
-            appDefaults.register(defaults: defaultsToRegister)
+            appDefaults.register(defaults: defaults)
 
             log.debug("registerDefaults succeeded")
         } catch {

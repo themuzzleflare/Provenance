@@ -16,25 +16,61 @@ final class AddTagWorkflowTwoVC: UIViewController {
 
     private lazy var dataSource = makeDataSource()
 
-    private lazy var editingBarButtonItem = UIBarButtonItem(title: isEditing ? "Cancel" : "Select", style: isEditing ? .done : .plain, target: self, action: #selector(toggleEditing))
+    private lazy var editingBarButtonItem = UIBarButtonItem(
+        title: isEditing ? "Cancel" : "Select",
+        style: isEditing ? .done : .plain,
+        target: self,
+        action: #selector(toggleEditing)
+    )
 
-    private lazy var addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow))
+    private lazy var addBarButtonItem = UIBarButtonItem(
+        barButtonSystemItem: .add,
+        target: self,
+        action: #selector(openAddWorkflow)
+    )
 
-    private lazy var selectionBarButtonItem = UIBarButtonItem(title: "Deselect All", style: .plain, target: self, action: #selector(selectionAction))
+    private lazy var selectionBarButtonItem = UIBarButtonItem(
+        title: "Deselect All",
+        style: .plain,
+        target: self,
+        action: #selector(selectionAction)
+    )
 
-    private lazy var selectionLabelBarButtonItem = UIBarButtonItem(title: "\(tableView.indexPathsForSelectedRows?.count.description ?? "0") of 6 selected")
+    private lazy var selectionLabelBarButtonItem = UIBarButtonItem(
+        title: "\(tableView.indexPathsForSelectedRows?.count.description ?? "0") of 6 selected"
+    )
 
-    private lazy var nextBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextAction))
+    private lazy var nextBarButtonItem = UIBarButtonItem(
+        title: "Next",
+        style: .plain,
+        target: self,
+        action: #selector(nextAction)
+    )
 
-    private let tableView = UITableView(frame: .zero, style: .plain)
+    private lazy var searchController: UISearchController = {
+        let sc = SearchController(searchResultsController: nil)
+
+        sc.searchBar.delegate = self
+
+        return sc
+    }()
+
+    private let tableView = UITableView(
+        frame: .zero,
+        style: .plain
+    )
 
     private let tableRefreshControl: UIRefreshControl = {
         let rc = UIRefreshControl()
-        rc.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+
+        rc.addTarget(
+            self,
+            action: #selector(refreshTags),
+            for: .valueChanged
+        )
+
         return rc
     }()
-
-    private let searchController = SearchController(searchResultsController: nil)
 
     private var showingBanner: Bool = false
 
@@ -55,13 +91,15 @@ final class AddTagWorkflowTwoVC: UIViewController {
     private var tagsError: String = ""
 
     private var filteredTags: [TagResource] {
-        tags.filter { tag in
-            searchController.searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchController.searchBar.text!)
+        return tags.filter {
+            (tag) in
+            searchController.searchBar.text!.isEmpty ||
+            tag.id.localizedStandardContains(searchController.searchBar.text!)
         }
     }
 
     private var groupedTags: [String: [TagResource]] {
-        Dictionary(
+        return Dictionary(
             grouping: filteredTags,
             by: { String($0.id.prefix(1)) }
         )
@@ -86,7 +124,13 @@ final class AddTagWorkflowTwoVC: UIViewController {
         }
 
         override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-            guard let firstTag = itemIdentifier(for: IndexPath(item: 0, section: section)) else { return nil }
+            guard let firstTag = itemIdentifier(
+                    for: IndexPath(
+                        item: 0,
+                        section: section
+                    )
+            )
+            else { return nil }
 
             guard let section = snapshot().sectionIdentifier(containingItem: firstTag) else { return nil }
 
@@ -102,73 +146,116 @@ final class AddTagWorkflowTwoVC: UIViewController {
 
     init(transaction: TransactionResource, fromTransactionTags: Bool = false) {
         self.transaction = transaction
+
         self.fromTransactionTags = fromTransactionTags
-        super.init(nibName: nil, bundle: nil)
+
+        super.init(
+            nibName: nil,
+            bundle: nil
+        )
+
         log.debug("init(transaction: \(transaction.attributes.transactionDescription), fromTransactionTags: \(fromTransactionTags.description))")
+
         dataSource.parent = self
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError("Not implemented") }
 
-    deinit {
-        log.debug("deinit")
-    }
+    deinit { log.debug("deinit") }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         log.debug("viewDidLoad")
+
         view.addSubview(tableView)
+
         configureProperties()
         configureNavigation()
         configureToolbar()
-        configureSearch()
         configureTableView()
         applySnapshot()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         log.debug("viewDidLayoutSubviews")
+
         tableView.frame = view.bounds
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         log.debug("viewWillAppear(animated: \(animated.description))")
+
         fetchTags()
 
         if fromTransactionTags {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .close,
+                target: self,
+                action: #selector(closeWorkflow))
         }
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
         log.debug("viewDidAppear(animated: \(animated.description))")
-        navigationController?.setToolbarHidden(!isEditing, animated: true)
+
+        navigationController?.setToolbarHidden(
+            !isEditing,
+            animated: true
+        )
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         log.debug("viewWillDisappear(animated: \(animated.description))")
-        navigationController?.setToolbarHidden(true, animated: false)
+
+        navigationController?.setToolbarHidden(
+            true,
+            animated: false
+        )
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
+
         log.debug("setEditing(editing: \(editing.description), animated: \(animated.description))")
-        tableView.setEditing(editing, animated: animated)
+
+        tableView.setEditing(
+            editing,
+            animated: animated
+        )
 
         updateToolbarItems()
+
         addBarButtonItem.isEnabled = !editing
-        editingBarButtonItem = UIBarButtonItem(title: editing ? "Cancel" : "Select", style: editing ? .done : .plain, target: self, action: #selector(toggleEditing))
 
-        navigationItem.rightBarButtonItems = [addBarButtonItem, editingBarButtonItem]
-        navigationItem.title = editing ? "Select Tags" : "Select Tag"
+        editingBarButtonItem = UIBarButtonItem(
+            title: editing ? "Cancel" : "Select",
+            style: editing ? .done : .plain,
+            target: self,
+            action: #selector(toggleEditing)
+        )
 
-        navigationController?.setToolbarHidden(!editing, animated: true)
+        navigationItem.rightBarButtonItems = [
+            addBarButtonItem,
+            editingBarButtonItem
+        ]
+
+        navigationItem.title = editing
+            ? "Select Tags"
+            : "Select Tag"
+
+        navigationController?.setToolbarHidden(
+            !editing,
+            animated: true
+        )
     }
 }
 
@@ -181,7 +268,12 @@ private extension AddTagWorkflowTwoVC {
         title = "Tag Selection"
         definesPresentationContext = true
 
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appMovedToForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
     }
 
     private func configureNavigation() {
@@ -199,13 +291,18 @@ private extension AddTagWorkflowTwoVC {
 
         selectionLabelBarButtonItem.tintColor = .label
 
-        setToolbarItems([selectionBarButtonItem, .flexibleSpace(), selectionLabelBarButtonItem, .flexibleSpace(), nextBarButtonItem], animated: false)
-    }
+        toolbarItems = [
+            selectionBarButtonItem,
+            .flexibleSpace(),
+            selectionLabelBarButtonItem,
+            .flexibleSpace(),
+            nextBarButtonItem
+        ]
 
-    private func configureSearch() {
-        log.verbose("configureSearch")
-
-        searchController.searchBar.delegate = self
+        setToolbarItems(
+            toolbarItems,
+            animated: false
+        )
     }
 
     private func configureTableView() {
@@ -213,10 +310,20 @@ private extension AddTagWorkflowTwoVC {
 
         tableView.dataSource = dataSource
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tagCell")
+
+        tableView.register(
+            UITableViewCell.self,
+            forCellReuseIdentifier: "tagCell"
+        )
+
         tableView.refreshControl = tableRefreshControl
         tableView.allowsMultipleSelectionDuringEditing = true
-        tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+
+        tableView.autoresizingMask = [
+            .flexibleHeight,
+            .flexibleWidth
+        ]
+
         tableView.tintColor = R.color.accentColor()
     }
 }
@@ -239,7 +346,12 @@ private extension AddTagWorkflowTwoVC {
     @objc private func selectionAction() {
         log.verbose("selectionAction")
 
-        tableView.indexPathsForSelectedRows?.forEach { tableView.deselectRow(at: $0, animated: false) }
+        tableView.indexPathsForSelectedRows?.forEach {
+            tableView.deselectRow(
+                at: $0,
+                animated: false
+            )
+        }
 
         updateToolbarItems()
     }
@@ -250,70 +362,119 @@ private extension AddTagWorkflowTwoVC {
         if let tags = tableView.indexPathsForSelectedRows?.map { dataSource.itemIdentifier(for: $0) } {
             let tagsObject = tags.map { TagResource(id: $0!.id) }
 
-            navigationController?.pushViewController(AddTagWorkflowThreeVC(transaction: transaction, tags: tagsObject), animated: true)
+            navigationController?.pushViewController(
+                AddTagWorkflowThreeVC(
+                    transaction: transaction,
+                    tags: tagsObject
+                ),
+                animated: true
+            )
         }
     }
 
     @objc private func addTagsTextFieldChanged() {
         log.verbose("addTagsTextFieldChanged")
 
-        if let alert = presentedViewController as? UIAlertController, let action = alert.actions.last {
+        if let alert = presentedViewController as? UIAlertController,
+           let action = alert.actions.last {
             let text = alert.textFields?.map { $0.text ?? "" }.joined() ?? ""
 
-            action.isEnabled = text.isEmpty
+            action.isEnabled = !text.isEmpty
         }
     }
 
     @objc private func openAddWorkflow() {
         log.verbose("openAddWorkflow")
 
-        let ac = UIAlertController(title: "Create Tags", message: "You can add a maximum of 6 tags to a transaction.", preferredStyle: .alert)
+        let ac = UIAlertController(
+            title: "Create Tags",
+            message: "You can add a maximum of 6 tags to a transaction.",
+            preferredStyle: .alert
+        )
 
         let fields = Array(0...5)
 
-        fields.forEach { _ in
-            ac.addTextField { [self] textField in
+        fields.forEach {
+            (_) in
+            ac.addTextField {
+                [self] (textField) in
                 textField.delegate = self
                 textField.autocapitalizationType = .none
                 textField.autocorrectionType = .no
                 textField.tintColor = R.color.accentColor()
-                textField.addTarget(self, action: #selector(addTagsTextFieldChanged), for: .editingChanged)
+
+                textField.addTarget(
+                    self,
+                    action: #selector(addTagsTextFieldChanged),
+                    for: .editingChanged
+                )
             }
         }
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let cancelAction = UIAlertAction(
+            title: "Cancel",
+            style: .cancel
+        )
 
-        cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+        cancelAction.setValue(
+            R.color.accentColor(),
+            forKey: "titleTextColor"
+        )
 
-        let submitAction = UIAlertAction(title: "Next", style: .default) { [self] _ in
-            let answers = ac.textFields?.map { TagResource(id: $0.text ?? "") }
+        let submitAction = UIAlertAction(
+            title: "Next",
+            style: .default,
+            handler: {
+                [self] (_) in
+                let answers = ac.textFields?.map { TagResource(id: $0.text ?? "") }
 
-            if let fanswers = answers?.filter { !$0.id.isEmpty } {
-                navigationController?.pushViewController(AddTagWorkflowThreeVC(transaction: transaction, tags: fanswers), animated: true)
+                if let fanswers = answers?.filter { !$0.id.isEmpty } {
+                    navigationController?.pushViewController(
+                        AddTagWorkflowThreeVC(
+                            transaction: transaction,
+                            tags: fanswers
+                        ),
+                        animated: true
+                    )
+                }
             }
-        }
+        )
 
-        submitAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
+        submitAction.setValue(
+            R.color.accentColor(),
+            forKey: "titleTextColor"
+        )
+
         submitAction.isEnabled = false
 
         ac.addAction(cancelAction)
         ac.addAction(submitAction)
 
-        present(ac, animated: true)
+        present(
+            ac,
+            animated: true
+        )
     }
 
     @objc private func refreshTags() {
         log.verbose("refreshTags")
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-            fetchTags()
-        }
+        DispatchQueue.main.asyncAfter(
+            deadline: .now() + 1,
+            execute: {
+                [self] in
+                fetchTags()
+            }
+        )
     }
 
     @objc private func toggleEditing() {
         log.verbose("toggleEditing")
 
-        setEditing(!isEditing, animated: true)
+        setEditing(
+            !isEditing,
+            animated: true
+        )
     }
 
     private func updateToolbarItems() {
@@ -321,7 +482,11 @@ private extension AddTagWorkflowTwoVC {
 
         selectionBarButtonItem.isEnabled = tableView.indexPathsForSelectedRows != nil
         selectionLabelBarButtonItem.title = "\(tableView.indexPathsForSelectedRows?.count.description ?? "0") of 6 selected"
-        selectionLabelBarButtonItem.style = tableView.indexPathsForSelectedRows?.count == 6 ? .done : .plain
+
+        selectionLabelBarButtonItem.style = tableView.indexPathsForSelectedRows?.count == 6
+            ? .done
+            : .plain
+
         nextBarButtonItem.isEnabled = tableView.indexPathsForSelectedRows != nil
     }
 
@@ -330,8 +495,12 @@ private extension AddTagWorkflowTwoVC {
 
         let dataSource = DataSource(
             tableView: tableView,
-            cellProvider: { tableView, indexPath, tag in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath)
+            cellProvider: {
+                (tableView, indexPath, tag) in
+                let cell = tableView.dequeueReusableCell(
+                    withIdentifier: "tagCell",
+                    for: indexPath
+                )
 
                 cell.selectedBackgroundView = selectedBackgroundCellView
                 cell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
@@ -351,13 +520,23 @@ private extension AddTagWorkflowTwoVC {
     private func applySnapshot(animate: Bool = true) {
         log.verbose("applySnapshot(animate: \(animate.description))")
 
-        sections = sortedTags.map { SortedTags(id: $0.key, tags: $0.value) }
+        sections = sortedTags.map {
+            SortedTags(
+                id: $0.key,
+                tags: $0.value
+            )
+        }
 
         var snapshot = Snapshot()
 
         snapshot.appendSections(sections)
 
-        sections.forEach { snapshot.appendItems($0.tags, toSection: $0) }
+        sections.forEach {
+            snapshot.appendItems(
+                $0.tags,
+                toSection: $0
+            )
+        }
 
         if snapshot.itemIdentifiers.isEmpty && tagsError.isEmpty {
             if tags.isEmpty && !noTags {
@@ -393,7 +572,12 @@ private extension AddTagWorkflowTwoVC {
                     label.font = R.font.circularStdBook(size: 23)
                     label.text = "No Tags"
 
-                    let vStack = UIStackView(arrangedSubviews: [icon, label])
+                    let vStack = UIStackView(
+                        arrangedSubviews: [
+                            icon,
+                            label
+                        ]
+                    )
 
                     view.addSubview(vStack)
 
@@ -426,25 +610,25 @@ private extension AddTagWorkflowTwoVC {
                     return view
                 }()
             } else {
-                if tableView.backgroundView != nil {
-                    tableView.backgroundView = nil
-                }
+                if tableView.backgroundView != nil { tableView.backgroundView = nil }
             }
         }
 
-        dataSource.apply(snapshot, animatingDifferences: animate)
+        dataSource.apply(
+            snapshot,
+            animatingDifferences: animate
+        )
     }
 
     private func fetchTags() {
         log.verbose("fetchTags")
 
-        Up.listTags { [self] result in
+        UpFacade.listTags {
+            [self] (result) in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let tags):
-                    display(tags)
-                case .failure(let error):
-                    display(error)
+                case .success(let tags): display(tags)
+                case .failure(let error): display(error)
                 }
             }
         }
@@ -454,14 +638,25 @@ private extension AddTagWorkflowTwoVC {
         log.verbose("display(tags: \(tags.count.description))")
 
         tagsError = ""
+
         self.tags = tags
 
         if navigationItem.title != "Select Tag" || navigationItem.title != "Select Tags" {
-            navigationItem.title = isEditing ? "Select Tags" : "Select Tag"
+            navigationItem.title = isEditing
+                ? "Select Tags"
+                : "Select Tag"
         }
 
         if navigationItem.rightBarButtonItems == nil {
-            navigationItem.setRightBarButtonItems([addBarButtonItem, editingBarButtonItem], animated: true)
+            let barButtonItems = [
+                addBarButtonItem,
+                editingBarButtonItem
+            ]
+
+            navigationItem.setRightBarButtonItems(
+                barButtonItems,
+                animated: true
+            )
         }
     }
 
@@ -469,15 +664,23 @@ private extension AddTagWorkflowTwoVC {
         log.verbose("display(error: \(errorString(for: error)))")
 
         tagsError = errorString(for: error)
+
         tags = []
-        setEditing(false, animated: false)
+
+        setEditing(
+            false,
+            animated: false
+        )
 
         if navigationItem.title != "Error" {
             navigationItem.title = "Error"
         }
 
         if navigationItem.rightBarButtonItems != nil {
-            navigationItem.setRightBarButtonItems(nil, animated: true)
+            navigationItem.setRightBarButtonItems(
+                nil,
+                animated: true
+            )
         }
     }
 }
@@ -497,17 +700,25 @@ extension AddTagWorkflowTwoVC: UITableViewDelegate {
         switch paths.count {
         case 6:
             if !showingBanner {
-                let nb = FloatingNotificationBanner(title: "Forbidden", subtitle: "You can only select a maximum of 6 tags.", style: .danger)
+                let nb = FloatingNotificationBanner(
+                    title: "Forbidden",
+                    subtitle: "You can only select a maximum of 6 tags.",
+                    style: .danger
+                )
 
                 nb.delegate = self
                 nb.duration = 0.5
 
-                nb.show(bannerPosition: .bottom, cornerRadius: 10, shadowBlurRadius: 5, shadowCornerRadius: 20)
+                nb.show(
+                    bannerPosition: .bottom,
+                    cornerRadius: 10,
+                    shadowBlurRadius: 5,
+                    shadowCornerRadius: 20
+                )
             }
 
             return nil
-        default:
-            return indexPath
+        default: return indexPath
         }
     }
 
@@ -515,13 +726,21 @@ extension AddTagWorkflowTwoVC: UITableViewDelegate {
         log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
 
         switch isEditing {
-        case true:
-            updateToolbarItems()
+        case true: updateToolbarItems()
         case false:
-            tableView.deselectRow(at: indexPath, animated: true)
+            tableView.deselectRow(
+                at: indexPath,
+                animated: true
+            )
 
             if let tag = dataSource.itemIdentifier(for: indexPath)?.id {
-                navigationController?.pushViewController(AddTagWorkflowThreeVC(transaction: transaction, tags: [TagResource(id: tag)]), animated: true)
+                navigationController?.pushViewController(
+                    AddTagWorkflowThreeVC(
+                        transaction: transaction,
+                        tags: [TagResource(id: tag)]
+                    ),
+                    animated: true
+                )
             }
         }
     }
@@ -530,10 +749,8 @@ extension AddTagWorkflowTwoVC: UITableViewDelegate {
         log.debug("tableView(didDeselectRowAt indexPath: \(indexPath))")
 
         switch isEditing {
-        case true:
-            updateToolbarItems()
-        case false:
-            break
+        case true: updateToolbarItems()
+        case false: break
         }
     }
 
@@ -543,18 +760,29 @@ extension AddTagWorkflowTwoVC: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         switch isEditing {
-        case true:
-            return nil
+        case true: return nil
         case false:
             guard let tag = dataSource.itemIdentifier(for: indexPath)?.id else { return nil }
 
-            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                UIMenu(children: [
-                    UIAction(title: "Copy", image: R.image.docOnClipboard()) { _ in
-                        UIPasteboard.general.string = tag
-                    }
-                ])
-            }
+            return UIContextMenuConfiguration(
+                identifier: nil,
+                previewProvider: nil,
+                actionProvider: {
+                    (_) in
+                    UIMenu(
+                        children: [
+                            UIAction(
+                                title: "Copy",
+                                image: R.image.docOnClipboard(),
+                                handler: {
+                                    (_) in
+                                    UIPasteboard.general.string = tag
+                                }
+                            )
+                        ]
+                    )
+                }
+            )
         }
     }
 }
@@ -565,9 +793,16 @@ extension AddTagWorkflowTwoVC: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""
 
-        guard let stringRange = Range(range, in: textField.text ?? "") else { return false }
+        guard let stringRange = Range(
+            range,
+            in: textField.text ?? ""
+        )
+        else { return false }
 
-        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        let updatedText = currentText.replacingCharacters(
+            in: stringRange,
+            with: string
+        )
 
         return updatedText.count <= 30
     }
@@ -588,6 +823,7 @@ extension AddTagWorkflowTwoVC: UISearchBarDelegate {
 
         if !searchBar.text!.isEmpty {
             searchBar.text = ""
+
             applySnapshot()
         }
     }

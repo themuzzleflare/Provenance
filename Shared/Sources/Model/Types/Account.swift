@@ -48,22 +48,15 @@ struct AccountAttribute: Codable {
 
     private var createdAt: String // The date-time at which this account was first opened.
 
-    private var creationDateAbsolute: String {
-        formatDateAbsolute(for: createdAt)
-    }
+    private var creationDateAbsolute: String { return formatDateAbsolute(for: createdAt) }
 
-    private var creationDateRelative: String {
-        formatDateRelative(for: createdAt)
-    }
+    private var creationDateRelative: String { return formatDateRelative(for: createdAt) }
 
     var creationDate: String {
         switch appDefaults.dateStyle {
-        case "Absolute":
-            return creationDateAbsolute
-        case "Relative":
-            return creationDateRelative
-        default:
-            return creationDateAbsolute
+        case "Absolute": return creationDateAbsolute
+        case "Relative": return creationDateRelative
+        default: return creationDateAbsolute
         }
     }
 }

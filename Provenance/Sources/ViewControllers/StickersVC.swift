@@ -4,20 +4,28 @@ import SwiftyBeaver
 final class StickersVC: UIViewController {
     // MARK: - Properties
 
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: gridLayout())
+    private let collectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: gridLayout()
+    )
 
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         log.debug("viewDidLoad")
+
         view.addSubview(collectionView)
+
         configure()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         log.debug("viewDidLayoutSubviews")
+
         collectionView.frame = view.bounds
     }
 }
@@ -35,8 +43,17 @@ private extension StickersVC {
 
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(StickerCollectionViewCell.self, forCellWithReuseIdentifier: StickerCollectionViewCell.reuseIdentifier)
-        collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+
+        collectionView.register(
+            StickerCollectionViewCell.self,
+            forCellWithReuseIdentifier: StickerCollectionViewCell.reuseIdentifier
+        )
+
+        collectionView.autoresizingMask = [
+            .flexibleHeight,
+            .flexibleWidth
+        ]
+
         collectionView.backgroundColor = .systemGroupedBackground
     }
 }
@@ -49,7 +66,10 @@ extension StickersVC: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StickerCollectionViewCell.reuseIdentifier, for: indexPath) as? StickerCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: StickerCollectionViewCell.reuseIdentifier,
+                for: indexPath
+        ) as? StickerCollectionViewCell else {
             fatalError("Unable to dequeue reusable cell with identifier: \(StickerCollectionViewCell.reuseIdentifier)")
         }
 
@@ -66,7 +86,10 @@ extension StickersVC: UICollectionViewDelegate {
         log.debug("collectionView(didSelectItemAt indexPath: \(indexPath))")
 
         if let image = stickerGifs[indexPath.item] {
-            navigationController?.pushViewController(StickerView(image: image), animated: true)
+            navigationController?.pushViewController(
+                StickerView(image: image),
+                animated: true
+            )
         }
     }
 }

@@ -2,8 +2,7 @@ import Intents
 
 final class IntentHandler: INExtension, AccountSelectionIntentHandling {
     func provideAccountOptionsCollection(for intent: AccountSelectionIntent, with completion: @escaping (INObjectCollection<AccountType>?, Error?) -> Void) {
-
-        Up.listAccounts { result in
+        UpFacade.listAccounts { result in
             switch result {
             case .success(let accounts):
                 let mappedAccounts = accounts.map { account in

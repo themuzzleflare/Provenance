@@ -33,7 +33,8 @@ final class TransactionCellNode: ASCellNode {
             attributes: [
                 .font: R.font.circularStdBook(size: UIFont.labelFontSize),
                 .foregroundColor: transaction.attributes.amount.valueInBaseUnits.signum() == -1
-                    ? .label : R.color.greenColour()
+                    ? .label
+                    : R.color.greenColour()
             ]
         )
     }

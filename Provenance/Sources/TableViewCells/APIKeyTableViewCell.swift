@@ -14,33 +14,39 @@ final class APIKeyTableViewCell: UITableViewCell {
 
     private var apiKeyDisplay: String {
         switch appDefaults.apiKey {
-        case "":
-            return "None"
-        default:
-            return appDefaults.apiKey
+        case "": return "None"
+        default: return appDefaults.apiKey
         }
     }
 
     // MARK: - Life Cycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(
+            style: style,
+            reuseIdentifier: reuseIdentifier
+        )
 
-        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [self] _, _ in
-            DispatchQueue.main.async {
-                apiKeyLabel.text = apiKeyDisplay
-                apiKeyLabel.textColor = apiKeyDisplay == "None" ? .placeholderText : .label
+        apiKeyObserver = appDefaults.observe(
+            \.apiKey,
+            options: .new,
+            changeHandler: {
+                [self] (_, _) in
+                DispatchQueue.main.async {
+                    apiKeyLabel.text = apiKeyDisplay
+                    apiKeyLabel.textColor = apiKeyDisplay == "None"
+                        ? .placeholderText
+                        : .label
+                }
             }
-        }
+        )
 
         configureCell()
         configureContentView()
         configureApiKeyLabel()
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError("Not implemented") }
 }
 
 // MARK: - Configuration
@@ -61,7 +67,11 @@ private extension APIKeyTableViewCell {
         apiKeyLabel.fadeLength = 10
         apiKeyLabel.textAlignment = .left
         apiKeyLabel.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-        apiKeyLabel.textColor = apiKeyDisplay == "None" ? .placeholderText : .label
+
+        apiKeyLabel.textColor = apiKeyDisplay == "None"
+            ? .placeholderText
+            : .label
+
         apiKeyLabel.text = apiKeyDisplay
     }
 }

@@ -52,39 +52,31 @@ struct TransactionAttribute: Codable {
 
     var isSettled: Bool {
         switch status {
-        case .settled:
-            return true
-        case .held:
-            return false
+        case .settled: return true
+        case .held: return false
         }
     }
 
     var statusString: String {
         switch isSettled {
-        case true:
-            return "Settled"
-        case false:
-            return "Held"
+        case true: return "Settled"
+        case false: return "Held"
         }
     }
 
     #if canImport(Rswift)
     var statusIcon: UIImage {
         switch isSettled {
-        case true:
-            return R.image.checkmarkCircle()!
-        case false:
-            return R.image.clock()!
+        case true: return R.image.checkmarkCircle()!
+        case false: return R.image.clock()!
         }
     }
     #endif
 
     var statusIconImage: Image {
         switch isSettled {
-        case true:
-            return Image(systemName: "checkmark.circle")
-        case false:
-            return Image(systemName: "clock")
+        case true: return Image(systemName: "checkmark.circle")
+        case false: return Image(systemName: "clock")
         }
     }
 
@@ -116,65 +108,45 @@ struct TransactionAttribute: Codable {
 
     private var settlementDateAbsolute: String? {
         switch settledAt {
-        case nil:
-            return nil
-        default:
-            return formatDateAbsolute(for: settledAt!)
+        case nil: return nil
+        default: return formatDateAbsolute(for: settledAt!)
         }
     }
 
     private var settlementDateRelative: String? {
         switch settledAt {
-        case nil:
-            return nil
-        default:
-            return formatDateRelative(for: settledAt!)
+        case nil: return nil
+        default: return formatDateRelative(for: settledAt!)
         }
     }
 
     var settlementDate: String? {
         switch settledAt {
-        case nil:
-            return nil
+        case nil: return nil
         default:
             switch appDefaults.dateStyle {
-            case "Absolute":
-                return settlementDateAbsolute
-            case "Relative":
-                return settlementDateRelative
-            default:
-                return settlementDateAbsolute
-                }
+            case "Absolute": return settlementDateAbsolute
+            case "Relative": return settlementDateRelative
+            default: return settlementDateAbsolute
+            }
         }
     }
 
     private var createdAt: String // The date-time at which this transaction was first encountered.
 
-    var createdAtDate: Date {
-        let date = createdAt.toDate()!
-        return date.dateAt(.startOfDay).date
-    }
+    var createdAtDate: Date { return createdAt.toDate()!.dateAt(.startOfDay).date }
 
-    var creationDayMonthYear: String {
-        createdAtDate.toString(.date(.medium))
-    }
+    var creationDayMonthYear: String { return createdAtDate.toString(.date(.medium)) }
 
-    var creationDateAbsolute: String {
-        formatDateAbsolute(for: createdAt)
-    }
+    var creationDateAbsolute: String { return formatDateAbsolute(for: createdAt) }
 
-    var creationDateRelative: String {
-        formatDateRelative(for: createdAt)
-    }
+    var creationDateRelative: String { return formatDateRelative(for: createdAt) }
 
     var creationDate: String {
         switch appDefaults.dateStyle {
-        case "Absolute":
-            return creationDateAbsolute
-        case "Relative":
-            return creationDateRelative
-        default:
-            return creationDateAbsolute
+        case "Absolute": return creationDateAbsolute
+        case "Relative": return creationDateRelative
+        default: return creationDateAbsolute
         }
     }
 
