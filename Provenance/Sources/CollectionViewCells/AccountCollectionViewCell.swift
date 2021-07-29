@@ -35,17 +35,13 @@ final class AccountCollectionViewCell: UICollectionViewCell {
 
     override var isHighlighted: Bool {
         didSet {
-            balanceLabel.textColor = isHighlighted
-                ? .label
-                : R.color.accentColor()
+            balanceLabel.textColor = isHighlighted ? .label : R.color.accentColor()
         }
     }
 
     override var isSelected: Bool {
         didSet {
-            balanceLabel.textColor = isSelected
-                ? .label
-                : R.color.accentColor()
+            balanceLabel.textColor = isSelected ? .label : R.color.accentColor()
         }
     }
 

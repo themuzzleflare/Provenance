@@ -12,11 +12,18 @@ final class TransactionCellNode: ASCellNode {
 
         automaticallyManagesSubnodes = true
 
+        let pLeftStyle = NSMutableParagraphStyle()
+        pLeftStyle.alignment = .left
+
+        let pRightStyle = NSMutableParagraphStyle()
+        pRightStyle.alignment = .right
+
         descriptionNode.attributedText = NSAttributedString(
             string: transaction.attributes.transactionDescription,
             attributes: [
                 .font: R.font.circularStdBold(size: UIFont.labelFontSize),
-                .foregroundColor: UIColor.label
+                .foregroundColor: UIColor.label,
+                .paragraphStyle: pLeftStyle
             ]
         )
 
@@ -24,7 +31,8 @@ final class TransactionCellNode: ASCellNode {
             string: transaction.attributes.creationDate,
             attributes: [
                 .font: R.font.circularStdBookItalic(size: UIFont.smallSystemFontSize),
-                .foregroundColor: UIColor.secondaryLabel
+                .foregroundColor: UIColor.secondaryLabel,
+                .paragraphStyle: pLeftStyle
             ]
         )
 
@@ -32,9 +40,8 @@ final class TransactionCellNode: ASCellNode {
             string: transaction.attributes.amount.valueShort,
             attributes: [
                 .font: R.font.circularStdBook(size: UIFont.labelFontSize),
-                .foregroundColor: transaction.attributes.amount.valueInBaseUnits.signum() == -1
-                    ? .label
-                    : R.color.greenColour()
+                .foregroundColor: transaction.attributes.amount.valueInBaseUnits.signum() == -1 ? .label : R.color.greenColour(),
+                .paragraphStyle: pRightStyle
             ]
         )
     }

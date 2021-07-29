@@ -140,6 +140,10 @@ final class AddTagWorkflowTwoVC: UIViewController {
         override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
             return parent.keys.map { $0.capitalized }
         }
+
+        override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+            return parent.keys.map { $0.capitalized }.firstIndex(of: title)!
+        }
     }
 
     // MARK: - Life Cycle

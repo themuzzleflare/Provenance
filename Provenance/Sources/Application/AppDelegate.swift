@@ -36,8 +36,7 @@ private extension AppDelegate {
     private func registerDefaults() {
         do {
             let settingsData = try Data(
-                contentsOf: R.file.settingsBundle()!
-                    .appendingPathComponent("Root.plist")
+                contentsOf: R.file.settingsBundle()!.appendingPathComponent("Root.plist")
             )
 
             let settingsPlist = try PropertyListSerialization.propertyList(

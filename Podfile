@@ -1,3 +1,5 @@
+install! 'cocoapods', :warn_for_unused_master_specs_repo => false
+
 platform :ios, '14.0'
 inhibit_all_warnings!
 
