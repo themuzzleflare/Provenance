@@ -20,12 +20,26 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>INIntentsSupported</key>
+	<array>
+		<string>DateStyleSelectionIntent</string>
+		<string>AccountSelectionIntent</string>
+		<string>ListTransactionsIntent</string>
+	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2021 Paul Tavitian</string>
+	<string>${PROVENANCE_COPYRIGHT}</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>AccountSelectionIntent</string>
+		<string>AddTagToTransactionIntent</string>
+		<string>DateStyleSelectionIntent</string>
+		<string>ListTransactionsIntent</string>
+		<string>RemoveTagFromTransactionIntent</string>
+	</array>
 	<key>UIAppFonts</key>
 	<array>
 		<string>CircularStd-Book.otf</string>
@@ -54,7 +68,7 @@
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>
-			<key>UIApplicationShortcutItemIconFile</key>
+			<key>UIApplicationShortcutItemIconSymbolName</key>
 			<string>dollarsign.circle</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Transactions</string>
@@ -62,7 +76,7 @@
 			<string>transactionsShortcut</string>
 		</dict>
 		<dict>
-			<key>UIApplicationShortcutItemIconFile</key>
+			<key>UIApplicationShortcutItemIconSymbolName</key>
 			<string>wallet.pass</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Accounts</string>
@@ -70,7 +84,7 @@
 			<string>accountsShortcut</string>
 		</dict>
 		<dict>
-			<key>UIApplicationShortcutItemIconFile</key>
+			<key>UIApplicationShortcutItemIconSymbolName</key>
 			<string>tag</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Tags</string>
@@ -78,7 +92,7 @@
 			<string>tagsShortcut</string>
 		</dict>
 		<dict>
-			<key>UIApplicationShortcutItemIconFile</key>
+			<key>UIApplicationShortcutItemIconSymbolName</key>
 			<string>tray.full</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Categories</string>
@@ -86,7 +100,7 @@
 			<string>categoriesShortcut</string>
 		</dict>
 		<dict>
-			<key>UIApplicationShortcutItemIconFile</key>
+			<key>UIApplicationShortcutItemIconSymbolName</key>
 			<string>info.circle</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>About</string>
@@ -97,7 +111,7 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>${PROVENANCE_LAUNCH_STORYBOARD}</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

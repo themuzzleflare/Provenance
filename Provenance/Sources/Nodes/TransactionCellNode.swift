@@ -1,85 +1,60 @@
 import UIKit
 import AsyncDisplayKit
-import Rswift
 
 final class TransactionCellNode: ASCellNode {
-    let descriptionNode = ASTextNode()
-    let creationDateNode = ASTextNode()
-    let amountNode = ASTextNode()
-
-    init(transaction: TransactionResource) {
-        super.init()
-
-        automaticallyManagesSubnodes = true
-
-        let pLeftStyle = NSMutableParagraphStyle()
-        pLeftStyle.alignment = .left
-
-        let pRightStyle = NSMutableParagraphStyle()
-        pRightStyle.alignment = .right
-
-        descriptionNode.attributedText = NSAttributedString(
-            string: transaction.attributes.transactionDescription,
-            attributes: [
-                .font: R.font.circularStdBold(size: UIFont.labelFontSize),
-                .foregroundColor: UIColor.label,
-                .paragraphStyle: pLeftStyle
-            ]
-        )
-
-        creationDateNode.attributedText = NSAttributedString(
-            string: transaction.attributes.creationDate,
-            attributes: [
-                .font: R.font.circularStdBookItalic(size: UIFont.smallSystemFontSize),
-                .foregroundColor: UIColor.secondaryLabel,
-                .paragraphStyle: pLeftStyle
-            ]
-        )
-
-        amountNode.attributedText = NSAttributedString(
-            string: transaction.attributes.amount.valueShort,
-            attributes: [
-                .font: R.font.circularStdBook(size: UIFont.labelFontSize),
-                .foregroundColor: transaction.attributes.amount.valueInBaseUnits.signum() == -1 ? .label : R.color.greenColour(),
-                .paragraphStyle: pRightStyle
-            ]
-        )
-    }
-
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-        let vStack = ASStackLayoutSpec(
-            direction: .vertical,
-            spacing: 0,
-            justifyContent: .start,
-            alignItems: .start,
-            children: [
-                descriptionNode,
-                creationDateNode
-            ]
-        )
-
-        vStack.style.flexShrink = 1.0
-        vStack.style.flexGrow = 1.0
-
-        let hStack = ASStackLayoutSpec(
-            direction: .horizontal,
-            spacing: 0,
-            justifyContent: .spaceBetween,
-            alignItems: .center,
-            children: [
-                vStack,
-                amountNode
-            ]
-        )
-
-        return ASInsetLayoutSpec(
-            insets: UIEdgeInsets(
-                top: 13,
-                left: 16,
-                bottom: 13,
-                right: 16
-            ),
-            child: hStack
-        )
-    }
+  private let descriptionTextNode = ASTextNode()
+  private let creationDateTextNode = ASTextNode()
+  private let amountTextNode = ASTextNode()
+  
+  init(transaction: TransactionResource) {
+    super.init()
+    
+    automaticallyManagesSubnodes = true
+    
+    descriptionTextNode.attributedText = NSAttributedString(
+      text: transaction.attributes.description,
+      font: .circularStdBold(size: UIFont.labelFontSize)
+    )
+    
+    creationDateTextNode.attributedText = NSAttributedString(
+      text: transaction.attributes.creationDate,
+      font: .circularStdBookItalic(size: UIFont.smallSystemFontSize),
+      colour: .secondaryLabel
+    )
+    
+    amountTextNode.attributedText = NSAttributedString(
+      text: transaction.attributes.amount.valueShort,
+      colour: transaction.attributes.amount.valueInBaseUnits.signum() == -1 ? .label : .greenColour,
+      alignment: .rightAligned
+    )
+  }
+  
+  override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    let verticalStack = ASStackLayoutSpec(
+      direction: .vertical,
+      spacing: 0,
+      justifyContent: .start,
+      alignItems: .start,
+      children: [
+        descriptionTextNode,
+        creationDateTextNode
+      ]
+    )
+    
+    verticalStack.style.flexShrink = 1.0
+    verticalStack.style.flexGrow = 1.0
+    
+    let horizontalStack = ASStackLayoutSpec(
+      direction: .horizontal,
+      spacing: 5,
+      justifyContent: .spaceBetween,
+      alignItems: .center,
+      children: [
+        verticalStack,
+        amountTextNode
+      ]
+    )
+    
+    return ASInsetLayoutSpec(insets: .cellNode, child: horizontalStack)
+  }
 }

@@ -1,46 +1,86 @@
 import UIKit
-import Rswift
 
 enum TabBarItem: Int, CaseIterable {
-    case transactions, accounts, tags, categories, about
+  case transactions = 0
+  case accounts = 1
+  case tags = 2
+  case categories = 3
+  case about = 4
+}
 
-    func vc() -> UIViewController {
-        switch self {
-        case .transactions: return NavigationController(rootViewController: TransactionsVC())
-        case .accounts: return NavigationController(rootViewController: AccountsVC())
-        case .tags: return NavigationController(rootViewController: TagsVC())
-        case .categories: return NavigationController(rootViewController: CategoriesVC())
-        case .about: return NavigationController(rootViewController: AboutVC())
-        }
+extension TabBarItem {
+  var viewController: UIViewController {
+    switch self {
+    case .transactions:
+      return NavigationController(rootViewController: TransactionsVC())
+    case .accounts:
+      return NavigationController(rootViewController: AccountsVC())
+    case .tags:
+      return NavigationController(rootViewController: TagsVC())
+    case .categories:
+      return NavigationController(rootViewController: CategoriesVC())
+    case .about:
+      return NavigationController(rootViewController: AboutVC())
     }
+  }
 
-    func title() -> String {
-        switch self {
-        case .transactions: return "Transactions"
-        case .accounts: return "Accounts"
-        case .tags: return "Tags"
-        case .categories: return "Categories"
-        case .about: return "About"
-        }
+  var title: String {
+    switch self {
+    case .transactions:
+      return "Transactions"
+    case .accounts:
+      return "Accounts"
+    case .tags:
+      return "Tags"
+    case .categories:
+      return "Categories"
+    case .about:
+      return "About"
     }
+  }
 
-    func image() -> UIImage? {
-        switch self {
-        case .transactions: return R.image.dollarsignCircle()
-        case .accounts: return R.image.walletPass()
-        case .tags: return R.image.tag()
-        case .categories: return R.image.trayFull()
-        case .about: return R.image.infoCircle()
-        }
+  var image: UIImage? {
+    switch self {
+    case .transactions:
+      return .dollarsignCircle
+    case .accounts:
+      return .walletPass
+    case .tags:
+      return .tag
+    case .categories:
+      return .trayFull
+    case .about:
+      return .infoCircle
     }
+  }
 
-    func selectedImage() -> UIImage? {
-        switch self {
-        case .transactions: return R.image.dollarsignCircleFill()
-        case .accounts: return R.image.walletPassFill()
-        case .tags: return R.image.tagFill()
-        case .categories: return R.image.trayFullFill()
-        case .about: return R.image.infoCircleFill()
-        }
+  var selectedImage: UIImage? {
+    switch self {
+    case .transactions:
+      return .dollarsignCircleFill
+    case .accounts:
+      return .walletPassFill
+    case .tags:
+      return .tagFill
+    case .categories:
+      return .trayFullFill
+    case .about:
+      return .infoCircleFill
     }
+  }
+
+  var shortcutType: ShortcutType {
+    switch self {
+    case .transactions:
+      return .transactions
+    case .accounts:
+      return .accounts
+    case .tags:
+      return .tags
+    case .categories:
+      return .categories
+    case .about:
+      return .about
+    }
+  }
 }

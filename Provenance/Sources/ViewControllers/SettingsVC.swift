@@ -1,378 +1,265 @@
 import UIKit
+import AsyncDisplayKit
 import NotificationBannerSwift
-import SwiftyBeaver
-import Rswift
 
-final class SettingsVC: UIViewController {
-    // MARK: - Properties
+final class SettingsVC: ASViewController {
+  // MARK: - Properties
 
-    private var displayBanner: GrowingNotificationBanner?
+  private var displayBanner: GrowingNotificationBanner?
+  private var submitActionProxy: UIAlertAction!
+  private var apiKeyObserver: NSKeyValueObservation?
+  private var textDidChangeObserver: NSObjectProtocol!
+  private let tableNode = ASTableNode(style: .grouped)
 
-    private var submitActionProxy: UIAlertAction!
+  // MARK: - Life Cycle
 
-    private var apiKeyObserver: NSKeyValueObservation?
+  init(displayBanner: GrowingNotificationBanner? = nil) {
+    self.displayBanner = displayBanner
+    super.init(node: tableNode)
+  }
 
-    private var textDidChangeObserver: NSObjectProtocol!
+  required init?(coder: NSCoder) {
+    fatalError("Not implemented")
+  }
 
-    private let tableView = UITableView(
-        frame: .zero,
-        style: .grouped
-    )
+  deinit {
+    removeObserver()
+  }
 
-    // MARK: - Life Cycle
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    configureObserver()
+    configureProperties()
+    configureNavigation()
+    configureTableNode()
+  }
 
-    init(displayBanner: GrowingNotificationBanner? = nil) {
-        self.displayBanner = displayBanner
-
-        super.init(nibName: nil, bundle: nil)
-
-        log.debug("init(displayBanner: \(displayBanner?.titleLabel?.text ?? "nil"))")
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    if let displayBanner = displayBanner {
+      displayBanner.show()
     }
-
-    required init?(coder: NSCoder) { fatalError("Not implemented") }
-
-    deinit { log.debug("deinit") }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        log.debug("viewDidLoad")
-
-        view.addSubview(tableView)
-
-        configureProperties()
-
-        configureNavigation()
-
-        configureTableView()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        log.debug("viewDidLayoutSubviews")
-
-        tableView.frame = view.bounds
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        log.debug("viewDidAppear(animated: \(animated.description))")
-
-        if let displayBanner = displayBanner {
-            displayBanner.show()
-        }
-    }
+  }
 }
 
 // MARK: - Configuration
 
 private extension SettingsVC {
-    private func configureProperties() {
-        log.verbose("configureProperties")
+  private func configureProperties() {
+    title = "Settings"
+  }
 
-        title = "Settings"
-
-        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) {
-            [self] (_, _) in
-            DispatchQueue.main.async {
-                if let alert = presentedViewController as? UIAlertController {
-                    alert.dismiss(animated: true)
-                }
-            }
+  private func configureObserver() {
+    apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [weak self] (_, change) in
+      guard let weakSelf = self, let value = change.newValue else { return }
+      DispatchQueue.main.async {
+        if let alert = weakSelf.presentedViewController as? UIAlertController {
+          alert.dismiss(animated: true)
         }
+      }
     }
+  }
 
-    private func configureNavigation() {
-        log.verbose("configureNavigation")
+  private func removeObserver() {
+    apiKeyObserver?.invalidate()
+    apiKeyObserver = nil
+  }
 
-        navigationItem.title = "Settings"
-        navigationItem.largeTitleDisplayMode = .never
+  private func configureNavigation() {
+    navigationItem.title = "Settings"
+    navigationItem.largeTitleDisplayMode = .never
+    navigationItem.leftBarButtonItem = UIBarButtonItem(
+      barButtonSystemItem: .close,
+      target: self,
+      action: #selector(closeWorkflow)
+    )
+  }
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .close,
-            target: self,
-            action: #selector(closeWorkflow)
-        )
-    }
-
-    private func configureTableView() {
-        log.verbose("configureTableView")
-
-        tableView.dataSource = self
-        tableView.delegate = self
-
-        tableView.register(
-            APIKeyTableViewCell.self,
-            forCellReuseIdentifier: APIKeyTableViewCell.reuseIdentifier
-        )
-
-        tableView.register(
-            DateStyleTableViewCell.self,
-            forCellReuseIdentifier: DateStyleTableViewCell.reuseIdentifier
-        )
-
-        tableView.register(
-            UITableViewCell.self,
-            forCellReuseIdentifier: "settingsCell"
-        )
-
-        tableView.autoresizingMask = [
-            .flexibleHeight,
-            .flexibleWidth
-        ]
-
-        tableView.showsVerticalScrollIndicator = false
-    }
+  private func configureTableNode() {
+    tableNode.dataSource = self
+    tableNode.delegate = self
+    tableNode.view.showsVerticalScrollIndicator = false
+  }
 }
 
 // MARK: - Actions
 
 private extension SettingsVC {
-    @objc private func closeWorkflow() {
-        log.verbose("closeWorkflow")
-
-        navigationController?.dismiss(animated: true)
-    }
+  @objc private func closeWorkflow() {
+    navigationController?.dismiss(animated: true)
+  }
 }
 
-// MARK: - UITableViewDataSource
+// MARK: - ASTableDataSource
 
-extension SettingsVC: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+extension SettingsVC: ASTableDataSource {
+  func numberOfSections(in tableNode: ASTableNode) -> Int {
+    return 3
+  }
+
+  func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
+    return 1
+  }
+
+  func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
+    let settingsCell = ASTextCellNode(text: "Settings", selectionStyle: .default, accessoryType: .disclosureIndicator)
+    return {
+      switch indexPath.section {
+      case 0:
+        return APIKeyCellNode()
+      case 1:
+        return DateStyleCellNode()
+      case 2:
+        return settingsCell
+      default:
+        fatalError("Unknown section")
+      }
     }
+  }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    switch section {
+    case 0:
+      return "API Key"
+    default:
+      return nil
     }
+  }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let apiKeyCell = tableView.dequeueReusableCell(
-                withIdentifier: APIKeyTableViewCell.reuseIdentifier,
-                for: indexPath
-        ) as? APIKeyTableViewCell else {
-            fatalError("Unable to dequeue reusable cell with identifier: \(APIKeyTableViewCell.reuseIdentifier)")
-        }
+  func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    switch section {
+    case 0:
+      return "The personal access token used to communicate with the Up Banking Developer API."
+    case 1:
+      return "The styling of dates displayed thoughout the application."
+    case 2:
+      return "Open in the Settings application."
+    default:
+      return nil
+    }
+  }
+}
 
-        guard let dateStyleCell = tableView.dequeueReusableCell(
-                withIdentifier: DateStyleTableViewCell.reuseIdentifier,
-                for: indexPath
-        ) as? DateStyleTableViewCell else {
-            fatalError("Unable to dequeue reusable cell with identifier: \(DateStyleTableViewCell.reuseIdentifier)")
-        }
+// MARK: - ASTableDelegate
 
-        let settingsCell = tableView.dequeueReusableCell(
-            withIdentifier: "settingsCell",
-            for: indexPath
+extension SettingsVC: ASTableDelegate {
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    switch section {
+    case 2:
+      return UIView()
+    default:
+      return nil
+    }
+  }
+
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    switch section {
+    case 2:
+      return 80
+    default:
+      return UITableView.automaticDimension
+    }
+  }
+
+  func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
+    switch indexPath.section {
+    case 0:
+      tableNode.deselectRow(at: indexPath, animated: true)
+      let alertController = UIAlertController(
+        title: "API Key",
+        message: "Enter a new API Key.",
+        preferredStyle: .alert
+      )
+      alertController.addTextField { [self] (textField) in
+        textField.autocapitalizationType = .none
+        textField.autocorrectionType = .no
+        textField.text = appDefaults.apiKey
+        textDidChangeObserver = NotificationCenter.default.addObserver(
+          forName: UITextField.textDidChangeNotification,
+          object: textField,
+          queue: .main,
+          using: { (notification) in
+            if let change = notification.object as? UITextField, let text = change.text {
+              submitActionProxy.isEnabled = text.count >= 1 && text != appDefaults.apiKey
+            } else {
+              submitActionProxy.isEnabled = false
+            }
+          }
         )
-
-        settingsCell.accessoryType = .disclosureIndicator
-        settingsCell.selectedBackgroundView = selectedBackgroundCellView
-        settingsCell.imageView?.tintColor = .label
-        settingsCell.imageView?.image = R.image.gearshape()
-        settingsCell.textLabel?.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-        settingsCell.textLabel?.text = "Settings"
-
-        switch indexPath.section {
-        case 0: return apiKeyCell
-        case 1: return dateStyleCell
-        case 2: return settingsCell
-        default: fatalError("Unknown section")
-        }
-    }
-
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0: return "API Key"
-        default: return nil
-        }
-    }
-
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        switch section {
-        case 0: return "The personal access token used to communicate with the Up Banking Developer API."
-        case 1: return "The styling of dates displayed thoughout the application."
-        case 2: return "Open in the Settings application."
-        default: return nil
-        }
-    }
-}
-
-// MARK: - UITableViewDelegate
-
-extension SettingsVC: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        switch section {
-        case 2: return UIView()
-        default: return nil
-        }
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        switch section {
-        case 2: return 80
-        default: return UITableView.automaticDimension
-        }
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
-
-        switch indexPath.section {
-        case 0:
-            tableView.deselectRow(
-                at: indexPath,
-                animated: true
-            )
-
-            let ac = UIAlertController(
-                title: "API Key",
-                message: "Enter a new API Key.",
-                preferredStyle: .alert
-            )
-
-            ac.addTextField {
-                [self] (textField) in
-                textField.autocapitalizationType = .none
-                textField.autocorrectionType = .no
-                textField.tintColor = R.color.accentColor()
-                textField.text = appDefaults.apiKey
-
-                textDidChangeObserver = NotificationCenter.default.addObserver(
-                    forName: UITextField.textDidChangeNotification,
-                    object: textField,
-                    queue: OperationQueue.main
-                ) {
-                    (notification) in
-                    if let tField = notification.object as? UITextField {
-                        if let text = tField.text {
-                            submitActionProxy.isEnabled = text.count >= 1 && text != appDefaults.apiKey
-                        } else {
-                            submitActionProxy.isEnabled = false
-                        }
-                    }
+      }
+      let submitAction = UIAlertAction(
+        title: "Save",
+        style: .default,
+        handler: { (_) in
+          if let answer = alertController.textFields?.first?.text {
+            if !answer.isEmpty && answer != appDefaults.apiKey {
+              UpFacade.ping(with: answer) { (error) in
+                DispatchQueue.main.async {
+                  switch error {
+                  case .none:
+                    GrowingNotificationBanner(
+                      title: "Success",
+                      subtitle: "The API Key was verified and saved.",
+                      style: .success
+                    ).show()
+                    appDefaults.apiKey = answer
+                  default:
+                    GrowingNotificationBanner(
+                      title: "Failed",
+                      subtitle: error!.description,
+                      style: .danger
+                    ).show()
+                  }
                 }
+              }
+            } else {
+              GrowingNotificationBanner(
+                title: "Failed",
+                subtitle: "The provided API Key was the same as the current one.",
+                style: .danger
+              ).show()
             }
-
-            let cancelAction = UIAlertAction(
-                title: "Cancel",
-                style: .cancel
-            )
-
-            cancelAction.setValue(
-                R.color.accentColor(),
-                forKey: "titleTextColor"
-            )
-
-            let submitAction = UIAlertAction(
-                title: "Save",
-                style: .default
-            ) {
-                (_) in
-                if let answer = ac.textFields?.first?.text {
-                    if !answer.isEmpty && answer != appDefaults.apiKey {
-                        UpFacade.ping(with: answer) {
-                            (error) in
-                            DispatchQueue.main.async {
-                                switch error {
-                                case .none:
-                                    let nb = GrowingNotificationBanner(
-                                        title: "Success",
-                                        subtitle: "The API Key was verified and saved.",
-                                        style: .success
-                                    )
-
-                                    nb.duration = 2
-
-                                    nb.show()
-
-                                    appDefaults.apiKey = answer
-                                default:
-                                    let nb = GrowingNotificationBanner(
-                                        title: "Failed",
-                                        subtitle: errorString(for: error!),
-                                        style: .danger
-                                    )
-
-                                    nb.duration = 2
-
-                                    nb.show()
-                                }
-                            }
-                        }
-                    } else {
-                        let nb = GrowingNotificationBanner(
-                            title: "Failed",
-                            subtitle: "The provided API Key was the same as the current one.",
-                            style: .danger
-                        )
-
-                        nb.duration = 2
-
-                        nb.show()
-                    }
-                }
-            }
-
-            submitAction.setValue(
-                R.color.accentColor(),
-                forKey: "titleTextColor"
-            )
-
-            submitAction.isEnabled = false
-            submitActionProxy = submitAction
-
-            ac.addAction(cancelAction)
-            ac.addAction(submitAction)
-
-            present(
-                ac,
-                animated: true
-            )
-        case 2:
-            tableView.deselectRow(
-                at: indexPath,
-                animated: true
-            )
-
-            UIApplication.shared.open(
-                URL(string: UIApplication.openSettingsURLString)!
-            )
-        default: break
+          }
         }
+      )
+      submitAction.isEnabled = false
+      submitActionProxy = submitAction
+      alertController.addAction(.cancel)
+      alertController.addAction(submitAction)
+      present(alertController, animated: true)
+    case 2:
+      tableNode.deselectRow(at: indexPath, animated: true)
+      UIApplication.shared.open(.settingsApp)
+    default:
+      break
     }
+  }
 
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        switch indexPath.section {
-        case 0:
-            switch appDefaults.apiKey {
-            case "": return nil
-            default:
-                return UIContextMenuConfiguration(
-                    identifier: nil,
-                    previewProvider: nil
-                ) {
-                    (_) in
-                    UIMenu(
-                        children: [
-                            UIAction(
-                                title: "Copy API Key",
-                                image: R.image.docOnClipboard()
-                            ) {
-                                (_) in
-                                UIPasteboard.general.string = appDefaults.apiKey
-                            }
-                        ]
-                    )
+  func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    switch indexPath.section {
+    case 0:
+      switch appDefaults.apiKey {
+      case "":
+        return nil
+      default:
+        return UIContextMenuConfiguration(
+          identifier: nil,
+          previewProvider: nil,
+          actionProvider: { (_) in
+            UIMenu(children: [
+              UIAction(
+                title: "Copy API Key",
+                image: .docOnClipboard,
+                handler: { (_) in
+                  UIPasteboard.general.string = appDefaults.apiKey
                 }
-            }
-        default: return nil
-        }
+              )
+            ])
+          }
+        )
+      }
+    default:
+      return nil
     }
+  }
 }

@@ -1,53 +1,30 @@
 import UIKit
-import FLAnimatedImage
-import SwiftyBeaver
-import TinyConstraints
+import AsyncDisplayKit
+import PINRemoteImage
 
-final class StickerView: ViewController {
-    // MARK: - Properties
+final class StickerView: ASViewController {
+  // MARK: - Life Cycle
 
-    private let imageView = FLAnimatedImageView()
+  init(image: ASAnimatedImageProtocol) {
+    super.init(node: StickerImageNode(sticker: image))
+  }
 
-    // MARK: - Life Cycle
+  required init?(coder: NSCoder) {
+    fatalError("Not implemented")
+  }
 
-    init(image: FLAnimatedImage) {
-        imageView.animatedImage = image
-
-        super.init(
-            nibName: nil,
-            bundle: nil
-        )
-
-        log.debug("init(image: \(image.description))")
-
-    }
-
-    required init?(coder: NSCoder) { fatalError("Not implemented") }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        log.debug("viewDidLoad")
-
-        view.addSubview(imageView)
-
-        configure()
-    }
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    configure()
+  }
 }
 
 // MARK: - Configuration
 
 private extension StickerView {
-    private func configure() {
-        log.verbose("configure")
-
-        title = "Sticker View"
-
-        navigationItem.title = "Sticker"
-        navigationItem.largeTitleDisplayMode = .never
-
-        imageView.centerInSuperview()
-        imageView.width(300)
-        imageView.height(300)
-    }
+  private func configure() {
+    title = "Sticker View"
+    navigationItem.title = "Sticker"
+    navigationItem.largeTitleDisplayMode = .never
+  }
 }

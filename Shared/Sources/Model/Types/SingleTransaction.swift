@@ -1,5 +1,5 @@
 import Foundation
 
 struct SingleTransaction: Codable {
-    var data: TransactionResource
+  var data: TransactionResource
 }

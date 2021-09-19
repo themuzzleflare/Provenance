@@ -1,493 +1,269 @@
 import UIKit
-import FLAnimatedImage
 import NotificationBannerSwift
-import SwiftyBeaver
-import TinyConstraints
-import Rswift
+import IGListKit
+import AsyncDisplayKit
 
-final class TransactionsByTagVC: UIViewController {
-    // MARK: - Properties
+final class TransactionsByTagVC: ASViewController {
+  // MARK: - Properties
 
-    private var tag: TagResource
+  private var tag: TagResource
 
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<SortedTransactions, TransactionResource>
+  private lazy var searchController = UISearchController(self)
 
-    private lazy var dataSource = makeDataSource()
+  private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshTransactions))
 
-    private lazy var searchController: UISearchController = {
-        let sc = SearchController(searchResultsController: nil)
-        sc.searchBar.delegate = self
-        return sc
-    }()
+  private let tableNode = ASTableNode(style: .grouped)
 
-    private let tableRefreshControl: UIRefreshControl = {
-        let rc = UIRefreshControl()
-        rc.addTarget(self, action: #selector(refreshTransactions), for: .valueChanged)
-        return rc
-    }()
+  private var dateStyleObserver: NSKeyValueObservation?
 
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+  private var noTransactions: Bool = false
 
-    private var dateStyleObserver: NSKeyValueObservation?
-
-    private var noTransactions: Bool = false
-
-    private var transactions: [TransactionResource] = [] {
-        didSet {
-            log.info("didSet transactions: \(transactions.count.description)")
-
-            noTransactions = transactions.isEmpty
-
-            if transactions.isEmpty {
-                navigationController?.popViewController(animated: true)
-            } else {
-                applySnapshot()
-                tableView.refreshControl?.endRefreshing()
-                searchController.searchBar.placeholder = "Search \(transactions.count.description) \(transactions.count == 1 ? "Transaction" : "Transactions")"
-            }
-        }
-    }
-
-    private var transactionsError: String = ""
-
-    private var filteredTransactions: [TransactionResource] {
-        transactions.filter { transaction in
-            searchController.searchBar.text!.isEmpty || transaction.attributes.transactionDescription.localizedStandardContains(searchController.searchBar.text!)
-        }
-    }
-
-    private var groupedTransactions: [Date: [TransactionResource]] {
-        Dictionary(
-            grouping: filteredTransactions,
-            by: { $0.attributes.createdAtDate }
-        )
-    }
-
-    private var sortedTransactions: [(key: Date, value: [TransactionResource])] {
-        return groupedTransactions.sorted { $0.key > $1.key }
-    }
-
-    private var sections: [SortedTransactions] = []
-
-    // UITableViewDiffableDataSource
-    private class DataSource: UITableViewDiffableDataSource<SortedTransactions, TransactionResource> {
-        weak var parent: TransactionsByTagVC! = nil
-
-        override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-            return true
-        }
-
-        override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-            guard let firstTransaction = itemIdentifier(for: IndexPath(item: 0, section: section)) else { return nil }
-
-            return firstTransaction.attributes.creationDayMonthYear
-        }
-
-        override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-            log.debug("tableView(commit editingStyle: \(editingStyle.rawValue), forRowAt indexPath: \(indexPath))")
-
-            guard let transaction = itemIdentifier(for: indexPath) else { return }
-
-            switch editingStyle {
-            case .delete:
-                let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(parent.tag.id)\" from \"\(transaction.attributes.transactionDescription)\"?", preferredStyle: .actionSheet)
-
-                let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [self] _ in
-                    UpFacade.modifyTags(removing: parent.tag, from: transaction) { error in
-                        DispatchQueue.main.async {
-                            switch error {
-                            case .none:
-                                let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(parent.tag.id) was removed from \(transaction.attributes.transactionDescription).", style: .success)
-
-                                nb.duration = 2
-
-                                nb.show()
-
-                                parent.fetchTransactions()
-                            default:
-                                let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
-
-                                nb.duration = 2
-
-                                nb.show()
-                            }
-                        }
-                    }
-                }
-
-                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-
-                cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-
-                ac.addAction(confirmAction)
-                ac.addAction(cancelAction)
-
-                parent.present(ac, animated: true)
-            default:
-                break
-            }
-        }
-    }
-
-    // MARK: - Life Cycle
-
-    init(tag: TagResource) {
-        self.tag = tag
-        super.init(nibName: nil, bundle: nil)
-        log.debug("init(tag: \(tag.id))")
-        dataSource.parent = self
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    deinit {
-        log.debug("deinit")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        log.debug("viewDidLoad")
-        view.addSubview(tableView)
-        configureProperties()
-        configureNavigation()
-        configureTableView()
+  private var transactions = [TransactionResource]() {
+    didSet {
+      noTransactions = transactions.isEmpty
+      if transactions.isEmpty {
+        navigationController?.popViewController(animated: true)
+      } else {
         applySnapshot()
+        tableNode.view.refreshControl?.endRefreshing()
+        searchController.searchBar.placeholder = "Search \(transactions.count.description) \(transactions.count == 1 ? "Transaction" : "Transactions")"
+      }
     }
+  }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        log.debug("viewDidLayoutSubviews")
-        tableView.frame = view.bounds
-    }
+  private var transactionsError = String()
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        log.debug("viewWillAppear")
-        fetchTransactions()
-    }
+  private var oldFilteredTransactions = [TransactionResource]()
 
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        log.debug("setEditing(editing: \(editing.description), animated: \(animated.description))")
-        tableView.setEditing(editing, animated: animated)
-    }
+  private var filteredTransactions: [TransactionResource] {
+    return transactions.filtered(searchBar: searchController.searchBar)
+  }
+
+  // MARK: - Life Cycle
+
+  init(tag: TagResource) {
+    self.tag = tag
+    super.init(node: tableNode)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("Not implemented")
+  }
+
+  deinit {
+    removeObservers()
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    configureObservers()
+    configureProperties()
+    configureNavigation()
+    configureTableNode()
+    applySnapshot(override: true)
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    fetchTransactions()
+  }
+
+  override func setEditing(_ editing: Bool, animated: Bool) {
+    super.setEditing(editing, animated: animated)
+    tableNode.view.setEditing(editing, animated: animated)
+  }
 }
 
 // MARK: - Configuration
 
 private extension TransactionsByTagVC {
-    private func configureProperties() {
-        log.verbose("configureProperties")
+  private func configureProperties() {
+    title = "Transactions by Tag"
+    definesPresentationContext = true
+  }
 
-        title = "Transactions by Tag"
-        definesPresentationContext = true
-
-        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-
-        dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [self] _, _ in
-            DispatchQueue.main.async {
-                reloadSnapshot()
-            }
-        }
+  private func configureObservers() {
+    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.new]) { [weak self] (_, change) in
+      guard let weakSelf = self, let value = change.newValue else { return }
+      DispatchQueue.main.async {
+        weakSelf.fetchTransactions()
+      }
     }
+  }
 
-    private func configureNavigation() {
-        log.verbose("configureNavigation")
+  private func removeObservers() {
+    NotificationCenter.default.removeObserver(self)
+    dateStyleObserver?.invalidate()
+    dateStyleObserver = nil
+  }
 
-        navigationItem.title = "Loading"
-        navigationItem.largeTitleDisplayMode = .never
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.dollarsignCircle())
-        navigationItem.rightBarButtonItem = editButtonItem
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-    }
+  private func configureNavigation() {
+    navigationItem.title = "Loading"
+    navigationItem.largeTitleDisplayMode = .never
+    navigationItem.backBarButtonItem = UIBarButtonItem(image: .dollarsignCircle)
+    navigationItem.rightBarButtonItem = editButtonItem
+    navigationItem.searchController = searchController
+    navigationItem.hidesSearchBarWhenScrolling = false
+  }
 
-    private func configureTableView() {
-        log.verbose("configureTableView")
-
-        tableView.dataSource = dataSource
-        tableView.delegate = self
-        tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
-        tableView.refreshControl = tableRefreshControl
-        tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-    }
+  private func configureTableNode() {
+    tableNode.dataSource = self
+    tableNode.delegate = self
+    tableNode.view.refreshControl = tableRefreshControl
+  }
 }
 
 // MARK: - Actions
 
-private extension TransactionsByTagVC {
-    @objc private func appMovedToForeground() {
-        log.verbose("appMovedToForeground")
+extension TransactionsByTagVC {
+  @objc private func appMovedToForeground() {
+    fetchTransactions()
+  }
 
-        fetchTransactions()
+  @objc private func refreshTransactions() {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+      fetchTransactions()
     }
+  }
 
-    @objc private func refreshTransactions() {
-        log.verbose("refreshTransactions")
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-            fetchTransactions()
-        }
-    }
-
-    private func reloadSnapshot() {
-        log.verbose("reloadSnapshot")
-
-        var snap = dataSource.snapshot()
-
-        snap.reloadItems(snap.itemIdentifiers)
-
-        dataSource.apply(snap, animatingDifferences: false)
-    }
-
-    private func makeDataSource() -> DataSource {
-        log.verbose("makeDataSource")
-
-        let dataSource = DataSource(
-            tableView: tableView,
-            cellProvider: { tableView, indexPath, transaction in
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as? TransactionTableViewCell else {
-                    fatalError("Unable to dequeue reusable cell with identifier: \(TransactionTableViewCell.reuseIdentifier)")
-                }
-
-                cell.transaction = transaction
-
-                return cell
-            }
-        )
-
-        dataSource.defaultRowAnimation = .middle
-
-        return dataSource
-    }
-
-    private func applySnapshot(animate: Bool = true) {
-        log.verbose("applySnapshot(animate: \(animate.description))")
-
-        sections = sortedTransactions.map { SortedTransactions(id: $0.key, transactions: $0.value) }
-
-        var snapshot = Snapshot()
-
-        snapshot.appendSections(sections)
-
-        sections.forEach { snapshot.appendItems($0.transactions, toSection: $0) }
-
-        if snapshot.itemIdentifiers.isEmpty && transactionsError.isEmpty {
-            if transactions.isEmpty && !noTransactions {
-                tableView.backgroundView = {
-                    let view = UIView(frame: tableView.bounds)
-
-                    let loadingIndicator = FLAnimatedImageView()
-
-                    view.addSubview(loadingIndicator)
-
-                    loadingIndicator.centerInSuperview()
-                    loadingIndicator.width(100)
-                    loadingIndicator.height(100)
-                    loadingIndicator.animatedImage = upZapSpinTransparentBackground
-
-                    return view
-                }()
-            } else {
-                tableView.backgroundView = {
-                    let view = UIView(frame: tableView.bounds)
-
-                    let icon = UIImageView(image: R.image.xmarkDiamond())
-
-                    icon.width(70)
-                    icon.height(64)
-                    icon.tintColor = .secondaryLabel
-
-                    let label = UILabel()
-
-                    label.translatesAutoresizingMaskIntoConstraints = false
-                    label.textAlignment = .center
-                    label.textColor = .secondaryLabel
-                    label.font = R.font.circularStdBook(size: 23)
-                    label.text = "No Transactions"
-
-                    let vStack = UIStackView(arrangedSubviews: [icon, label])
-
-                    view.addSubview(vStack)
-
-                    vStack.horizontalToSuperview(insets: .horizontal(16))
-                    vStack.centerInSuperview()
-                    vStack.axis = .vertical
-                    vStack.alignment = .center
-                    vStack.spacing = 10
-
-                    return view
-                }()
-            }
+  private func applySnapshot(override: Bool = false) {
+    let result = ListDiffPaths(
+      fromSection: 0,
+      toSection: 0,
+      oldArray: oldFilteredTransactions,
+      newArray: filteredTransactions,
+      option: .equality
+    ).forBatchUpdates()
+    if result.hasChanges || override || !transactionsError.isEmpty || noTransactions {
+      if filteredTransactions.isEmpty && transactionsError.isEmpty {
+        if transactions.isEmpty && !noTransactions {
+          tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds)
         } else {
-            if !transactionsError.isEmpty {
-                tableView.backgroundView = {
-                    let view = UIView(frame: tableView.bounds)
-
-                    let label = UILabel()
-
-                    view.addSubview(label)
-
-                    label.horizontalToSuperview(insets: .horizontal(16))
-                    label.centerInSuperview()
-                    label.textAlignment = .center
-                    label.textColor = .secondaryLabel
-                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                    label.numberOfLines = 0
-                    label.text = transactionsError
-
-                    return view
-                }()
-            } else {
-                if tableView.backgroundView != nil {
-                    tableView.backgroundView = nil
-                }
-            }
+          tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .transactions)
         }
-
-        dataSource.apply(snapshot, animatingDifferences: animate)
-    }
-
-    private func fetchTransactions() {
-        log.verbose("fetchTransactions")
-
-        UpFacade.listTransactions(filterBy: tag) { [self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let transactions):
-                    display(transactions)
-                case .failure(let error):
-                    display(error)
-                }
-            }
+      } else {
+        if !transactionsError.isEmpty {
+          tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: transactionsError)
+        } else {
+          if tableNode.view.backgroundView != nil { tableNode.view.backgroundView = nil }
         }
+      }
+      let batchUpdates = { [self] in
+        tableNode.deleteRows(at: result.deletes, with: .automatic)
+        tableNode.insertRows(at: result.inserts, with: .automatic)
+        result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
+        tableNode.reloadRows(at: result.updates, with: .none)
+        oldFilteredTransactions = filteredTransactions
+      }
+      tableNode.performBatchUpdates(batchUpdates)
     }
+  }
 
-    private func display(_ transactions: [TransactionResource]) {
-        log.verbose("display(transactions: \(transactions.count.description))")
-
-        transactionsError = ""
-        self.transactions = transactions
-
-        if navigationItem.title != tag.id {
-            navigationItem.title = tag.id
+  func fetchTransactions() {
+    UpFacade.listTransactions(filterBy: tag) { [self] result in
+      DispatchQueue.main.async {
+        switch result {
+        case let .success(transactions):
+          display(transactions)
+        case let .failure(error):
+          display(error)
         }
+      }
     }
+  }
 
-    private func display(_ error: NetworkError) {
-        log.verbose("display(error: \(errorString(for: error)))")
-
-        transactionsError = errorString(for: error)
-        transactions = []
-
-        if navigationItem.title != "Error" {
-            navigationItem.title = "Error"
-        }
+  private func display(_ transactions: [TransactionResource]) {
+    transactionsError = ""
+    self.transactions = transactions
+    if navigationItem.title != tag.id {
+      navigationItem.title = tag.id
     }
+  }
+
+  private func display(_ error: NetworkError) {
+    transactionsError = error.description
+    transactions = []
+    if navigationItem.title != "Error" {
+      navigationItem.title = "Error"
+    }
+  }
 }
 
-// MARK: - UITableViewDelegate
+// MARK: - ASTableDataSource
 
-extension TransactionsByTagVC: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+extension TransactionsByTagVC: ASTableDataSource {
+  func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
+    return filteredTransactions.count
+  }
+
+  func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
+    let node = TransactionCellNode(transaction: filteredTransactions[indexPath.row])
+    return {
+      node
     }
+  }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        log.debug("tableView(didSelectRowAt indexPath: \(indexPath))")
+  func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    return true
+  }
 
-        tableView.deselectRow(at: indexPath, animated: true)
-
-        if let transaction = dataSource.itemIdentifier(for: indexPath) {
-            navigationController?.pushViewController(TransactionDetailVC(transaction: transaction), animated: true)
-        }
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    let transaction = filteredTransactions[indexPath.row]
+    switch editingStyle {
+    case .delete:
+      let alertController = UIAlertController.removeTagFromTransaction(self, removing: tag, from: transaction)
+      present(alertController, animated: true)
+    default:
+      break
     }
+  }
+}
 
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .delete
+// MARK: - ASTableDelegate
+
+extension TransactionsByTagVC: ASTableDelegate {
+  func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
+    tableNode.deselectRow(at: indexPath, animated: true)
+    let transaction = filteredTransactions[indexPath.row]
+    navigationController?.pushViewController(TransactionDetailVC(transaction: transaction), animated: true)
+  }
+
+  func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    return .delete
+  }
+
+  func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+    return "Remove"
+  }
+
+  func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    let transaction = filteredTransactions[indexPath.row]
+    switch isEditing {
+    case true:
+      return nil
+    case false:
+      return UIContextMenuConfiguration(elements: [
+        .copyTransactionDescription(transaction: transaction),
+        .copyTransactionCreationDate(transaction: transaction),
+        .copyTransactionAmount(transaction: transaction),
+        .removeTagFromTransaction(self, removing: tag, from: transaction)
+      ])
     }
-
-    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        return "Remove"
-    }
-
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard let transaction = dataSource.itemIdentifier(for: indexPath) else { return nil }
-
-        switch isEditing {
-        case true:
-            return nil
-        case false:
-            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-                UIMenu(children: [
-                    UIAction(title: "Copy Description", image: R.image.textAlignright()) { _ in
-                        UIPasteboard.general.string = transaction.attributes.transactionDescription
-                    },
-                    UIAction(title: "Copy Creation Date", image: R.image.calendarCircle()) { _ in
-                        UIPasteboard.general.string = transaction.attributes.creationDate
-                    },
-                    UIAction(title: "Copy Amount", image: R.image.dollarsignCircle()) { _ in
-                        UIPasteboard.general.string = transaction.attributes.amount.valueShort
-                    },
-                    UIAction(title: "Remove", image: R.image.trash(), attributes: .destructive) { [self] _ in
-                        let ac = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(transaction.attributes.transactionDescription)\"?", preferredStyle: .actionSheet)
-
-                        let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { _ in
-                            UpFacade.modifyTags(removing: tag, from: transaction) { error in
-                                DispatchQueue.main.async {
-                                    switch error {
-                                    case .none:
-                                        let nb = GrowingNotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.transactionDescription).", style: .success)
-
-                                        nb.duration = 2
-
-                                        nb.show()
-
-                                        fetchTransactions()
-                                    default:
-                                        let nb = GrowingNotificationBanner(title: "Failed", subtitle: errorString(for: error!), style: .danger)
-
-                                        nb.duration = 2
-
-                                        nb.show()
-                                    }
-                                }
-                            }
-                        }
-
-                        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-
-                        cancelAction.setValue(R.color.accentColor(), forKey: "titleTextColor")
-
-                        ac.addAction(confirmAction)
-                        ac.addAction(cancelAction)
-
-                        present(ac, animated: true)
-                    }
-                ])
-            }
-        }
-    }
+  }
 }
 
 // MARK: - UISearchBarDelegate
 
 extension TransactionsByTagVC: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        log.debug("searchBar(textDidChange searchText: \(searchText))")
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    applySnapshot()
+  }
 
-        applySnapshot()
+  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    if !searchBar.text!.isEmpty {
+      searchBar.clear()
+      applySnapshot()
     }
-
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        log.debug("searchBarCancelButtonClicked")
-
-        if !searchBar.text!.isEmpty {
-            searchBar.text = ""
-
-            applySnapshot()
-        }
-    }
+  }
 }

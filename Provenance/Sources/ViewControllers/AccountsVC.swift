@@ -1,418 +1,238 @@
 import UIKit
-import FLAnimatedImage
-import SwiftyBeaver
-import TinyConstraints
-import Rswift
+import IGListKit
+import AsyncDisplayKit
 
-final class AccountsVC: UIViewController {
-    // MARK: - Properties
-
-    private enum Section {
-        case main
+final class AccountsVC: ASViewController {
+  // MARK: - Properties
+  
+  private lazy var searchController = UISearchController.accounts(self)
+  
+  private let collectionNode = ASCollectionNode(collectionViewLayout: .twoColumnGridLayout)
+  
+  private lazy var collectionRefreshControl = UIRefreshControl(self, selector: #selector(refreshAccounts))
+  
+  private var apiKeyObserver: NSKeyValueObservation?
+  
+  private var noAccounts: Bool = false
+  
+  private var accounts = [AccountResource]() {
+    didSet {
+      noAccounts = accounts.isEmpty
+      applySnapshot()
+      collectionNode.view.refreshControl?.endRefreshing()
+      searchController.searchBar.placeholder = "Search \(accounts.count.description) \(accounts.count == 1 ? "Account" : "Accounts")"
     }
+  }
+  
+  private var accountsError = String()
+  
+  private var oldFilteredAccounts = [AccountResource]()
+  
+  private var filteredAccounts: [AccountResource] {
+    return accounts.filtered(searchBar: searchController.searchBar)
+  }
+  
+  // MARK: - Life Cycle
 
-    private typealias DataSource = UICollectionViewDiffableDataSource<Section, AccountResource>
+  override init() {
+    super.init(node: collectionNode)
+  }
 
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, AccountResource>
+  deinit {
+    removeObservers()
+  }
 
-    private typealias AccountCell = UICollectionView.CellRegistration<AccountCollectionViewCell, AccountResource>
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
-    private lazy var dataSource = makeDataSource()
-
-    private lazy var searchController: UISearchController = {
-        let sc = SearchController(searchResultsController: nil)
-
-        sc.searchBar.delegate = self
-
-        return sc
-    }()
-
-    private let collectionView = UICollectionView(
-        frame: .zero,
-        collectionViewLayout: twoColumnGridLayout()
-    )
-
-    private let collectionRefreshControl: UIRefreshControl = {
-        let rc = UIRefreshControl()
-
-        rc.addTarget(
-            self,
-            action: #selector(refreshAccounts),
-            for: .valueChanged
-        )
-
-        return rc
-    }()
-
-    private let cellRegistration = AccountCell {
-        (cell, _, account) in
-        cell.account = account
-    }
-
-    private var apiKeyObserver: NSKeyValueObservation?
-
-    private var noAccounts: Bool = false
-
-    private var accounts: [AccountResource] = [] {
-        didSet {
-            log.info("didSet accounts: \(accounts.count.description)")
-
-            noAccounts = accounts.isEmpty
-
-            applySnapshot()
-
-            reloadSnapshot()
-
-            collectionView.refreshControl?.endRefreshing()
-
-            searchController.searchBar.placeholder = "Search \(accounts.count.description) \(accounts.count == 1 ? "Account" : "Accounts")"
-        }
-    }
-
-    private var accountsError: String = ""
-
-    private var filteredAccounts: [AccountResource] {
-        return accounts.filter { account in
-            searchController.searchBar.text!.isEmpty
-                || account.attributes.displayName
-                .localizedStandardContains(searchController.searchBar.text!)
-        }
-    }
-
-    // MARK: - Life Cycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        log.debug("viewDidLoad")
-
-        view.addSubview(collectionView)
-
-        configureProperties()
-
-        configureNavigation()
-
-        configureCollectionView()
-
-        applySnapshot()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        log.debug("viewDidLayoutSubviews")
-
-        collectionView.frame = view.bounds
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        log.debug("viewWillAppear(animated: \(animated.description))")
-
-        fetchAccounts()
-    }
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    configureObservers()
+    configureProperties()
+    configureNavigation()
+    configureCollectionNode()
+    applySnapshot(override: true)
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    fetchAccounts()
+  }
 }
 
 // MARK: - Configuration
 
 private extension AccountsVC {
-    private func configureProperties() {
-        log.verbose("configureProperties")
+  private func configureProperties() {
+    title = "Accounts"
+    definesPresentationContext = true
+  }
 
-        title = "Accounts"
-
-        definesPresentationContext = true
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(appMovedToForeground),
-            name: UIApplication.willEnterForegroundNotification,
-            object: nil
-        )
-
-        apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) {
-            [self] (_, _) in
-            fetchAccounts()
-        }
+  private func configureObservers() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(appMovedToForeground),
+      name: UIApplication.willEnterForegroundNotification,
+      object: nil
+    )
+    apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [weak self] (_, change) in
+      guard let weakSelf = self, let value = change.newValue else { return }
+      DispatchQueue.main.async {
+        weakSelf.fetchAccounts()
+      }
     }
+  }
 
-    private func configureNavigation() {
-        log.verbose("configureNavigation")
-
-        navigationItem.title = "Loading"
-
-        navigationItem.largeTitleDisplayMode = .always
-
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: R.image.walletPass())
-
-        navigationItem.searchController = searchController
-    }
-
-    private func configureCollectionView() {
-        log.verbose("configureCollectionView")
-
-        collectionView.dataSource = dataSource
-
-        collectionView.delegate = self
-
-        collectionView.refreshControl = collectionRefreshControl
-
-        collectionView.autoresizingMask = [
-            .flexibleHeight,
-            .flexibleWidth
-        ]
-
-        collectionView.backgroundColor = .systemGroupedBackground
-    }
+  private func removeObservers() {
+    NotificationCenter.default.removeObserver(self)
+    apiKeyObserver?.invalidate()
+    apiKeyObserver = nil
+  }
+  
+  private func configureNavigation() {
+    navigationItem.title = "Loading"
+    navigationItem.largeTitleDisplayMode = .always
+    navigationItem.backBarButtonItem = UIBarButtonItem(image: .walletPass)
+    navigationItem.searchController = searchController
+  }
+  
+  private func configureCollectionNode() {
+    collectionNode.dataSource = self
+    collectionNode.delegate = self
+    collectionNode.view.refreshControl = collectionRefreshControl
+    collectionNode.backgroundColor = .systemGroupedBackground
+  }
 }
 
 // MARK: - Actions
 
 private extension AccountsVC {
-    @objc private func appMovedToForeground() {
-        log.verbose("appMovedToForeground")
-
-        fetchAccounts()
+  @objc private func appMovedToForeground() {
+    fetchAccounts()
+  }
+  
+  @objc private func refreshAccounts() {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+      fetchAccounts()
     }
-
-    @objc private func refreshAccounts() {
-        log.verbose("refreshAccounts")
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            [self] in
-            fetchAccounts()
-        }
-    }
-
-    private func makeDataSource() -> DataSource {
-        log.verbose("makeDataSource")
-
-        return DataSource(
-            collectionView: collectionView
-        ) {
-            [self] (collectionView, indexPath, account) in
-            collectionView.dequeueConfiguredReusableCell(
-                using: cellRegistration,
-                for: indexPath,
-                item: account
-            )
-        }
-    }
-
-    private func applySnapshot(animate: Bool = true) {
-        log.verbose("applySnapshot(animate: \(animate.description))")
-
-        var snapshot = Snapshot()
-
-        snapshot.appendSections([.main])
-
-        snapshot.appendItems(
-            filteredAccounts,
-            toSection: .main
-        )
-
-        if snapshot.itemIdentifiers.isEmpty && accountsError.isEmpty {
-            if accounts.isEmpty && !noAccounts {
-                collectionView.backgroundView = {
-                    let view = UIView(frame: collectionView.bounds)
-
-                    let loadingIndicator = FLAnimatedImageView()
-
-                    view.addSubview(loadingIndicator)
-
-                    loadingIndicator.centerInSuperview()
-                    loadingIndicator.width(100)
-                    loadingIndicator.height(100)
-                    loadingIndicator.animatedImage = upZapSpinTransparentBackground
-
-                    return view
-                }()
-            } else {
-                collectionView.backgroundView = {
-                    let view = UIView(frame: collectionView.bounds)
-
-                    let icon = UIImageView(image: R.image.xmarkDiamond())
-
-                    icon.width(70)
-                    icon.height(64)
-                    icon.tintColor = .secondaryLabel
-
-                    let label = UILabel()
-
-                    label.translatesAutoresizingMaskIntoConstraints = false
-                    label.textAlignment = .center
-                    label.textColor = .secondaryLabel
-                    label.font = R.font.circularStdBook(size: 23)
-                    label.text = "No Accounts"
-
-                    let vStack = UIStackView(
-                        arrangedSubviews: [
-                            icon,
-                            label
-                        ]
-                    )
-
-                    view.addSubview(vStack)
-
-                    vStack.horizontalToSuperview(insets: .horizontal(16))
-                    vStack.centerInSuperview()
-                    vStack.axis = .vertical
-                    vStack.alignment = .center
-                    vStack.spacing = 10
-
-                    return view
-                }()
-            }
+  }
+  
+  private func applySnapshot(override: Bool = false) {
+    let result = ListDiffPaths(
+      fromSection: 0,
+      toSection: 0,
+      oldArray: oldFilteredAccounts,
+      newArray: filteredAccounts,
+      option: .equality
+    ).forBatchUpdates()
+    if result.hasChanges || override || !accountsError.isEmpty || noAccounts {
+      if filteredAccounts.isEmpty && accountsError.isEmpty {
+        if accounts.isEmpty && !noAccounts {
+          collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds)
         } else {
-            if !accountsError.isEmpty {
-                collectionView.backgroundView = {
-                    let view = UIView(frame: collectionView.bounds)
-
-                    let label = UILabel()
-
-                    view.addSubview(label)
-
-                    label.horizontalToSuperview(insets: .horizontal(16))
-                    label.centerInSuperview()
-                    label.textAlignment = .center
-                    label.textColor = .secondaryLabel
-                    label.font = R.font.circularStdBook(size: UIFont.labelFontSize)
-                    label.numberOfLines = 0
-                    label.text = accountsError
-
-                    return view
-                }()
-            } else {
-                if collectionView.backgroundView != nil {
-                    collectionView.backgroundView = nil
-                }
-            }
+          collectionNode.view.backgroundView = .noContentView(frame: collectionNode.bounds, type: .accounts)
         }
-
-        dataSource.apply(
-            snapshot,
-            animatingDifferences: animate
-        )
-    }
-
-    private func reloadSnapshot() {
-        log.verbose("reloadSnapshot")
-
-        var snap = dataSource.snapshot()
-
-        snap.reloadItems(snap.itemIdentifiers)
-
-        dataSource.apply(
-            snap,
-            animatingDifferences: false
-        )
-    }
-
-    private func fetchAccounts() {
-        log.verbose("fetchAccounts")
-
-        UpFacade.listAccounts {
-            [self] (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let accounts): display(accounts)
-                case .failure(let error): display(error)
-                }
-            }
+      } else {
+        if !accountsError.isEmpty {
+          collectionNode.view.backgroundView = .errorView(frame: collectionNode.bounds, text: accountsError)
+        } else {
+          if collectionNode.view.backgroundView != nil {
+            collectionNode.view.backgroundView = nil
+          }
         }
+      }
+      let batchUpdates = { [self] in
+        collectionNode.deleteItems(at: result.deletes)
+        collectionNode.insertItems(at: result.inserts)
+        result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
+        collectionNode.reloadItems(at: result.updates)
+        oldFilteredAccounts = filteredAccounts
+      }
+      collectionNode.performBatchUpdates(batchUpdates)
     }
-
-    private func display(_ accounts: [AccountResource]) {
-        log.verbose("display(accounts: \(accounts.count.description))")
-
-        accountsError = ""
-
-        self.accounts = accounts
-
-        if navigationItem.title != "Accounts" {
-            navigationItem.title = "Accounts"
+  }
+  
+  private func fetchAccounts() {
+    UpFacade.listAccounts { [self] (result) in
+      DispatchQueue.main.async {
+        switch result {
+        case let .success(accounts):
+          display(accounts)
+        case let .failure(error):
+          display(error)
         }
+      }
     }
-
-    private func display(_ error: NetworkError) {
-        log.verbose("display(error: \(errorString(for: error)))")
-
-        accountsError = errorString(for: error)
-
-        accounts = []
-
-        if navigationItem.title != "Error" {
-            navigationItem.title = "Error"
-        }
+  }
+  
+  private func display(_ accounts: [AccountResource]) {
+    accountsError = ""
+    self.accounts = accounts
+    if navigationItem.title != "Accounts" {
+      navigationItem.title = "Accounts"
     }
+  }
+  
+  private func display(_ error: NetworkError) {
+    accountsError = error.description
+    accounts = []
+    if navigationItem.title != "Error" {
+      navigationItem.title = "Error"
+    }
+  }
 }
 
-// MARK: - UICollectionViewDelegate
+// MARK: - ASCollectionDataSource
 
-extension AccountsVC: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        log.debug("collectionView(didSelectItemAt indexPath: \(indexPath))")
+extension AccountsVC: ASCollectionDataSource {
+  func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
+    return filteredAccounts.count
+  }
 
-        collectionView.deselectItem(
-            at: indexPath,
-            animated: true
-        )
-
-        if let account = dataSource.itemIdentifier(for: indexPath) {
-            navigationController?.pushViewController(
-                TransactionsByAccountVC(account: account),
-                animated: true
-            )
-        }
+  func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
+    let node = AccountCellNode(account: filteredAccounts[indexPath.item])
+    return {
+      node
     }
+  }
+}
 
-    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard let account = dataSource.itemIdentifier(for: indexPath) else { return nil }
+// MARK: - ASCollectionDelegate
 
-        return UIContextMenuConfiguration(
-            identifier: nil,
-            previewProvider: nil
-        ) {
-            (_) in
-            UIMenu(
-                children: [
-                    UIAction(
-                        title: "Copy Balance",
-                        image: R.image.dollarsignCircle()
-                    ) {
-                        (_) in
-                        UIPasteboard.general.string = account.attributes.balance.valueShort
-                    },
-                    UIAction(
-                        title: "Copy Display Name",
-                        image: R.image.textAlignright()
-                    ) {
-                        (_) in
-                        UIPasteboard.general.string = account.attributes.displayName
-                    }
-                ]
-            )
-        }
-    }
+extension AccountsVC: ASCollectionDelegate {
+  func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
+    collectionNode.deselectItem(at: indexPath, animated: true)
+    let account = filteredAccounts[indexPath.item]
+    navigationController?.pushViewController(TransactionsByAccountVC(account: account), animated: true)
+  }
+
+  func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    let account = filteredAccounts[indexPath.item]
+    return UIContextMenuConfiguration(elements: [
+      .copyAccountBalance(account: account),
+      .copyAccountDisplayName(account: account)
+    ])
+  }
 }
 
 // MARK: - UISearchBarDelegate
 
 extension AccountsVC: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        log.debug("searchBar(textDidChange searchText: \(searchText))")
-
-        applySnapshot()
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    applySnapshot()
+  }
+  
+  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    if !searchBar.text!.isEmpty {
+      searchBar.clear()
+      applySnapshot()
     }
+  }
 
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        log.debug("searchBarCancelButtonClicked")
-
-        if !searchBar.text!.isEmpty {
-            searchBar.text = ""
-
-            applySnapshot()
-        }
+  func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+    if !searchBar.text!.isEmpty {
+      applySnapshot()
     }
+  }
 }

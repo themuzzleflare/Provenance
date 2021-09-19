@@ -7,17 +7,20 @@ target 'Provenance' do
   use_frameworks!
   
   pod 'Firebase/Crashlytics'
-  pod 'Firebase/Analytics'
+  pod 'Firebase/AnalyticsWithoutAdIdSupport'
   pod 'Firebase/AppCheck'
+  pod 'Alamofire'
+  pod 'AlamofireNetworkActivityIndicator'
   pod 'SwiftLint'
   pod 'MarqueeLabel'
-  pod 'TinyConstraints'
-  pod 'R.swift'
   pod 'FLAnimatedImage'
   pod 'NotificationBannerSwift'
   pod 'SwiftDate'
-  pod 'SwiftyBeaver'
   pod 'Texture'
+  pod 'SnapKit'
+  pod 'IGListKit/Diffing'
+  pod 'BonMot'
+  pod 'SwiftyJSON'
   
 end
   
@@ -25,7 +28,17 @@ target 'Provenance Intents' do
   use_frameworks!
   
   pod 'SwiftDate'
-  pod 'SwiftyBeaver'
+  pod 'Alamofire'
+  pod 'SwiftyJSON'
+  
+end
+
+target 'Provenance IntentsUI' do
+  use_frameworks!
+  
+  pod 'SwiftDate'
+  pod 'SnapKit'
+  pod 'SwiftyJSON'
   
 end
 
@@ -33,6 +46,24 @@ target 'Provenance Widgets' do
   use_frameworks!
   
   pod 'SwiftDate'
-  pod 'SwiftyBeaver'
-  
+  pod 'SwiftyJSON'
+
+end
+
+post_install do |installer|
+  require 'fileutils'
+  FileUtils.cp_r('Pods/Target Support Files/Pods-Provenance/Pods-Provenance-acknowledgements.plist', 'Provenance/Resources/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
+  installer.pods_project.targets.each do |target|
+    if target.name == 'PINCache' || target.name == 'PINOperation' || target.name == 'PINRemoteImage' || target.name == 'IGListKit'
+      target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+      end
+    else
+      if target.name == 'Texture'
+        target.build_configurations.each do |config|
+          config.build_settings['VALIDATE_WORKSPACE_SKIPPED_SDK_FRAMEWORKS'] = 'AssetsLibrary'
+        end
+      end
+    end
+  end
 end

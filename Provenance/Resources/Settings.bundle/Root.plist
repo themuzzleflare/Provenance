@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>ApplicationGroupContainerIdentifier</key>
-	<string>group.cloud.tavitian.provenance</string>
+	<string></string>
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
@@ -28,7 +28,7 @@
 			<key>Key</key>
 			<string>dateStyle</string>
 			<key>DefaultValue</key>
-			<string>Absolute</string>
+			<real>0</real>
 			<key>Titles</key>
 			<array>
 				<string>Absolute</string>
@@ -36,8 +36,8 @@
 			</array>
 			<key>Values</key>
 			<array>
-				<string>Absolute</string>
-				<string>Relative</string>
+				<real>0</real>
+				<integer>1</integer>
 			</array>
 		</dict>
 		<dict>
@@ -45,8 +45,6 @@
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
 			<string>Diagnostics</string>
-			<key>FooterText</key>
-			<string></string>
 		</dict>
 		<dict>
 			<key>Type</key>
@@ -72,6 +70,8 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
+			<string>Other</string>
+			<key>FooterText</key>
 			<string></string>
 		</dict>
 		<dict>

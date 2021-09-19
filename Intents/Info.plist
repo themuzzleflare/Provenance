@@ -31,6 +31,10 @@
 			<key>IntentsSupported</key>
 			<array>
 				<string>AccountSelectionIntent</string>
+				<string>AddTagToTransactionIntent</string>
+				<string>DateStyleSelectionIntent</string>
+				<string>ListTransactionsIntent</string>
+				<string>RemoveTagFromTransactionIntent</string>
 			</array>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>

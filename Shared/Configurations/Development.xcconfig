@@ -1,0 +1,3 @@
+#include "Shared.xcconfig"
+
+APP_ATTEST_ENVIRONMENT = development

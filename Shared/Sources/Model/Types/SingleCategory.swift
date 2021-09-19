@@ -1,5 +1,5 @@
 import Foundation
 
 struct SingleCategory: Codable {
-    var data: CategoryResource
+  var data: CategoryResource
 }
