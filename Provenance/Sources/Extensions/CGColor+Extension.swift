@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 extension CGColor {
-  /// `UIColor.separator.cgColor`.
+    /// `UIColor.separator.cgColor`.
   static var separator: CGColor {
     return UIColor.separator.cgColor
   }

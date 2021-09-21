@@ -3,33 +3,33 @@ import AsyncDisplayKit
 import PINRemoteImage
 
 final class StickersVC: ASViewController {
-  // MARK: - Properties
-
+    // MARK: - Properties
+  
   private let collectionNode = ASCollectionNode(collectionViewLayout: .gridLayout)
   private let stickerGifs = [ASPINRemoteImageDownloader.stickerTwo, ASPINRemoteImageDownloader.stickerThree, ASPINRemoteImageDownloader.stickerSix, ASPINRemoteImageDownloader.stickerSeven]
-
-  // MARK: - Life Cycle
-
+  
+    // MARK: - Life Cycle
+  
   override init() {
     super.init(node: collectionNode)
   }
-
+  
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configure()
   }
-
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     collectionNode.reloadData()
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension StickersVC {
   private func configure() {
@@ -41,13 +41,13 @@ private extension StickersVC {
   }
 }
 
-// MARK: - ASCollectionDataSource
+  // MARK: - ASCollectionDataSource
 
 extension StickersVC: ASCollectionDataSource {
   func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
     return stickerGifs.count
   }
-
+  
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
     let node = StickerCellNode(sticker: stickerGifs[indexPath.item])
     return {
@@ -56,7 +56,7 @@ extension StickersVC: ASCollectionDataSource {
   }
 }
 
-// MARK: - ASCollectionDelegate
+  // MARK: - ASCollectionDelegate
 
 extension StickersVC: ASCollectionDelegate {
   func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {

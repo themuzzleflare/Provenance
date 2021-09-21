@@ -1,31 +1,31 @@
 import UIKit
 
 final class DiagnosticTableVC: ViewController {
-  // MARK: - Properties
-
-  private typealias DataSource = UITableViewDiffableDataSource<DetailSection, DetailAttribute>
-
-  private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailAttribute>
-
+    // MARK: - Properties
+  
+  private typealias DataSource = UITableViewDiffableDataSource<DetailSection, DetailItem>
+  
+  private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailItem>
+  
   private lazy var dataSource = makeDataSource()
-
+  
   private lazy var sections: [DetailSection] = [
-    DetailSection(id: 1, attributes: [
-      DetailAttribute(
+    DetailSection(id: 1, items: [
+      DetailItem(
         id: "Version",
         value: appDefaults.appVersion
       ),
-      DetailAttribute(
+      DetailItem(
         id: "Build",
         value: appDefaults.appBuild
       )
     ])
   ]
-
+  
   private let tableView = UITableView(frame: .zero, style: .grouped)
-
-  // MARK: - Life Cycle
-
+  
+    // MARK: - Life Cycle
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(tableView)
@@ -34,26 +34,26 @@ final class DiagnosticTableVC: ViewController {
     configureTableView()
     applySnapshot()
   }
-
+  
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     tableView.frame = view.bounds
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension DiagnosticTableVC {
   private func configureProperties() {
     title = "Diagnostics"
   }
-
+  
   private func configureNavigation() {
     navigationItem.title = "Diagnostics"
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
   }
-
+  
   private func configureTableView() {
     tableView.dataSource = dataSource
     tableView.delegate = self
@@ -63,13 +63,13 @@ private extension DiagnosticTableVC {
   }
 }
 
-// MARK: - Actions
+  // MARK: - Actions
 
 private extension DiagnosticTableVC {
   @objc private func closeWorkflow() {
     navigationController?.dismiss(animated: true)
   }
-
+  
   private func makeDataSource() -> DataSource {
     return DataSource(
       tableView: tableView,
@@ -83,22 +83,22 @@ private extension DiagnosticTableVC {
       }
     )
   }
-
+  
   private func applySnapshot(animate: Bool = false) {
     var snapshot = Snapshot()
     snapshot.appendSections(sections)
-    sections.forEach { snapshot.appendItems($0.attributes, toSection: $0) }
+    sections.forEach { snapshot.appendItems($0.items, toSection: $0) }
     dataSource.apply(snapshot, animatingDifferences: animate)
   }
 }
 
-// MARK: - UITableViewDelegate
+  // MARK: - UITableViewDelegate
 
 extension DiagnosticTableVC: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return UITableView.automaticDimension
   }
-
+  
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     guard let attribute = dataSource.itemIdentifier(for: indexPath) else {
       return nil

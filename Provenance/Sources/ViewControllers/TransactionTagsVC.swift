@@ -4,7 +4,7 @@ import IGListKit
 import AsyncDisplayKit
 
 final class TransactionTagsVC: ASViewController {
-  // MARK: - Properties
+    // MARK: - Properties
   
   private var transaction: TransactionResource {
     didSet {
@@ -18,7 +18,11 @@ final class TransactionTagsVC: ASViewController {
     }
   }
   
-  private var oldTags = [RelationshipData]()
+  private var oldTags = [TagResource]()
+  
+  private var tags: [TagResource] {
+    return transaction.relationships.tags.data.tagResources
+  }
   
   private lazy var addBarButtonItem = UIBarButtonItem(
     barButtonSystemItem: .add,
@@ -50,19 +54,19 @@ final class TransactionTagsVC: ASViewController {
   
   private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshTags))
   
-  // MARK: - Life Cycle
+    // MARK: - Life Cycle
   
   init(transaction: TransactionResource) {
     self.transaction = transaction
     super.init(node: tableNode)
   }
   
-  required init?(coder: NSCoder) {
-    fatalError("Not implemented")
-  }
-  
   deinit {
     removeObserver()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("Not implemented")
   }
   
   override func viewDidLoad() {
@@ -99,7 +103,7 @@ final class TransactionTagsVC: ASViewController {
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension TransactionTagsVC {
   private func configureProperties() {
@@ -139,7 +143,7 @@ private extension TransactionTagsVC {
   }
 }
 
-// MARK: - Actions
+  // MARK: - Actions
 
 private extension TransactionTagsVC {
   @objc private func appMovedToForeground() {
@@ -160,7 +164,7 @@ private extension TransactionTagsVC {
   
   @objc private func selectionAction() {
     switch tableNode.indexPathsForSelectedRows?.count {
-    case transaction.relationships.tags.data.count:
+    case tags.count:
       tableNode.indexPathsForSelectedRows?.forEach { tableNode.deselectRow(at: $0, animated: false) }
     default:
       let indexes = tableNode.indexPathsForVisibleRows()
@@ -170,20 +174,18 @@ private extension TransactionTagsVC {
   }
   
   @objc private func removeTags() {
-    if let tags = tableNode.indexPathsForSelectedRows?.map { transaction.relationships.tags.data[$0.row] } {
-      let tagIds = tags.map { $0.id }.joined(separator: ", ")
+    if let selectedTags = tableNode.indexPathsForSelectedRows?.map { tags[$0.row] } {
       let alertController = UIAlertController(
         title: nil,
-        message: "Are you sure you want to remove \"\(tagIds)\" from \"\(transaction.attributes.description)\"?",
+        message: "Are you sure you want to remove \"\(selectedTags.joinedWithComma)\" from \"\(transaction.attributes.description)\"?",
         preferredStyle: .actionSheet
       )
       let confirmAction = UIAlertAction(
         title: "Remove",
         style: .destructive,
         handler: { [self] (_) in
-          let tagsObject = tags.map { TagResource(id: $0.id) }
           UpFacade.modifyTags(
-            removing: tagsObject,
+            removing: selectedTags,
             from: transaction,
             completion: { (error) in
               DispatchQueue.main.async {
@@ -191,7 +193,7 @@ private extension TransactionTagsVC {
                 case .none:
                   GrowingNotificationBanner(
                     title: "Success",
-                    subtitle: "\(tagIds) was removed from \(transaction.attributes.description).",
+                    subtitle: "\(selectedTags.joinedWithComma) was removed from \(transaction.attributes.description).",
                     style: .success
                   ).show()
                   fetchTransaction()
@@ -214,20 +216,17 @@ private extension TransactionTagsVC {
   }
   
   @objc private func removeAllTags() {
-    let tags = transaction.relationships.tags.data
-    let tagIds = tags.map { $0.id }.joined(separator: ", ")
     let alertController = UIAlertController(
       title: nil,
-      message: "Are you sure you want to remove \"\(tagIds)\" from \"\(transaction.attributes.description)\"?",
+      message: "Are you sure you want to remove \"\(tags.joinedWithComma)\" from \"\(transaction.attributes.description)\"?",
       preferredStyle: .actionSheet
     )
     let confirmAction = UIAlertAction(
       title: "Remove",
       style: .destructive,
       handler: { [self] (_) in
-        let tagsObject = tags.map { TagResource(id: $0.id) }
         UpFacade.modifyTags(
-          removing: tagsObject,
+          removing: tags,
           from: transaction,
           completion: { (error) in
             DispatchQueue.main.async {
@@ -235,7 +234,7 @@ private extension TransactionTagsVC {
               case .none:
                 GrowingNotificationBanner(
                   title: "Success",
-                  subtitle: "\(tagIds) was removed from \(transaction.attributes.description).",
+                  subtitle: "\(tags.joinedWithComma) was removed from \(transaction.attributes.description).",
                   style: .success
                 ).show()
                 fetchTransaction()
@@ -257,8 +256,8 @@ private extension TransactionTagsVC {
   }
   
   private func updateToolbarItems() {
-    selectionBarButtonItem.title = tableNode.indexPathsForSelectedRows?.count == transaction.relationships.tags.data.count ? "Deselect All" : "Select All"
-    removeAllBarButtonItem.isEnabled = tableNode.indexPathsForSelectedRows?.count != transaction.relationships.tags.data.count
+    selectionBarButtonItem.title = tableNode.indexPathsForSelectedRows?.count == tags.count ? "Deselect All" : "Select All"
+    removeAllBarButtonItem.isEnabled = tableNode.indexPathsForSelectedRows?.count != tags.count
     removeBarButtonItem.isEnabled = tableNode.indexPathsForSelectedRows != nil
   }
   
@@ -267,7 +266,7 @@ private extension TransactionTagsVC {
       fromSection: 0,
       toSection: 0,
       oldArray: oldTags,
-      newArray: transaction.relationships.tags.data,
+      newArray: tags,
       option: .equality
     ).forBatchUpdates()
     if result.hasChanges || override {
@@ -275,7 +274,7 @@ private extension TransactionTagsVC {
         tableNode.deleteRows(at: result.deletes, with: .automatic)
         tableNode.insertRows(at: result.inserts, with: .automatic)
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldTags = transaction.relationships.tags.data
+        oldTags = tags
       }
       tableNode.performBatchUpdates(batchUpdates)
     }
@@ -295,15 +294,16 @@ private extension TransactionTagsVC {
   }
 }
 
-// MARK: - ASTableDataSource
+  // MARK: - ASTableDataSource
 
 extension TransactionTagsVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
-    return transaction.relationships.tags.data.count
+    return tags.count
   }
   
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let node = TagCellNode(text: transaction.relationships.tags.data[indexPath.row].id)
+    let tag = tags[indexPath.row]
+    let node = TagCellNode(tag: tag)
     return {
       node
     }
@@ -314,7 +314,7 @@ extension TransactionTagsVC: ASTableDataSource {
   }
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-    let tag = transaction.relationships.tags.data[indexPath.row]
+    let tag = tags[indexPath.row]
     switch editingStyle {
     case .delete:
       let alertController = UIAlertController(
@@ -326,9 +326,8 @@ extension TransactionTagsVC: ASTableDataSource {
         title: "Remove",
         style: .destructive,
         handler: { [self] (_) in
-          let tagObject = TagResource(id: tag.id)
           UpFacade.modifyTags(
-            removing: tagObject,
+            removing: tag,
             from: transaction,
             completion: { (error) in
               DispatchQueue.main.async {
@@ -361,7 +360,7 @@ extension TransactionTagsVC: ASTableDataSource {
   }
 }
 
-// MARK: - ASTableDelegate
+  // MARK: - ASTableDelegate
 
 extension TransactionTagsVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
@@ -369,9 +368,10 @@ extension TransactionTagsVC: ASTableDelegate {
     case true:
       updateToolbarItems()
     case false:
+      let tag = tags[indexPath.row]
+      let viewController = TransactionsByTagVC(tag: tag)
       tableNode.deselectRow(at: indexPath, animated: true)
-      let tag = transaction.relationships.tags.data[indexPath.row].id
-      navigationController?.pushViewController(TransactionsByTagVC(tag: TagResource(id: tag)), animated: true)
+      navigationController?.pushViewController(viewController, animated: true)
     }
   }
   
@@ -401,7 +401,7 @@ extension TransactionTagsVC: ASTableDelegate {
     case true:
       return nil
     case false:
-      let tag = transaction.relationships.tags.data[indexPath.row]
+      let tag = tags[indexPath.row]
       return UIContextMenuConfiguration(
         identifier: nil,
         previewProvider: nil,
@@ -429,9 +429,8 @@ extension TransactionTagsVC: ASTableDelegate {
                     title: "Remove",
                     style: .destructive,
                     handler: { (_) in
-                      let tagObject = TagResource(id: tag.id)
                       UpFacade.modifyTags(
-                        removing: tagObject,
+                        removing: tag,
                         from: transaction,
                         completion: { (error) in
                           DispatchQueue.main.async {

@@ -3,20 +3,20 @@ import IGListKit
 import AsyncDisplayKit
 
 final class TransactionsByCategoryVC: ASViewController {
-  // MARK: - Properties
-
+    // MARK: - Properties
+  
   private var category: CategoryResource
-
+  
   private lazy var searchController = UISearchController(self)
-
+  
   private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshTransactions))
-
+  
   private let tableNode = ASTableNode(style: .grouped)
-
+  
   private var dateStyleObserver: NSKeyValueObservation?
-
+  
   private var noTransactions: Bool = false
-
+  
   private var transactions = [TransactionResource]() {
     didSet {
       noTransactions = transactions.isEmpty
@@ -25,30 +25,30 @@ final class TransactionsByCategoryVC: ASViewController {
       searchController.searchBar.placeholder = "Search \(transactions.count.description) \(transactions.count == 1 ? "Transaction" : "Transactions")"
     }
   }
-
+  
   private var transactionsError = String()
-
+  
   private var oldFilteredTransactions = [TransactionResource]()
-
+  
   private var filteredTransactions: [TransactionResource] {
     return transactions.filtered(searchBar: searchController.searchBar)
   }
-
-  // MARK: - Life Cycle
-
+  
+    // MARK: - Life Cycle
+  
   init(category: CategoryResource) {
     self.category = category
     super.init(node: tableNode)
   }
-
-  required init?(coder: NSCoder) {
-    fatalError("Not implemented")
-  }
-
+  
   deinit {
     removeObservers()
   }
-
+  
+  required init?(coder: NSCoder) {
+    fatalError("Not implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
@@ -57,21 +57,21 @@ final class TransactionsByCategoryVC: ASViewController {
     configureTableNode()
     applySnapshot(override: true)
   }
-
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     fetchTransactions()
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension TransactionsByCategoryVC {
   private func configureProperties() {
     title = "Transactions by Category"
     definesPresentationContext = true
   }
-
+  
   private func configureObservers() {
     NotificationCenter.default.addObserver(
       self,
@@ -79,20 +79,20 @@ private extension TransactionsByCategoryVC {
       name: UIApplication.willEnterForegroundNotification,
       object: nil
     )
-    dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, change) in
-      guard let weakSelf = self, let value = change.newValue else { return }
+    dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+      guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         weakSelf.fetchTransactions()
       }
     }
   }
-
+  
   private func removeObservers() {
     NotificationCenter.default.removeObserver(self)
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil
   }
-
+  
   private func configureNavigation() {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .never
@@ -100,7 +100,7 @@ private extension TransactionsByCategoryVC {
     navigationItem.searchController = searchController
     navigationItem.hidesSearchBarWhenScrolling = false
   }
-
+  
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
@@ -108,19 +108,19 @@ private extension TransactionsByCategoryVC {
   }
 }
 
-// MARK: - Actions
+  // MARK: - Actions
 
 private extension TransactionsByCategoryVC {
   @objc private func appMovedToForeground() {
     fetchTransactions()
   }
-
+  
   @objc private func refreshTransactions() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
       fetchTransactions()
     }
   }
-
+  
   private func applySnapshot(override: Bool = false) {
     let result = ListDiffPaths(
       fromSection: 0,
@@ -152,7 +152,7 @@ private extension TransactionsByCategoryVC {
       tableNode.performBatchUpdates(batchUpdates)
     }
   }
-
+  
   private func fetchTransactions() {
     UpFacade.listTransactions(filterBy: category) { [self] (result) in
       DispatchQueue.main.async {
@@ -165,15 +165,15 @@ private extension TransactionsByCategoryVC {
       }
     }
   }
-
+  
   private func display(_ transactions: [TransactionResource]) {
-    transactionsError = ""
+    transactionsError = .emptyString
     self.transactions = transactions
     if navigationItem.title != category.attributes.name {
       navigationItem.title = category.attributes.name
     }
   }
-
+  
   private func display(_ error: NetworkError) {
     transactionsError = error.description
     transactions = []
@@ -183,13 +183,13 @@ private extension TransactionsByCategoryVC {
   }
 }
 
-// MARK: - ASTableDataSource
+  // MARK: - ASTableDataSource
 
 extension TransactionsByCategoryVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
     return filteredTransactions.count
   }
-
+  
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let node = TransactionCellNode(transaction: filteredTransactions[indexPath.row])
     return {
@@ -198,15 +198,15 @@ extension TransactionsByCategoryVC: ASTableDataSource {
   }
 }
 
-// MARK: - ASTableDelegate
+  // MARK: - ASTableDelegate
 
 extension TransactionsByCategoryVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
-    tableNode.deselectRow(at: indexPath, animated: true)
     let transaction = filteredTransactions[indexPath.row]
+    tableNode.deselectRow(at: indexPath, animated: true)
     navigationController?.pushViewController(TransactionDetailVC(transaction: transaction), animated: true)
   }
-
+  
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     let transaction = filteredTransactions[indexPath.row]
     return UIContextMenuConfiguration(elements: [
@@ -217,13 +217,13 @@ extension TransactionsByCategoryVC: ASTableDelegate {
   }
 }
 
-// MARK: - UISearchBarDelegate
+  // MARK: - UISearchBarDelegate
 
 extension TransactionsByCategoryVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     applySnapshot()
   }
-
+  
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     if !searchBar.text!.isEmpty {
       searchBar.clear()

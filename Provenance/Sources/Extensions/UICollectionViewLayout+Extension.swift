@@ -2,12 +2,12 @@ import Foundation
 import UIKit
 
 extension UICollectionViewLayout {
-  /// `UICollectionViewFlowLayout()`.
+    /// `UICollectionViewFlowLayout()`.
   static var flowLayout: UICollectionViewLayout {
     return UICollectionViewFlowLayout()
   }
-
-  /// `twoColumnGridLayout`.
+  
+    /// `twoColumnGridLayout`.
   static var twoColumnGridLayout: UICollectionViewLayout {
     return UICollectionViewCompositionalLayout { (_, _) in
       let itemSize = NSCollectionLayoutSize(
@@ -36,8 +36,8 @@ extension UICollectionViewLayout {
       return section
     }
   }
-
-  /// `gridLayout`.
+  
+    /// `gridLayout`.
   static var gridLayout: UICollectionViewLayout {
     let itemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(0.2),

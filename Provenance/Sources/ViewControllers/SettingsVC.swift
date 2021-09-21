@@ -3,29 +3,29 @@ import AsyncDisplayKit
 import NotificationBannerSwift
 
 final class SettingsVC: ASViewController {
-  // MARK: - Properties
-
+    // MARK: - Properties
+  
   private var displayBanner: GrowingNotificationBanner?
   private var submitActionProxy: UIAlertAction!
   private var apiKeyObserver: NSKeyValueObservation?
   private var textDidChangeObserver: NSObjectProtocol!
   private let tableNode = ASTableNode(style: .grouped)
-
-  // MARK: - Life Cycle
-
+  
+    // MARK: - Life Cycle
+  
   init(displayBanner: GrowingNotificationBanner? = nil) {
     self.displayBanner = displayBanner
     super.init(node: tableNode)
   }
-
+  
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-
+  
   deinit {
     removeObserver()
   }
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObserver()
@@ -33,7 +33,7 @@ final class SettingsVC: ASViewController {
     configureNavigation()
     configureTableNode()
   }
-
+  
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     if let displayBanner = displayBanner {
@@ -42,13 +42,13 @@ final class SettingsVC: ASViewController {
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension SettingsVC {
   private func configureProperties() {
     title = "Settings"
   }
-
+  
   private func configureObserver() {
     apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [weak self] (_, change) in
       guard let weakSelf = self, let value = change.newValue else { return }
@@ -59,12 +59,12 @@ private extension SettingsVC {
       }
     }
   }
-
+  
   private func removeObserver() {
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
   }
-
+  
   private func configureNavigation() {
     navigationItem.title = "Settings"
     navigationItem.largeTitleDisplayMode = .never
@@ -74,7 +74,7 @@ private extension SettingsVC {
       action: #selector(closeWorkflow)
     )
   }
-
+  
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
@@ -82,7 +82,7 @@ private extension SettingsVC {
   }
 }
 
-// MARK: - Actions
+  // MARK: - Actions
 
 private extension SettingsVC {
   @objc private func closeWorkflow() {
@@ -90,17 +90,17 @@ private extension SettingsVC {
   }
 }
 
-// MARK: - ASTableDataSource
+  // MARK: - ASTableDataSource
 
 extension SettingsVC: ASTableDataSource {
   func numberOfSections(in tableNode: ASTableNode) -> Int {
     return 3
   }
-
+  
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
     return 1
   }
-
+  
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let settingsCell = ASTextCellNode(text: "Settings", selectionStyle: .default, accessoryType: .disclosureIndicator)
     return {
@@ -116,7 +116,7 @@ extension SettingsVC: ASTableDataSource {
       }
     }
   }
-
+  
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     switch section {
     case 0:
@@ -125,7 +125,7 @@ extension SettingsVC: ASTableDataSource {
       return nil
     }
   }
-
+  
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     switch section {
     case 0:
@@ -140,7 +140,7 @@ extension SettingsVC: ASTableDataSource {
   }
 }
 
-// MARK: - ASTableDelegate
+  // MARK: - ASTableDelegate
 
 extension SettingsVC: ASTableDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -151,7 +151,7 @@ extension SettingsVC: ASTableDelegate {
       return nil
     }
   }
-
+  
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     switch section {
     case 2:
@@ -160,7 +160,7 @@ extension SettingsVC: ASTableDelegate {
       return UITableView.automaticDimension
     }
   }
-
+  
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
     switch indexPath.section {
     case 0:
@@ -234,7 +234,7 @@ extension SettingsVC: ASTableDelegate {
       break
     }
   }
-
+  
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     switch indexPath.section {
     case 0:

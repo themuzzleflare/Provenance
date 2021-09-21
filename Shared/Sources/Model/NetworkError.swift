@@ -14,13 +14,13 @@ extension NetworkError {
       self = .transportError(error)
       return
     }
-
+    
     if let response = response as? HTTPURLResponse,
        !(200...299).contains(response.statusCode) {
       self = .serverError(statusCode: response.statusCode)
       return
     }
-
+    
     if data == nil {
       self = .noData
     }
@@ -43,7 +43,7 @@ extension NetworkError {
       return "No Data"
     }
   }
-
+  
   var description: String {
     switch self {
     case let .transportError(error):

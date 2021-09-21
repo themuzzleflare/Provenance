@@ -3,36 +3,38 @@ import AsyncDisplayKit
 import NotificationBannerSwift
 
 final class AddTagWorkflowThreeVC: ASViewController {
-  // MARK: - Properties
-
+    // MARK: - Properties
+  
   private var transaction: TransactionResource
-
+  
   private var tags: [TagResource]
-
+  
   private let tableNode = ASTableNode(style: .grouped)
-
-  private var tagIds: String {
-    return tags.map { $0.id }.joined(separator: ", ")
-  }
-
+  
   private var dateStyleObserver: NSKeyValueObservation?
-
-  // MARK: - Life Cycle
-
+  
+    // MARK: - Life Cycle
+  
   init(transaction: TransactionResource, tags: [TagResource]) {
     self.transaction = transaction
     self.tags = tags
     super.init(node: tableNode)
   }
-
-  required init?(coder: NSCoder) {
-    fatalError("Not implemented")
+  
+  init(transaction: TransactionResource, tag: TagResource) {
+    self.transaction = transaction
+    self.tags = [tag]
+    super.init(node: tableNode)
   }
-
+  
   deinit {
     removeObserver()
   }
-
+  
+  required init?(coder: NSCoder) {
+    fatalError("Not implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObserver()
@@ -42,40 +44,40 @@ final class AddTagWorkflowThreeVC: ASViewController {
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension AddTagWorkflowThreeVC {
   private func configureProperties() {
     title = "Add Tag Confirmation"
   }
-
+  
   private func configureObserver() {
-    dateStyleObserver = appDefaults.observe(\.dateStyle, options: [.initial, .new]) { [weak self] (_, change) in
-      guard let weakSelf = self, let value = change.newValue, let dateStyle = AppDateStyle(rawValue: value) else { return }
+    dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+      guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         weakSelf.tableNode.reloadData()
       }
     }
   }
-
+  
   private func removeObserver() {
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil
   }
-
+  
   private func configureNavigation() {
     navigationItem.title = "Confirmation"
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.rightBarButtonItem = UIBarButtonItem(image: .checkmark, style: .plain, target: self, action: #selector(addTag))
   }
-
+  
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.view.showsVerticalScrollIndicator = false
   }
 }
 
-// MARK: - Actions
+  // MARK: - Actions
 
 private extension AddTagWorkflowThreeVC {
   @objc private func addTag() {
@@ -89,7 +91,7 @@ private extension AddTagWorkflowThreeVC {
           case .none:
             GrowingNotificationBanner(
               title: "Success",
-              subtitle: "\(tagIds) was added to \(transaction.attributes.description).",
+              subtitle: "\(tags.joinedWithComma) was added to \(transaction.attributes.description).",
               style: .success
             ).show()
             navigationController?.popViewController(animated: true)
@@ -112,13 +114,13 @@ private extension AddTagWorkflowThreeVC {
   }
 }
 
-// MARK: - ASTableDataSource
+  // MARK: - ASTableDataSource
 
 extension AddTagWorkflowThreeVC: ASTableDataSource {
   func numberOfSections(in tableNode: ASTableNode) -> Int {
     return 3
   }
-
+  
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
     switch section {
     case 0:
@@ -131,25 +133,25 @@ extension AddTagWorkflowThreeVC: ASTableDataSource {
       fatalError("Unknown section")
     }
   }
-
+  
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let tag = tags[indexPath.row].id
-    let tcell = TransactionCellNode(transaction: transaction)
-    tcell.selectionStyle = .none
+    let tag = tags[indexPath.row]
+    let transactionCellNode = TransactionCellNode(transaction: transaction)
+    transactionCellNode.selectionStyle = .none
     return {
       switch indexPath.section {
       case 0:
-        return ASTextCellNode(text: tag, selectionStyle: .none)
+        return ASTextCellNode(text: tag.id, selectionStyle: .none)
       case 1:
-        return tcell
+        return transactionCellNode
       case 2:
-        return ASTextCellNode(text: "You are adding the \(self.tags.count == 1 ? "tag" : "tags") \"\(self.tagIds)\" to the transaction \"\(self.transaction.attributes.description)\", which was \(appDefaults.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: .none)
+        return ASTextCellNode(text: "You are adding the \(self.tags.count == 1 ? "tag" : "tags") \"\(self.tags.joinedWithComma)\" to the transaction \"\(self.transaction.attributes.description)\", which was \(appDefaults.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: .none)
       default:
         fatalError("Unknown section")
       }
     }
   }
-
+  
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     switch section {
     case 0:
@@ -162,7 +164,7 @@ extension AddTagWorkflowThreeVC: ASTableDataSource {
       return nil
     }
   }
-
+  
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     switch section {
     case 2:

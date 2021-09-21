@@ -2,8 +2,8 @@ import UIKit
 import SnapKit
 
 final class StatusIconHelpView: ViewController {
-  // MARK: - Properties
-
+    // MARK: - Properties
+  
   private let configuration = UIImage.SymbolConfiguration(pointSize: 21)
   private let verticalStack = UIStackView()
   private let heldStack = UIStackView()
@@ -12,16 +12,16 @@ final class StatusIconHelpView: ViewController {
   private let settledImage = UIImageView()
   private let heldLabel = UILabel()
   private let settledLabel = UILabel()
-
-  // MARK: - Life Cycle
-
+  
+    // MARK: - Life Cycle
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configure()
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension StatusIconHelpView {
   private func configure() {
@@ -57,7 +57,7 @@ private extension StatusIconHelpView {
   }
 }
 
-// MARK: - Actions
+  // MARK: - Actions
 
 private extension StatusIconHelpView {
   @objc private func closeWorkflow() {

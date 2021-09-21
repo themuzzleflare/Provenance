@@ -9,6 +9,16 @@ enum TabBarItem: Int, CaseIterable {
 }
 
 extension TabBarItem {
+  static var defaultTabs = TabBarItem.allCases.map { (item) -> UIViewController in
+    let viewController = item.viewController
+    viewController.tabBarItem = UITabBarItem(
+      title: item.title,
+      image: item.image,
+      selectedImage: item.selectedImage
+    )
+    return viewController
+  }
+  
   var viewController: UIViewController {
     switch self {
     case .transactions:
@@ -23,7 +33,7 @@ extension TabBarItem {
       return NavigationController(rootViewController: AboutVC())
     }
   }
-
+  
   var title: String {
     switch self {
     case .transactions:
@@ -38,7 +48,7 @@ extension TabBarItem {
       return "About"
     }
   }
-
+  
   var image: UIImage? {
     switch self {
     case .transactions:
@@ -53,7 +63,7 @@ extension TabBarItem {
       return .infoCircle
     }
   }
-
+  
   var selectedImage: UIImage? {
     switch self {
     case .transactions:
@@ -68,7 +78,7 @@ extension TabBarItem {
       return .infoCircleFill
     }
   }
-
+  
   var shortcutType: ShortcutType {
     switch self {
     case .transactions:

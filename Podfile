@@ -19,8 +19,6 @@ target 'Provenance' do
   pod 'Texture'
   pod 'SnapKit'
   pod 'IGListKit/Diffing'
-  pod 'BonMot'
-  pod 'SwiftyJSON'
   
 end
   
@@ -29,16 +27,13 @@ target 'Provenance Intents' do
   
   pod 'SwiftDate'
   pod 'Alamofire'
-  pod 'SwiftyJSON'
   
 end
 
 target 'Provenance IntentsUI' do
   use_frameworks!
   
-  pod 'SwiftDate'
   pod 'SnapKit'
-  pod 'SwiftyJSON'
   
 end
 
@@ -46,7 +41,6 @@ target 'Provenance Widgets' do
   use_frameworks!
   
   pod 'SwiftDate'
-  pod 'SwiftyJSON'
 
 end
 

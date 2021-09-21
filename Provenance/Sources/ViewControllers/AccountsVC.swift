@@ -3,7 +3,7 @@ import IGListKit
 import AsyncDisplayKit
 
 final class AccountsVC: ASViewController {
-  // MARK: - Properties
+    // MARK: - Properties
   
   private lazy var searchController = UISearchController.accounts(self)
   
@@ -11,7 +11,20 @@ final class AccountsVC: ASViewController {
   
   private lazy var collectionRefreshControl = UIRefreshControl(self, selector: #selector(refreshAccounts))
   
+  private var accountFilter: AccountTypeOptionEnum = appDefaults.appAccountFilter {
+    didSet {
+      if appDefaults.accountFilter != accountFilter.rawValue {
+        appDefaults.accountFilter = accountFilter.rawValue
+      }
+      if searchController.searchBar.selectedScopeButtonIndex != accountFilter.rawValue {
+        searchController.searchBar.selectedScopeButtonIndex = accountFilter.rawValue
+      }
+    }
+  }
+  
   private var apiKeyObserver: NSKeyValueObservation?
+  
+  private var accountFilterObserver: NSKeyValueObservation?
   
   private var noAccounts: Bool = false
   
@@ -32,20 +45,20 @@ final class AccountsVC: ASViewController {
     return accounts.filtered(searchBar: searchController.searchBar)
   }
   
-  // MARK: - Life Cycle
-
+    // MARK: - Life Cycle
+  
   override init() {
     super.init(node: collectionNode)
   }
-
+  
   deinit {
     removeObservers()
   }
-
+  
   required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+    fatalError("Not implemented")
   }
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
@@ -61,14 +74,14 @@ final class AccountsVC: ASViewController {
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension AccountsVC {
   private func configureProperties() {
     title = "Accounts"
     definesPresentationContext = true
   }
-
+  
   private func configureObservers() {
     NotificationCenter.default.addObserver(
       self,
@@ -76,18 +89,24 @@ private extension AccountsVC {
       name: UIApplication.willEnterForegroundNotification,
       object: nil
     )
-    apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [weak self] (_, change) in
-      guard let weakSelf = self, let value = change.newValue else { return }
+    apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+      guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         weakSelf.fetchAccounts()
       }
     }
+    accountFilterObserver = appDefaults.observe(\.accountFilter, options: .new) { [weak self] (_, change) in
+      guard let weakSelf = self, let value = change.newValue, let accountFilter = AccountTypeOptionEnum(rawValue: value) else { return }
+      weakSelf.accountFilter = accountFilter
+    }
   }
-
+  
   private func removeObservers() {
     NotificationCenter.default.removeObserver(self)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
+    accountFilterObserver?.invalidate()
+    accountFilterObserver = nil
   }
   
   private func configureNavigation() {
@@ -101,11 +120,10 @@ private extension AccountsVC {
     collectionNode.dataSource = self
     collectionNode.delegate = self
     collectionNode.view.refreshControl = collectionRefreshControl
-    collectionNode.backgroundColor = .systemGroupedBackground
   }
 }
 
-// MARK: - Actions
+  // MARK: - Actions
 
 private extension AccountsVC {
   @objc private func appMovedToForeground() {
@@ -167,7 +185,7 @@ private extension AccountsVC {
   }
   
   private func display(_ accounts: [AccountResource]) {
-    accountsError = ""
+    accountsError = .emptyString
     self.accounts = accounts
     if navigationItem.title != "Accounts" {
       navigationItem.title = "Accounts"
@@ -183,13 +201,13 @@ private extension AccountsVC {
   }
 }
 
-// MARK: - ASCollectionDataSource
+  // MARK: - ASCollectionDataSource
 
 extension AccountsVC: ASCollectionDataSource {
   func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
     return filteredAccounts.count
   }
-
+  
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
     let node = AccountCellNode(account: filteredAccounts[indexPath.item])
     return {
@@ -198,15 +216,15 @@ extension AccountsVC: ASCollectionDataSource {
   }
 }
 
-// MARK: - ASCollectionDelegate
+  // MARK: - ASCollectionDelegate
 
 extension AccountsVC: ASCollectionDelegate {
   func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
-    collectionNode.deselectItem(at: indexPath, animated: true)
     let account = filteredAccounts[indexPath.item]
+    collectionNode.deselectItem(at: indexPath, animated: true)
     navigationController?.pushViewController(TransactionsByAccountVC(account: account), animated: true)
   }
-
+  
   func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     let account = filteredAccounts[indexPath.item]
     return UIContextMenuConfiguration(elements: [
@@ -216,7 +234,7 @@ extension AccountsVC: ASCollectionDelegate {
   }
 }
 
-// MARK: - UISearchBarDelegate
+  // MARK: - UISearchBarDelegate
 
 extension AccountsVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -229,8 +247,11 @@ extension AccountsVC: UISearchBarDelegate {
       applySnapshot()
     }
   }
-
+  
   func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+    if let value = AccountTypeOptionEnum(rawValue: selectedScope) {
+      accountFilter = value
+    }
     if !searchBar.text!.isEmpty {
       applySnapshot()
     }

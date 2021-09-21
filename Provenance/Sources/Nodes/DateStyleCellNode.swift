@@ -4,33 +4,37 @@ import AsyncDisplayKit
 final class DateStyleCellNode: ASCellNode {
   private let dateStyleTextNode = ASTextNode()
   private let segmentedControlNode = SegmentedControlNode()
-
+  
   private var styleSelection: AppDateStyle = appDefaults.appDateStyle {
     didSet {
-      if appDefaults.dateStyle != styleSelection.rawValue { appDefaults.dateStyle = styleSelection.rawValue }
-      if segmentedControlNode.selectedSegmentIndex != styleSelection.rawValue { segmentedControlNode.selectedSegmentIndex = styleSelection.rawValue }
+      if appDefaults.dateStyle != styleSelection.rawValue {
+        appDefaults.dateStyle = styleSelection.rawValue
+      }
+      if segmentedControlNode.selectedSegmentIndex != styleSelection.rawValue {
+        segmentedControlNode.selectedSegmentIndex = styleSelection.rawValue
+      }
     }
   }
-
+  
   private var dateStyleObserver: NSKeyValueObservation?
-
+  
   override init() {
     super.init()
-
+    
     automaticallyManagesSubnodes = true
-
+    
     selectionStyle = .none
-
+    
     dateStyleTextNode.attributedText = NSAttributedString(
       text: "Date Style",
       font: .circularStdMedium(size: UIFont.labelFontSize)
     )
   }
-
+  
   deinit {
     removeObserver()
   }
-
+  
   override func didLoad() {
     super.didLoad()
     configureObserver()
@@ -38,7 +42,7 @@ final class DateStyleCellNode: ASCellNode {
     segmentedControlNode.selectedSegmentIndex = styleSelection.rawValue
     segmentedControlNode.addTarget(self, action: #selector(changedSelection), forControlEvents: .valueChanged)
   }
-
+  
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
     let hStack = ASStackLayoutSpec(
       direction: .horizontal,
@@ -50,7 +54,7 @@ final class DateStyleCellNode: ASCellNode {
         segmentedControlNode
       ]
     )
-
+    
     return ASInsetLayoutSpec(insets: .cellNode, child: hStack)
   }
 }
@@ -62,12 +66,12 @@ extension DateStyleCellNode {
       weakSelf.styleSelection = dateStyle
     }
   }
-
+  
   private func removeObserver() {
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil
   }
-
+  
   @objc private func changedSelection() {
     if let dateStyle = AppDateStyle(rawValue: segmentedControlNode.selectedSegmentIndex) {
       styleSelection = dateStyle

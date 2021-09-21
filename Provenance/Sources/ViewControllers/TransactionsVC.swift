@@ -3,8 +3,8 @@ import IGListKit
 import AsyncDisplayKit
 
 final class TransactionsVC: ASViewController {
-  // MARK: - Properties
-
+    // MARK: - Properties
+  
   private lazy var filterBarButtonItem = UIBarButtonItem(image: .sliderHorizontal3, menu: filterMenu)
   
   private lazy var searchController = UISearchController(self)
@@ -14,21 +14,21 @@ final class TransactionsVC: ASViewController {
   private let tableNode = ASTableNode(style: .grouped)
   
   private var apiKeyObserver: NSKeyValueObservation?
-
+  
   private var dateStyleObserver: NSKeyValueObservation?
-
+  
   private var noTransactions: Bool = false
-
+  
   private var transactionsError = String()
-
+  
   private var transactions = [TransactionResource]() {
     didSet {
       transactionsUpdates()
     }
   }
-
+  
   private var oldFilteredTransactions = [TransactionResource]()
-
+  
   private var filteredTransactions: [TransactionResource] {
     return preFilteredTransactions.filtered(searchBar: searchController.searchBar)
   }
@@ -54,17 +54,17 @@ final class TransactionsVC: ASViewController {
       filterUpdates()
     }
   }
-
-  // MARK: - Life Cycle
-
+  
+    // MARK: - Life Cycle
+  
   override init() {
     super.init(node: tableNode)
   }
-
+  
   deinit {
     removeObservers()
   }
-
+  
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
@@ -84,7 +84,7 @@ final class TransactionsVC: ASViewController {
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 extension TransactionsVC {
   private func configureTableNode() {
@@ -97,7 +97,7 @@ extension TransactionsVC {
     title = "Transactions"
     definesPresentationContext = true
   }
-
+  
   private func configureObservers() {
     NotificationCenter.default.addObserver(
       self,
@@ -118,7 +118,7 @@ extension TransactionsVC {
       }
     }
   }
-
+  
   private func removeObservers() {
     NotificationCenter.default.removeObserver(self)
     apiKeyObserver?.invalidate()
@@ -135,7 +135,7 @@ extension TransactionsVC {
   }
 }
 
-// MARK: - Actions
+  // MARK: - Actions
 
 extension TransactionsVC {
   @objc private func appMovedToForeground() {
@@ -204,7 +204,9 @@ extension TransactionsVC {
         if !transactionsError.isEmpty {
           tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: transactionsError)
         } else {
-          if tableNode.view.backgroundView != nil { tableNode.view.backgroundView = nil }
+          if tableNode.view.backgroundView != nil {
+            tableNode.view.backgroundView = nil
+          }
         }
       }
       let batchUpdates = { [self] in
@@ -231,7 +233,7 @@ extension TransactionsVC {
   }
   
   private func display(_ transactions: [TransactionResource]) {
-    transactionsError = String.emptyString
+    transactionsError = .emptyString
     self.transactions = transactions
     if navigationItem.title != "Transactions" {
       navigationItem.title = "Transactions"
@@ -253,27 +255,30 @@ extension TransactionsVC {
   }
 }
 
-// MARK: - ASTableDataSource
+  // MARK: - ASTableDataSource
 
 extension TransactionsVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
     return filteredTransactions.count
   }
-
+  
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let node = TransactionCellNode(transaction: filteredTransactions[indexPath.row])
+    let transaction = filteredTransactions[indexPath.row]
+    let node = TransactionCellNode(transaction: transaction)
     return {
       node
     }
   }
 }
 
-// MARK: - ASTableDelegate
+  // MARK: - ASTableDelegate
 
 extension TransactionsVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
+    let transaction = filteredTransactions[indexPath.row]
+    let viewController = TransactionDetailVC(transaction: transaction)
     tableNode.deselectRow(at: indexPath, animated: true)
-    navigationController?.pushViewController(TransactionDetailVC(transaction: filteredTransactions[indexPath.row]), animated: true)
+    navigationController?.pushViewController(viewController, animated: true)
   }
   
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -286,7 +291,7 @@ extension TransactionsVC: ASTableDelegate {
   }
 }
 
-// MARK: - UISearchBarDelegate
+  // MARK: - UISearchBarDelegate
 
 extension TransactionsVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

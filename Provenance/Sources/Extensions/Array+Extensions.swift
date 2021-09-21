@@ -37,9 +37,9 @@ extension Array where Element: CategoryResource {
     return self.filter { (category) in
       switch searchBar.selectedScopeButtonIndex {
       case 0:
-        return searchBar.text!.isEmpty || (category.attributes.name.localizedStandardContains(searchBar.text!) && category.isParent == true)
+        return searchBar.text!.isEmpty || (category.attributes.name.localizedStandardContains(searchBar.text!) && category.categoryTypeEnum == .parent)
       case 1:
-        return searchBar.text!.isEmpty || (category.attributes.name.localizedStandardContains(searchBar.text!) && category.isParent == false)
+        return searchBar.text!.isEmpty || (category.attributes.name.localizedStandardContains(searchBar.text!) && category.categoryTypeEnum == .child)
       default:
         return searchBar.text!.isEmpty || category.attributes.name.localizedStandardContains(searchBar.text!)
       }
@@ -52,16 +52,16 @@ extension Array where Element == DetailSection {
     return [
       DetailSection(
         id: 1,
-        attributes: [
-          DetailAttribute(
+        items: [
+          DetailItem(
             id: "Status",
             value: transaction.attributes.statusString
           ),
-          DetailAttribute(
+          DetailItem(
             id: "Account",
             value: account?.attributes.displayName ?? ""
           ),
-          DetailAttribute(
+          DetailItem(
             id: "Transfer Account",
             value: transferAccount?.attributes.displayName ?? ""
           )
@@ -69,16 +69,16 @@ extension Array where Element == DetailSection {
       ),
       DetailSection(
         id: 2,
-        attributes: [
-          DetailAttribute(
+        items: [
+          DetailItem(
             id: "Description",
             value: transaction.attributes.description
           ),
-          DetailAttribute(
+          DetailItem(
             id: "Raw Text",
             value: transaction.attributes.rawText ?? ""
           ),
-          DetailAttribute(
+          DetailItem(
             id: "Message",
             value: transaction.attributes.message ?? ""
           )
@@ -86,20 +86,20 @@ extension Array where Element == DetailSection {
       ),
       DetailSection(
         id: 3,
-        attributes: [
-          DetailAttribute(
+        items: [
+          DetailItem(
             id: "Hold \(transaction.attributes.holdInfo?.amount.transactionType ?? "")",
             value: transaction.attributes.holdTransValue
           ),
-          DetailAttribute(
+          DetailItem(
             id: "Hold Foreign \(transaction.attributes.holdInfo?.foreignAmount?.transactionType ?? "")",
             value: transaction.attributes.holdForeignTransValue
           ),
-          DetailAttribute(
+          DetailItem(
             id: "Foreign \(transaction.attributes.foreignAmount?.transactionType ?? "")",
             value: transaction.attributes.foreignTransValue
           ),
-          DetailAttribute(
+          DetailItem(
             id: transaction.attributes.amount.transactionType,
             value: transaction.attributes.amount.valueLong
           )
@@ -107,12 +107,12 @@ extension Array where Element == DetailSection {
       ),
       DetailSection(
         id: 4,
-        attributes: [
-          DetailAttribute(
+        items: [
+          DetailItem(
             id: "Creation Date",
             value: transaction.attributes.creationDate
           ),
-          DetailAttribute(
+          DetailItem(
             id: "Settlement Date",
             value: transaction.attributes.settlementDate ?? ""
           )
@@ -120,12 +120,12 @@ extension Array where Element == DetailSection {
       ),
       DetailSection(
         id: 5,
-        attributes: [
-          DetailAttribute(
+        items: [
+          DetailItem(
             id: "Parent Category",
             value: parentCategory?.attributes.name ?? ""
           ),
-          DetailAttribute(
+          DetailItem(
             id: "Category",
             value: category?.attributes.name ?? ""
           )
@@ -133,8 +133,8 @@ extension Array where Element == DetailSection {
       ),
       DetailSection(
         id: 6,
-        attributes: [
-          DetailAttribute(
+        items: [
+          DetailItem(
             id: "Tags",
             value: transaction.relationships.tags.data.count.description
           )
@@ -142,25 +142,25 @@ extension Array where Element == DetailSection {
       )
     ]
   }
-
+  
   static func accountDetailSections(account: AccountResource, transaction: TransactionResource?) -> [DetailSection] {
     return [
       DetailSection(
         id: 1,
-        attributes: [
-          DetailAttribute(
+        items: [
+          DetailItem(
             id: "Account Balance",
             value: account.attributes.balance.valueLong
           ),
-          DetailAttribute(
+          DetailItem(
             id: "Latest Transaction",
             value: transaction?.attributes.description ?? ""
           ),
-          DetailAttribute(
+          DetailItem(
             id: "Account ID",
             value: account.id
           ),
-          DetailAttribute(
+          DetailItem(
             id: "Creation Date",
             value: account.attributes.creationDate
           )
@@ -171,11 +171,11 @@ extension Array where Element == DetailSection {
   
   var filtered: [DetailSection] {
     return self.filter {
-      !$0.attributes.allSatisfy {
+      !$0.items.allSatisfy {
         $0.value.isEmpty || ($0.id == "Tags" && $0.value == "0")
       }
     }.map {
-      DetailSection(id: $0.id, attributes: $0.attributes.filter {
+      DetailSection(id: $0.id, items: $0.items.filter {
         !$0.value.isEmpty
       })
     }

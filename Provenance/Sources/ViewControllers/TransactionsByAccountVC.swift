@@ -3,11 +3,11 @@ import IGListKit
 import AsyncDisplayKit
 
 final class TransactionsByAccountVC: ASViewController {
-  // MARK: - Properties
+    // MARK: - Properties
   
   private var account: AccountResource {
     didSet {
-      if !searchController.isFirstResponder && searchController.searchBar.text!.isEmpty {
+      if !searchController.isActive && searchController.searchBar.text!.isEmpty {
         setTableHeaderView()
       }
     }
@@ -37,19 +37,19 @@ final class TransactionsByAccountVC: ASViewController {
     return transactions.filtered(searchBar: searchController.searchBar)
   }
   
-  // MARK: - Life Cycle
+    // MARK: - Life Cycle
   
   init(account: AccountResource) {
     self.account = account
     super.init(node: tableNode)
   }
   
-  required init?(coder: NSCoder) {
-    fatalError("Not implemented")
-  }
-  
   deinit {
     removeObservers()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("Not implemented")
   }
   
   override func viewDidLoad() {
@@ -67,14 +67,14 @@ final class TransactionsByAccountVC: ASViewController {
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension TransactionsByAccountVC {
   private func configureProperties() {
     title = "Transactions by Account"
     definesPresentationContext = false
   }
-
+  
   private func configureObservers() {
     NotificationCenter.default.addObserver(
       self,
@@ -89,7 +89,7 @@ private extension TransactionsByAccountVC {
       }
     }
   }
-
+  
   private func removeObservers() {
     NotificationCenter.default.removeObserver(self)
     dateStyleObserver?.invalidate()
@@ -112,7 +112,7 @@ private extension TransactionsByAccountVC {
   }
 }
 
-// MARK: - Actions
+  // MARK: - Actions
 
 private extension TransactionsByAccountVC {
   @objc private func appMovedToForeground() {
@@ -120,7 +120,8 @@ private extension TransactionsByAccountVC {
   }
   
   @objc private func openAccountInfo() {
-    present(NavigationController(rootViewController: AccountDetailVC(account: account, transaction: transactions.first)), animated: true)
+    let viewController = NavigationController(rootViewController: AccountDetailVC(account: account, transaction: transactions.first))
+    present(viewController, animated: true)
   }
   
   @objc private func refreshData() {
@@ -185,8 +186,8 @@ private extension TransactionsByAccountVC {
         switch result {
         case let .success(account):
           display(account)
-        case let .failure(error):
-          print(error.description)
+        case .failure:
+          break
         }
       }
     }
@@ -210,7 +211,7 @@ private extension TransactionsByAccountVC {
   }
   
   private func display(_ transactions: [TransactionResource]) {
-    transactionsError = ""
+    transactionsError = .emptyString
     self.transactions = transactions
     if navigationItem.title != account.attributes.displayName {
       navigationItem.title = account.attributes.displayName
@@ -226,13 +227,13 @@ private extension TransactionsByAccountVC {
   }
 }
 
-// MARK: - ASTableDataSource
+  // MARK: - ASTableDataSource
 
 extension TransactionsByAccountVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
     return filteredTransactions.count
   }
-
+  
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let node = TransactionCellNode(transaction: filteredTransactions[indexPath.row])
     return {
@@ -241,12 +242,12 @@ extension TransactionsByAccountVC: ASTableDataSource {
   }
 }
 
-// MARK: - ASTableDelegate
+  // MARK: - ASTableDelegate
 
 extension TransactionsByAccountVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
-    tableNode.deselectRow(at: indexPath, animated: true)
     let transaction = filteredTransactions[indexPath.row]
+    tableNode.deselectRow(at: indexPath, animated: true)
     navigationController?.pushViewController(TransactionDetailVC(transaction: transaction), animated: true)
   }
   
@@ -260,7 +261,7 @@ extension TransactionsByAccountVC: ASTableDelegate {
   }
 }
 
-// MARK: - UISearchBarDelegate
+  // MARK: - UISearchBarDelegate
 
 extension TransactionsByAccountVC: UISearchBarDelegate {
   func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

@@ -2,7 +2,7 @@ import UIKit
 import MarqueeLabel
 
 final class TransactionDetailVC: ViewController {
-  // MARK: - Properties
+    // MARK: - Properties
   
   private var transaction: TransactionResource {
     didSet {
@@ -10,14 +10,14 @@ final class TransactionDetailVC: ViewController {
     }
   }
   
-  private typealias DataSource = UITableViewDiffableDataSource<DetailSection, DetailAttribute>
-
-  private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailAttribute>
-
+  private typealias DataSource = UITableViewDiffableDataSource<DetailSection, DetailItem>
+  
+  private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailItem>
+  
   private lazy var dataSource = makeDataSource()
-
+  
   private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshTransaction))
-
+  
   private let tableView = UITableView(frame: .zero, style: .grouped)
   
   private var filteredSections: [DetailSection] {
@@ -54,19 +54,19 @@ final class TransactionDetailVC: ViewController {
     }
   }
   
-  // MARK: - Life Cycle
+    // MARK: - Life Cycle
   
   init(transaction: TransactionResource) {
     self.transaction = transaction
     super.init(nibName: nil, bundle: nil)
   }
   
-  required init?(coder: NSCoder) {
-    fatalError("Not implemented")
-  }
-  
   deinit {
     removeObserver()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("Not implemented")
   }
   
   override func viewDidLoad() {
@@ -90,13 +90,13 @@ final class TransactionDetailVC: ViewController {
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension TransactionDetailVC {
   private func configureProperties() {
     title = "Transaction Details"
   }
-
+  
   private func configureObserver() {
     NotificationCenter.default.addObserver(
       self,
@@ -105,7 +105,7 @@ private extension TransactionDetailVC {
       object: nil
     )
   }
-
+  
   private func removeObserver() {
     NotificationCenter.default.removeObserver(self)
   }
@@ -128,7 +128,7 @@ private extension TransactionDetailVC {
   }
 }
 
-// MARK: - Actions
+  // MARK: - Actions
 
 private extension TransactionDetailVC {
   @objc private func appMovedToForeground() {
@@ -226,7 +226,7 @@ private extension TransactionDetailVC {
   private func applySnapshot(animate: Bool = true) {
     var snapshot = Snapshot()
     snapshot.appendSections(filteredSections)
-    filteredSections.forEach { snapshot.appendItems($0.attributes, toSection: $0) }
+    filteredSections.forEach { snapshot.appendItems($0.items, toSection: $0) }
     if snapshot.itemIdentifiers.isEmpty {
       tableView.backgroundView = .loadingView(frame: tableView.bounds)
     } else if tableView.backgroundView != nil {
@@ -257,7 +257,7 @@ private extension TransactionDetailVC {
   }
 }
 
-// MARK: - UITableViewDelegate
+  // MARK: - UITableViewDelegate
 
 extension TransactionDetailVC: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -2,17 +2,17 @@ import UIKit
 import SnapKit
 
 final class AttributeCell: UITableViewCell {
-  // MARK: - Properties
-
+    // MARK: - Properties
+  
   static let reuseIdentifier = "attributeCell"
-
+  
   var leftLabel = UILabel()
   var rightLabel = SRCopyableLabel()
-
+  
   private let horizontalStack = UIStackView()
-
-  // MARK: - Life Cycle
-
+  
+    // MARK: - Life Cycle
+  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     configureCell()
@@ -21,24 +21,24 @@ final class AttributeCell: UITableViewCell {
     configureRightLabel()
     configureHorizontalStackView()
   }
-
+  
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension AttributeCell {
   private func configureCell() {
     separatorInset = .zero
     selectionStyle = .none
   }
-
+  
   private func configureContentView() {
     contentView.addSubview(horizontalStack)
   }
-
+  
   private func configureLeftLabel() {
     leftLabel.font = .circularStdMedium(size: UIFont.labelFontSize)
     leftLabel.textAlignment = .left
@@ -52,7 +52,7 @@ private extension AttributeCell {
     rightLabel.textColor = .secondaryLabel
     rightLabel.numberOfLines = 0
   }
-
+  
   private func configureHorizontalStackView() {
     horizontalStack.snp.makeConstraints { make in
       make.edges.equalToSuperview().inset(UIEdgeInsets.cellNode)

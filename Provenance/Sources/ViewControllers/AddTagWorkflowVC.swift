@@ -3,18 +3,18 @@ import IGListKit
 import AsyncDisplayKit
 
 final class AddTagWorkflowVC: ASViewController {
-  // MARK: - Properties
-
+    // MARK: - Properties
+  
   private lazy var searchController = UISearchController(self)
-
+  
   private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshTransactions))
-
+  
   private let tableNode = ASTableNode(style: .grouped)
-
+  
   private var dateStyleObserver: NSKeyValueObservation?
-
+  
   private var noTransactions: Bool = false
-
+  
   private var transactions = [TransactionResource]() {
     didSet {
       noTransactions = transactions.isEmpty
@@ -23,29 +23,29 @@ final class AddTagWorkflowVC: ASViewController {
       searchController.searchBar.placeholder = "Search \(transactions.count.description) \(transactions.count == 1 ? "Transaction" : "Transactions")"
     }
   }
-
+  
   private var transactionsError = String()
-
+  
   private var oldFilteredTransactions = [TransactionResource]()
-
+  
   private var filteredTransactions: [TransactionResource] {
     return transactions.filtered(searchBar: searchController.searchBar)
   }
-
-  // MARK: - Life Cycle
-
+  
+    // MARK: - Life Cycle
+  
   override init() {
     super.init(node: tableNode)
   }
-
+  
   deinit {
     removeObservers()
   }
-
+  
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
@@ -54,21 +54,21 @@ final class AddTagWorkflowVC: ASViewController {
     configureTableNode()
     applySnapshot(override: true)
   }
-
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     fetchTransactions()
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension AddTagWorkflowVC {
   private func configureProperties() {
     title = "Transaction Selection"
     definesPresentationContext = true
   }
-
+  
   private func configureObservers() {
     NotificationCenter.default.addObserver(
       self,
@@ -76,20 +76,20 @@ private extension AddTagWorkflowVC {
       name: UIApplication.willEnterForegroundNotification,
       object: nil
     )
-    dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, change) in
-      guard let weakSelf = self, let value = change.newValue else { return }
+    dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+      guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         weakSelf.fetchTransactions()
       }
     }
   }
-
+  
   private func removeObservers() {
     NotificationCenter.default.removeObserver(self)
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil
   }
-
+  
   private func configureNavigation() {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .never
@@ -98,7 +98,7 @@ private extension AddTagWorkflowVC {
     navigationItem.hidesSearchBarWhenScrolling = false
     navigationItem.backButtonDisplayMode = .minimal
   }
-
+  
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
@@ -106,23 +106,23 @@ private extension AddTagWorkflowVC {
   }
 }
 
-// MARK: - Actions
+  // MARK: - Actions
 
 private extension AddTagWorkflowVC {
   @objc private func appMovedToForeground() {
     fetchTransactions()
   }
-
+  
   @objc private func refreshTransactions() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
       fetchTransactions()
     }
   }
-
+  
   @objc private func closeWorkflow() {
     navigationController?.dismiss(animated: true)
   }
-
+  
   private func applySnapshot(override: Bool = false) {
     let result = ListDiffPaths(
       fromSection: 0,
@@ -154,7 +154,7 @@ private extension AddTagWorkflowVC {
       tableNode.performBatchUpdates(batchUpdates)
     }
   }
-
+  
   private func fetchTransactions() {
     UpFacade.listTransactions { [self] (result) in
       DispatchQueue.main.async {
@@ -167,15 +167,15 @@ private extension AddTagWorkflowVC {
       }
     }
   }
-
+  
   private func display(_ transactions: [TransactionResource]) {
-    transactionsError = ""
+    transactionsError = .emptyString
     self.transactions = transactions
     if navigationItem.title != "Select Transaction" {
       navigationItem.title = "Select Transaction"
     }
   }
-
+  
   private func display(_ error: NetworkError) {
     transactionsError = error.description
     transactions = []
@@ -185,13 +185,13 @@ private extension AddTagWorkflowVC {
   }
 }
 
-// MARK: - ASTableDataSource
+  // MARK: - ASTableDataSource
 
 extension AddTagWorkflowVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
     return filteredTransactions.count
   }
-
+  
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let node = TransactionCellNode(transaction: filteredTransactions[indexPath.row])
     return {
@@ -200,15 +200,15 @@ extension AddTagWorkflowVC: ASTableDataSource {
   }
 }
 
-// MARK: - ASTableDelegate
+  // MARK: - ASTableDelegate
 
 extension AddTagWorkflowVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
-    tableNode.deselectRow(at: indexPath, animated: true)
     let transaction = filteredTransactions[indexPath.row]
+    tableNode.deselectRow(at: indexPath, animated: true)
     navigationController?.pushViewController(AddTagWorkflowTwoVC(transaction: transaction), animated: true)
   }
-
+  
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     let transaction = filteredTransactions[indexPath.row]
     return UIContextMenuConfiguration(elements: [
@@ -219,13 +219,13 @@ extension AddTagWorkflowVC: ASTableDelegate {
   }
 }
 
-// MARK: - UISearchBarDelegate
+  // MARK: - UISearchBarDelegate
 
 extension AddTagWorkflowVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     applySnapshot()
   }
-
+  
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     if !searchBar.text!.isEmpty {
       searchBar.clear()

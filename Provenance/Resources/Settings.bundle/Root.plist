@@ -44,6 +44,62 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
+			<string>Filters</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Account Filter</string>
+			<key>Key</key>
+			<string>accountFilter</string>
+			<key>DefaultValue</key>
+			<integer>0</integer>
+			<key>Titles</key>
+			<array>
+				<string>By Transactional</string>
+				<string>By Saver</string>
+			</array>
+			<key>ShortTitles</key>
+			<array>
+				<string>Transactional</string>
+				<string>Saver</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<real>0</real>
+				<integer>1</integer>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Category Filter</string>
+			<key>Key</key>
+			<string>categoryFilter</string>
+			<key>DefaultValue</key>
+			<integer>0</integer>
+			<key>Titles</key>
+			<array>
+				<string>By Parent</string>
+				<string>By Child</string>
+			</array>
+			<key>ShortTitles</key>
+			<array>
+				<string>Parent</string>
+				<string>Child</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<real>0</real>
+				<integer>1</integer>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
 			<string>Diagnostics</string>
 		</dict>
 		<dict>

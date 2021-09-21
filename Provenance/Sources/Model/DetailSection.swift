@@ -2,11 +2,12 @@ import Foundation
 
 struct DetailSection: Identifiable {
   var id: Int
-  var attributes: [DetailAttribute]
-
-  init(id: Int, attributes: [DetailAttribute]) {
+  
+  var items: [DetailItem]
+  
+  init(id: Int, items: [DetailItem]) {
     self.id = id
-    self.attributes = attributes
+    self.items = items
   }
 }
 
@@ -14,7 +15,7 @@ extension DetailSection: Hashable {
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)
   }
-
+  
   static func == (lhs: DetailSection, rhs: DetailSection) -> Bool {
     lhs.id == rhs.id
   }

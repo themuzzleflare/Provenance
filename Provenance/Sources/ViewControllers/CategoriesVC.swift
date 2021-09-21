@@ -3,7 +3,7 @@ import IGListKit
 import AsyncDisplayKit
 
 final class CategoriesVC: ASViewController {
-  // MARK: - Properties
+    // MARK: - Properties
   
   private lazy var searchController = UISearchController.categories(self)
   
@@ -11,7 +11,20 @@ final class CategoriesVC: ASViewController {
   
   private lazy var collectionRefreshControl = UIRefreshControl(self, selector: #selector(refreshCategories))
   
+  private var categoryFilter: CategoryTypeEnum = appDefaults.appCategoryFilter {
+    didSet {
+      if appDefaults.categoryFilter != categoryFilter.rawValue {
+        appDefaults.categoryFilter = categoryFilter.rawValue
+      }
+      if searchController.searchBar.selectedScopeButtonIndex != categoryFilter.rawValue {
+        searchController.searchBar.selectedScopeButtonIndex = categoryFilter.rawValue
+      }
+    }
+  }
+  
   private var apiKeyObserver: NSKeyValueObservation?
+  
+  private var categoryFilterObserver: NSKeyValueObservation?
   
   private var noCategories: Bool = false
   
@@ -31,20 +44,20 @@ final class CategoriesVC: ASViewController {
   private var filteredCategories: [CategoryResource] {
     return categories.filtered(searchBar: searchController.searchBar)
   }
-  // MARK: - Life Cycle
-
+    // MARK: - Life Cycle
+  
   override init() {
     super.init(node: collectionNode)
   }
-
+  
   deinit {
     removeObservers()
   }
-
+  
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
@@ -60,14 +73,14 @@ final class CategoriesVC: ASViewController {
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension CategoriesVC {
   private func configureProperties() {
     title = "Categories"
     definesPresentationContext = true
   }
-
+  
   private func configureObservers() {
     NotificationCenter.default.addObserver(
       self,
@@ -75,18 +88,24 @@ private extension CategoriesVC {
       name: UIApplication.willEnterForegroundNotification,
       object: nil
     )
-    apiKeyObserver = appDefaults.observe(\.apiKey, options: [.new]) { [weak self] (_, change) in
-      guard let weakSelf = self, let value = change.newValue else { return }
+    apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+      guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         weakSelf.fetchCategories()
       }
     }
+    categoryFilterObserver = appDefaults.observe(\.categoryFilter, options: .new) { [weak self] (_, change) in
+      guard let weakSelf = self, let value = change.newValue, let categoryFilter = CategoryTypeEnum(rawValue: value) else { return }
+      weakSelf.categoryFilter = categoryFilter
+    }
   }
-
+  
   private func removeObservers() {
     NotificationCenter.default.removeObserver(self)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
+    categoryFilterObserver?.invalidate()
+    categoryFilterObserver = nil
   }
   
   private func configureNavigation() {
@@ -100,11 +119,10 @@ private extension CategoriesVC {
     collectionNode.dataSource = self
     collectionNode.delegate = self
     collectionNode.view.refreshControl = collectionRefreshControl
-    collectionNode.backgroundColor = .systemGroupedBackground
   }
 }
 
-// MARK: - Actions
+  // MARK: - Actions
 
 private extension CategoriesVC {
   @objc private func appMovedToForeground() {
@@ -166,7 +184,7 @@ private extension CategoriesVC {
   }
   
   private func display(_ categories: [CategoryResource]) {
-    categoriesError = ""
+    categoriesError = .emptyString
     self.categories = categories
     if navigationItem.title != "Categories" {
       navigationItem.title = "Categories"
@@ -182,13 +200,13 @@ private extension CategoriesVC {
   }
 }
 
-// MARK: - ASCollectionDataSource
+  // MARK: - ASCollectionDataSource
 
 extension CategoriesVC: ASCollectionDataSource {
   func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
     return filteredCategories.count
   }
-
+  
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
     let node = CategoryCellNode(category: filteredCategories[indexPath.item])
     return {
@@ -197,12 +215,12 @@ extension CategoriesVC: ASCollectionDataSource {
   }
 }
 
-// MARK: - ASCollectionDelegate
+  // MARK: - ASCollectionDelegate
 
 extension CategoriesVC: ASCollectionDelegate {
   func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
-    collectionNode.deselectItem(at: indexPath, animated: true)
     let category = filteredCategories[indexPath.item]
+    collectionNode.deselectItem(at: indexPath, animated: true)
     navigationController?.pushViewController(TransactionsByCategoryVC(category: category), animated: true)
   }
   
@@ -214,7 +232,7 @@ extension CategoriesVC: ASCollectionDelegate {
   }
 }
 
-// MARK: - UISearchBarDelegate
+  // MARK: - UISearchBarDelegate
 
 extension CategoriesVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -227,8 +245,11 @@ extension CategoriesVC: UISearchBarDelegate {
       applySnapshot()
     }
   }
-
+  
   func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+    if let value = CategoryTypeEnum(rawValue: selectedScope) {
+      categoryFilter = value
+    }
     if !searchBar.text!.isEmpty {
       applySnapshot()
     }

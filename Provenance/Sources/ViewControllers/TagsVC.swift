@@ -3,18 +3,18 @@ import IGListKit
 import AsyncDisplayKit
 
 final class TagsVC: ASViewController {
-  // MARK: - Properties
-
+    // MARK: - Properties
+  
   private lazy var searchController = UISearchController(self)
-
+  
   private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshTags))
-
+  
   private let tableNode = ASTableNode(style: .grouped)
-
+  
   private var apiKeyObserver: NSKeyValueObservation?
-
+  
   private var noTags: Bool = false
-
+  
   private var tags = [TagResource]() {
     didSet {
       noTags = tags.isEmpty
@@ -23,29 +23,29 @@ final class TagsVC: ASViewController {
       searchController.searchBar.placeholder = "Search \(tags.count.description) \(tags.count == 1 ? "Tag" : "Tags")"
     }
   }
-
+  
   private var tagsError = String()
-
+  
   private var oldFilteredTags = [TagResource]()
-
+  
   private var filteredTags: [TagResource] {
     return tags.filtered(searchBar: searchController.searchBar)
   }
-
-  // MARK: - Life Cycle
-
+  
+    // MARK: - Life Cycle
+  
   override init() {
     super.init(node: tableNode)
   }
-
+  
   deinit {
     removeObservers()
   }
-
+  
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
@@ -54,14 +54,14 @@ final class TagsVC: ASViewController {
     configureNavigation()
     applySnapshot(override: true)
   }
-
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     fetchTags()
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension TagsVC {
   private func configureProperties() {
@@ -76,27 +76,27 @@ private extension TagsVC {
       name: UIApplication.willEnterForegroundNotification,
       object: nil
     )
-    apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [weak self] (_, change) in
-      guard let weakSelf = self, let value = change.newValue else { return }
+    apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+      guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         weakSelf.fetchTags()
       }
     }
   }
-
+  
   private func removeObservers() {
     NotificationCenter.default.removeObserver(self)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
   }
-
+  
   private func configureNavigation() {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .always
     navigationItem.backBarButtonItem = UIBarButtonItem(image: .tag)
     navigationItem.searchController = searchController
   }
-
+  
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
@@ -104,25 +104,25 @@ private extension TagsVC {
   }
 }
 
-// MARK: - Actions
+  // MARK: - Actions
 
 private extension TagsVC {
   @objc private func appMovedToForeground() {
     fetchTags()
   }
-
+  
   @objc private func openAddWorkflow() {
-    let vc = NavigationController(rootViewController: AddTagWorkflowVC())
-    vc.modalPresentationStyle = .fullScreen
-    present(vc, animated: true)
+    let viewController = NavigationController(rootViewController: AddTagWorkflowVC())
+    viewController.modalPresentationStyle = .fullScreen
+    present(viewController, animated: true)
   }
-
+  
   @objc private func refreshTags() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
       fetchTags()
     }
   }
-
+  
   private func applySnapshot(override: Bool = false) {
     let result = ListDiffPaths(
       fromSection: 0,
@@ -156,7 +156,7 @@ private extension TagsVC {
       tableNode.performBatchUpdates(batchUpdates)
     }
   }
-
+  
   private func fetchTags() {
     UpFacade.listTags { [self] (result) in
       DispatchQueue.main.async {
@@ -169,9 +169,9 @@ private extension TagsVC {
       }
     }
   }
-
+  
   private func display(_ tags: [TagResource]) {
-    tagsError = ""
+    tagsError = .emptyString
     self.tags = tags
     if navigationItem.title != "Tags" {
       navigationItem.title = "Tags"
@@ -180,7 +180,7 @@ private extension TagsVC {
       navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow)), animated: true)
     }
   }
-
+  
   private func display(_ error: NetworkError) {
     tagsError = error.description
     tags = []
@@ -193,30 +193,32 @@ private extension TagsVC {
   }
 }
 
-// MARK: - ASTableDataSource
+  // MARK: - ASTableDataSource
 
 extension TagsVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
     return filteredTags.count
   }
-
+  
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let node = TagCellNode(text: filteredTags[indexPath.row].id)
+    let tag = filteredTags[indexPath.row]
+    let node = TagCellNode(tag: tag)
     return {
       node
     }
   }
 }
 
-// MARK: - ASTableDelegate
+  // MARK: - ASTableDelegate
 
 extension TagsVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
-    tableNode.deselectRow(at: indexPath, animated: true)
     let tag = filteredTags[indexPath.row]
-    navigationController?.pushViewController(TransactionsByTagVC(tag: tag), animated: true)
+    let viewController = TransactionsByTagVC(tag: tag)
+    tableNode.deselectRow(at: indexPath, animated: true)
+    navigationController?.pushViewController(viewController, animated: true)
   }
-
+  
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     let tag = filteredTags[indexPath.row]
     return UIContextMenuConfiguration(elements: [
@@ -225,13 +227,13 @@ extension TagsVC: ASTableDelegate {
   }
 }
 
-// MARK: - UISearchBarDelegate
+  // MARK: - UISearchBarDelegate
 
 extension TagsVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     applySnapshot()
   }
-
+  
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     if !searchBar.text!.isEmpty {
       searchBar.clear()

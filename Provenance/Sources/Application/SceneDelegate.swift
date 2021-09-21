@@ -3,15 +3,15 @@ import WidgetKit
 import NotificationBannerSwift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-  // MARK: - Properties
-
+    // MARK: - Properties
+  
   var window: UIWindow?
   private var submitActionProxy: UIAlertAction!
   private var textDidChangeObserver: NSObjectProtocol!
   private var savedShortcutItem: UIApplicationShortcutItem!
-
-  // MARK: - Life Cycle
-
+  
+    // MARK: - Life Cycle
+  
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     if let shortcutItem = connectionOptions.shortcutItem {
@@ -24,19 +24,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window?.makeKeyAndVisible()
     checkApiKey()
   }
-
-  func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-    let handled = handleShortcutItem(shortcutItem: shortcutItem)
-    completionHandler(handled)
+  
+  func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+    guard userActivity.activityType == NSUserActivity.addedTagsToTransaction.activityType, let intentResponse = userActivity.interaction?.intentResponse as? AddTagToTransactionIntentResponse, let transaction = intentResponse.transaction?.identifier else {
+      return
+    }
+    UpFacade.retrieveTransaction(for: transaction) { (result) in
+      DispatchQueue.main.async {
+        switch result {
+        case let .success(transaction):
+          if let tabBarController = self.window?.rootViewController as? TabBarController, let navigationController = tabBarController.selectedViewController as? NavigationController {
+            let viewController = TransactionTagsVC(transaction: transaction)
+            navigationController.pushViewController(viewController, animated: true)
+          }
+        case .failure:
+          break
+        }
+      }
+    }
   }
-
+  
+  func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+    let completion = handleShortcutItem(shortcutItem: shortcutItem)
+    completionHandler(completion)
+  }
+  
   func sceneDidBecomeActive(_ scene: UIScene) {
     if savedShortcutItem != nil {
       _ = handleShortcutItem(shortcutItem: savedShortcutItem)
     }
     WidgetCenter.shared.reloadAllTimelines()
   }
-
+  
   func sceneWillResignActive(_ scene: UIScene) {
     if savedShortcutItem != nil {
       savedShortcutItem = nil
@@ -44,7 +63,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
 }
 
-// MARK: - Actions
+  // MARK: - Actions
 
 private extension SceneDelegate {
   private func checkApiKey() {
@@ -124,7 +143,7 @@ private extension SceneDelegate {
       window?.rootViewController?.present(alertController, animated: true)
     }
   }
-
+  
   private func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
     if let tabBarController = window?.rootViewController as? TabBarController, let shortcutType = ShortcutType(rawValue: shortcutItem.type) {
       tabBarController.selectedIndex = shortcutType.tabBarItem.rawValue
