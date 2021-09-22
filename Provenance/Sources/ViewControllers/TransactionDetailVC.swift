@@ -21,7 +21,7 @@ final class TransactionDetailVC: ViewController {
   private let tableView = UITableView(frame: .zero, style: .grouped)
   
   private var filteredSections: [DetailSection] {
-    return [DetailSection].transactionDetailSections(
+    return .transactionDetailSections(
       transaction: transaction,
       account: account,
       transferAccount: transferAccount,
@@ -136,7 +136,8 @@ private extension TransactionDetailVC {
   }
   
   @objc private func openStatusIconHelpView() {
-    present(NavigationController(rootViewController: StatusIconHelpView()), animated: true)
+    let viewController = NavigationController(rootViewController: StatusIconHelpView())
+    present(viewController, animated: true)
   }
   
   @objc private func refreshTransaction() {
@@ -215,9 +216,9 @@ private extension TransactionDetailVC {
         }
         cell.selectionStyle = attribute.cellSelectionStyle
         cell.accessoryType = attribute.cellAccessoryType
-        cell.leftLabel.text = attribute.id
-        cell.rightLabel.font = attribute.valueFont
-        cell.rightLabel.text = attribute.value
+        cell.text = attribute.id
+        cell.detailFont = attribute.valueFont
+        cell.detailText = attribute.value
         return cell
       }
     )
@@ -270,26 +271,31 @@ extension TransactionDetailVC: UITableViewDelegate {
       case "Account":
         tableView.deselectRow(at: indexPath, animated: true)
         if let account = account {
-          navigationController?.pushViewController(TransactionsByAccountVC(account: account), animated: true)
+          let viewController = TransactionsByAccountVC(account: account)
+          navigationController?.pushViewController(viewController, animated: true)
         }
       case "Transfer Account":
         tableView.deselectRow(at: indexPath, animated: true)
         if let transferAccount = transferAccount {
-          navigationController?.pushViewController(TransactionsByAccountVC(account: transferAccount), animated: true)
+          let viewController = TransactionsByAccountVC(account: transferAccount)
+          navigationController?.pushViewController(viewController, animated: true)
         }
       case "Parent Category":
         tableView.deselectRow(at: indexPath, animated: true)
         if let parentCategory = parentCategory {
-          navigationController?.pushViewController(TransactionsByCategoryVC(category: parentCategory), animated: true)
+          let viewController = TransactionsByCategoryVC(category: parentCategory)
+          navigationController?.pushViewController(viewController, animated: true)
         }
       case "Category":
         tableView.deselectRow(at: indexPath, animated: true)
         if let category = category {
-          navigationController?.pushViewController(TransactionsByCategoryVC(category: category), animated: true)
+          let viewController = TransactionsByCategoryVC(category: category)
+          navigationController?.pushViewController(viewController, animated: true)
         }
       case "Tags":
+        let viewController = TransactionTagsVC(transaction: transaction)
         tableView.deselectRow(at: indexPath, animated: true)
-        navigationController?.pushViewController(TransactionTagsVC(transaction: transaction), animated: true)
+        navigationController?.pushViewController(viewController, animated: true)
       default:
         break
       }

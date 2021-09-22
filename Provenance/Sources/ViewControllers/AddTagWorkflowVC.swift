@@ -193,7 +193,8 @@ extension AddTagWorkflowVC: ASTableDataSource {
   }
   
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let node = TransactionCellNode(transaction: filteredTransactions[indexPath.row])
+    let transaction = filteredTransactions[indexPath.row]
+    let node = TransactionCellNode(transaction: transaction)
     return {
       node
     }
@@ -205,8 +206,9 @@ extension AddTagWorkflowVC: ASTableDataSource {
 extension AddTagWorkflowVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
     let transaction = filteredTransactions[indexPath.row]
+    let viewController = AddTagWorkflowTwoVC(transaction: transaction)
     tableNode.deselectRow(at: indexPath, animated: true)
-    navigationController?.pushViewController(AddTagWorkflowTwoVC(transaction: transaction), animated: true)
+    navigationController?.pushViewController(viewController, animated: true)
   }
   
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

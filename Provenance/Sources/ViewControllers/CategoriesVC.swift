@@ -208,7 +208,8 @@ extension CategoriesVC: ASCollectionDataSource {
   }
   
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let node = CategoryCellNode(category: filteredCategories[indexPath.item])
+    let category = filteredCategories[indexPath.item]
+    let node = CategoryCellNode(category: category)
     return {
       node
     }
@@ -220,8 +221,9 @@ extension CategoriesVC: ASCollectionDataSource {
 extension CategoriesVC: ASCollectionDelegate {
   func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
     let category = filteredCategories[indexPath.item]
+    let viewController = TransactionsByCategoryVC(category: category)
     collectionNode.deselectItem(at: indexPath, animated: true)
-    navigationController?.pushViewController(TransactionsByCategoryVC(category: category), animated: true)
+    navigationController?.pushViewController(viewController, animated: true)
   }
   
   func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

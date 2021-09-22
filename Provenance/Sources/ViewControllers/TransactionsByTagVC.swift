@@ -211,9 +211,9 @@ extension TransactionsByTagVC: ASTableDataSource {
   }
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-    let transaction = filteredTransactions[indexPath.row]
     switch editingStyle {
     case .delete:
+      let transaction = filteredTransactions[indexPath.row]
       let alertController = UIAlertController.removeTagFromTransaction(self, removing: tag, from: transaction)
       present(alertController, animated: true)
     default:
@@ -241,11 +241,11 @@ extension TransactionsByTagVC: ASTableDelegate {
   }
   
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-    let transaction = filteredTransactions[indexPath.row]
     switch isEditing {
     case true:
       return nil
     case false:
+      let transaction = filteredTransactions[indexPath.row]
       return UIContextMenuConfiguration(elements: [
         .copyTransactionDescription(transaction: transaction),
         .copyTransactionCreationDate(transaction: transaction),

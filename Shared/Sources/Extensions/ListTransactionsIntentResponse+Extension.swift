@@ -7,4 +7,8 @@ extension ListTransactionsIntentResponse {
     intentResponse.transactionsCount = transactionsCount
     return intentResponse
   }
+  
+  static func failure(code: ListTransactionsIntentResponseCode) -> ListTransactionsIntentResponse {
+    return ListTransactionsIntentResponse(code: code, userActivity: nil)
+  }
 }

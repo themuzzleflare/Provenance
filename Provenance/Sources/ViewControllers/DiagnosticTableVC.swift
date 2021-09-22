@@ -9,20 +9,11 @@ final class DiagnosticTableVC: ViewController {
   
   private lazy var dataSource = makeDataSource()
   
-  private lazy var sections: [DetailSection] = [
-    DetailSection(id: 1, items: [
-      DetailItem(
-        id: "Version",
-        value: appDefaults.appVersion
-      ),
-      DetailItem(
-        id: "Build",
-        value: appDefaults.appBuild
-      )
-    ])
-  ]
-  
   private let tableView = UITableView(frame: .zero, style: .grouped)
+  
+  private var sections: [DetailSection] {
+    return .diagnosticsSections
+  }
   
     // MARK: - Life Cycle
   
@@ -77,8 +68,8 @@ private extension DiagnosticTableVC {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as? AttributeCell else {
           fatalError("Unable to dequeue reusable cell with identifier: \(AttributeCell.reuseIdentifier)")
         }
-        cell.leftLabel.text = attribute.id
-        cell.rightLabel.text = attribute.value
+        cell.text = attribute.id
+        cell.detailText = attribute.value
         return cell
       }
     )
@@ -100,20 +91,14 @@ extension DiagnosticTableVC: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-    guard let attribute = dataSource.itemIdentifier(for: indexPath) else {
-      return nil
-    }
-    switch attribute.id {
+    guard let attribute = dataSource.itemIdentifier(for: indexPath) else { return nil }
+    switch attribute.value {
     case "Unknown":
       return nil
     default:
-      return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { (_) in
-        UIMenu(children: [
-          UIAction(title: "Copy \(attribute.id)", image: .docOnClipboard) { (_) in
-            UIPasteboard.general.string = attribute.value
-          }
-        ])
-      }
+      return UIContextMenuConfiguration(elements: [
+        .copyAttribute(attribute: attribute)
+      ])
     }
   }
 }

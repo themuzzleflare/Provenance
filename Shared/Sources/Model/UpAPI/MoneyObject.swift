@@ -27,8 +27,6 @@ extension MoneyObject {
     switch valueInBaseUnits.signum() {
     case -1:
       return "-$"
-    case 1:
-      return "$"
     default:
       return "$"
     }
@@ -37,9 +35,7 @@ extension MoneyObject {
   var valueString: String {
     switch valueInBaseUnits.signum() {
     case -1:
-      return value.replacingOccurrences(of: "-", with: "")
-    case 1:
-      return value
+      return value.replacingOccurrences(of: "-", with: String.emptyString)
     default:
       return value
     }

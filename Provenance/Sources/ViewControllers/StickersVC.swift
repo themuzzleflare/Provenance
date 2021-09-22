@@ -49,7 +49,8 @@ extension StickersVC: ASCollectionDataSource {
   }
   
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let node = StickerCellNode(sticker: stickerGifs[indexPath.item])
+    let sticker = stickerGifs[indexPath.item]
+    let node = StickerCellNode(sticker: sticker)
     return {
       node
     }
@@ -60,7 +61,8 @@ extension StickersVC: ASCollectionDataSource {
 
 extension StickersVC: ASCollectionDelegate {
   func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
-    let image = stickerGifs[indexPath.item]
-    navigationController?.pushViewController(StickerView(image: image), animated: true)
+    let sticker = stickerGifs[indexPath.item]
+    let viewController = StickerView(image: sticker)
+    navigationController?.pushViewController(viewController, animated: true)
   }
 }

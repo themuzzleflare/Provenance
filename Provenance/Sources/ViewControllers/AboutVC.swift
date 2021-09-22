@@ -2,27 +2,27 @@ import UIKit
 import AsyncDisplayKit
 
 final class AboutVC: ASViewController {
-  // MARK: - Properties
-
+    // MARK: - Properties
+  
   private let tableNode = ASTableNode(style: .grouped)
-
-  // MARK: - Life Cycle
-
+  
+    // MARK: - Life Cycle
+  
   override init() {
     super.init(node: tableNode)
   }
-
+  
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configure()
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension AboutVC {
   private func configure() {
@@ -38,25 +38,27 @@ private extension AboutVC {
   }
 }
 
-// MARK: - Actions
+  // MARK: - Actions
 
 private extension AboutVC {
   @objc private func openSettings() {
-    present(NavigationController(rootViewController: SettingsVC()), animated: true)
+    let viewController = NavigationController(rootViewController: SettingsVC())
+    present(viewController, animated: true)
   }
-
+  
   @objc private func openDiagnostics() {
-    present(NavigationController(rootViewController: DiagnosticTableVC()), animated: true)
+    let viewController = NavigationController(rootViewController: DiagnosticTableVC())
+    present(viewController, animated: true)
   }
 }
 
-// MARK: - ASTableDataSource
+  // MARK: - ASTableDataSource
 
 extension AboutVC: ASTableDataSource {
   func numberOfSections(in tableNode: ASTableNode) -> Int {
     return 3
   }
-
+  
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
     switch section {
     case 0:
@@ -69,7 +71,7 @@ extension AboutVC: ASTableDataSource {
       fatalError("Unknown section")
     }
   }
-
+  
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let section = indexPath.section
     let row = indexPath.row
@@ -116,7 +118,7 @@ extension AboutVC: ASTableDataSource {
       }
     }
   }
-
+  
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     switch section {
     case 2:
@@ -127,7 +129,7 @@ extension AboutVC: ASTableDataSource {
   }
 }
 
-// MARK: - ASTableDelegate
+  // MARK: - ASTableDelegate
 
 extension AboutVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
@@ -158,7 +160,7 @@ extension AboutVC: ASTableDelegate {
       break
     }
   }
-
+  
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     let section = indexPath.section
     let row = indexPath.row

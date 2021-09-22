@@ -82,8 +82,8 @@ private extension TransactionsByAccountVC {
       name: UIApplication.willEnterForegroundNotification,
       object: nil
     )
-    dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, change) in
-      guard let weakSelf = self, let value = change.newValue, let dateStyle = AppDateStyle(rawValue: value) else { return }
+    dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+      guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         weakSelf.fetchingTasks()
       }
@@ -235,7 +235,8 @@ extension TransactionsByAccountVC: ASTableDataSource {
   }
   
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let node = TransactionCellNode(transaction: filteredTransactions[indexPath.row])
+    let transaction = filteredTransactions[indexPath.row]
+    let node = TransactionCellNode(transaction: transaction)
     return {
       node
     }
@@ -247,8 +248,9 @@ extension TransactionsByAccountVC: ASTableDataSource {
 extension TransactionsByAccountVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
     let transaction = filteredTransactions[indexPath.row]
+    let viewController = TransactionDetailVC(transaction: transaction)
     tableNode.deselectRow(at: indexPath, animated: true)
-    navigationController?.pushViewController(TransactionDetailVC(transaction: transaction), animated: true)
+    navigationController?.pushViewController(viewController, animated: true)
   }
   
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

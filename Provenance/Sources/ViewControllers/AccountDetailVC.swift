@@ -28,7 +28,7 @@ final class AccountDetailVC: ViewController {
   private let tableView = UITableView(frame: .zero, style: .grouped)
   
   private var sections: [DetailSection] {
-    return [DetailSection].accountDetailSections(account: account, transaction: transaction).filtered
+    return .accountDetailSections(account: account, transaction: transaction).filtered
   }
   
     // MARK: - Life Cycle
@@ -133,9 +133,9 @@ private extension AccountDetailVC {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as? AttributeCell else {
           fatalError("Unable to dequeue reusable cell with identifier: \(AttributeCell.reuseIdentifier)")
         }
-        cell.leftLabel.text = attribute.id
-        cell.rightLabel.font = attribute.valueFont
-        cell.rightLabel.text = attribute.value
+        cell.text = attribute.id
+        cell.detailFont = attribute.valueFont
+        cell.detailText = attribute.value
         return cell
       }
     )

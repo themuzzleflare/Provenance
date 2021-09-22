@@ -13,7 +13,6 @@ final class StickerImageNode: ASDisplayNode {
     imageNode.animatedImage = sticker
     imageNode.style.maxWidth = ASDimension(unit: .points, value: 300)
     imageNode.style.maxHeight = ASDimension(unit: .points, value: 300)
-    backgroundColor = .systemBackground
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {

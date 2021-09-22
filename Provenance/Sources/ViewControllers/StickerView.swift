@@ -3,23 +3,23 @@ import AsyncDisplayKit
 import PINRemoteImage
 
 final class StickerView: ASViewController {
-  // MARK: - Life Cycle
-
+    // MARK: - Life Cycle
+  
   init(image: ASAnimatedImageProtocol) {
     super.init(node: StickerImageNode(sticker: image))
   }
-
+  
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configure()
   }
 }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
 private extension StickerView {
   private func configure() {

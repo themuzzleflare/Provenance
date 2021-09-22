@@ -18,12 +18,12 @@ final class SettingsVC: ASViewController {
     super.init(node: tableNode)
   }
   
-  required init?(coder: NSCoder) {
-    fatalError("Not implemented")
-  }
-  
   deinit {
     removeObserver()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("Not implemented")
   }
   
   override func viewDidLoad() {
@@ -50,8 +50,8 @@ private extension SettingsVC {
   }
   
   private func configureObserver() {
-    apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [weak self] (_, change) in
-      guard let weakSelf = self, let value = change.newValue else { return }
+    apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+      guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         if let alert = weakSelf.presentedViewController as? UIAlertController {
           alert.dismiss(animated: true)

@@ -26,7 +26,6 @@
 		7A17C18C2657940E00E5EA23 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A17C18B2657940E00E5EA23 /* Intents.framework */; };
 		7A17C1932657940E00E5EA23 /* Provenance Intents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7A17C18A2657940E00E5EA23 /* Provenance Intents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7A1BE9F426EDAD6D00A97F56 /* StickerImageNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1BE9F326EDAD6D00A97F56 /* StickerImageNode.swift */; };
-		7A1BF6062696789F0046BE5D /* SRCopyableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1BF6052696789F0046BE5D /* SRCopyableLabel.swift */; };
 		7A202B5D262908EC00D2450A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A202B5C262908EC00D2450A /* SceneDelegate.swift */; };
 		7A22713926817399001F63FF /* ShortcutType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A22713826817399001F63FF /* ShortcutType.swift */; };
 		7A2F18FE261D9CC80054A9B6 /* StickerSeven.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F18F6261D9CC60054A9B6 /* StickerSeven.gif */; };
@@ -259,6 +258,10 @@
 		7A56101D25D25B600091396E /* TransactionsByCategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101C25D25B600091396E /* TransactionsByCategoryVC.swift */; };
 		7A5B06CB26F2BE87005CE3D1 /* ProvenanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5B06C926F2BE86005CE3D1 /* ProvenanceApp.swift */; };
 		7A5BDE762616B99B00B5A5F9 /* CategoriesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5BDE752616B99B00B5A5F9 /* CategoriesVC.swift */; };
+		7A615D7326FA9D6D001F1834 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A615D7226FA9D6D001F1834 /* UITextField+Extension.swift */; };
+		7A615D7726FABA74001F1834 /* AppWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A615D7626FABA74001F1834 /* AppWidgets.swift */; };
+		7A615D7826FABA74001F1834 /* AppWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A615D7626FABA74001F1834 /* AppWidgets.swift */; };
+		7A615D7926FABEC7001F1834 /* AppWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A615D7626FABA74001F1834 /* AppWidgets.swift */; };
 		7A67980D25D3E15D002AA83A /* DiagnosticTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A67980C25D3E15D002AA83A /* DiagnosticTableVC.swift */; };
 		7A72D2F12672DEAF005FAC4F /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */; };
 		7A7CAB0326F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */; };
@@ -329,8 +332,6 @@
 		7AF2150D26EF3A86009F4F38 /* UISearchController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2150C26EF3A86009F4F38 /* UISearchController+Extension.swift */; };
 		7AF2150F26EF40C9009F4F38 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2150E26EF40C9009F4F38 /* UIView+Extension.swift */; };
 		7AF2151126EF4175009F4F38 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2151026EF4175009F4F38 /* ContentType.swift */; };
-		7AF2151326EF41F5009F4F38 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2151226EF41F5009F4F38 /* UILabel+Extension.swift */; };
-		7AF2151526EF41FF009F4F38 /* UIStackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2151426EF41FF009F4F38 /* UIStackView+Extension.swift */; };
 		7AF2151B26F046E9009F4F38 /* SegmentedControlNodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2151A26F046E9009F4F38 /* SegmentedControlNodeProtocol.swift */; };
 		7AF2151D26F04723009F4F38 /* SegmentedControlNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2151C26F04723009F4F38 /* SegmentedControlNode.swift */; };
 		7AF2152B26F04BCC009F4F38 /* TransactionResource+ListDiffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2152A26F04BCC009F4F38 /* TransactionResource+ListDiffable.swift */; };
@@ -446,7 +447,6 @@
 		7A17C1972657942000E5EA23 /* Intents.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Intents.entitlements; sourceTree = "<group>"; };
 		7A17C19D2657984B00E5EA23 /* AccountBalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountBalanceModel.swift; sourceTree = "<group>"; };
 		7A1BE9F326EDAD6D00A97F56 /* StickerImageNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerImageNode.swift; sourceTree = "<group>"; };
-		7A1BF6052696789F0046BE5D /* SRCopyableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SRCopyableLabel.swift; sourceTree = "<group>"; };
 		7A202B5C262908EC00D2450A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7A22713826817399001F63FF /* ShortcutType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutType.swift; sourceTree = "<group>"; };
 		7A22714026817937001F63FF /* DateFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatters.swift; sourceTree = "<group>"; };
@@ -475,6 +475,8 @@
 		7A61534726F9606600382804 /* NSString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSString+Extension.swift"; sourceTree = "<group>"; };
 		7A61534B26F960D500382804 /* Status+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Status+Extension.swift"; sourceTree = "<group>"; };
 		7A61534F26F961F800382804 /* ListTransactionsIntentResponse+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListTransactionsIntentResponse+Extension.swift"; sourceTree = "<group>"; };
+		7A615D7226FA9D6D001F1834 /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
+		7A615D7626FABA74001F1834 /* AppWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppWidgets.swift; sourceTree = "<group>"; };
 		7A67980C25D3E15D002AA83A /* DiagnosticTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticTableVC.swift; sourceTree = "<group>"; };
 		7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
 		7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASPINRemoteImageDownloader+Extension.swift"; sourceTree = "<group>"; };
@@ -590,8 +592,6 @@
 		7AF2150C26EF3A86009F4F38 /* UISearchController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchController+Extension.swift"; sourceTree = "<group>"; };
 		7AF2150E26EF40C9009F4F38 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		7AF2151026EF4175009F4F38 /* ContentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentType.swift; sourceTree = "<group>"; };
-		7AF2151226EF41F5009F4F38 /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
-		7AF2151426EF41FF009F4F38 /* UIStackView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extension.swift"; sourceTree = "<group>"; };
 		7AF2151626EF439D009F4F38 /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
 		7AF2151A26F046E9009F4F38 /* SegmentedControlNodeProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlNodeProtocol.swift; sourceTree = "<group>"; };
 		7AF2151C26F04723009F4F38 /* SegmentedControlNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlNode.swift; sourceTree = "<group>"; };
@@ -684,14 +684,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7A040C5D2699337F000CCFF3 /* BaseViews */ = {
-			isa = PBXGroup;
-			children = (
-				7A1BF6052696789F0046BE5D /* SRCopyableLabel.swift */,
-			);
-			path = BaseViews;
-			sourceTree = "<group>";
-		};
 		7A040C8026994EE4000CCFF3 /* Nodes */ = {
 			isa = PBXGroup;
 			children = (
@@ -898,6 +890,7 @@
 				7A12C0EE26F83C81005C8AB1 /* AccountTypeOptionEnum.swift */,
 				7A17C19D2657984B00E5EA23 /* AccountBalanceModel.swift */,
 				7AFBD8E026F346F200460939 /* LatestTransactionModel.swift */,
+				7A615D7626FABA74001F1834 /* AppWidgets.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1113,7 +1106,6 @@
 				7A22F7E625FFF8860014BDC8 /* Model */,
 				7A07979A25D79ACE0013EE82 /* TableViewCells */,
 				7A040C8026994EE4000CCFF3 /* Nodes */,
-				7A040C5D2699337F000CCFF3 /* BaseViews */,
 				7A22F7E925FFF90E0014BDC8 /* BaseControllers */,
 				7A0557D72604A0A30080D2CD /* ViewControllers */,
 			);
@@ -1158,8 +1150,6 @@
 				7AF2150A26EF34C5009F4F38 /* CGColor+Extension.swift */,
 				7AF2150C26EF3A86009F4F38 /* UISearchController+Extension.swift */,
 				7AF2150E26EF40C9009F4F38 /* UIView+Extension.swift */,
-				7AF2151226EF41F5009F4F38 /* UILabel+Extension.swift */,
-				7AF2151426EF41FF009F4F38 /* UIStackView+Extension.swift */,
 				7AF2155126F04F73009F4F38 /* Array+Extensions.swift */,
 				7AF2152A26F04BCC009F4F38 /* TransactionResource+ListDiffable.swift */,
 				7AAADD5C26F1910700C4A9D9 /* TransactionAttribute+ListDiffable.swift */,
@@ -1180,6 +1170,7 @@
 				7AAADD5A26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift */,
 				7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */,
 				7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */,
+				7A615D7226FA9D6D001F1834 /* UITextField+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1668,6 +1659,7 @@
 				7A340BCA26F9C25100D43523 /* LatestTransactionModel.swift in Sources */,
 				7A340B6B26F9C16900D43523 /* TransactionResource.swift in Sources */,
 				7A340B6426F9C16900D43523 /* TransactionRelationshipTransferAccount.swift in Sources */,
+				7A615D7926FABEC7001F1834 /* AppWidgets.swift in Sources */,
 				7A340BCB26F9C26200D43523 /* AccountBalanceModel.swift in Sources */,
 				7A340B4F26F9C14D00D43523 /* CategoryTypeEnum.swift in Sources */,
 				7A340B5126F9C14D00D43523 /* ResultDecoder.swift in Sources */,
@@ -1796,6 +1788,7 @@
 				7A0A301E26B52C88009E52FB /* AboutTopCellNode.swift in Sources */,
 				7AF2155B26F0533F009F4F38 /* TransactionAttribute+Extension.swift in Sources */,
 				7AF2150B26EF34C5009F4F38 /* CGColor+Extension.swift in Sources */,
+				7A615D7726FABA74001F1834 /* AppWidgets.swift in Sources */,
 				7A340B0B26F9C11200D43523 /* String+Extension.swift in Sources */,
 				7A340B0F26F9C11200D43523 /* UIFont+Extension.swift in Sources */,
 				7AB34D5D25C7CDCB000A1E81 /* SettingsVC.swift in Sources */,
@@ -1804,20 +1797,17 @@
 				7A340BA926F9C16900D43523 /* Pagination.swift in Sources */,
 				7A340B0526F9C11200D43523 /* Dictionary+Extension.swift in Sources */,
 				7AF214F326EEE6F9009F4F38 /* TagCellNode.swift in Sources */,
-				7AF2151526EF41FF009F4F38 /* UIStackView+Extension.swift in Sources */,
 				7A5B06CB26F2BE87005CE3D1 /* ProvenanceApp.swift in Sources */,
 				7AF2155226F04F73009F4F38 /* Array+Extensions.swift in Sources */,
 				7AA113882615181700386E2D /* AttributeCell.swift in Sources */,
 				7A5BDE762616B99B00B5A5F9 /* CategoriesVC.swift in Sources */,
 				7AAADD5B26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift in Sources */,
-				7A1BF6062696789F0046BE5D /* SRCopyableLabel.swift in Sources */,
 				7AF214EE26EEC796009F4F38 /* UISearchBar+Extension.swift in Sources */,
 				7A0A302226B5310E009E52FB /* RightDetailCellNode.swift in Sources */,
 				7AF2152B26F04BCC009F4F38 /* TransactionResource+ListDiffable.swift in Sources */,
 				7A340BA426F9C16900D43523 /* Tag.swift in Sources */,
 				7A340BA726F9C16900D43523 /* MoneyObject.swift in Sources */,
 				7AAADD5526F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift in Sources */,
-				7AF2151326EF41F5009F4F38 /* UILabel+Extension.swift in Sources */,
 				7A340BA526F9C16900D43523 /* CategoryRelationshipChildren.swift in Sources */,
 				7A56101625D21BFE0091396E /* TransactionsByTagVC.swift in Sources */,
 				7ACD456C261D67A7000C8FD2 /* WidgetsVC.swift in Sources */,
@@ -1874,6 +1864,7 @@
 				7A340BB326F9C16900D43523 /* TransactionRelationship.swift in Sources */,
 				7A438783263AAC9B008C5714 /* StatusIconHelpView.swift in Sources */,
 				7A340BBE26F9C16900D43523 /* AccountRelationship.swift in Sources */,
+				7A615D7326FA9D6D001F1834 /* UITextField+Extension.swift in Sources */,
 				7A340B1626F9C11200D43523 /* ListTransactionsIntentResponse+Extension.swift in Sources */,
 				7A340B3B26F9C14B00D43523 /* AccountTypeOptionEnum.swift in Sources */,
 			);
@@ -1884,6 +1875,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A340B4626F9C14C00D43523 /* CategoryTypeEnum.swift in Sources */,
+				7A615D7826FABA74001F1834 /* AppWidgets.swift in Sources */,
 				7A340B0326F9C10200D43523 /* URLQueryParameterStringConvertible.swift in Sources */,
 				7A340B9726F9C16900D43523 /* SingleTransaction.swift in Sources */,
 				7A340B2626F9C11300D43523 /* NSString+Extension.swift in Sources */,

@@ -12,7 +12,7 @@ extension UserDefaults {
     /// The string of the "apiKey" key.
   @objc dynamic var apiKey: String {
     get {
-      return string(forKey: Keys.apiKey) ?? ""
+      return string(forKey: Keys.apiKey) ?? .emptyString
     }
     set {
       setValue(newValue, forKey: Keys.apiKey)
@@ -27,7 +27,7 @@ extension UserDefaults {
     }
     set {
       setValue(newValue, forKey: Keys.dateStyle)
-      WidgetCenter.shared.reloadTimelines(ofKind: "latestTransactionWidget")
+      WidgetCenter.shared.reloadTimelines(ofKind: AppWidgets.latestTransaction.kind)
     }
   }
   

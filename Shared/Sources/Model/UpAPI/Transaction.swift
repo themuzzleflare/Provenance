@@ -6,12 +6,3 @@ struct Transaction: Codable {
   
   var links: Pagination
 }
-
-extension Transaction {
-  var listTransactionsIntentResponse: ListTransactionsIntentResponse {
-    return .success(
-      transactions: self.data.transactionTypes,
-      transactionsCount: self.data.count.nsNumber
-    )
-  }
-}

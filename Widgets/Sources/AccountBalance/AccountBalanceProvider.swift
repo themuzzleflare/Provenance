@@ -14,21 +14,20 @@ struct AccountBalanceProvider: IntentTimelineProvider {
   
   func getTimeline(for configuration: Intent, in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
     guard let accountId = configuration.account?.identifier ?? appDefaults.selectedAccount else {
-      let timeline = Timeline(entries: [Entry.empty], policy: .atEnd)
+      let timeline = Timeline(entries: .singleEntry(with: .empty), policy: .atEnd)
       completion(timeline)
       return
     }
-    
     UpFacade.retrieveAccount(for: accountId) { (result) in
       switch result {
       case let .success(account):
         appDefaults.selectedAccount = account.id
         let entry = Entry(date: Date(), account: account.accountBalanceModel, error: nil)
-        let timeline = Timeline(entries: [entry], policy: .atEnd)
+        let timeline = Timeline(entries: .singleEntry(with: entry), policy: .atEnd)
         completion(timeline)
       case let .failure(error):
         let entry = Entry(date: Date(), account: nil, error: error)
-        let timeline = Timeline(entries: [entry], policy: .atEnd)
+        let timeline = Timeline(entries: .singleEntry(with: entry), policy: .atEnd)
         completion(timeline)
       }
     }

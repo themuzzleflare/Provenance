@@ -209,7 +209,8 @@ extension AccountsVC: ASCollectionDataSource {
   }
   
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let node = AccountCellNode(account: filteredAccounts[indexPath.item])
+    let account = filteredAccounts[indexPath.item]
+    let node = AccountCellNode(account: account)
     return {
       node
     }
@@ -221,8 +222,9 @@ extension AccountsVC: ASCollectionDataSource {
 extension AccountsVC: ASCollectionDelegate {
   func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
     let account = filteredAccounts[indexPath.item]
+    let viewController = TransactionsByAccountVC(account: account)
     collectionNode.deselectItem(at: indexPath, animated: true)
-    navigationController?.pushViewController(TransactionsByAccountVC(account: account), animated: true)
+    navigationController?.pushViewController(viewController, animated: true)
   }
   
   func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

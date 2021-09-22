@@ -66,7 +66,7 @@ extension UIView {
   
   static func accountTransactionsHeaderView(frame: CGRect, account: AccountResource) -> UIView {
     let view = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: 117))
-    let balanceLabel = SRCopyableLabel()
+    let balanceLabel = UILabel()
     let displayNameLabel = UILabel()
     let verticalStack = UIStackView(arrangedSubviews: [balanceLabel, displayNameLabel])
     view.addSubview(verticalStack)

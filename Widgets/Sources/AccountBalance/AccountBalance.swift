@@ -3,7 +3,11 @@ import WidgetKit
 
 struct AccountBalance: Widget {
   var body: some WidgetConfiguration {
-    IntentConfiguration(kind: "accountBalanceWidget", intent: AccountSelectionIntent.self, provider: AccountBalanceProvider()) { (entry) in
+    IntentConfiguration(
+      kind: AppWidgets.accountBalance.kind,
+      intent: AccountSelectionIntent.self,
+      provider: AccountBalanceProvider()
+    ) { (entry) in
       AccountBalanceEntryView(entry: entry)
     }
     .configurationDisplayName("Account Balance")

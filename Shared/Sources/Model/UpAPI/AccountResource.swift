@@ -9,11 +9,11 @@ class AccountResource: Codable {
 
   let attributes: AccountAttribute
 
-  let relationships: AccountRelationship?
+  let relationships: AccountRelationship
 
   let links: SelfLink?
 
-  init(id: String, attributes: AccountAttribute, relationships: AccountRelationship? = nil, links: SelfLink? = nil) {
+  init(id: String, attributes: AccountAttribute, relationships: AccountRelationship, links: SelfLink? = nil) {
     self.id = id
     self.attributes = attributes
     self.relationships = relationships

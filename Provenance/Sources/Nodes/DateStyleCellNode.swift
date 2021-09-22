@@ -44,7 +44,7 @@ final class DateStyleCellNode: ASCellNode {
   }
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    let hStack = ASStackLayoutSpec(
+    let horizontalStack = ASStackLayoutSpec(
       direction: .horizontal,
       spacing: 0,
       justifyContent: .spaceBetween,
@@ -55,7 +55,7 @@ final class DateStyleCellNode: ASCellNode {
       ]
     )
     
-    return ASInsetLayoutSpec(insets: .cellNode, child: hStack)
+    return ASInsetLayoutSpec(insets: .cellNode, child: horizontalStack)
   }
 }
 

@@ -6,10 +6,36 @@ final class AttributeCell: UITableViewCell {
   
   static let reuseIdentifier = "attributeCell"
   
-  var leftLabel = UILabel()
-  var rightLabel = SRCopyableLabel()
-  
+  private let leftLabel = UILabel()
+  private let rightLabel = UILabel()
   private let horizontalStack = UIStackView()
+  
+  var text: String? {
+    get {
+      return leftLabel.text
+    }
+    set {
+      leftLabel.text = newValue
+    }
+  }
+  
+  var detailText: String? {
+    get {
+      return rightLabel.text
+    }
+    set {
+      rightLabel.text = newValue
+    }
+  }
+  
+  var detailFont: UIFont? {
+    get {
+      return rightLabel.font
+    }
+    set {
+      rightLabel.font = newValue
+    }
+  }
   
     // MARK: - Life Cycle
   

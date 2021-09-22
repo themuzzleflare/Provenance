@@ -114,9 +114,9 @@ extension IntentHandler: ListTransactionsIntentHandling {
         switch response.result {
         case let .success(transactions):
           if transactions.data.isEmpty {
-            completion(ListTransactionsIntentResponse(code: .noContent, userActivity: nil))
+            completion(.failure(code: .noContent))
           } else {
-            completion(transactions.listTransactionsIntentResponse)
+            completion(.success(transactions: transactions.data.transactionTypes, transactionsCount: transactions.data.count.nsNumber))
           }
         case let .failure(error):
           completion(.failure(error: error.localizedDescription))
@@ -207,7 +207,6 @@ extension IntentHandler: RemoveTagFromTransactionIntentHandling {
       completion(nil, nil)
       return
     }
-    
     UpFacade.retrieveTransaction(for: transaction) { result in
       switch result {
       case let .success(transaction):

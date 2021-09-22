@@ -12,7 +12,7 @@ extension URLSession {
       resultHandler(.success(data!))
     }
   }
-
+  
   func dataTask(with request: URLRequest, errorHandler: @escaping (NetworkError?) -> Void) -> URLSessionDataTask {
     return self.dataTask(with: request) { (data, response, error) in
       errorHandler(NetworkError(data: data, response: response, error: error))

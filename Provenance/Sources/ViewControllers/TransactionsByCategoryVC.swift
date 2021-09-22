@@ -140,7 +140,9 @@ private extension TransactionsByCategoryVC {
         if !transactionsError.isEmpty {
           tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: transactionsError)
         } else {
-          if tableNode.view.backgroundView != nil { tableNode.view.backgroundView = nil }
+          if tableNode.view.backgroundView != nil {
+            tableNode.view.backgroundView = nil
+          }
         }
       }
       let batchUpdates = { [self] in
@@ -191,7 +193,8 @@ extension TransactionsByCategoryVC: ASTableDataSource {
   }
   
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let node = TransactionCellNode(transaction: filteredTransactions[indexPath.row])
+    let transaction = filteredTransactions[indexPath.row]
+    let node = TransactionCellNode(transaction: transaction)
     return {
       node
     }
@@ -203,8 +206,9 @@ extension TransactionsByCategoryVC: ASTableDataSource {
 extension TransactionsByCategoryVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
     let transaction = filteredTransactions[indexPath.row]
+    let viewController = TransactionDetailVC(transaction: transaction)
     tableNode.deselectRow(at: indexPath, animated: true)
-    navigationController?.pushViewController(TransactionDetailVC(transaction: transaction), animated: true)
+    navigationController?.pushViewController(viewController, animated: true)
   }
   
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

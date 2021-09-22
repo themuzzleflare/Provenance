@@ -6,6 +6,12 @@ final class TransactionCell: UITableViewCell {
   
   static let reuseIdentifier = "transactionCell"
   
+  private let transactionDescriptionLabel = UILabel()
+  private let transactionCreationDateLabel = UILabel()
+  private let transactionAmountLabel = UILabel()
+  private let verticalStack = UIStackView()
+  private let horizontalStack = UIStackView()
+  
   var transaction: TransactionType! {
     didSet {
       transactionDescription = transaction.transactionDescription
@@ -40,12 +46,6 @@ final class TransactionCell: UITableViewCell {
       transactionAmountLabel.text = newValue
     }
   }
-  
-  private let transactionDescriptionLabel = UILabel()
-  private let transactionCreationDateLabel = UILabel()
-  private let transactionAmountLabel = UILabel()
-  private let verticalStack = UIStackView()
-  private let horizontalStack = UIStackView()
   
     // MARK: - Life Cycle
   

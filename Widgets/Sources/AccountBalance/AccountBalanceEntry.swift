@@ -15,3 +15,9 @@ extension AccountBalanceEntry {
     return AccountBalanceEntry(date: Date(), account: nil, error: nil)
   }
 }
+
+extension Array where Element == AccountBalanceEntry {
+  static func singleEntry(with entry: AccountBalanceEntry) -> [AccountBalanceEntry] {
+    return [entry]
+  }
+}

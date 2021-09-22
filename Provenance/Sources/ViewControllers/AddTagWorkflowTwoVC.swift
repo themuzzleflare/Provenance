@@ -199,7 +199,7 @@ private extension AddTagWorkflowTwoVC {
   
   @objc private func addTagsTextFieldChanged() {
     if let alert = presentedViewController as? UIAlertController, let action = alert.actions.last {
-      let text = alert.textFields?.map { $0.text ?? "" }.joined() ?? ""
+      let text = alert.textFields?.textsJoined ?? .emptyString
       action.isEnabled = !text.isEmpty
     }
   }
@@ -387,8 +387,8 @@ extension AddTagWorkflowTwoVC: ASTableDelegate {
 
 extension AddTagWorkflowTwoVC: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    let currentText = textField.text ?? ""
-    guard let stringRange = Range(range, in: textField.text ?? "") else { return false }
+    let currentText = textField.text ?? .emptyString
+    guard let stringRange = Range(range, in: textField.text ?? .emptyString) else { return false }
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
     return updatedText.count <= 30
   }

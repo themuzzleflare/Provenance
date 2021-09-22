@@ -108,11 +108,11 @@ extension TransactionAttribute {
   var holdTransValue: String {
     switch holdInfo {
     case nil:
-      return ""
+      return .emptyString
     default:
       switch holdInfo!.amount.value {
       case amount.value:
-        return ""
+        return .emptyString
       default:
         return holdInfo!.amount.valueLong
       }
@@ -122,11 +122,11 @@ extension TransactionAttribute {
   var holdForeignTransValue: String {
     switch holdInfo?.foreignAmount {
     case nil:
-      return ""
+      return .emptyString
     default:
       switch holdInfo!.foreignAmount!.value {
       case foreignAmount!.value:
-        return ""
+        return .emptyString
       default:
         return holdInfo!.foreignAmount!.valueLong
       }
@@ -136,7 +136,7 @@ extension TransactionAttribute {
   var foreignTransValue: String {
     switch foreignAmount {
     case nil:
-      return ""
+      return .emptyString
     default:
       return foreignAmount!.valueLong
     }

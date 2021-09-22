@@ -27,7 +27,7 @@ extension Int {
       return "Network error"
     }
   }
-
+  
   var statusDescription: String {
     switch self {
     case 200:
