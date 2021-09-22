@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import SwiftDate
 
 class TransactionAttribute: Codable {
   let creationDate: String
@@ -96,12 +97,19 @@ extension TransactionAttribute {
     }
   }
   
+  var createdAtDateComponents: DateComponents? {
+    return createdAt.toDate()?.dateComponents
+  }
+  
+  var settledAtDateComponents: DateComponents? {
+    return settledAt?.toDate()?.dateComponents
+  }
+  
   var settlementDate: String? {
-    switch settledAt {
-    case nil:
+    if let settledAt = settledAt {
+      return formatDate(for: settledAt, dateStyle: appDefaults.appDateStyle)
+    } else {
       return nil
-    default:
-      return formatDate(for: settledAt!, dateStyle: appDefaults.appDateStyle)
     }
   }
   

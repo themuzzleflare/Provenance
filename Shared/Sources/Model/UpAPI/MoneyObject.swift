@@ -1,4 +1,5 @@
 import Foundation
+import Intents
 
 struct MoneyObject: Codable {
     /// The ISO 4217 currency code.
@@ -29,5 +30,9 @@ extension MoneyObject {
   
   var valueLong: String {
     return NumberFormatter.currencyLong(currencyCode: currencyCode).string(from: value.nsDecimalNumber) ?? value
+  }
+  
+  var inCurrencyAmount: INCurrencyAmount {
+    return INCurrencyAmount(amount: value.nsDecimalNumber, currencyCode: currencyCode)
   }
 }

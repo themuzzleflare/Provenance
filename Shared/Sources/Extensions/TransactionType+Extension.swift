@@ -1,6 +1,5 @@
 import Foundation
 import Intents
-import SwiftDate
 
 extension TransactionType {
   convenience init(id: String, description: String, creationDate: String, amount: String) {
@@ -15,8 +14,8 @@ extension TransactionType {
     self.transactionDescription = transaction.attributes.description
     self.transactionCreationDate = transaction.attributes.creationDate
     self.transactionAmount = transaction.attributes.amount.valueShort
-    self.amount = INCurrencyAmount(amount: transaction.attributes.amount.value.nsDecimalNumber, currencyCode: transaction.attributes.amount.currencyCode)
-    self.creationDate = transaction.attributes.createdAt.toDate()?.dateComponents
+    self.amount = transaction.attributes.amount.inCurrencyAmount
+    self.creationDate = transaction.attributes.createdAtDateComponents
   }
 }
 
