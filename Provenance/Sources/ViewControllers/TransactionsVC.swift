@@ -105,13 +105,13 @@ extension TransactionsVC {
       name: UIApplication.willEnterForegroundNotification,
       object: nil
     )
-    apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+    apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         weakSelf.fetchingTasks()
       }
     }
-    dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+    dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         weakSelf.fetchingTasks()
@@ -143,11 +143,11 @@ extension TransactionsVC {
   }
   
   @objc private func switchDateStyle() {
-    switch appDefaults.appDateStyle {
+    switch ProvenanceApp.userDefaults.appDateStyle {
     case .absolute:
-      appDefaults.appDateStyle = .relative
+      ProvenanceApp.userDefaults.appDateStyle = .relative
     case .relative:
-      appDefaults.appDateStyle = .absolute
+      ProvenanceApp.userDefaults.appDateStyle = .absolute
     }
   }
   

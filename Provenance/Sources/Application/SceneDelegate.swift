@@ -67,7 +67,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 private extension SceneDelegate {
   private func checkApiKey() {
-    if appDefaults.apiKey.isEmpty {
+    if ProvenanceApp.userDefaults.apiKey.isEmpty {
       let alertController = UIAlertController(
         title: "API Key Required",
         message: "You don't have an API Key set. You can set one now.",
@@ -82,7 +82,7 @@ private extension SceneDelegate {
           queue: .main,
           using: { (notification) in
             if let change = notification.object as? UITextField, let text = change.text {
-              submitActionProxy.isEnabled = text.count >= 1 && text != appDefaults.apiKey
+              submitActionProxy.isEnabled = text.count >= 1 && text != ProvenanceApp.userDefaults.apiKey
             } else {
               submitActionProxy.isEnabled = false
             }
@@ -94,7 +94,7 @@ private extension SceneDelegate {
         style: .default,
         handler: { [self] (_) in
           if let answer = alertController.textFields?.first?.text {
-            if !answer.isEmpty && answer != appDefaults.apiKey {
+            if !answer.isEmpty && answer != ProvenanceApp.userDefaults.apiKey {
               UpFacade.ping(with: answer) { (error) in
                 DispatchQueue.main.async {
                   switch error {
@@ -105,7 +105,7 @@ private extension SceneDelegate {
                       style: .success,
                       duration: 2.0
                     )
-                    appDefaults.apiKey = answer
+                    ProvenanceApp.userDefaults.apiKey = answer
                     let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
                     viewController.modalPresentationStyle = .fullScreen
                     window?.rootViewController?.present(viewController, animated: true)

@@ -28,6 +28,6 @@ class AccountAttribute: Codable {
     accountType = try values.decode(AccountTypeEnum.self, forKey: .accountType)
     balance = try values.decode(MoneyObject.self, forKey: .balance)
     createdAt = try values.decode(String.self, forKey: .createdAt)
-    creationDate = formatDate(for: createdAt, dateStyle: appDefaults.appDateStyle)
+    creationDate = ProvenanceApp.formatDate(for: createdAt, dateStyle: ProvenanceApp.userDefaults.appDateStyle)
   }
 }

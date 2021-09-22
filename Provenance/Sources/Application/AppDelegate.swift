@@ -34,7 +34,7 @@ private extension AppDelegate {
           defaults[key] = preference["DefaultValue"]
         }
       }
-      appDefaults.register(defaults: defaults)
+      ProvenanceApp.userDefaults.register(defaults: defaults)
     } catch {
       fatalError("registerDefaults failed with error: \(error.localizedDescription)")
     }

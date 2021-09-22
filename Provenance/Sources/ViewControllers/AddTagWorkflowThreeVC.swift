@@ -52,7 +52,7 @@ private extension AddTagWorkflowThreeVC {
   }
   
   private func configureObserver() {
-    dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+    dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         weakSelf.tableNode.reloadData()
@@ -145,7 +145,7 @@ extension AddTagWorkflowThreeVC: ASTableDataSource {
       case 1:
         return transactionCellNode
       case 2:
-        return ASTextCellNode(text: "You are adding the \(self.tags.count == 1 ? "tag" : "tags") \"\(self.tags.joinedWithComma)\" to the transaction \"\(self.transaction.attributes.description)\", which was \(appDefaults.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: .none)
+        return ASTextCellNode(text: "You are adding the \(self.tags.count == 1 ? "tag" : "tags") \"\(self.tags.joinedWithComma)\" to the transaction \"\(self.transaction.attributes.description)\", which was \(ProvenanceApp.userDefaults.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: .none)
       default:
         fatalError("Unknown section")
       }

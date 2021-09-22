@@ -50,7 +50,7 @@ private extension SettingsVC {
   }
   
   private func configureObserver() {
-    apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+    apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         if let alert = weakSelf.presentedViewController as? UIAlertController {
@@ -173,14 +173,14 @@ extension SettingsVC: ASTableDelegate {
       alertController.addTextField { [self] (textField) in
         textField.autocapitalizationType = .none
         textField.autocorrectionType = .no
-        textField.text = appDefaults.apiKey
+        textField.text = ProvenanceApp.userDefaults.apiKey
         textDidChangeObserver = NotificationCenter.default.addObserver(
           forName: UITextField.textDidChangeNotification,
           object: textField,
           queue: .main,
           using: { (notification) in
             if let change = notification.object as? UITextField, let text = change.text {
-              submitActionProxy.isEnabled = text.count >= 1 && text != appDefaults.apiKey
+              submitActionProxy.isEnabled = text.count >= 1 && text != ProvenanceApp.userDefaults.apiKey
             } else {
               submitActionProxy.isEnabled = false
             }
@@ -192,7 +192,7 @@ extension SettingsVC: ASTableDelegate {
         style: .default,
         handler: { (_) in
           if let answer = alertController.textFields?.first?.text {
-            if !answer.isEmpty && answer != appDefaults.apiKey {
+            if !answer.isEmpty && answer != ProvenanceApp.userDefaults.apiKey {
               UpFacade.ping(with: answer) { (error) in
                 DispatchQueue.main.async {
                   switch error {
@@ -202,7 +202,7 @@ extension SettingsVC: ASTableDelegate {
                       subtitle: "The API Key was verified and saved.",
                       style: .success
                     ).show()
-                    appDefaults.apiKey = answer
+                    ProvenanceApp.userDefaults.apiKey = answer
                   default:
                     GrowingNotificationBanner(
                       title: "Failed",
@@ -238,7 +238,7 @@ extension SettingsVC: ASTableDelegate {
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     switch indexPath.section {
     case 0:
-      switch appDefaults.apiKey {
+      switch ProvenanceApp.userDefaults.apiKey {
       case "":
         return nil
       default:
@@ -251,7 +251,7 @@ extension SettingsVC: ASTableDelegate {
                 title: "Copy API Key",
                 image: .docOnClipboard,
                 handler: { (_) in
-                  UIPasteboard.general.string = appDefaults.apiKey
+                  UIPasteboard.general.string = ProvenanceApp.userDefaults.apiKey
                 }
               )
             ])

@@ -4,9 +4,9 @@ extension DateStyle {
   func description(_ transaction: TransactionResource) -> String {
     switch self {
     case .absolute:
-      return formatDate(for: transaction.attributes.createdAt, dateStyle: .absolute)
+      return ProvenanceApp.formatDate(for: transaction.attributes.createdAt, dateStyle: .absolute)
     case .relative:
-      return formatDate(for: transaction.attributes.createdAt, dateStyle: .relative)
+      return ProvenanceApp.formatDate(for: transaction.attributes.createdAt, dateStyle: .relative)
     case .appDefault, .unknown:
       return transaction.attributes.creationDate
     }
@@ -19,7 +19,7 @@ extension DateStyle {
     case .relative:
       return .relative
     case .appDefault, .unknown:
-      return appDefaults.appDateStyle
+      return ProvenanceApp.userDefaults.appDateStyle
     }
   }
 }

@@ -11,10 +11,10 @@ final class AccountsVC: ASViewController {
   
   private lazy var collectionRefreshControl = UIRefreshControl(self, selector: #selector(refreshAccounts))
   
-  private var accountFilter: AccountTypeOptionEnum = appDefaults.appAccountFilter {
+  private var accountFilter: AccountTypeOptionEnum = ProvenanceApp.userDefaults.appAccountFilter {
     didSet {
-      if appDefaults.accountFilter != accountFilter.rawValue {
-        appDefaults.accountFilter = accountFilter.rawValue
+      if ProvenanceApp.userDefaults.accountFilter != accountFilter.rawValue {
+        ProvenanceApp.userDefaults.accountFilter = accountFilter.rawValue
       }
       if searchController.searchBar.selectedScopeButtonIndex != accountFilter.rawValue {
         searchController.searchBar.selectedScopeButtonIndex = accountFilter.rawValue
@@ -89,13 +89,13 @@ private extension AccountsVC {
       name: UIApplication.willEnterForegroundNotification,
       object: nil
     )
-    apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+    apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         weakSelf.fetchAccounts()
       }
     }
-    accountFilterObserver = appDefaults.observe(\.accountFilter, options: .new) { [weak self] (_, change) in
+    accountFilterObserver = ProvenanceApp.userDefaults.observe(\.accountFilter, options: .new) { [weak self] (_, change) in
       guard let weakSelf = self, let value = change.newValue, let accountFilter = AccountTypeOptionEnum(rawValue: value) else { return }
       weakSelf.accountFilter = accountFilter
     }

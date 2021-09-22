@@ -83,9 +83,9 @@ extension AboutVC: ASTableDataSource {
         case 0:
           return AboutTopCellNode()
         case 1:
-          return RightDetailCellNode(text: "Version", detailText: appDefaults.appVersion)
+          return RightDetailCellNode(text: "Version", detailText: ProvenanceApp.userDefaults.appVersion)
         case 2:
-          return RightDetailCellNode(text: "Build", detailText: appDefaults.appBuild)
+          return RightDetailCellNode(text: "Build", detailText: ProvenanceApp.userDefaults.appBuild)
         default:
           fatalError("Unknown row")
         }
@@ -168,27 +168,27 @@ extension AboutVC: ASTableDelegate {
     case 0:
       switch row {
       case 1:
-        switch appDefaults.appVersion {
+        switch ProvenanceApp.userDefaults.appVersion {
         case "Unknown":
           return nil
         default:
           return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { (_) in
             UIMenu(children: [
               UIAction(title: "Copy Version", image: .docOnClipboard) { (_) in
-                UIPasteboard.general.string = appDefaults.appVersion
+                UIPasteboard.general.string = ProvenanceApp.userDefaults.appVersion
               }
             ])
           }
         }
       case 2:
-        switch appDefaults.appBuild {
+        switch ProvenanceApp.userDefaults.appBuild {
         case "Unknown":
           return nil
         default:
           return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { (_) in
             UIMenu(children: [
               UIAction(title: "Copy Build", image: .docOnClipboard) { (_) in
-                UIPasteboard.general.string = appDefaults.appBuild
+                UIPasteboard.general.string = ProvenanceApp.userDefaults.appBuild
               }
             ])
           }

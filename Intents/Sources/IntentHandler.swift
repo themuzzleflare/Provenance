@@ -78,9 +78,9 @@ extension IntentHandler: ListTransactionsIntentHandling {
       "page[size]": "100"
     ]
     if let apiKey = intent.apiKey {
-      headers.add(.authorization(bearerToken: apiKey.isEmpty ? appDefaults.apiKey : apiKey))
+      headers.add(.authorization(bearerToken: apiKey.isEmpty ? ProvenanceApp.userDefaults.apiKey : apiKey))
     } else {
-      headers.add(.authorization(bearerToken: appDefaults.apiKey))
+      headers.add(.authorization(bearerToken: ProvenanceApp.userDefaults.apiKey))
     }
     if let account = intent.account?.identifier {
       requestUrl = "https://api.up.com.au/api/v1/accounts/\(account)/transactions"

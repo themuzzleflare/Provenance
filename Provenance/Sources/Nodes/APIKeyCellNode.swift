@@ -6,11 +6,11 @@ final class APIKeyCellNode: ASCellNode {
     // MARK: - Properties
   
   private var apiKeyDisplay: String {
-    switch appDefaults.apiKey {
-    case "":
+    switch ProvenanceApp.userDefaults.apiKey {
+    case .emptyString:
       return "None"
     default:
-      return appDefaults.apiKey
+      return ProvenanceApp.userDefaults.apiKey
     }
   }
   

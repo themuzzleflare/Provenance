@@ -109,7 +109,6 @@
 		7A340B3B26F9C14B00D43523 /* AccountTypeOptionEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A12C0EE26F83C81005C8AB1 /* AccountTypeOptionEnum.swift */; };
 		7A340B3C26F9C14B00D43523 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AED68922682B13C00C1795E /* NetworkError.swift */; };
 		7A340B3D26F9C14B00D43523 /* CategoryTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA819EB26F8175A00B5BD29 /* CategoryTypeEnum.swift */; };
-		7A340B3E26F9C14B00D43523 /* DateFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A22714026817937001F63FF /* DateFormatters.swift */; };
 		7A340B3F26F9C14B00D43523 /* ResultDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A16B5742683F8BB005428E0 /* ResultDecoder.swift */; };
 		7A340B4026F9C14B00D43523 /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5B06CA26F2BE87005CE3D1 /* InfoPlist.swift */; };
 		7A340B4126F9C14B00D43523 /* LatestTransactionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBD8E026F346F200460939 /* LatestTransactionModel.swift */; };
@@ -118,7 +117,6 @@
 		7A340B4426F9C14C00D43523 /* AccountTypeOptionEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A12C0EE26F83C81005C8AB1 /* AccountTypeOptionEnum.swift */; };
 		7A340B4526F9C14C00D43523 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AED68922682B13C00C1795E /* NetworkError.swift */; };
 		7A340B4626F9C14C00D43523 /* CategoryTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA819EB26F8175A00B5BD29 /* CategoryTypeEnum.swift */; };
-		7A340B4726F9C14C00D43523 /* DateFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A22714026817937001F63FF /* DateFormatters.swift */; };
 		7A340B4826F9C14C00D43523 /* ResultDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A16B5742683F8BB005428E0 /* ResultDecoder.swift */; };
 		7A340B4926F9C14C00D43523 /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5B06CA26F2BE87005CE3D1 /* InfoPlist.swift */; };
 		7A340B4A26F9C14C00D43523 /* LatestTransactionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBD8E026F346F200460939 /* LatestTransactionModel.swift */; };
@@ -127,7 +125,6 @@
 		7A340B4D26F9C14D00D43523 /* AccountTypeOptionEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A12C0EE26F83C81005C8AB1 /* AccountTypeOptionEnum.swift */; };
 		7A340B4E26F9C14D00D43523 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AED68922682B13C00C1795E /* NetworkError.swift */; };
 		7A340B4F26F9C14D00D43523 /* CategoryTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA819EB26F8175A00B5BD29 /* CategoryTypeEnum.swift */; };
-		7A340B5026F9C14D00D43523 /* DateFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A22714026817937001F63FF /* DateFormatters.swift */; };
 		7A340B5126F9C14D00D43523 /* ResultDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A16B5742683F8BB005428E0 /* ResultDecoder.swift */; };
 		7A340B5226F9C14D00D43523 /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5B06CA26F2BE87005CE3D1 /* InfoPlist.swift */; };
 		7A340B5426F9C14D00D43523 /* AppDateStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2151E26F047BD009F4F38 /* AppDateStyle.swift */; };
@@ -266,6 +263,8 @@
 		7A72D2F12672DEAF005FAC4F /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */; };
 		7A7CAB0326F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */; };
 		7A7CAB0526F1F161005CB30F /* FLAnimatedImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */; };
+		7A7F039826FB0064003F1321 /* ProvenanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5B06C926F2BE86005CE3D1 /* ProvenanceApp.swift */; };
+		7A7F039A26FB0068003F1321 /* ProvenanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5B06C926F2BE86005CE3D1 /* ProvenanceApp.swift */; };
 		7A82FB3826F47EAB00C9C04E /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A82FB2026F47B3C00C9C04E /* IntentsUI.framework */; };
 		7A82FB3B26F47EAB00C9C04E /* IntentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB3A26F47EAB00C9C04E /* IntentViewController.swift */; };
 		7A82FB3E26F47EAB00C9C04E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A82FB3C26F47EAB00C9C04E /* MainInterface.storyboard */; };
@@ -455,7 +454,6 @@
 		7A1BE9F326EDAD6D00A97F56 /* StickerImageNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerImageNode.swift; sourceTree = "<group>"; };
 		7A202B5C262908EC00D2450A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7A22713826817399001F63FF /* ShortcutType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutType.swift; sourceTree = "<group>"; };
-		7A22714026817937001F63FF /* DateFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatters.swift; sourceTree = "<group>"; };
 		7A2F18F6261D9CC60054A9B6 /* StickerSeven.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerSeven.gif; sourceTree = "<group>"; };
 		7A2F18F8261D9CC70054A9B6 /* StickerTwo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerTwo.gif; sourceTree = "<group>"; };
 		7A2F18F9261D9CC80054A9B6 /* StickerSix.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerSix.gif; sourceTree = "<group>"; };
@@ -769,7 +767,6 @@
 		7A22F7E625FFF8860014BDC8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				7A5B06C926F2BE86005CE3D1 /* ProvenanceApp.swift */,
 				7AA113C6261550B900386E2D /* DetailSection.swift */,
 				7AA113BE26154F3800386E2D /* DetailItem.swift */,
 				7AF2151026EF4175009F4F38 /* ContentType.swift */,
@@ -889,7 +886,7 @@
 			isa = PBXGroup;
 			children = (
 				7A75631826A7ED8000963658 /* UpAPI */,
-				7A22714026817937001F63FF /* DateFormatters.swift */,
+				7A5B06C926F2BE86005CE3D1 /* ProvenanceApp.swift */,
 				7AED68922682B13C00C1795E /* NetworkError.swift */,
 				7A16B5742683F8BB005428E0 /* ResultDecoder.swift */,
 				7AF2151E26F047BD009F4F38 /* AppDateStyle.swift */,
@@ -1671,6 +1668,7 @@
 				7AD266D726FADD9100EFF4A2 /* NumberFormatter+Extension.swift in Sources */,
 				7A340B6426F9C16900D43523 /* TransactionRelationshipTransferAccount.swift in Sources */,
 				7A615D7926FABEC7001F1834 /* AppWidgets.swift in Sources */,
+				7A7F039A26FB0068003F1321 /* ProvenanceApp.swift in Sources */,
 				7A340BCB26F9C26200D43523 /* AccountBalanceModel.swift in Sources */,
 				7A340B4F26F9C14D00D43523 /* CategoryTypeEnum.swift in Sources */,
 				7A340B5126F9C14D00D43523 /* ResultDecoder.swift in Sources */,
@@ -1680,7 +1678,6 @@
 				7A340B6926F9C16900D43523 /* TransactionAttribute.swift in Sources */,
 				7A340B7526F9C16900D43523 /* TagInputResourceIdentifier.swift in Sources */,
 				7A340B7326F9C16900D43523 /* TagResource.swift in Sources */,
-				7A340B5026F9C14D00D43523 /* DateFormatters.swift in Sources */,
 				7A340B5626F9C16900D43523 /* Transaction.swift in Sources */,
 				7A340B6F26F9C16900D43523 /* AccountTypeEnum.swift in Sources */,
 				7A340B7726F9C16900D43523 /* CategoryRelationshipParent.swift in Sources */,
@@ -1759,7 +1756,6 @@
 				7AD295F425D358B200B8A765 /* TransactionsByAccountVC.swift in Sources */,
 				7A340B1326F9C11200D43523 /* UIEdgeInsets+Extension.swift in Sources */,
 				7A340BB526F9C16900D43523 /* TransactionAttribute.swift in Sources */,
-				7A340B3E26F9C14B00D43523 /* DateFormatters.swift in Sources */,
 				7A340BAE26F9C16900D43523 /* SingleAccount.swift in Sources */,
 				7A340BB426F9C16900D43523 /* SingleCategory.swift in Sources */,
 				7AB609B32603F1130038B85B /* AddTagWorkflowThreeVC.swift in Sources */,
@@ -1898,7 +1894,6 @@
 				7A340B8726F9C16900D43523 /* CategoryRelationship.swift in Sources */,
 				7A340B1E26F9C11300D43523 /* Color+Extension.swift in Sources */,
 				7A340B1926F9C11300D43523 /* Int+Extension.swift in Sources */,
-				7A340B4726F9C14C00D43523 /* DateFormatters.swift in Sources */,
 				7A340B9A26F9C16900D43523 /* TagRelationship.swift in Sources */,
 				7A340B8D26F9C16900D43523 /* TransactionRelationship.swift in Sources */,
 				7A340B8A26F9C16900D43523 /* TransactionRelationshipTransferAccount.swift in Sources */,
@@ -1952,6 +1947,7 @@
 				7A340B9F26F9C16900D43523 /* RelatedLink.swift in Sources */,
 				7A340B9626F9C16900D43523 /* TransactionRelationshipAccount.swift in Sources */,
 				7A340B9C26F9C16900D43523 /* CategoryResource.swift in Sources */,
+				7A7F039826FB0064003F1321 /* ProvenanceApp.swift in Sources */,
 				7AFBD91326F4019100460939 /* LatestTransactionEntry.swift in Sources */,
 				7A340B9026F9C16900D43523 /* CashbackObject.swift in Sources */,
 				7A340B4826F9C14C00D43523 /* ResultDecoder.swift in Sources */,

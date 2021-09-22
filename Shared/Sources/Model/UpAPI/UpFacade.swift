@@ -308,7 +308,7 @@ struct UpFacade {
 private extension UpFacade {
   private static func authorisedRequest(url: URL) -> URLRequest {
     var request = URLRequest(url: url)
-    request.addValue("Bearer \(appDefaults.apiKey)", forHTTPHeaderField: "Authorization")
+    request.addValue("Bearer \(ProvenanceApp.userDefaults.apiKey)", forHTTPHeaderField: "Authorization")
     return request
   }
 }

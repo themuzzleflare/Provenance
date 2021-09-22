@@ -82,7 +82,7 @@ private extension TransactionsByAccountVC {
       name: UIApplication.willEnterForegroundNotification,
       object: nil
     )
-    dateStyleObserver = appDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+    dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         weakSelf.fetchingTasks()

@@ -1,8 +1,6 @@
 import Foundation
 import WidgetKit
 
-let appDefaults = UserDefaults.provenance
-
 extension UserDefaults {
     /// A `UserDefaults` instance for the application group. Observations should be made on a stored variable of this value.
   static var provenance: UserDefaults {

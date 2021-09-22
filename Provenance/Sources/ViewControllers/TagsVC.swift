@@ -76,7 +76,7 @@ private extension TagsVC {
       name: UIApplication.willEnterForegroundNotification,
       object: nil
     )
-    apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+    apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         weakSelf.fetchTags()

@@ -11,10 +11,10 @@ final class CategoriesVC: ASViewController {
   
   private lazy var collectionRefreshControl = UIRefreshControl(self, selector: #selector(refreshCategories))
   
-  private var categoryFilter: CategoryTypeEnum = appDefaults.appCategoryFilter {
+  private var categoryFilter: CategoryTypeEnum = ProvenanceApp.userDefaults.appCategoryFilter {
     didSet {
-      if appDefaults.categoryFilter != categoryFilter.rawValue {
-        appDefaults.categoryFilter = categoryFilter.rawValue
+      if ProvenanceApp.userDefaults.categoryFilter != categoryFilter.rawValue {
+        ProvenanceApp.userDefaults.categoryFilter = categoryFilter.rawValue
       }
       if searchController.searchBar.selectedScopeButtonIndex != categoryFilter.rawValue {
         searchController.searchBar.selectedScopeButtonIndex = categoryFilter.rawValue
@@ -88,13 +88,13 @@ private extension CategoriesVC {
       name: UIApplication.willEnterForegroundNotification,
       object: nil
     )
-    apiKeyObserver = appDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+    apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         weakSelf.fetchCategories()
       }
     }
-    categoryFilterObserver = appDefaults.observe(\.categoryFilter, options: .new) { [weak self] (_, change) in
+    categoryFilterObserver = ProvenanceApp.userDefaults.observe(\.categoryFilter, options: .new) { [weak self] (_, change) in
       guard let weakSelf = self, let value = change.newValue, let categoryFilter = CategoryTypeEnum(rawValue: value) else { return }
       weakSelf.categoryFilter = categoryFilter
     }

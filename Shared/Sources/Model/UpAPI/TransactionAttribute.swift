@@ -65,7 +65,7 @@ class TransactionAttribute: Codable {
     foreignAmount = try values.decodeIfPresent(MoneyObject.self, forKey: .foreignAmount)
     settledAt = try values.decodeIfPresent(String.self, forKey: .settledAt)
     createdAt = try values.decode(String.self, forKey: .createdAt)
-    creationDate = formatDate(for: createdAt, dateStyle: appDefaults.appDateStyle)
+    creationDate = ProvenanceApp.formatDate(for: createdAt, dateStyle: ProvenanceApp.userDefaults.appDateStyle)
   }
 }
 
@@ -107,7 +107,7 @@ extension TransactionAttribute {
   
   var settlementDate: String? {
     if let settledAt = settledAt {
-      return formatDate(for: settledAt, dateStyle: appDefaults.appDateStyle)
+      return ProvenanceApp.formatDate(for: settledAt, dateStyle: ProvenanceApp.userDefaults.appDateStyle)
     } else {
       return nil
     }
