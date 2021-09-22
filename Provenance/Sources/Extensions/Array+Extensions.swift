@@ -89,15 +89,15 @@ extension Array where Element == DetailSection {
         items: [
           DetailItem(
             id: "Hold \(transaction.attributes.holdInfo?.amount.transactionType ?? .emptyString)",
-            value: transaction.attributes.holdTransValue
+            value: transaction.attributes.holdValue
           ),
           DetailItem(
             id: "Hold Foreign \(transaction.attributes.holdInfo?.foreignAmount?.transactionType ?? .emptyString)",
-            value: transaction.attributes.holdForeignTransValue
+            value: transaction.attributes.holdForeignValue
           ),
           DetailItem(
             id: "Foreign \(transaction.attributes.foreignAmount?.transactionType ?? .emptyString)",
-            value: transaction.attributes.foreignTransValue
+            value: transaction.attributes.foreignValue
           ),
           DetailItem(
             id: transaction.attributes.amount.transactionType,

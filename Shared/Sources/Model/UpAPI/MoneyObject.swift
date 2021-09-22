@@ -23,29 +23,11 @@ extension MoneyObject {
     }
   }
   
-  var valueSymbol: String {
-    switch valueInBaseUnits.signum() {
-    case -1:
-      return "-$"
-    default:
-      return "$"
-    }
-  }
-  
-  var valueString: String {
-    switch valueInBaseUnits.signum() {
-    case -1:
-      return value.replacingOccurrences(of: "-", with: String.emptyString)
-    default:
-      return value
-    }
-  }
-  
   var valueShort: String {
-    return "\(valueSymbol)\(valueString)"
+    return NumberFormatter.currency(currencyCode: currencyCode).string(from: value.nsDecimalNumber) ?? value
   }
   
   var valueLong: String {
-    return "\(valueSymbol)\(valueString) \(currencyCode)"
+    return NumberFormatter.currencyLong(currencyCode: currencyCode).string(from: value.nsDecimalNumber) ?? value
   }
 }

@@ -28,11 +28,7 @@
 	<string>${PROVENANCE_COPYRIGHT}</string>
 	<key>NSUserActivityTypes</key>
 	<array>
-		<string>AccountSelectionIntent</string>
-		<string>AddTagToTransactionIntent</string>
-		<string>DateStyleSelectionIntent</string>
-		<string>ListTransactionsIntent</string>
-		<string>RemoveTagFromTransactionIntent</string>
+		<string>addedTagsToTransaction</string>
 	</array>
 	<key>UIAppFonts</key>
 	<array>

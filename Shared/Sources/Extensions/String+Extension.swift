@@ -9,6 +9,14 @@ extension String {
     return NSString(string: self)
   }
   
+  var nsDecimalNumber: NSDecimalNumber {
+    return NSDecimalNumber(string: self)
+  }
+  
+  var double: Double {
+    return Double(self)!
+  }
+  
   var tagInputResourceIdentifier: TagInputResourceIdentifier {
     return TagInputResourceIdentifier(id: self)
   }

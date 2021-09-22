@@ -1387,7 +1387,7 @@
 			<key>INTypeDisplayNameID</key>
 			<string>7dJx5q</string>
 			<key>INTypeLastPropertyTag</key>
-			<integer>108</integer>
+			<integer>112</integer>
 			<key>INTypeName</key>
 			<string>TransactionType</string>
 			<key>INTypeProperties</key>
@@ -1483,6 +1483,47 @@
 					<integer>108</integer>
 					<key>INTypePropertyType</key>
 					<string>String</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDisplayName</key>
+					<string>Creation Date</string>
+					<key>INTypePropertyDisplayNameID</key>
+					<string>z3TXNy</string>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>8</integer>
+					<key>INTypePropertyMetadata</key>
+					<dict>
+						<key>INTypePropertyMetadataDateStyle</key>
+						<string>Full</string>
+						<key>INTypePropertyMetadataFormat</key>
+						<string>Style</string>
+						<key>INTypePropertyMetadataTemplateID</key>
+						<string>LWGKqe</string>
+						<key>INTypePropertyMetadataTimeStyle</key>
+						<string>Full</string>
+						<key>INTypePropertyMetadataType</key>
+						<string>DateTime</string>
+					</dict>
+					<key>INTypePropertyName</key>
+					<string>creationDate</string>
+					<key>INTypePropertyTag</key>
+					<integer>110</integer>
+					<key>INTypePropertyType</key>
+					<string>DateComponents</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDisplayName</key>
+					<string>Amount</string>
+					<key>INTypePropertyDisplayNameID</key>
+					<string>miMxmN</string>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>9</integer>
+					<key>INTypePropertyName</key>
+					<string>amount</string>
+					<key>INTypePropertyTag</key>
+					<integer>112</integer>
+					<key>INTypePropertyType</key>
+					<string>CurrencyAmount</string>
 				</dict>
 			</array>
 		</dict>

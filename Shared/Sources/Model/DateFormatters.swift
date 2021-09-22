@@ -2,12 +2,11 @@ import Foundation
 import SwiftDate
 
 func formatDate(for dateString: String, dateStyle: AppDateStyle) -> String {
+  guard let date = dateString.toDate() else { return dateString }
   switch dateStyle {
   case .absolute:
-    guard let date = dateString.toDate() else { return dateString }
-    return date.toString(.dateTime(.medium))
+    return date.toString(.dateTime(.short))
   case .relative:
-    guard let date = dateString.toDate() else { return dateString }
-    return date.toString(.relative(style: nil))
+    return date.toRelative()
   }
 }

@@ -307,6 +307,12 @@
 		7AD127DD2604735800A39272 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AD317972604412000B4E008 /* SwiftUI.framework */; };
 		7AD127E92604735B00A39272 /* Provenance Widgets.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7AD127DB2604735800A39272 /* Provenance Widgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7AD127FD260473A400A39272 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
+		7AD266D526FADA1E00EFF4A2 /* NumberFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD266D426FADA1E00EFF4A2 /* NumberFormatter+Extension.swift */; };
+		7AD266D626FADD9000EFF4A2 /* NumberFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD266D426FADA1E00EFF4A2 /* NumberFormatter+Extension.swift */; };
+		7AD266D726FADD9100EFF4A2 /* NumberFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD266D426FADA1E00EFF4A2 /* NumberFormatter+Extension.swift */; };
+		7AD266D926FADDF500EFF4A2 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD266D826FADDF500EFF4A2 /* Double+Extension.swift */; };
+		7AD266DA26FADDF500EFF4A2 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD266D826FADDF500EFF4A2 /* Double+Extension.swift */; };
+		7AD266DB26FADDF500EFF4A2 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD266D826FADDF500EFF4A2 /* Double+Extension.swift */; };
 		7AD295F425D358B200B8A765 /* TransactionsByAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */; };
 		7AD295F825D3599A00B8A765 /* AccountDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */; };
 		7AD6ED9A2604A9180051A235 /* Provenance Stickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7AD6ED932604A9150051A235 /* Provenance Stickers.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -558,6 +564,8 @@
 		7AD1279A2604702600A39272 /* Widgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widgets.swift; sourceTree = "<group>"; };
 		7AD127DB2604735800A39272 /* Provenance Widgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance Widgets.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AD127EA2604735B00A39272 /* Widgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Widgets.entitlements; sourceTree = "<group>"; };
+		7AD266D426FADA1E00EFF4A2 /* NumberFormatter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter+Extension.swift"; sourceTree = "<group>"; };
+		7AD266D826FADDF500EFF4A2 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByAccountVC.swift; sourceTree = "<group>"; };
 		7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailVC.swift; sourceTree = "<group>"; };
 		7AD317952604412000B4E008 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -970,6 +978,8 @@
 				7A61534F26F961F800382804 /* ListTransactionsIntentResponse+Extension.swift */,
 				7A0F043626F998EC00333191 /* NSUserActivity+Extension.swift */,
 				7A0F043A26F99DF000333191 /* AddTagToTransactionIntentResponse+Extension.swift */,
+				7AD266D426FADA1E00EFF4A2 /* NumberFormatter+Extension.swift */,
+				7AD266D826FADDF500EFF4A2 /* Double+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1658,12 +1668,14 @@
 				7A340B2D26F9C11300D43523 /* URLSession+Extension.swift in Sources */,
 				7A340BCA26F9C25100D43523 /* LatestTransactionModel.swift in Sources */,
 				7A340B6B26F9C16900D43523 /* TransactionResource.swift in Sources */,
+				7AD266D726FADD9100EFF4A2 /* NumberFormatter+Extension.swift in Sources */,
 				7A340B6426F9C16900D43523 /* TransactionRelationshipTransferAccount.swift in Sources */,
 				7A615D7926FABEC7001F1834 /* AppWidgets.swift in Sources */,
 				7A340BCB26F9C26200D43523 /* AccountBalanceModel.swift in Sources */,
 				7A340B4F26F9C14D00D43523 /* CategoryTypeEnum.swift in Sources */,
 				7A340B5126F9C14D00D43523 /* ResultDecoder.swift in Sources */,
 				7A340B3626F9C11300D43523 /* URL+Extension.swift in Sources */,
+				7AD266DB26FADDF500EFF4A2 /* Double+Extension.swift in Sources */,
 				7A340B5F26F9C16900D43523 /* UpFacade.swift in Sources */,
 				7A340B6926F9C16900D43523 /* TransactionAttribute.swift in Sources */,
 				7A340B7526F9C16900D43523 /* TagInputResourceIdentifier.swift in Sources */,
@@ -1769,6 +1781,7 @@
 				7A340BA626F9C16900D43523 /* TransactionRelationshipTag.swift in Sources */,
 				7A340B1426F9C11200D43523 /* NSString+Extension.swift in Sources */,
 				7AE75E3725FF1C3B00C16AF6 /* NavigationController.swift in Sources */,
+				7AD266D926FADDF500EFF4A2 /* Double+Extension.swift in Sources */,
 				7A340B1526F9C11200D43523 /* UserDefaults+Extension.swift in Sources */,
 				7A340BB626F9C16900D43523 /* CashbackObject.swift in Sources */,
 				7A340BC526F9C16900D43523 /* RelatedLink.swift in Sources */,
@@ -1836,6 +1849,7 @@
 				7A340BC326F9C16900D43523 /* CategoryRelationshipParent.swift in Sources */,
 				7AF2155826F050B3009F4F38 /* ASViewController.swift in Sources */,
 				7A340B4026F9C14B00D43523 /* InfoPlist.swift in Sources */,
+				7AD266D526FADA1E00EFF4A2 /* NumberFormatter+Extension.swift in Sources */,
 				7A340B1126F9C11200D43523 /* AddTagToTransactionIntentResponse+Extension.swift in Sources */,
 				7A56101A25D22AF10091396E /* AddTagWorkflowVC.swift in Sources */,
 				7AC9F7D326AE4E9C0096D486 /* ViewController.swift in Sources */,
@@ -1923,6 +1937,7 @@
 				7A340B9126F9C16900D43523 /* TransactionResource.swift in Sources */,
 				7AFBD90F26F4010400460939 /* AccountBalanceEntryView.swift in Sources */,
 				7A35ECA42657B88400568ECA /* LatestTransaction.swift in Sources */,
+				7AD266DA26FADDF500EFF4A2 /* Double+Extension.swift in Sources */,
 				7A340B9E26F9C16900D43523 /* RelationshipData.swift in Sources */,
 				7AFBD91526F4019900460939 /* LatestTransactionEntryView.swift in Sources */,
 				7A340B4B26F9C14C00D43523 /* AppDateStyle.swift in Sources */,
@@ -1933,6 +1948,7 @@
 				7A340B9226F9C16900D43523 /* HoldInfoObject.swift in Sources */,
 				7A340B8C26F9C16900D43523 /* CategoryAttribute.swift in Sources */,
 				7A340B9326F9C16900D43523 /* AccountAttribute.swift in Sources */,
+				7AD266D626FADD9000EFF4A2 /* NumberFormatter+Extension.swift in Sources */,
 				7A340B9F26F9C16900D43523 /* RelatedLink.swift in Sources */,
 				7A340B9626F9C16900D43523 /* TransactionRelationshipAccount.swift in Sources */,
 				7A340B9C26F9C16900D43523 /* CategoryResource.swift in Sources */,
@@ -2234,7 +2250,7 @@
 			baseConfigurationReference = 807F847AFD560FFD17AA96DA /* Pods-Provenance.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Provenance/Resources/Provenance.entitlements;
-				CODE_SIGN_IDENTITY = "${CODESIGNING_IDENTITY}";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
@@ -2257,7 +2273,7 @@
 			baseConfigurationReference = 0D092E02E7CA483DD8D5DE38 /* Pods-Provenance.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Provenance/Resources/Provenance.entitlements;
-				CODE_SIGN_IDENTITY = "${CODESIGNING_IDENTITY}";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;

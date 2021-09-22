@@ -30,10 +30,10 @@
 			<array/>
 			<key>IntentsSupported</key>
 			<array>
+				<string>AccountSelectionIntent</string>
 				<string>AddTagToTransactionIntent</string>
 				<string>ListTransactionsIntent</string>
 				<string>RemoveTagFromTransactionIntent</string>
-				<string>AccountSelectionIntent</string>
 			</array>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
