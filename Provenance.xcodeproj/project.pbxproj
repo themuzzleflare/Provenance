@@ -253,6 +253,13 @@
 		7A56101625D21BFE0091396E /* TransactionsByTagVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101525D21BFE0091396E /* TransactionsByTagVC.swift */; };
 		7A56101A25D22AF10091396E /* AddTagWorkflowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101925D22AF10091396E /* AddTagWorkflowVC.swift */; };
 		7A56101D25D25B600091396E /* TransactionsByCategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101C25D25B600091396E /* TransactionsByCategoryVC.swift */; };
+		7A5A89E726FBEE950010223B /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9C253926F30ABD00509ED4 /* Font+Extension.swift */; };
+		7A5A89E826FBEE9A0010223B /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9C253926F30ABD00509ED4 /* Font+Extension.swift */; };
+		7A5A89E926FBEE9B0010223B /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9C253926F30ABD00509ED4 /* Font+Extension.swift */; };
+		7A5A89EB26FBF0790010223B /* Image+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5A89EA26FBF0790010223B /* Image+Extension.swift */; };
+		7A5A89EC26FBF0790010223B /* Image+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5A89EA26FBF0790010223B /* Image+Extension.swift */; };
+		7A5A89ED26FBF0790010223B /* Image+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5A89EA26FBF0790010223B /* Image+Extension.swift */; };
+		7A5A89EE26FBF0790010223B /* Image+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5A89EA26FBF0790010223B /* Image+Extension.swift */; };
 		7A5B06CB26F2BE87005CE3D1 /* ProvenanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5B06C926F2BE86005CE3D1 /* ProvenanceApp.swift */; };
 		7A5BDE762616B99B00B5A5F9 /* CategoriesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5BDE752616B99B00B5A5F9 /* CategoriesVC.swift */; };
 		7A615D7326FA9D6D001F1834 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A615D7226FA9D6D001F1834 /* UITextField+Extension.swift */; };
@@ -265,6 +272,19 @@
 		7A7CAB0526F1F161005CB30F /* FLAnimatedImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */; };
 		7A7F039826FB0064003F1321 /* ProvenanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5B06C926F2BE86005CE3D1 /* ProvenanceApp.swift */; };
 		7A7F039A26FB0068003F1321 /* ProvenanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5B06C926F2BE86005CE3D1 /* ProvenanceApp.swift */; };
+		7A7F039D26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7F039C26FB0641003F1321 /* TransactionColour+Extension.swift */; };
+		7A7F039E26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7F039C26FB0641003F1321 /* TransactionColour+Extension.swift */; };
+		7A7F039F26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7F039C26FB0641003F1321 /* TransactionColour+Extension.swift */; };
+		7A7F03A026FB06AA003F1321 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F55F26F1634200384F53 /* UIColor+Extension.swift */; };
+		7A7F03A126FB06AB003F1321 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F55F26F1634200384F53 /* UIColor+Extension.swift */; };
+		7A7F03A226FB0859003F1321 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F55F26F1634200384F53 /* UIColor+Extension.swift */; };
+		7A7F03A326FB085E003F1321 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9C253B26F30D5700509ED4 /* Color+Extension.swift */; };
+		7A7F03A426FB0869003F1321 /* TransactionColour+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7F039C26FB0641003F1321 /* TransactionColour+Extension.swift */; };
+		7A7F03A526FB0B01003F1321 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
+		7A7F03A626FB0B10003F1321 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
+		7A7F03A726FB0F36003F1321 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2152C26F04CF3009F4F38 /* UIImage+Extension.swift */; };
+		7A7F03A826FB0F37003F1321 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2152C26F04CF3009F4F38 /* UIImage+Extension.swift */; };
+		7A7F03A926FB0F3E003F1321 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2152C26F04CF3009F4F38 /* UIImage+Extension.swift */; };
 		7A82FB3826F47EAB00C9C04E /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A82FB2026F47B3C00C9C04E /* IntentsUI.framework */; };
 		7A82FB3B26F47EAB00C9C04E /* IntentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB3A26F47EAB00C9C04E /* IntentViewController.swift */; };
 		7A82FB3E26F47EAB00C9C04E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A82FB3C26F47EAB00C9C04E /* MainInterface.storyboard */; };
@@ -343,7 +363,6 @@
 		7AF2152D26F04CF3009F4F38 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2152C26F04CF3009F4F38 /* UIImage+Extension.swift */; };
 		7AF2155226F04F73009F4F38 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2155126F04F73009F4F38 /* Array+Extensions.swift */; };
 		7AF2155826F050B3009F4F38 /* ASViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2155726F050B3009F4F38 /* ASViewController.swift */; };
-		7AF2155B26F0533F009F4F38 /* TransactionAttribute+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2155A26F0533F009F4F38 /* TransactionAttribute+Extension.swift */; };
 		7AF2155D26F05422009F4F38 /* UIMenu+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2155C26F05422009F4F38 /* UIMenu+Extension.swift */; };
 		7AF2156026F057F1009F4F38 /* FilterMenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2155F26F057F1009F4F38 /* FilterMenuAction.swift */; };
 		7AF2156426F05F74009F4F38 /* UIMenuElement+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2156326F05F74009F4F38 /* UIMenuElement+Extension.swift */; };
@@ -466,6 +485,7 @@
 		7A56101525D21BFE0091396E /* TransactionsByTagVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByTagVC.swift; sourceTree = "<group>"; };
 		7A56101925D22AF10091396E /* AddTagWorkflowVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagWorkflowVC.swift; sourceTree = "<group>"; };
 		7A56101C25D25B600091396E /* TransactionsByCategoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByCategoryVC.swift; sourceTree = "<group>"; };
+		7A5A89EA26FBF0790010223B /* Image+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extension.swift"; sourceTree = "<group>"; };
 		7A5B06C326F2BCB6005CE3D1 /* Shared.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 		7A5B06C426F2BCB6005CE3D1 /* Production.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Production.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 		7A5B06C526F2BCB7005CE3D1 /* Development.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
@@ -485,6 +505,7 @@
 		7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
 		7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASPINRemoteImageDownloader+Extension.swift"; sourceTree = "<group>"; };
 		7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FLAnimatedImage+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		7A7F039C26FB0641003F1321 /* TransactionColour+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionColour+Extension.swift"; sourceTree = "<group>"; };
 		7A82FB1726F466FE00C9C04E /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
 		7A82FB2026F47B3C00C9C04E /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
 		7A82FB3726F47EAB00C9C04E /* Provenance IntentsUI.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance IntentsUI.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -616,7 +637,6 @@
 		7AF2154C26F04E1E009F4F38 /* TransactionRelationshipTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRelationshipTag.swift; sourceTree = "<group>"; };
 		7AF2155126F04F73009F4F38 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		7AF2155726F050B3009F4F38 /* ASViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASViewController.swift; sourceTree = "<group>"; };
-		7AF2155A26F0533F009F4F38 /* TransactionAttribute+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionAttribute+Extension.swift"; sourceTree = "<group>"; };
 		7AF2155C26F05422009F4F38 /* UIMenu+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIMenu+Extension.swift"; sourceTree = "<group>"; };
 		7AF2155F26F057F1009F4F38 /* FilterMenuAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuAction.swift; sourceTree = "<group>"; };
 		7AF2156326F05F74009F4F38 /* UIMenuElement+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIMenuElement+Extension.swift"; sourceTree = "<group>"; };
@@ -795,7 +815,6 @@
 				7AD1279A2604702600A39272 /* Widgets.swift */,
 				7AFBD90826F400D000460939 /* AccountBalance */,
 				7AFBD90926F400D500460939 /* LatestTransaction */,
-				7AEB9FE326F86D2D00CBDAA1 /* Extensions */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -842,20 +861,19 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		7A38860726BB62F900F57EA0 /* Configurations */ = {
+		7A38860726BB62F900F57EA0 /* XcodeConfigurations */ = {
 			isa = PBXGroup;
 			children = (
 				7A5B06C526F2BCB7005CE3D1 /* Development.xcconfig */,
 				7A5B06C426F2BCB6005CE3D1 /* Production.xcconfig */,
 				7A5B06C326F2BCB6005CE3D1 /* Shared.xcconfig */,
 			);
-			path = Configurations;
+			path = XcodeConfigurations;
 			sourceTree = "<group>";
 		};
 		7A75631426A7ED3100963658 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				7A38860726BB62F900F57EA0 /* Configurations */,
 				7A75631626A7ED6B00963658 /* Resources */,
 				7A75631526A7ED6600963658 /* Sources */,
 			);
@@ -957,26 +975,31 @@
 		7A8BC0C62681583600D6D8D3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				7AAADD5626F17FF300C4A9D9 /* String+Extension.swift */,
+				7AF2152C26F04CF3009F4F38 /* UIImage+Extension.swift */,
+				7A5A89EA26FBF0790010223B /* Image+Extension.swift */,
+				7A90F55F26F1634200384F53 /* UIColor+Extension.swift */,
 				7A9C253B26F30D5700509ED4 /* Color+Extension.swift */,
+				7A90F51F26F08ECA00384F53 /* UIFont+Extension.swift */,
+				7A9C253926F30ABD00509ED4 /* Font+Extension.swift */,
+				7A0F043626F998EC00333191 /* NSUserActivity+Extension.swift */,
+				7AAADD5626F17FF300C4A9D9 /* String+Extension.swift */,
+				7A61534726F9606600382804 /* NSString+Extension.swift */,
 				7A8BC0C72681586100D6D8D3 /* UserDefaults+Extension.swift */,
+				7AD266D426FADA1E00EFF4A2 /* NumberFormatter+Extension.swift */,
 				7A8BC0C9268158EA00D6D8D3 /* Dictionary+Extension.swift */,
 				7A8BC0CB2681590A00D6D8D3 /* URL+Extension.swift */,
-				7A90F51F26F08ECA00384F53 /* UIFont+Extension.swift */,
 				7AF214FD26EF326C009F4F38 /* UIEdgeInsets+Extension.swift */,
 				7A16B5722683F884005428E0 /* URLSession+Extension.swift */,
 				7AF2151626EF439D009F4F38 /* Int+Extension.swift */,
+				7AD266D826FADDF500EFF4A2 /* Double+Extension.swift */,
 				7A61533726F95ACD00382804 /* DateStyle+Extension.swift */,
 				7A61533B26F95D5200382804 /* TransactionType+Extension.swift */,
 				7A61533F26F95EED00382804 /* AccountType+Extension.swift */,
 				7A61534326F95FDE00382804 /* CategoryType+Extension.swift */,
-				7A61534726F9606600382804 /* NSString+Extension.swift */,
 				7A61534B26F960D500382804 /* Status+Extension.swift */,
 				7A61534F26F961F800382804 /* ListTransactionsIntentResponse+Extension.swift */,
-				7A0F043626F998EC00333191 /* NSUserActivity+Extension.swift */,
 				7A0F043A26F99DF000333191 /* AddTagToTransactionIntentResponse+Extension.swift */,
-				7AD266D426FADA1E00EFF4A2 /* NumberFormatter+Extension.swift */,
-				7AD266D826FADDF500EFF4A2 /* Double+Extension.swift */,
+				7A7F039C26FB0641003F1321 /* TransactionColour+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1032,6 +1055,7 @@
 		7AB34D1125C78230000A1E81 = {
 			isa = PBXGroup;
 			children = (
+				7A38860726BB62F900F57EA0 /* XcodeConfigurations */,
 				7A75631426A7ED3100963658 /* Shared */,
 				7AB34D1C25C78230000A1E81 /* Provenance */,
 				7AD6ED942604A9150051A235 /* Stickers */,
@@ -1131,19 +1155,9 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
-		7AEB9FE326F86D2D00CBDAA1 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				7A9C253926F30ABD00509ED4 /* Font+Extension.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		7AF2155026F04F62009F4F38 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				7AF2152C26F04CF3009F4F38 /* UIImage+Extension.swift */,
-				7A90F55F26F1634200384F53 /* UIColor+Extension.swift */,
 				7A90F56126F16FB200384F53 /* URL+Extensions.swift */,
 				7AAADD5426F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift */,
 				7AF2150626EF32C5009F4F38 /* ASSizeRange+Extension.swift */,
@@ -1160,7 +1174,6 @@
 				7AF2155126F04F73009F4F38 /* Array+Extensions.swift */,
 				7AF2152A26F04BCC009F4F38 /* TransactionResource+ListDiffable.swift */,
 				7AAADD5C26F1910700C4A9D9 /* TransactionAttribute+ListDiffable.swift */,
-				7AF2155A26F0533F009F4F38 /* TransactionAttribute+Extension.swift */,
 				7A90F52126F096D200384F53 /* AccountResource+ListDiffable.swift */,
 				7A9C253626F2E7F200509ED4 /* AccountAttribute+ListDiffable.swift */,
 				7A90F52F26F097BB00384F53 /* TagResource+ListDiffable.swift */,
@@ -1402,6 +1415,7 @@
 				7A340B0026F9C0FC00D43523 /* SF-Mono-Regular.otf in Resources */,
 				7A340AFD26F9C0FC00D43523 /* CircularStd-BookItalic.ttf in Resources */,
 				7A340AFE26F9C0FC00D43523 /* CircularStd-Bold.otf in Resources */,
+				7A7F03A626FB0B10003F1321 /* Assets.xcassets in Resources */,
 				7A340AFF26F9C0FC00D43523 /* CircularStd-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1414,6 +1428,7 @@
 				7A340AFC26F9C0FB00D43523 /* CircularStd-Book.otf in Resources */,
 				7A340AF926F9C0FB00D43523 /* CircularStd-Bold.otf in Resources */,
 				7A340AFB26F9C0FB00D43523 /* SF-Mono-Regular.otf in Resources */,
+				7A7F03A526FB0B01003F1321 /* Assets.xcassets in Resources */,
 				7A82FB3E26F47EAB00C9C04E /* MainInterface.storyboard in Resources */,
 				7A340AFA26F9C0FB00D43523 /* CircularStd-Medium.otf in Resources */,
 			);
@@ -1637,6 +1652,7 @@
 				7A340B3426F9C11300D43523 /* NSUserActivity+Extension.swift in Sources */,
 				7A340B6326F9C16900D43523 /* Account.swift in Sources */,
 				7A340B5426F9C14D00D43523 /* AppDateStyle.swift in Sources */,
+				7A7F03A826FB0F37003F1321 /* UIImage+Extension.swift in Sources */,
 				7A340B5726F9C16900D43523 /* ModifyTags.swift in Sources */,
 				7A340B4E26F9C14D00D43523 /* NetworkError.swift in Sources */,
 				7A340B0426F9C10700D43523 /* URLQueryParameterStringConvertible.swift in Sources */,
@@ -1660,6 +1676,7 @@
 				7A340B7226F9C16900D43523 /* AccountRelationship.swift in Sources */,
 				7A340B2B26F9C11300D43523 /* Int+Extension.swift in Sources */,
 				7A340B5926F9C16900D43523 /* CategoryRelationshipChildren.swift in Sources */,
+				7A5A89E826FBEE9A0010223B /* Font+Extension.swift in Sources */,
 				7A340B7926F9C16900D43523 /* RelatedLink.swift in Sources */,
 				7A340B3A26F9C11300D43523 /* ListTransactionsIntentResponse+Extension.swift in Sources */,
 				7A340B2D26F9C11300D43523 /* URLSession+Extension.swift in Sources */,
@@ -1684,6 +1701,7 @@
 				7A340B6726F9C16900D43523 /* TransactionRelationship.swift in Sources */,
 				7A0662FB26F5573500720802 /* Intents.intentdefinition in Sources */,
 				7A340B7426F9C16900D43523 /* TagRelationship.swift in Sources */,
+				7A7F039F26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */,
 				7A340B6E26F9C16900D43523 /* AccountResource.swift in Sources */,
 				7A340B6526F9C16900D43523 /* TransactionStatusEnum.swift in Sources */,
 				7A340B4D26F9C14D00D43523 /* AccountTypeOptionEnum.swift in Sources */,
@@ -1700,7 +1718,9 @@
 				7A340B3026F9C11300D43523 /* Color+Extension.swift in Sources */,
 				7A340B3926F9C11300D43523 /* UserDefaults+Extension.swift in Sources */,
 				7A340B5E26F9C16900D43523 /* TransactionsLinksObject.swift in Sources */,
+				7A5A89ED26FBF0790010223B /* Image+Extension.swift in Sources */,
 				7A340B7026F9C16900D43523 /* TransactionRelationshipAccount.swift in Sources */,
+				7A7F03A126FB06AB003F1321 /* UIColor+Extension.swift in Sources */,
 				7A340B2C26F9C11300D43523 /* AccountType+Extension.swift in Sources */,
 				7A340B7826F9C16900D43523 /* RelationshipData.swift in Sources */,
 			);
@@ -1710,9 +1730,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A5A89EE26FBF0790010223B /* Image+Extension.swift in Sources */,
 				7A340BC826F9C1B200D43523 /* UIEdgeInsets+Extension.swift in Sources */,
+				7A7F03A326FB085E003F1321 /* Color+Extension.swift in Sources */,
+				7A7F03A426FB0869003F1321 /* TransactionColour+Extension.swift in Sources */,
+				7A7F03A926FB0F3E003F1321 /* UIImage+Extension.swift in Sources */,
 				7A82FB3B26F47EAB00C9C04E /* IntentViewController.swift in Sources */,
 				7A9C12F926F5CF6000C09CA7 /* Intents.intentdefinition in Sources */,
+				7A5A89E926FBEE9B0010223B /* Font+Extension.swift in Sources */,
+				7A7F03A226FB0859003F1321 /* UIColor+Extension.swift in Sources */,
 				7A340BC926F9C1DC00D43523 /* UIFont+Extension.swift in Sources */,
 				7A82FB4926F4869600C9C04E /* TransactionCell.swift in Sources */,
 			);
@@ -1784,6 +1810,7 @@
 				7AF214FF26EF326C009F4F38 /* NSParagraphStyle+Extension.swift in Sources */,
 				7A09E4B52686E30600C9F299 /* TransactionDetailVC.swift in Sources */,
 				7A340B0926F9C11200D43523 /* URLSession+Extension.swift in Sources */,
+				7A5A89E726FBEE950010223B /* Font+Extension.swift in Sources */,
 				7AF2156E26F06C98009F4F38 /* UIRefreshControl+Extension.swift in Sources */,
 				7ADE3330267AED2B00066823 /* TransactionsVC.swift in Sources */,
 				7AF2150826EF32C5009F4F38 /* ASTextCellNode+Extension.swift in Sources */,
@@ -1795,7 +1822,6 @@
 				7A340B1026F9C11200D43523 /* NSUserActivity+Extension.swift in Sources */,
 				7A340BBD26F9C16900D43523 /* SingleTransaction.swift in Sources */,
 				7A0A301E26B52C88009E52FB /* AboutTopCellNode.swift in Sources */,
-				7AF2155B26F0533F009F4F38 /* TransactionAttribute+Extension.swift in Sources */,
 				7AF2150B26EF34C5009F4F38 /* CGColor+Extension.swift in Sources */,
 				7A615D7726FABA74001F1834 /* AppWidgets.swift in Sources */,
 				7A340B0B26F9C11200D43523 /* String+Extension.swift in Sources */,
@@ -1824,6 +1850,7 @@
 				7A90F53026F097BB00384F53 /* TagResource+ListDiffable.swift in Sources */,
 				7AF214FE26EF326C009F4F38 /* NSAttributedString+Extension.swift in Sources */,
 				7AA113BF26154F3800386E2D /* DetailItem.swift in Sources */,
+				7A7F039D26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */,
 				7A67980D25D3E15D002AA83A /* DiagnosticTableVC.swift in Sources */,
 				7AF2156626F05FE3009F4F38 /* UIContextMenuConfiguration+Extension.swift in Sources */,
 				7A90F55A26F0998700384F53 /* RelationshipData+ListDiffable.swift in Sources */,
@@ -1864,6 +1891,7 @@
 				7A340B4326F9C14B00D43523 /* AccountBalanceModel.swift in Sources */,
 				7A340BAC26F9C16900D43523 /* TransactionRelationshipCategory.swift in Sources */,
 				7AF2151B26F046E9009F4F38 /* SegmentedControlNodeProtocol.swift in Sources */,
+				7A5A89EB26FBF0790010223B /* Image+Extension.swift in Sources */,
 				7A0A302A26B54C4A009E52FB /* DateStyleCellNode.swift in Sources */,
 				7A340B0E26F9C11200D43523 /* CategoryType+Extension.swift in Sources */,
 				7AF2156C26F062FE009F4F38 /* UIAlertController+Extension.swift in Sources */,
@@ -1894,6 +1922,7 @@
 				7A340B8726F9C16900D43523 /* CategoryRelationship.swift in Sources */,
 				7A340B1E26F9C11300D43523 /* Color+Extension.swift in Sources */,
 				7A340B1926F9C11300D43523 /* Int+Extension.swift in Sources */,
+				7A7F039E26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */,
 				7A340B9A26F9C16900D43523 /* TagRelationship.swift in Sources */,
 				7A340B8D26F9C16900D43523 /* TransactionRelationship.swift in Sources */,
 				7A340B8A26F9C16900D43523 /* TransactionRelationshipTransferAccount.swift in Sources */,
@@ -1912,7 +1941,9 @@
 				7A340B9426F9C16900D43523 /* AccountResource.swift in Sources */,
 				7AE54D082611671D005D38A5 /* AccountBalance.swift in Sources */,
 				7A340B4926F9C14C00D43523 /* InfoPlist.swift in Sources */,
+				7A7F03A726FB0F36003F1321 /* UIImage+Extension.swift in Sources */,
 				7A340B8426F9C16900D43523 /* TransactionsLinksObject.swift in Sources */,
+				7A7F03A026FB06AA003F1321 /* UIColor+Extension.swift in Sources */,
 				7A340B8926F9C16900D43523 /* Account.swift in Sources */,
 				7A340B1A26F9C11300D43523 /* AccountType+Extension.swift in Sources */,
 				7A340B8326F9C16900D43523 /* Pagination.swift in Sources */,
@@ -1922,6 +1953,7 @@
 				7AFBD90B26F400ED00460939 /* AccountBalanceProvider.swift in Sources */,
 				7AFBD90D26F400FB00460939 /* AccountBalanceEntry.swift in Sources */,
 				7A340B9926F9C16900D43523 /* TagResource.swift in Sources */,
+				7A5A89EC26FBF0790010223B /* Image+Extension.swift in Sources */,
 				7AFBD8E926F34B2D00460939 /* TransactionCellView.swift in Sources */,
 				7A340B4C26F9C14C00D43523 /* AccountBalanceModel.swift in Sources */,
 				7A340B4426F9C14C00D43523 /* AccountTypeOptionEnum.swift in Sources */,

@@ -17,6 +17,7 @@ final class TransactionCell: UITableViewCell {
       transactionDescription = transaction.transactionDescription
       transactionCreationDate = transaction.transactionCreationDate
       transactionAmount = transaction.transactionAmount
+      transactionAmountColour = transaction.transactionColour.uiColour
     }
   }
   
@@ -44,6 +45,15 @@ final class TransactionCell: UITableViewCell {
     }
     set {
       transactionAmountLabel.text = newValue
+    }
+  }
+  
+  private(set) var transactionAmountColour: UIColor? {
+    get {
+      return transactionAmountLabel.textColor
+    }
+    set {
+      transactionAmountLabel.textColor = newValue
     }
   }
   

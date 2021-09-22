@@ -55,7 +55,7 @@ extension Array where Element == DetailSection {
         items: [
           DetailItem(
             id: "Status",
-            value: transaction.attributes.statusString
+            value: transaction.attributes.status.description
           ),
           DetailItem(
             id: "Account",

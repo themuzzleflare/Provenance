@@ -123,8 +123,8 @@ private extension TransactionDetailVC {
     navigationItem.title = transaction.attributes.description
     navigationItem.titleView = MarqueeLabel(text: transaction.attributes.description)
     navigationItem.largeTitleDisplayMode = .never
-    navigationItem.setRightBarButton(UIBarButtonItem(image: transaction.attributes.statusIcon, style: .plain, target: self, action: #selector(openStatusIconHelpView)), animated: false)
-    navigationItem.rightBarButtonItem?.tintColor = transaction.attributes.isSettled ? .systemGreen : .systemYellow
+    navigationItem.setRightBarButton(UIBarButtonItem(image: transaction.attributes.status.uiImage, style: .plain, target: self, action: #selector(openStatusIconHelpView)), animated: false)
+    navigationItem.rightBarButtonItem?.tintColor = transaction.attributes.status.uiColour
   }
 }
 

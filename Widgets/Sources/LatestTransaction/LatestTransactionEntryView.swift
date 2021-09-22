@@ -1,8 +1,10 @@
 import SwiftUI
 
 struct LatestTransactionEntryView: View {
-  let entry: LatestTransactionProvider.Entry
   @Environment(\.widgetFamily) private var family
+  
+  let entry: LatestTransactionProvider.Entry
+  
   var body: some View {
     Group {
       if let transaction = entry.transaction {

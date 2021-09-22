@@ -1,18 +1,18 @@
 import Foundation
 
 class CategoryResource: Codable {
-  /// The type of this resource: categories
+    /// The type of this resource: categories
   let type = "categories"
-
-  /// The unique identifier for this category. This is a human-readable but URL-safe value.
+  
+    /// The unique identifier for this category. This is a human-readable but URL-safe value.
   let id: String
-
+  
   let attributes: CategoryAttribute
-
+  
   let relationships: CategoryRelationship
-
+  
   let links: SelfLink?
-
+  
   init(id: String, attributes: CategoryAttribute, relationships: CategoryRelationship, links: SelfLink? = nil) {
     self.id = id
     self.attributes = attributes

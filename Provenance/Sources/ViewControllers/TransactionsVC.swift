@@ -39,7 +39,7 @@ final class TransactionsVC: ASViewController {
   
   private var preFilteredTransactions: [TransactionResource] {
     return transactions.filter { (transaction) in
-      (!showSettledOnly || transaction.attributes.isSettled) && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
+      (!showSettledOnly || transaction.attributes.status.isSettled) && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
     }
   }
   

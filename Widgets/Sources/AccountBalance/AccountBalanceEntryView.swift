@@ -1,8 +1,10 @@
 import SwiftUI
 
 struct AccountBalanceEntryView: View {
-  let entry: AccountBalanceProvider.Entry
   @Environment(\.widgetFamily) private var family
+  
+  let entry: AccountBalanceProvider.Entry
+  
   var body: some View {
     Group {
       if let account = entry.account {

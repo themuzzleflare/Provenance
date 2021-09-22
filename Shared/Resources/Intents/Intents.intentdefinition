@@ -110,6 +110,49 @@
 				</dict>
 			</array>
 		</dict>
+		<dict>
+			<key>INEnumDisplayName</key>
+			<string>Transaction Colour</string>
+			<key>INEnumDisplayNameID</key>
+			<string>DtyGzg</string>
+			<key>INEnumGeneratesHeader</key>
+			<true/>
+			<key>INEnumName</key>
+			<string>TransactionColour</string>
+			<key>INEnumType</key>
+			<string>Regular</string>
+			<key>INEnumValues</key>
+			<array>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Unknown</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>5tjXgH</string>
+					<key>INEnumValueName</key>
+					<string>unknown</string>
+				</dict>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Primary Label</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>bdoyly</string>
+					<key>INEnumValueIndex</key>
+					<integer>1</integer>
+					<key>INEnumValueName</key>
+					<string>primaryLabel</string>
+				</dict>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Green</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>5I2CbK</string>
+					<key>INEnumValueIndex</key>
+					<integer>2</integer>
+					<key>INEnumValueName</key>
+					<string>green</string>
+				</dict>
+			</array>
+		</dict>
 	</array>
 	<key>INIntentDefinitionModelVersion</key>
 	<string>1.2</string>
@@ -1387,7 +1430,7 @@
 			<key>INTypeDisplayNameID</key>
 			<string>7dJx5q</string>
 			<key>INTypeLastPropertyTag</key>
-			<integer>112</integer>
+			<integer>114</integer>
 			<key>INTypeName</key>
 			<string>TransactionType</string>
 			<key>INTypeProperties</key>
@@ -1486,44 +1529,21 @@
 				</dict>
 				<dict>
 					<key>INTypePropertyDisplayName</key>
-					<string>Creation Date</string>
+					<string>Transaction Colour</string>
 					<key>INTypePropertyDisplayNameID</key>
-					<string>z3TXNy</string>
+					<string>DfVnmP</string>
 					<key>INTypePropertyDisplayPriority</key>
 					<integer>8</integer>
-					<key>INTypePropertyMetadata</key>
-					<dict>
-						<key>INTypePropertyMetadataDateStyle</key>
-						<string>Full</string>
-						<key>INTypePropertyMetadataFormat</key>
-						<string>Style</string>
-						<key>INTypePropertyMetadataTemplateID</key>
-						<string>LWGKqe</string>
-						<key>INTypePropertyMetadataTimeStyle</key>
-						<string>Full</string>
-						<key>INTypePropertyMetadataType</key>
-						<string>DateTime</string>
-					</dict>
+					<key>INTypePropertyEnumType</key>
+					<string>TransactionColour</string>
+					<key>INTypePropertyEnumTypeNamespace</key>
+					<string>0x5oXc</string>
 					<key>INTypePropertyName</key>
-					<string>creationDate</string>
+					<string>transactionColour</string>
 					<key>INTypePropertyTag</key>
-					<integer>110</integer>
+					<integer>114</integer>
 					<key>INTypePropertyType</key>
-					<string>DateComponents</string>
-				</dict>
-				<dict>
-					<key>INTypePropertyDisplayName</key>
-					<string>Amount</string>
-					<key>INTypePropertyDisplayNameID</key>
-					<string>miMxmN</string>
-					<key>INTypePropertyDisplayPriority</key>
-					<integer>9</integer>
-					<key>INTypePropertyName</key>
-					<string>amount</string>
-					<key>INTypePropertyTag</key>
-					<integer>112</integer>
-					<key>INTypePropertyType</key>
-					<string>CurrencyAmount</string>
+					<string>Integer</string>
 				</dict>
 			</array>
 		</dict>

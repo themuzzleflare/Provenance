@@ -163,8 +163,7 @@ extension IntentHandler: AddTagToTransactionIntentHandling {
       } else if tags.isEmpty {
         completion([.needsValue()])
       } else {
-        let results = tags.map { AddTagToTransactionTagsResolutionResult.success(with: $0) }
-        completion(results)
+        completion(tags.addTagToTransactionTagsResolutionResults)
       }
     } else {
       completion([.needsValue()])
@@ -238,8 +237,7 @@ extension IntentHandler: RemoveTagFromTransactionIntentHandling {
   
   func resolveTags(for intent: RemoveTagFromTransactionIntent, with completion: @escaping ([INStringResolutionResult]) -> Void) {
     if let tags = intent.tags {
-      let results = tags.map { INStringResolutionResult.success(with: $0) }
-      completion(results)
+      completion(tags.stringResolutionResults)
     } else {
       completion([.needsValue()])
     }

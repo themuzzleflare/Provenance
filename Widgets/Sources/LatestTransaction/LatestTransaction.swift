@@ -10,8 +10,8 @@ struct LatestTransaction: Widget {
     ) { (entry) in
       LatestTransactionEntryView(entry: entry)
     }
-    .configurationDisplayName("Latest Transaction")
-    .description("Displays your latest transaction.")
+    .configurationDisplayName(AppWidgets.latestTransaction.name)
+    .description(AppWidgets.latestTransaction.description)
     .supportedFamilies([.systemSmall, .systemMedium])
   }
 }

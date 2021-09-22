@@ -1,4 +1,3 @@
-import Foundation
 import Intents
 
 struct MoneyObject: Codable {
@@ -21,6 +20,17 @@ extension MoneyObject {
       return "Credit"
     default:
       return "Amount"
+    }
+  }
+  
+  var transactionColour: TransactionColour {
+    switch valueInBaseUnits.signum() {
+    case -1:
+      return .primaryLabel
+    case 1:
+      return .green
+    default:
+      return .unknown
     }
   }
   

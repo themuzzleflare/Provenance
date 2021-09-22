@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TransactionCellView: View {
   let transaction: LatestTransactionModel
+  
   var body: some View {
     HStack {
       VStack(alignment: .leading) {
@@ -15,7 +16,7 @@ struct TransactionCellView: View {
       Spacer()
       Text(transaction.amount)
         .multilineTextAlignment(.trailing)
-        .foregroundColor(transaction.colour)
+        .foregroundColor(transaction.colour.colour)
     }
   }
 }

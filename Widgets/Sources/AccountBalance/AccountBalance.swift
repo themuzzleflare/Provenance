@@ -10,8 +10,8 @@ struct AccountBalance: Widget {
     ) { (entry) in
       AccountBalanceEntryView(entry: entry)
     }
-    .configurationDisplayName("Account Balance")
-    .description("Displays the balance of your selected account.")
+    .configurationDisplayName(AppWidgets.accountBalance.name)
+    .description(AppWidgets.accountBalance.description)
     .supportedFamilies([.systemSmall, .systemMedium])
   }
 }

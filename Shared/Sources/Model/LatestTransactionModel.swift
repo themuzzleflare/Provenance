@@ -1,11 +1,11 @@
-import SwiftUI
+import Foundation
 
 struct LatestTransactionModel: Identifiable {
   let id: String
   let description: String
   let creationDate: String
   let amount: String
-  let colour: Color
+  let colour: TransactionColour
 }
 
 extension LatestTransactionModel {
@@ -15,7 +15,7 @@ extension LatestTransactionModel {
       description: "Officeworks",
       creationDate: "21 hours ago",
       amount: "-$79.95",
-      colour: .primary
+      colour: .primaryLabel
     )
   }
 }

@@ -1,5 +1,4 @@
 import Foundation
-import SwiftUI
 import SwiftDate
 
 class TransactionAttribute: Codable {
@@ -70,33 +69,6 @@ class TransactionAttribute: Codable {
 }
 
 extension TransactionAttribute {
-  var isSettled: Bool {
-    switch status {
-    case .settled:
-      return true
-    case .held:
-      return false
-    }
-  }
-  
-  var statusString: String {
-    switch isSettled {
-    case true:
-      return "Settled"
-    case false:
-      return "Held"
-    }
-  }
-  
-  var statusIconImage: Image {
-    switch isSettled {
-    case true:
-      return Image(systemName: "checkmark.circle")
-    case false:
-      return Image(systemName: "clock")
-    }
-  }
-  
   var createdAtDateComponents: DateComponents? {
     return createdAt.toDate()?.dateComponents
   }
@@ -114,39 +86,24 @@ extension TransactionAttribute {
   }
   
   var holdValue: String {
-    switch holdInfo {
-    case nil:
+    guard let holdInfo = holdInfo, holdInfo.amount.value != amount.value else {
       return .emptyString
-    default:
-      switch holdInfo!.amount.value {
-      case amount.value:
-        return .emptyString
-      default:
-        return holdInfo!.amount.valueLong
-      }
     }
+    return holdInfo.amount.valueLong
   }
   
   var holdForeignValue: String {
-    switch holdInfo?.foreignAmount {
-    case nil:
+    guard let holdForeignAmount = holdInfo?.foreignAmount, holdForeignAmount.value != foreignAmount?.value else {
       return .emptyString
-    default:
-      switch holdInfo!.foreignAmount!.value {
-      case foreignAmount!.value:
-        return .emptyString
-      default:
-        return holdInfo!.foreignAmount!.valueLong
-      }
     }
+    return holdForeignAmount.valueLong
   }
   
   var foreignValue: String {
-    switch foreignAmount {
-    case nil:
+    if let foreignAmount = foreignAmount {
+      return foreignAmount.valueLong
+    } else {
       return .emptyString
-    default:
-      return foreignAmount!.valueLong
     }
   }
 }

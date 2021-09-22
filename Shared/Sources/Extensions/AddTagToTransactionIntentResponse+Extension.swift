@@ -1,5 +1,4 @@
 import Foundation
-import Intents
 
 extension AddTagToTransactionIntentResponse {
   static func success(tags: [String], transaction: TransactionType, userActivity: NSUserActivity) -> AddTagToTransactionIntentResponse {

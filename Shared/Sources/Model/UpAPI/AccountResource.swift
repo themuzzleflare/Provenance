@@ -1,18 +1,18 @@
 import Foundation
 
 class AccountResource: Codable {
-  /// The type of this resource: accounts
+    /// The type of this resource: accounts
   let type = "accounts"
-
-  /// The unique identifier for this account.
+  
+    /// The unique identifier for this account.
   let id: String
-
+  
   let attributes: AccountAttribute
-
+  
   let relationships: AccountRelationship
-
+  
   let links: SelfLink?
-
+  
   init(id: String, attributes: AccountAttribute, relationships: AccountRelationship, links: SelfLink? = nil) {
     self.id = id
     self.attributes = attributes

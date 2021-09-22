@@ -24,7 +24,7 @@ final class TransactionCellNode: ASCellNode {
     
     amountTextNode.attributedText = NSAttributedString(
       text: transaction.attributes.amount.valueShort,
-      colour: transaction.attributes.amount.valueInBaseUnits.signum() == -1 ? .label : .greenColour,
+      colour: transaction.attributes.amount.transactionColour.uiColour,
       alignment: .rightAligned
     )
   }

@@ -1,5 +1,4 @@
 import Foundation
-import SwiftUI
 
 class TransactionResource: Codable {
     /// The type of this resource: transactions
@@ -29,7 +28,7 @@ extension TransactionResource {
       description: self.attributes.description,
       creationDate: configuration.dateStyle.description(self),
       amount: self.attributes.amount.valueShort,
-      colour: self.attributes.amount.valueInBaseUnits.signum() == -1 ? .primary : .greenColour
+      colour: self.attributes.amount.transactionColour
     )
   }
   
