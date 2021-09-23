@@ -1,8 +1,30 @@
 import Foundation
+import CoreGraphics
 
 extension Int {
+    /// NSNumber.
   var nsNumber: NSNumber {
     return NSNumber(value: self)
+  }
+  
+    /// UInt.
+  var uInt: UInt {
+    return UInt(self)
+  }
+  
+    /// Double.
+  var double: Double {
+    return Double(self)
+  }
+  
+    /// Float.
+  var float: Float {
+    return Float(self)
+  }
+  
+    /// CGFloat.
+  var cgFloat: CGFloat {
+    return CGFloat(self)
   }
   
   var statusTitle: String {
@@ -31,7 +53,7 @@ extension Int {
   var statusDescription: String {
     switch self {
     case 200:
-      return "Everything worked as intended"
+      return "Everything worked as intended."
     case 201:
       return "A new resource was created successfully—Typically used with POST requests."
     case 204:

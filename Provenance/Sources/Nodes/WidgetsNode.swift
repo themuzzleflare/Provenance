@@ -1,4 +1,3 @@
-import UIKit
 import AsyncDisplayKit
 
 final class WidgetsNode: ASScrollNode {
@@ -21,16 +20,9 @@ final class WidgetsNode: ASScrollNode {
     latestTransactionImageNode.style.width = ASDimension(unit: .points, value: 150)
     latestTransactionImageNode.style.height = ASDimension(unit: .points, value: 150)
     
-    titleTextNode.attributedText = NSAttributedString(
-      text: "Adding a Widget",
-      font: .circularStdBold(size: 23),
-      colour: .accentColor,
-      alignment: .centreAligned
-    )
+    titleTextNode.attributedText = "Adding a Widget".styled(with: .addingWidgetTitle)
     
-    instructionsTextNode.attributedText = NSAttributedString(
-      text: "1. Long-press an empty area on your Home Screen until the apps jiggle.\n\n2. Tap the plus button in the upper-right corner to bring up the widget picker.\n\n3. Find Provenance in the list.\n\n4. Tap the Add Widget button or drag the widget to the desired spot on your Home Screen."
-    )
+    instructionsTextNode.attributedText = "1. Long-press an empty area on your Home Screen until the apps jiggle.\n\n2. Tap the plus button in the upper-right corner to bring up the widget picker.\n\n3. Find Provenance in the list.\n\n4. Tap the Add Widget button or drag the widget to the desired spot on your Home Screen.".styled(with: .provenance)
   }
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {

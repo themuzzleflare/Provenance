@@ -6,7 +6,7 @@ extension TransactionType {
     self.transactionDescription = transaction.attributes.description
     self.transactionCreationDate = transaction.attributes.creationDate
     self.transactionAmount = transaction.attributes.amount.valueShort
-    self.transactionColour = transaction.attributes.amount.transactionColour
+    self.transactionColour = transaction.attributes.amount.transactionType.colour
   }
 }
 

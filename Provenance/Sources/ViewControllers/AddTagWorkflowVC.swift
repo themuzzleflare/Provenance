@@ -1,4 +1,3 @@
-import UIKit
 import IGListKit
 import AsyncDisplayKit
 
@@ -6,9 +5,7 @@ final class AddTagWorkflowVC: ASViewController {
     // MARK: - Properties
   
   private lazy var searchController = UISearchController(self)
-  
-  private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshTransactions))
-  
+    
   private let tableNode = ASTableNode(style: .grouped)
   
   private var dateStyleObserver: NSKeyValueObservation?
@@ -49,7 +46,7 @@ final class AddTagWorkflowVC: ASViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
-    configureProperties()
+    configureSelf()
     configureNavigation()
     configureTableNode()
     applySnapshot(override: true)
@@ -64,7 +61,7 @@ final class AddTagWorkflowVC: ASViewController {
   // MARK: - Configuration
 
 private extension AddTagWorkflowVC {
-  private func configureProperties() {
+  private func configureSelf() {
     title = "Transaction Selection"
     definesPresentationContext = true
   }
@@ -85,7 +82,7 @@ private extension AddTagWorkflowVC {
   }
   
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self)
+    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil
   }
@@ -93,7 +90,7 @@ private extension AddTagWorkflowVC {
   private func configureNavigation() {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .never
-    navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+    navigationItem.leftBarButtonItem = .close(self, action: #selector(closeWorkflow))
     navigationItem.searchController = searchController
     navigationItem.hidesSearchBarWhenScrolling = false
     navigationItem.backButtonDisplayMode = .minimal
@@ -102,7 +99,7 @@ private extension AddTagWorkflowVC {
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
-    tableNode.view.refreshControl = tableRefreshControl
+    tableNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshTransactions))
   }
 }
 

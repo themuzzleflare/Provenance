@@ -1,4 +1,3 @@
-import IntentsUI
 import SnapKit
 
 final class TransactionCell: UITableViewCell {

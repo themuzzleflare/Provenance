@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 class AccountResource: Codable {
     /// The type of this resource: accounts
@@ -41,6 +41,19 @@ extension AccountResource {
 }
 
 extension Array where Element: AccountResource {
+  func filtered(searchBar: UISearchBar) -> [AccountResource] {
+    return self.filter { (account) in
+      switch searchBar.selectedScopeButtonIndex {
+      case 0:
+        return searchBar.text!.isEmpty || (account.attributes.displayName.localizedStandardContains(searchBar.text!) && account.attributes.accountType == .transactional)
+      case 1:
+        return searchBar.text!.isEmpty || (account.attributes.displayName.localizedStandardContains(searchBar.text!) && account.attributes.accountType == .saver)
+      default:
+        return searchBar.text!.isEmpty || account.attributes.displayName.localizedStandardContains(searchBar.text!)
+      }
+    }
+  }
+  
   var accountTypes: [AccountType] {
     return self.map { (account) in
       return account.accountType

@@ -1,4 +1,3 @@
-import UIKit
 import NotificationBannerSwift
 import IGListKit
 import AsyncDisplayKit
@@ -45,8 +44,6 @@ final class AddTagWorkflowTwoVC: ASViewController {
   
   private let tableNode = ASTableNode(style: .grouped)
   
-  private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshTags))
-  
   private var showingBanner: Bool = false
   
   private var noTags: Bool = false
@@ -88,7 +85,7 @@ final class AddTagWorkflowTwoVC: ASViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObserver()
-    configureProperties()
+    configureSelf()
     configureNavigation()
     configureToolbar()
     configureTableNode()
@@ -99,7 +96,7 @@ final class AddTagWorkflowTwoVC: ASViewController {
     super.viewWillAppear(animated)
     fetchTags()
     if fromTransactionTags {
-      navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+      navigationItem.leftBarButtonItem = .close(self, action: #selector(closeWorkflow))
     }
   }
   
@@ -133,7 +130,7 @@ final class AddTagWorkflowTwoVC: ASViewController {
   // MARK: - Configuration
 
 private extension AddTagWorkflowTwoVC {
-  private func configureProperties() {
+  private func configureSelf() {
     title = "Tag Selection"
     definesPresentationContext = true
   }
@@ -148,7 +145,7 @@ private extension AddTagWorkflowTwoVC {
   }
   
   private func removeObserver() {
-    NotificationCenter.default.removeObserver(self)
+    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
   }
   
   private func configureNavigation() {
@@ -167,7 +164,7 @@ private extension AddTagWorkflowTwoVC {
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
-    tableNode.view.refreshControl = tableRefreshControl
+    tableNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshTags))
     tableNode.allowsMultipleSelectionDuringEditing = true
   }
 }

@@ -1,5 +1,3 @@
-import UIKit
-import NotificationBannerSwift
 import IGListKit
 import AsyncDisplayKit
 
@@ -9,8 +7,6 @@ final class TransactionsByTagVC: ASViewController {
   private var tag: TagResource
   
   private lazy var searchController = UISearchController(self)
-  
-  private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshTransactions))
   
   private let tableNode = ASTableNode(style: .grouped)
   
@@ -57,7 +53,7 @@ final class TransactionsByTagVC: ASViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
-    configureProperties()
+    configureSelf()
     configureNavigation()
     configureTableNode()
     applySnapshot(override: true)
@@ -77,7 +73,7 @@ final class TransactionsByTagVC: ASViewController {
   // MARK: - Configuration
 
 private extension TransactionsByTagVC {
-  private func configureProperties() {
+  private func configureSelf() {
     title = "Transactions by Tag"
     definesPresentationContext = true
   }
@@ -93,7 +89,7 @@ private extension TransactionsByTagVC {
   }
   
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self)
+    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil
   }
@@ -110,7 +106,7 @@ private extension TransactionsByTagVC {
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
-    tableNode.view.refreshControl = tableRefreshControl
+    tableNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshTransactions))
   }
 }
 
@@ -162,7 +158,7 @@ extension TransactionsByTagVC {
   }
   
   func fetchTransactions() {
-    UpFacade.listTransactions(filterBy: tag) { [self] result in
+    UpFacade.listTransactions(filterBy: tag) { [self] (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(transactions):

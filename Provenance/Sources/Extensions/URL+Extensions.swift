@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 
 extension URL {
@@ -51,6 +50,7 @@ extension URL {
     return URL(string: "mailto:feedback@tavitian.cloud?subject=Feedback%20for%20Provenance")!
   }
   
+    /// `URL(string: "https://github.com/themuzzleflare/Provenance")!`.
   static var github: URL {
     return URL(string: "https://github.com/themuzzleflare/Provenance")!
   }

@@ -13,6 +13,8 @@
 		7A0662F926F5573000720802 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB1726F466FE00C9C04E /* Intents.intentdefinition */; settings = {ATTRIBUTES = (private_codegen, ); }; };
 		7A0662FB26F5573500720802 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB1726F466FE00C9C04E /* Intents.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
 		7A0662FC26F5573600720802 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB1726F466FE00C9C04E /* Intents.intentdefinition */; settings = {ATTRIBUTES = (private_codegen, ); }; };
+		7A08A79126FC1BA50035DD2F /* StringStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A08A79026FC1BA50035DD2F /* StringStyle+Extension.swift */; };
+		7A08A79526FC399F0035DD2F /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A08A79426FC399F0035DD2F /* UIViewController+Extension.swift */; };
 		7A09E4B52686E30600C9F299 /* TransactionDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A09E4B42686E30600C9F299 /* TransactionDetailVC.swift */; };
 		7A0A301E26B52C88009E52FB /* AboutTopCellNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0A301D26B52C88009E52FB /* AboutTopCellNode.swift */; };
 		7A0A302226B5310E009E52FB /* RightDetailCellNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0A302126B5310E009E52FB /* RightDetailCellNode.swift */; };
@@ -33,6 +35,7 @@
 		7A2F1901261D9CC80054A9B6 /* StickerSix.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F18F9261D9CC80054A9B6 /* StickerSix.gif */; };
 		7A2F1902261D9CC80054A9B6 /* StickerThree.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F18FA261D9CC80054A9B6 /* StickerThree.gif */; };
 		7A2F1978261DA6B20054A9B6 /* StickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F1977261DA6B20054A9B6 /* StickerView.swift */; };
+		7A31696A26FC1667009695C8 /* StatusIconHelpNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A31696926FC1667009695C8 /* StatusIconHelpNode.swift */; };
 		7A340AEE26F9C0F500D43523 /* CircularStd-BookItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ADC818026A7F67F009D4E4E /* CircularStd-BookItalic.ttf */; };
 		7A340AEF26F9C0F500D43523 /* CircularStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7ADC817F26A7F67F009D4E4E /* CircularStd-Bold.otf */; };
 		7A340AF026F9C0F500D43523 /* CircularStd-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7ADC817D26A7F67F009D4E4E /* CircularStd-Medium.otf */; };
@@ -285,6 +288,100 @@
 		7A7F03A726FB0F36003F1321 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2152C26F04CF3009F4F38 /* UIImage+Extension.swift */; };
 		7A7F03A826FB0F37003F1321 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2152C26F04CF3009F4F38 /* UIImage+Extension.swift */; };
 		7A7F03A926FB0F3E003F1321 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2152C26F04CF3009F4F38 /* UIImage+Extension.swift */; };
+		7A8022E326FC5CD1008600B0 /* ASCellNode+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8022E226FC5CD1008600B0 /* ASCellNode+Extension.swift */; };
+		7A8022E726FC6455008600B0 /* TransactionAmountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8022E626FC6455008600B0 /* TransactionAmountType.swift */; };
+		7A8022E826FC69B1008600B0 /* TransactionAmountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8022E626FC6455008600B0 /* TransactionAmountType.swift */; };
+		7A8022E926FC69B1008600B0 /* TransactionAmountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8022E626FC6455008600B0 /* TransactionAmountType.swift */; };
+		7A8022EC26FC7C30008600B0 /* Bool+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */; };
+		7A8022ED26FC7C30008600B0 /* Bool+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */; };
+		7A8022EE26FC7C30008600B0 /* Bool+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */; };
+		7A8022EF26FC7C30008600B0 /* Bool+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */; };
+		7A8022F026FC8489008600B0 /* NSParagraphStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214F926EF326B009F4F38 /* NSParagraphStyle+Extension.swift */; };
+		7A8022F126FC8489008600B0 /* CGSize+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214FB26EF326C009F4F38 /* CGSize+Extension.swift */; };
+		7A8022F226FC8489008600B0 /* CGColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2150A26EF34C5009F4F38 /* CGColor+Extension.swift */; };
+		7A8022F326FC8489008600B0 /* CGFloat+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214FA26EF326B009F4F38 /* CGFloat+Extension.swift */; };
+		7A8022F426FC8489008600B0 /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214F826EF326B009F4F38 /* NSAttributedString+Extension.swift */; };
+		7A8022F526FC848A008600B0 /* NSParagraphStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214F926EF326B009F4F38 /* NSParagraphStyle+Extension.swift */; };
+		7A8022F626FC848A008600B0 /* CGSize+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214FB26EF326C009F4F38 /* CGSize+Extension.swift */; };
+		7A8022F726FC848A008600B0 /* CGColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2150A26EF34C5009F4F38 /* CGColor+Extension.swift */; };
+		7A8022F826FC848A008600B0 /* CGFloat+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214FA26EF326B009F4F38 /* CGFloat+Extension.swift */; };
+		7A8022F926FC848A008600B0 /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214F826EF326B009F4F38 /* NSAttributedString+Extension.swift */; };
+		7A8022FA26FC848A008600B0 /* NSParagraphStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214F926EF326B009F4F38 /* NSParagraphStyle+Extension.swift */; };
+		7A8022FB26FC848A008600B0 /* CGSize+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214FB26EF326C009F4F38 /* CGSize+Extension.swift */; };
+		7A8022FC26FC848A008600B0 /* CGColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2150A26EF34C5009F4F38 /* CGColor+Extension.swift */; };
+		7A8022FD26FC848A008600B0 /* CGFloat+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214FA26EF326B009F4F38 /* CGFloat+Extension.swift */; };
+		7A8022FE26FC848A008600B0 /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214F826EF326B009F4F38 /* NSAttributedString+Extension.swift */; };
+		7A8022FF26FC8508008600B0 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5626F17FF300C4A9D9 /* String+Extension.swift */; };
+		7A80230026FC852A008600B0 /* AddTagToTransactionIntentResponse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F043A26F99DF000333191 /* AddTagToTransactionIntentResponse+Extension.swift */; };
+		7A80230126FC852C008600B0 /* ListTransactionsIntentResponse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534F26F961F800382804 /* ListTransactionsIntentResponse+Extension.swift */; };
+		7A80230226FC852E008600B0 /* Status+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534B26F960D500382804 /* Status+Extension.swift */; };
+		7A80230326FC8530008600B0 /* CategoryType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534326F95FDE00382804 /* CategoryType+Extension.swift */; };
+		7A80230426FC8532008600B0 /* AccountType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533F26F95EED00382804 /* AccountType+Extension.swift */; };
+		7A80230526FC8536008600B0 /* TransactionType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533B26F95D5200382804 /* TransactionType+Extension.swift */; };
+		7A80230626FC8538008600B0 /* DateStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533726F95ACD00382804 /* DateStyle+Extension.swift */; };
+		7A80230726FC853A008600B0 /* URLSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A16B5722683F884005428E0 /* URLSession+Extension.swift */; };
+		7A80230826FC853C008600B0 /* UIEdgeInsets+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214FD26EF326C009F4F38 /* UIEdgeInsets+Extension.swift */; };
+		7A80230926FC853D008600B0 /* UIEdgeInsets+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214FD26EF326C009F4F38 /* UIEdgeInsets+Extension.swift */; };
+		7A80230A26FC853F008600B0 /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8BC0CB2681590A00D6D8D3 /* URL+Extension.swift */; };
+		7A80230B26FC8541008600B0 /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8BC0C9268158EA00D6D8D3 /* Dictionary+Extension.swift */; };
+		7A80230C26FC854A008600B0 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F51F26F08ECA00384F53 /* UIFont+Extension.swift */; };
+		7A80230D26FC854B008600B0 /* NSString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534726F9606600382804 /* NSString+Extension.swift */; };
+		7A80230E26FC854B008600B0 /* UserDefaults+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8BC0C72681586100D6D8D3 /* UserDefaults+Extension.swift */; };
+		7A80230F26FC854B008600B0 /* NSUserActivity+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F043626F998EC00333191 /* NSUserActivity+Extension.swift */; };
+		7A80231026FC854B008600B0 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD266D826FADDF500EFF4A2 /* Double+Extension.swift */; };
+		7A80231126FC854B008600B0 /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2151626EF439D009F4F38 /* Int+Extension.swift */; };
+		7A80231226FC854B008600B0 /* NumberFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD266D426FADA1E00EFF4A2 /* NumberFormatter+Extension.swift */; };
+		7A80231326FC854D008600B0 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F51F26F08ECA00384F53 /* UIFont+Extension.swift */; };
+		7A80231426FC8551008600B0 /* URLQueryParameterStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8BC0CE2681594B00D6D8D3 /* URLQueryParameterStringConvertible.swift */; };
+		7A80231526FC855F008600B0 /* TransactionAmountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8022E626FC6455008600B0 /* TransactionAmountType.swift */; };
+		7A80231626FC855F008600B0 /* CategoryTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA819EB26F8175A00B5BD29 /* CategoryTypeEnum.swift */; };
+		7A80231726FC855F008600B0 /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5B06CA26F2BE87005CE3D1 /* InfoPlist.swift */; };
+		7A80231826FC855F008600B0 /* AccountTypeOptionEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A12C0EE26F83C81005C8AB1 /* AccountTypeOptionEnum.swift */; };
+		7A80231926FC855F008600B0 /* LatestTransactionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBD8E026F346F200460939 /* LatestTransactionModel.swift */; };
+		7A80231A26FC855F008600B0 /* AccountBalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A17C19D2657984B00E5EA23 /* AccountBalanceModel.swift */; };
+		7A80231B26FC855F008600B0 /* AppDateStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2151E26F047BD009F4F38 /* AppDateStyle.swift */; };
+		7A80231C26FC855F008600B0 /* ResultDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A16B5742683F8BB005428E0 /* ResultDecoder.swift */; };
+		7A80231D26FC855F008600B0 /* ProvenanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5B06C926F2BE86005CE3D1 /* ProvenanceApp.swift */; };
+		7A80231E26FC855F008600B0 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AED68922682B13C00C1795E /* NetworkError.swift */; };
+		7A80231F26FC855F008600B0 /* AppWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A615D7626FABA74001F1834 /* AppWidgets.swift */; };
+		7A80232026FC8577008600B0 /* CategoryAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F54926F0989600384F53 /* CategoryAttribute.swift */; };
+		7A80232126FC8577008600B0 /* TransactionAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2152626F04B86009F4F38 /* TransactionAttribute.swift */; };
+		7A80232226FC8577008600B0 /* TagInputResourceIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F53D26F0980A00384F53 /* TagInputResourceIdentifier.swift */; };
+		7A80232326FC8577008600B0 /* SingleCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A17B937268720710001946D /* SingleCategory.swift */; };
+		7A80232426FC8577008600B0 /* CategoryResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F54526F0988800384F53 /* CategoryResource.swift */; };
+		7A80232526FC8577008600B0 /* AccountRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F52B26F0974C00384F53 /* AccountRelationship.swift */; };
+		7A80232626FC8577008600B0 /* TagResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F53126F097EA00384F53 /* TagResource.swift */; };
+		7A80232726FC8577008600B0 /* TransactionsLinksObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9082FD26929431005CCB26 /* TransactionsLinksObject.swift */; };
+		7A80232826FC8577008600B0 /* TransactionRelationshipAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2154026F04E04009F4F38 /* TransactionRelationshipAccount.swift */; };
+		7A80232926FC8577008600B0 /* TransactionRelationshipTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2154C26F04E1E009F4F38 /* TransactionRelationshipTag.swift */; };
+		7A80232A26FC8577008600B0 /* CategoryRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F54D26F098A200384F53 /* CategoryRelationship.swift */; };
+		7A80232B26FC8577008600B0 /* CategoryRelationshipChildren.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F55526F098B400384F53 /* CategoryRelationshipChildren.swift */; };
+		7A80232C26FC8577008600B0 /* TransactionResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2152226F04B72009F4F38 /* TransactionResource.swift */; };
+		7A80232D26FC8577008600B0 /* TransactionStatusEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5E26F1973B00C4A9D9 /* TransactionStatusEnum.swift */; };
+		7A80232E26FC8577008600B0 /* AccountResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F52326F0970900384F53 /* AccountResource.swift */; };
+		7A80232F26FC8577008600B0 /* TransactionRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2153C26F04DFA009F4F38 /* TransactionRelationship.swift */; };
+		7A80233026FC8577008600B0 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D3C25C78588000A1E81 /* Transaction.swift */; };
+		7A80233126FC8577008600B0 /* ModifyTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F53926F097FF00384F53 /* ModifyTags.swift */; };
+		7A80233226FC8577008600B0 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8DDCA125D138C200EF85B9 /* Category.swift */; };
+		7A80233326FC8577008600B0 /* HoldInfoObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2153026F04DDD009F4F38 /* HoldInfoObject.swift */; };
+		7A80233426FC8577008600B0 /* CategoryRelationshipParent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F55126F098AB00384F53 /* CategoryRelationshipParent.swift */; };
+		7A80233526FC8577008600B0 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFDBEB225C7FEDB002DB208 /* Account.swift */; };
+		7A80233626FC8577008600B0 /* SelfLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9082EB269278AA005CCB26 /* SelfLink.swift */; };
+		7A80233726FC8577008600B0 /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9082E7269275CE005CCB26 /* Pagination.swift */; };
+		7A80233826FC8577008600B0 /* SingleTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAC68FA262D581D0046494C /* SingleTransaction.swift */; };
+		7A80233926FC8577008600B0 /* TagRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F53526F097F400384F53 /* TagRelationship.swift */; };
+		7A80233A26FC8577008600B0 /* RoundUpObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2153426F04DE8009F4F38 /* RoundUpObject.swift */; };
+		7A80233B26FC8577008600B0 /* TransactionRelationshipTransferAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2154426F04E0C009F4F38 /* TransactionRelationshipTransferAccount.swift */; };
+		7A80233C26FC8577008600B0 /* UpFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9494052629350B00B39E75 /* UpFacade.swift */; };
+		7A80233D26FC8577008600B0 /* RelatedLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9082EF26927967005CCB26 /* RelatedLink.swift */; };
+		7A80233E26FC8577008600B0 /* CashbackObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2153826F04DF2009F4F38 /* CashbackObject.swift */; };
+		7A80233F26FC8577008600B0 /* MoneyObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A908301269296E4005CCB26 /* MoneyObject.swift */; };
+		7A80234026FC8577008600B0 /* AccountTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD6226F1977700C4A9D9 /* AccountTypeEnum.swift */; };
+		7A80234126FC8577008600B0 /* AccountAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F52726F0973000384F53 /* AccountAttribute.swift */; };
+		7A80234226FC8577008600B0 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56100E25D219530091396E /* Tag.swift */; };
+		7A80234326FC8577008600B0 /* TransactionRelationshipCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2154826F04E16009F4F38 /* TransactionRelationshipCategory.swift */; };
+		7A80234426FC8577008600B0 /* SingleAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAC68FF262D6C9E0046494C /* SingleAccount.swift */; };
+		7A80234526FC8577008600B0 /* RelationshipData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9082F3269279BB005CCB26 /* RelationshipData.swift */; };
 		7A82FB3826F47EAB00C9C04E /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A82FB2026F47B3C00C9C04E /* IntentsUI.framework */; };
 		7A82FB3B26F47EAB00C9C04E /* IntentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB3A26F47EAB00C9C04E /* IntentViewController.swift */; };
 		7A82FB3E26F47EAB00C9C04E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A82FB3C26F47EAB00C9C04E /* MainInterface.storyboard */; };
@@ -361,7 +458,6 @@
 		7AF2151D26F04723009F4F38 /* SegmentedControlNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2151C26F04723009F4F38 /* SegmentedControlNode.swift */; };
 		7AF2152B26F04BCC009F4F38 /* TransactionResource+ListDiffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2152A26F04BCC009F4F38 /* TransactionResource+ListDiffable.swift */; };
 		7AF2152D26F04CF3009F4F38 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2152C26F04CF3009F4F38 /* UIImage+Extension.swift */; };
-		7AF2155226F04F73009F4F38 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2155126F04F73009F4F38 /* Array+Extensions.swift */; };
 		7AF2155826F050B3009F4F38 /* ASViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2155726F050B3009F4F38 /* ASViewController.swift */; };
 		7AF2155D26F05422009F4F38 /* UIMenu+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2155C26F05422009F4F38 /* UIMenu+Extension.swift */; };
 		7AF2156026F057F1009F4F38 /* FilterMenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2155F26F057F1009F4F38 /* FilterMenuAction.swift */; };
@@ -448,6 +544,8 @@
 		54E8AB3886563257C39F757D /* Pods_Provenance.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Provenance.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A040C8126994F09000CCFF3 /* TransactionCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCellNode.swift; sourceTree = "<group>"; };
 		7A0557D42604A0170080D2CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7A08A79026FC1BA50035DD2F /* StringStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringStyle+Extension.swift"; sourceTree = "<group>"; };
+		7A08A79426FC399F0035DD2F /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		7A09E4B42686E30600C9F299 /* TransactionDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailVC.swift; sourceTree = "<group>"; };
 		7A0A301D26B52C88009E52FB /* AboutTopCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutTopCellNode.swift; sourceTree = "<group>"; };
 		7A0A302126B5310E009E52FB /* RightDetailCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightDetailCellNode.swift; sourceTree = "<group>"; };
@@ -478,6 +576,7 @@
 		7A2F18F9261D9CC80054A9B6 /* StickerSix.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerSix.gif; sourceTree = "<group>"; };
 		7A2F18FA261D9CC80054A9B6 /* StickerThree.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerThree.gif; sourceTree = "<group>"; };
 		7A2F1977261DA6B20054A9B6 /* StickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerView.swift; sourceTree = "<group>"; };
+		7A31696926FC1667009695C8 /* StatusIconHelpNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusIconHelpNode.swift; sourceTree = "<group>"; };
 		7A35ECA32657B88400568ECA /* LatestTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestTransaction.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7A438782263AAC9B008C5714 /* StatusIconHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusIconHelpView.swift; sourceTree = "<group>"; };
 		7A56100E25D219530091396E /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
@@ -506,6 +605,9 @@
 		7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASPINRemoteImageDownloader+Extension.swift"; sourceTree = "<group>"; };
 		7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FLAnimatedImage+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7A7F039C26FB0641003F1321 /* TransactionColour+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionColour+Extension.swift"; sourceTree = "<group>"; };
+		7A8022E226FC5CD1008600B0 /* ASCellNode+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASCellNode+Extension.swift"; sourceTree = "<group>"; };
+		7A8022E626FC6455008600B0 /* TransactionAmountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionAmountType.swift; sourceTree = "<group>"; };
+		7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+Extension.swift"; sourceTree = "<group>"; };
 		7A82FB1726F466FE00C9C04E /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
 		7A82FB2026F47B3C00C9C04E /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
 		7A82FB3726F47EAB00C9C04E /* Provenance IntentsUI.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance IntentsUI.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -635,7 +737,6 @@
 		7AF2154426F04E0C009F4F38 /* TransactionRelationshipTransferAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRelationshipTransferAccount.swift; sourceTree = "<group>"; };
 		7AF2154826F04E16009F4F38 /* TransactionRelationshipCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRelationshipCategory.swift; sourceTree = "<group>"; };
 		7AF2154C26F04E1E009F4F38 /* TransactionRelationshipTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRelationshipTag.swift; sourceTree = "<group>"; };
-		7AF2155126F04F73009F4F38 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		7AF2155726F050B3009F4F38 /* ASViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASViewController.swift; sourceTree = "<group>"; };
 		7AF2155C26F05422009F4F38 /* UIMenu+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIMenu+Extension.swift"; sourceTree = "<group>"; };
 		7AF2155F26F057F1009F4F38 /* FilterMenuAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuAction.swift; sourceTree = "<group>"; };
@@ -726,6 +827,7 @@
 				7A1BE9F326EDAD6D00A97F56 /* StickerImageNode.swift */,
 				7AF2156F26F07F93009F4F38 /* WidgetsNode.swift */,
 				7AF2151C26F04723009F4F38 /* SegmentedControlNode.swift */,
+				7A31696926FC1667009695C8 /* StatusIconHelpNode.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -914,6 +1016,7 @@
 				7A17C19D2657984B00E5EA23 /* AccountBalanceModel.swift */,
 				7AFBD8E026F346F200460939 /* LatestTransactionModel.swift */,
 				7A615D7626FABA74001F1834 /* AppWidgets.swift */,
+				7A8022E626FC6455008600B0 /* TransactionAmountType.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -979,19 +1082,25 @@
 				7A5A89EA26FBF0790010223B /* Image+Extension.swift */,
 				7A90F55F26F1634200384F53 /* UIColor+Extension.swift */,
 				7A9C253B26F30D5700509ED4 /* Color+Extension.swift */,
+				7AF2150A26EF34C5009F4F38 /* CGColor+Extension.swift */,
 				7A90F51F26F08ECA00384F53 /* UIFont+Extension.swift */,
 				7A9C253926F30ABD00509ED4 /* Font+Extension.swift */,
 				7A0F043626F998EC00333191 /* NSUserActivity+Extension.swift */,
 				7AAADD5626F17FF300C4A9D9 /* String+Extension.swift */,
 				7A61534726F9606600382804 /* NSString+Extension.swift */,
+				7AF214F826EF326B009F4F38 /* NSAttributedString+Extension.swift */,
+				7AF214F926EF326B009F4F38 /* NSParagraphStyle+Extension.swift */,
+				7AF2151626EF439D009F4F38 /* Int+Extension.swift */,
+				7AF214FA26EF326B009F4F38 /* CGFloat+Extension.swift */,
+				7AF214FB26EF326C009F4F38 /* CGSize+Extension.swift */,
+				7AD266D826FADDF500EFF4A2 /* Double+Extension.swift */,
+				7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */,
 				7A8BC0C72681586100D6D8D3 /* UserDefaults+Extension.swift */,
 				7AD266D426FADA1E00EFF4A2 /* NumberFormatter+Extension.swift */,
 				7A8BC0C9268158EA00D6D8D3 /* Dictionary+Extension.swift */,
 				7A8BC0CB2681590A00D6D8D3 /* URL+Extension.swift */,
 				7AF214FD26EF326C009F4F38 /* UIEdgeInsets+Extension.swift */,
 				7A16B5722683F884005428E0 /* URLSession+Extension.swift */,
-				7AF2151626EF439D009F4F38 /* Int+Extension.swift */,
-				7AD266D826FADDF500EFF4A2 /* Double+Extension.swift */,
 				7A61533726F95ACD00382804 /* DateStyle+Extension.swift */,
 				7A61533B26F95D5200382804 /* TransactionType+Extension.swift */,
 				7A61533F26F95EED00382804 /* AccountType+Extension.swift */,
@@ -1162,16 +1271,10 @@
 				7AAADD5426F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift */,
 				7AF2150626EF32C5009F4F38 /* ASSizeRange+Extension.swift */,
 				7AF2150526EF32C5009F4F38 /* ASTextCellNode+Extension.swift */,
-				7AF214FA26EF326B009F4F38 /* CGFloat+Extension.swift */,
-				7AF214FB26EF326C009F4F38 /* CGSize+Extension.swift */,
-				7AF214F826EF326B009F4F38 /* NSAttributedString+Extension.swift */,
-				7AF214F926EF326B009F4F38 /* NSParagraphStyle+Extension.swift */,
 				7AF214FC26EF326C009F4F38 /* UICollectionViewLayout+Extension.swift */,
 				7AF214ED26EEC796009F4F38 /* UISearchBar+Extension.swift */,
-				7AF2150A26EF34C5009F4F38 /* CGColor+Extension.swift */,
 				7AF2150C26EF3A86009F4F38 /* UISearchController+Extension.swift */,
 				7AF2150E26EF40C9009F4F38 /* UIView+Extension.swift */,
-				7AF2155126F04F73009F4F38 /* Array+Extensions.swift */,
 				7AF2152A26F04BCC009F4F38 /* TransactionResource+ListDiffable.swift */,
 				7AAADD5C26F1910700C4A9D9 /* TransactionAttribute+ListDiffable.swift */,
 				7A90F52126F096D200384F53 /* AccountResource+ListDiffable.swift */,
@@ -1191,6 +1294,9 @@
 				7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */,
 				7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */,
 				7A615D7226FA9D6D001F1834 /* UITextField+Extension.swift */,
+				7A08A79026FC1BA50035DD2F /* StringStyle+Extension.swift */,
+				7A08A79426FC399F0035DD2F /* UIViewController+Extension.swift */,
+				7A8022E226FC5CD1008600B0 /* ASCellNode+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1651,15 +1757,19 @@
 			files = (
 				7A340B3426F9C11300D43523 /* NSUserActivity+Extension.swift in Sources */,
 				7A340B6326F9C16900D43523 /* Account.swift in Sources */,
+				7A80230926FC853D008600B0 /* UIEdgeInsets+Extension.swift in Sources */,
 				7A340B5426F9C14D00D43523 /* AppDateStyle.swift in Sources */,
+				7A8022EE26FC7C30008600B0 /* Bool+Extension.swift in Sources */,
 				7A7F03A826FB0F37003F1321 /* UIImage+Extension.swift in Sources */,
 				7A340B5726F9C16900D43523 /* ModifyTags.swift in Sources */,
 				7A340B4E26F9C14D00D43523 /* NetworkError.swift in Sources */,
 				7A340B0426F9C10700D43523 /* URLQueryParameterStringConvertible.swift in Sources */,
 				7A340B5826F9C16900D43523 /* Tag.swift in Sources */,
 				7A340B7126F9C16900D43523 /* SingleTransaction.swift in Sources */,
+				7A8022F526FC848A008600B0 /* NSParagraphStyle+Extension.swift in Sources */,
 				7A340B6C26F9C16900D43523 /* HoldInfoObject.swift in Sources */,
 				7A340B3526F9C11300D43523 /* AddTagToTransactionIntentResponse+Extension.swift in Sources */,
+				7A8022F726FC848A008600B0 /* CGColor+Extension.swift in Sources */,
 				7A340B2E26F9C11300D43523 /* Status+Extension.swift in Sources */,
 				7A340B7A26F9C16900D43523 /* SelfLink.swift in Sources */,
 				7A340B5A26F9C16900D43523 /* TransactionRelationshipTag.swift in Sources */,
@@ -1672,6 +1782,7 @@
 				7A340B3826F9C11300D43523 /* NSString+Extension.swift in Sources */,
 				7A340B2A26F9C11300D43523 /* TransactionType+Extension.swift in Sources */,
 				7A340B6126F9C16900D43523 /* CategoryRelationship.swift in Sources */,
+				7A80230C26FC854A008600B0 /* UIFont+Extension.swift in Sources */,
 				7A340B3226F9C11300D43523 /* CategoryType+Extension.swift in Sources */,
 				7A340B7226F9C16900D43523 /* AccountRelationship.swift in Sources */,
 				7A340B2B26F9C11300D43523 /* Int+Extension.swift in Sources */,
@@ -1695,6 +1806,7 @@
 				7A340B6926F9C16900D43523 /* TransactionAttribute.swift in Sources */,
 				7A340B7526F9C16900D43523 /* TagInputResourceIdentifier.swift in Sources */,
 				7A340B7326F9C16900D43523 /* TagResource.swift in Sources */,
+				7A8022E826FC69B1008600B0 /* TransactionAmountType.swift in Sources */,
 				7A340B5626F9C16900D43523 /* Transaction.swift in Sources */,
 				7A340B6F26F9C16900D43523 /* AccountTypeEnum.swift in Sources */,
 				7A340B7726F9C16900D43523 /* CategoryRelationshipParent.swift in Sources */,
@@ -1708,6 +1820,7 @@
 				7A340B6A26F9C16900D43523 /* CashbackObject.swift in Sources */,
 				7A340B3126F9C11300D43523 /* DateStyle+Extension.swift in Sources */,
 				7A340B6226F9C16900D43523 /* SingleAccount.swift in Sources */,
+				7A8022F626FC848A008600B0 /* CGSize+Extension.swift in Sources */,
 				7A340B7B26F9C16900D43523 /* RoundUpObject.swift in Sources */,
 				7A340B2926F9C11300D43523 /* Dictionary+Extension.swift in Sources */,
 				7A340B6626F9C16900D43523 /* CategoryAttribute.swift in Sources */,
@@ -1716,8 +1829,10 @@
 				7A340B6D26F9C16900D43523 /* AccountAttribute.swift in Sources */,
 				7A340B5C26F9C16900D43523 /* Category.swift in Sources */,
 				7A340B3026F9C11300D43523 /* Color+Extension.swift in Sources */,
+				7A8022F926FC848A008600B0 /* NSAttributedString+Extension.swift in Sources */,
 				7A340B3926F9C11300D43523 /* UserDefaults+Extension.swift in Sources */,
 				7A340B5E26F9C16900D43523 /* TransactionsLinksObject.swift in Sources */,
+				7A8022F826FC848A008600B0 /* CGFloat+Extension.swift in Sources */,
 				7A5A89ED26FBF0790010223B /* Image+Extension.swift in Sources */,
 				7A340B7026F9C16900D43523 /* TransactionRelationshipAccount.swift in Sources */,
 				7A7F03A126FB06AB003F1321 /* UIColor+Extension.swift in Sources */,
@@ -1731,15 +1846,88 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A5A89EE26FBF0790010223B /* Image+Extension.swift in Sources */,
+				7A80232D26FC8577008600B0 /* TransactionStatusEnum.swift in Sources */,
+				7A80234026FC8577008600B0 /* AccountTypeEnum.swift in Sources */,
+				7A80230D26FC854B008600B0 /* NSString+Extension.swift in Sources */,
+				7A80233326FC8577008600B0 /* HoldInfoObject.swift in Sources */,
+				7A80231826FC855F008600B0 /* AccountTypeOptionEnum.swift in Sources */,
+				7A80230326FC8530008600B0 /* CategoryType+Extension.swift in Sources */,
 				7A340BC826F9C1B200D43523 /* UIEdgeInsets+Extension.swift in Sources */,
+				7A80230F26FC854B008600B0 /* NSUserActivity+Extension.swift in Sources */,
 				7A7F03A326FB085E003F1321 /* Color+Extension.swift in Sources */,
+				7A8022EF26FC7C30008600B0 /* Bool+Extension.swift in Sources */,
+				7A80230A26FC853F008600B0 /* URL+Extension.swift in Sources */,
+				7A80232326FC8577008600B0 /* SingleCategory.swift in Sources */,
+				7A80234526FC8577008600B0 /* RelationshipData.swift in Sources */,
+				7A80232B26FC8577008600B0 /* CategoryRelationshipChildren.swift in Sources */,
+				7A80232226FC8577008600B0 /* TagInputResourceIdentifier.swift in Sources */,
+				7A80232826FC8577008600B0 /* TransactionRelationshipAccount.swift in Sources */,
+				7A80232526FC8577008600B0 /* AccountRelationship.swift in Sources */,
+				7A8022FB26FC848A008600B0 /* CGSize+Extension.swift in Sources */,
+				7A80233726FC8577008600B0 /* Pagination.swift in Sources */,
 				7A7F03A426FB0869003F1321 /* TransactionColour+Extension.swift in Sources */,
+				7A80232626FC8577008600B0 /* TagResource.swift in Sources */,
+				7A80231526FC855F008600B0 /* TransactionAmountType.swift in Sources */,
+				7A80234426FC8577008600B0 /* SingleAccount.swift in Sources */,
+				7A80231D26FC855F008600B0 /* ProvenanceApp.swift in Sources */,
+				7A80233926FC8577008600B0 /* TagRelationship.swift in Sources */,
+				7A80233F26FC8577008600B0 /* MoneyObject.swift in Sources */,
+				7A80231F26FC855F008600B0 /* AppWidgets.swift in Sources */,
 				7A7F03A926FB0F3E003F1321 /* UIImage+Extension.swift in Sources */,
+				7A80232126FC8577008600B0 /* TransactionAttribute.swift in Sources */,
+				7A80230126FC852C008600B0 /* ListTransactionsIntentResponse+Extension.swift in Sources */,
+				7A8022FE26FC848A008600B0 /* NSAttributedString+Extension.swift in Sources */,
+				7A80231726FC855F008600B0 /* InfoPlist.swift in Sources */,
+				7A80230726FC853A008600B0 /* URLSession+Extension.swift in Sources */,
 				7A82FB3B26F47EAB00C9C04E /* IntentViewController.swift in Sources */,
+				7A80230026FC852A008600B0 /* AddTagToTransactionIntentResponse+Extension.swift in Sources */,
+				7A80231926FC855F008600B0 /* LatestTransactionModel.swift in Sources */,
+				7A80232E26FC8577008600B0 /* AccountResource.swift in Sources */,
 				7A9C12F926F5CF6000C09CA7 /* Intents.intentdefinition in Sources */,
+				7A80232426FC8577008600B0 /* CategoryResource.swift in Sources */,
+				7A80232C26FC8577008600B0 /* TransactionResource.swift in Sources */,
+				7A80233126FC8577008600B0 /* ModifyTags.swift in Sources */,
+				7A80233826FC8577008600B0 /* SingleTransaction.swift in Sources */,
+				7A80232926FC8577008600B0 /* TransactionRelationshipTag.swift in Sources */,
+				7A80233026FC8577008600B0 /* Transaction.swift in Sources */,
+				7A80233B26FC8577008600B0 /* TransactionRelationshipTransferAccount.swift in Sources */,
+				7A80233A26FC8577008600B0 /* RoundUpObject.swift in Sources */,
+				7A80230B26FC8541008600B0 /* Dictionary+Extension.swift in Sources */,
+				7A8022FF26FC8508008600B0 /* String+Extension.swift in Sources */,
+				7A80233E26FC8577008600B0 /* CashbackObject.swift in Sources */,
+				7A80232726FC8577008600B0 /* TransactionsLinksObject.swift in Sources */,
+				7A80233C26FC8577008600B0 /* UpFacade.swift in Sources */,
+				7A80234126FC8577008600B0 /* AccountAttribute.swift in Sources */,
+				7A80234226FC8577008600B0 /* Tag.swift in Sources */,
+				7A80233426FC8577008600B0 /* CategoryRelationshipParent.swift in Sources */,
+				7A80233626FC8577008600B0 /* SelfLink.swift in Sources */,
+				7A80231E26FC855F008600B0 /* NetworkError.swift in Sources */,
+				7A80231426FC8551008600B0 /* URLQueryParameterStringConvertible.swift in Sources */,
+				7A80232F26FC8577008600B0 /* TransactionRelationship.swift in Sources */,
+				7A80233526FC8577008600B0 /* Account.swift in Sources */,
+				7A80231A26FC855F008600B0 /* AccountBalanceModel.swift in Sources */,
 				7A5A89E926FBEE9B0010223B /* Font+Extension.swift in Sources */,
+				7A80231026FC854B008600B0 /* Double+Extension.swift in Sources */,
+				7A8022FD26FC848A008600B0 /* CGFloat+Extension.swift in Sources */,
+				7A80231626FC855F008600B0 /* CategoryTypeEnum.swift in Sources */,
+				7A80231C26FC855F008600B0 /* ResultDecoder.swift in Sources */,
+				7A80233D26FC8577008600B0 /* RelatedLink.swift in Sources */,
 				7A7F03A226FB0859003F1321 /* UIColor+Extension.swift in Sources */,
+				7A80230426FC8532008600B0 /* AccountType+Extension.swift in Sources */,
+				7A80230526FC8536008600B0 /* TransactionType+Extension.swift in Sources */,
+				7A80230626FC8538008600B0 /* DateStyle+Extension.swift in Sources */,
+				7A80230226FC852E008600B0 /* Status+Extension.swift in Sources */,
+				7A80232026FC8577008600B0 /* CategoryAttribute.swift in Sources */,
+				7A80231126FC854B008600B0 /* Int+Extension.swift in Sources */,
+				7A80231B26FC855F008600B0 /* AppDateStyle.swift in Sources */,
+				7A80232A26FC8577008600B0 /* CategoryRelationship.swift in Sources */,
+				7A8022FC26FC848A008600B0 /* CGColor+Extension.swift in Sources */,
 				7A340BC926F9C1DC00D43523 /* UIFont+Extension.swift in Sources */,
+				7A80234326FC8577008600B0 /* TransactionRelationshipCategory.swift in Sources */,
+				7A8022FA26FC848A008600B0 /* NSParagraphStyle+Extension.swift in Sources */,
+				7A80233226FC8577008600B0 /* Category.swift in Sources */,
+				7A80231226FC854B008600B0 /* NumberFormatter+Extension.swift in Sources */,
+				7A80230E26FC854B008600B0 /* UserDefaults+Extension.swift in Sources */,
 				7A82FB4926F4869600C9C04E /* TransactionCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1764,6 +1952,7 @@
 				7AF2155D26F05422009F4F38 /* UIMenu+Extension.swift in Sources */,
 				7AF2150926EF32C5009F4F38 /* ASSizeRange+Extension.swift in Sources */,
 				7AF2150D26EF3A86009F4F38 /* UISearchController+Extension.swift in Sources */,
+				7A08A79126FC1BA50035DD2F /* StringStyle+Extension.swift in Sources */,
 				7A340B3C26F9C14B00D43523 /* NetworkError.swift in Sources */,
 				7AF2151126EF4175009F4F38 /* ContentType.swift in Sources */,
 				7A340BAA26F9C16900D43523 /* TransactionsLinksObject.swift in Sources */,
@@ -1805,6 +1994,7 @@
 				7AE75E3725FF1C3B00C16AF6 /* NavigationController.swift in Sources */,
 				7AD266D926FADDF500EFF4A2 /* Double+Extension.swift in Sources */,
 				7A340B1526F9C11200D43523 /* UserDefaults+Extension.swift in Sources */,
+				7A8022E726FC6455008600B0 /* TransactionAmountType.swift in Sources */,
 				7A340BB626F9C16900D43523 /* CashbackObject.swift in Sources */,
 				7A340BC526F9C16900D43523 /* RelatedLink.swift in Sources */,
 				7AF214FF26EF326C009F4F38 /* NSParagraphStyle+Extension.swift in Sources */,
@@ -1817,6 +2007,7 @@
 				7A0662F926F5573000720802 /* Intents.intentdefinition in Sources */,
 				7AA113C7261550B900386E2D /* DetailSection.swift in Sources */,
 				7A040C8226994F09000CCFF3 /* TransactionCellNode.swift in Sources */,
+				7A31696A26FC1667009695C8 /* StatusIconHelpNode.swift in Sources */,
 				7A56101225D219770091396E /* TagsVC.swift in Sources */,
 				7A7CAB0526F1F161005CB30F /* FLAnimatedImage+Extension.swift in Sources */,
 				7A340B1026F9C11200D43523 /* NSUserActivity+Extension.swift in Sources */,
@@ -1826,6 +2017,7 @@
 				7A615D7726FABA74001F1834 /* AppWidgets.swift in Sources */,
 				7A340B0B26F9C11200D43523 /* String+Extension.swift in Sources */,
 				7A340B0F26F9C11200D43523 /* UIFont+Extension.swift in Sources */,
+				7A8022EC26FC7C30008600B0 /* Bool+Extension.swift in Sources */,
 				7AB34D5D25C7CDCB000A1E81 /* SettingsVC.swift in Sources */,
 				7A340BB826F9C16900D43523 /* HoldInfoObject.swift in Sources */,
 				7A0A302626B5422F009E52FB /* StickerCellNode.swift in Sources */,
@@ -1833,7 +2025,6 @@
 				7A340B0526F9C11200D43523 /* Dictionary+Extension.swift in Sources */,
 				7AF214F326EEE6F9009F4F38 /* TagCellNode.swift in Sources */,
 				7A5B06CB26F2BE87005CE3D1 /* ProvenanceApp.swift in Sources */,
-				7AF2155226F04F73009F4F38 /* Array+Extensions.swift in Sources */,
 				7AA113882615181700386E2D /* AttributeCell.swift in Sources */,
 				7A5BDE762616B99B00B5A5F9 /* CategoriesVC.swift in Sources */,
 				7AAADD5B26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift in Sources */,
@@ -1844,6 +2035,7 @@
 				7A340BA726F9C16900D43523 /* MoneyObject.swift in Sources */,
 				7AAADD5526F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift in Sources */,
 				7A340BA526F9C16900D43523 /* CategoryRelationshipChildren.swift in Sources */,
+				7A8022E326FC5CD1008600B0 /* ASCellNode+Extension.swift in Sources */,
 				7A56101625D21BFE0091396E /* TransactionsByTagVC.swift in Sources */,
 				7ACD456C261D67A7000C8FD2 /* WidgetsVC.swift in Sources */,
 				7A340B0A26F9C11200D43523 /* Status+Extension.swift in Sources */,
@@ -1874,6 +2066,7 @@
 				7A340B4026F9C14B00D43523 /* InfoPlist.swift in Sources */,
 				7AD266D526FADA1E00EFF4A2 /* NumberFormatter+Extension.swift in Sources */,
 				7A340B1126F9C11200D43523 /* AddTagToTransactionIntentResponse+Extension.swift in Sources */,
+				7A08A79526FC399F0035DD2F /* UIViewController+Extension.swift in Sources */,
 				7A56101A25D22AF10091396E /* AddTagWorkflowVC.swift in Sources */,
 				7AC9F7D326AE4E9C0096D486 /* ViewController.swift in Sources */,
 				7A340BB026F9C16900D43523 /* TransactionRelationshipTransferAccount.swift in Sources */,
@@ -1922,11 +2115,13 @@
 				7A340B8726F9C16900D43523 /* CategoryRelationship.swift in Sources */,
 				7A340B1E26F9C11300D43523 /* Color+Extension.swift in Sources */,
 				7A340B1926F9C11300D43523 /* Int+Extension.swift in Sources */,
+				7A8022E926FC69B1008600B0 /* TransactionAmountType.swift in Sources */,
 				7A7F039E26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */,
 				7A340B9A26F9C16900D43523 /* TagRelationship.swift in Sources */,
 				7A340B8D26F9C16900D43523 /* TransactionRelationship.swift in Sources */,
 				7A340B8A26F9C16900D43523 /* TransactionRelationshipTransferAccount.swift in Sources */,
 				7A340B1726F9C11300D43523 /* Dictionary+Extension.swift in Sources */,
+				7A8022ED26FC7C30008600B0 /* Bool+Extension.swift in Sources */,
 				7A340B2426F9C11300D43523 /* URL+Extension.swift in Sources */,
 				7A8E41F126048320003D0E6A /* Widgets.swift in Sources */,
 				7A340B4526F9C14C00D43523 /* NetworkError.swift in Sources */,
@@ -1937,6 +2132,7 @@
 				7AFBD91126F4018800460939 /* LatestTransactionProvider.swift in Sources */,
 				7A340BA126F9C16900D43523 /* RoundUpObject.swift in Sources */,
 				7A340B8226F9C16900D43523 /* Category.swift in Sources */,
+				7A8022F426FC8489008600B0 /* NSAttributedString+Extension.swift in Sources */,
 				7A340B8B26F9C16900D43523 /* TransactionStatusEnum.swift in Sources */,
 				7A340B9426F9C16900D43523 /* AccountResource.swift in Sources */,
 				7AE54D082611671D005D38A5 /* AccountBalance.swift in Sources */,
@@ -1948,12 +2144,14 @@
 				7A340B1A26F9C11300D43523 /* AccountType+Extension.swift in Sources */,
 				7A340B8326F9C16900D43523 /* Pagination.swift in Sources */,
 				7A340B1C26F9C11300D43523 /* Status+Extension.swift in Sources */,
+				7A80230826FC853C008600B0 /* UIEdgeInsets+Extension.swift in Sources */,
 				7A340B7D26F9C16900D43523 /* ModifyTags.swift in Sources */,
 				7A340B1D26F9C11300D43523 /* String+Extension.swift in Sources */,
 				7AFBD90B26F400ED00460939 /* AccountBalanceProvider.swift in Sources */,
 				7AFBD90D26F400FB00460939 /* AccountBalanceEntry.swift in Sources */,
 				7A340B9926F9C16900D43523 /* TagResource.swift in Sources */,
 				7A5A89EC26FBF0790010223B /* Image+Extension.swift in Sources */,
+				7A8022F126FC8489008600B0 /* CGSize+Extension.swift in Sources */,
 				7AFBD8E926F34B2D00460939 /* TransactionCellView.swift in Sources */,
 				7A340B4C26F9C14C00D43523 /* AccountBalanceModel.swift in Sources */,
 				7A340B4426F9C14C00D43523 /* AccountTypeOptionEnum.swift in Sources */,
@@ -1968,6 +2166,7 @@
 				7A340B9E26F9C16900D43523 /* RelationshipData.swift in Sources */,
 				7AFBD91526F4019900460939 /* LatestTransactionEntryView.swift in Sources */,
 				7A340B4B26F9C14C00D43523 /* AppDateStyle.swift in Sources */,
+				7A8022F026FC8489008600B0 /* NSParagraphStyle+Extension.swift in Sources */,
 				7A340B1B26F9C11300D43523 /* URLSession+Extension.swift in Sources */,
 				7A340B9826F9C16900D43523 /* AccountRelationship.swift in Sources */,
 				7A340B1826F9C11300D43523 /* TransactionType+Extension.swift in Sources */,
@@ -1975,9 +2174,12 @@
 				7A340B9226F9C16900D43523 /* HoldInfoObject.swift in Sources */,
 				7A340B8C26F9C16900D43523 /* CategoryAttribute.swift in Sources */,
 				7A340B9326F9C16900D43523 /* AccountAttribute.swift in Sources */,
+				7A8022F226FC8489008600B0 /* CGColor+Extension.swift in Sources */,
 				7AD266D626FADD9000EFF4A2 /* NumberFormatter+Extension.swift in Sources */,
 				7A340B9F26F9C16900D43523 /* RelatedLink.swift in Sources */,
 				7A340B9626F9C16900D43523 /* TransactionRelationshipAccount.swift in Sources */,
+				7A8022F326FC8489008600B0 /* CGFloat+Extension.swift in Sources */,
+				7A80231326FC854D008600B0 /* UIFont+Extension.swift in Sources */,
 				7A340B9C26F9C16900D43523 /* CategoryResource.swift in Sources */,
 				7A7F039826FB0064003F1321 /* ProvenanceApp.swift in Sources */,
 				7AFBD91326F4019100460939 /* LatestTransactionEntry.swift in Sources */,

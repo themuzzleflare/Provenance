@@ -1,4 +1,3 @@
-import UIKit
 import AsyncDisplayKit
 
 final class TagCellNode: ASCellNode {
@@ -6,9 +5,12 @@ final class TagCellNode: ASCellNode {
   
   init(tag: TagResource) {
     super.init()
+    
     automaticallyManagesSubnodes = true
+    
     accessoryType = .disclosureIndicator
-    tagTextNode.attributedText = NSAttributedString(text: tag.id)
+    
+    tagTextNode.attributedText = tag.id.styled(with: .provenance)
   }
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {

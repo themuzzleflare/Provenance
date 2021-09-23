@@ -1,4 +1,3 @@
-import Foundation
 import MarqueeLabel
 
 extension MarqueeLabel {
@@ -6,7 +5,7 @@ extension MarqueeLabel {
     self.init()
     self.speed = .duration(8.0)
     self.fadeLength = 10.0
-    self.font = .boldSystemFont(ofSize: UIFont.labelFontSize)
+    self.font = .boldSystemFont(ofSize: .labelFontSize)
     self.text = text
   }
 }

@@ -1,5 +1,3 @@
-import UIKit
-import NotificationBannerSwift
 import IGListKit
 import AsyncDisplayKit
 
@@ -52,8 +50,6 @@ final class TransactionTagsVC: ASViewController {
   
   private let tableNode = ASTableNode(style: .grouped)
   
-  private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshTags))
-  
     // MARK: - Life Cycle
   
   init(transaction: TransactionResource) {
@@ -72,7 +68,7 @@ final class TransactionTagsVC: ASViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObserver()
-    configureProperties()
+    configureSelf()
     configureNavigation()
     configureToolbar()
     configureTableNode()
@@ -106,7 +102,7 @@ final class TransactionTagsVC: ASViewController {
   // MARK: - Configuration
 
 private extension TransactionTagsVC {
-  private func configureProperties() {
+  private func configureSelf() {
     title = "Transaction Tags"
   }
   
@@ -120,7 +116,7 @@ private extension TransactionTagsVC {
   }
   
   private func removeObserver() {
-    NotificationCenter.default.removeObserver(self)
+    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
   }
   
   private func configureNavigation() {
@@ -137,7 +133,7 @@ private extension TransactionTagsVC {
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
-    tableNode.view.refreshControl = tableRefreshControl
+    tableNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshTags))
     tableNode.allowsMultipleSelectionDuringEditing = true
     tableNode.view.showsVerticalScrollIndicator = false
   }
@@ -145,7 +141,7 @@ private extension TransactionTagsVC {
 
   // MARK: - Actions
 
-private extension TransactionTagsVC {
+extension TransactionTagsVC {
   @objc private func appMovedToForeground() {
     fetchTransaction()
   }
@@ -175,83 +171,13 @@ private extension TransactionTagsVC {
   
   @objc private func removeTags() {
     if let selectedTags = tableNode.indexPathsForSelectedRows?.map { tags[$0.row] } {
-      let alertController = UIAlertController(
-        title: nil,
-        message: "Are you sure you want to remove \"\(selectedTags.joinedWithComma)\" from \"\(transaction.attributes.description)\"?",
-        preferredStyle: .actionSheet
-      )
-      let confirmAction = UIAlertAction(
-        title: "Remove",
-        style: .destructive,
-        handler: { [self] (_) in
-          UpFacade.modifyTags(
-            removing: selectedTags,
-            from: transaction,
-            completion: { (error) in
-              DispatchQueue.main.async {
-                switch error {
-                case .none:
-                  GrowingNotificationBanner(
-                    title: "Success",
-                    subtitle: "\(selectedTags.joinedWithComma) was removed from \(transaction.attributes.description).",
-                    style: .success
-                  ).show()
-                  fetchTransaction()
-                default:
-                  GrowingNotificationBanner(
-                    title: "Failed",
-                    subtitle: error!.description,
-                    style: .danger
-                  ).show()
-                }
-              }
-            }
-          )
-        }
-      )
-      alertController.addAction(confirmAction)
-      alertController.addAction(.cancel)
+      let alertController = UIAlertController.removeTagsFromTransaction(self, removing: selectedTags, from: transaction)
       present(alertController, animated: true)
     }
   }
   
   @objc private func removeAllTags() {
-    let alertController = UIAlertController(
-      title: nil,
-      message: "Are you sure you want to remove \"\(tags.joinedWithComma)\" from \"\(transaction.attributes.description)\"?",
-      preferredStyle: .actionSheet
-    )
-    let confirmAction = UIAlertAction(
-      title: "Remove",
-      style: .destructive,
-      handler: { [self] (_) in
-        UpFacade.modifyTags(
-          removing: tags,
-          from: transaction,
-          completion: { (error) in
-            DispatchQueue.main.async {
-              switch error {
-              case .none:
-                GrowingNotificationBanner(
-                  title: "Success",
-                  subtitle: "\(tags.joinedWithComma) was removed from \(transaction.attributes.description).",
-                  style: .success
-                ).show()
-                fetchTransaction()
-              default:
-                GrowingNotificationBanner(
-                  title: "Failed",
-                  subtitle: error!.description,
-                  style: .danger
-                ).show()
-              }
-            }
-          }
-        )
-      }
-    )
-    alertController.addAction(confirmAction)
-    alertController.addAction(.cancel)
+    let alertController = UIAlertController.removeTagsFromTransaction(self, removing: tags, from: transaction)
     present(alertController, animated: true)
   }
   
@@ -280,7 +206,7 @@ private extension TransactionTagsVC {
     }
   }
   
-  private func fetchTransaction() {
+  func fetchTransaction() {
     UpFacade.retrieveTransaction(for: transaction) { (result) in
       DispatchQueue.main.async {
         switch result {
@@ -314,45 +240,10 @@ extension TransactionTagsVC: ASTableDataSource {
   }
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-    let tag = tags[indexPath.row]
     switch editingStyle {
     case .delete:
-      let alertController = UIAlertController(
-        title: nil,
-        message: "Are you sure you want to remove \"\(tag.id)\" from \"\(transaction.attributes.description)\"?",
-        preferredStyle: .actionSheet
-      )
-      let confirmAction = UIAlertAction(
-        title: "Remove",
-        style: .destructive,
-        handler: { [self] (_) in
-          UpFacade.modifyTags(
-            removing: tag,
-            from: transaction,
-            completion: { (error) in
-              DispatchQueue.main.async {
-                switch error {
-                case .none:
-                  GrowingNotificationBanner(
-                    title: "Success",
-                    subtitle: "\(tag.id) was removed from \(transaction.attributes.description).",
-                    style: .success
-                  ).show()
-                  fetchTransaction()
-                default:
-                  GrowingNotificationBanner(
-                    title: "Failed",
-                    subtitle: error!.description,
-                    style: .danger
-                  ).show()
-                }
-              }
-            }
-          )
-        }
-      )
-      alertController.addAction(confirmAction)
-      alertController.addAction(.cancel)
+      let tag = tags[indexPath.row]
+      let alertController = UIAlertController.removeTagFromTransaction(self, removing: tag, from: transaction)
       present(alertController, animated: true)
     default:
       break
@@ -402,67 +293,10 @@ extension TransactionTagsVC: ASTableDelegate {
       return nil
     case false:
       let tag = tags[indexPath.row]
-      return UIContextMenuConfiguration(
-        identifier: nil,
-        previewProvider: nil,
-        actionProvider: { (_) in
-          UIMenu(
-            children: [
-              UIAction(
-                title: "Copy",
-                image: .docOnClipboard,
-                handler: { (_) in
-                  UIPasteboard.general.string = tag.id
-                }
-              ),
-              UIAction(
-                title: "Remove",
-                image: .trash,
-                attributes: .destructive,
-                handler: { [self] (_) in
-                  let alertController = UIAlertController(
-                    title: nil,
-                    message: "Are you sure you want to remove \"\(tag.id)\" from \"\(transaction.attributes.description)\"?",
-                    preferredStyle: .actionSheet
-                  )
-                  let confirmAction = UIAlertAction(
-                    title: "Remove",
-                    style: .destructive,
-                    handler: { (_) in
-                      UpFacade.modifyTags(
-                        removing: tag,
-                        from: transaction,
-                        completion: { (error) in
-                          DispatchQueue.main.async {
-                            switch error {
-                            case .none:
-                              GrowingNotificationBanner(
-                                title: "Success",
-                                subtitle: "\(tag.id) was removed from \(transaction.attributes.description).",
-                                style: .success
-                              ).show()
-                              fetchTransaction()
-                            default:
-                              GrowingNotificationBanner(
-                                title: "Failed",
-                                subtitle: error!.description,
-                                style: .danger
-                              ).show()
-                            }
-                          }
-                        }
-                      )
-                    }
-                  )
-                  alertController.addAction(confirmAction)
-                  alertController.addAction(.cancel)
-                  present(alertController, animated: true)
-                }
-              )
-            ]
-          )
-        }
-      )
+      return UIContextMenuConfiguration(elements: [
+        .copyTagName(tag: tag),
+        .removeTagFromTransaction(self, removing: tag, from: transaction)
+      ])
     }
   }
 }

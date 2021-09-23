@@ -1,7 +1,7 @@
-import Foundation
+import UIKit
 
 class TransactionResource: Codable {
-    /// The type of this resource: transactions
+    /// The type of this resource: `transactions`
   let type = "transactions"
   
     /// The unique identifier for this transaction.
@@ -28,7 +28,7 @@ extension TransactionResource {
       description: self.attributes.description,
       creationDate: configuration.dateStyle.description(self),
       amount: self.attributes.amount.valueShort,
-      colour: self.attributes.amount.transactionColour
+      colour: self.attributes.amount.transactionType.colour
     )
   }
   
@@ -44,6 +44,12 @@ extension TransactionResource {
 }
 
 extension Array where Element: TransactionResource {
+  func filtered(searchBar: UISearchBar) -> [TransactionResource] {
+    return self.filter { (transaction) in
+      searchBar.text?.isEmpty ?? true || transaction.attributes.description.localizedStandardContains(searchBar.text!)
+    }
+  }
+  
   var transactionTypes: [TransactionType] {
     return self.map { (transaction) in
       return transaction.transactionType

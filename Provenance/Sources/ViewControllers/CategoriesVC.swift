@@ -1,4 +1,3 @@
-import UIKit
 import IGListKit
 import AsyncDisplayKit
 
@@ -8,8 +7,6 @@ final class CategoriesVC: ASViewController {
   private lazy var searchController = UISearchController.categories(self)
   
   private let collectionNode = ASCollectionNode(collectionViewLayout: .twoColumnGridLayout)
-  
-  private lazy var collectionRefreshControl = UIRefreshControl(self, selector: #selector(refreshCategories))
   
   private var categoryFilter: CategoryTypeEnum = ProvenanceApp.userDefaults.appCategoryFilter {
     didSet {
@@ -61,7 +58,7 @@ final class CategoriesVC: ASViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
-    configureProperties()
+    configureSelf()
     configureNavigation()
     configureCollectionNode()
     applySnapshot(override: true)
@@ -76,7 +73,7 @@ final class CategoriesVC: ASViewController {
   // MARK: - Configuration
 
 private extension CategoriesVC {
-  private func configureProperties() {
+  private func configureSelf() {
     title = "Categories"
     definesPresentationContext = true
   }
@@ -101,7 +98,7 @@ private extension CategoriesVC {
   }
   
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self)
+    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
     categoryFilterObserver?.invalidate()
@@ -118,7 +115,7 @@ private extension CategoriesVC {
   private func configureCollectionNode() {
     collectionNode.dataSource = self
     collectionNode.delegate = self
-    collectionNode.view.refreshControl = collectionRefreshControl
+    collectionNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshCategories))
   }
 }
 

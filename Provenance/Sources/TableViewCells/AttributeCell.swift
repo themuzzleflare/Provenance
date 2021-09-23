@@ -1,4 +1,3 @@
-import UIKit
 import SnapKit
 
 final class AttributeCell: UITableViewCell {
@@ -66,14 +65,14 @@ private extension AttributeCell {
   }
   
   private func configureLeftLabel() {
-    leftLabel.font = .circularStdMedium(size: UIFont.labelFontSize)
+    leftLabel.font = .circularStdMedium(size: .labelFontSize)
     leftLabel.textAlignment = .left
     leftLabel.textColor = .label
     leftLabel.numberOfLines = 0
   }
   
   private func configureRightLabel() {
-    rightLabel.font = .circularStdBook(size: UIFont.labelFontSize)
+    rightLabel.font = .circularStdBook(size: .labelFontSize)
     rightLabel.textAlignment = .right
     rightLabel.textColor = .secondaryLabel
     rightLabel.numberOfLines = 0

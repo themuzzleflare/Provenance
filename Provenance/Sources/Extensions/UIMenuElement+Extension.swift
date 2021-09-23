@@ -1,7 +1,12 @@
-import Foundation
 import UIKit
 
 extension UIMenuElement {
+  static func copyGeneric(title: String, string: String) -> UIAction {
+    return UIAction(title: "Copy \(title)", image: .docOnClipboard, handler: { (_) in
+      UIPasteboard.general.string = string
+    })
+  }
+  
   static func copyTransactionDescription(transaction: TransactionResource) -> UIAction {
     return UIAction(title: "Copy Description", image: .textAlignright, handler: { (_) in
       UIPasteboard.general.string = transaction.attributes.description
@@ -21,6 +26,13 @@ extension UIMenuElement {
   }
   
   static func removeTagFromTransaction(_ viewController: TransactionsByTagVC, removing tag: TagResource, from transaction: TransactionResource) -> UIAction {
+    return UIAction(title: "Remove", image: .trash, attributes: .destructive) { (_) in
+      let alertController = UIAlertController.removeTagFromTransaction(viewController, removing: tag, from: transaction)
+      viewController.present(alertController, animated: true)
+    }
+  }
+  
+  static func removeTagFromTransaction(_ viewController: TransactionTagsVC, removing tag: TagResource, from transaction: TransactionResource) -> UIAction {
     return UIAction(title: "Remove", image: .trash, attributes: .destructive) { (_) in
       let alertController = UIAlertController.removeTagFromTransaction(viewController, removing: tag, from: transaction)
       viewController.present(alertController, animated: true)

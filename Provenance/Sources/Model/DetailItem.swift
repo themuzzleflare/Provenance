@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 
 struct DetailItem: Identifiable {
@@ -45,9 +44,9 @@ extension DetailItem {
   var valueFont: UIFont {
     switch id {
     case "Raw Text", "Account ID":
-      return .sfMonoRegular(size: UIFont.labelFontSize)
+      return .sfMonoRegular(size: .labelFontSize)
     default:
-      return .circularStdBook(size: UIFont.labelFontSize)
+      return .circularStdBook(size: .labelFontSize)
     }
   }
 }

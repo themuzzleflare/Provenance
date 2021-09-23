@@ -1,6 +1,4 @@
-import UIKit
 import AsyncDisplayKit
-import PINRemoteImage
 
 final class StickerView: ASViewController {
     // MARK: - Life Cycle
@@ -15,15 +13,19 @@ final class StickerView: ASViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    configure()
+    configureSelf()
+    configureNavigation()
   }
 }
 
   // MARK: - Configuration
 
 private extension StickerView {
-  private func configure() {
+  private func configureSelf() {
     title = "Sticker View"
+  }
+  
+  private func configureNavigation() {
     navigationItem.title = "Sticker"
     navigationItem.largeTitleDisplayMode = .never
   }

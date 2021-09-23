@@ -1,4 +1,3 @@
-import Foundation
 import IGListKit
 
 extension CategoryResource: ListDiffable {

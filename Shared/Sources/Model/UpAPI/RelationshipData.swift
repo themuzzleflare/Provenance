@@ -1,8 +1,10 @@
 import Foundation
 
 class RelationshipData: Codable {
+    /// The type of this resource.
   let type: String
   
+    /// The unique identifier of the resource within its type.
   let id: String
   
   init(type: String, id: String) {

@@ -1,6 +1,4 @@
-import UIKit
 import AsyncDisplayKit
-import PINRemoteImage
 
 final class StickersVC: ASViewController {
     // MARK: - Properties
@@ -20,7 +18,7 @@ final class StickersVC: ASViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    configure()
+    configureSelf()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -32,7 +30,7 @@ final class StickersVC: ASViewController {
   // MARK: - Configuration
 
 private extension StickersVC {
-  private func configure() {
+  private func configureSelf() {
     title = "Stickers"
     navigationItem.title = "Stickers"
     navigationItem.largeTitleDisplayMode = .never

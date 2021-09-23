@@ -20,7 +20,7 @@ final class DiagnosticTableVC: ViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(tableView)
-    configureProperties()
+    configureSelf()
     configureNavigation()
     configureTableView()
     applySnapshot()
@@ -35,14 +35,14 @@ final class DiagnosticTableVC: ViewController {
   // MARK: - Configuration
 
 private extension DiagnosticTableVC {
-  private func configureProperties() {
+  private func configureSelf() {
     title = "Diagnostics"
   }
   
   private func configureNavigation() {
     navigationItem.title = "Diagnostics"
     navigationItem.largeTitleDisplayMode = .never
-    navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+    navigationItem.leftBarButtonItem = .close(self, action: #selector(closeWorkflow))
   }
   
   private func configureTableView() {
@@ -91,14 +91,9 @@ extension DiagnosticTableVC: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-    guard let attribute = dataSource.itemIdentifier(for: indexPath) else { return nil }
-    switch attribute.value {
-    case "Unknown":
-      return nil
-    default:
-      return UIContextMenuConfiguration(elements: [
-        .copyAttribute(attribute: attribute)
-      ])
-    }
+    guard let attribute = dataSource.itemIdentifier(for: indexPath), attribute.value != "Unknown" else { return nil }
+    return UIContextMenuConfiguration(elements: [
+      .copyAttribute(attribute: attribute)
+    ])
   }
 }

@@ -1,4 +1,3 @@
-import UIKit
 import IGListKit
 import AsyncDisplayKit
 
@@ -8,8 +7,6 @@ final class TransactionsByCategoryVC: ASViewController {
   private var category: CategoryResource
   
   private lazy var searchController = UISearchController(self)
-  
-  private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshTransactions))
   
   private let tableNode = ASTableNode(style: .grouped)
   
@@ -52,7 +49,7 @@ final class TransactionsByCategoryVC: ASViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
-    configureProperties()
+    configureSelf()
     configureNavigation()
     configureTableNode()
     applySnapshot(override: true)
@@ -67,7 +64,7 @@ final class TransactionsByCategoryVC: ASViewController {
   // MARK: - Configuration
 
 private extension TransactionsByCategoryVC {
-  private func configureProperties() {
+  private func configureSelf() {
     title = "Transactions by Category"
     definesPresentationContext = true
   }
@@ -88,7 +85,7 @@ private extension TransactionsByCategoryVC {
   }
   
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self)
+    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil
   }
@@ -104,7 +101,7 @@ private extension TransactionsByCategoryVC {
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
-    tableNode.view.refreshControl = tableRefreshControl
+    tableNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshTransactions))
   }
 }
 

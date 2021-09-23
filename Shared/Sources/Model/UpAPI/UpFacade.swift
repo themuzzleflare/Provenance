@@ -57,7 +57,7 @@ struct UpFacade {
   }
   
   static func listTransactions(completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/transactions")!.appendingQueryParameters(["page[size]": "100"])
+    let url = URL(string: "https://api.up.com.au/api/v1/transactions")!.appendingQueryParameters(["page[size]": "30"])
     let request = authorisedRequest(url: url)
     URLSession.shared.dataTask(with: request) { (result) in
       completion(transactionsDecoder.decode(result))

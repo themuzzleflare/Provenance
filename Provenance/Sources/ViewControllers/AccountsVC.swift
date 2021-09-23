@@ -1,4 +1,3 @@
-import UIKit
 import IGListKit
 import AsyncDisplayKit
 
@@ -8,9 +7,7 @@ final class AccountsVC: ASViewController {
   private lazy var searchController = UISearchController.accounts(self)
   
   private let collectionNode = ASCollectionNode(collectionViewLayout: .twoColumnGridLayout)
-  
-  private lazy var collectionRefreshControl = UIRefreshControl(self, selector: #selector(refreshAccounts))
-  
+    
   private var accountFilter: AccountTypeOptionEnum = ProvenanceApp.userDefaults.appAccountFilter {
     didSet {
       if ProvenanceApp.userDefaults.accountFilter != accountFilter.rawValue {
@@ -62,7 +59,7 @@ final class AccountsVC: ASViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
-    configureProperties()
+    configureSelf()
     configureNavigation()
     configureCollectionNode()
     applySnapshot(override: true)
@@ -77,7 +74,7 @@ final class AccountsVC: ASViewController {
   // MARK: - Configuration
 
 private extension AccountsVC {
-  private func configureProperties() {
+  private func configureSelf() {
     title = "Accounts"
     definesPresentationContext = true
   }
@@ -102,7 +99,7 @@ private extension AccountsVC {
   }
   
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self)
+    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
     accountFilterObserver?.invalidate()
@@ -119,7 +116,7 @@ private extension AccountsVC {
   private func configureCollectionNode() {
     collectionNode.dataSource = self
     collectionNode.delegate = self
-    collectionNode.view.refreshControl = collectionRefreshControl
+    collectionNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshAccounts))
   }
 }
 

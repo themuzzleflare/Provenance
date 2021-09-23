@@ -19,6 +19,7 @@ target 'Provenance' do
   pod 'Texture'
   pod 'SnapKit'
   pod 'IGListKit/Diffing'
+  pod 'BonMot'
   
 end
   
@@ -34,6 +35,7 @@ target 'Provenance IntentsUI' do
   use_frameworks!
   
   pod 'SnapKit'
+  pod 'SwiftDate'
   
 end
 

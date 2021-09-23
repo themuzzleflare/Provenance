@@ -5,9 +5,7 @@ class ViewController: UIViewController {
     super.viewDidLoad()
     configure()
   }
-}
-
-private extension ViewController {
+  
   private func configure() {
     view.backgroundColor = .systemBackground
   }

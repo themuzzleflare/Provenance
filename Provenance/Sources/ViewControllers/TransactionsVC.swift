@@ -1,4 +1,3 @@
-import UIKit
 import IGListKit
 import AsyncDisplayKit
 
@@ -8,8 +7,6 @@ final class TransactionsVC: ASViewController {
   private lazy var filterBarButtonItem = UIBarButtonItem(image: .sliderHorizontal3, menu: filterMenu)
   
   private lazy var searchController = UISearchController(self)
-  
-  private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshTransactions))
   
   private let tableNode = ASTableNode(style: .grouped)
   
@@ -73,7 +70,7 @@ final class TransactionsVC: ASViewController {
     super.viewDidLoad()
     configureObservers()
     configureTableNode()
-    configureProperties()
+    configureSelf()
     configureNavigation()
     applySnapshot(override: true)
   }
@@ -90,10 +87,10 @@ extension TransactionsVC {
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
-    tableNode.view.refreshControl = tableRefreshControl
+    tableNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshTransactions))
   }
   
-  private func configureProperties() {
+  private func configureSelf() {
     title = "Transactions"
     definesPresentationContext = true
   }
@@ -120,7 +117,7 @@ extension TransactionsVC {
   }
   
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self)
+    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
     dateStyleObserver?.invalidate()

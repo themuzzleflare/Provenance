@@ -1,11 +1,13 @@
-import Foundation
-import UIKit
 import FLAnimatedImage
 import SnapKit
 
 extension UIView {
+  static var plainView: UIView {
+    return UIView()
+  }
+  
   static var selectedBackgroundCellView: UIView {
-    let view = UIView()
+    let view = UIView.plainView
     view.backgroundColor = .accentColor
     return view
   }
@@ -58,7 +60,7 @@ extension UIView {
     }
     label.textAlignment = .center
     label.textColor = .secondaryLabel
-    label.font = .circularStdBook(size: UIFont.labelFontSize)
+    label.font = .circularStdBook(size: .labelFontSize)
     label.numberOfLines = 0
     label.text = text
     return view

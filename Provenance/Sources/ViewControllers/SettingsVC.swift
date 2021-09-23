@@ -1,14 +1,17 @@
-import UIKit
-import AsyncDisplayKit
 import NotificationBannerSwift
+import AsyncDisplayKit
 
 final class SettingsVC: ASViewController {
     // MARK: - Properties
   
   private var displayBanner: GrowingNotificationBanner?
-  private var submitActionProxy: UIAlertAction!
+  
+  var submitActionProxy: UIAlertAction!
+  
   private var apiKeyObserver: NSKeyValueObservation?
-  private var textDidChangeObserver: NSObjectProtocol!
+  
+  var textDidChangeObserver: NSObjectProtocol!
+  
   private let tableNode = ASTableNode(style: .grouped)
   
     // MARK: - Life Cycle
@@ -29,7 +32,7 @@ final class SettingsVC: ASViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObserver()
-    configureProperties()
+    configureSelf()
     configureNavigation()
     configureTableNode()
   }
@@ -45,7 +48,7 @@ final class SettingsVC: ASViewController {
   // MARK: - Configuration
 
 private extension SettingsVC {
-  private func configureProperties() {
+  private func configureSelf() {
     title = "Settings"
   }
   
@@ -68,11 +71,7 @@ private extension SettingsVC {
   private func configureNavigation() {
     navigationItem.title = "Settings"
     navigationItem.largeTitleDisplayMode = .never
-    navigationItem.leftBarButtonItem = UIBarButtonItem(
-      barButtonSystemItem: .close,
-      target: self,
-      action: #selector(closeWorkflow)
-    )
+    navigationItem.leftBarButtonItem = .close(self, action: #selector(closeWorkflow))
   }
   
   private func configureTableNode() {
@@ -102,15 +101,15 @@ extension SettingsVC: ASTableDataSource {
   }
   
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let settingsCell = ASTextCellNode(text: "Settings", selectionStyle: .default, accessoryType: .disclosureIndicator)
+    let settingsNode = ASTextCellNode(text: "Settings", selectionStyle: .default, accessoryType: .disclosureIndicator)
     return {
       switch indexPath.section {
       case 0:
-        return APIKeyCellNode()
+        return .apiKey
       case 1:
-        return DateStyleCellNode()
+        return .dateStyle
       case 2:
-        return settingsCell
+        return settingsNode
       default:
         fatalError("Unknown section")
       }
@@ -146,7 +145,7 @@ extension SettingsVC: ASTableDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     switch section {
     case 2:
-      return UIView()
+      return .plainView
     default:
       return nil
     }
@@ -165,67 +164,7 @@ extension SettingsVC: ASTableDelegate {
     switch indexPath.section {
     case 0:
       tableNode.deselectRow(at: indexPath, animated: true)
-      let alertController = UIAlertController(
-        title: "API Key",
-        message: "Enter a new API Key.",
-        preferredStyle: .alert
-      )
-      alertController.addTextField { [self] (textField) in
-        textField.autocapitalizationType = .none
-        textField.autocorrectionType = .no
-        textField.text = ProvenanceApp.userDefaults.apiKey
-        textDidChangeObserver = NotificationCenter.default.addObserver(
-          forName: UITextField.textDidChangeNotification,
-          object: textField,
-          queue: .main,
-          using: { (notification) in
-            if let change = notification.object as? UITextField, let text = change.text {
-              submitActionProxy.isEnabled = text.count >= 1 && text != ProvenanceApp.userDefaults.apiKey
-            } else {
-              submitActionProxy.isEnabled = false
-            }
-          }
-        )
-      }
-      let submitAction = UIAlertAction(
-        title: "Save",
-        style: .default,
-        handler: { (_) in
-          if let answer = alertController.textFields?.first?.text {
-            if !answer.isEmpty && answer != ProvenanceApp.userDefaults.apiKey {
-              UpFacade.ping(with: answer) { (error) in
-                DispatchQueue.main.async {
-                  switch error {
-                  case .none:
-                    GrowingNotificationBanner(
-                      title: "Success",
-                      subtitle: "The API Key was verified and saved.",
-                      style: .success
-                    ).show()
-                    ProvenanceApp.userDefaults.apiKey = answer
-                  default:
-                    GrowingNotificationBanner(
-                      title: "Failed",
-                      subtitle: error!.description,
-                      style: .danger
-                    ).show()
-                  }
-                }
-              }
-            } else {
-              GrowingNotificationBanner(
-                title: "Failed",
-                subtitle: "The provided API Key was the same as the current one.",
-                style: .danger
-              ).show()
-            }
-          }
-        }
-      )
-      submitAction.isEnabled = false
-      submitActionProxy = submitAction
-      alertController.addAction(.cancel)
-      alertController.addAction(submitAction)
+      let alertController = UIAlertController.saveApiKey(self)
       present(alertController, animated: true)
     case 2:
       tableNode.deselectRow(at: indexPath, animated: true)
@@ -238,26 +177,9 @@ extension SettingsVC: ASTableDelegate {
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     switch indexPath.section {
     case 0:
-      switch ProvenanceApp.userDefaults.apiKey {
-      case "":
-        return nil
-      default:
-        return UIContextMenuConfiguration(
-          identifier: nil,
-          previewProvider: nil,
-          actionProvider: { (_) in
-            UIMenu(children: [
-              UIAction(
-                title: "Copy API Key",
-                image: .docOnClipboard,
-                handler: { (_) in
-                  UIPasteboard.general.string = ProvenanceApp.userDefaults.apiKey
-                }
-              )
-            ])
-          }
-        )
-      }
+      return ProvenanceApp.userDefaults.apiKey == .emptyString ? nil : UIContextMenuConfiguration(elements: [
+        .copyGeneric(title: "API Key", string: ProvenanceApp.userDefaults.apiKey)
+      ])
     default:
       return nil
     }

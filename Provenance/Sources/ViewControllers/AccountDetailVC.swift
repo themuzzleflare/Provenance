@@ -23,8 +23,6 @@ final class AccountDetailVC: ViewController {
   
   private lazy var dataSource = makeDataSource()
   
-  private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshData))
-  
   private let tableView = UITableView(frame: .zero, style: .grouped)
   
   private var sections: [DetailSection] {
@@ -51,7 +49,7 @@ final class AccountDetailVC: ViewController {
     super.viewDidLoad()
     configureObserver()
     view.addSubview(tableView)
-    configureProperties()
+    configureSelf()
     configureNavigation()
     configureTableView()
     applySnapshot(animate: false)
@@ -71,7 +69,7 @@ final class AccountDetailVC: ViewController {
   // MARK: - Configuration
 
 private extension AccountDetailVC {
-  private func configureProperties() {
+  private func configureSelf() {
     title = "Account Details"
   }
   
@@ -85,20 +83,20 @@ private extension AccountDetailVC {
   }
   
   private func removeObserver() {
-    NotificationCenter.default.removeObserver(self)
+    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
   }
   
   private func configureNavigation() {
     navigationItem.title = account.attributes.displayName
     navigationItem.largeTitleDisplayMode = .never
-    navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeWorkflow))
+    navigationItem.leftBarButtonItem = .close(self, action: #selector(closeWorkflow))
   }
   
   private func configureTableView() {
     tableView.dataSource = dataSource
     tableView.delegate = self
     tableView.register(AttributeCell.self, forCellReuseIdentifier: AttributeCell.reuseIdentifier)
-    tableView.refreshControl = tableRefreshControl
+    tableView.refreshControl = UIRefreshControl(self, selector: #selector(refreshData))
     tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     tableView.showsVerticalScrollIndicator = false
   }

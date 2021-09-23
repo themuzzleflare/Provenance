@@ -1,4 +1,3 @@
-import UIKit
 import AsyncDisplayKit
 
 final class DateStyleCellNode: ASCellNode {
@@ -25,10 +24,7 @@ final class DateStyleCellNode: ASCellNode {
     
     selectionStyle = .none
     
-    dateStyleTextNode.attributedText = NSAttributedString(
-      text: "Date Style",
-      font: .circularStdMedium(size: UIFont.labelFontSize)
-    )
+    dateStyleTextNode.attributedText = "Date Style".styled(with: .leftText)
   }
   
   deinit {

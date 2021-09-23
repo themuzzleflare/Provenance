@@ -1,13 +1,12 @@
 import UIKit
 import WidgetKit
-import NotificationBannerSwift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // MARK: - Properties
   
   var window: UIWindow?
-  private var submitActionProxy: UIAlertAction!
-  private var textDidChangeObserver: NSObjectProtocol!
+  var submitActionProxy: UIAlertAction!
+  var textDidChangeObserver: NSObjectProtocol!
   private var savedShortcutItem: UIApplicationShortcutItem!
   
     // MARK: - Life Cycle
@@ -68,78 +67,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 private extension SceneDelegate {
   private func checkApiKey() {
     if ProvenanceApp.userDefaults.apiKey.isEmpty {
-      let alertController = UIAlertController(
-        title: "API Key Required",
-        message: "You don't have an API Key set. You can set one now.",
-        preferredStyle: .alert
-      )
-      alertController.addTextField { [self] (textField) in
-        textField.autocapitalizationType = .none
-        textField.autocorrectionType = .no
-        textDidChangeObserver = NotificationCenter.default.addObserver(
-          forName: UITextField.textDidChangeNotification,
-          object: textField,
-          queue: .main,
-          using: { (notification) in
-            if let change = notification.object as? UITextField, let text = change.text {
-              submitActionProxy.isEnabled = text.count >= 1 && text != ProvenanceApp.userDefaults.apiKey
-            } else {
-              submitActionProxy.isEnabled = false
-            }
-          }
-        )
-      }
-      let submitAction = UIAlertAction(
-        title: "Save",
-        style: .default,
-        handler: { [self] (_) in
-          if let answer = alertController.textFields?.first?.text {
-            if !answer.isEmpty && answer != ProvenanceApp.userDefaults.apiKey {
-              UpFacade.ping(with: answer) { (error) in
-                DispatchQueue.main.async {
-                  switch error {
-                  case .none:
-                    let notificationBanner = GrowingNotificationBanner(
-                      title: "Success",
-                      subtitle: "The API Key was verified and saved.",
-                      style: .success,
-                      duration: 2.0
-                    )
-                    ProvenanceApp.userDefaults.apiKey = answer
-                    let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
-                    viewController.modalPresentationStyle = .fullScreen
-                    window?.rootViewController?.present(viewController, animated: true)
-                  default:
-                    let notificationBanner = GrowingNotificationBanner(
-                      title: "Failed",
-                      subtitle: error!.description,
-                      style: .danger,
-                      duration: 2.0
-                    )
-                    let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
-                    viewController.modalPresentationStyle = .fullScreen
-                    window?.rootViewController?.present(viewController, animated: true)
-                  }
-                }
-              }
-            } else {
-              let notificationBanner = GrowingNotificationBanner(
-                title: "Failed",
-                subtitle: "The provided API Key was the same as the current one.",
-                style: .danger,
-                duration: 2.0
-              )
-              let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
-              viewController.modalPresentationStyle = .fullScreen
-              window?.rootViewController?.present(viewController, animated: true)
-            }
-          }
-        }
-      )
-      submitAction.isEnabled = false
-      submitActionProxy = submitAction
-      alertController.addAction(.cancel)
-      alertController.addAction(submitAction)
+      let alertController = UIAlertController.noApiKey(self)
       window?.rootViewController?.present(alertController, animated: true)
     }
   }

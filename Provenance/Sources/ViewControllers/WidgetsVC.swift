@@ -1,4 +1,3 @@
-import UIKit
 import AsyncDisplayKit
 
 final class WidgetsVC: ASViewController {

@@ -5,16 +5,24 @@ extension String {
     return ""
   }
   
+  static var space: String {
+    return " "
+  }
+  
+  var integer: Int? {
+    return Int(self)
+  }
+  
+  var url: URL? {
+    return URL(string: self)
+  }
+  
   var nsString: NSString {
     return NSString(string: self)
   }
   
   var nsDecimalNumber: NSDecimalNumber {
     return NSDecimalNumber(string: self)
-  }
-  
-  var double: Double {
-    return Double(self)!
   }
   
   var tagInputResourceIdentifier: TagInputResourceIdentifier {
@@ -39,13 +47,13 @@ extension Array where Element == String {
   
   var stringResolutionResults: [INStringResolutionResult] {
     return self.map { (string) in
-      return .success(with: string)
+      return string.stringResolutionResult
     }
   }
   
   var addTagToTransactionTagsResolutionResults: [AddTagToTransactionTagsResolutionResult] {
     return self.map { (string) in
-      return .success(with: string)
+      return string.addTagToTransactionTagsResolutionResult
     }
   }
 }

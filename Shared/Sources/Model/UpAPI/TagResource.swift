@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 class TagResource: Codable {
     /// The type of this resource: tags
@@ -26,6 +26,12 @@ extension TagResource {
 }
 
 extension Array where Element: TagResource {
+  func filtered(searchBar: UISearchBar) -> [TagResource] {
+    return self.filter { (tag) in
+      searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchBar.text!)
+    }
+  }
+  
   var nsStringArray: [NSString] {
     return self.map { (tag) in
       return tag.id.nsString

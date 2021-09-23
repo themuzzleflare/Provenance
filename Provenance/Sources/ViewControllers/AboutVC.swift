@@ -1,4 +1,3 @@
-import UIKit
 import AsyncDisplayKit
 
 final class AboutVC: ASViewController {
@@ -18,20 +17,28 @@ final class AboutVC: ASViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    configure()
+    configureSelf()
+    configureNavigation()
+    configureTableNode()
   }
 }
 
   // MARK: - Configuration
 
 private extension AboutVC {
-  private func configure() {
+  private func configureSelf() {
     title = "About"
+  }
+  
+  private func configureNavigation() {
     navigationItem.title = "About"
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.backBarButtonItem = UIBarButtonItem(image: .infoCircle)
     navigationItem.leftBarButtonItem = UIBarButtonItem(image: .chevronLeftSlashChevronRight, style: .plain, target: self, action: #selector(openDiagnostics))
     navigationItem.rightBarButtonItem = UIBarButtonItem(image: .gear, style: .plain, target: self, action: #selector(openSettings))
+  }
+  
+  private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
     tableNode.view.showsVerticalScrollIndicator = false
@@ -140,9 +147,9 @@ extension AboutVC: ASTableDelegate {
       tableNode.deselectRow(at: indexPath, animated: true)
       switch row {
       case 0:
-        navigationController?.pushViewController(WidgetsVC(), animated: true)
+        navigationController?.pushViewController(.widgets, animated: true)
       case 1:
-        navigationController?.pushViewController(StickersVC(), animated: true)
+        navigationController?.pushViewController(.stickers, animated: true)
       default:
         break
       }
@@ -168,52 +175,26 @@ extension AboutVC: ASTableDelegate {
     case 0:
       switch row {
       case 1:
-        switch ProvenanceApp.userDefaults.appVersion {
-        case "Unknown":
-          return nil
-        default:
-          return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { (_) in
-            UIMenu(children: [
-              UIAction(title: "Copy Version", image: .docOnClipboard) { (_) in
-                UIPasteboard.general.string = ProvenanceApp.userDefaults.appVersion
-              }
-            ])
-          }
-        }
+        return ProvenanceApp.userDefaults.appVersion == "Unknown" ? nil : UIContextMenuConfiguration(elements: [
+          .copyGeneric(title: "Version", string: ProvenanceApp.userDefaults.appVersion)
+        ])
       case 2:
-        switch ProvenanceApp.userDefaults.appBuild {
-        case "Unknown":
-          return nil
-        default:
-          return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { (_) in
-            UIMenu(children: [
-              UIAction(title: "Copy Build", image: .docOnClipboard) { (_) in
-                UIPasteboard.general.string = ProvenanceApp.userDefaults.appBuild
-              }
-            ])
-          }
-        }
+        return ProvenanceApp.userDefaults.appBuild == "Unknown" ? nil : UIContextMenuConfiguration(elements: [
+          .copyGeneric(title: "Build", string: ProvenanceApp.userDefaults.appBuild)
+        ])
       default:
         return nil
       }
     case 2:
       switch row {
       case 0:
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { (_) in
-          UIMenu(children: [
-            UIAction(title: "Copy Email", image: .docOnClipboard) { (_) in
-              UIPasteboard.general.string = "feedback@tavitian.cloud"
-            }
-          ])
-        }
+        return UIContextMenuConfiguration(elements: [
+          .copyGeneric(title: "Email", string: "feedback@tavitian.cloud")
+        ])
       case 1:
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { (_) in
-          UIMenu(children: [
-            UIAction(title: "Copy Link", image: .docOnClipboard) { (_) in
-              UIPasteboard.general.string = "https://github.com/themuzzleflare/Provenance"
-            }
-          ])
-        }
+        return UIContextMenuConfiguration(elements: [
+          .copyGeneric(title: "Link", string: "https://github.com/themuzzleflare/Provenance")
+        ])
       default:
         return nil
       }

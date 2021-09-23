@@ -1,4 +1,3 @@
-import UIKit
 import AsyncDisplayKit
 
 final class AccountCellNode: ASCellNode {
@@ -10,17 +9,9 @@ final class AccountCellNode: ASCellNode {
     
     automaticallyManagesSubnodes = true
     
-    balanceTextNode.attributedText = NSAttributedString(
-      text: account.attributes.balance.valueShort,
-      font: .circularStdBold(size: 32),
-      colour: .accentColor,
-      alignment: .centreAligned
-    )
+    balanceTextNode.attributedText = account.attributes.balance.valueShort.styled(with: .accountBalance)
     
-    displayNameTextNode.attributedText = NSAttributedString(
-      text: account.attributes.displayName,
-      alignment: .centreAligned
-    )
+    displayNameTextNode.attributedText = account.attributes.displayName.styled(with: .accountDisplayName)
     
     cornerRadius = 12.5
     borderColor = .separator

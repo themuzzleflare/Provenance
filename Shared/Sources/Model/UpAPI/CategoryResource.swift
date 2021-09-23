@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 class CategoryResource: Codable {
     /// The type of this resource: categories
@@ -35,6 +35,19 @@ extension CategoryResource {
 }
 
 extension Array where Element: CategoryResource {
+  func filtered(searchBar: UISearchBar) -> [CategoryResource] {
+    return self.filter { (category) in
+      switch searchBar.selectedScopeButtonIndex {
+      case 0:
+        return searchBar.text!.isEmpty || (category.attributes.name.localizedStandardContains(searchBar.text!) && category.categoryTypeEnum == .parent)
+      case 1:
+        return searchBar.text!.isEmpty || (category.attributes.name.localizedStandardContains(searchBar.text!) && category.categoryTypeEnum == .child)
+      default:
+        return searchBar.text!.isEmpty || category.attributes.name.localizedStandardContains(searchBar.text!)
+      }
+    }
+  }
+  
   var categoryTypes: [CategoryType] {
     return self.map { (category) in
       return category.categoryType

@@ -1,6 +1,5 @@
-import UIKit
-import AsyncDisplayKit
 import NotificationBannerSwift
+import AsyncDisplayKit
 
 final class AddTagWorkflowThreeVC: ASViewController {
     // MARK: - Properties
@@ -38,7 +37,7 @@ final class AddTagWorkflowThreeVC: ASViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObserver()
-    configureProperties()
+    configureSelf()
     configureNavigation()
     configureTableNode()
   }
@@ -47,7 +46,7 @@ final class AddTagWorkflowThreeVC: ASViewController {
   // MARK: - Configuration
 
 private extension AddTagWorkflowThreeVC {
-  private func configureProperties() {
+  private func configureSelf() {
     title = "Add Tag Confirmation"
   }
   
@@ -81,9 +80,7 @@ private extension AddTagWorkflowThreeVC {
 
 private extension AddTagWorkflowThreeVC {
   @objc private func addTag() {
-    let activityIndicator = UIActivityIndicatorView.mediumAnimating
-    let barButtonItem = UIBarButtonItem(customView: activityIndicator)
-    navigationItem.setRightBarButton(barButtonItem, animated: false)
+    navigationItem.setRightBarButton(.activityIndicator, animated: false)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
       UpFacade.modifyTags(adding: tags, to: transaction) { (error) in
         DispatchQueue.main.async {
@@ -92,14 +89,16 @@ private extension AddTagWorkflowThreeVC {
             GrowingNotificationBanner(
               title: "Success",
               subtitle: "\(tags.joinedWithComma) was added to \(transaction.attributes.description).",
-              style: .success
+              style: .success,
+              duration: 2.0
             ).show()
             navigationController?.popViewController(animated: true)
           default:
             GrowingNotificationBanner(
               title: "Failed",
               subtitle: error!.description,
-              style: .danger
+              style: .danger,
+              duration: 2.0
             ).show()
             switch error {
             case .transportError:
@@ -141,11 +140,11 @@ extension AddTagWorkflowThreeVC: ASTableDataSource {
     return {
       switch indexPath.section {
       case 0:
-        return ASTextCellNode(text: tag.id, selectionStyle: .none)
+        return ASTextCellNode(text: tag.id, selectionStyle: UITableViewCell.SelectionStyle.none)
       case 1:
         return transactionCellNode
       case 2:
-        return ASTextCellNode(text: "You are adding the \(self.tags.count == 1 ? "tag" : "tags") \"\(self.tags.joinedWithComma)\" to the transaction \"\(self.transaction.attributes.description)\", which was \(ProvenanceApp.userDefaults.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: .none)
+        return ASTextCellNode(text: "You are adding the \(self.tags.count == 1 ? "tag" : "tags") \"\(self.tags.joinedWithComma)\" to the transaction \"\(self.transaction.attributes.description)\", which was \(ProvenanceApp.userDefaults.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: UITableViewCell.SelectionStyle.none)
       default:
         fatalError("Unknown section")
       }

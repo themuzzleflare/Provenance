@@ -1,4 +1,3 @@
-import UIKit
 import MarqueeLabel
 
 final class TransactionDetailVC: ViewController {
@@ -15,8 +14,6 @@ final class TransactionDetailVC: ViewController {
   private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailItem>
   
   private lazy var dataSource = makeDataSource()
-  
-  private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshTransaction))
   
   private let tableView = UITableView(frame: .zero, style: .grouped)
   
@@ -73,7 +70,7 @@ final class TransactionDetailVC: ViewController {
     super.viewDidLoad()
     configureObserver()
     view.addSubview(tableView)
-    configureProperties()
+    configureSelf()
     configureTableView()
     configureNavigation()
     applySnapshot()
@@ -93,7 +90,7 @@ final class TransactionDetailVC: ViewController {
   // MARK: - Configuration
 
 private extension TransactionDetailVC {
-  private func configureProperties() {
+  private func configureSelf() {
     title = "Transaction Details"
   }
   
@@ -107,16 +104,17 @@ private extension TransactionDetailVC {
   }
   
   private func removeObserver() {
-    NotificationCenter.default.removeObserver(self)
+    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
   }
   
   private func configureTableView() {
     tableView.dataSource = dataSource
     tableView.delegate = self
     tableView.register(AttributeCell.self, forCellReuseIdentifier: AttributeCell.reuseIdentifier)
-    tableView.refreshControl = tableRefreshControl
+    tableView.refreshControl = UIRefreshControl(self, selector: #selector(refreshTransaction))
     tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     tableView.showsVerticalScrollIndicator = false
+    tableView.backgroundColor = .systemBackground
   }
   
   private func configureNavigation() {

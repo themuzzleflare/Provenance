@@ -15,8 +15,7 @@ extension NetworkError {
       return
     }
     
-    if let response = response as? HTTPURLResponse,
-       !(200...299).contains(response.statusCode) {
+    if let response = response as? HTTPURLResponse, !(200...299).contains(response.statusCode) {
       self = .serverError(statusCode: response.statusCode)
       return
     }

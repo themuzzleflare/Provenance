@@ -1,4 +1,3 @@
-import UIKit
 import IGListKit
 import AsyncDisplayKit
 
@@ -14,9 +13,7 @@ final class TransactionsByAccountVC: ASViewController {
   }
   
   private lazy var searchController = UISearchController(self)
-  
-  private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshData))
-  
+    
   private let tableNode = ASTableNode(style: .grouped)
   
   private var dateStyleObserver: NSKeyValueObservation?
@@ -55,7 +52,7 @@ final class TransactionsByAccountVC: ASViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
-    configureProperties()
+    configureSelf()
     configureNavigation()
     configureTableNode()
     applySnapshot(override: true)
@@ -70,7 +67,7 @@ final class TransactionsByAccountVC: ASViewController {
   // MARK: - Configuration
 
 private extension TransactionsByAccountVC {
-  private func configureProperties() {
+  private func configureSelf() {
     title = "Transactions by Account"
     definesPresentationContext = false
   }
@@ -91,7 +88,7 @@ private extension TransactionsByAccountVC {
   }
   
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self)
+    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil
   }
@@ -108,7 +105,7 @@ private extension TransactionsByAccountVC {
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
-    tableNode.view.refreshControl = tableRefreshControl
+    tableNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshData))
   }
 }
 

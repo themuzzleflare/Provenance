@@ -1,6 +1,4 @@
-import UIKit
 import AsyncDisplayKit
-import PINRemoteImage
 
 final class StickerCellNode: ASCellNode {
   private let stickerImageNode = ASImageNode()

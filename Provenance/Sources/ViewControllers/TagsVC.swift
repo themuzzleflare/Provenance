@@ -1,4 +1,3 @@
-import UIKit
 import IGListKit
 import AsyncDisplayKit
 
@@ -6,9 +5,7 @@ final class TagsVC: ASViewController {
     // MARK: - Properties
   
   private lazy var searchController = UISearchController(self)
-  
-  private lazy var tableRefreshControl = UIRefreshControl(self, selector: #selector(refreshTags))
-  
+    
   private let tableNode = ASTableNode(style: .grouped)
   
   private var apiKeyObserver: NSKeyValueObservation?
@@ -50,7 +47,7 @@ final class TagsVC: ASViewController {
     super.viewDidLoad()
     configureObservers()
     configureTableNode()
-    configureProperties()
+    configureSelf()
     configureNavigation()
     applySnapshot(override: true)
   }
@@ -64,7 +61,7 @@ final class TagsVC: ASViewController {
   // MARK: - Configuration
 
 private extension TagsVC {
-  private func configureProperties() {
+  private func configureSelf() {
     title = "Tags"
     definesPresentationContext = true
   }
@@ -85,7 +82,7 @@ private extension TagsVC {
   }
   
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self)
+    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
   }
@@ -100,7 +97,7 @@ private extension TagsVC {
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
-    tableNode.view.refreshControl = tableRefreshControl
+    tableNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshTags))
   }
 }
 
@@ -177,7 +174,8 @@ private extension TagsVC {
       navigationItem.title = "Tags"
     }
     if navigationItem.rightBarButtonItem == nil {
-      navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow)), animated: true)
+      let barButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow))
+      navigationItem.setRightBarButton(barButtonItem, animated: true)
     }
   }
   

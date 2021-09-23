@@ -1,4 +1,3 @@
-import UIKit
 import AsyncDisplayKit
 
 final class TransactionCellNode: ASCellNode {
@@ -11,22 +10,11 @@ final class TransactionCellNode: ASCellNode {
     
     automaticallyManagesSubnodes = true
     
-    descriptionTextNode.attributedText = NSAttributedString(
-      text: transaction.attributes.description,
-      font: .circularStdBold(size: UIFont.labelFontSize)
-    )
+    descriptionTextNode.attributedText = transaction.attributes.description.styled(with: .transactionDescription)
     
-    creationDateTextNode.attributedText = NSAttributedString(
-      text: transaction.attributes.creationDate,
-      font: .circularStdBookItalic(size: UIFont.smallSystemFontSize),
-      colour: .secondaryLabel
-    )
+    creationDateTextNode.attributedText = transaction.attributes.creationDate.styled(with: .transactionCreationDate)
     
-    amountTextNode.attributedText = NSAttributedString(
-      text: transaction.attributes.amount.valueShort,
-      colour: transaction.attributes.amount.transactionColour.uiColour,
-      alignment: .rightAligned
-    )
+    amountTextNode.attributedText = transaction.attributes.amount.valueShort.styled(with: .transactionAmount, .color(transaction.attributes.amount.transactionType.colour.uiColour))
   }
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
