@@ -1,6 +1,7 @@
 import NotificationBannerSwift
 import IGListKit
 import AsyncDisplayKit
+import Alamofire
 
 final class AddTagWorkflowTwoVC: ASViewController {
     // MARK: - Properties
@@ -54,7 +55,7 @@ final class AddTagWorkflowTwoVC: ASViewController {
       applySnapshot()
       updateToolbarItems()
       tableNode.view.refreshControl?.endRefreshing()
-      searchController.searchBar.placeholder = "Search \(tags.count.description) \(tags.count == 1 ? "Tag" : "Tags")"
+      searchController.searchBar.placeholder = tags.searchBarPlaceholder
     }
   }
   
@@ -139,13 +140,13 @@ private extension AddTagWorkflowTwoVC {
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(appMovedToForeground),
-      name: UIApplication.willEnterForegroundNotification,
+      name: .willEnterForegroundNotification,
       object: nil
     )
   }
   
   private func removeObserver() {
-    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
   }
   
   private func configureNavigation() {
@@ -281,8 +282,8 @@ private extension AddTagWorkflowTwoVC {
     }
   }
   
-  private func display(_ error: NetworkError) {
-    tagsError = error.description
+  private func display(_ error: AFError) {
+    tagsError = error.errorDescription ?? error.localizedDescription
     tags = []
     setEditing(false, animated: false)
     if navigationItem.title != "Error" {

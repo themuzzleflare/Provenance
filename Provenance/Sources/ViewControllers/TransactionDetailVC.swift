@@ -1,4 +1,5 @@
 import MarqueeLabel
+import Alamofire
 
 final class TransactionDetailVC: ViewController {
     // MARK: - Properties
@@ -98,13 +99,13 @@ private extension TransactionDetailVC {
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(appMovedToForeground),
-      name: UIApplication.willEnterForegroundNotification,
+      name: .willEnterForegroundNotification,
       object: nil
     )
   }
   
   private func removeObserver() {
-    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
   }
   
   private func configureTableView() {
@@ -251,7 +252,7 @@ private extension TransactionDetailVC {
     self.transaction = transaction
   }
   
-  private func display(_ error: NetworkError) {
+  private func display(_ error: AFError) {
     tableView.refreshControl?.endRefreshing()
   }
 }

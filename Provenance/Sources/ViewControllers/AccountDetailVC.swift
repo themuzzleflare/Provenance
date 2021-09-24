@@ -77,13 +77,13 @@ private extension AccountDetailVC {
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(appMovedToForeground),
-      name: UIApplication.willEnterForegroundNotification,
+      name: .willEnterForegroundNotification,
       object: nil
     )
   }
   
   private func removeObserver() {
-    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
   }
   
   private func configureNavigation() {
@@ -99,6 +99,7 @@ private extension AccountDetailVC {
     tableView.refreshControl = UIRefreshControl(self, selector: #selector(refreshData))
     tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     tableView.showsVerticalScrollIndicator = false
+    tableView.backgroundColor = .systemBackground
   }
 }
 
@@ -125,7 +126,7 @@ private extension AccountDetailVC {
   }
   
   private func makeDataSource() -> DataSource {
-    let dataSource = DataSource(
+    return DataSource(
       tableView: tableView,
       cellProvider: { (tableView, indexPath, attribute) in
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as? AttributeCell else {
@@ -137,8 +138,6 @@ private extension AccountDetailVC {
         return cell
       }
     )
-    dataSource.defaultRowAnimation = .automatic
-    return dataSource
   }
   
   private func applySnapshot(animate: Bool = true) {
@@ -149,7 +148,7 @@ private extension AccountDetailVC {
   }
   
   private func fetchAccount() {
-    UpFacade.retrieveAccount(for: account) { [self] (result) in
+    UpFacade.retrieveAccount(for: account) { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(account):
@@ -162,11 +161,11 @@ private extension AccountDetailVC {
   }
   
   private func fetchTransaction() {
-    UpFacade.retrieveLatestTransaction(for: account) { [self] (result) in
+    UpFacade.retrieveLatestTransaction(for: account) { (result) in
       DispatchQueue.main.async {
         switch result {
-        case let .success(transactions):
-          transaction = transactions.first
+        case let .success(transaction):
+          self.transaction = transaction
         case .failure:
           break
         }

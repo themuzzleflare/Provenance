@@ -1,5 +1,6 @@
 import IGListKit
 import AsyncDisplayKit
+import Alamofire
 
 final class TransactionsVC: ASViewController {
     // MARK: - Properties
@@ -28,10 +29,6 @@ final class TransactionsVC: ASViewController {
   
   private var filteredTransactions: [TransactionResource] {
     return preFilteredTransactions.filtered(searchBar: searchController.searchBar)
-  }
-  
-  private var searchBarPlaceholder: String {
-    return "Search \(preFilteredTransactions.count.description) \(preFilteredTransactions.count == 1 ? "Transaction" : "Transactions")"
   }
   
   private var preFilteredTransactions: [TransactionResource] {
@@ -99,7 +96,7 @@ extension TransactionsVC {
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(appMovedToForeground),
-      name: UIApplication.willEnterForegroundNotification,
+      name: .willEnterForegroundNotification,
       object: nil
     )
     apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
@@ -117,7 +114,7 @@ extension TransactionsVC {
   }
   
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
     dateStyleObserver?.invalidate()
@@ -158,12 +155,12 @@ extension TransactionsVC {
     noTransactions = transactions.isEmpty
     applySnapshot()
     tableNode.view.refreshControl?.endRefreshing()
-    searchController.searchBar.placeholder = searchBarPlaceholder
+    searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
   }
   
   private func filterUpdates() {
     filterBarButtonItem.menu = filterMenu
-    searchController.searchBar.placeholder = searchBarPlaceholder
+    searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
     applySnapshot()
   }
   
@@ -240,8 +237,8 @@ extension TransactionsVC {
     }
   }
   
-  private func display(_ error: NetworkError) {
-    transactionsError = error.description
+  private func display(_ error: AFError) {
+    transactionsError = error.errorDescription ?? error.localizedDescription
     transactions = []
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"

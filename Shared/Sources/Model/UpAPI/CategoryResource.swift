@@ -35,17 +35,14 @@ extension CategoryResource {
 }
 
 extension Array where Element: CategoryResource {
-  func filtered(searchBar: UISearchBar) -> [CategoryResource] {
+  func filtered(filter: CategoryTypeEnum, searchBar: UISearchBar) -> [CategoryResource] {
     return self.filter { (category) in
-      switch searchBar.selectedScopeButtonIndex {
-      case 0:
-        return searchBar.text!.isEmpty || (category.attributes.name.localizedStandardContains(searchBar.text!) && category.categoryTypeEnum == .parent)
-      case 1:
-        return searchBar.text!.isEmpty || (category.attributes.name.localizedStandardContains(searchBar.text!) && category.categoryTypeEnum == .child)
-      default:
-        return searchBar.text!.isEmpty || category.attributes.name.localizedStandardContains(searchBar.text!)
-      }
+      return searchBar.text!.isEmpty || (category.attributes.name.localizedStandardContains(searchBar.text!) && category.categoryTypeEnum == filter)
     }
+  }
+  
+  var searchBarPlaceholder: String {
+    return "Search \(self.count.description) \(self.count == 1 ? "Category" : "Categories")"
   }
   
   var categoryTypes: [CategoryType] {

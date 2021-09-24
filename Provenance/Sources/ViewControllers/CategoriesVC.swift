@@ -1,5 +1,6 @@
 import IGListKit
 import AsyncDisplayKit
+import Alamofire
 
 final class CategoriesVC: ASViewController {
     // MARK: - Properties
@@ -30,7 +31,7 @@ final class CategoriesVC: ASViewController {
       noCategories = categories.isEmpty
       applySnapshot()
       collectionNode.view.refreshControl?.endRefreshing()
-      searchController.searchBar.placeholder = "Search \(categories.count.description) \(categories.count == 1 ? "Category" : "Categories")"
+      searchController.searchBar.placeholder = categories.searchBarPlaceholder
     }
   }
   
@@ -39,7 +40,7 @@ final class CategoriesVC: ASViewController {
   private var oldFilteredCategories = [CategoryResource]()
   
   private var filteredCategories: [CategoryResource] {
-    return categories.filtered(searchBar: searchController.searchBar)
+    return categories.filtered(filter: categoryFilter, searchBar: searchController.searchBar)
   }
     // MARK: - Life Cycle
   
@@ -82,7 +83,7 @@ private extension CategoriesVC {
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(appMovedToForeground),
-      name: UIApplication.willEnterForegroundNotification,
+      name: .willEnterForegroundNotification,
       object: nil
     )
     apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
@@ -98,7 +99,7 @@ private extension CategoriesVC {
   }
   
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
     categoryFilterObserver?.invalidate()
@@ -188,8 +189,8 @@ private extension CategoriesVC {
     }
   }
   
-  private func display(_ error: NetworkError) {
-    categoriesError = error.description
+  private func display(_ error: AFError) {
+    categoriesError = error.errorDescription ?? error.localizedDescription
     categories = []
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"

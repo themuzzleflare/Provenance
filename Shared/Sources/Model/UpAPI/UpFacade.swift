@@ -1,314 +1,407 @@
-import Foundation
+import Alamofire
 
 struct UpFacade {
-  private static let jsonDecoder = JSONDecoder()
-  private static let jsonEncoder = JSONEncoder()
+  private static let jsonEncoder = JSONParameterEncoder.default
   
-    // MARK: - Decoders
-  
-  private static let transactionsDecoder = ResultDecoder<[TransactionResource]> { (data) in
-    try Array(jsonDecoder.decode(Transaction.self, from: data).data)
+    /// Ping
+    ///
+    /// - Parameters:
+    ///   - key: The API key to ping with.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Make a basic ping request to the API. This is useful to verify that authentication is functioning correctly. On authentication success an HTTP `200` status is returned. On failure an HTTP `401` error response is returned.
+  static func ping(with key: String, completion: @escaping (AFError?) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: key)
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/util/ping", method: .get, headers: headers)
+      .validate()
+      .response { (response) in
+        completion(response.error)
+      }
   }
   
-  private static let transactionDecoder = ResultDecoder<TransactionResource> { (data) in
-    try jsonDecoder.decode(SingleTransaction.self, from: data).data
-  }
-  
-  private static let accountsDecoder = ResultDecoder<[AccountResource]> { (data) in
-    try Array(jsonDecoder.decode(Account.self, from: data).data)
-  }
-  
-  private static let accountDecoder = ResultDecoder<AccountResource> { (data) in
-    try jsonDecoder.decode(SingleAccount.self, from: data).data
-  }
-  
-  private static let tagsDecoder = ResultDecoder<[TagResource]> { (data) in
-    try Array(jsonDecoder.decode(Tag.self, from: data).data)
-  }
-  
-  private static let categoriesDecoder = ResultDecoder<[CategoryResource]> { (data) in
-    try Array(jsonDecoder.decode(Category.self, from: data).data)
-  }
-  
-  private static let categoryDecoder = ResultDecoder<CategoryResource> { (data) in
-    try jsonDecoder.decode(SingleCategory.self, from: data).data
-  }
-  
-    // MARK: - Methods
-  
-  static func ping(with key: String, completion: @escaping (NetworkError?) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/util/ping")!
-    var request = URLRequest(url: url)
-    request.addValue("Bearer \(key)", forHTTPHeaderField: "Authorization")
-    URLSession.shared.dataTask(with: request, errorHandler: completion).resume()
-  }
-  
-  @available(iOS 15.0, *) static func listTransactions() async throws -> [TransactionResource] {
-    try await withCheckedThrowingContinuation { (continuation) in
-      listTransactions { result in
-        switch result {
+  static func listTransactions(completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    let parameters: Parameters = [
+      "page[size]": "100"
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
+      .validate()
+      .responseDecodable(of: Transaction.self) { (response) in
+        switch response.result {
         case let .success(transactions):
-          continuation.resume(returning: transactions)
+          completion(.success(transactions.data))
         case let .failure(error):
-          continuation.resume(throwing: error)
+          completion(.failure(error))
         }
       }
-    }
   }
   
-  static func listTransactions(completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/transactions")!.appendingQueryParameters(["page[size]": "30"])
-    let request = authorisedRequest(url: url)
-    URLSession.shared.dataTask(with: request) { (result) in
-      completion(transactionsDecoder.decode(result))
-    }.resume()
+  static func listTransactions(filterBy account: AccountResource, completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    let parameters: Parameters = [
+      "page[size]": "100"
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)/transactions", method: .get, parameters: parameters, headers: headers)
+      .validate()
+      .responseDecodable(of: Transaction.self) { (response) in
+        switch response.result {
+        case let .success(transactions):
+          completion(.success(transactions.data))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      }
   }
   
-  /**
-   Retrieve a list of all transactions for a specific account. Results are ordered newest first to oldest last.
-   
-   - parameter account: The account object.
-   - returns: An array of `TransactionResource` objects.
-   - throws: A `NetworkError` object.
-   
-   */
-  
-  static func listTransactions(filterBy account: AccountResource, completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/accounts/\(account.id)/transactions")!.appendingQueryParameters(["page[size]": "100"])
-    let request = authorisedRequest(url: url)
-    URLSession.shared.dataTask(with: request) { (result) in
-      completion(transactionsDecoder.decode(result))
-    }.resume()
+  static func listTransactions(filterBy tag: TagResource, completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    let parameters: Parameters = [
+      "filter[tag]": tag.id,
+      "page[size]": "100"
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
+      .validate()
+      .responseDecodable(of: Transaction.self) { (response) in
+        switch response.result {
+        case let .success(transactions):
+          completion(.success(transactions.data))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      }
   }
   
-  static func listTransactions(filterBy tag: TagResource, completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/transactions")!.appendingQueryParameters(["filter[tag]": tag.id, "page[size]": "100"])
-    let request = authorisedRequest(url: url)
-    URLSession.shared.dataTask(with: request) { (result) in
-      completion(transactionsDecoder.decode(result))
-    }.resume()
+  static func listTransactions(filterBy category: CategoryResource, completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    let parameters: Parameters = [
+      "filter[category]": category.id,
+      "page[size]": "100"
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
+      .validate()
+      .responseDecodable(of: Transaction.self) { (response) in
+        switch response.result {
+        case let .success(transactions):
+          completion(.success(transactions.data))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      }
   }
   
-  /**
-   Retrieve a list of all transactions across all accounts for a specific category for the currently authenticated user. Results are ordered newest first to oldest last.
-   
-   - parameter category: The category object.
-   - returns: An array of `TransactionResource` objects.
-   - throws: A `NetworkError` object.
-   
-   */
-  
-  static func listTransactions(filterBy category: CategoryResource, completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/transactions")!.appendingQueryParameters(["filter[category]": category.id, "page[size]": "100"])
-    let request = authorisedRequest(url: url)
-    URLSession.shared.dataTask(with: request) { (result) in
-      completion(transactionsDecoder.decode(result))
-    }.resume()
+  static func retrieveLatestTransaction(completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    let parameters: Parameters = [
+      "page[size]": "1"
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
+      .validate()
+      .responseDecodable(of: Transaction.self) { (response) in
+        switch response.result {
+        case let .success(transactions):
+          completion(.success(transactions.data[0]))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      }
   }
   
-  static func retrieveLatestTransaction(completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/transactions")!.appendingQueryParameters(["page[size]": "1"])
-    let request = authorisedRequest(url: url)
-    URLSession.shared.dataTask(with: request) { (result) in
-      completion(transactionsDecoder.decode(result))
-    }.resume()
+  static func retrieveLatestTransaction(for account: AccountResource, completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    let parameters: Parameters = [
+      "page[size]": "1"
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)/transactions", method: .get, parameters: parameters, headers: headers)
+      .validate()
+      .responseDecodable(of: Transaction.self) { (response) in
+        switch response.result {
+        case let .success(transactions):
+          completion(.success(transactions.data[0]))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      }
   }
   
-  static func retrieveLatestTransaction(for account: AccountResource, completion: @escaping (Result<[TransactionResource], NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/accounts/\(account.id)/transactions")!.appendingQueryParameters(["page[size]": "1"])
-    let request = authorisedRequest(url: url)
-    URLSession.shared.dataTask(with: request) { (result) in
-      completion(transactionsDecoder.decode(result))
-    }.resume()
+  static func retrieveTransaction(for transaction: TransactionResource, completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)", method: .get, headers: headers)
+      .validate()
+      .responseDecodable(of: SingleTransaction.self) { (response) in
+        switch response.result {
+        case let .success(transaction):
+          completion(.success(transaction.data))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      }
   }
   
-  /**
-   Retrieve a specific transaction.
-   
-   - parameter transaction: The transaction object.
-   - returns: A `TransactionResource` object.
-   - throws: A `NetworkError` object.
-   
-   */
-  
-  static func retrieveTransaction(for transaction: TransactionResource, completion: @escaping (Result<TransactionResource, NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)")!
-    let request = authorisedRequest(url: url)
-    URLSession.shared.dataTask(with: request) { (result) in
-      completion(transactionDecoder.decode(result))
-    }.resume()
+  static func retrieveTransaction(for transactionId: String, completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transactionId)", method: .get, headers: headers)
+      .validate()
+      .responseDecodable(of: SingleTransaction.self) { (response) in
+        switch response.result {
+        case let .success(transaction):
+          completion(.success(transaction.data))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      }
   }
   
-  /**
-   Retrieve a specific transaction by providing its unique identifier.
-   
-   - parameter transactionId: The unique identifier for the transaction.
-   - returns: A `TransactionResource` object.
-   - throws: A `NetworkError` object.
-   
-   */
-  
-  static func retrieveTransaction(for transactionId: String, completion: @escaping (Result<TransactionResource, NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transactionId)")!
-    let request = authorisedRequest(url: url)
-    URLSession.shared.dataTask(with: request) { (result) in
-      completion(transactionDecoder.decode(result))
-    }.resume()
+  static func listAccounts(completion: @escaping (Result<[AccountResource], AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    let parameters: Parameters = [
+      "page[size]": "100"
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/accounts", method: .get, parameters: parameters, headers: headers)
+      .validate()
+      .responseDecodable(of: Account.self) { (response) in
+        switch response.result {
+        case let .success(accounts):
+          completion(.success(accounts.data))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      }
   }
   
-  static func listAccounts(completion: @escaping (Result<[AccountResource], NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/accounts")!.appendingQueryParameters(["page[size]": "100"])
-    let request = authorisedRequest(url: url)
-    URLSession.shared.dataTask(with: request) { (result) in
-      completion(accountsDecoder.decode(result))
-    }.resume()
+  static func retrieveAccount(for account: AccountResource, completion: @escaping (Result<AccountResource, AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)", method: .get, headers: headers)
+      .validate()
+      .responseDecodable(of: SingleAccount.self) { (response) in
+        switch response.result {
+        case let .success(account):
+          completion(.success(account.data))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      }
   }
   
-  static func retrieveAccount(for account: AccountResource, completion: @escaping (Result<AccountResource, NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/accounts/\(account.id)")!
-    let request = authorisedRequest(url: url)
-    URLSession.shared.dataTask(with: request) { (result) in
-      completion(accountDecoder.decode(result))
-    }.resume()
+  static func retrieveAccount(for accountId: String, completion: @escaping (Result<AccountResource, AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/accounts/\(accountId)", method: .get, headers: headers)
+      .validate()
+      .responseDecodable(of: SingleAccount.self) { (response) in
+        switch response.result {
+        case let .success(account):
+          completion(.success(account.data))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      }
   }
   
-  static func retrieveAccount(for accountId: String, completion: @escaping (Result<AccountResource, NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/accounts/\(accountId)")!
-    let request = authorisedRequest(url: url)
-    URLSession.shared.dataTask(with: request) { (result) in
-      completion(accountDecoder.decode(result))
-    }.resume()
+  static func listTags(completion: @escaping (Result<[TagResource], AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    let parameters: Parameters = [
+      "page[size]": "100"
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/tags", method: .get, parameters: parameters, headers: headers)
+      .validate()
+      .responseDecodable(of: Tag.self) { (response) in
+        switch response.result {
+        case let .success(tags):
+          completion(.success(tags.data))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      }
   }
   
-  static func listTags(completion: @escaping (Result<[TagResource], NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/tags")!.appendingQueryParameters(["page[size]": "100"])
-    let request = authorisedRequest(url: url)
-    URLSession.shared.dataTask(with: request) { (result) in
-      completion(tagsDecoder.decode(result))
-    }.resume()
+  static func modifyTags(adding tags: [TagResource], to transaction: TransactionResource, completion: @escaping (AFError?) -> Void) {
+    let headers: HTTPHeaders = [
+      .contentType("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags", method: .post, parameters: ModifyTags(tags: tags), encoder: jsonEncoder, headers: headers)
+      .validate()
+      .response { (response) in
+        completion(response.error)
+      }
   }
   
-  static func modifyTags(adding tags: [TagResource], to transaction: TransactionResource, completion: @escaping (NetworkError?) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
-    var request = authorisedRequest(url: url)
-    request.httpMethod = "POST"
-    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    let bodyObject = ModifyTags(data: tags.tagInputResourceIdentifiers)
-    do {
-      request.httpBody = try jsonEncoder.encode(bodyObject)
-    } catch {
-      completion(.encodingError(error))
-      return
-    }
-    URLSession.shared.dataTask(with: request, errorHandler: completion).resume()
+  static func modifyTags(adding tags: [String], to transaction: String, completion: @escaping (AFError?) -> Void) {
+    let headers: HTTPHeaders = [
+      .contentType("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags", method: .post, parameters: ModifyTags(tags: tags), encoder: jsonEncoder, headers: headers)
+      .validate()
+      .response { (response) in
+        completion(response.error)
+      }
   }
   
-  static func modifyTags(adding tags: [String], to transaction: String, completion: @escaping (NetworkError?) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags")!
-    var request = authorisedRequest(url: url)
-    request.httpMethod = "POST"
-    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    let bodyObject = ModifyTags(data: tags.tagInputResourceIdentifiers)
-    do {
-      request.httpBody = try jsonEncoder.encode(bodyObject)
-    } catch {
-      completion(.encodingError(error))
-      return
-    }
-    URLSession.shared.dataTask(with: request, errorHandler: completion).resume()
+  static func modifyTags(adding tag: TagResource, to transaction: TransactionResource, completion: @escaping (AFError?) -> Void) {
+    let headers: HTTPHeaders = [
+      .contentType("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags", method: .post, parameters: ModifyTags(tag: tag), encoder: jsonEncoder, headers: headers)
+      .validate()
+      .response { (response) in
+        completion(response.error)
+      }
   }
   
-  static func modifyTags(adding tag: TagResource, to transaction: TransactionResource, completion: @escaping (NetworkError?) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
-    var request = authorisedRequest(url: url)
-    request.httpMethod = "POST"
-    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    let tagsObject = [tag.tagInputResourceIdentifier]
-    let bodyObject = ModifyTags(data: tagsObject)
-    do {
-      request.httpBody = try jsonEncoder.encode(bodyObject)
-    } catch {
-      completion(.encodingError(error))
-      return
-    }
-    URLSession.shared.dataTask(with: request, errorHandler: completion).resume()
+  static func modifyTags(removing tags: [TagResource], from transaction: TransactionResource, completion: @escaping (AFError?) -> Void) {
+    let headers: HTTPHeaders = [
+      .contentType("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags", method: .delete, parameters: ModifyTags(tags: tags), encoder: jsonEncoder, headers: headers)
+      .validate()
+      .response { (response) in
+        completion(response.error)
+      }
   }
   
-  static func modifyTags(removing tags: [TagResource], from transaction: TransactionResource, completion: @escaping (NetworkError?) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
-    var request = authorisedRequest(url: url)
-    request.httpMethod = "DELETE"
-    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    let bodyObject = ModifyTags(data: tags.tagInputResourceIdentifiers)
-    do {
-      request.httpBody = try jsonEncoder.encode(bodyObject)
-    } catch {
-      completion(.encodingError(error))
-      return
-    }
-    URLSession.shared.dataTask(with: request, errorHandler: completion).resume()
+  static func modifyTags(removing tags: [String], from transaction: String, completion: @escaping (AFError?) -> Void) {
+    let headers: HTTPHeaders = [
+      .contentType("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags", method: .delete, parameters: ModifyTags(tags: tags), encoder: jsonEncoder, headers: headers)
+      .validate()
+      .response { (response) in
+        completion(response.error)
+      }
   }
   
-  static func modifyTags(removing tags: [String], from transaction: String, completion: @escaping (NetworkError?) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags")!
-    var request = authorisedRequest(url: url)
-    request.httpMethod = "DELETE"
-    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    let bodyObject = ModifyTags(data: tags.tagInputResourceIdentifiers)
-    do {
-      request.httpBody = try jsonEncoder.encode(bodyObject)
-    } catch {
-      completion(.encodingError(error))
-      return
-    }
-    URLSession.shared.dataTask(with: request, errorHandler: completion).resume()
+  static func modifyTags(removing tag: TagResource, from transaction: TransactionResource, completion: @escaping (AFError?) -> Void) {
+    let headers: HTTPHeaders = [
+      .contentType("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags", method: .delete, parameters: ModifyTags(tag: tag), encoder: jsonEncoder, headers: headers)
+      .validate()
+      .response { (response) in
+        completion(response.error)
+      }
   }
   
-  static func modifyTags(removing tag: TagResource, from transaction: TransactionResource, completion: @escaping (NetworkError?) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags")!
-    var request = authorisedRequest(url: url)
-    request.httpMethod = "DELETE"
-    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    let tagsObject = [tag.tagInputResourceIdentifier]
-    let bodyObject = ModifyTags(data: tagsObject)
-    do {
-      request.httpBody = try jsonEncoder.encode(bodyObject)
-    } catch {
-      completion(.encodingError(error))
-      return
-    }
-    URLSession.shared.dataTask(with: request, errorHandler: completion).resume()
+  static func listCategories(completion: @escaping (Result<[CategoryResource], AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/categories", method: .get, headers: headers)
+      .validate()
+      .responseDecodable(of: Category.self) { (response) in
+        switch response.result {
+        case let .success(categories):
+          completion(.success(categories.data))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      }
   }
   
-  static func listCategories(completion: @escaping (Result<[CategoryResource], NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/categories")!
-    let request = authorisedRequest(url: url)
-    URLSession.shared.dataTask(with: request) { (result) in
-      completion(categoriesDecoder.decode(result))
-    }.resume()
+  static func retrieveCategory(for category: CategoryResource, completion: @escaping (Result<CategoryResource, AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/categories/\(category.id)", method: .get, headers: headers)
+      .validate()
+      .responseDecodable(of: SingleCategory.self) { (response) in
+        switch response.result {
+        case let .success(category):
+          completion(.success(category.data))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      }
   }
   
-  static func retrieveCategory(for category: CategoryResource, completion: @escaping (Result<CategoryResource, NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/categories/\(category.id)")!
-    let request = authorisedRequest(url: url)
-    URLSession.shared.dataTask(with: request) { (result) in
-      completion(categoryDecoder.decode(result))
-    }.resume()
-  }
-  
-  static func retrieveCategory(for categoryId: String, completion: @escaping (Result<CategoryResource, NetworkError>) -> Void) {
-    let url = URL(string: "https://api.up.com.au/api/v1/categories/\(categoryId)")!
-    let request = authorisedRequest(url: url)
-    URLSession.shared.dataTask(with: request) { (result) in
-      completion(categoryDecoder.decode(result))
-    }.resume()
-  }
-}
-
-private extension UpFacade {
-  private static func authorisedRequest(url: URL) -> URLRequest {
-    var request = URLRequest(url: url)
-    request.addValue("Bearer \(ProvenanceApp.userDefaults.apiKey)", forHTTPHeaderField: "Authorization")
-    return request
+  static func retrieveCategory(for categoryId: String, completion: @escaping (Result<CategoryResource, AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    AF.request("https://api.up.com.au/api/v1/categories/\(categoryId)", method: .get, headers: headers)
+      .validate()
+      .responseDecodable(of: SingleCategory.self) { (response) in
+        switch response.result {
+        case let .success(category):
+          completion(.success(category.data))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      }
   }
 }

@@ -36,6 +36,7 @@ target 'Provenance IntentsUI' do
   
   pod 'SnapKit'
   pod 'SwiftDate'
+  pod 'Alamofire'
   
 end
 
@@ -43,6 +44,7 @@ target 'Provenance Widgets' do
   use_frameworks!
   
   pod 'SwiftDate'
+  pod 'Alamofire'
 
 end
 

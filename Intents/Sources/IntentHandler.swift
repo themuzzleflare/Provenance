@@ -119,7 +119,7 @@ extension IntentHandler: ListTransactionsIntentHandling {
             completion(.success(transactions: transactions.data.transactionTypes, transactionsCount: transactions.data.count.nsNumber))
           }
         case let .failure(error):
-          completion(.failure(error: error.localizedDescription))
+          completion(.failure(error: error.errorDescription ?? error.localizedDescription))
         }
       }
   }
@@ -181,7 +181,7 @@ extension IntentHandler: AddTagToTransactionIntentHandling {
     }
     UpFacade.modifyTags(adding: tags, to: transactionIdentifier) { (error) in
       if let error = error {
-        completion(.failure(error: error.description))
+        completion(.failure(error: error.errorDescription ?? error.localizedDescription))
       } else {
         completion(.success(tags: tags, transaction: transaction, userActivity: .addedTagsToTransaction))
       }
@@ -254,7 +254,7 @@ extension IntentHandler: RemoveTagFromTransactionIntentHandling {
     }
     UpFacade.modifyTags(removing: tags, from: transactionIdentifier) { (error) in
       if let error = error {
-        completion(.failure(error: error.description))
+        completion(.failure(error: error.errorDescription ?? error.localizedDescription))
       } else {
         completion(.success(tags: tags, transaction: transaction))
       }

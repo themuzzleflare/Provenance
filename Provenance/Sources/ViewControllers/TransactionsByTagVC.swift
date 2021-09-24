@@ -1,5 +1,6 @@
 import IGListKit
 import AsyncDisplayKit
+import Alamofire
 
 final class TransactionsByTagVC: ASViewController {
     // MARK: - Properties
@@ -22,7 +23,7 @@ final class TransactionsByTagVC: ASViewController {
       } else {
         applySnapshot()
         tableNode.view.refreshControl?.endRefreshing()
-        searchController.searchBar.placeholder = "Search \(transactions.count.description) \(transactions.count == 1 ? "Transaction" : "Transactions")"
+        searchController.searchBar.placeholder = transactions.searchBarPlaceholder
       }
     }
   }
@@ -79,7 +80,7 @@ private extension TransactionsByTagVC {
   }
   
   private func configureObservers() {
-    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
@@ -89,7 +90,7 @@ private extension TransactionsByTagVC {
   }
   
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil
   }
@@ -178,8 +179,8 @@ extension TransactionsByTagVC {
     }
   }
   
-  private func display(_ error: NetworkError) {
-    transactionsError = error.description
+  private func display(_ error: AFError) {
+    transactionsError = error.errorDescription ?? error.localizedDescription
     transactions = []
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"

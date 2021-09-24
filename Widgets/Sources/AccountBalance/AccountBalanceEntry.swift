@@ -1,9 +1,10 @@
 import WidgetKit
+import Alamofire
 
 struct AccountBalanceEntry: TimelineEntry {
   let date: Date
   let account: AccountBalanceModel?
-  let error: NetworkError?
+  let error: AFError?
 }
 
 extension AccountBalanceEntry {

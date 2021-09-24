@@ -33,14 +33,14 @@ struct AccountBalanceEntryView: View {
       } else if let error = entry.error {
         switch family {
         case .systemSmall:
-          Text(error.description)
+          Text(error.errorDescription ?? error.localizedDescription)
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         case .systemMedium, .systemLarge, .systemExtraLarge:
           VStack {
-            Text(error.title)
+            Text("Error")
               .font(.circularStdBold(size: 18))
-            Text(error.description)
+            Text(error.errorDescription ?? error.localizedDescription)
           }
           .padding()
           .frame(maxWidth: .infinity, maxHeight: .infinity)

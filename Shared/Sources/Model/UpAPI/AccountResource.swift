@@ -41,17 +41,14 @@ extension AccountResource {
 }
 
 extension Array where Element: AccountResource {
-  func filtered(searchBar: UISearchBar) -> [AccountResource] {
+  func filtered(filter: AccountTypeOptionEnum, searchBar: UISearchBar) -> [AccountResource] {
     return self.filter { (account) in
-      switch searchBar.selectedScopeButtonIndex {
-      case 0:
-        return searchBar.text!.isEmpty || (account.attributes.displayName.localizedStandardContains(searchBar.text!) && account.attributes.accountType == .transactional)
-      case 1:
-        return searchBar.text!.isEmpty || (account.attributes.displayName.localizedStandardContains(searchBar.text!) && account.attributes.accountType == .saver)
-      default:
-        return searchBar.text!.isEmpty || account.attributes.displayName.localizedStandardContains(searchBar.text!)
-      }
+      return searchBar.text!.isEmpty || (account.attributes.displayName.localizedStandardContains(searchBar.text!) && account.attributes.accountType == filter.accountTypeEnum)
     }
+  }
+  
+  var searchBarPlaceholder: String {
+    return "Search \(self.count.description) \(self.count == 1 ? "Account" : "Accounts")"
   }
   
   var accountTypes: [AccountType] {

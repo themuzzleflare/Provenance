@@ -1,9 +1,10 @@
 import WidgetKit
+import Alamofire
 
 struct LatestTransactionEntry: TimelineEntry {
   let date: Date
   let transaction: LatestTransactionModel?
-  let error: NetworkError?
+  let error: AFError?
 }
 
 extension LatestTransactionEntry {

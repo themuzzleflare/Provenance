@@ -1,5 +1,6 @@
 import IGListKit
 import AsyncDisplayKit
+import Alamofire
 
 final class TagsVC: ASViewController {
     // MARK: - Properties
@@ -17,7 +18,7 @@ final class TagsVC: ASViewController {
       noTags = tags.isEmpty
       applySnapshot()
       tableNode.view.refreshControl?.endRefreshing()
-      searchController.searchBar.placeholder = "Search \(tags.count.description) \(tags.count == 1 ? "Tag" : "Tags")"
+      searchController.searchBar.placeholder = tags.searchBarPlaceholder
     }
   }
   
@@ -70,7 +71,7 @@ private extension TagsVC {
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(appMovedToForeground),
-      name: UIApplication.willEnterForegroundNotification,
+      name: .willEnterForegroundNotification,
       object: nil
     )
     apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
@@ -82,7 +83,7 @@ private extension TagsVC {
   }
   
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
   }
@@ -179,8 +180,8 @@ private extension TagsVC {
     }
   }
   
-  private func display(_ error: NetworkError) {
-    tagsError = error.description
+  private func display(_ error: AFError) {
+    tagsError = error.errorDescription ?? error.localizedDescription
     tags = []
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"

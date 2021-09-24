@@ -96,16 +96,11 @@ private extension AddTagWorkflowThreeVC {
           default:
             GrowingNotificationBanner(
               title: "Failed",
-              subtitle: error!.description,
+              subtitle: error?.errorDescription ?? error?.localizedDescription ?? .emptyString,
               style: .danger,
               duration: 2.0
             ).show()
-            switch error {
-            case .transportError:
-              navigationController?.popToRootViewController(animated: true)
-            default:
-              navigationController?.popViewController(animated: true)
-            }
+            navigationController?.popViewController(animated: true)
           }
         }
       }

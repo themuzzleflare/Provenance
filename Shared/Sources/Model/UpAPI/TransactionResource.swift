@@ -46,8 +46,12 @@ extension TransactionResource {
 extension Array where Element: TransactionResource {
   func filtered(searchBar: UISearchBar) -> [TransactionResource] {
     return self.filter { (transaction) in
-      searchBar.text?.isEmpty ?? true || transaction.attributes.description.localizedStandardContains(searchBar.text!)
+      return searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchBar.text!)
     }
+  }
+  
+  var searchBarPlaceholder: String {
+    return "Search \(self.count.description) \(self.count == 1 ? "Transaction" : "Transactions")"
   }
   
   var transactionTypes: [TransactionType] {

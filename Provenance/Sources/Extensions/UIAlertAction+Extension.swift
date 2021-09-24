@@ -27,7 +27,7 @@ extension UIAlertAction {
             GrowingNotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success, duration: 2.0).show()
             viewController.fetchTransactions()
           default:
-            GrowingNotificationBanner(title: "Failed", subtitle: error!.description, style: .danger, duration: 2.0).show()
+            GrowingNotificationBanner(title: "Failed", subtitle: error?.errorDescription ?? error?.localizedDescription ?? .emptyString, style: .danger, duration: 2.0).show()
           }
         }
       }
@@ -43,7 +43,7 @@ extension UIAlertAction {
             GrowingNotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success, duration: 2.0).show()
             viewController.fetchTransaction()
           default:
-            GrowingNotificationBanner(title: "Failed", subtitle: error!.description, style: .danger, duration: 2.0).show()
+            GrowingNotificationBanner(title: "Failed", subtitle: error?.errorDescription ?? error?.localizedDescription ?? .emptyString, style: .danger, duration: 2.0).show()
           }
         }
       }
@@ -59,7 +59,7 @@ extension UIAlertAction {
             GrowingNotificationBanner(title: "Success", subtitle: "\(tags.joinedWithComma) was removed from \(transaction.attributes.description).", style: .success, duration: 2.0).show()
             viewController.fetchTransaction()
           default:
-            GrowingNotificationBanner(title: "Failed", subtitle: error!.description, style: .danger, duration: 2.0).show()
+            GrowingNotificationBanner(title: "Failed", subtitle: error?.errorDescription ?? error?.localizedDescription ?? .emptyString, style: .danger, duration: 2.0).show()
           }
         }
       }
@@ -67,7 +67,7 @@ extension UIAlertAction {
   }
   
   static func submitNewTags(_ navigationController: UINavigationController?, transaction: TransactionResource, alertController: UIAlertController) -> UIAlertAction {
-    let submitAction = UIAlertAction(
+    let alertAction = UIAlertAction(
       title: "Next",
       style: .default,
       handler: { (_) in
@@ -77,12 +77,12 @@ extension UIAlertAction {
         }
       }
     )
-    submitAction.isEnabled = false
-    return submitAction
+    alertAction.isEnabled = false
+    return alertAction
   }
   
   static func saveApiKey(alertController: UIAlertController, viewController: SettingsVC) -> UIAlertAction {
-    let submitAction = UIAlertAction(
+    let alertAction = UIAlertAction(
       title: "Save",
       style: .default,
       handler: { (_) in
@@ -102,7 +102,7 @@ extension UIAlertAction {
                 default:
                   GrowingNotificationBanner(
                     title: "Failed",
-                    subtitle: error!.description,
+                    subtitle: error?.errorDescription ?? error?.localizedDescription ?? .emptyString,
                     style: .danger,
                     duration: 2.0
                   ).show()
@@ -120,13 +120,13 @@ extension UIAlertAction {
         }
       }
     )
-    submitAction.isEnabled = false
-    viewController.submitActionProxy = submitAction
-    return submitAction
+    alertAction.isEnabled = false
+    viewController.submitActionProxy = alertAction
+    return alertAction
   }
   
   static func noApiKey(sceneDelegate: SceneDelegate, alertController: UIAlertController) -> UIAlertAction {
-    let submitAction = UIAlertAction(
+    let alertAction = UIAlertAction(
       title: "Save",
       style: .default,
       handler: { (_) in
@@ -142,20 +142,18 @@ extension UIAlertAction {
                     style: .success,
                     duration: 2.0
                   )
-                  ProvenanceApp.userDefaults.apiKey = answer
                   let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
-                  viewController.modalPresentationStyle = .fullScreen
-                  sceneDelegate.window?.rootViewController?.present(viewController, animated: true)
+                  ProvenanceApp.userDefaults.apiKey = answer
+                  sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
                 default:
                   let notificationBanner = GrowingNotificationBanner(
                     title: "Failed",
-                    subtitle: error!.description,
+                    subtitle: error?.errorDescription ?? error?.localizedDescription ?? .emptyString,
                     style: .danger,
                     duration: 2.0
                   )
                   let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
-                  viewController.modalPresentationStyle = .fullScreen
-                  sceneDelegate.window?.rootViewController?.present(viewController, animated: true)
+                  sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
                 }
               }
             }
@@ -167,14 +165,13 @@ extension UIAlertAction {
               duration: 2.0
             )
             let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
-            viewController.modalPresentationStyle = .fullScreen
-            sceneDelegate.window?.rootViewController?.present(viewController, animated: true)
+            sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
           }
         }
       }
     )
-    submitAction.isEnabled = false
-    sceneDelegate.submitActionProxy = submitAction
-    return submitAction
+    alertAction.isEnabled = false
+    sceneDelegate.submitActionProxy = alertAction
+    return alertAction
   }
 }

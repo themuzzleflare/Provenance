@@ -1,5 +1,6 @@
 import IGListKit
 import AsyncDisplayKit
+import Alamofire
 
 final class AccountsVC: ASViewController {
     // MARK: - Properties
@@ -30,7 +31,7 @@ final class AccountsVC: ASViewController {
       noAccounts = accounts.isEmpty
       applySnapshot()
       collectionNode.view.refreshControl?.endRefreshing()
-      searchController.searchBar.placeholder = "Search \(accounts.count.description) \(accounts.count == 1 ? "Account" : "Accounts")"
+      searchController.searchBar.placeholder = accounts.searchBarPlaceholder
     }
   }
   
@@ -39,7 +40,7 @@ final class AccountsVC: ASViewController {
   private var oldFilteredAccounts = [AccountResource]()
   
   private var filteredAccounts: [AccountResource] {
-    return accounts.filtered(searchBar: searchController.searchBar)
+    return accounts.filtered(filter: accountFilter, searchBar: searchController.searchBar)
   }
   
     // MARK: - Life Cycle
@@ -83,7 +84,7 @@ private extension AccountsVC {
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(appMovedToForeground),
-      name: UIApplication.willEnterForegroundNotification,
+      name: .willEnterForegroundNotification,
       object: nil
     )
     apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
@@ -99,7 +100,7 @@ private extension AccountsVC {
   }
   
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
     accountFilterObserver?.invalidate()
@@ -189,8 +190,8 @@ private extension AccountsVC {
     }
   }
   
-  private func display(_ error: NetworkError) {
-    accountsError = error.description
+  private func display(_ error: AFError) {
+    accountsError = error.errorDescription ?? error.localizedDescription
     accounts = []
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"

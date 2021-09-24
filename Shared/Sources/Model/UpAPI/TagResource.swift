@@ -28,8 +28,12 @@ extension TagResource {
 extension Array where Element: TagResource {
   func filtered(searchBar: UISearchBar) -> [TagResource] {
     return self.filter { (tag) in
-      searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchBar.text!)
+      return searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchBar.text!)
     }
+  }
+  
+  var searchBarPlaceholder: String {
+    return "Search \(self.count.description) \(self.count == 1 ? "Tag" : "Tags")"
   }
   
   var nsStringArray: [NSString] {

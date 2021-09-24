@@ -7,9 +7,9 @@ struct TransactionCellView: View {
     HStack {
       VStack(alignment: .leading) {
         Text(transaction.description)
-          .font(.circularStdMedium(size: UIFont.labelFontSize))
+          .font(.circularStdMedium(size: .labelFontSize))
         Text(transaction.creationDate)
-          .font(.circularStdBookItalic(size: UIFont.smallSystemFontSize))
+          .font(.circularStdBookItalic(size: .smallSystemFontSize))
           .foregroundColor(.secondary)
       }
       .multilineTextAlignment(.leading)
