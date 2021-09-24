@@ -144,7 +144,7 @@ private extension CategoriesVC {
     if result.hasChanges || override || !categoriesError.isEmpty || noCategories {
       if filteredCategories.isEmpty && categoriesError.isEmpty {
         if categories.isEmpty && !noCategories {
-          collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds)
+          collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds, contentType: .categories)
         } else {
           collectionNode.view.backgroundView = .noContentView(frame: collectionNode.bounds, type: .categories)
         }

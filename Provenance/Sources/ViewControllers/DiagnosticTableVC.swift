@@ -51,6 +51,7 @@ private extension DiagnosticTableVC {
     tableView.register(AttributeCell.self, forCellReuseIdentifier: AttributeCell.reuseIdentifier)
     tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     tableView.showsVerticalScrollIndicator = false
+    tableView.backgroundColor = .systemBackground
   }
 }
 

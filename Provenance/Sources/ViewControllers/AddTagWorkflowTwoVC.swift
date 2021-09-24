@@ -235,7 +235,7 @@ private extension AddTagWorkflowTwoVC {
     if result.hasChanges || override || !tagsError.isEmpty || noTags {
       if filteredTags.isEmpty && tagsError.isEmpty {
         if tags.isEmpty && !noTags {
-          tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds)
+          tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .tags)
         } else {
           tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .tags)
         }

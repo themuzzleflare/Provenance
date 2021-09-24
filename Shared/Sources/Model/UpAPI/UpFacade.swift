@@ -10,6 +10,7 @@ struct UpFacade {
     ///   - completion: Block to execute for handling the request response.
     ///
     /// Make a basic ping request to the API. This is useful to verify that authentication is functioning correctly. On authentication success an HTTP `200` status is returned. On failure an HTTP `401` error response is returned.
+  
   static func ping(with key: String, completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
@@ -22,6 +23,12 @@ struct UpFacade {
         completion(response.error)
       }
   }
+  
+    /// List transactions
+    ///
+    /// - Parameter completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve a list of all transactions across all accounts for the currently authenticated user. The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present. To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string. These filter parameters **should not** be used for pagination. Results are ordered newest first to oldest last.
   
   static func listTransactions(completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
@@ -44,6 +51,14 @@ struct UpFacade {
         }
       }
   }
+  
+    /// List transactions by account
+    ///
+    /// - Parameters:
+    ///   - account: The account to list transactions for.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve a list of all transactions for a specific account. The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present. To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string. These filter parameters **should not** be used for pagination. Results are ordered newest first to oldest last.
   
   static func listTransactions(filterBy account: AccountResource, completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [

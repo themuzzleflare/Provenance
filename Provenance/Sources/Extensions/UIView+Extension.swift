@@ -1,5 +1,5 @@
-import FLAnimatedImage
 import SnapKit
+import MBProgressHUD
 
 extension UIView {
   static var plainView: UIView {
@@ -12,16 +12,13 @@ extension UIView {
     return view
   }
   
-  static func loadingView(frame: CGRect) -> UIView {
+  static func loadingView(frame: CGRect, contentType: ContentType) -> UIView {
     let view = UIView(frame: frame)
-    let loadingIndicator = FLAnimatedImageView()
+    let loadingIndicator = MBProgressHUD(view: view)
+    loadingIndicator.animationType = .zoomIn
+    loadingIndicator.detailsLabel.attributedText = contentType.loadingDescription.styled(with: .provenance)
     view.addSubview(loadingIndicator)
-    loadingIndicator.snp.makeConstraints { (make) in
-      make.center.equalToSuperview()
-      make.width.equalTo(100)
-      make.height.equalTo(100)
-    }
-    loadingIndicator.animatedImage = .upZapSpinTransparentBackground
+    loadingIndicator.show(animated: true)
     return view
   }
   

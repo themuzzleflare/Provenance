@@ -190,7 +190,7 @@ extension TransactionsVC {
     if result.hasChanges || override || !transactionsError.isEmpty || noTransactions {
       if filteredTransactions.isEmpty && transactionsError.isEmpty {
         if transactions.isEmpty && !noTransactions {
-          tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds)
+          tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .transactions)
         } else {
           tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .transactions)
         }

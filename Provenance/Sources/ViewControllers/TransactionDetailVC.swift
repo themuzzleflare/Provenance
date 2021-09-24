@@ -228,7 +228,7 @@ private extension TransactionDetailVC {
     snapshot.appendSections(filteredSections)
     filteredSections.forEach { snapshot.appendItems($0.items, toSection: $0) }
     if snapshot.itemIdentifiers.isEmpty {
-      tableView.backgroundView = .loadingView(frame: tableView.bounds)
+      tableView.backgroundView = .loadingView(frame: tableView.bounds, contentType: .transactions)
     } else if tableView.backgroundView != nil {
       tableView.backgroundView = nil
     }

@@ -20,6 +20,7 @@ target 'Provenance' do
   pod 'SnapKit'
   pod 'IGListKit/Diffing'
   pod 'BonMot'
+  pod 'MBProgressHUD'
   
 end
   
@@ -52,7 +53,7 @@ post_install do |installer|
   require 'fileutils'
   FileUtils.cp_r('Pods/Target Support Files/Pods-Provenance/Pods-Provenance-acknowledgements.plist', 'Provenance/Resources/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
   installer.pods_project.targets.each do |target|
-    if target.name == 'PINCache' || target.name == 'PINOperation' || target.name == 'PINRemoteImage' || target.name == 'IGListKit'
+    if target.name == 'PINCache' || target.name == 'PINOperation' || target.name == 'PINRemoteImage' || target.name == 'IGListKit' || target.name == 'MBProgressHUD'
       target.build_configurations.each do |config|
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
       end

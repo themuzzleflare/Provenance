@@ -47,6 +47,19 @@ extension ContentType {
     }
   }
   
+  var loadingDescription: String {
+    switch self {
+    case .transactions:
+      return "Loading Transactions"
+    case .accounts:
+      return "Loading Accounts"
+    case .tags:
+      return "Loading Tags"
+    case .categories:
+      return "Loading Categories"
+    }
+  }
+  
   func searchBarPlaceholder(count: Int) -> String {
     return "Search \(count.description) \(count == 1 ? singular : plural)"
   }

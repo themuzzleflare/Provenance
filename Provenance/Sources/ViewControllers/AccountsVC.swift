@@ -145,7 +145,7 @@ private extension AccountsVC {
     if result.hasChanges || override || !accountsError.isEmpty || noAccounts {
       if filteredAccounts.isEmpty && accountsError.isEmpty {
         if accounts.isEmpty && !noAccounts {
-          collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds)
+          collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds, contentType: .accounts)
         } else {
           collectionNode.view.backgroundView = .noContentView(frame: collectionNode.bounds, type: .accounts)
         }
