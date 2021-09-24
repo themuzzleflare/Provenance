@@ -6,7 +6,7 @@ struct UpFacade {
     /// Ping
     ///
     /// - Parameters:
-    ///   - key: The API key to ping with.
+    ///   - key: The personal access token to ping with.
     ///   - completion: Block to execute for handling the request response.
     ///
     /// Make a basic ping request to the API. This is useful to verify that authentication is functioning correctly. On authentication success an HTTP `200` status is returned. On failure an HTTP `401` error response is returned.
@@ -82,6 +82,14 @@ struct UpFacade {
       }
   }
   
+    /// List transactions by tag
+    ///
+    /// - Parameters:
+    ///   - tag: The tag to list transactions for.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve a list of all transactions for a specific tag. The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present. To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string. These filter parameters **should not** be used for pagination. Results are ordered newest first to oldest last.
+  
   static func listTransactions(filterBy tag: TagResource, completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
@@ -104,6 +112,14 @@ struct UpFacade {
         }
       }
   }
+  
+    /// List transactions by category
+    ///
+    /// - Parameters:
+    ///   - category: The category to list transactions for.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve a list of all transactions for a specific category. The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present. To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string. These filter parameters **should not** be used for pagination. Results are ordered newest first to oldest last.
   
   static func listTransactions(filterBy category: CategoryResource, completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
@@ -128,6 +144,12 @@ struct UpFacade {
       }
   }
   
+    /// Retrieve latest transaction
+    ///
+    /// - Parameter completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve the latest transaction across all accounts.
+  
   static func retrieveLatestTransaction(completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
@@ -149,6 +171,14 @@ struct UpFacade {
         }
       }
   }
+  
+    /// Retrieve latest transaction for account
+    ///
+    /// - Parameters:
+    ///   - account: The account to retrieve the latest transaction for.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve the latest transaction for a specific account.
   
   static func retrieveLatestTransaction(for account: AccountResource, completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
@@ -172,6 +202,14 @@ struct UpFacade {
       }
   }
   
+    /// Retrieve transaction
+    ///
+    /// - Parameters:
+    ///   - transaction: The transaction to retrieve.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve a specific transaction by providing its unique identifier.
+  
   static func retrieveTransaction(for transaction: TransactionResource, completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
@@ -190,6 +228,14 @@ struct UpFacade {
       }
   }
   
+    /// Retrieve transaction
+    ///
+    /// - Parameters:
+    ///   - transactionId: The unique identifier for the transaction to retrieve.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve a specific transaction by providing its unique identifier.
+  
   static func retrieveTransaction(for transactionId: String, completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
@@ -207,6 +253,12 @@ struct UpFacade {
         }
       }
   }
+  
+    /// List accounts
+    ///
+    /// - Parameter completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve a paginated list of all accounts for the currently authenticated user. The returned list is paginated and can be scrolled by following the `prev` and `next` links where present.
   
   static func listAccounts(completion: @escaping (Result<[AccountResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
@@ -230,6 +282,14 @@ struct UpFacade {
       }
   }
   
+    /// Retrieve account
+    ///
+    /// - Parameters:
+    ///   - account: The account to retrieve.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve a specific account by providing its unique identifier.
+  
   static func retrieveAccount(for account: AccountResource, completion: @escaping (Result<AccountResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
@@ -248,6 +308,14 @@ struct UpFacade {
       }
   }
   
+    /// Retrieve account
+    ///
+    /// - Parameters:
+    ///   - accountId: The unique identifier for the account to retrieve.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve a specific account by providing its unique identifier.
+  
   static func retrieveAccount(for accountId: String, completion: @escaping (Result<AccountResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
@@ -265,6 +333,12 @@ struct UpFacade {
         }
       }
   }
+  
+    /// List tags
+    ///
+    /// - Parameter completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve a list of all tags currently in use. The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present. Results are ordered lexicographically. The `transactions` relationship for each tag exposes a link to get the transactions with the given tag.
   
   static func listTags(completion: @escaping (Result<[TagResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
@@ -288,6 +362,15 @@ struct UpFacade {
       }
   }
   
+    /// Add tags to transaction
+    ///
+    /// - Parameters:
+    ///   - tags: The tags to add.
+    ///   - transaction: The transaction to add the tags to.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Associates one or more tags with a specific transaction. No more than 6 tags may be present on any single transaction. Duplicate tags are silently ignored. An HTTP `204` is returned on success. The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
+  
   static func modifyTags(adding tags: [TagResource], to transaction: TransactionResource, completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
       .contentType("application/json"),
@@ -300,6 +383,15 @@ struct UpFacade {
         completion(response.error)
       }
   }
+  
+    /// Add tags to transaction
+    ///
+    /// - Parameters:
+    ///   - tags: The labels of the tags to add.
+    ///   - transaction: The unique identifier for the transaction to add the tags to.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Associates one or more tags with a specific transaction. No more than 6 tags may be present on any single transaction. Duplicate tags are silently ignored. An HTTP `204` is returned on success. The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
   
   static func modifyTags(adding tags: [String], to transaction: String, completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
@@ -314,6 +406,15 @@ struct UpFacade {
       }
   }
   
+    /// Add tags to transaction
+    ///
+    /// - Parameters:
+    ///   - tag: The tag to add.
+    ///   - transaction: The transaction to add the tag to.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Associates one or more tags with a specific transaction. No more than 6 tags may be present on any single transaction. Duplicate tags are silently ignored. An HTTP `204` is returned on success. The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
+  
   static func modifyTags(adding tag: TagResource, to transaction: TransactionResource, completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
       .contentType("application/json"),
@@ -326,6 +427,15 @@ struct UpFacade {
         completion(response.error)
       }
   }
+  
+    /// Remove tags from transaction
+    ///
+    /// - Parameters:
+    ///   - tags: The tags to remove.
+    ///   - transaction: The transaction to remove the tags from.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Disassociates one or more tags from a specific transaction. Tags that are not associated are silently ignored. An HTTP `204` is returned on success. The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
   
   static func modifyTags(removing tags: [TagResource], from transaction: TransactionResource, completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
@@ -340,6 +450,15 @@ struct UpFacade {
       }
   }
   
+    /// Remove tags from transaction
+    ///
+    /// - Parameters:
+    ///   - tags: The labels of the tags to remove.
+    ///   - transaction: The unique identifier for the transaction to remove the tags from.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Disassociates one or more tags from a specific transaction. Tags that are not associated are silently ignored. An HTTP `204` is returned on success. The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
+  
   static func modifyTags(removing tags: [String], from transaction: String, completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
       .contentType("application/json"),
@@ -353,6 +472,15 @@ struct UpFacade {
       }
   }
   
+    /// Remove tags from transaction
+    ///
+    /// - Parameters:
+    ///   - tag: The tag to remove.
+    ///   - transaction: The transaction to remove the tag from.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Disassociates one or more tags from a specific transaction. Tags that are not associated are silently ignored. An HTTP `204` is returned on success. The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
+  
   static func modifyTags(removing tag: TagResource, from transaction: TransactionResource, completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
       .contentType("application/json"),
@@ -365,6 +493,12 @@ struct UpFacade {
         completion(response.error)
       }
   }
+  
+    /// List categories
+    ///
+    /// - Parameter completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve a list of all categories and their ancestry. The returned list is not paginated.
   
   static func listCategories(completion: @escaping (Result<[CategoryResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
@@ -384,6 +518,14 @@ struct UpFacade {
       }
   }
   
+    /// Retrieve category
+    ///
+    /// - Parameters:
+    ///   - category: The category to retrieve.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve a specific category by providing its unique identifier.
+  
   static func retrieveCategory(for category: CategoryResource, completion: @escaping (Result<CategoryResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
@@ -401,6 +543,14 @@ struct UpFacade {
         }
       }
   }
+  
+    /// Retrieve category
+    ///
+    /// - Parameters:
+    ///   - categoryId: The unique identifier for the category to retrieve.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve a specific category by providing its unique identifier.
   
   static func retrieveCategory(for categoryId: String, completion: @escaping (Result<CategoryResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
