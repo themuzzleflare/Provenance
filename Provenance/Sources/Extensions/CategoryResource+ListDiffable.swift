@@ -7,6 +7,6 @@ extension CategoryResource: ListDiffable {
 
   func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
     guard let object = object as? CategoryResource else { return false }
-    return self.id == object.id
+    return true
   }
 }

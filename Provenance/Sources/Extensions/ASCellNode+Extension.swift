@@ -8,4 +8,8 @@ extension ASCellNode {
   static var dateStyle: ASCellNode {
     return DateStyleCellNode()
   }
+  
+  static var aboutTop: ASCellNode {
+    return AboutTopCellNode()
+  }
 }

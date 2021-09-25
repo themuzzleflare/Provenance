@@ -96,7 +96,7 @@ private extension AccountDetailVC {
     tableView.dataSource = dataSource
     tableView.delegate = self
     tableView.register(AttributeCell.self, forCellReuseIdentifier: AttributeCell.reuseIdentifier)
-    tableView.refreshControl = UIRefreshControl(self, selector: #selector(refreshData))
+    tableView.refreshControl = UIRefreshControl(self, action: #selector(refreshData))
     tableView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     tableView.showsVerticalScrollIndicator = false
     tableView.backgroundColor = .systemBackground

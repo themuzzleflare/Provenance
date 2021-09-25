@@ -1,16 +1,11 @@
 import Foundation
 
-class RelationshipData: Codable {
+struct RelationshipData: Codable, Identifiable {
     /// The type of this resource.
-  let type: String
+  var type: String
   
     /// The unique identifier of the resource within its type.
-  let id: String
-  
-  init(type: String, id: String) {
-    self.type = type
-    self.id = id
-  }
+  var id: String
 }
 
 extension RelationshipData {
@@ -19,7 +14,7 @@ extension RelationshipData {
   }
 }
 
-extension Array where Element: RelationshipData {
+extension Array where Element == RelationshipData {
   var tagResources: [TagResource] {
     return self.map { (tag) in
       return tag.tagResource

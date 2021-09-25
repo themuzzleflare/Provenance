@@ -1,8 +1,8 @@
 import UIKit
 
 extension UIRefreshControl {
-  convenience init(_ viewController: UIViewController, selector: Selector) {
+  convenience init(_ viewController: UIViewController, action: Selector) {
     self.init()
-    self.addTarget(viewController, action: selector, for: .valueChanged)
+    self.addTarget(viewController, action: action, for: .valueChanged)
   }
 }

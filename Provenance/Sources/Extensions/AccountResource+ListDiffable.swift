@@ -7,6 +7,6 @@ extension AccountResource: ListDiffable {
   
   func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
     guard let object = object as? AccountResource else { return false }
-    return self.id == object.id && self.attributes.isEqual(toDiffableObject: object.attributes)
+    return self.attributes.balance.valueInBaseUnits == object.attributes.balance.valueInBaseUnits
   }
 }

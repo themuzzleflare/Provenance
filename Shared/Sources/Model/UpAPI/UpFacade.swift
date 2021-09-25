@@ -165,7 +165,11 @@ struct UpFacade {
       .responseDecodable(of: Transaction.self) { (response) in
         switch response.result {
         case let .success(transactions):
-          completion(.success(transactions.data[0]))
+          if let transaction = transactions.data.first {
+            completion(.success(transaction))
+          } else {
+            completion(.failure(.responseValidationFailed(reason: .dataFileNil)))
+          }
         case let .failure(error):
           completion(.failure(error))
         }
@@ -195,7 +199,11 @@ struct UpFacade {
       .responseDecodable(of: Transaction.self) { (response) in
         switch response.result {
         case let .success(transactions):
-          completion(.success(transactions.data[0]))
+          if let transaction = transactions.data.first {
+            completion(.success(transaction))
+          } else {
+            completion(.failure(.responseValidationFailed(reason: .dataFileNil)))
+          }
         case let .failure(error):
           completion(.failure(error))
         }

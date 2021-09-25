@@ -1,7 +1,7 @@
 import UIKit
 
 class AccountResource: Codable {
-    /// The type of this resource: accounts
+    /// The type of this resource: `accounts`
   let type = "accounts"
   
     /// The unique identifier for this account.

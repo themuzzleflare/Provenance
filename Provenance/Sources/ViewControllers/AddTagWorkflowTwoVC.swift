@@ -40,7 +40,7 @@ final class AddTagWorkflowTwoVC: ASViewController {
     target: self,
     action: #selector(nextAction)
   )
-  
+    
   private lazy var searchController = UISearchController(self)
   
   private let tableNode = ASTableNode(style: .grouped)
@@ -165,7 +165,7 @@ private extension AddTagWorkflowTwoVC {
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
-    tableNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshTags))
+    tableNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshTags))
     tableNode.allowsMultipleSelectionDuringEditing = true
   }
 }
@@ -362,10 +362,6 @@ extension AddTagWorkflowTwoVC: ASTableDelegate {
     case false:
       break
     }
-  }
-  
-  func tableView(_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
-    return isEditing
   }
   
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

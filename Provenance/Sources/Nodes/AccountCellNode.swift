@@ -12,6 +12,7 @@ final class AccountCellNode: ASCellNode {
     balanceTextNode.attributedText = account.attributes.balance.valueShort.styled(with: .accountBalance)
     
     displayNameTextNode.attributedText = account.attributes.displayName.styled(with: .accountDisplayName)
+    displayNameTextNode.maximumNumberOfLines = 2
     
     cornerRadius = 12.5
     borderColor = .separator

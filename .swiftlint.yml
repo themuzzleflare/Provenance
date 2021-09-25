@@ -14,4 +14,3 @@ opt_in_rules:
 - empty_string
 excluded:
 - Pods
-- R.generated.swift

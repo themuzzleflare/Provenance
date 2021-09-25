@@ -22,7 +22,7 @@ final class AddTagWorkflowThreeVC: ASViewController {
   
   init(transaction: TransactionResource, tag: TagResource) {
     self.transaction = transaction
-    self.tags = [tag]
+    self.tags = .singleTag(with: tag)
     super.init(node: tableNode)
   }
   
@@ -84,20 +84,19 @@ private extension AddTagWorkflowThreeVC {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
       UpFacade.modifyTags(adding: tags, to: transaction) { (error) in
         DispatchQueue.main.async {
-          switch error {
-          case .none:
+          if let error = error {
             GrowingNotificationBanner(
-              title: "Success",
-              subtitle: "\(tags.joinedWithComma) was added to \(transaction.attributes.description).",
-              style: .success,
+              title: "Failed",
+              subtitle: error.errorDescription ?? error.localizedDescription,
+              style: .danger,
               duration: 2.0
             ).show()
             navigationController?.popViewController(animated: true)
-          default:
+          } else {
             GrowingNotificationBanner(
-              title: "Failed",
-              subtitle: error?.errorDescription ?? error?.localizedDescription ?? .emptyString,
-              style: .danger,
+              title: "Success",
+              subtitle: "\(tags.joinedWithComma) \(tags.count == 1 ? "was" : "were") added to \(transaction.attributes.description).",
+              style: .success,
               duration: 2.0
             ).show()
             navigationController?.popViewController(animated: true)
@@ -139,7 +138,7 @@ extension AddTagWorkflowThreeVC: ASTableDataSource {
       case 1:
         return transactionCellNode
       case 2:
-        return ASTextCellNode(text: "You are adding the \(self.tags.count == 1 ? "tag" : "tags") \"\(self.tags.joinedWithComma)\" to the transaction \"\(self.transaction.attributes.description)\", which was \(ProvenanceApp.userDefaults.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: UITableViewCell.SelectionStyle.none)
+        return ASTextCellNode(text: "You are adding \(self.tags.joinedWithComma) to \(self.transaction.attributes.description), which was \(ProvenanceApp.userDefaults.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: UITableViewCell.SelectionStyle.none)
       default:
         fatalError("Unknown section")
       }

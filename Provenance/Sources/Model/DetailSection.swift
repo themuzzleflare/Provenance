@@ -4,11 +4,6 @@ struct DetailSection: Identifiable {
   var id: Int
   
   var items: [DetailItem]
-  
-  init(id: Int, items: [DetailItem]) {
-    self.id = id
-    self.items = items
-  }
 }
 
 extension DetailSection: Hashable {
@@ -50,7 +45,7 @@ extension Array where Element == DetailSection {
           ),
           DetailItem(
             id: "Raw Text",
-            value: transaction.attributes.rawText ?? .emptyString
+            value: transaction.attributes.rawText?.trimmingCharacters(in: .whitespacesAndNewlines) ?? .emptyString
           ),
           DetailItem(
             id: "Message",
@@ -163,12 +158,12 @@ extension Array where Element == DetailSection {
   
   var filtered: [DetailSection] {
     return self.filter { (section) in
-      !section.items.allSatisfy { (item) in
-        item.value.isEmpty || (item.id == "Tags" && item.value == "0")
+      return !section.items.allSatisfy { (item) in
+        return item.value.isEmpty || (item.id == "Tags" && item.value == "0")
       }
     }.map { (section) in
-      DetailSection(id: section.id, items: section.items.filter { (item) in
-        !item.value.isEmpty
+      return DetailSection(id: section.id, items: section.items.filter { (item) in
+        return !item.value.isEmpty
       })
     }
   }

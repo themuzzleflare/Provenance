@@ -77,8 +77,8 @@ extension IntentHandler: ListTransactionsIntentHandling {
     var queryParameters: Parameters = [
       "page[size]": "100"
     ]
-    if let apiKey = intent.apiKey {
-      headers.add(.authorization(bearerToken: apiKey.isEmpty ? ProvenanceApp.userDefaults.apiKey : apiKey))
+    if let apiKey = intent.apiKey, !apiKey.isEmpty {
+      headers.add(.authorization(bearerToken: apiKey))
     } else {
       headers.add(.authorization(bearerToken: ProvenanceApp.userDefaults.apiKey))
     }
@@ -206,7 +206,7 @@ extension IntentHandler: RemoveTagFromTransactionIntentHandling {
       completion(nil, nil)
       return
     }
-    UpFacade.retrieveTransaction(for: transaction) { result in
+    UpFacade.retrieveTransaction(for: transaction) { (result) in
       switch result {
       case let .success(transaction):
         completion(transaction.tagsArray.collection, nil)

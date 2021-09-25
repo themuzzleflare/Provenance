@@ -8,7 +8,7 @@ final class AccountsVC: ASViewController {
   private lazy var searchController = UISearchController.accounts(self)
   
   private let collectionNode = ASCollectionNode(collectionViewLayout: .twoColumnGridLayout)
-    
+  
   private var accountFilter: AccountTypeOptionEnum = ProvenanceApp.userDefaults.appAccountFilter {
     didSet {
       if ProvenanceApp.userDefaults.accountFilter != accountFilter.rawValue {
@@ -117,7 +117,7 @@ private extension AccountsVC {
   private func configureCollectionNode() {
     collectionNode.dataSource = self
     collectionNode.delegate = self
-    collectionNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshAccounts))
+    collectionNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshAccounts))
   }
 }
 

@@ -56,7 +56,7 @@ extension UIAlertAction {
         DispatchQueue.main.async {
           switch error {
           case .none:
-            GrowingNotificationBanner(title: "Success", subtitle: "\(tags.joinedWithComma) was removed from \(transaction.attributes.description).", style: .success, duration: 2.0).show()
+            GrowingNotificationBanner(title: "Success", subtitle: "\(tags.joinedWithComma) \(tags.count == 1 ? "was" : "were") removed from \(transaction.attributes.description).", style: .success, duration: 2.0).show()
             viewController.fetchTransaction()
           default:
             GrowingNotificationBanner(title: "Failed", subtitle: error?.errorDescription ?? error?.localizedDescription ?? .emptyString, style: .danger, duration: 2.0).show()

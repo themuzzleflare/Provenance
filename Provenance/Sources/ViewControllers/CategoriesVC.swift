@@ -116,7 +116,7 @@ private extension CategoriesVC {
   private func configureCollectionNode() {
     collectionNode.dataSource = self
     collectionNode.delegate = self
-    collectionNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshCategories))
+    collectionNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshCategories))
   }
 }
 

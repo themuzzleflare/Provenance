@@ -368,12 +368,10 @@
 		7A90F52226F096D200384F53 /* AccountResource+ListDiffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F52126F096D200384F53 /* AccountResource+ListDiffable.swift */; };
 		7A90F53026F097BB00384F53 /* TagResource+ListDiffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F52F26F097BB00384F53 /* TagResource+ListDiffable.swift */; };
 		7A90F54226F0985500384F53 /* CategoryResource+ListDiffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F54126F0985500384F53 /* CategoryResource+ListDiffable.swift */; };
-		7A90F55A26F0998700384F53 /* RelationshipData+ListDiffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F55926F0998700384F53 /* RelationshipData+ListDiffable.swift */; };
 		7A90F55E26F15DF900384F53 /* GrowingNotificationBanner+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F55D26F15DF900384F53 /* GrowingNotificationBanner+Extension.swift */; };
 		7A90F56026F1634200384F53 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F55F26F1634200384F53 /* UIColor+Extension.swift */; };
 		7A90F56226F16FB200384F53 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F56126F16FB200384F53 /* URL+Extensions.swift */; };
 		7A9C12F926F5CF6000C09CA7 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB1726F466FE00C9C04E /* Intents.intentdefinition */; settings = {ATTRIBUTES = (private_codegen, ); }; };
-		7A9C253726F2E7F200509ED4 /* AccountAttribute+ListDiffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9C253626F2E7F200509ED4 /* AccountAttribute+ListDiffable.swift */; };
 		7A9C253A26F30ABD00509ED4 /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9C253926F30ABD00509ED4 /* Font+Extension.swift */; };
 		7AA113882615181700386E2D /* AttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA113872615181700386E2D /* AttributeCell.swift */; };
 		7AA113BF26154F3800386E2D /* DetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA113BE26154F3800386E2D /* DetailItem.swift */; };
@@ -383,7 +381,6 @@
 		7AAADD5526F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5426F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift */; };
 		7AAADD5926F1812600C4A9D9 /* UIBarButtonItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5826F1812600C4A9D9 /* UIBarButtonItem+Extension.swift */; };
 		7AAADD5B26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5A26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift */; };
-		7AAADD5D26F1910700C4A9D9 /* TransactionAttribute+ListDiffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5C26F1910700C4A9D9 /* TransactionAttribute+ListDiffable.swift */; };
 		7AB34D1E25C78230000A1E81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D1D25C78230000A1E81 /* AppDelegate.swift */; };
 		7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
 		7AB34D2A25C78232000A1E81 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2825C78232000A1E81 /* LaunchScreen.storyboard */; };
@@ -487,16 +484,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		7A34D05926F9B32000C2A9D4 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		7AD317A92604412200B4E008 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -616,12 +603,10 @@
 		7A90F54D26F098A200384F53 /* CategoryRelationship.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRelationship.swift; sourceTree = "<group>"; };
 		7A90F55126F098AB00384F53 /* CategoryRelationshipParent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRelationshipParent.swift; sourceTree = "<group>"; };
 		7A90F55526F098B400384F53 /* CategoryRelationshipChildren.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRelationshipChildren.swift; sourceTree = "<group>"; };
-		7A90F55926F0998700384F53 /* RelationshipData+ListDiffable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RelationshipData+ListDiffable.swift"; sourceTree = "<group>"; };
 		7A90F55D26F15DF900384F53 /* GrowingNotificationBanner+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GrowingNotificationBanner+Extension.swift"; sourceTree = "<group>"; };
 		7A90F55F26F1634200384F53 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7A90F56126F16FB200384F53 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7A9494052629350B00B39E75 /* UpFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpFacade.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		7A9C253626F2E7F200509ED4 /* AccountAttribute+ListDiffable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountAttribute+ListDiffable.swift"; sourceTree = "<group>"; };
 		7A9C253926F30ABD00509ED4 /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extension.swift"; sourceTree = "<group>"; };
 		7A9C253B26F30D5700509ED4 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		7A9DE23C25DE35AB00175697 /* Provenance.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Provenance.entitlements; sourceTree = "<group>"; };
@@ -635,7 +620,6 @@
 		7AAADD5626F17FF300C4A9D9 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		7AAADD5826F1812600C4A9D9 /* UIBarButtonItem+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Extension.swift"; sourceTree = "<group>"; };
 		7AAADD5A26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MarqueeLabel+Extension.swift"; sourceTree = "<group>"; };
-		7AAADD5C26F1910700C4A9D9 /* TransactionAttribute+ListDiffable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionAttribute+ListDiffable.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7AAADD5E26F1973B00C4A9D9 /* TransactionStatusEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionStatusEnum.swift; sourceTree = "<group>"; };
 		7AAADD6226F1977700C4A9D9 /* AccountTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeEnum.swift; sourceTree = "<group>"; };
 		7AAC68FA262D581D0046494C /* SingleTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTransaction.swift; sourceTree = "<group>"; };
@@ -1234,12 +1218,9 @@
 				7AF2150C26EF3A86009F4F38 /* UISearchController+Extension.swift */,
 				7AF2150E26EF40C9009F4F38 /* UIView+Extension.swift */,
 				7AF2152A26F04BCC009F4F38 /* TransactionResource+ListDiffable.swift */,
-				7AAADD5C26F1910700C4A9D9 /* TransactionAttribute+ListDiffable.swift */,
 				7A90F52126F096D200384F53 /* AccountResource+ListDiffable.swift */,
-				7A9C253626F2E7F200509ED4 /* AccountAttribute+ListDiffable.swift */,
 				7A90F52F26F097BB00384F53 /* TagResource+ListDiffable.swift */,
 				7A90F54126F0985500384F53 /* CategoryResource+ListDiffable.swift */,
-				7A90F55926F0998700384F53 /* RelationshipData+ListDiffable.swift */,
 				7AF2155C26F05422009F4F38 /* UIMenu+Extension.swift */,
 				7AF2156326F05F74009F4F38 /* UIMenuElement+Extension.swift */,
 				7AF2156526F05FE3009F4F38 /* UIContextMenuConfiguration+Extension.swift */,
@@ -1373,7 +1354,6 @@
 				7AA125182626AB3900F50D6D /* Configure Settings.bundle/Root.plist */,
 				7A54E10C26AA5AFE0011566E /* Initialise SwiftLint */,
 				7ACA1A4F26AA498700DE1645 /* Initialise Crashlytics */,
-				7A34D05926F9B32000C2A9D4 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1912,7 +1892,6 @@
 				7A340BA226F9C16900D43523 /* Transaction.swift in Sources */,
 				7A90F55E26F15DF900384F53 /* GrowingNotificationBanner+Extension.swift in Sources */,
 				7A340BAB26F9C16900D43523 /* UpFacade.swift in Sources */,
-				7A9C253726F2E7F200509ED4 /* AccountAttribute+ListDiffable.swift in Sources */,
 				7AD295F425D358B200B8A765 /* TransactionsByAccountVC.swift in Sources */,
 				7A340B1326F9C11200D43523 /* UIEdgeInsets+Extension.swift in Sources */,
 				7A340BB526F9C16900D43523 /* TransactionAttribute.swift in Sources */,
@@ -1988,7 +1967,6 @@
 				7A7F039D26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */,
 				7A67980D25D3E15D002AA83A /* DiagnosticTableVC.swift in Sources */,
 				7AF2156626F05FE3009F4F38 /* UIContextMenuConfiguration+Extension.swift in Sources */,
-				7A90F55A26F0998700384F53 /* RelationshipData+ListDiffable.swift in Sources */,
 				7A7CAB0326F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift in Sources */,
 				7A340BBB26F9C16900D43523 /* AccountTypeEnum.swift in Sources */,
 				7A340BC226F9C16900D43523 /* CategoryResource.swift in Sources */,
@@ -2017,7 +1995,6 @@
 				7AF2156026F057F1009F4F38 /* FilterMenuAction.swift in Sources */,
 				7A90F56226F16FB200384F53 /* URL+Extensions.swift in Sources */,
 				7AF2151D26F04723009F4F38 /* SegmentedControlNode.swift in Sources */,
-				7AAADD5D26F1910700C4A9D9 /* TransactionAttribute+ListDiffable.swift in Sources */,
 				7A14D5EA261AC37100C072E3 /* AccountsVC.swift in Sources */,
 				7A340B3D26F9C14B00D43523 /* CategoryTypeEnum.swift in Sources */,
 				7A72D2F12672DEAF005FAC4F /* TabBarItem.swift in Sources */,
@@ -2186,10 +2163,7 @@
 			baseConfigurationReference = 964B0AFF552941F193B1E0FD /* Pods-Provenance Intents.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Intents/Resources/Intents.entitlements;
-				CODE_SIGN_IDENTITY = "${CODESIGNING_IDENTITY}";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Intents/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2211,8 +2185,6 @@
 			baseConfigurationReference = F44CAF287D724CA2FDCB35F0 /* Pods-Provenance Intents.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Intents/Resources/Intents.entitlements;
-				CODE_SIGN_IDENTITY = "${CODESIGNING_IDENTITY}";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Intents/Resources/Info.plist;
@@ -2235,10 +2207,7 @@
 			baseConfigurationReference = 4A69AA9B67AFAF5C76AC1FDD /* Pods-Provenance IntentsUI.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = IntentsUI/Resources/IntentsUI.entitlements;
-				CODE_SIGN_IDENTITY = "${CODESIGNING_IDENTITY}";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = IntentsUI/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2260,8 +2229,6 @@
 			baseConfigurationReference = 2D014169F9EEA0917835C562 /* Pods-Provenance IntentsUI.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = IntentsUI/Resources/IntentsUI.entitlements;
-				CODE_SIGN_IDENTITY = "${CODESIGNING_IDENTITY}";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = IntentsUI/Resources/Info.plist;
@@ -2316,6 +2283,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "${CODESIGNING_IDENTITY}";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = "${PROVENANCE_BUILD_VERSION}";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -2385,6 +2353,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "${CODESIGNING_IDENTITY}";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = "${PROVENANCE_BUILD_VERSION}";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -2416,8 +2385,6 @@
 			baseConfigurationReference = 807F847AFD560FFD17AA96DA /* Pods-Provenance.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Provenance/Resources/Provenance.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Provenance/Resources/Info.plist;
@@ -2428,7 +2395,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "${PROVENANCE_BUNDLE_ID}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Development";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2439,8 +2405,6 @@
 			baseConfigurationReference = 0D092E02E7CA483DD8D5DE38 /* Pods-Provenance.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Provenance/Resources/Provenance.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Provenance/Resources/Info.plist;
@@ -2451,7 +2415,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "${PROVENANCE_BUNDLE_ID}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Development";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2462,10 +2425,7 @@
 			baseConfigurationReference = 46176A5C77FA0CFAB8C42136 /* Pods-Provenance Widgets.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Widgets/Resources/Widgets.entitlements;
-				CODE_SIGN_IDENTITY = "${CODESIGNING_IDENTITY}";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Widgets/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2476,7 +2436,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "${PROVENANCE_BUNDLE_ID}.widgets";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Widgets Development";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
@@ -2489,8 +2448,6 @@
 			baseConfigurationReference = BFFD3DC6104CD7F7D32B02CB /* Pods-Provenance Widgets.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Widgets/Resources/Widgets.entitlements;
-				CODE_SIGN_IDENTITY = "${CODESIGNING_IDENTITY}";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Widgets/Resources/Info.plist;
@@ -2502,7 +2459,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "${PROVENANCE_BUNDLE_ID}.widgets";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Widgets Development";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
@@ -2514,10 +2470,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "${IMESSAGE_APP_ICON}";
-				CODE_SIGN_IDENTITY = "${CODESIGNING_IDENTITY}";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "${PROVENANCE_STICKERS_DEPLOYMENT_TARGET}";
@@ -2534,8 +2487,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "${IMESSAGE_APP_ICON}";
-				CODE_SIGN_IDENTITY = "${CODESIGNING_IDENTITY}";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				INFOPLIST_FILE = Stickers/Resources/Info.plist;

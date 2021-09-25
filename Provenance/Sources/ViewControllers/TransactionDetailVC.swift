@@ -112,7 +112,7 @@ private extension TransactionDetailVC {
     tableView.dataSource = dataSource
     tableView.delegate = self
     tableView.register(AttributeCell.self, forCellReuseIdentifier: AttributeCell.reuseIdentifier)
-    tableView.refreshControl = UIRefreshControl(self, selector: #selector(refreshTransaction))
+    tableView.refreshControl = UIRefreshControl(self, action: #selector(refreshTransaction))
     tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     tableView.showsVerticalScrollIndicator = false
     tableView.backgroundColor = .systemBackground
@@ -302,14 +302,9 @@ extension TransactionDetailVC: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-    guard let attribute = dataSource.itemIdentifier(for: indexPath) else { return nil }
-    switch attribute.id {
-    case "Tags":
-      return nil
-    default:
-      return UIContextMenuConfiguration(elements: [
-        .copyAttribute(attribute: attribute)
-      ])
-    }
+    guard let attribute = dataSource.itemIdentifier(for: indexPath), attribute.id != "Tags" else { return nil }
+    return UIContextMenuConfiguration(elements: [
+      .copyAttribute(attribute: attribute)
+    ])
   }
 }

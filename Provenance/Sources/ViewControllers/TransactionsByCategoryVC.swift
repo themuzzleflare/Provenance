@@ -80,7 +80,7 @@ private extension TransactionsByCategoryVC {
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
-        weakSelf.fetchTransactions()
+        weakSelf.tableNode.reloadData()
       }
     }
   }
@@ -102,7 +102,7 @@ private extension TransactionsByCategoryVC {
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
-    tableNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshTransactions))
+    tableNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshTransactions))
   }
 }
 

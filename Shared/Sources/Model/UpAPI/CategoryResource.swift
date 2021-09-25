@@ -1,7 +1,7 @@
 import UIKit
 
 class CategoryResource: Codable {
-    /// The type of this resource: categories
+    /// The type of this resource: `categories`
   let type = "categories"
   
     /// The unique identifier for this category. This is a human-readable but URL-safe value.

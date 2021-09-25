@@ -98,7 +98,7 @@ private extension TagsVC {
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
-    tableNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshTags))
+    tableNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshTags))
   }
 }
 

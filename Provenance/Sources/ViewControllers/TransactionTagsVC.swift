@@ -133,7 +133,7 @@ private extension TransactionTagsVC {
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
-    tableNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshTags))
+    tableNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshTags))
     tableNode.allowsMultipleSelectionDuringEditing = true
     tableNode.view.showsVerticalScrollIndicator = false
   }
@@ -148,8 +148,7 @@ extension TransactionTagsVC {
   
   @objc private func openAddWorkflow() {
     let viewController = NavigationController(rootViewController: AddTagWorkflowTwoVC(transaction: transaction, fromTransactionTags: true))
-    viewController.modalPresentationStyle = .fullScreen
-    present(viewController, animated: true)
+    present(.fullscreen(viewController), animated: true)
   }
   
   @objc private func refreshTags() {
@@ -273,10 +272,6 @@ extension TransactionTagsVC: ASTableDelegate {
     case false:
       break
     }
-  }
-  
-  func tableView(_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
-    return isEditing
   }
   
   func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {

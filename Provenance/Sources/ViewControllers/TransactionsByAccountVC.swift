@@ -83,7 +83,7 @@ private extension TransactionsByAccountVC {
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
-        weakSelf.fetchingTasks()
+        weakSelf.tableNode.reloadData()
       }
     }
   }
@@ -106,7 +106,7 @@ private extension TransactionsByAccountVC {
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
-    tableNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshData))
+    tableNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshData))
   }
 }
 

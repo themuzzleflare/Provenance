@@ -60,7 +60,7 @@ final class TransactionCell: UITableViewCell {
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    configureCell()
+    configureSelf()
     configureContentView()
     configureTransactionDescription()
     configureTransactionCreationDate()
@@ -82,7 +82,7 @@ final class TransactionCell: UITableViewCell {
   // MARK: - Configuration
 
 private extension TransactionCell {
-  private func configureCell() {
+  private func configureSelf() {
     separatorInset = .zero
   }
   
@@ -91,20 +91,20 @@ private extension TransactionCell {
   }
   
   private func configureTransactionDescription() {
-    transactionDescriptionLabel.font = .circularStdBold(size: UIFont.labelFontSize)
+    transactionDescriptionLabel.font = .circularStdBold(size: .labelFontSize)
     transactionDescriptionLabel.textAlignment = .left
     transactionDescriptionLabel.numberOfLines = 0
   }
   
   private func configureTransactionCreationDate() {
-    transactionCreationDateLabel.font = .circularStdBookItalic(size: UIFont.smallSystemFontSize)
+    transactionCreationDateLabel.font = .circularStdBookItalic(size: .smallSystemFontSize)
     transactionCreationDateLabel.textAlignment = .left
     transactionCreationDateLabel.numberOfLines = 0
     transactionCreationDateLabel.textColor = .secondaryLabel
   }
   
   private func configureTransactionAmount() {
-    transactionAmountLabel.font = .circularStdBook(size: UIFont.labelFontSize)
+    transactionAmountLabel.font = .circularStdBook(size: .labelFontSize)
     transactionAmountLabel.textAlignment = .right
     transactionAmountLabel.numberOfLines = 0
   }

@@ -6,7 +6,7 @@ final class AddTagWorkflowVC: ASViewController {
     // MARK: - Properties
   
   private lazy var searchController = UISearchController(self)
-    
+  
   private let tableNode = ASTableNode(style: .grouped)
   
   private var dateStyleObserver: NSKeyValueObservation?
@@ -77,7 +77,7 @@ private extension AddTagWorkflowVC {
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
-        weakSelf.fetchTransactions()
+        weakSelf.tableNode.reloadData()
       }
     }
   }
@@ -100,7 +100,7 @@ private extension AddTagWorkflowVC {
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
-    tableNode.view.refreshControl = UIRefreshControl(self, selector: #selector(refreshTransactions))
+    tableNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshTransactions))
   }
 }
 

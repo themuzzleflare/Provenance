@@ -1,7 +1,7 @@
 import UIKit
 
 class TagResource: Codable {
-    /// The type of this resource: tags
+    /// The type of this resource: `tags`
   let type = "tags"
   
     /// The label of the tag, which also acts as the tag’s unique identifier.
@@ -26,6 +26,10 @@ extension TagResource {
 }
 
 extension Array where Element: TagResource {
+  static func singleTag(with tag: TagResource) -> [TagResource] {
+    return [tag]
+  }
+  
   func filtered(searchBar: UISearchBar) -> [TagResource] {
     return self.filter { (tag) in
       return searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchBar.text!)
@@ -49,7 +53,7 @@ extension Array where Element: TagResource {
   }
   
   var joinedWithComma: String {
-    return stringArray.joined(separator: ", ")
+    return ListFormatter.localizedString(byJoining: stringArray)
   }
   
   var relationshipDatas: [RelationshipData] {

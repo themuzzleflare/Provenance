@@ -14,21 +14,21 @@ extension UIAlertController {
   }
   
   static func removeTagFromTransaction(_ viewController: TransactionsByTagVC, removing tag: TagResource, from transaction: TransactionResource) -> UIAlertController {
-    let alertController = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(transaction.attributes.description)\"?", preferredStyle: .actionSheet)
+    let alertController = UIAlertController(title: nil, message: "Are you sure you want to remove \(tag.id) from \(transaction.attributes.description)?", preferredStyle: .actionSheet)
     alertController.addAction(.removeTagFromTransaction(viewController, removing: tag, from: transaction))
     alertController.addAction(.cancel)
     return alertController
   }
   
   static func removeTagFromTransaction(_ viewController: TransactionTagsVC, removing tag: TagResource, from transaction: TransactionResource) -> UIAlertController {
-    let alertController = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tag.id)\" from \"\(transaction.attributes.description)\"?", preferredStyle: .actionSheet)
+    let alertController = UIAlertController(title: nil, message: "Are you sure you want to remove \(tag.id) from \(transaction.attributes.description)?", preferredStyle: .actionSheet)
     alertController.addAction(.removeTagFromTransaction(viewController, removing: tag, from: transaction))
     alertController.addAction(.cancel)
     return alertController
   }
   
   static func removeTagsFromTransaction(_ viewController: TransactionTagsVC, removing tags: [TagResource], from transaction: TransactionResource) -> UIAlertController {
-    let alertController = UIAlertController(title: nil, message: "Are you sure you want to remove \"\(tags.joinedWithComma)\" from \"\(transaction.attributes.description)\"?", preferredStyle: .actionSheet)
+    let alertController = UIAlertController(title: nil, message: "Are you sure you want to remove \(tags.joinedWithComma) from \(transaction.attributes.description)?", preferredStyle: .actionSheet)
     alertController.addAction(.removeTagsFromTransaction(viewController, removing: tags, from: transaction))
     alertController.addAction(.cancel)
     return alertController
