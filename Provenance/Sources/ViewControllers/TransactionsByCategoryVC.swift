@@ -1,4 +1,4 @@
-import IGListKit
+import IGListDiffKit
 import AsyncDisplayKit
 import Alamofire
 
@@ -9,7 +9,7 @@ final class TransactionsByCategoryVC: ASViewController {
   
   private lazy var searchController = UISearchController(self)
   
-  private let tableNode = ASTableNode(style: .grouped)
+  private let tableNode = ASTableNode(style: .plain)
   
   private var dateStyleObserver: NSKeyValueObservation?
   
@@ -26,11 +26,11 @@ final class TransactionsByCategoryVC: ASViewController {
   
   private var transactionsError = String()
   
-  private var oldFilteredTransactions = [TransactionResource]()
-  
   private var filteredTransactions: [TransactionResource] {
     return transactions.filtered(searchBar: searchController.searchBar)
   }
+  
+  private var oldTransactionCellModels = [TransactionCellModel]()
   
     // MARK: - Life Cycle
   
@@ -71,16 +71,11 @@ private extension TransactionsByCategoryVC {
   }
   
   private func configureObservers() {
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(appMovedToForeground),
-      name: .willEnterForegroundNotification,
-      object: nil
-    )
+    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
-        weakSelf.tableNode.reloadData()
+        weakSelf.fetchTransactions()
       }
     }
   }
@@ -94,7 +89,7 @@ private extension TransactionsByCategoryVC {
   private func configureNavigation() {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .never
-    navigationItem.backBarButtonItem = UIBarButtonItem(image: .dollarsignCircle)
+    navigationItem.backBarButtonItem = .dollarsignCircle
     navigationItem.searchController = searchController
     navigationItem.hidesSearchBarWhenScrolling = false
   }
@@ -123,8 +118,8 @@ private extension TransactionsByCategoryVC {
     let result = ListDiffPaths(
       fromSection: 0,
       toSection: 0,
-      oldArray: oldFilteredTransactions,
-      newArray: filteredTransactions,
+      oldArray: oldTransactionCellModels,
+      newArray: filteredTransactions.transactionCellModels,
       option: .equality
     ).forBatchUpdates()
     if result.hasChanges || override || !transactionsError.isEmpty || noTransactions {
@@ -147,7 +142,7 @@ private extension TransactionsByCategoryVC {
         tableNode.deleteRows(at: result.deletes, with: .fade)
         tableNode.insertRows(at: result.inserts, with: .fade)
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldFilteredTransactions = filteredTransactions
+        oldTransactionCellModels = filteredTransactions.transactionCellModels
       }
       tableNode.performBatchUpdates(batchUpdates)
     }
@@ -207,15 +202,6 @@ extension TransactionsByCategoryVC: ASTableDelegate {
     let viewController = TransactionDetailVC(transaction: transaction)
     tableNode.deselectRow(at: indexPath, animated: true)
     navigationController?.pushViewController(viewController, animated: true)
-  }
-  
-  func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-    let transaction = filteredTransactions[indexPath.row]
-    return UIContextMenuConfiguration(elements: [
-      .copyTransactionDescription(transaction: transaction),
-      .copyTransactionCreationDate(transaction: transaction),
-      .copyTransactionAmount(transaction: transaction)
-    ])
   }
 }
 

@@ -16,9 +16,9 @@ target 'Provenance' do
   pod 'FLAnimatedImage'
   pod 'NotificationBannerSwift'
   pod 'SwiftDate'
-  pod 'Texture'
+  pod 'Texture', :git => 'https://github.com/TextureGroup/Texture.git'
+  pod 'Texture/IGListKit', :git => 'https://github.com/TextureGroup/Texture.git'
   pod 'SnapKit'
-  pod 'IGListKit/Diffing'
   pod 'BonMot'
   pod 'MBProgressHUD'
   

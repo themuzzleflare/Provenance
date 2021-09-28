@@ -40,7 +40,7 @@ final class AttributeCell: UITableViewCell {
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    configureCell()
+    configureSelf()
     configureContentView()
     configureLeftLabel()
     configureRightLabel()
@@ -55,7 +55,7 @@ final class AttributeCell: UITableViewCell {
   // MARK: - Configuration
 
 private extension AttributeCell {
-  private func configureCell() {
+  private func configureSelf() {
     separatorInset = .zero
     selectionStyle = .none
   }

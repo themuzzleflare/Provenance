@@ -26,6 +26,8 @@ final class IntentViewController: UIViewController {
   }
 }
 
+  // MARK: - INUIHostedViewControlling
+
 extension IntentViewController: INUIHostedViewControlling {
   func configureView(for parameters: Set<INParameter>, of interaction: INInteraction, interactiveBehavior: INUIInteractiveBehavior, context: INUIHostedViewContext, completion: @escaping (Bool, Set<INParameter>, CGSize) -> Void) {
     guard let intentResponse = interaction.intentResponse as? ListTransactionsIntentResponse, let transactionTypes = intentResponse.transactions else {
@@ -41,6 +43,8 @@ extension IntentViewController: INUIHostedViewControlling {
   }
 }
 
+  // MARK: - UITableViewDataSource
+
 extension IntentViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return transactions.count
@@ -55,6 +59,8 @@ extension IntentViewController: UITableViewDataSource {
     return cell
   }
 }
+
+  // MARK: - UITableViewDelegate
 
 extension IntentViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -44,6 +44,10 @@ extension TransactionAttribute {
     return settledAt?.toDate()?.dateComponents
   }
   
+  var sortingDate: Date {
+    return createdAt.toDate()?.dateAtStartOf(.day).date ?? Date()
+  }
+  
   var creationDate: String {
     return ProvenanceApp.formatDate(for: createdAt, dateStyle: ProvenanceApp.userDefaults.appDateStyle)
   }

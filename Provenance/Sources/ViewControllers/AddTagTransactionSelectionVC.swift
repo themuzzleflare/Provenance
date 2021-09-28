@@ -1,13 +1,13 @@
-import IGListKit
+import IGListDiffKit
 import AsyncDisplayKit
 import Alamofire
 
-final class AddTagWorkflowVC: ASViewController {
+final class AddTagTransactionSelectionVC: ASViewController {
     // MARK: - Properties
   
   private lazy var searchController = UISearchController(self)
   
-  private let tableNode = ASTableNode(style: .grouped)
+  private let tableNode = ASTableNode(style: .plain)
   
   private var dateStyleObserver: NSKeyValueObservation?
   
@@ -24,7 +24,7 @@ final class AddTagWorkflowVC: ASViewController {
   
   private var transactionsError = String()
   
-  private var oldFilteredTransactions = [TransactionResource]()
+  private var oldTransactionCellModels = [TransactionCellModel]()
   
   private var filteredTransactions: [TransactionResource] {
     return transactions.filtered(searchBar: searchController.searchBar)
@@ -61,23 +61,18 @@ final class AddTagWorkflowVC: ASViewController {
 
   // MARK: - Configuration
 
-private extension AddTagWorkflowVC {
+private extension AddTagTransactionSelectionVC {
   private func configureSelf() {
     title = "Transaction Selection"
     definesPresentationContext = true
   }
   
   private func configureObservers() {
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(appMovedToForeground),
-      name: .willEnterForegroundNotification,
-      object: nil
-    )
+    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
-        weakSelf.tableNode.reloadData()
+        weakSelf.fetchTransactions()
       }
     }
   }
@@ -106,7 +101,7 @@ private extension AddTagWorkflowVC {
 
   // MARK: - Actions
 
-private extension AddTagWorkflowVC {
+private extension AddTagTransactionSelectionVC {
   @objc private func appMovedToForeground() {
     fetchTransactions()
   }
@@ -125,8 +120,8 @@ private extension AddTagWorkflowVC {
     let result = ListDiffPaths(
       fromSection: 0,
       toSection: 0,
-      oldArray: oldFilteredTransactions,
-      newArray: filteredTransactions,
+      oldArray: oldTransactionCellModels,
+      newArray: filteredTransactions.transactionCellModels,
       option: .equality
     ).forBatchUpdates()
     if result.hasChanges || override || !transactionsError.isEmpty || noTransactions {
@@ -147,7 +142,7 @@ private extension AddTagWorkflowVC {
         tableNode.deleteRows(at: result.deletes, with: .fade)
         tableNode.insertRows(at: result.inserts, with: .fade)
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldFilteredTransactions = filteredTransactions
+        oldTransactionCellModels = filteredTransactions.transactionCellModels
       }
       tableNode.performBatchUpdates(batchUpdates)
     }
@@ -185,7 +180,7 @@ private extension AddTagWorkflowVC {
 
   // MARK: - ASTableDataSource
 
-extension AddTagWorkflowVC: ASTableDataSource {
+extension AddTagTransactionSelectionVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
     return filteredTransactions.count
   }
@@ -201,27 +196,18 @@ extension AddTagWorkflowVC: ASTableDataSource {
 
   // MARK: - ASTableDelegate
 
-extension AddTagWorkflowVC: ASTableDelegate {
+extension AddTagTransactionSelectionVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
     let transaction = filteredTransactions[indexPath.row]
-    let viewController = AddTagWorkflowTwoVC(transaction: transaction)
+    let viewController = AddTagTagsSelectionVC(transaction: transaction)
     tableNode.deselectRow(at: indexPath, animated: true)
     navigationController?.pushViewController(viewController, animated: true)
-  }
-  
-  func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-    let transaction = filteredTransactions[indexPath.row]
-    return UIContextMenuConfiguration(elements: [
-      .copyTransactionDescription(transaction: transaction),
-      .copyTransactionCreationDate(transaction: transaction),
-      .copyTransactionAmount(transaction: transaction)
-    ])
   }
 }
 
   // MARK: - UISearchBarDelegate
 
-extension AddTagWorkflowVC: UISearchBarDelegate {
+extension AddTagTransactionSelectionVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     applySnapshot()
   }

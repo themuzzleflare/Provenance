@@ -1,7 +1,7 @@
 import NotificationBannerSwift
 import AsyncDisplayKit
 
-final class AddTagWorkflowThreeVC: ASViewController {
+final class AddTagConfirmationVC: ASViewController {
     // MARK: - Properties
   
   private var transaction: TransactionResource
@@ -45,7 +45,7 @@ final class AddTagWorkflowThreeVC: ASViewController {
 
   // MARK: - Configuration
 
-private extension AddTagWorkflowThreeVC {
+private extension AddTagConfirmationVC {
   private func configureSelf() {
     title = "Add Tag Confirmation"
   }
@@ -67,7 +67,7 @@ private extension AddTagWorkflowThreeVC {
   private func configureNavigation() {
     navigationItem.title = "Confirmation"
     navigationItem.largeTitleDisplayMode = .never
-    navigationItem.rightBarButtonItem = UIBarButtonItem(image: .checkmark, style: .plain, target: self, action: #selector(addTag))
+    navigationItem.rightBarButtonItem = .confirmAddTags(self, action: #selector(addTags))
   }
   
   private func configureTableNode() {
@@ -78,8 +78,8 @@ private extension AddTagWorkflowThreeVC {
 
   // MARK: - Actions
 
-private extension AddTagWorkflowThreeVC {
-  @objc private func addTag() {
+private extension AddTagConfirmationVC {
+  @objc private func addTags() {
     navigationItem.setRightBarButton(.activityIndicator, animated: false)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
       UpFacade.modifyTags(adding: tags, to: transaction) { (error) in
@@ -91,7 +91,6 @@ private extension AddTagWorkflowThreeVC {
               style: .danger,
               duration: 2.0
             ).show()
-            navigationController?.popViewController(animated: true)
           } else {
             GrowingNotificationBanner(
               title: "Success",
@@ -99,8 +98,8 @@ private extension AddTagWorkflowThreeVC {
               style: .success,
               duration: 2.0
             ).show()
-            navigationController?.popViewController(animated: true)
           }
+          navigationController?.popViewController(animated: true)
         }
       }
     }
@@ -109,7 +108,7 @@ private extension AddTagWorkflowThreeVC {
 
   // MARK: - ASTableDataSource
 
-extension AddTagWorkflowThreeVC: ASTableDataSource {
+extension AddTagConfirmationVC: ASTableDataSource {
   func numberOfSections(in tableNode: ASTableNode) -> Int {
     return 3
   }

@@ -1,15 +1,19 @@
-import IGListDiffKit
+import IGListKit
 import AsyncDisplayKit
 import Alamofire
 
-final class TransactionsVC: ASViewController {
+final class TransactionsVCAlt: ASViewController {
     // MARK: - Properties
   
   private lazy var filterBarButtonItem = UIBarButtonItem(image: .sliderHorizontal3, menu: filterMenu)
   
   private lazy var searchController = UISearchController(self)
   
-  private let tableNode = ASTableNode(style: .plain)
+  private lazy var adapter: ListAdapter = {
+    return ListAdapter(updater: ListAdapterUpdater(), viewController: self)
+  }()
+  
+  private let collectionNode = ASCollectionNode(collectionViewLayout: .sectionHeadersPinned)
   
   private var apiKeyObserver: NSKeyValueObservation?
   
@@ -28,8 +32,6 @@ final class TransactionsVC: ASViewController {
   private var filteredTransactions: [TransactionResource] {
     return preFilteredTransactions.filtered(searchBar: searchController.searchBar)
   }
-  
-  private var oldTransactionCellModels = [TransactionCellModel]()
   
   private var preFilteredTransactions: [TransactionResource] {
     return transactions.filter { (transaction) in
@@ -52,7 +54,9 @@ final class TransactionsVC: ASViewController {
     // MARK: - Life Cycle
   
   override init() {
-    super.init(node: tableNode)
+    super.init(node: collectionNode)
+    adapter.setASDKCollectionNode(collectionNode)
+    adapter.dataSource = self
   }
   
   deinit {
@@ -66,10 +70,9 @@ final class TransactionsVC: ASViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
-    configureTableNode()
+    configureCollectionNode()
     configureSelf()
     configureNavigation()
-    applySnapshot(override: true)
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -80,11 +83,9 @@ final class TransactionsVC: ASViewController {
 
   // MARK: - Configuration
 
-extension TransactionsVC {
-  private func configureTableNode() {
-    tableNode.dataSource = self
-    tableNode.delegate = self
-    tableNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshTransactions))
+extension TransactionsVCAlt {
+  private func configureCollectionNode() {
+    collectionNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshTransactions))
   }
   
   private func configureSelf() {
@@ -103,7 +104,7 @@ extension TransactionsVC {
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
-        weakSelf.fetchingTasks()
+        weakSelf.adapter.performUpdates(animated: true)
       }
     }
   }
@@ -121,12 +122,13 @@ extension TransactionsVC {
     navigationItem.largeTitleDisplayMode = .always
     navigationItem.backBarButtonItem = .dollarsignCircle
     navigationItem.searchController = searchController
+    navigationItem.hidesSearchBarWhenScrolling = false
   }
 }
 
   // MARK: - Actions
 
-extension TransactionsVC {
+extension TransactionsVCAlt {
   @objc private func appMovedToForeground() {
     fetchingTasks()
   }
@@ -148,15 +150,15 @@ extension TransactionsVC {
   
   private func transactionsUpdates() {
     noTransactions = transactions.isEmpty
-    applySnapshot()
-    tableNode.view.refreshControl?.endRefreshing()
+    adapter.performUpdates(animated: true)
+    collectionNode.view.refreshControl?.endRefreshing()
     searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
   }
   
   private func filterUpdates() {
     filterBarButtonItem.menu = filterMenu
     searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
-    applySnapshot()
+    adapter.performUpdates(animated: true)
   }
   
   private func fetchingTasks() {
@@ -171,40 +173,6 @@ extension TransactionsVC {
       case let .settledOnly(settledOnly):
         self.showSettledOnly = settledOnly
       }
-    }
-  }
-  
-  private func applySnapshot(override: Bool = false) {
-    let result = ListDiffPaths(
-      fromSection: 0,
-      toSection: 0,
-      oldArray: oldTransactionCellModels,
-      newArray: filteredTransactions.transactionCellModels,
-      option: .equality
-    ).forBatchUpdates()
-    if result.hasChanges || override || !transactionsError.isEmpty || noTransactions {
-      if filteredTransactions.isEmpty && transactionsError.isEmpty {
-        if transactions.isEmpty && !noTransactions {
-          tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .transactions)
-        } else {
-          tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .transactions)
-        }
-      } else {
-        if !transactionsError.isEmpty {
-          tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: transactionsError)
-        } else {
-          if tableNode.view.backgroundView != nil {
-            tableNode.view.backgroundView = nil
-          }
-        }
-      }
-      let batchUpdates = { [self] in
-        tableNode.deleteRows(at: result.deletes, with: .fade)
-        tableNode.insertRows(at: result.inserts, with: .fade)
-        result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldTransactionCellModels = filteredTransactions.transactionCellModels
-      }
-      tableNode.performBatchUpdates(batchUpdates)
     }
   }
   
@@ -244,44 +212,55 @@ extension TransactionsVC {
   }
 }
 
-  // MARK: - ASTableDataSource
+  // MARK: - ListAdapterDataSource
 
-extension TransactionsVC: ASTableDataSource {
-  func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
-    return filteredTransactions.count
+extension TransactionsVCAlt: ListAdapterDataSource {
+  func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
+    return filteredTransactions.sortedTransactionModels
   }
   
-  func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let transaction = filteredTransactions[indexPath.row]
-    let node = TransactionCellNode(transaction: transaction)
-    return {
-      node
+  func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
+    return TransactionsSC(self)
+  }
+  
+  func emptyView(for listAdapter: ListAdapter) -> UIView? {
+    if filteredTransactions.isEmpty && transactionsError.isEmpty {
+      if transactions.isEmpty && !noTransactions {
+        return .loadingView(frame: collectionNode.bounds, contentType: .transactions)
+      } else {
+        return .noContentView(frame: collectionNode.bounds, type: .transactions)
+      }
+    } else {
+      if !transactionsError.isEmpty {
+        return .errorView(frame: collectionNode.bounds, text: transactionsError)
+      } else {
+        return nil
+      }
     }
   }
 }
 
-  // MARK: - ASTableDelegate
+  // MARK: - SelectionDelegate
 
-extension TransactionsVC: ASTableDelegate {
-  func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
-    let transaction = filteredTransactions[indexPath.row]
+extension TransactionsVCAlt: SelectionDelegate {
+  func didSelectItem(at indexPath: IndexPath) {
+    let transaction = filteredTransactions.sortedTransactionCoreModels[indexPath.section].transactions[indexPath.row]
     let viewController = TransactionDetailVC(transaction: transaction)
-    tableNode.deselectRow(at: indexPath, animated: true)
     navigationController?.pushViewController(viewController, animated: true)
   }
 }
 
   // MARK: - UISearchBarDelegate
 
-extension TransactionsVC: UISearchBarDelegate {
+extension TransactionsVCAlt: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    applySnapshot()
+    adapter.performUpdates(animated: true)
   }
   
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     if !searchBar.text!.isEmpty {
       searchBar.clear()
-      applySnapshot()
+      adapter.performUpdates(animated: true)
     }
   }
 }

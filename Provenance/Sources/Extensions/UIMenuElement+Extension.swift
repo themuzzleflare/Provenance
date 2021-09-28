@@ -13,15 +13,33 @@ extension UIMenuElement {
     })
   }
   
+  static func copyTransactionDescription(transaction: String) -> UIAction {
+    return UIAction(title: "Copy Description", image: .textAlignright, handler: { (_) in
+      UIPasteboard.general.string = transaction
+    })
+  }
+  
   static func copyTransactionCreationDate(transaction: TransactionResource) -> UIAction {
     return UIAction(title: "Copy Creation Date", image: .calendarCircle, handler: { (_) in
       UIPasteboard.general.string = transaction.attributes.creationDate
     })
   }
   
+  static func copyTransactionCreationDate(transaction: String) -> UIAction {
+    return UIAction(title: "Copy Creation Date", image: .calendarCircle, handler: { (_) in
+      UIPasteboard.general.string = transaction
+    })
+  }
+  
   static func copyTransactionAmount(transaction: TransactionResource) -> UIAction {
     return UIAction(title: "Copy Amount", image: .dollarsignCircle, handler: { (_) in
       UIPasteboard.general.string = transaction.attributes.amount.valueShort
+    })
+  }
+  
+  static func copyTransactionAmount(transaction: String) -> UIAction {
+    return UIAction(title: "Copy Amount", image: .dollarsignCircle, handler: { (_) in
+      UIPasteboard.general.string = transaction
     })
   }
   

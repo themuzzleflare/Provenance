@@ -1,6 +1,6 @@
 import Alamofire
 
-struct UpFacade {
+class UpFacade {
   private static let jsonEncoder = JSONParameterEncoder.default
   
     /// Ping

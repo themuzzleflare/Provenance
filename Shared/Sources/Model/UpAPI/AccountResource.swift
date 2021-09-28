@@ -1,24 +1,17 @@
 import UIKit
 
-class AccountResource: Codable {
+struct AccountResource: Codable, Identifiable {
     /// The type of this resource: `accounts`
-  let type = "accounts"
+  var type = "accounts"
   
     /// The unique identifier for this account.
-  let id: String
+  var id: String
   
-  let attributes: AccountAttribute
+  var attributes: AccountAttribute
   
-  let relationships: AccountRelationship
+  var relationships: AccountRelationship
   
-  let links: SelfLink?
-  
-  init(id: String, attributes: AccountAttribute, relationships: AccountRelationship, links: SelfLink? = nil) {
-    self.id = id
-    self.attributes = attributes
-    self.relationships = relationships
-    self.links = links
-  }
+  var links: SelfLink?
 }
 
 extension AccountResource {
@@ -40,7 +33,7 @@ extension AccountResource {
   }
 }
 
-extension Array where Element: AccountResource {
+extension Array where Element == AccountResource {
   func filtered(filter: AccountTypeOptionEnum, searchBar: UISearchBar) -> [AccountResource] {
     return self.filter { (account) in
       return searchBar.text!.isEmpty || (account.attributes.displayName.localizedStandardContains(searchBar.text!) && account.attributes.accountType == filter.accountTypeEnum)

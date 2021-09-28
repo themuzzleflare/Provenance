@@ -1,4 +1,4 @@
-import IGListKit
+import IGListDiffKit
 import AsyncDisplayKit
 import Alamofire
 
@@ -37,11 +37,11 @@ final class AccountsVC: ASViewController {
   
   private var accountsError = String()
   
-  private var oldFilteredAccounts = [AccountResource]()
-  
   private var filteredAccounts: [AccountResource] {
     return accounts.filtered(filter: accountFilter, searchBar: searchController.searchBar)
   }
+  
+  private var oldAccountCellModels = [AccountCellModel]()
   
     // MARK: - Life Cycle
   
@@ -81,12 +81,7 @@ private extension AccountsVC {
   }
   
   private func configureObservers() {
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(appMovedToForeground),
-      name: .willEnterForegroundNotification,
-      object: nil
-    )
+    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
@@ -110,7 +105,7 @@ private extension AccountsVC {
   private func configureNavigation() {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .always
-    navigationItem.backBarButtonItem = UIBarButtonItem(image: .walletPass)
+    navigationItem.backBarButtonItem = .walletPass
     navigationItem.searchController = searchController
   }
   
@@ -138,8 +133,8 @@ private extension AccountsVC {
     let result = ListDiffPaths(
       fromSection: 0,
       toSection: 0,
-      oldArray: oldFilteredAccounts,
-      newArray: filteredAccounts,
+      oldArray: oldAccountCellModels,
+      newArray: filteredAccounts.accountCellModels,
       option: .equality
     ).forBatchUpdates()
     if result.hasChanges || override || !accountsError.isEmpty || noAccounts {
@@ -163,7 +158,7 @@ private extension AccountsVC {
         collectionNode.insertItems(at: result.inserts)
         result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
         collectionNode.reloadItems(at: result.updates)
-        oldFilteredAccounts = filteredAccounts
+        oldAccountCellModels = filteredAccounts.accountCellModels
       }
       collectionNode.performBatchUpdates(batchUpdates)
     }

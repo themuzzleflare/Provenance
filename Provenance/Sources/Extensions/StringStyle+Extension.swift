@@ -21,7 +21,7 @@ extension StringStyle {
   
   static var transactionCreationDate: StringStyle {
     return StringStyle(
-      .font(.circularStdBookItalic(size: .smallSystemFontSize)),
+      .font(.circularStdBook(size: .smallSystemFontSize)),
       .color(.secondaryLabel),
       .alignment(.left)
     )

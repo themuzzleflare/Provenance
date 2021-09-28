@@ -96,12 +96,7 @@ private extension TransactionDetailVC {
   }
   
   private func configureObserver() {
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(appMovedToForeground),
-      name: .willEnterForegroundNotification,
-      object: nil
-    )
+    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
   }
   
   private func removeObserver() {
@@ -227,11 +222,6 @@ private extension TransactionDetailVC {
     var snapshot = Snapshot()
     snapshot.appendSections(filteredSections)
     filteredSections.forEach { snapshot.appendItems($0.items, toSection: $0) }
-    if snapshot.itemIdentifiers.isEmpty {
-      tableView.backgroundView = .loadingView(frame: tableView.bounds, contentType: .transactions)
-    } else if tableView.backgroundView != nil {
-      tableView.backgroundView = nil
-    }
     dataSource.apply(snapshot, animatingDifferences: animate)
   }
   

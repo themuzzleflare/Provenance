@@ -1,24 +1,17 @@
 import UIKit
 
-class TransactionResource: Codable {
+struct TransactionResource: Codable, Identifiable {
     /// The type of this resource: `transactions`
-  let type = "transactions"
+  var type = "transactions"
   
     /// The unique identifier for this transaction.
-  let id: String
+  var id: String
   
-  let attributes: TransactionAttribute
+  var attributes: TransactionAttribute
   
-  let relationships: TransactionRelationship
+  var relationships: TransactionRelationship
   
-  let links: SelfLink?
-  
-  init(id: String, attributes: TransactionAttribute, relationships: TransactionRelationship, links: SelfLink? = nil) {
-    self.id = id
-    self.attributes = attributes
-    self.relationships = relationships
-    self.links = links
-  }
+  var links: SelfLink?
 }
 
 extension TransactionResource {
@@ -43,7 +36,7 @@ extension TransactionResource {
   }
 }
 
-extension Array where Element: TransactionResource {
+extension Array where Element == TransactionResource {
   func filtered(searchBar: UISearchBar) -> [TransactionResource] {
     return self.filter { (transaction) in
       return searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchBar.text!)

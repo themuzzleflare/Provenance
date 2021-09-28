@@ -72,7 +72,7 @@ extension UIAlertAction {
       style: .default,
       handler: { (_) in
         if let tags = alertController.textFields?.tagResources {
-          let viewController = AddTagWorkflowThreeVC(transaction: transaction, tags: tags)
+          let viewController = AddTagConfirmationVC(transaction: transaction, tags: tags)
           navigationController?.pushViewController(viewController, animated: true)
         }
       }

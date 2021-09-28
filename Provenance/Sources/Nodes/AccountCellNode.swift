@@ -20,15 +20,15 @@ final class AccountCellNode: ASCellNode {
     backgroundColor = .secondarySystemGroupedBackground
   }
   
-  override var isHighlighted: Bool {
-    didSet {
-      backgroundColor = isHighlighted ? .systemGray4 : .secondarySystemGroupedBackground
-    }
-  }
-  
   override var isSelected: Bool {
     didSet {
       backgroundColor = isSelected ? .systemGray4 : .secondarySystemGroupedBackground
+    }
+  }
+  
+  override var isHighlighted: Bool {
+    didSet {
+      backgroundColor = isHighlighted ? .systemGray4 : .secondarySystemGroupedBackground
     }
   }
   

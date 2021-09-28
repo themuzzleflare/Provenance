@@ -1,4 +1,4 @@
-import IGListKit
+import IGListDiffKit
 import AsyncDisplayKit
 import Alamofire
 
@@ -9,7 +9,7 @@ final class TransactionsByTagVC: ASViewController {
   
   private lazy var searchController = UISearchController(self)
   
-  private let tableNode = ASTableNode(style: .grouped)
+  private let tableNode = ASTableNode(style: .plain)
   
   private var dateStyleObserver: NSKeyValueObservation?
   
@@ -29,12 +29,12 @@ final class TransactionsByTagVC: ASViewController {
   }
   
   private var transactionsError = String()
-  
-  private var oldFilteredTransactions = [TransactionResource]()
-  
+    
   private var filteredTransactions: [TransactionResource] {
     return transactions.filtered(searchBar: searchController.searchBar)
   }
+  
+  private var oldTransactionCellModels = [TransactionCellModel]()
   
     // MARK: - Life Cycle
   
@@ -84,7 +84,7 @@ private extension TransactionsByTagVC {
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
-        weakSelf.tableNode.reloadData()
+        weakSelf.fetchTransactions()
       }
     }
   }
@@ -98,7 +98,7 @@ private extension TransactionsByTagVC {
   private func configureNavigation() {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .never
-    navigationItem.backBarButtonItem = UIBarButtonItem(image: .dollarsignCircle)
+    navigationItem.backBarButtonItem = .dollarsignCircle
     navigationItem.rightBarButtonItem = editButtonItem
     navigationItem.searchController = searchController
     navigationItem.hidesSearchBarWhenScrolling = false
@@ -128,8 +128,8 @@ extension TransactionsByTagVC {
     let result = ListDiffPaths(
       fromSection: 0,
       toSection: 0,
-      oldArray: oldFilteredTransactions,
-      newArray: filteredTransactions,
+      oldArray: oldTransactionCellModels,
+      newArray: filteredTransactions.transactionCellModels,
       option: .equality
     ).forBatchUpdates()
     if result.hasChanges || override || !transactionsError.isEmpty || noTransactions {
@@ -152,7 +152,7 @@ extension TransactionsByTagVC {
         tableNode.deleteRows(at: result.deletes, with: .fade)
         tableNode.insertRows(at: result.inserts, with: .fade)
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldFilteredTransactions = filteredTransactions
+        oldTransactionCellModels = filteredTransactions.transactionCellModels
       }
       tableNode.performBatchUpdates(batchUpdates)
     }

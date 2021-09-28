@@ -1,9 +1,9 @@
 import NotificationBannerSwift
-import IGListKit
+import IGListDiffKit
 import AsyncDisplayKit
 import Alamofire
 
-final class AddTagWorkflowTwoVC: ASViewController {
+final class AddTagTagsSelectionVC: ASViewController {
     // MARK: - Properties
   
   private var transaction: TransactionResource
@@ -40,10 +40,10 @@ final class AddTagWorkflowTwoVC: ASViewController {
     target: self,
     action: #selector(nextAction)
   )
-    
+  
   private lazy var searchController = UISearchController(self)
   
-  private let tableNode = ASTableNode(style: .grouped)
+  private let tableNode = ASTableNode(style: .plain)
   
   private var showingBanner: Bool = false
   
@@ -61,7 +61,7 @@ final class AddTagWorkflowTwoVC: ASViewController {
   
   private var tagsError = String()
   
-  private var oldFilteredTags = [TagResource]()
+  private var oldTagCellModels = [TagCellModel]()
   
   private var filteredTags: [TagResource] {
     return tags.filtered(searchBar: searchController.searchBar)
@@ -130,19 +130,14 @@ final class AddTagWorkflowTwoVC: ASViewController {
 
   // MARK: - Configuration
 
-private extension AddTagWorkflowTwoVC {
+private extension AddTagTagsSelectionVC {
   private func configureSelf() {
     title = "Tag Selection"
     definesPresentationContext = true
   }
   
   private func configureObserver() {
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(appMovedToForeground),
-      name: .willEnterForegroundNotification,
-      object: nil
-    )
+    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
   }
   
   private func removeObserver() {
@@ -172,7 +167,7 @@ private extension AddTagWorkflowTwoVC {
 
   // MARK: - Actions
 
-private extension AddTagWorkflowTwoVC {
+private extension AddTagTagsSelectionVC {
   @objc private func appMovedToForeground() {
     fetchTags()
   }
@@ -190,7 +185,7 @@ private extension AddTagWorkflowTwoVC {
   
   @objc private func nextAction() {
     if let selectedTags = tableNode.indexPathsForSelectedRows?.map { filteredTags[$0.row] } {
-      let viewController = AddTagWorkflowThreeVC(transaction: transaction, tags: selectedTags)
+      let viewController = AddTagConfirmationVC(transaction: transaction, tags: selectedTags)
       navigationController?.pushViewController(viewController, animated: true)
     }
   }
@@ -228,8 +223,8 @@ private extension AddTagWorkflowTwoVC {
     let result = ListDiffPaths(
       fromSection: 0,
       toSection: 0,
-      oldArray: oldFilteredTags,
-      newArray: filteredTags,
+      oldArray: oldTagCellModels,
+      newArray: filteredTags.tagCellModels,
       option: .equality
     ).forBatchUpdates()
     if result.hasChanges || override || !tagsError.isEmpty || noTags {
@@ -252,7 +247,7 @@ private extension AddTagWorkflowTwoVC {
         tableNode.deleteRows(at: result.deletes, with: .automatic)
         tableNode.insertRows(at: result.inserts, with: .automatic)
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldFilteredTags = filteredTags
+        oldTagCellModels = filteredTags.tagCellModels
       }
       tableNode.performBatchUpdates(batchUpdates)
     }
@@ -297,7 +292,7 @@ private extension AddTagWorkflowTwoVC {
 
   // MARK: - ASTableDataSource
 
-extension AddTagWorkflowTwoVC: ASTableDataSource {
+extension AddTagTagsSelectionVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
     return filteredTags.count
   }
@@ -317,30 +312,25 @@ extension AddTagWorkflowTwoVC: ASTableDataSource {
 
   // MARK: - ASTableDelegate
 
-extension AddTagWorkflowTwoVC: ASTableDelegate {
+extension AddTagTagsSelectionVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-    guard let paths = tableNode.indexPathsForSelectedRows else { return indexPath }
-    switch paths.count {
-    case 6:
-      if !showingBanner {
-        let notificationBanner = FloatingNotificationBanner(
-          title: "Forbidden",
-          subtitle: "You can only select a maximum of 6 tags.",
-          style: .danger
-        )
-        notificationBanner.delegate = self
-        notificationBanner.duration = 0.5
-        notificationBanner.show(
-          bannerPosition: .bottom,
-          cornerRadius: 10,
-          shadowBlurRadius: 5,
-          shadowCornerRadius: 20
-        )
-      }
-      return nil
-    default:
-      return indexPath
+    guard let paths = tableNode.indexPathsForSelectedRows, paths.count == 6 else { return indexPath }
+    if !showingBanner {
+      let notificationBanner = FloatingNotificationBanner(
+        title: "Forbidden",
+        subtitle: "You can only select a maximum of 6 tags.",
+        style: .danger
+      )
+      notificationBanner.delegate = self
+      notificationBanner.duration = 1.5
+      notificationBanner.show(
+        bannerPosition: .top,
+        cornerRadius: 10,
+        shadowBlurRadius: 5,
+        shadowCornerRadius: 20
+      )
     }
+    return nil
   }
   
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
@@ -349,7 +339,7 @@ extension AddTagWorkflowTwoVC: ASTableDelegate {
       updateToolbarItems()
     case false:
       let tag = filteredTags[indexPath.row]
-      let viewController = AddTagWorkflowThreeVC(transaction: transaction, tag: tag)
+      let viewController = AddTagConfirmationVC(transaction: transaction, tag: tag)
       tableNode.deselectRow(at: indexPath, animated: true)
       navigationController?.pushViewController(viewController, animated: true)
     }
@@ -379,7 +369,7 @@ extension AddTagWorkflowTwoVC: ASTableDelegate {
 
   // MARK: - UITextFieldDelegate
 
-extension AddTagWorkflowTwoVC: UITextFieldDelegate {
+extension AddTagTagsSelectionVC: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? .emptyString
     guard let stringRange = Range(range, in: textField.text ?? .emptyString) else { return false }
@@ -390,7 +380,7 @@ extension AddTagWorkflowTwoVC: UITextFieldDelegate {
 
   // MARK: - UISearchBarDelegate
 
-extension AddTagWorkflowTwoVC: UISearchBarDelegate {
+extension AddTagTagsSelectionVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     applySnapshot()
     updateToolbarItems()
@@ -406,7 +396,7 @@ extension AddTagWorkflowTwoVC: UISearchBarDelegate {
 
   // MARK: - NotificationBannerDelegate
 
-extension AddTagWorkflowTwoVC: NotificationBannerDelegate {
+extension AddTagTagsSelectionVC: NotificationBannerDelegate {
   func notificationBannerWillAppear(_ banner: BaseNotificationBanner) {
     showingBanner = true
   }

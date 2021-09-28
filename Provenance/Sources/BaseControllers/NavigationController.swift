@@ -1,6 +1,6 @@
 import AsyncDisplayKit
 
-final class NavigationController: ASNavigationController {
+final class NavigationController: ASDKNavigationController {
     // MARK: - Life Cycle
   
   override init(rootViewController: UIViewController) {

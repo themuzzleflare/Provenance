@@ -1,4 +1,4 @@
-import IGListKit
+import IGListDiffKit
 import AsyncDisplayKit
 import Alamofire
 
@@ -37,7 +37,7 @@ final class CategoriesVC: ASViewController {
   
   private var categoriesError = String()
   
-  private var oldFilteredCategories = [CategoryResource]()
+  private var oldCategoryCellModels = [CategoryCellModel]()
   
   private var filteredCategories: [CategoryResource] {
     return categories.filtered(filter: categoryFilter, searchBar: searchController.searchBar)
@@ -80,12 +80,7 @@ private extension CategoriesVC {
   }
   
   private func configureObservers() {
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(appMovedToForeground),
-      name: .willEnterForegroundNotification,
-      object: nil
-    )
+    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
@@ -109,7 +104,7 @@ private extension CategoriesVC {
   private func configureNavigation() {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .always
-    navigationItem.backBarButtonItem = UIBarButtonItem(image: .trayFull)
+    navigationItem.backBarButtonItem = .trayFull
     navigationItem.searchController = searchController
   }
   
@@ -137,8 +132,8 @@ private extension CategoriesVC {
     let result = ListDiffPaths(
       fromSection: 0,
       toSection: 0,
-      oldArray: oldFilteredCategories,
-      newArray: filteredCategories,
+      oldArray: oldCategoryCellModels,
+      newArray: filteredCategories.categoryCellModels,
       option: .equality
     ).forBatchUpdates()
     if result.hasChanges || override || !categoriesError.isEmpty || noCategories {
@@ -162,7 +157,7 @@ private extension CategoriesVC {
         collectionNode.insertItems(at: result.inserts)
         result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
         collectionNode.reloadItems(at: result.updates)
-        oldFilteredCategories = filteredCategories
+        oldCategoryCellModels = filteredCategories.categoryCellModels
       }
       collectionNode.performBatch(animated: true, updates: batchUpdates)
     }

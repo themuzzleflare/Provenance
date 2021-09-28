@@ -1,4 +1,5 @@
 import UIKit
+import MarqueeLabel
 
 final class AccountDetailVC: ViewController {
     // MARK: - Properties
@@ -74,12 +75,7 @@ private extension AccountDetailVC {
   }
   
   private func configureObserver() {
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(appMovedToForeground),
-      name: .willEnterForegroundNotification,
-      object: nil
-    )
+    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
   }
   
   private func removeObserver() {
@@ -88,6 +84,7 @@ private extension AccountDetailVC {
   
   private func configureNavigation() {
     navigationItem.title = account.attributes.displayName
+    navigationItem.titleView = MarqueeLabel(text: account.attributes.displayName)
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.leftBarButtonItem = .close(self, action: #selector(closeWorkflow))
   }

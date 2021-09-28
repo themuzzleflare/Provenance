@@ -1,18 +1,13 @@
 import UIKit
 
-class TagResource: Codable {
+struct TagResource: Codable, Identifiable {
     /// The type of this resource: `tags`
-  let type = "tags"
+  var type = "tags"
   
     /// The label of the tag, which also acts as the tag’s unique identifier.
-  let id: String
+  var id: String
   
-  let relationships: TagRelationship?
-  
-  init(id: String, relationships: TagRelationship? = nil) {
-    self.id = id
-    self.relationships = relationships
-  }
+  var relationships: TagRelationship?
 }
 
 extension TagResource {
@@ -25,7 +20,7 @@ extension TagResource {
   }
 }
 
-extension Array where Element: TagResource {
+extension Array where Element == TagResource {
   static func singleTag(with tag: TagResource) -> [TagResource] {
     return [tag]
   }

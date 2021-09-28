@@ -6,7 +6,8 @@ extension UISearchController {
     self.searchBar.delegate = delegate
     self.obscuresBackgroundDuringPresentation = false
     self.searchBar.searchBarStyle = .minimal
-    self.searchBar.placeholder = "Search"
+    self.searchBar.autocorrectionType = .no
+    self.searchBar.autocapitalizationType = .none
   }
   
   static func accounts(_ delegate: UISearchBarDelegate) -> UISearchController {

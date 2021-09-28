@@ -33,9 +33,9 @@ private extension AboutVC {
   private func configureNavigation() {
     navigationItem.title = "About"
     navigationItem.largeTitleDisplayMode = .never
-    navigationItem.backBarButtonItem = UIBarButtonItem(image: .infoCircle)
-    navigationItem.leftBarButtonItem = UIBarButtonItem(image: .chevronLeftSlashChevronRight, style: .plain, target: self, action: #selector(openDiagnostics))
-    navigationItem.rightBarButtonItem = UIBarButtonItem(image: .gear, style: .plain, target: self, action: #selector(openSettings))
+    navigationItem.backBarButtonItem = .infoCircle
+    navigationItem.leftBarButtonItem = .openDiagnostics(self, action: #selector(openDiagnostics))
+    navigationItem.rightBarButtonItem = .openSettings(self, action: #selector(openSettings))
   }
   
   private func configureTableNode() {

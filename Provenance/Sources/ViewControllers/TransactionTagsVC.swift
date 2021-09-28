@@ -1,4 +1,4 @@
-import IGListKit
+import IGListDiffKit
 import AsyncDisplayKit
 
 final class TransactionTagsVC: ASViewController {
@@ -16,7 +16,7 @@ final class TransactionTagsVC: ASViewController {
     }
   }
   
-  private var oldTags = [TagResource]()
+  private var oldTagCellModels = [TagCellModel]()
   
   private var tags: [TagResource] {
     return transaction.relationships.tags.data.tagResources
@@ -48,7 +48,7 @@ final class TransactionTagsVC: ASViewController {
     action: #selector(removeTags)
   )
   
-  private let tableNode = ASTableNode(style: .grouped)
+  private let tableNode = ASTableNode(style: .plain)
   
     // MARK: - Life Cycle
   
@@ -107,12 +107,7 @@ private extension TransactionTagsVC {
   }
   
   private func configureObserver() {
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(appMovedToForeground),
-      name: .willEnterForegroundNotification,
-      object: nil
-    )
+    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
   }
   
   private func removeObserver() {
@@ -147,7 +142,7 @@ extension TransactionTagsVC {
   }
   
   @objc private func openAddWorkflow() {
-    let viewController = NavigationController(rootViewController: AddTagWorkflowTwoVC(transaction: transaction, fromTransactionTags: true))
+    let viewController = NavigationController(rootViewController: AddTagTagsSelectionVC(transaction: transaction, fromTransactionTags: true))
     present(.fullscreen(viewController), animated: true)
   }
   
@@ -190,8 +185,8 @@ extension TransactionTagsVC {
     let result = ListDiffPaths(
       fromSection: 0,
       toSection: 0,
-      oldArray: oldTags,
-      newArray: tags,
+      oldArray: oldTagCellModels,
+      newArray: tags.tagCellModels,
       option: .equality
     ).forBatchUpdates()
     if result.hasChanges || override {
@@ -199,7 +194,7 @@ extension TransactionTagsVC {
         tableNode.deleteRows(at: result.deletes, with: .automatic)
         tableNode.insertRows(at: result.inserts, with: .automatic)
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldTags = tags
+        oldTagCellModels = tags.tagCellModels
       }
       tableNode.performBatchUpdates(batchUpdates)
     }

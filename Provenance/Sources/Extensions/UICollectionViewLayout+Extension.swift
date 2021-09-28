@@ -6,6 +6,12 @@ extension UICollectionViewLayout {
     return UICollectionViewFlowLayout()
   }
   
+  static var sectionHeadersPinned: UICollectionViewLayout {
+    let layout = UICollectionViewFlowLayout()
+    layout.sectionHeadersPinToVisibleBounds = true
+    return layout
+  }
+  
     /// `twoColumnGridLayout`.
   static var twoColumnGridLayout: UICollectionViewLayout {
     return UICollectionViewCompositionalLayout { (_, _) in

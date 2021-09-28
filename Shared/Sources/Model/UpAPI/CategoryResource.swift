@@ -1,24 +1,17 @@
 import UIKit
 
-class CategoryResource: Codable {
+struct CategoryResource: Codable, Identifiable {
     /// The type of this resource: `categories`
-  let type = "categories"
+  var type = "categories"
   
     /// The unique identifier for this category. This is a human-readable but URL-safe value.
-  let id: String
+  var id: String
   
-  let attributes: CategoryAttribute
+  var attributes: CategoryAttribute
   
-  let relationships: CategoryRelationship
+  var relationships: CategoryRelationship
   
-  let links: SelfLink?
-  
-  init(id: String, attributes: CategoryAttribute, relationships: CategoryRelationship, links: SelfLink? = nil) {
-    self.id = id
-    self.attributes = attributes
-    self.relationships = relationships
-    self.links = links
-  }
+  var links: SelfLink?
 }
 
 extension CategoryResource {
@@ -34,7 +27,7 @@ extension CategoryResource {
   }
 }
 
-extension Array where Element: CategoryResource {
+extension Array where Element == CategoryResource {
   func filtered(filter: CategoryTypeEnum, searchBar: UISearchBar) -> [CategoryResource] {
     return self.filter { (category) in
       return searchBar.text!.isEmpty || (category.attributes.name.localizedStandardContains(searchBar.text!) && category.categoryTypeEnum == filter)

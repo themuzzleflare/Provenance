@@ -19,6 +19,8 @@ final class StickersVC: ASViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureSelf()
+    configureNavigation()
+    configureCollectionNode()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -32,8 +34,14 @@ final class StickersVC: ASViewController {
 private extension StickersVC {
   private func configureSelf() {
     title = "Stickers"
+  }
+  
+  private func configureNavigation() {
     navigationItem.title = "Stickers"
     navigationItem.largeTitleDisplayMode = .never
+  }
+  
+  private func configureCollectionNode() {
     collectionNode.dataSource = self
     collectionNode.delegate = self
   }

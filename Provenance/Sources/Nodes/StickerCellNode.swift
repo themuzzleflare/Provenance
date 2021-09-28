@@ -9,6 +9,7 @@ final class StickerCellNode: ASCellNode {
     automaticallyManagesSubnodes = true
     
     stickerImageNode.animatedImage = sticker
+    
     borderWidth = 1
     borderColor = .separator
   }

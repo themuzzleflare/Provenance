@@ -1,4 +1,4 @@
-import IGListKit
+import IGListDiffKit
 import AsyncDisplayKit
 import Alamofire
 
@@ -6,8 +6,8 @@ final class TagsVC: ASViewController {
     // MARK: - Properties
   
   private lazy var searchController = UISearchController(self)
-    
-  private let tableNode = ASTableNode(style: .grouped)
+  
+  private let tableNode = ASTableNode(style: .plain)
   
   private var apiKeyObserver: NSKeyValueObservation?
   
@@ -24,7 +24,7 @@ final class TagsVC: ASViewController {
   
   private var tagsError = String()
   
-  private var oldFilteredTags = [TagResource]()
+  private var oldTagCellModels = [TagCellModel]()
   
   private var filteredTags: [TagResource] {
     return tags.filtered(searchBar: searchController.searchBar)
@@ -68,12 +68,7 @@ private extension TagsVC {
   }
   
   private func configureObservers() {
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(appMovedToForeground),
-      name: .willEnterForegroundNotification,
-      object: nil
-    )
+    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
@@ -91,7 +86,7 @@ private extension TagsVC {
   private func configureNavigation() {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .always
-    navigationItem.backBarButtonItem = UIBarButtonItem(image: .tag)
+    navigationItem.backBarButtonItem = .tag
     navigationItem.searchController = searchController
   }
   
@@ -109,10 +104,9 @@ private extension TagsVC {
     fetchTags()
   }
   
-  @objc private func openAddWorkflow() {
-    let viewController = NavigationController(rootViewController: AddTagWorkflowVC())
-    viewController.modalPresentationStyle = .fullScreen
-    present(viewController, animated: true)
+  @objc private func addTags() {
+    let viewController = NavigationController(rootViewController: AddTagTransactionSelectionVC())
+    present(.fullscreen(viewController), animated: true)
   }
   
   @objc private func refreshTags() {
@@ -125,8 +119,8 @@ private extension TagsVC {
     let result = ListDiffPaths(
       fromSection: 0,
       toSection: 0,
-      oldArray: oldFilteredTags,
-      newArray: filteredTags,
+      oldArray: oldTagCellModels,
+      newArray: filteredTags.tagCellModels,
       option: .equality
     ).forBatchUpdates()
     if result.hasChanges || override || !tagsError.isEmpty || noTags {
@@ -149,7 +143,7 @@ private extension TagsVC {
         tableNode.deleteRows(at: result.deletes, with: .automatic)
         tableNode.insertRows(at: result.inserts, with: .automatic)
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldFilteredTags = filteredTags
+        oldTagCellModels = filteredTags.tagCellModels
       }
       tableNode.performBatchUpdates(batchUpdates)
     }
@@ -175,8 +169,7 @@ private extension TagsVC {
       navigationItem.title = "Tags"
     }
     if navigationItem.rightBarButtonItem == nil {
-      let barButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openAddWorkflow))
-      navigationItem.setRightBarButton(barButtonItem, animated: true)
+      navigationItem.setRightBarButton(.addTags(self, action: #selector(addTags)), animated: true)
     }
   }
   

@@ -11,8 +11,7 @@ extension UIEdgeInsets {
     return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
   }
   
-    /// `UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 0)`.
   static var sectionHeader: UIEdgeInsets {
-    return UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 0)
+    return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 0)
   }
 }

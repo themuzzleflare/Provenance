@@ -17,15 +17,19 @@ final class StatusIconHelpView: ASViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    configure()
+    configureSelf()
+    configureNavigation()
   }
 }
 
   // MARK: - Configuration
 
 private extension StatusIconHelpView {
-  private func configure() {
+  private func configureSelf() {
     title = "Transaction Status Icons"
+  }
+  
+  private func configureNavigation() {
     navigationItem.title = "Transaction Status Icons"
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.leftBarButtonItem = .close(self, action: #selector(closeWorkflow))

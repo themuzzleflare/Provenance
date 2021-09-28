@@ -1,5 +1,6 @@
-import IGListKit
+import IGListDiffKit
 import AsyncDisplayKit
+import MarqueeLabel
 import Alamofire
 
 final class TransactionsByAccountVC: ASViewController {
@@ -15,7 +16,7 @@ final class TransactionsByAccountVC: ASViewController {
   
   private lazy var searchController = UISearchController(self)
   
-  private let tableNode = ASTableNode(style: .grouped)
+  private let tableNode = ASTableNode(style: .plain)
   
   private var dateStyleObserver: NSKeyValueObservation?
   
@@ -28,12 +29,12 @@ final class TransactionsByAccountVC: ASViewController {
   }
   
   private var transactionsError = String()
-  
-  private var oldFilteredTransactions = [TransactionResource]()
-  
+    
   private var filteredTransactions: [TransactionResource] {
     return transactions.filtered(searchBar: searchController.searchBar)
   }
+  
+  private var oldTransactionCellModels = [TransactionCellModel]()
   
     // MARK: - Life Cycle
   
@@ -74,16 +75,11 @@ private extension TransactionsByAccountVC {
   }
   
   private func configureObservers() {
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(appMovedToForeground),
-      name: .willEnterForegroundNotification,
-      object: nil
-    )
+    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
-        weakSelf.tableNode.reloadData()
+        weakSelf.fetchingTasks()
       }
     }
   }
@@ -97,7 +93,7 @@ private extension TransactionsByAccountVC {
   private func configureNavigation() {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .never
-    navigationItem.backBarButtonItem = UIBarButtonItem(image: .dollarsignCircle)
+    navigationItem.backBarButtonItem = .dollarsignCircle
     navigationItem.rightBarButtonItem = UIBarButtonItem(image: .infoCircle, style: .plain, target: self, action: #selector(openAccountInfo))
     navigationItem.searchController = searchController
     navigationItem.hidesSearchBarWhenScrolling = false
@@ -148,8 +144,8 @@ private extension TransactionsByAccountVC {
     let result = ListDiffPaths(
       fromSection: 0,
       toSection: 0,
-      oldArray: oldFilteredTransactions,
-      newArray: filteredTransactions,
+      oldArray: oldTransactionCellModels,
+      newArray: filteredTransactions.transactionCellModels,
       option: .equality
     ).forBatchUpdates()
     if result.hasChanges || override || !transactionsError.isEmpty || noTransactions {
@@ -172,7 +168,7 @@ private extension TransactionsByAccountVC {
         tableNode.deleteRows(at: result.deletes, with: .fade)
         tableNode.insertRows(at: result.inserts, with: .fade)
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldFilteredTransactions = filteredTransactions
+        oldTransactionCellModels = filteredTransactions.transactionCellModels
       }
       tableNode.performBatchUpdates(batchUpdates)
     }
@@ -213,6 +209,7 @@ private extension TransactionsByAccountVC {
     self.transactions = transactions
     if navigationItem.title != account.attributes.displayName {
       navigationItem.title = account.attributes.displayName
+      navigationItem.titleView = MarqueeLabel(text: account.attributes.displayName)
     }
   }
   
@@ -249,15 +246,6 @@ extension TransactionsByAccountVC: ASTableDelegate {
     let viewController = TransactionDetailVC(transaction: transaction)
     tableNode.deselectRow(at: indexPath, animated: true)
     navigationController?.pushViewController(viewController, animated: true)
-  }
-  
-  func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-    let transaction = filteredTransactions[indexPath.row]
-    return UIContextMenuConfiguration(elements: [
-      .copyTransactionDescription(transaction: transaction),
-      .copyTransactionCreationDate(transaction: transaction),
-      .copyTransactionAmount(transaction: transaction)
-    ])
   }
 }
 

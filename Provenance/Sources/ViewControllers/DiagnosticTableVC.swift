@@ -65,7 +65,7 @@ private extension DiagnosticTableVC {
   private func makeDataSource() -> DataSource {
     return DataSource(
       tableView: tableView,
-      cellProvider: { tableView, indexPath, attribute in
+      cellProvider: { (tableView, indexPath, attribute) in
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as? AttributeCell else {
           fatalError("Unable to dequeue reusable cell with identifier: \(AttributeCell.reuseIdentifier)")
         }
