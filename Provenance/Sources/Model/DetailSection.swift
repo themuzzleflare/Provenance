@@ -2,7 +2,6 @@ import Foundation
 
 struct DetailSection: Identifiable {
   var id: Int
-  
   var items: [DetailItem]
 }
 

@@ -48,6 +48,26 @@ extension UserDefaults {
     }
   }
   
+    /// The boolean of the "settledOnly" key.
+  @objc dynamic var settledOnly: Bool {
+    get {
+      return bool(forKey: Keys.settledOnly)
+    }
+    set {
+      setValue(newValue, forKey: Keys.settledOnly)
+    }
+  }
+  
+    /// The integer of the "transactionGrouping" key.
+  @objc dynamic var transactionGrouping: Int {
+    get {
+      return integer(forKey: Keys.transactionGrouping)
+    }
+    set {
+      setValue(newValue, forKey: Keys.transactionGrouping)
+    }
+  }
+  
     /// The last selected account for the account balance widget.
   var selectedAccount: String? {
     get {
@@ -88,6 +108,16 @@ extension UserDefaults {
     }
   }
   
+    /// The configured `TransactionGroupingEnum` enumeration based on the integer of the "transactionGrouping" key.
+  var appTransactionGrouping: TransactionGroupingEnum {
+    get {
+      return TransactionGroupingEnum(rawValue: transactionGrouping) ?? .all
+    }
+    set {
+      transactionGrouping = newValue.rawValue
+    }
+  }
+  
     /// The short version string of the application.
   var appVersion: String {
     return string(forKey: Keys.appVersion) ?? "Unknown"
@@ -105,6 +135,8 @@ extension UserDefaults {
     static let dateStyle = "dateStyle"
     static let accountFilter = "accountFilter"
     static let categoryFilter = "categoryFilter"
+    static let settledOnly = "settledOnly"
+    static let transactionGrouping = "transactionGrouping"
     static let selectedAccount = "selectedAccount"
     static let appVersion = "appVersion"
     static let appBuild = "appBuild"

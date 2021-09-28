@@ -1,17 +1,30 @@
 import UIKit
 
 extension UIMenu {
-  static func transactionsFilterMenu(filter: CategoryFilter, showSettledOnly: Bool, completion: @escaping (FilterMenuAction) -> Void) -> UIMenu {
+  static func transactionsFilterMenu(categoryFilter: TransactionCategory, groupingFilter: TransactionGroupingEnum, showSettledOnly: Bool, completion: @escaping (FilterMenuAction) -> Void) -> UIMenu {
     return UIMenu(children: [
       UIMenu(
         title: "Category",
-        image: filter == .all ? .trayFull : .trayFullFill,
-        children: CategoryFilter.allCases.map { (category) in
+        image: categoryFilter == .all ? .trayFull : .trayFullFill,
+        children: TransactionCategory.allCases.map { (category) in
           UIAction(
             title: category.name,
-            state: filter == category ? .on : .off,
+            state: categoryFilter == category ? .on : .off,
             handler: { (_) in
               completion(.category(category))
+            }
+          )
+        }
+      ),
+      UIMenu(
+        title: "Grouping",
+        image: groupingFilter == .all ? .squareStack : .squareStackFill,
+        children: TransactionGroupingEnum.allCases.map { (grouping) in
+          UIAction(
+            title: grouping.description,
+            state: groupingFilter == grouping ? .on : .off,
+            handler: { (_) in
+              completion(.grouping(grouping))
             }
           )
         }

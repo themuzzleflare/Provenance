@@ -156,4 +156,12 @@ extension Image {
   static var xmarkDiamondFill: Image {
     return Image(systemName: "xmark.diamond.fill")
   }
+  
+  static var squareStack: Image {
+    return Image(systemName: "square.stack")
+  }
+  
+  static var squareStackFill: Image {
+    return Image(systemName: "square.stack.fill")
+  }
 }

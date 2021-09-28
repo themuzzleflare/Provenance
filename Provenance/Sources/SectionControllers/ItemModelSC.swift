@@ -1,8 +1,8 @@
 import IGListKit
 import AsyncDisplayKit
 
-final class TransactionsSC: ListSectionController {
-  private var object: SortedTransactionModel?
+final class ItemModelSC: ListSectionController {
+  private var object: TransactionCellModel?
   
   weak var delegate: SelectionDelegate?
   
@@ -10,10 +10,6 @@ final class TransactionsSC: ListSectionController {
     self.delegate = delegate
     super.init()
     supplementaryViewSource = self
-  }
-  
-  override func numberOfItems() -> Int {
-    return object?.transactions.count ?? 0
   }
   
   override func sizeForItem(at index: Int) -> CGSize {
@@ -25,7 +21,7 @@ final class TransactionsSC: ListSectionController {
   }
   
   override func didUpdate(to object: Any) {
-    self.object = object as? SortedTransactionModel
+    self.object = object as? TransactionCellModel
   }
   
   override func didSelectItem(at index: Int) {
@@ -48,10 +44,9 @@ final class TransactionsSC: ListSectionController {
 
   // MARK: - ASSectionController
 
-extension TransactionsSC: ASSectionController {
+extension ItemModelSC: ASSectionController {
   func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
-    let transaction = object?.transactions[index]
-    let node = TransactionCellNode(transaction: transaction)
+    let node = TransactionCellNode(transaction: object)
     return {
       node
     }
@@ -64,9 +59,9 @@ extension TransactionsSC: ASSectionController {
 
   // MARK: - ListSupplementaryViewSource
 
-extension TransactionsSC: ListSupplementaryViewSource {
+extension ItemModelSC: ListSupplementaryViewSource {
   func supportedElementKinds() -> [String] {
-    return [ASCollectionView.elementKindSectionHeader]
+    return [ASCollectionView.elementKindSectionFooter]
   }
   
   func viewForSupplementaryElement(ofKind elementKind: String, at index: Int) -> UICollectionReusableView {
@@ -80,15 +75,15 @@ extension TransactionsSC: ListSupplementaryViewSource {
 
   // MARK: - ASSupplementaryNodeSource
 
-extension TransactionsSC: ASSupplementaryNodeSource {
+extension ItemModelSC: ASSupplementaryNodeSource {
   func nodeBlockForSupplementaryElement(ofKind elementKind: String, at index: Int) -> ASCellNodeBlock {
-    let node = HeaderCellNode(object: object)
+    let node = SeparatorCellNode()
     return {
       node
     }
   }
   
   func sizeRangeForSupplementaryElement(ofKind elementKind: String, at index: Int) -> ASSizeRange {
-    return .cellNode(minHeight: 45, maxHeight: 45)
+    return .separator
   }
 }

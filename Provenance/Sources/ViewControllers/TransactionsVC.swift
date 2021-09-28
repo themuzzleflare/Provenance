@@ -1,4 +1,4 @@
-import IGListDiffKit
+import IGListKit
 import AsyncDisplayKit
 import Alamofire
 
@@ -9,15 +9,42 @@ final class TransactionsVC: ASViewController {
   
   private lazy var searchController = UISearchController(self)
   
-  private let tableNode = ASTableNode(style: .plain)
+  private lazy var adapter: ListAdapter = {
+    return ListAdapter(updater: ListAdapterUpdater(), viewController: self)
+  }()
+  
+  private let collectionNode = ASCollectionNode(collectionViewLayout: .flowLayout)
   
   private var apiKeyObserver: NSKeyValueObservation?
   
   private var dateStyleObserver: NSKeyValueObservation?
   
+  private var settledOnlyObserver: NSKeyValueObservation?
+  
+  private var transactionGroupingObserver: NSKeyValueObservation?
+  
   private var noTransactions: Bool = false
   
   private var transactionsError = String()
+  
+  private lazy var segmentedControl: UISegmentedControl = {
+    let control = UISegmentedControl(items: TransactionGroupingEnum.allCases.map { return $0.description })
+    control.selectedSegmentIndex = transactionGrouping.rawValue
+    control.addTarget(self, action: #selector(onControl(_:)), for: .valueChanged)
+    return control
+  }()
+  
+  private var transactionGrouping: TransactionGroupingEnum = ProvenanceApp.userDefaults.appTransactionGrouping {
+    didSet {
+      if ProvenanceApp.userDefaults.transactionGrouping != transactionGrouping.rawValue {
+        ProvenanceApp.userDefaults.transactionGrouping = transactionGrouping.rawValue
+      }
+      if segmentedControl.selectedSegmentIndex != transactionGrouping.rawValue {
+        segmentedControl.selectedSegmentIndex = transactionGrouping.rawValue
+      }
+      filterUpdates()
+    }
+  }
   
   private var transactions = [TransactionResource]() {
     didSet {
@@ -29,22 +56,23 @@ final class TransactionsVC: ASViewController {
     return preFilteredTransactions.filtered(searchBar: searchController.searchBar)
   }
   
-  private var oldTransactionCellModels = [TransactionCellModel]()
-  
   private var preFilteredTransactions: [TransactionResource] {
     return transactions.filter { (transaction) in
       (!showSettledOnly || transaction.attributes.status.isSettled) && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
     }
   }
   
-  private var filter: CategoryFilter = .all {
+  private var filter: TransactionCategory = .all {
     didSet {
       filterUpdates()
     }
   }
   
-  private var showSettledOnly: Bool = false {
+  private var showSettledOnly: Bool = ProvenanceApp.userDefaults.settledOnly {
     didSet {
+      if ProvenanceApp.userDefaults.settledOnly != showSettledOnly {
+        ProvenanceApp.userDefaults.settledOnly = showSettledOnly
+      }
       filterUpdates()
     }
   }
@@ -52,7 +80,9 @@ final class TransactionsVC: ASViewController {
     // MARK: - Life Cycle
   
   override init() {
-    super.init(node: tableNode)
+    super.init(node: collectionNode)
+    adapter.setASDKCollectionNode(collectionNode)
+    adapter.dataSource = self
   }
   
   deinit {
@@ -66,10 +96,9 @@ final class TransactionsVC: ASViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
-    configureTableNode()
+    configureCollectionNode()
     configureSelf()
     configureNavigation()
-    applySnapshot(override: true)
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -81,10 +110,8 @@ final class TransactionsVC: ASViewController {
   // MARK: - Configuration
 
 extension TransactionsVC {
-  private func configureTableNode() {
-    tableNode.dataSource = self
-    tableNode.delegate = self
-    tableNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshTransactions))
+  private func configureCollectionNode() {
+    collectionNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshTransactions))
   }
   
   private func configureSelf() {
@@ -103,8 +130,16 @@ extension TransactionsVC {
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
-        weakSelf.fetchingTasks()
+        weakSelf.adapter.performUpdates(animated: true)
       }
+    }
+    settledOnlyObserver = ProvenanceApp.userDefaults.observe(\.settledOnly, options: .new) { [weak self] (_, change) in
+      guard let weakSelf = self, let value = change.newValue else { return }
+      weakSelf.showSettledOnly = value
+    }
+    transactionGroupingObserver = ProvenanceApp.userDefaults.observe(\.transactionGrouping, options: .new) { [weak self] (_, change) in
+      guard let weakSelf = self, let value = change.newValue, let grouping = TransactionGroupingEnum(rawValue: value) else { return }
+      weakSelf.transactionGrouping = grouping
     }
   }
   
@@ -114,6 +149,10 @@ extension TransactionsVC {
     apiKeyObserver = nil
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil
+    settledOnlyObserver?.invalidate()
+    settledOnlyObserver = nil
+    transactionGroupingObserver?.invalidate()
+    transactionGroupingObserver = nil
   }
   
   private func configureNavigation() {
@@ -127,6 +166,12 @@ extension TransactionsVC {
   // MARK: - Actions
 
 extension TransactionsVC {
+  @objc func onControl(_ control: UISegmentedControl) {
+    if let value = TransactionGroupingEnum(rawValue: control.selectedSegmentIndex) {
+      transactionGrouping = value
+    }
+  }
+  
   @objc private func appMovedToForeground() {
     fetchingTasks()
   }
@@ -148,15 +193,15 @@ extension TransactionsVC {
   
   private func transactionsUpdates() {
     noTransactions = transactions.isEmpty
-    applySnapshot()
-    tableNode.view.refreshControl?.endRefreshing()
+    adapter.performUpdates(animated: true)
+    collectionNode.view.refreshControl?.endRefreshing()
     searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
   }
   
   private func filterUpdates() {
     filterBarButtonItem.menu = filterMenu
     searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
-    applySnapshot()
+    adapter.performUpdates(animated: true)
   }
   
   private func fetchingTasks() {
@@ -164,47 +209,15 @@ extension TransactionsVC {
   }
   
   private var filterMenu: UIMenu {
-    return .transactionsFilterMenu(filter: filter, showSettledOnly: showSettledOnly) { (type) in
+    return .transactionsFilterMenu(categoryFilter: filter, groupingFilter: transactionGrouping, showSettledOnly: showSettledOnly) { (type) in
       switch type {
       case let .category(category):
         self.filter = category
+      case let .grouping(grouping):
+        self.transactionGrouping = grouping
       case let .settledOnly(settledOnly):
         self.showSettledOnly = settledOnly
       }
-    }
-  }
-  
-  private func applySnapshot(override: Bool = false) {
-    let result = ListDiffPaths(
-      fromSection: 0,
-      toSection: 0,
-      oldArray: oldTransactionCellModels,
-      newArray: filteredTransactions.transactionCellModels,
-      option: .equality
-    ).forBatchUpdates()
-    if result.hasChanges || override || !transactionsError.isEmpty || noTransactions {
-      if filteredTransactions.isEmpty && transactionsError.isEmpty {
-        if transactions.isEmpty && !noTransactions {
-          tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .transactions)
-        } else {
-          tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .transactions)
-        }
-      } else {
-        if !transactionsError.isEmpty {
-          tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: transactionsError)
-        } else {
-          if tableNode.view.backgroundView != nil {
-            tableNode.view.backgroundView = nil
-          }
-        }
-      }
-      let batchUpdates = { [self] in
-        tableNode.deleteRows(at: result.deletes, with: .fade)
-        tableNode.insertRows(at: result.inserts, with: .fade)
-        result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldTransactionCellModels = filteredTransactions.transactionCellModels
-      }
-      tableNode.performBatchUpdates(batchUpdates)
     }
   }
   
@@ -227,8 +240,11 @@ extension TransactionsVC {
     if navigationItem.title != "Transactions" {
       navigationItem.title = "Transactions"
     }
-    if navigationItem.leftBarButtonItems == nil {
-      navigationItem.setLeftBarButtonItems([.dateStyleButtonItem(self, action: #selector(switchDateStyle)), filterBarButtonItem], animated: true)
+    if navigationItem.leftBarButtonItem == nil {
+      navigationItem.setLeftBarButton(.dateStyleButtonItem(self, action: #selector(switchDateStyle)), animated: true)
+    }
+    if navigationItem.rightBarButtonItem == nil {
+      navigationItem.setRightBarButton(filterBarButtonItem, animated: true)
     }
   }
   
@@ -238,36 +254,68 @@ extension TransactionsVC {
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"
     }
-    if navigationItem.leftBarButtonItems != nil {
-      navigationItem.setLeftBarButtonItems(nil, animated: true)
+    if navigationItem.leftBarButtonItem != nil {
+      navigationItem.setLeftBarButton(nil, animated: true)
+    }
+    if navigationItem.rightBarButtonItem != nil {
+      navigationItem.setRightBarButton(nil, animated: true)
     }
   }
 }
 
-  // MARK: - ASTableDataSource
+  // MARK: - ListAdapterDataSource
 
-extension TransactionsVC: ASTableDataSource {
-  func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
-    return filteredTransactions.count
+extension TransactionsVC: ListAdapterDataSource {
+  func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
+    guard transactionGrouping != .all else {
+      return filteredTransactions.sortedTransactionModels.sortedMixedModel
+    }
+    return filteredTransactions.sortedTransactionModels.sortedMixedModel.filter { type(of: $0) == transactionGrouping.valueType! }
   }
   
-  func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let transaction = filteredTransactions[indexPath.row]
-    let node = TransactionCellNode(transaction: transaction)
-    return {
-      node
+  func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
+    switch object {
+    case is SortedSectionModel:
+      return SectionModelSC()
+    case is TransactionCellModel:
+      return ItemModelSC(self)
+    default:
+      return ItemModelSC(self)
+    }
+  }
+  
+  func emptyView(for listAdapter: ListAdapter) -> UIView? {
+    if filteredTransactions.isEmpty && transactionsError.isEmpty {
+      if transactions.isEmpty && !noTransactions {
+        return .loadingView(frame: collectionNode.bounds, contentType: .transactions)
+      } else {
+        return .noContentView(frame: collectionNode.bounds, type: .transactions)
+      }
+    } else {
+      if !transactionsError.isEmpty {
+        return .errorView(frame: collectionNode.bounds, text: transactionsError)
+      } else {
+        return nil
+      }
     }
   }
 }
 
-  // MARK: - ASTableDelegate
+  // MARK: - SelectionDelegate
 
-extension TransactionsVC: ASTableDelegate {
-  func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
-    let transaction = filteredTransactions[indexPath.row]
-    let viewController = TransactionDetailVC(transaction: transaction)
-    tableNode.deselectRow(at: indexPath, animated: true)
-    navigationController?.pushViewController(viewController, animated: true)
+extension TransactionsVC: SelectionDelegate {
+  func didSelectItem(at indexPath: IndexPath) {
+    switch transactionGrouping.valueType {
+    case is TransactionCellModel.Type:
+      let transaction = filteredTransactions.sortedTransactionCoreModels.sortedMixedCoreModel.filter { type(of: $0) == TransactionResource.self }.transactionResources[indexPath.section]
+      let viewController = TransactionDetailVC(transaction: transaction)
+      navigationController?.pushViewController(viewController, animated: true)
+    default:
+      if let transaction = filteredTransactions.sortedTransactionCoreModels.sortedMixedCoreModel[indexPath.section] as? TransactionResource {
+        let viewController = TransactionDetailVC(transaction: transaction)
+        navigationController?.pushViewController(viewController, animated: true)
+      }
+    }
   }
 }
 
@@ -275,13 +323,13 @@ extension TransactionsVC: ASTableDelegate {
 
 extension TransactionsVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    applySnapshot()
+    adapter.performUpdates(animated: true)
   }
   
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     if !searchBar.text!.isEmpty {
       searchBar.clear()
-      applySnapshot()
+      adapter.performUpdates(animated: true)
     }
   }
 }

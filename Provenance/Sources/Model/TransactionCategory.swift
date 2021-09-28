@@ -1,6 +1,6 @@
 import Foundation
 
-enum CategoryFilter: String, CaseIterable {
+enum TransactionCategory: String, CaseIterable {
   case all
   case gamesAndSoftware = "games-and-software"
   case carInsuranceAndMaintenance = "car-insurance-and-maintenance"
@@ -45,7 +45,7 @@ enum CategoryFilter: String, CaseIterable {
   case technology
 }
 
-extension CategoryFilter {
+extension TransactionCategory {
   var name: String {
     switch self {
     case .gamesAndSoftware:

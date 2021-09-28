@@ -14,6 +14,16 @@ final class HeaderCellNode: ASCellNode {
     backgroundColor = .secondarySystemGroupedBackground
   }
   
+  init(object: SortedSectionModel?) {
+    super.init()
+    
+    automaticallyManagesSubnodes = true
+    
+    dateTextNode.attributedText = object?.id.toString(.date(.medium)).styled(with: .provenance)
+    
+    backgroundColor = .secondarySystemGroupedBackground
+  }
+  
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
     return ASInsetLayoutSpec(insets: .sectionHeader, child: dateTextNode)
   }

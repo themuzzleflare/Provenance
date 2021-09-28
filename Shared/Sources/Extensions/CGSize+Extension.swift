@@ -6,6 +6,6 @@ extension CGSize {
   }
   
   static var separator: CGSize {
-    return CGSize(width: .screenWidth, height: 0.5)
+    return CGSize(width: .screenWidth, height: 0.25)
   }
 }

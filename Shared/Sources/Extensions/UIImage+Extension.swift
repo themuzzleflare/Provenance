@@ -156,4 +156,12 @@ extension UIImage {
   static var xmarkDiamondFill: UIImage {
     return UIImage(systemName: "xmark.diamond.fill")!
   }
+  
+  static var squareStack: UIImage {
+    return UIImage(systemName: "square.stack")!
+  }
+  
+  static var squareStackFill: UIImage {
+    return UIImage(systemName: "square.stack.fill")!
+  }
 }

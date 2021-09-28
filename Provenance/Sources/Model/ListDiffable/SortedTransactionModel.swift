@@ -18,3 +18,20 @@ final class SortedTransactionModel: ListDiffable {
     return self.id == object.id && self.transactions == object.transactions
   }
 }
+
+extension SortedTransactionModel {
+  var sortedSectionModel: SortedSectionModel {
+    return SortedSectionModel(id: self.id)
+  }
+}
+
+extension Array where Element: SortedTransactionModel {
+  var sortedMixedModel: [ListDiffable] {
+    var data = [ListDiffable]()
+    self.forEach { (object) in
+      data.append(object.sortedSectionModel)
+      data.append(contentsOf: object.transactions)
+    }
+    return data
+  }
+}

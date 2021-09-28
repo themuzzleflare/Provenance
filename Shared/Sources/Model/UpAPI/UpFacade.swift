@@ -37,7 +37,7 @@ class UpFacade {
     ]
     
     let parameters: Parameters = [
-      "page[size]": "100"
+      "page[size]": "30"
     ]
     
     AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)

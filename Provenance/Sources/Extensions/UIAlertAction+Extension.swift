@@ -22,12 +22,11 @@ extension UIAlertAction {
     return UIAlertAction(title: "Remove", style: .destructive) { (_) in
       UpFacade.modifyTags(removing: tag, from: transaction) { (error) in
         DispatchQueue.main.async {
-          switch error {
-          case .none:
+          if let error = error {
+            GrowingNotificationBanner(title: "Failed", subtitle: error.errorDescription ?? error.localizedDescription, style: .danger, duration: 2.0).show()
+          } else {
             GrowingNotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success, duration: 2.0).show()
             viewController.fetchTransactions()
-          default:
-            GrowingNotificationBanner(title: "Failed", subtitle: error?.errorDescription ?? error?.localizedDescription ?? .emptyString, style: .danger, duration: 2.0).show()
           }
         }
       }
@@ -38,12 +37,11 @@ extension UIAlertAction {
     return UIAlertAction(title: "Remove", style: .destructive) { (_) in
       UpFacade.modifyTags(removing: tag, from: transaction) { (error) in
         DispatchQueue.main.async {
-          switch error {
-          case .none:
+          if let error = error {
+            GrowingNotificationBanner(title: "Failed", subtitle: error.errorDescription ?? error.localizedDescription, style: .danger, duration: 2.0).show()
+          } else {
             GrowingNotificationBanner(title: "Success", subtitle: "\(tag.id) was removed from \(transaction.attributes.description).", style: .success, duration: 2.0).show()
             viewController.fetchTransaction()
-          default:
-            GrowingNotificationBanner(title: "Failed", subtitle: error?.errorDescription ?? error?.localizedDescription ?? .emptyString, style: .danger, duration: 2.0).show()
           }
         }
       }
@@ -54,12 +52,11 @@ extension UIAlertAction {
     return UIAlertAction(title: "Remove", style: .destructive) { (_) in
       UpFacade.modifyTags(removing: tags, from: transaction) { (error) in
         DispatchQueue.main.async {
-          switch error {
-          case .none:
+          if let error = error {
+            GrowingNotificationBanner(title: "Failed", subtitle: error.errorDescription ?? error.localizedDescription, style: .danger, duration: 2.0).show()
+          } else {
             GrowingNotificationBanner(title: "Success", subtitle: "\(tags.joinedWithComma) \(tags.count == 1 ? "was" : "were") removed from \(transaction.attributes.description).", style: .success, duration: 2.0).show()
             viewController.fetchTransaction()
-          default:
-            GrowingNotificationBanner(title: "Failed", subtitle: error?.errorDescription ?? error?.localizedDescription ?? .emptyString, style: .danger, duration: 2.0).show()
           }
         }
       }
@@ -90,8 +87,14 @@ extension UIAlertAction {
           if !answer.isEmpty && answer != ProvenanceApp.userDefaults.apiKey {
             UpFacade.ping(with: answer) { (error) in
               DispatchQueue.main.async {
-                switch error {
-                case .none:
+                if let error = error {
+                  GrowingNotificationBanner(
+                    title: "Failed",
+                    subtitle: error.errorDescription ?? error.localizedDescription,
+                    style: .danger,
+                    duration: 2.0
+                  ).show()
+                } else {
                   GrowingNotificationBanner(
                     title: "Success",
                     subtitle: "The API Key was verified and saved.",
@@ -99,13 +102,6 @@ extension UIAlertAction {
                     duration: 2.0
                   ).show()
                   ProvenanceApp.userDefaults.apiKey = answer
-                default:
-                  GrowingNotificationBanner(
-                    title: "Failed",
-                    subtitle: error?.errorDescription ?? error?.localizedDescription ?? .emptyString,
-                    style: .danger,
-                    duration: 2.0
-                  ).show()
                 }
               }
             }
@@ -134,8 +130,16 @@ extension UIAlertAction {
           if !answer.isEmpty && answer != ProvenanceApp.userDefaults.apiKey {
             UpFacade.ping(with: answer) { (error) in
               DispatchQueue.main.async {
-                switch error {
-                case .none:
+                if let error = error {
+                  let notificationBanner = GrowingNotificationBanner(
+                    title: "Failed",
+                    subtitle: error.errorDescription ?? error.localizedDescription,
+                    style: .danger,
+                    duration: 2.0
+                  )
+                  let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
+                  sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
+                } else {
                   let notificationBanner = GrowingNotificationBanner(
                     title: "Success",
                     subtitle: "The API Key was verified and saved.",
@@ -144,15 +148,6 @@ extension UIAlertAction {
                   )
                   let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
                   ProvenanceApp.userDefaults.apiKey = answer
-                  sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
-                default:
-                  let notificationBanner = GrowingNotificationBanner(
-                    title: "Failed",
-                    subtitle: error?.errorDescription ?? error?.localizedDescription ?? .emptyString,
-                    style: .danger,
-                    duration: 2.0
-                  )
-                  let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
                   sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
                 }
               }
