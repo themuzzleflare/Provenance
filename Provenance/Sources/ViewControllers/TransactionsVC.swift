@@ -27,20 +27,10 @@ final class TransactionsVC: ASViewController {
   
   private var transactionsError = String()
   
-  private lazy var segmentedControl: UISegmentedControl = {
-    let control = UISegmentedControl(items: TransactionGroupingEnum.allCases.map { return $0.description })
-    control.selectedSegmentIndex = transactionGrouping.rawValue
-    control.addTarget(self, action: #selector(onControl(_:)), for: .valueChanged)
-    return control
-  }()
-  
   private var transactionGrouping: TransactionGroupingEnum = ProvenanceApp.userDefaults.appTransactionGrouping {
     didSet {
       if ProvenanceApp.userDefaults.transactionGrouping != transactionGrouping.rawValue {
         ProvenanceApp.userDefaults.transactionGrouping = transactionGrouping.rawValue
-      }
-      if segmentedControl.selectedSegmentIndex != transactionGrouping.rawValue {
-        segmentedControl.selectedSegmentIndex = transactionGrouping.rawValue
       }
       filterUpdates()
     }
@@ -58,12 +48,15 @@ final class TransactionsVC: ASViewController {
   
   private var preFilteredTransactions: [TransactionResource] {
     return transactions.filter { (transaction) in
-      (!showSettledOnly || transaction.attributes.status.isSettled) && (filter == .all || filter.rawValue == transaction.relationships.category.data?.id)
+      (!showSettledOnly || transaction.attributes.status.isSettled) && (categoryFilter == .all || categoryFilter.rawValue == transaction.relationships.category.data?.id)
     }
   }
   
-  private var filter: TransactionCategory = .all {
+  private var categoryFilter: TransactionCategory = ProvenanceApp.userDefaults.appSelectedCategory {
     didSet {
+      if ProvenanceApp.userDefaults.selectedCategory != categoryFilter.rawValue {
+        ProvenanceApp.userDefaults.selectedCategory = categoryFilter.rawValue
+      }
       filterUpdates()
     }
   }
@@ -166,12 +159,6 @@ extension TransactionsVC {
   // MARK: - Actions
 
 extension TransactionsVC {
-  @objc func onControl(_ control: UISegmentedControl) {
-    if let value = TransactionGroupingEnum(rawValue: control.selectedSegmentIndex) {
-      transactionGrouping = value
-    }
-  }
-  
   @objc private func appMovedToForeground() {
     fetchingTasks()
   }
@@ -209,10 +196,10 @@ extension TransactionsVC {
   }
   
   private var filterMenu: UIMenu {
-    return .transactionsFilterMenu(categoryFilter: filter, groupingFilter: transactionGrouping, showSettledOnly: showSettledOnly) { (type) in
+    return .transactionsFilterMenu(categoryFilter: categoryFilter, groupingFilter: transactionGrouping, showSettledOnly: showSettledOnly) { (type) in
       switch type {
       case let .category(category):
-        self.filter = category
+        self.categoryFilter = category
       case let .grouping(grouping):
         self.transactionGrouping = grouping
       case let .settledOnly(settledOnly):
@@ -277,8 +264,6 @@ extension TransactionsVC: ListAdapterDataSource {
     switch object {
     case is SortedSectionModel:
       return SectionModelSC()
-    case is TransactionCellModel:
-      return ItemModelSC(self)
     default:
       return ItemModelSC(self)
     }

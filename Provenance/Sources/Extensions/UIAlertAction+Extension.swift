@@ -102,6 +102,7 @@ extension UIAlertAction {
                     duration: 2.0
                   ).show()
                   ProvenanceApp.userDefaults.apiKey = answer
+                  viewController.tableNode.reloadData()
                 }
               }
             }
@@ -126,8 +127,8 @@ extension UIAlertAction {
       title: "Save",
       style: .default,
       handler: { (_) in
-        if let answer = alertController.textFields?.first?.text {
-          if !answer.isEmpty && answer != ProvenanceApp.userDefaults.apiKey {
+        if let textField = alertController.textFields?.first, let answer = textField.text {
+          if textField.hasText && answer != ProvenanceApp.userDefaults.apiKey {
             UpFacade.ping(with: answer) { (error) in
               DispatchQueue.main.async {
                 if let error = error {

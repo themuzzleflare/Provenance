@@ -14,13 +14,8 @@ final class APIKeyCellNode: ASCellNode {
   }
   
   private lazy var marqueeLabel = ASDisplayNode { () -> UIView in
-    let view = MarqueeLabel()
-    view.speed = .rate(65)
-    view.fadeLength = 10
-    view.textAlignment = .left
-    view.font = .circularStdBook(size: UIFont.labelFontSize)
+    let view = MarqueeLabel(text: self.apiKeyDisplay)
     view.textColor = self.apiKeyDisplay == "None" ? .placeholderText : .label
-    view.text = self.apiKeyDisplay
     return view
   }
   

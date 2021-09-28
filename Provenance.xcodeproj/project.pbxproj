@@ -381,6 +381,9 @@
 		7A89B16B2702F58400330165 /* TransactionGroupingEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89B1692702F58400330165 /* TransactionGroupingEnum.swift */; };
 		7A89B16C2702F58400330165 /* TransactionGroupingEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89B1692702F58400330165 /* TransactionGroupingEnum.swift */; };
 		7A89B16D2702F58400330165 /* TransactionGroupingEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89B1692702F58400330165 /* TransactionGroupingEnum.swift */; };
+		7A8DDBD82703163300DDC098 /* TransactionCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A14D5FF261AD5FF00C072E3 /* TransactionCategory.swift */; };
+		7A8DDBD92703163400DDC098 /* TransactionCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A14D5FF261AD5FF00C072E3 /* TransactionCategory.swift */; };
+		7A8DDBDA2703163400DDC098 /* TransactionCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A14D5FF261AD5FF00C072E3 /* TransactionCategory.swift */; };
 		7A8E41F126048320003D0E6A /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD1279A2604702600A39272 /* Widgets.swift */; };
 		7A90F52226F096D200384F53 /* AccountResource+CellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F52126F096D200384F53 /* AccountResource+CellModel.swift */; };
 		7A90F53026F097BB00384F53 /* TagResource+CellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F52F26F097BB00384F53 /* TagResource+CellModel.swift */; };
@@ -889,7 +892,6 @@
 				7AA113BE26154F3800386E2D /* DetailItem.swift */,
 				7AF2151026EF4175009F4F38 /* ContentType.swift */,
 				7A22713826817399001F63FF /* ShortcutType.swift */,
-				7A14D5FF261AD5FF00C072E3 /* TransactionCategory.swift */,
 				7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */,
 				7AF2155F26F057F1009F4F38 /* FilterMenuAction.swift */,
 				7AB304F427014A77009F366E /* SRCopyableLabel.swift */,
@@ -1011,6 +1013,7 @@
 			isa = PBXGroup;
 			children = (
 				7A75631826A7ED8000963658 /* UpAPI */,
+				7A14D5FF261AD5FF00C072E3 /* TransactionCategory.swift */,
 				7A5B06C926F2BE86005CE3D1 /* ProvenanceApp.swift */,
 				7AF2151E26F047BD009F4F38 /* AppDateStyle.swift */,
 				7A5B06CA26F2BE87005CE3D1 /* InfoPlist.swift */,
@@ -1829,6 +1832,7 @@
 				7A340B7B26F9C16900D43523 /* RoundUpObject.swift in Sources */,
 				7A340B6626F9C16900D43523 /* CategoryAttribute.swift in Sources */,
 				7A340B2F26F9C11300D43523 /* String+Extension.swift in Sources */,
+				7A8DDBD92703163400DDC098 /* TransactionCategory.swift in Sources */,
 				7A340B6026F9C16900D43523 /* TransactionRelationshipCategory.swift in Sources */,
 				7A340B6D26F9C16900D43523 /* AccountAttribute.swift in Sources */,
 				7A340B5C26F9C16900D43523 /* Category.swift in Sources */,
@@ -1873,6 +1877,7 @@
 				7A80231526FC855F008600B0 /* TransactionAmountType.swift in Sources */,
 				7A80234426FC8577008600B0 /* SingleAccount.swift in Sources */,
 				7A80231D26FC855F008600B0 /* ProvenanceApp.swift in Sources */,
+				7A8DDBD82703163300DDC098 /* TransactionCategory.swift in Sources */,
 				7A80233926FC8577008600B0 /* TagRelationship.swift in Sources */,
 				7A80233F26FC8577008600B0 /* MoneyObject.swift in Sources */,
 				7A80231F26FC855F008600B0 /* AppWidgets.swift in Sources */,
@@ -2137,6 +2142,7 @@
 				7A340BA126F9C16900D43523 /* RoundUpObject.swift in Sources */,
 				7A340B8226F9C16900D43523 /* Category.swift in Sources */,
 				7A8022F426FC8489008600B0 /* NSAttributedString+Extension.swift in Sources */,
+				7A8DDBDA2703163400DDC098 /* TransactionCategory.swift in Sources */,
 				7A340B8B26F9C16900D43523 /* TransactionStatusEnum.swift in Sources */,
 				7A340B9426F9C16900D43523 /* AccountResource.swift in Sources */,
 				7AE54D082611671D005D38A5 /* AccountBalance.swift in Sources */,

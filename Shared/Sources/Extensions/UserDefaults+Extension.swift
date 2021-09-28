@@ -78,6 +78,24 @@ extension UserDefaults {
     }
   }
   
+  var selectedCategory: String {
+    get {
+      return string(forKey: Keys.selectedCategory) ?? TransactionCategory.all.rawValue
+    }
+    set {
+      setValue(newValue, forKey: Keys.selectedCategory)
+    }
+  }
+  
+  var appSelectedCategory: TransactionCategory {
+    get {
+      return TransactionCategory(rawValue: selectedCategory) ?? .all
+    }
+    set {
+      selectedCategory = newValue.rawValue
+    }
+  }
+  
     /// The configured `AppDateStyle` enumeration based on the integer of the "dateStyle" key.
   var appDateStyle: AppDateStyle {
     get {
@@ -138,6 +156,7 @@ extension UserDefaults {
     static let settledOnly = "settledOnly"
     static let transactionGrouping = "transactionGrouping"
     static let selectedAccount = "selectedAccount"
+    static let selectedCategory = "selectedCategory"
     static let appVersion = "appVersion"
     static let appBuild = "appBuild"
   }

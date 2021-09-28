@@ -12,7 +12,7 @@ final class SettingsVC: ASViewController {
   
   var textDidChangeObserver: NSObjectProtocol!
   
-  private let tableNode = ASTableNode(style: .grouped)
+  let tableNode = ASTableNode(style: .grouped)
   
     // MARK: - Life Cycle
   
