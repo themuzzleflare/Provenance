@@ -6,6 +6,7 @@ extension UICollectionViewLayout {
     return UICollectionViewFlowLayout()
   }
   
+    /// A `UICollectionViewFlowLayout()` with `sectionHeadersPinToVisibleBounds` set to `true`.
   static var sectionHeadersPinned: UICollectionViewLayout {
     let layout = UICollectionViewFlowLayout()
     layout.sectionHeadersPinToVisibleBounds = true

@@ -7,6 +7,10 @@ final class TagCellModel: ListDiffable {
     self.id = tag.id
   }
   
+  init(id: String) {
+    self.id = id
+  }
+  
   func diffIdentifier() -> NSObjectProtocol {
     return id as NSObjectProtocol
   }

@@ -11,6 +11,12 @@ final class AccountCellModel: ListDiffable {
     self.displayName = account.attributes.displayName
   }
   
+  init(id: String, balance: String, displayName: String) {
+    self.id = id
+    self.balance = balance
+    self.displayName = displayName
+  }
+  
   func diffIdentifier() -> NSObjectProtocol {
     return id as NSObjectProtocol
   }

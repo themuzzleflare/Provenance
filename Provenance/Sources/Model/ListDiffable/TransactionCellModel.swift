@@ -15,6 +15,14 @@ final class TransactionCellModel: ListDiffable {
     self.colour = transaction.attributes.amount.transactionType.colour
   }
   
+  init(id: String, description: String, creationDate: String, amount: String, colour: TransactionColour) {
+    self.id = id
+    self.description = description
+    self.creationDate = creationDate
+    self.amount = amount
+    self.colour = colour
+  }
+  
   func diffIdentifier() -> NSObjectProtocol {
     return id as NSObjectProtocol
   }

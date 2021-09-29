@@ -9,6 +9,11 @@ final class CategoryCellModel: ListDiffable {
     self.name = category.attributes.name
   }
   
+  init(id: String, name: String) {
+    self.id = id
+    self.name = name
+  }
+  
   func diffIdentifier() -> NSObjectProtocol {
     return id as NSObjectProtocol
   }

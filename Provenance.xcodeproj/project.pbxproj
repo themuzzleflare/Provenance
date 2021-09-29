@@ -430,7 +430,6 @@
 		7AD6ED9A2604A9180051A235 /* Provenance Stickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7AD6ED932604A9150051A235 /* Provenance Stickers.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7AD739A22657C04D009FF994 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A17C18E2657940E00E5EA23 /* IntentHandler.swift */; };
 		7ADF0EC22702F9F5004FE0B1 /* TransactionGroupingEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADF0EC12702F9F5004FE0B1 /* TransactionGroupingEnum+Extension.swift */; };
-		7ADF0EC42702FEEF004FE0B1 /* UISegmentedControl+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADF0EC32702FEEF004FE0B1 /* UISegmentedControl+Extension.swift */; };
 		7AE53BF12685C2A20010862E /* up-logo-white-sunset-transparent-bg.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7AE53BF02685C2A20010862E /* up-logo-white-sunset-transparent-bg.gif */; };
 		7AE53BF32685C3B80010862E /* up-logo-draw-midnight-yellow-transparent-bg.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7AE53BF22685C3B80010862E /* up-logo-draw-midnight-yellow-transparent-bg.gif */; };
 		7AE53BF52685C4790010862E /* up-zap-spin-transparent-bg.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7AE53BF42685C4790010862E /* up-zap-spin-transparent-bg.gif */; };
@@ -519,6 +518,16 @@
 				7AD127E92604735B00A39272 /* Provenance Widgets.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7AFC6ECF2703E7EB0056270B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -695,7 +704,6 @@
 		7ADC818026A7F67F009D4E4E /* CircularStd-BookItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CircularStd-BookItalic.ttf"; sourceTree = "<group>"; };
 		7ADC818126A7F67F009D4E4E /* SF-Mono-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Mono-Regular.otf"; sourceTree = "<group>"; };
 		7ADF0EC12702F9F5004FE0B1 /* TransactionGroupingEnum+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionGroupingEnum+Extension.swift"; sourceTree = "<group>"; };
-		7ADF0EC32702FEEF004FE0B1 /* UISegmentedControl+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Extension.swift"; sourceTree = "<group>"; };
 		7AE53BF02685C2A20010862E /* up-logo-white-sunset-transparent-bg.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "up-logo-white-sunset-transparent-bg.gif"; sourceTree = "<group>"; };
 		7AE53BF22685C3B80010862E /* up-logo-draw-midnight-yellow-transparent-bg.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "up-logo-draw-midnight-yellow-transparent-bg.gif"; sourceTree = "<group>"; };
 		7AE53BF42685C4790010862E /* up-zap-spin-transparent-bg.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "up-zap-spin-transparent-bg.gif"; sourceTree = "<group>"; };
@@ -1085,6 +1093,7 @@
 		7A8BC0C62681583600D6D8D3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				7A8BC0C72681586100D6D8D3 /* UserDefaults+Extension.swift */,
 				7AF2152C26F04CF3009F4F38 /* UIImage+Extension.swift */,
 				7A5A89EA26FBF0790010223B /* Image+Extension.swift */,
 				7A90F55F26F1634200384F53 /* UIColor+Extension.swift */,
@@ -1102,7 +1111,6 @@
 				7AF214FB26EF326C009F4F38 /* CGSize+Extension.swift */,
 				7AD266D826FADDF500EFF4A2 /* Double+Extension.swift */,
 				7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */,
-				7A8BC0C72681586100D6D8D3 /* UserDefaults+Extension.swift */,
 				7AD266D426FADA1E00EFF4A2 /* NumberFormatter+Extension.swift */,
 				7AF214FD26EF326C009F4F38 /* UIEdgeInsets+Extension.swift */,
 				7A61533726F95ACD00382804 /* DateStyle+Extension.swift */,
@@ -1279,36 +1287,14 @@
 		7AF2155026F04F62009F4F38 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				7A90F56126F16FB200384F53 /* URL+Extensions.swift */,
-				7AAADD5426F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift */,
-				7AF2150626EF32C5009F4F38 /* ASSizeRange+Extension.swift */,
-				7AF2150526EF32C5009F4F38 /* ASTextCellNode+Extension.swift */,
-				7AF214FC26EF326C009F4F38 /* UICollectionViewLayout+Extension.swift */,
-				7AF214ED26EEC796009F4F38 /* UISearchBar+Extension.swift */,
-				7AF2150C26EF3A86009F4F38 /* UISearchController+Extension.swift */,
-				7AF2150E26EF40C9009F4F38 /* UIView+Extension.swift */,
-				7AF2152A26F04BCC009F4F38 /* TransactionResource+CellModel.swift */,
-				7A90F52126F096D200384F53 /* AccountResource+CellModel.swift */,
-				7A90F52F26F097BB00384F53 /* TagResource+CellModel.swift */,
-				7A90F54126F0985500384F53 /* CategoryResource+CellModel.swift */,
-				7AF2155C26F05422009F4F38 /* UIMenu+Extension.swift */,
-				7AF2156326F05F74009F4F38 /* UIMenuElement+Extension.swift */,
-				7AF2156526F05FE3009F4F38 /* UIContextMenuConfiguration+Extension.swift */,
-				7AF2156926F062FE009F4F38 /* UIAlertAction+Extension.swift */,
-				7AF2156A26F062FE009F4F38 /* UIAlertController+Extension.swift */,
-				7AF2156D26F06C98009F4F38 /* UIRefreshControl+Extension.swift */,
-				7A90F55D26F15DF900384F53 /* GrowingNotificationBanner+Extension.swift */,
-				7AAADD5826F1812600C4A9D9 /* UIBarButtonItem+Extension.swift */,
-				7AAADD5A26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift */,
-				7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */,
-				7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */,
-				7A615D7226FA9D6D001F1834 /* UITextField+Extension.swift */,
-				7A08A79026FC1BA50035DD2F /* StringStyle+Extension.swift */,
-				7A08A79426FC399F0035DD2F /* UIViewController+Extension.swift */,
-				7A8022E226FC5CD1008600B0 /* ASCellNode+Extension.swift */,
-				7A3192E626FD88A400718A25 /* NSNotificationName+Extension.swift */,
+				7AFC6EAE2703DFF40056270B /* AsyncDisplayKit */,
+				7AFC6EAF2703E0190056270B /* CellModel */,
+				7AFC6EB02703E06A0056270B /* UIKit */,
+				7AFC6EB42703E0D20056270B /* NotificationBannerSwift */,
+				7AFC6EB32703E0C00056270B /* MarqueeLabel */,
+				7AFC6EB22703E0B10056270B /* FLAnimatedImage */,
+				7AFC6EB12703E0A20056270B /* BonMot */,
 				7ADF0EC12702F9F5004FE0B1 /* TransactionGroupingEnum+Extension.swift */,
-				7ADF0EC32702FEEF004FE0B1 /* UISegmentedControl+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1343,6 +1329,83 @@
 				7A35ECA32657B88400568ECA /* LatestTransaction.swift */,
 			);
 			path = LatestTransaction;
+			sourceTree = "<group>";
+		};
+		7AFC6EAE2703DFF40056270B /* AsyncDisplayKit */ = {
+			isa = PBXGroup;
+			children = (
+				7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */,
+				7AF2150626EF32C5009F4F38 /* ASSizeRange+Extension.swift */,
+				7AF2150526EF32C5009F4F38 /* ASTextCellNode+Extension.swift */,
+				7A8022E226FC5CD1008600B0 /* ASCellNode+Extension.swift */,
+			);
+			path = AsyncDisplayKit;
+			sourceTree = "<group>";
+		};
+		7AFC6EAF2703E0190056270B /* CellModel */ = {
+			isa = PBXGroup;
+			children = (
+				7AF2152A26F04BCC009F4F38 /* TransactionResource+CellModel.swift */,
+				7A90F52126F096D200384F53 /* AccountResource+CellModel.swift */,
+				7A90F52F26F097BB00384F53 /* TagResource+CellModel.swift */,
+				7A90F54126F0985500384F53 /* CategoryResource+CellModel.swift */,
+			);
+			path = CellModel;
+			sourceTree = "<group>";
+		};
+		7AFC6EB02703E06A0056270B /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				7A3192E626FD88A400718A25 /* NSNotificationName+Extension.swift */,
+				7A90F56126F16FB200384F53 /* URL+Extensions.swift */,
+				7AAADD5426F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift */,
+				7AF214FC26EF326C009F4F38 /* UICollectionViewLayout+Extension.swift */,
+				7AF214ED26EEC796009F4F38 /* UISearchBar+Extension.swift */,
+				7AF2150C26EF3A86009F4F38 /* UISearchController+Extension.swift */,
+				7AF2150E26EF40C9009F4F38 /* UIView+Extension.swift */,
+				7AF2155C26F05422009F4F38 /* UIMenu+Extension.swift */,
+				7AF2156326F05F74009F4F38 /* UIMenuElement+Extension.swift */,
+				7AF2156526F05FE3009F4F38 /* UIContextMenuConfiguration+Extension.swift */,
+				7AF2156926F062FE009F4F38 /* UIAlertAction+Extension.swift */,
+				7AF2156A26F062FE009F4F38 /* UIAlertController+Extension.swift */,
+				7AF2156D26F06C98009F4F38 /* UIRefreshControl+Extension.swift */,
+				7AAADD5826F1812600C4A9D9 /* UIBarButtonItem+Extension.swift */,
+				7A615D7226FA9D6D001F1834 /* UITextField+Extension.swift */,
+				7A08A79426FC399F0035DD2F /* UIViewController+Extension.swift */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		7AFC6EB12703E0A20056270B /* BonMot */ = {
+			isa = PBXGroup;
+			children = (
+				7A08A79026FC1BA50035DD2F /* StringStyle+Extension.swift */,
+			);
+			path = BonMot;
+			sourceTree = "<group>";
+		};
+		7AFC6EB22703E0B10056270B /* FLAnimatedImage */ = {
+			isa = PBXGroup;
+			children = (
+				7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */,
+			);
+			path = FLAnimatedImage;
+			sourceTree = "<group>";
+		};
+		7AFC6EB32703E0C00056270B /* MarqueeLabel */ = {
+			isa = PBXGroup;
+			children = (
+				7AAADD5A26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift */,
+			);
+			path = MarqueeLabel;
+			sourceTree = "<group>";
+		};
+		7AFC6EB42703E0D20056270B /* NotificationBannerSwift */ = {
+			isa = PBXGroup;
+			children = (
+				7A90F55D26F15DF900384F53 /* GrowingNotificationBanner+Extension.swift */,
+			);
+			path = NotificationBannerSwift;
 			sourceTree = "<group>";
 		};
 		D3A54786F5922BD1BB89FF35 /* Pods */ = {
@@ -1427,6 +1490,7 @@
 				7AA125182626AB3900F50D6D /* Configure Settings.bundle/Root.plist */,
 				7A54E10C26AA5AFE0011566E /* Initialise SwiftLint */,
 				7ACA1A4F26AA498700DE1645 /* Initialise Crashlytics */,
+				7AFC6ECF2703E7EB0056270B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1946,7 +2010,6 @@
 				7A340B4226F9C14B00D43523 /* AppDateStyle.swift in Sources */,
 				7A340BC726F9C16900D43523 /* RoundUpObject.swift in Sources */,
 				7A340B0C26F9C11200D43523 /* Color+Extension.swift in Sources */,
-				7ADF0EC42702FEEF004FE0B1 /* UISegmentedControl+Extension.swift in Sources */,
 				7A340BBC26F9C16900D43523 /* TransactionRelationshipAccount.swift in Sources */,
 				7A3248352701B95700A9037D /* SelectionDelegate.swift in Sources */,
 				7A340BC426F9C16900D43523 /* RelationshipData.swift in Sources */,
