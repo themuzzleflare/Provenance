@@ -246,6 +246,10 @@
 		7A340BCA26F9C25100D43523 /* LatestTransactionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBD8E026F346F200460939 /* LatestTransactionModel.swift */; };
 		7A340BCB26F9C26200D43523 /* AccountBalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A17C19D2657984B00E5EA23 /* AccountBalanceModel.swift */; };
 		7A35ECA42657B88400568ECA /* LatestTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A35ECA32657B88400568ECA /* LatestTransaction.swift */; };
+		7A3E427A2703F8F7007E3A08 /* IGListSingleSectionController+Refinements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3E42762703F8F7007E3A08 /* IGListSingleSectionController+Refinements.swift */; };
+		7A3E427B2703F8F7007E3A08 /* ListValueSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3E42772703F8F7007E3A08 /* ListValueSectionController.swift */; };
+		7A3E427C2703F8F7007E3A08 /* ListIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3E42782703F8F7007E3A08 /* ListIdentifiable.swift */; };
+		7A3E427D2703F8F7007E3A08 /* IGListCollectionContext+Refinements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3E42792703F8F7007E3A08 /* IGListCollectionContext+Refinements.swift */; };
 		7A438783263AAC9B008C5714 /* StatusIconHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A438782263AAC9B008C5714 /* StatusIconHelpView.swift */; };
 		7A455CA22607FBFE00A7F2B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
 		7A56101225D219770091396E /* TagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101125D219770091396E /* TagsVC.swift */; };
@@ -586,6 +590,10 @@
 		7A3248362701C1A700A9037D /* SortedTransactionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedTransactionModel.swift; sourceTree = "<group>"; };
 		7A3248382701C6EC00A9037D /* HeaderCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCellNode.swift; sourceTree = "<group>"; };
 		7A35ECA32657B88400568ECA /* LatestTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestTransaction.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		7A3E42762703F8F7007E3A08 /* IGListSingleSectionController+Refinements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IGListSingleSectionController+Refinements.swift"; sourceTree = "<group>"; };
+		7A3E42772703F8F7007E3A08 /* ListValueSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListValueSectionController.swift; sourceTree = "<group>"; };
+		7A3E42782703F8F7007E3A08 /* ListIdentifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListIdentifiable.swift; sourceTree = "<group>"; };
+		7A3E42792703F8F7007E3A08 /* IGListCollectionContext+Refinements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IGListCollectionContext+Refinements.swift"; sourceTree = "<group>"; };
 		7A438782263AAC9B008C5714 /* StatusIconHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusIconHelpView.swift; sourceTree = "<group>"; };
 		7A56100E25D219530091396E /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		7A56101125D219770091396E /* TagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsVC.swift; sourceTree = "<group>"; };
@@ -989,6 +997,25 @@
 			path = XcodeConfigurations;
 			sourceTree = "<group>";
 		};
+		7A3E42742703F8D9007E3A08 /* IGListKit */ = {
+			isa = PBXGroup;
+			children = (
+				7A3E42752703F8DD007E3A08 /* IGListSwiftKit */,
+			);
+			path = IGListKit;
+			sourceTree = "<group>";
+		};
+		7A3E42752703F8DD007E3A08 /* IGListSwiftKit */ = {
+			isa = PBXGroup;
+			children = (
+				7A3E42792703F8F7007E3A08 /* IGListCollectionContext+Refinements.swift */,
+				7A3E42762703F8F7007E3A08 /* IGListSingleSectionController+Refinements.swift */,
+				7A3E42782703F8F7007E3A08 /* ListIdentifiable.swift */,
+				7A3E42772703F8F7007E3A08 /* ListValueSectionController.swift */,
+			);
+			path = IGListSwiftKit;
+			sourceTree = "<group>";
+		};
 		7A75631426A7ED3100963658 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -1287,6 +1314,7 @@
 		7AF2155026F04F62009F4F38 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				7A3E42742703F8D9007E3A08 /* IGListKit */,
 				7AFC6EAE2703DFF40056270B /* AsyncDisplayKit */,
 				7AFC6EAF2703E0190056270B /* CellModel */,
 				7AFC6EB02703E06A0056270B /* UIKit */,
@@ -2118,9 +2146,11 @@
 				7A7F039D26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */,
 				7A67980D25D3E15D002AA83A /* DiagnosticTableVC.swift in Sources */,
 				7AF2156626F05FE3009F4F38 /* UIContextMenuConfiguration+Extension.swift in Sources */,
+				7A3E427D2703F8F7007E3A08 /* IGListCollectionContext+Refinements.swift in Sources */,
 				7A7CAB0326F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift in Sources */,
 				7A340BBB26F9C16900D43523 /* AccountTypeEnum.swift in Sources */,
 				7A340BC226F9C16900D43523 /* CategoryResource.swift in Sources */,
+				7A3E427C2703F8F7007E3A08 /* ListIdentifiable.swift in Sources */,
 				7A1B52142702C1A900835111 /* ItemModelSC.swift in Sources */,
 				7AF2150026EF326C009F4F38 /* CGFloat+Extension.swift in Sources */,
 				7AB609B02603F0D80038B85B /* AddTagTagsSelectionVC.swift in Sources */,
@@ -2150,6 +2180,7 @@
 				7AF2151D26F04723009F4F38 /* SegmentedControlNode.swift in Sources */,
 				7A14D5EA261AC37100C072E3 /* AccountsVC.swift in Sources */,
 				7A340B3D26F9C14B00D43523 /* CategoryTypeEnum.swift in Sources */,
+				7A3E427B2703F8F7007E3A08 /* ListValueSectionController.swift in Sources */,
 				7A72D2F12672DEAF005FAC4F /* TabBarItem.swift in Sources */,
 				7AF2150126EF326C009F4F38 /* CGSize+Extension.swift in Sources */,
 				7A2F1978261DA6B20054A9B6 /* StickerView.swift in Sources */,
@@ -2172,6 +2203,7 @@
 				7A1B52102702BD9D00835111 /* SortedSectionModel.swift in Sources */,
 				7A615D7326FA9D6D001F1834 /* UITextField+Extension.swift in Sources */,
 				7A1B52182702C82300835111 /* SortedSectionCoreModel.swift in Sources */,
+				7A3E427A2703F8F7007E3A08 /* IGListSingleSectionController+Refinements.swift in Sources */,
 				7A340B1626F9C11200D43523 /* ListTransactionsIntentResponse+Extension.swift in Sources */,
 				7A340B3B26F9C14B00D43523 /* AccountTypeOptionEnum.swift in Sources */,
 			);

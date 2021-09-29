@@ -27,7 +27,7 @@ final class TransactionCellNode: ASCellNode {
   }
   
   init(transaction: TransactionCellModel?) {
-    self.transactionDescription = transaction?.description ?? .emptyString
+    self.transactionDescription = transaction?.transactionDescription ?? .emptyString
     self.creationDate = transaction?.creationDate ?? .emptyString
     self.amount = transaction?.amount ?? .emptyString
     self.colour = transaction?.colour ?? .unknown

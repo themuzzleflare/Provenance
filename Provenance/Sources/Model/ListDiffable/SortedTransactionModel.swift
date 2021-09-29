@@ -1,6 +1,6 @@
 import IGListDiffKit
 
-final class SortedTransactionModel: ListDiffable {
+final class SortedTransactionModel {
   let id: Date
   let transactions: [TransactionCellModel]
   
@@ -8,14 +8,16 @@ final class SortedTransactionModel: ListDiffable {
     self.id = id
     self.transactions = transactions
   }
-  
+}
+
+extension SortedTransactionModel: ListDiffable {
   func diffIdentifier() -> NSObjectProtocol {
     return id as NSObjectProtocol
   }
   
   func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
     guard let object = object as? SortedTransactionModel else { return false }
-    return self.id == object.id && self.transactions == object.transactions
+    return self.transactions == object.transactions
   }
 }
 

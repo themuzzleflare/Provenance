@@ -1,40 +1,37 @@
 import IGListDiffKit
 
-final class TransactionCellModel: ListDiffable {
+final class TransactionCellModel: NSObject {
   let id: String
-  let description: String
+  let transactionDescription: String
   let creationDate: String
   let amount: String
   let colour: TransactionColour
   
   init(transaction: TransactionResource) {
     self.id = transaction.id
-    self.description = transaction.attributes.description
+    self.transactionDescription = transaction.attributes.description
     self.creationDate = transaction.attributes.creationDate
     self.amount = transaction.attributes.amount.valueShort
     self.colour = transaction.attributes.amount.transactionType.colour
   }
   
-  init(id: String, description: String, creationDate: String, amount: String, colour: TransactionColour) {
+  init(id: String, transactionDescription: String, creationDate: String, amount: String, colour: TransactionColour) {
     self.id = id
-    self.description = description
+    self.transactionDescription = transactionDescription
     self.creationDate = creationDate
     self.amount = amount
     self.colour = colour
   }
-  
+}
+
+extension TransactionCellModel: ListDiffable {
   func diffIdentifier() -> NSObjectProtocol {
     return id as NSObjectProtocol
   }
   
   func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
+    if self === object { return true }
     guard let object = object as? TransactionCellModel else { return false }
-    return self.id == object.id && self.creationDate == object.creationDate
-  }
-}
-
-extension TransactionCellModel: Equatable {
-  static func == (lhs: TransactionCellModel, rhs: TransactionCellModel) -> Bool {
-    return lhs.id == rhs.id && lhs.creationDate == rhs.creationDate
+    return self.creationDate == object.creationDate
   }
 }

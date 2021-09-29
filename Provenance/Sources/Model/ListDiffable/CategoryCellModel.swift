@@ -1,6 +1,6 @@
 import IGListDiffKit
 
-final class CategoryCellModel: ListDiffable {
+final class CategoryCellModel {
   let id: String
   let name: String
   
@@ -13,13 +13,15 @@ final class CategoryCellModel: ListDiffable {
     self.id = id
     self.name = name
   }
-  
+}
+
+extension CategoryCellModel: ListDiffable {
   func diffIdentifier() -> NSObjectProtocol {
     return id as NSObjectProtocol
   }
   
   func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
     guard let object = object as? CategoryCellModel else { return false }
-    return self.id == object.id && self.name == object.name
+    return self.name == object.name
   }
 }
