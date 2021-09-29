@@ -14,3 +14,4 @@ opt_in_rules:
 - empty_string
 excluded:
 - Pods
+- Provenance/Sources/Extensions/IGListKit/IGListSwiftKit
