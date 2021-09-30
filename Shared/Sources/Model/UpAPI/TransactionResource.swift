@@ -39,7 +39,7 @@ extension TransactionResource {
 extension Array where Element == TransactionResource {
   func filtered(searchBar: UISearchBar) -> [TransactionResource] {
     return self.filter { (transaction) in
-      return searchBar.text!.isEmpty || transaction.attributes.description.localizedStandardContains(searchBar.text!)
+      return !searchBar.searchTextField.hasText || transaction.attributes.description.localizedStandardContains(searchBar.text!)
     }
   }
   

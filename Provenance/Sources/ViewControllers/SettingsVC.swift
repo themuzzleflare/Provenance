@@ -59,6 +59,7 @@ private extension SettingsVC {
         if let alert = weakSelf.presentedViewController as? UIAlertController {
           alert.dismiss(animated: true)
         }
+        weakSelf.tableNode.reloadData()
       }
     }
   }

@@ -2,7 +2,15 @@ import IGListKit
 import AsyncDisplayKit
 
 final class SectionModelSC: ListSectionController {
+  override var description: String {
+    return "SectionModelSC"
+  }
+  
   private var object: SortedSectionModel?
+  
+  override init() {
+    super.init()
+  }
   
   override func sizeForItem(at index: Int) -> CGSize {
     return ASIGListSectionControllerMethods.sizeForItem(at: index)

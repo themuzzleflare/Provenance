@@ -235,7 +235,7 @@ extension CategoriesVC: UISearchBarDelegate {
   }
   
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    if !searchBar.text!.isEmpty {
+    if searchBar.searchTextField.hasText {
       searchBar.clear()
       applySnapshot()
     }
@@ -245,7 +245,7 @@ extension CategoriesVC: UISearchBarDelegate {
     if let value = CategoryTypeEnum(rawValue: selectedScope) {
       categoryFilter = value
     }
-    if !searchBar.text!.isEmpty {
+    if searchBar.searchTextField.hasText {
       applySnapshot()
     }
   }

@@ -10,10 +10,12 @@ final class TransactionsVC: ASViewController {
   private lazy var searchController = UISearchController(self)
   
   private lazy var adapter: ListAdapter = {
-    return ListAdapter(updater: ListAdapterUpdater(), viewController: self)
+    return ListAdapter(updater: ListAdapterUpdater(), viewController: self, workingRangeSize: 2)
   }()
   
   private let collectionNode = ASCollectionNode(collectionViewLayout: .flowLayout)
+  
+  private let spinToken = "spinner"
   
   private var apiKeyObserver: NSKeyValueObservation?
   
@@ -21,7 +23,11 @@ final class TransactionsVC: ASViewController {
   
   private var settledOnlyObserver: NSKeyValueObservation?
   
+  private var paginationCursorObserver: NSKeyValueObservation?
+  
   private var transactionGroupingObserver: NSKeyValueObservation?
+  
+  private var cursor: String?
   
   private var noTransactions: Bool = false
   
@@ -70,6 +76,8 @@ final class TransactionsVC: ASViewController {
     }
   }
   
+  private var loading: Bool = false
+  
     // MARK: - Life Cycle
   
   override init() {
@@ -92,10 +100,6 @@ final class TransactionsVC: ASViewController {
     configureCollectionNode()
     configureSelf()
     configureNavigation()
-  }
-  
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
     fetchingTasks()
   }
 }
@@ -130,6 +134,10 @@ extension TransactionsVC {
       guard let weakSelf = self, let value = change.newValue else { return }
       weakSelf.showSettledOnly = value
     }
+    paginationCursorObserver = ProvenanceApp.userDefaults.observe(\.paginationCursor, options: .new) { [weak self] (_, change) in
+      guard let weakSelf = self, let value = change.newValue else { return }
+      weakSelf.cursor = value.isEmpty ? nil : value
+    }
     transactionGroupingObserver = ProvenanceApp.userDefaults.observe(\.transactionGrouping, options: .new) { [weak self] (_, change) in
       guard let weakSelf = self, let value = change.newValue, let grouping = TransactionGroupingEnum(rawValue: value) else { return }
       weakSelf.transactionGrouping = grouping
@@ -144,6 +152,8 @@ extension TransactionsVC {
     dateStyleObserver = nil
     settledOnlyObserver?.invalidate()
     settledOnlyObserver = nil
+    paginationCursorObserver?.invalidate()
+    paginationCursorObserver = nil
     transactionGroupingObserver?.invalidate()
     transactionGroupingObserver = nil
   }
@@ -179,6 +189,7 @@ extension TransactionsVC {
   }
   
   private func transactionsUpdates() {
+    loading = false
     noTransactions = transactions.isEmpty
     adapter.performUpdates(animated: true)
     collectionNode.view.refreshControl?.endRefreshing()
@@ -221,6 +232,19 @@ extension TransactionsVC {
     }
   }
   
+  private func fetchTransactionsWithCursor() {
+    UpFacade.listTransactions(cursor: cursor) { [self] (result) in
+      DispatchQueue.main.async {
+        switch result {
+        case let .success(transactions):
+          self.transactions.append(contentsOf: transactions)
+        case let .failure(error):
+          display(error)
+        }
+      }
+    }
+  }
+  
   private func display(_ transactions: [TransactionResource]) {
     transactionsError = .emptyString
     self.transactions = transactions
@@ -255,17 +279,25 @@ extension TransactionsVC {
 extension TransactionsVC: ListAdapterDataSource {
   func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
     guard transactionGrouping != .all else {
-      return filteredTransactions.sortedTransactionModels.sortedMixedModel
+      var objects = filteredTransactions.sortedTransactionModels.sortedMixedModel
+        objects.append(spinToken as ListDiffable)
+      return objects
     }
-    return filteredTransactions.sortedTransactionModels.sortedMixedModel.filter { type(of: $0) == transactionGrouping.valueType! }
+    var objects = filteredTransactions.sortedTransactionModels.sortedMixedModel.filter { type(of: $0) == transactionGrouping.valueType! }
+      objects.append(spinToken as ListDiffable)
+    return objects
   }
   
   func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
-    switch object {
-    case is SortedSectionModel:
-      return SectionModelSC()
-    default:
-      return ItemModelSC(self)
+    if let obj = object as? String, obj == spinToken {
+      return SpinnerSC(self)
+    } else {
+      switch object {
+      case is SortedSectionModel:
+        return SectionModelSC()
+      default:
+        return ItemModelSC(self)
+      }
     }
   }
   
@@ -304,6 +336,17 @@ extension TransactionsVC: SelectionDelegate {
   }
 }
 
+  // MARK: - LoadingDelegate
+
+extension TransactionsVC: LoadingDelegate {
+  func startLoading() {
+    if cursor != nil && !loading && !searchController.isActive && !searchController.searchBar.searchTextField.hasText {
+      loading = true
+      fetchTransactionsWithCursor()
+    }
+  }
+}
+
   // MARK: - UISearchBarDelegate
 
 extension TransactionsVC: UISearchBarDelegate {
@@ -312,7 +355,7 @@ extension TransactionsVC: UISearchBarDelegate {
   }
   
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    if !searchBar.text!.isEmpty {
+    if searchBar.searchTextField.hasText {
       searchBar.clear()
       adapter.performUpdates(animated: true)
     }

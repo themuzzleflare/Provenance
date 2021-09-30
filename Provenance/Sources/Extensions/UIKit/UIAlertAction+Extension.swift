@@ -64,108 +64,96 @@ extension UIAlertAction {
   }
   
   static func submitNewTags(_ navigationController: UINavigationController?, transaction: TransactionResource, alertController: UIAlertController) -> UIAlertAction {
-    let alertAction = UIAlertAction(
-      title: "Next",
-      style: .default,
-      handler: { (_) in
-        if let tags = alertController.textFields?.tagResources {
-          let viewController = AddTagConfirmationVC(transaction: transaction, tags: tags)
-          navigationController?.pushViewController(viewController, animated: true)
-        }
+    let alertAction = UIAlertAction(title: "Next", style: .default, handler: { (_) in
+      if let tags = alertController.textFields?.tagResources {
+        let viewController = AddTagConfirmationVC(transaction: transaction, tags: tags)
+        navigationController?.pushViewController(viewController, animated: true)
       }
-    )
+    })
     alertAction.isEnabled = false
     return alertAction
   }
   
   static func saveApiKey(alertController: UIAlertController, viewController: SettingsVC) -> UIAlertAction {
-    let alertAction = UIAlertAction(
-      title: "Save",
-      style: .default,
-      handler: { (_) in
-        if let textField = alertController.textFields?.first, let answer = textField.text {
-          if textField.hasText && answer != ProvenanceApp.userDefaults.apiKey {
-            UpFacade.ping(with: answer) { (error) in
-              DispatchQueue.main.async {
-                if let error = error {
-                  GrowingNotificationBanner(
-                    title: "Failed",
-                    subtitle: error.errorDescription ?? error.localizedDescription,
-                    style: .danger,
-                    duration: 2.0
-                  ).show()
-                } else {
-                  GrowingNotificationBanner(
-                    title: "Success",
-                    subtitle: "The API Key was verified and saved.",
-                    style: .success,
-                    duration: 2.0
-                  ).show()
-                  ProvenanceApp.userDefaults.apiKey = answer
-                  viewController.tableNode.reloadData()
-                }
+    let alertAction = UIAlertAction(title: "Save", style: .default, handler: { (_) in
+      if let textField = alertController.textFields?.first, let answer = textField.text {
+        if textField.hasText && answer != ProvenanceApp.userDefaults.apiKey {
+          UpFacade.ping(with: answer) { (error) in
+            DispatchQueue.main.async {
+              if let error = error {
+                GrowingNotificationBanner(
+                  title: "Failed",
+                  subtitle: error.errorDescription ?? error.localizedDescription,
+                  style: .danger,
+                  duration: 2.0
+                ).show()
+              } else {
+                GrowingNotificationBanner(
+                  title: "Success",
+                  subtitle: "The API Key was verified and saved.",
+                  style: .success,
+                  duration: 2.0
+                ).show()
+                ProvenanceApp.userDefaults.apiKey = answer
+                viewController.tableNode.reloadData()
               }
             }
-          } else {
-            GrowingNotificationBanner(
-              title: "Failed",
-              subtitle: "The provided API Key was the same as the current one.",
-              style: .danger,
-              duration: 2.0
-            ).show()
           }
+        } else {
+          GrowingNotificationBanner(
+            title: "Failed",
+            subtitle: "The provided API Key was the same as the current one.",
+            style: .danger,
+            duration: 2.0
+          ).show()
         }
       }
-    )
+    })
     alertAction.isEnabled = false
     viewController.submitActionProxy = alertAction
     return alertAction
   }
   
   static func noApiKey(sceneDelegate: SceneDelegate, alertController: UIAlertController) -> UIAlertAction {
-    let alertAction = UIAlertAction(
-      title: "Save",
-      style: .default,
-      handler: { (_) in
-        if let textField = alertController.textFields?.first, let answer = textField.text {
-          if textField.hasText && answer != ProvenanceApp.userDefaults.apiKey {
-            UpFacade.ping(with: answer) { (error) in
-              DispatchQueue.main.async {
-                if let error = error {
-                  let notificationBanner = GrowingNotificationBanner(
-                    title: "Failed",
-                    subtitle: error.errorDescription ?? error.localizedDescription,
-                    style: .danger,
-                    duration: 2.0
-                  )
-                  let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
-                  sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
-                } else {
-                  let notificationBanner = GrowingNotificationBanner(
-                    title: "Success",
-                    subtitle: "The API Key was verified and saved.",
-                    style: .success,
-                    duration: 2.0
-                  )
-                  let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
-                  ProvenanceApp.userDefaults.apiKey = answer
-                  sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
-                }
+    let alertAction = UIAlertAction(title: "Save", style: .default, handler: { (_) in
+      if let textField = alertController.textFields?.first, let answer = textField.text {
+        if textField.hasText && answer != ProvenanceApp.userDefaults.apiKey {
+          UpFacade.ping(with: answer) { (error) in
+            DispatchQueue.main.async {
+              if let error = error {
+                let notificationBanner = GrowingNotificationBanner(
+                  title: "Failed",
+                  subtitle: error.errorDescription ?? error.localizedDescription,
+                  style: .danger,
+                  duration: 2.0
+                )
+                let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
+                sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
+              } else {
+                let notificationBanner = GrowingNotificationBanner(
+                  title: "Success",
+                  subtitle: "The API Key was verified and saved.",
+                  style: .success,
+                  duration: 2.0
+                )
+                let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
+                ProvenanceApp.userDefaults.apiKey = answer
+                sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
               }
             }
-          } else {
-            let notificationBanner = GrowingNotificationBanner(
-              title: "Failed",
-              subtitle: "The provided API Key was the same as the current one.",
-              style: .danger,
-              duration: 2.0
-            )
-            let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
-            sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
           }
+        } else {
+          let notificationBanner = GrowingNotificationBanner(
+            title: "Failed",
+            subtitle: "The provided API Key was the same as the current one.",
+            style: .danger,
+            duration: 2.0
+          )
+          let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
+          sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
         }
       }
-    )
+    })
     alertAction.isEnabled = false
     sceneDelegate.submitActionProxy = alertAction
     return alertAction

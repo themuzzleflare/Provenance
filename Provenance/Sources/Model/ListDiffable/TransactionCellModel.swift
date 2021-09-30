@@ -1,6 +1,10 @@
 import IGListDiffKit
 
 final class TransactionCellModel: NSObject {
+  override var description: String {
+    return transactionDescription
+  }
+  
   let id: String
   let transactionDescription: String
   let creationDate: String
@@ -23,6 +27,8 @@ final class TransactionCellModel: NSObject {
     self.colour = colour
   }
 }
+
+  // MARK: - ListDiffable
 
 extension TransactionCellModel: ListDiffable {
   func diffIdentifier() -> NSObjectProtocol {

@@ -227,7 +227,7 @@ extension TagsVC: UISearchBarDelegate {
   }
   
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    if !searchBar.text!.isEmpty {
+    if searchBar.searchTextField.hasText {
       searchBar.clear()
       applySnapshot()
     }

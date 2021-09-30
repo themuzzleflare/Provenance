@@ -13,4 +13,12 @@ extension UIViewController {
   static var stickers: UIViewController {
     return StickersVC()
   }
+  
+  static var settings: UIViewController {
+    return SettingsVC()
+  }
+  
+  static var diagnostics: UIViewController {
+    return DiagnosticsVC()
+  }
 }

@@ -3,20 +3,16 @@ import AsyncDisplayKit
 final class TabBarController: ASTabBarController {
     // MARK: - Life Cycle
   
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    configure()
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("Not implemented")
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    configureSelf()
   }
 }
 
   // MARK: - Configuration
 
 private extension TabBarController {
-  private func configure() {
+  private func configureSelf() {
     setViewControllers(TabBarItem.defaultTabs, animated: false)
   }
 }

@@ -18,6 +18,8 @@ final class AccountCellModel {
   }
 }
 
+  // MARK: - ListDiffable
+
 extension AccountCellModel: ListDiffable {
   func diffIdentifier() -> NSObjectProtocol {
     return id as NSObjectProtocol

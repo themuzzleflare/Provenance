@@ -68,6 +68,15 @@ extension UserDefaults {
     }
   }
   
+  @objc dynamic var paginationCursor: String {
+    get {
+      return string(forKey: Keys.paginationCursor) ?? .emptyString
+    }
+    set {
+      setValue(newValue, forKey: Keys.paginationCursor)
+    }
+  }
+  
     /// The last selected account for the account balance widget.
   var selectedAccount: String? {
     get {
@@ -157,6 +166,7 @@ extension UserDefaults {
     static let transactionGrouping = "transactionGrouping"
     static let selectedAccount = "selectedAccount"
     static let selectedCategory = "selectedCategory"
+    static let paginationCursor = "paginationCursor"
     static let appVersion = "appVersion"
     static let appBuild = "appBuild"
   }

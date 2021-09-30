@@ -5,6 +5,10 @@ extension UIBarButtonItem {
     return UIBarButtonItem(image: .calendarBadgeClock, style: .plain, target: target, action: action)
   }
   
+  static func accountInfo(_ target: UIViewController, action: Selector) -> UIBarButtonItem {
+    return UIBarButtonItem(image: .infoCircle, style: .plain, target: target, action: action)
+  }
+  
   static func close(_ target: UIViewController, action: Selector) -> UIBarButtonItem {
     return UIBarButtonItem(barButtonSystemItem: .close, target: target, action: action)
   }

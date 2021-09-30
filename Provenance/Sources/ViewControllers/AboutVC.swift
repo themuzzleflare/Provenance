@@ -49,12 +49,12 @@ private extension AboutVC {
 
 private extension AboutVC {
   @objc private func openSettings() {
-    let viewController = NavigationController(rootViewController: SettingsVC())
+    let viewController = NavigationController(rootViewController: .settings)
     present(viewController, animated: true)
   }
   
   @objc private func openDiagnostics() {
-    let viewController = NavigationController(rootViewController: DiagnosticTableVC())
+    let viewController = NavigationController(rootViewController: .diagnostics)
     present(viewController, animated: true)
   }
 }

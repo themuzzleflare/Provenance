@@ -237,7 +237,7 @@ extension AccountsVC: UISearchBarDelegate {
   }
   
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    if !searchBar.text!.isEmpty {
+    if searchBar.searchTextField.hasText {
       searchBar.clear()
       applySnapshot()
     }
@@ -247,7 +247,7 @@ extension AccountsVC: UISearchBarDelegate {
     if let value = AccountTypeOptionEnum(rawValue: selectedScope) {
       accountFilter = value
     }
-    if !searchBar.text!.isEmpty {
+    if searchBar.searchTextField.hasText {
       applySnapshot()
     }
   }

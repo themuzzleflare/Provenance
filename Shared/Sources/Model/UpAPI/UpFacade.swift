@@ -26,26 +26,75 @@ class UpFacade {
   
     /// List transactions
     ///
-    /// - Parameter completion: Block to execute for handling the request response.
+    /// - Parameters:
+    ///  - cursor: The pagination cursor to apply to the request.
+    ///  - completion: Block to execute for handling the request response.
     ///
     /// Retrieve a list of all transactions across all accounts for the currently authenticated user. The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present. To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string. These filter parameters **should not** be used for pagination. Results are ordered newest first to oldest last.
   
-  static func listTransactions(completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
+  static func listTransactions(cursor: String? = nil, completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
       .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
     ]
     
-    let parameters: Parameters = [
-      "page[size]": "30"
+    var parameters: Parameters = [
+      "page[size]": "20"
     ]
+    
+    if let cursor = cursor {
+      parameters.updateValue(cursor, forKey: "page[after]")
+    }
     
     AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
       .validate()
       .responseDecodable(of: Transaction.self) { (response) in
         switch response.result {
         case let .success(transactions):
+          ProvenanceApp.userDefaults.paginationCursor = transactions.links.nextCursor ?? .emptyString
           completion(.success(transactions.data))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      }
+  }
+  
+    /// List complete transactions
+    ///
+    /// - Parameters:
+    ///   - cursor: The pagination cursor to apply to the request.
+    ///   - inputTransactions: An array of `TransactionResource` objects to prepend to the response.
+    ///   - completion: Block to execute for handling the request response.
+    ///
+    /// Retrieve a list of all transactions across all accounts for the currently authenticated user. To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string. These filter parameters **should not** be used for pagination. Results are ordered newest first to oldest last.
+  
+  static func listCompleteTransactions(cursor: String? = nil, inputTransactions: [TransactionResource] = [], completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
+    let headers: HTTPHeaders = [
+      .accept("application/json"),
+      .authorization(bearerToken: ProvenanceApp.userDefaults.apiKey)
+    ]
+    
+    var parameters: Parameters = [
+      "page[size]": "100"
+    ]
+    
+    if let cursor = cursor {
+      parameters.updateValue(cursor, forKey: "page[after]")
+    }
+    
+    AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
+      .validate()
+      .responseDecodable(of: Transaction.self) { (response) in
+        switch response.result {
+        case let .success(transactions) where transactions.links.next != nil:
+          if let param = transactions.links.nextCursor {
+            print("Calling completion with cursor: \(param)")
+            listCompleteTransactions(cursor: param, inputTransactions: (inputTransactions + transactions.data), completion: completion)
+          } else {
+            completion(.success(inputTransactions + transactions.data))
+          }
+        case let .success(transactions):
+          completion(.success(inputTransactions + transactions.data))
         case let .failure(error):
           completion(.failure(error))
         }

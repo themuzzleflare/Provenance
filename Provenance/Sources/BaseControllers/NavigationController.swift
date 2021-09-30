@@ -3,20 +3,16 @@ import AsyncDisplayKit
 final class NavigationController: ASDKNavigationController {
     // MARK: - Life Cycle
   
-  override init(rootViewController: UIViewController) {
-    super.init(rootViewController: rootViewController)
-    configure()
-  }
-  
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("Not implemented")
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    configureSelf()
   }
 }
 
   // MARK: - Configuration
 
 private extension NavigationController {
-  private func configure() {
+  private func configureSelf() {
     navigationBar.prefersLargeTitles = true
   }
 }

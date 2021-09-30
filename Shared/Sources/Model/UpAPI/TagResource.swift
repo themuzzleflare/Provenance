@@ -27,7 +27,7 @@ extension Array where Element == TagResource {
   
   func filtered(searchBar: UISearchBar) -> [TagResource] {
     return self.filter { (tag) in
-      return searchBar.text!.isEmpty || tag.id.localizedStandardContains(searchBar.text!)
+      return !searchBar.searchTextField.hasText || tag.id.localizedStandardContains(searchBar.text!)
     }
   }
   

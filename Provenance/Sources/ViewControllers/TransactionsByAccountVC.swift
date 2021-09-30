@@ -8,7 +8,7 @@ final class TransactionsByAccountVC: ASViewController {
   
   private var account: AccountResource {
     didSet {
-      if !searchController.isActive && searchController.searchBar.text!.isEmpty {
+      if !searchController.isActive && !searchController.searchBar.searchTextField.hasText {
         setTableHeaderView()
       }
     }
@@ -29,7 +29,7 @@ final class TransactionsByAccountVC: ASViewController {
   }
   
   private var transactionsError = String()
-    
+  
   private var filteredTransactions: [TransactionResource] {
     return transactions.filtered(searchBar: searchController.searchBar)
   }
@@ -94,7 +94,7 @@ private extension TransactionsByAccountVC {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.backBarButtonItem = .dollarsignCircle
-    navigationItem.rightBarButtonItem = UIBarButtonItem(image: .infoCircle, style: .plain, target: self, action: #selector(openAccountInfo))
+    navigationItem.rightBarButtonItem = .accountInfo(self, action: #selector(openAccountInfo))
     navigationItem.searchController = searchController
     navigationItem.hidesSearchBarWhenScrolling = false
   }
@@ -257,7 +257,7 @@ extension TransactionsByAccountVC: UISearchBarDelegate {
   }
   
   func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-    if searchBar.text!.isEmpty {
+    if !searchBar.searchTextField.hasText {
       setTableHeaderView()
     }
   }
@@ -267,7 +267,7 @@ extension TransactionsByAccountVC: UISearchBarDelegate {
   }
   
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    if !searchBar.text!.isEmpty {
+    if searchBar.searchTextField.hasText {
       searchBar.clear()
       setTableHeaderView()
       applySnapshot()

@@ -1,6 +1,6 @@
 import UIKit
 
-final class DiagnosticTableVC: ViewController {
+final class DiagnosticsVC: ViewController {
     // MARK: - Properties
   
   private typealias DataSource = UITableViewDiffableDataSource<DetailSection, DetailItem>
@@ -34,7 +34,7 @@ final class DiagnosticTableVC: ViewController {
 
   // MARK: - Configuration
 
-private extension DiagnosticTableVC {
+private extension DiagnosticsVC {
   private func configureSelf() {
     title = "Diagnostics"
   }
@@ -57,7 +57,7 @@ private extension DiagnosticTableVC {
 
   // MARK: - Actions
 
-private extension DiagnosticTableVC {
+private extension DiagnosticsVC {
   @objc private func closeWorkflow() {
     navigationController?.dismiss(animated: true)
   }
@@ -86,7 +86,7 @@ private extension DiagnosticTableVC {
 
   // MARK: - UITableViewDelegate
 
-extension DiagnosticTableVC: UITableViewDelegate {
+extension DiagnosticsVC: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return UITableView.automaticDimension
   }

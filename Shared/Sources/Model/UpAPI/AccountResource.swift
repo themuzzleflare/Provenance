@@ -36,7 +36,7 @@ extension AccountResource {
 extension Array where Element == AccountResource {
   func filtered(filter: AccountTypeOptionEnum, searchBar: UISearchBar) -> [AccountResource] {
     return self.filter { (account) in
-      return searchBar.text!.isEmpty || (account.attributes.displayName.localizedStandardContains(searchBar.text!) && account.attributes.accountType == filter.accountTypeEnum)
+      return !searchBar.searchTextField.hasText || (account.attributes.displayName.localizedStandardContains(searchBar.text!) && account.attributes.accountType == filter.accountTypeEnum)
     }
   }
   

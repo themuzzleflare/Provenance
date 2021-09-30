@@ -10,6 +10,8 @@ final class SortedTransactionModel {
   }
 }
 
+  // MARK: - ListDiffable
+
 extension SortedTransactionModel: ListDiffable {
   func diffIdentifier() -> NSObjectProtocol {
     return id as NSObjectProtocol

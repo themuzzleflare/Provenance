@@ -8,6 +8,7 @@ extension UISearchController {
     self.searchBar.searchBarStyle = .minimal
     self.searchBar.autocorrectionType = .no
     self.searchBar.autocapitalizationType = .none
+    self.searchBar.spellCheckingType = .no
   }
   
   static func accounts(_ delegate: UISearchBarDelegate) -> UISearchController {

@@ -30,7 +30,7 @@ extension CategoryResource {
 extension Array where Element == CategoryResource {
   func filtered(filter: CategoryTypeEnum, searchBar: UISearchBar) -> [CategoryResource] {
     return self.filter { (category) in
-      return searchBar.text!.isEmpty || (category.attributes.name.localizedStandardContains(searchBar.text!) && category.categoryTypeEnum == filter)
+      return !searchBar.searchTextField.hasText || (category.attributes.name.localizedStandardContains(searchBar.text!) && category.categoryTypeEnum == filter)
     }
   }
   

@@ -2,12 +2,16 @@ import IGListKit
 import AsyncDisplayKit
 
 final class ItemModelSC: ListSectionController {
+  override var description: String {
+    return "ItemModelSC"
+  }
+  
   private var object: TransactionCellModel?
   
-  weak var delegate: SelectionDelegate?
+  weak var selectionDelegate: SelectionDelegate?
   
-  init(_ delegate: SelectionDelegate? = nil) {
-    self.delegate = delegate
+  init(_ selectionDelegate: SelectionDelegate? = nil) {
+    self.selectionDelegate = selectionDelegate
     super.init()
     supplementaryViewSource = self
   }
@@ -26,19 +30,19 @@ final class ItemModelSC: ListSectionController {
   
   override func didSelectItem(at index: Int) {
     collectionContext?.deselectItem(at: index, sectionController: self, animated: true)
-    delegate?.didSelectItem(at: IndexPath(item: index, section: section))
+    selectionDelegate?.didSelectItem(at: IndexPath(item: index, section: section))
   }
   
   override func didDeselectItem(at index: Int) {
-    delegate?.didDeselectItem(at: IndexPath(item: index, section: section))
+    selectionDelegate?.didDeselectItem(at: IndexPath(item: index, section: section))
   }
   
   override func didHighlightItem(at index: Int) {
-    delegate?.didHighlightItem(at: IndexPath(item: index, section: section))
+    selectionDelegate?.didHighlightItem(at: IndexPath(item: index, section: section))
   }
   
   override func didUnhighlightItem(at index: Int) {
-    delegate?.didUnhighlightItem(at: IndexPath(item: index, section: section))
+    selectionDelegate?.didUnhighlightItem(at: IndexPath(item: index, section: section))
   }
 }
 
