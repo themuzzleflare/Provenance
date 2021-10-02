@@ -1,7 +1,6 @@
 import IGListKit
 import Alamofire
 import UIKit
-import CoreData
 
 final class TransactionsVCAlt: ViewController {
     // MARK: - Properties
@@ -243,7 +242,6 @@ extension TransactionsVCAlt {
         switch result {
         case let .success(transactions):
           self.transactions.append(contentsOf: transactions)
-          self.saveTransactions(transactions)
         case let .failure(error):
           self.display(error)
         }
@@ -263,7 +261,6 @@ extension TransactionsVCAlt {
     if navigationItem.rightBarButtonItem == nil {
       navigationItem.setRightBarButton(filterBarButtonItem, animated: true)
     }
-    saveTransactions(transactions)
   }
   
   private func display(_ error: AFError) {
@@ -277,28 +274,6 @@ extension TransactionsVCAlt {
     }
     if navigationItem.rightBarButtonItem != nil {
       navigationItem.setRightBarButton(nil, animated: true)
-    }
-  }
-  
-  private func saveTransactions(_ transactions: [TransactionResource]) {
-    transactions.forEach { (transaction) in
-      guard !UpTransaction.fetchAll().contains(where: { $0.id == UUID(uuidString: transaction.id) }) else {
-        return
-      }
-      let newTransaction = UpTransaction(context: AppDelegate.persistentContainer.viewContext)
-      newTransaction.id = UUID(uuidString: transaction.id)
-      newTransaction.transactionDescription = transaction.attributes.description
-      newTransaction.rawText = transaction.attributes.rawText
-      newTransaction.message = transaction.attributes.message
-      newTransaction.amount = transaction.attributes.amount.value.nsDecimalNumber
-      newTransaction.creationDate = transaction.attributes.createdAt.toDate()?.date
-      newTransaction.settlementDate = transaction.attributes.settledAt?.toDate()?.date
-    }
-    
-    do {
-      try AppDelegate.persistentContainer.viewContext.save()
-    } catch {
-      print("Failed to save: \(error)")
     }
   }
 }

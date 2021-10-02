@@ -1,4 +1,3 @@
-import UIKit
 import MarqueeLabel
 
 protocol MarqueeLabelNodeProtocol: AnyObject {

@@ -1,7 +1,6 @@
 import Firebase
 import SwiftDate
 import AlamofireNetworkActivityIndicator
-import CoreData
 
 @main class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Life Cycle
@@ -17,18 +16,6 @@ import CoreData
   func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
     return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
   }
-  
-    // MARK: Core Data Stack
-  
-  static var persistentContainer: PersistentContainer = {
-    let container = PersistentContainer(name: "Provenance")
-    container.loadPersistentStores { (_, error) in
-      if let error = error {
-        fatalError("Unable to load persistent stores: \(error)")
-      }
-    }
-    return container
-  }()
 }
 
   // MARK: - Configuration

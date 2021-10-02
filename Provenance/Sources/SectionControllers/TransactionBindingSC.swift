@@ -1,5 +1,5 @@
 import IGListKit
-import UIKit
+import SwiftDate
 
 final class TransactionBindingSC: ListBindingSectionController<SortedTransactionModelAlt> {
   override init() {
