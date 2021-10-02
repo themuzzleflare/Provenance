@@ -10,6 +10,10 @@
 		0C5FC232CF069B90D4EE111A /* Pods_Provenance_IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4364DD804AF3902A82B3883 /* Pods_Provenance_IntentsUI.framework */; };
 		7143DD91BFAE7F99AE9A2B81 /* Pods_Provenance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E8AB3886563257C39F757D /* Pods_Provenance.framework */; };
 		7A040C8226994F09000CCFF3 /* TransactionCellNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A040C8126994F09000CCFF3 /* TransactionCellNode.swift */; };
+		7A04EEB52708162E001469EB /* Provenance.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7A04EEB32708162E001469EB /* Provenance.xcdatamodeld */; };
+		7A04EEB727081C7F001469EB /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A04EEB627081C7E001469EB /* PersistentContainer.swift */; };
+		7A04EEB9270826DB001469EB /* CoreDataVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A04EEB8270826DB001469EB /* CoreDataVC.swift */; };
+		7A04EEBB27082883001469EB /* TransactionCDCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A04EEBA27082883001469EB /* TransactionCDCell.swift */; };
 		7A0662F926F5573000720802 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB1726F466FE00C9C04E /* Intents.intentdefinition */; settings = {ATTRIBUTES = (private_codegen, ); }; };
 		7A0662FB26F5573500720802 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB1726F466FE00C9C04E /* Intents.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
 		7A0662FC26F5573600720802 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB1726F466FE00C9C04E /* Intents.intentdefinition */; settings = {ATTRIBUTES = (private_codegen, ); }; };
@@ -32,6 +36,7 @@
 		7A14D600261AD5FF00C072E3 /* TransactionCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A14D5FF261AD5FF00C072E3 /* TransactionCategory.swift */; };
 		7A17C18C2657940E00E5EA23 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A17C18B2657940E00E5EA23 /* Intents.framework */; };
 		7A17C1932657940E00E5EA23 /* Provenance Intents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7A17C18A2657940E00E5EA23 /* Provenance Intents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7A1AFAC9270842900000D409 /* UpTransaction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1AFAC8270842900000D409 /* UpTransaction+Extension.swift */; };
 		7A1B520E2702BD5400835111 /* SortedTransactionCoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B520D2702BD5400835111 /* SortedTransactionCoreModel.swift */; };
 		7A1B52102702BD9D00835111 /* SortedSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B520F2702BD9D00835111 /* SortedSectionModel.swift */; };
 		7A1B52122702C1A000835111 /* SectionModelSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B52112702C1A000835111 /* SectionModelSC.swift */; };
@@ -248,10 +253,6 @@
 		7A340BCA26F9C25100D43523 /* LatestTransactionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBD8E026F346F200460939 /* LatestTransactionModel.swift */; };
 		7A340BCB26F9C26200D43523 /* AccountBalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A17C19D2657984B00E5EA23 /* AccountBalanceModel.swift */; };
 		7A35ECA42657B88400568ECA /* LatestTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A35ECA32657B88400568ECA /* LatestTransaction.swift */; };
-		7A3E427A2703F8F7007E3A08 /* IGListSingleSectionController+Refinements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3E42762703F8F7007E3A08 /* IGListSingleSectionController+Refinements.swift */; };
-		7A3E427B2703F8F7007E3A08 /* ListValueSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3E42772703F8F7007E3A08 /* ListValueSectionController.swift */; };
-		7A3E427C2703F8F7007E3A08 /* ListIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3E42782703F8F7007E3A08 /* ListIdentifiable.swift */; };
-		7A3E427D2703F8F7007E3A08 /* IGListCollectionContext+Refinements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3E42792703F8F7007E3A08 /* IGListCollectionContext+Refinements.swift */; };
 		7A3E428427041243007E3A08 /* SpinnerCellNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3E428327041243007E3A08 /* SpinnerCellNode.swift */; };
 		7A3E4286270412FC007E3A08 /* SpinnerSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3E4285270412FC007E3A08 /* SpinnerSC.swift */; };
 		7A3E428827041B44007E3A08 /* LoadingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3E428727041B44007E3A08 /* LoadingDelegate.swift */; };
@@ -275,6 +276,15 @@
 		7A615D7826FABA74001F1834 /* AppWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A615D7626FABA74001F1834 /* AppWidgets.swift */; };
 		7A615D7926FABEC7001F1834 /* AppWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A615D7626FABA74001F1834 /* AppWidgets.swift */; };
 		7A67980D25D3E15D002AA83A /* DiagnosticsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A67980C25D3E15D002AA83A /* DiagnosticsVC.swift */; };
+		7A69F25D2706A392008CA6CC /* TransactionBindingSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F25C2706A392008CA6CC /* TransactionBindingSC.swift */; };
+		7A69F2602706A736008CA6CC /* TransactionCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F25F2706A736008CA6CC /* TransactionCollectionCell.swift */; };
+		7A69F2622706A73F008CA6CC /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F2612706A73F008CA6CC /* HeaderCell.swift */; };
+		7A69F2662706AEDE008CA6CC /* TransactionsVCAlt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F2652706AEDE008CA6CC /* TransactionsVCAlt.swift */; };
+		7A69F26B2706B53F008CA6CC /* IGListCollectionContext+Refinements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F2672706B53E008CA6CC /* IGListCollectionContext+Refinements.swift */; };
+		7A69F26C2706B53F008CA6CC /* ListIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F2682706B53F008CA6CC /* ListIdentifiable.swift */; };
+		7A69F26D2706B53F008CA6CC /* IGListSingleSectionController+Refinements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F2692706B53F008CA6CC /* IGListSingleSectionController+Refinements.swift */; };
+		7A69F26E2706B53F008CA6CC /* ListValueSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F26A2706B53F008CA6CC /* ListValueSectionController.swift */; };
+		7A69F2702706BEA8008CA6CC /* SpinnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F26F2706BEA8008CA6CC /* SpinnerCell.swift */; };
 		7A72D2F12672DEAF005FAC4F /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */; };
 		7A7CAB0326F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */; };
 		7A7CAB0526F1F161005CB30F /* FLAnimatedImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */; };
@@ -406,13 +416,15 @@
 		7AA113BF26154F3800386E2D /* DetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA113BE26154F3800386E2D /* DetailItem.swift */; };
 		7AA113C7261550B900386E2D /* DetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA113C6261550B900386E2D /* DetailSection.swift */; };
 		7AA124FD262682F300F50D6D /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7AA124FC262682F300F50D6D /* Settings.bundle */; };
-		7AA40A6D2705533100334A27 /* ListCollectionContext+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA40A6C2705533100334A27 /* ListCollectionContext+Extension.swift */; };
 		7AA6C4EC2623F606003F7947 /* AboutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA6C4EB2623F606003F7947 /* AboutVC.swift */; };
 		7AAA5FAB26FF157500136E32 /* TransactionCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAA5FAA26FF157500136E32 /* TransactionCellModel.swift */; };
 		7AAADD5526F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5426F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift */; };
 		7AAADD5926F1812600C4A9D9 /* UIBarButtonItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5826F1812600C4A9D9 /* UIBarButtonItem+Extension.swift */; };
 		7AAADD5B26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5A26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift */; };
-		7AB304F527014A77009F366E /* SRCopyableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB304F427014A77009F366E /* SRCopyableLabel.swift */; };
+		7AAB8D652707CB3200A59D03 /* SortedTransactionModelAlt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAB8D642707CB3200A59D03 /* SortedTransactionModelAlt.swift */; };
+		7AAB8D682707D02500A59D03 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAB8D672707D02500A59D03 /* HeaderView.swift */; };
+		7AAB8D6A2707D10D00A59D03 /* ListSectionController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAB8D692707D10D00A59D03 /* ListSectionController+Extension.swift */; };
+		7AAB8D6C2707E26900A59D03 /* CALayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAB8D6B2707E26900A59D03 /* CALayer+Extension.swift */; };
 		7AB34D1E25C78230000A1E81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D1D25C78230000A1E81 /* AppDelegate.swift */; };
 		7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
 		7AB34D2A25C78232000A1E81 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2825C78232000A1E81 /* LaunchScreen.storyboard */; };
@@ -420,6 +432,7 @@
 		7AB34D5D25C7CDCB000A1E81 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */; };
 		7AB609B02603F0D80038B85B /* AddTagTagsSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609AF2603F0D80038B85B /* AddTagTagsSelectionVC.swift */; };
 		7AB609B32603F1130038B85B /* AddTagConfirmationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609B22603F1130038B85B /* AddTagConfirmationVC.swift */; };
+		7AC8AA8427059DD600E7BDDC /* IGListAdapterUpdateType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC8AA8327059DD600E7BDDC /* IGListAdapterUpdateType+Extension.swift */; };
 		7AC9F7D326AE4E9C0096D486 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC9F7D226AE4E9C0096D486 /* ViewController.swift */; };
 		7ACA1A4E26AA448C00DE1645 /* ProvenanceAppCheckProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACA1A4D26AA448C00DE1645 /* ProvenanceAppCheckProviderFactory.swift */; };
 		7ACA1A5126AA4BDE00DE1645 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7ACA1A5026AA4BDE00DE1645 /* GoogleService-Info.plist */; };
@@ -550,6 +563,10 @@
 		4A69AA9B67AFAF5C76AC1FDD /* Pods-Provenance IntentsUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Provenance IntentsUI.debug.xcconfig"; path = "Target Support Files/Pods-Provenance IntentsUI/Pods-Provenance IntentsUI.debug.xcconfig"; sourceTree = "<group>"; };
 		54E8AB3886563257C39F757D /* Pods_Provenance.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Provenance.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A040C8126994F09000CCFF3 /* TransactionCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCellNode.swift; sourceTree = "<group>"; };
+		7A04EEB42708162E001469EB /* Provenance.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Provenance.xcdatamodel; sourceTree = "<group>"; };
+		7A04EEB627081C7E001469EB /* PersistentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
+		7A04EEB8270826DB001469EB /* CoreDataVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataVC.swift; sourceTree = "<group>"; };
+		7A04EEBA27082883001469EB /* TransactionCDCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCDCell.swift; sourceTree = "<group>"; };
 		7A0557D42604A0170080D2CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A08A79026FC1BA50035DD2F /* StringStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringStyle+Extension.swift"; sourceTree = "<group>"; };
 		7A08A79426FC399F0035DD2F /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
@@ -578,6 +595,7 @@
 		7A17C1902657940E00E5EA23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A17C1972657942000E5EA23 /* Intents.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Intents.entitlements; sourceTree = "<group>"; };
 		7A17C19D2657984B00E5EA23 /* AccountBalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountBalanceModel.swift; sourceTree = "<group>"; };
+		7A1AFAC8270842900000D409 /* UpTransaction+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpTransaction+Extension.swift"; sourceTree = "<group>"; };
 		7A1B520D2702BD5400835111 /* SortedTransactionCoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedTransactionCoreModel.swift; sourceTree = "<group>"; };
 		7A1B520F2702BD9D00835111 /* SortedSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedSectionModel.swift; sourceTree = "<group>"; };
 		7A1B52112702C1A000835111 /* SectionModelSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionModelSC.swift; sourceTree = "<group>"; };
@@ -599,10 +617,6 @@
 		7A3248362701C1A700A9037D /* SortedTransactionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedTransactionModel.swift; sourceTree = "<group>"; };
 		7A3248382701C6EC00A9037D /* HeaderCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCellNode.swift; sourceTree = "<group>"; };
 		7A35ECA32657B88400568ECA /* LatestTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestTransaction.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		7A3E42762703F8F7007E3A08 /* IGListSingleSectionController+Refinements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IGListSingleSectionController+Refinements.swift"; sourceTree = "<group>"; };
-		7A3E42772703F8F7007E3A08 /* ListValueSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListValueSectionController.swift; sourceTree = "<group>"; };
-		7A3E42782703F8F7007E3A08 /* ListIdentifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListIdentifiable.swift; sourceTree = "<group>"; };
-		7A3E42792703F8F7007E3A08 /* IGListCollectionContext+Refinements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IGListCollectionContext+Refinements.swift"; sourceTree = "<group>"; };
 		7A3E428327041243007E3A08 /* SpinnerCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerCellNode.swift; sourceTree = "<group>"; };
 		7A3E4285270412FC007E3A08 /* SpinnerSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerSC.swift; sourceTree = "<group>"; };
 		7A3E428727041B44007E3A08 /* LoadingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingDelegate.swift; sourceTree = "<group>"; };
@@ -629,6 +643,15 @@
 		7A615D7226FA9D6D001F1834 /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		7A615D7626FABA74001F1834 /* AppWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppWidgets.swift; sourceTree = "<group>"; };
 		7A67980C25D3E15D002AA83A /* DiagnosticsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsVC.swift; sourceTree = "<group>"; };
+		7A69F25C2706A392008CA6CC /* TransactionBindingSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBindingSC.swift; sourceTree = "<group>"; };
+		7A69F25F2706A736008CA6CC /* TransactionCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCollectionCell.swift; sourceTree = "<group>"; };
+		7A69F2612706A73F008CA6CC /* HeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
+		7A69F2652706AEDE008CA6CC /* TransactionsVCAlt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsVCAlt.swift; sourceTree = "<group>"; };
+		7A69F2672706B53E008CA6CC /* IGListCollectionContext+Refinements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IGListCollectionContext+Refinements.swift"; sourceTree = "<group>"; };
+		7A69F2682706B53F008CA6CC /* ListIdentifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListIdentifiable.swift; sourceTree = "<group>"; };
+		7A69F2692706B53F008CA6CC /* IGListSingleSectionController+Refinements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IGListSingleSectionController+Refinements.swift"; sourceTree = "<group>"; };
+		7A69F26A2706B53F008CA6CC /* ListValueSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListValueSectionController.swift; sourceTree = "<group>"; };
+		7A69F26F2706BEA8008CA6CC /* SpinnerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerCell.swift; sourceTree = "<group>"; };
 		7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
 		7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASPINRemoteImageDownloader+Extension.swift"; sourceTree = "<group>"; };
 		7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FLAnimatedImage+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -680,7 +703,6 @@
 		7AA113BE26154F3800386E2D /* DetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailItem.swift; sourceTree = "<group>"; };
 		7AA113C6261550B900386E2D /* DetailSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSection.swift; sourceTree = "<group>"; };
 		7AA124FC262682F300F50D6D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		7AA40A6C2705533100334A27 /* ListCollectionContext+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListCollectionContext+Extension.swift"; sourceTree = "<group>"; };
 		7AA6C4EB2623F606003F7947 /* AboutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutVC.swift; sourceTree = "<group>"; };
 		7AA819EB26F8175A00B5BD29 /* CategoryTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTypeEnum.swift; sourceTree = "<group>"; };
 		7AAA5FAA26FF157500136E32 /* TransactionCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCellModel.swift; sourceTree = "<group>"; };
@@ -690,9 +712,12 @@
 		7AAADD5A26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MarqueeLabel+Extension.swift"; sourceTree = "<group>"; };
 		7AAADD5E26F1973B00C4A9D9 /* TransactionStatusEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionStatusEnum.swift; sourceTree = "<group>"; };
 		7AAADD6226F1977700C4A9D9 /* AccountTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeEnum.swift; sourceTree = "<group>"; };
+		7AAB8D642707CB3200A59D03 /* SortedTransactionModelAlt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedTransactionModelAlt.swift; sourceTree = "<group>"; };
+		7AAB8D672707D02500A59D03 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		7AAB8D692707D10D00A59D03 /* ListSectionController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListSectionController+Extension.swift"; sourceTree = "<group>"; };
+		7AAB8D6B2707E26900A59D03 /* CALayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Extension.swift"; sourceTree = "<group>"; };
 		7AAC68FA262D581D0046494C /* SingleTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTransaction.swift; sourceTree = "<group>"; };
 		7AAC68FF262D6C9E0046494C /* SingleAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleAccount.swift; sourceTree = "<group>"; };
-		7AB304F427014A77009F366E /* SRCopyableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SRCopyableLabel.swift; sourceTree = "<group>"; };
 		7AB34D1A25C78230000A1E81 /* Provenance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Provenance.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AB34D1D25C78230000A1E81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AB34D2625C78232000A1E81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -703,6 +728,7 @@
 		7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		7AB609AF2603F0D80038B85B /* AddTagTagsSelectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagTagsSelectionVC.swift; sourceTree = "<group>"; };
 		7AB609B22603F1130038B85B /* AddTagConfirmationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagConfirmationVC.swift; sourceTree = "<group>"; };
+		7AC8AA8327059DD600E7BDDC /* IGListAdapterUpdateType+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IGListAdapterUpdateType+Extension.swift"; sourceTree = "<group>"; };
 		7AC9F7D226AE4E9C0096D486 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		7ACA1A4D26AA448C00DE1645 /* ProvenanceAppCheckProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvenanceAppCheckProviderFactory.swift; sourceTree = "<group>"; };
 		7ACA1A5026AA4BDE00DE1645 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -861,10 +887,19 @@
 			path = Nodes;
 			sourceTree = "<group>";
 		};
+		7A04EEB227081605001469EB /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				7A04EEB32708162E001469EB /* Provenance.xcdatamodeld */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		7A0557D72604A0A30080D2CD /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				7A1B52152702C30100835111 /* TransactionsVC.swift */,
+				7A69F2652706AEDE008CA6CC /* TransactionsVCAlt.swift */,
 				7A09E4B42686E30600C9F299 /* TransactionDetailVC.swift */,
 				7A438782263AAC9B008C5714 /* StatusIconHelpView.swift */,
 				7A122EE5268AB37800BF90BB /* TransactionTagsVC.swift */,
@@ -884,6 +919,7 @@
 				7ACD456B261D67A7000C8FD2 /* WidgetsVC.swift */,
 				7ACD4570261D93C3000C8FD2 /* StickersVC.swift */,
 				7A2F1977261DA6B20054A9B6 /* StickerView.swift */,
+				7A04EEB8270826DB001469EB /* CoreDataVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -894,6 +930,7 @@
 				7AB34D1D25C78230000A1E81 /* AppDelegate.swift */,
 				7A202B5C262908EC00D2450A /* SceneDelegate.swift */,
 				7ACA1A4D26AA448C00DE1645 /* ProvenanceAppCheckProviderFactory.swift */,
+				7A04EEB627081C7E001469EB /* PersistentContainer.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -902,6 +939,7 @@
 			isa = PBXGroup;
 			children = (
 				7AA113872615181700386E2D /* AttributeCell.swift */,
+				7A04EEBA27082883001469EB /* TransactionCDCell.swift */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -915,6 +953,14 @@
 			path = Intents;
 			sourceTree = "<group>";
 		};
+		7A1AFAC7270842860000D409 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				7A1AFAC8270842900000D409 /* UpTransaction+Extension.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		7A22F7E625FFF8860014BDC8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -925,7 +971,6 @@
 				7A22713826817399001F63FF /* ShortcutType.swift */,
 				7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */,
 				7AF2155F26F057F1009F4F38 /* FilterMenuAction.swift */,
-				7AB304F427014A77009F366E /* SRCopyableLabel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -947,6 +992,7 @@
 				7A1B52112702C1A000835111 /* SectionModelSC.swift */,
 				7A1B52132702C1A900835111 /* ItemModelSC.swift */,
 				7A3E4285270412FC007E3A08 /* SpinnerSC.swift */,
+				7A69F25C2706A392008CA6CC /* TransactionBindingSC.swift */,
 			);
 			path = SectionControllers;
 			sourceTree = "<group>";
@@ -1017,7 +1063,8 @@
 			isa = PBXGroup;
 			children = (
 				7A3E42752703F8DD007E3A08 /* IGListSwiftKit */,
-				7AA40A6C2705533100334A27 /* ListCollectionContext+Extension.swift */,
+				7AC8AA8327059DD600E7BDDC /* IGListAdapterUpdateType+Extension.swift */,
+				7AAB8D692707D10D00A59D03 /* ListSectionController+Extension.swift */,
 			);
 			path = IGListKit;
 			sourceTree = "<group>";
@@ -1025,12 +1072,30 @@
 		7A3E42752703F8DD007E3A08 /* IGListSwiftKit */ = {
 			isa = PBXGroup;
 			children = (
-				7A3E42792703F8F7007E3A08 /* IGListCollectionContext+Refinements.swift */,
-				7A3E42762703F8F7007E3A08 /* IGListSingleSectionController+Refinements.swift */,
-				7A3E42782703F8F7007E3A08 /* ListIdentifiable.swift */,
-				7A3E42772703F8F7007E3A08 /* ListValueSectionController.swift */,
+				7A69F2672706B53E008CA6CC /* IGListCollectionContext+Refinements.swift */,
+				7A69F2692706B53F008CA6CC /* IGListSingleSectionController+Refinements.swift */,
+				7A69F2682706B53F008CA6CC /* ListIdentifiable.swift */,
+				7A69F26A2706B53F008CA6CC /* ListValueSectionController.swift */,
 			);
 			path = IGListSwiftKit;
+			sourceTree = "<group>";
+		};
+		7A69F25E2706A71F008CA6CC /* CollectionViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				7A69F25F2706A736008CA6CC /* TransactionCollectionCell.swift */,
+				7A69F2612706A73F008CA6CC /* HeaderCell.swift */,
+				7A69F26F2706BEA8008CA6CC /* SpinnerCell.swift */,
+			);
+			path = CollectionViewCells;
+			sourceTree = "<group>";
+		};
+		7A6DF39E2706850D00E257B7 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				7ADF0EC12702F9F5004FE0B1 /* TransactionGroupingEnum+Extension.swift */,
+			);
+			path = Other;
 			sourceTree = "<group>";
 		};
 		7A75631426A7ED3100963658 /* Shared */ = {
@@ -1176,6 +1241,7 @@
 				7ACA1A5026AA4BDE00DE1645 /* GoogleService-Info.plist */,
 				7A9DE23C25DE35AB00175697 /* Provenance.entitlements */,
 				7AA124FC262682F300F50D6D /* Settings.bundle */,
+				7A04EEB227081605001469EB /* CoreData */,
 				7AB609AC2602CAD80038B85B /* Storyboards */,
 				7ACD45C1261D9920000C8FD2 /* GIF */,
 			);
@@ -1186,6 +1252,7 @@
 			isa = PBXGroup;
 			children = (
 				7A3248362701C1A700A9037D /* SortedTransactionModel.swift */,
+				7AAB8D642707CB3200A59D03 /* SortedTransactionModelAlt.swift */,
 				7A1B520D2702BD5400835111 /* SortedTransactionCoreModel.swift */,
 				7A1B520F2702BD9D00835111 /* SortedSectionModel.swift */,
 				7A1B52172702C82300835111 /* SortedSectionCoreModel.swift */,
@@ -1222,6 +1289,14 @@
 				7A82FB4626F47F7B00C9C04E /* IntentsUI.entitlements */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		7AAB8D662707D01500A59D03 /* CollectionReusableViews */ = {
+			isa = PBXGroup;
+			children = (
+				7AAB8D672707D02500A59D03 /* HeaderView.swift */,
+			);
+			path = CollectionReusableViews;
 			sourceTree = "<group>";
 		};
 		7AB34D1125C78230000A1E81 = {
@@ -1317,9 +1392,11 @@
 				7AF2155026F04F62009F4F38 /* Extensions */,
 				7A22F7E625FFF8860014BDC8 /* Model */,
 				7A07979A25D79ACE0013EE82 /* TableViewCells */,
-				7A24CD5A2701752D00ED26FF /* SectionControllers */,
+				7A69F25E2706A71F008CA6CC /* CollectionViewCells */,
+				7AAB8D662707D01500A59D03 /* CollectionReusableViews */,
 				7A040C8026994EE4000CCFF3 /* Nodes */,
 				7A22F7E925FFF90E0014BDC8 /* BaseControllers */,
+				7A24CD5A2701752D00ED26FF /* SectionControllers */,
 				7A0557D72604A0A30080D2CD /* ViewControllers */,
 			);
 			path = Sources;
@@ -1340,6 +1417,7 @@
 		7AF2155026F04F62009F4F38 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				7A1AFAC7270842860000D409 /* CoreData */,
 				7A3E42742703F8D9007E3A08 /* IGListKit */,
 				7AFC6EAE2703DFF40056270B /* AsyncDisplayKit */,
 				7AFC6EAF2703E0190056270B /* CellModel */,
@@ -1348,7 +1426,7 @@
 				7AFC6EB32703E0C00056270B /* MarqueeLabel */,
 				7AFC6EB22703E0B10056270B /* FLAnimatedImage */,
 				7AFC6EB12703E0A20056270B /* BonMot */,
-				7ADF0EC12702F9F5004FE0B1 /* TransactionGroupingEnum+Extension.swift */,
+				7A6DF39E2706850D00E257B7 /* Other */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1420,6 +1498,7 @@
 				7AF214ED26EEC796009F4F38 /* UISearchBar+Extension.swift */,
 				7AF2150C26EF3A86009F4F38 /* UISearchController+Extension.swift */,
 				7AF2150E26EF40C9009F4F38 /* UIView+Extension.swift */,
+				7AAB8D6B2707E26900A59D03 /* CALayer+Extension.swift */,
 				7AF2155C26F05422009F4F38 /* UIMenu+Extension.swift */,
 				7AF2156326F05F74009F4F38 /* UIMenuElement+Extension.swift */,
 				7AF2156526F05FE3009F4F38 /* UIContextMenuConfiguration+Extension.swift */,
@@ -2063,7 +2142,9 @@
 			files = (
 				7ACD4571261D93C3000C8FD2 /* StickersVC.swift in Sources */,
 				7AAA5FAB26FF157500136E32 /* TransactionCellModel.swift in Sources */,
+				7AAB8D6C2707E26900A59D03 /* CALayer+Extension.swift in Sources */,
 				7A340BAF26F9C16900D43523 /* Account.swift in Sources */,
+				7A69F26D2706B53F008CA6CC /* IGListSingleSectionController+Refinements.swift in Sources */,
 				7A340B4226F9C14B00D43523 /* AppDateStyle.swift in Sources */,
 				7A340BC726F9C16900D43523 /* RoundUpObject.swift in Sources */,
 				7A340B0C26F9C11200D43523 /* Color+Extension.swift in Sources */,
@@ -2077,6 +2158,7 @@
 				7AF2156426F05F74009F4F38 /* UIMenuElement+Extension.swift in Sources */,
 				7AAADD5926F1812600C4A9D9 /* UIBarButtonItem+Extension.swift in Sources */,
 				7A340BC026F9C16900D43523 /* TagRelationship.swift in Sources */,
+				7AAB8D6A2707D10D00A59D03 /* ListSectionController+Extension.swift in Sources */,
 				7AF2155D26F05422009F4F38 /* UIMenu+Extension.swift in Sources */,
 				7A1B520E2702BD5400835111 /* SortedTransactionCoreModel.swift in Sources */,
 				7AF2150926EF32C5009F4F38 /* ASSizeRange+Extension.swift in Sources */,
@@ -2100,7 +2182,10 @@
 				7A340BAB26F9C16900D43523 /* UpFacade.swift in Sources */,
 				7AD295F425D358B200B8A765 /* TransactionsByAccountVC.swift in Sources */,
 				7A340B1326F9C11200D43523 /* UIEdgeInsets+Extension.swift in Sources */,
+				7AAB8D682707D02500A59D03 /* HeaderView.swift in Sources */,
 				7A340BB526F9C16900D43523 /* TransactionAttribute.swift in Sources */,
+				7A04EEB52708162E001469EB /* Provenance.xcdatamodeld in Sources */,
+				7A69F2622706A73F008CA6CC /* HeaderCell.swift in Sources */,
 				7A340BAE26F9C16900D43523 /* SingleAccount.swift in Sources */,
 				7A340BB426F9C16900D43523 /* SingleCategory.swift in Sources */,
 				7AB609B32603F1130038B85B /* AddTagConfirmationVC.swift in Sources */,
@@ -2108,6 +2193,7 @@
 				7A22713926817399001F63FF /* ShortcutType.swift in Sources */,
 				7AF214F526EF1451009F4F38 /* CategoryCellNode.swift in Sources */,
 				7AF2152D26F04CF3009F4F38 /* UIImage+Extension.swift in Sources */,
+				7A69F26B2706B53F008CA6CC /* IGListCollectionContext+Refinements.swift in Sources */,
 				7AA6C4EC2623F606003F7947 /* AboutVC.swift in Sources */,
 				7A340BB926F9C16900D43523 /* AccountAttribute.swift in Sources */,
 				7A90F54226F0985500384F53 /* CategoryResource+CellModel.swift in Sources */,
@@ -2125,6 +2211,7 @@
 				7AD266D926FADDF500EFF4A2 /* Double+Extension.swift in Sources */,
 				7A340B1526F9C11200D43523 /* UserDefaults+Extension.swift in Sources */,
 				7A8022E726FC6455008600B0 /* TransactionAmountType.swift in Sources */,
+				7A04EEB9270826DB001469EB /* CoreDataVC.swift in Sources */,
 				7A340BB626F9C16900D43523 /* CashbackObject.swift in Sources */,
 				7A340BC526F9C16900D43523 /* RelatedLink.swift in Sources */,
 				7AF214FF26EF326C009F4F38 /* NSParagraphStyle+Extension.swift in Sources */,
@@ -2139,7 +2226,6 @@
 				7A56101225D219770091396E /* TagsVC.swift in Sources */,
 				7A7CAB0526F1F161005CB30F /* FLAnimatedImage+Extension.swift in Sources */,
 				7A340B1026F9C11200D43523 /* NSUserActivity+Extension.swift in Sources */,
-				7AB304F527014A77009F366E /* SRCopyableLabel.swift in Sources */,
 				7A340BBD26F9C16900D43523 /* SingleTransaction.swift in Sources */,
 				7A0A301E26B52C88009E52FB /* AboutTopCellNode.swift in Sources */,
 				7AF2150B26EF34C5009F4F38 /* CGColor+Extension.swift in Sources */,
@@ -2149,10 +2235,12 @@
 				7A340B0B26F9C11200D43523 /* String+Extension.swift in Sources */,
 				7A340B0F26F9C11200D43523 /* UIFont+Extension.swift in Sources */,
 				7A8022EC26FC7C30008600B0 /* Bool+Extension.swift in Sources */,
+				7A04EEB727081C7F001469EB /* PersistentContainer.swift in Sources */,
 				7AB34D5D25C7CDCB000A1E81 /* SettingsVC.swift in Sources */,
 				7A340BB826F9C16900D43523 /* HoldInfoObject.swift in Sources */,
 				7A0A302626B5422F009E52FB /* StickerCellNode.swift in Sources */,
 				7A340BA926F9C16900D43523 /* Pagination.swift in Sources */,
+				7A69F25D2706A392008CA6CC /* TransactionBindingSC.swift in Sources */,
 				7AF214F326EEE6F9009F4F38 /* TagCellNode.swift in Sources */,
 				7A5B06CB26F2BE87005CE3D1 /* ProvenanceApp.swift in Sources */,
 				7A3248392701C6EC00A9037D /* HeaderCellNode.swift in Sources */,
@@ -2163,13 +2251,16 @@
 				7AF214EE26EEC796009F4F38 /* UISearchBar+Extension.swift in Sources */,
 				7A0A302226B5310E009E52FB /* RightDetailCellNode.swift in Sources */,
 				7AF2152B26F04BCC009F4F38 /* TransactionResource+CellModel.swift in Sources */,
+				7A1AFAC9270842900000D409 /* UpTransaction+Extension.swift in Sources */,
 				7A3E428427041243007E3A08 /* SpinnerCellNode.swift in Sources */,
 				7A340BA426F9C16900D43523 /* Tag.swift in Sources */,
 				7A340BA726F9C16900D43523 /* MoneyObject.swift in Sources */,
 				7AAADD5526F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift in Sources */,
 				7A340BA526F9C16900D43523 /* CategoryRelationshipChildren.swift in Sources */,
+				7A69F2662706AEDE008CA6CC /* TransactionsVCAlt.swift in Sources */,
 				7A8022E326FC5CD1008600B0 /* ASCellNode+Extension.swift in Sources */,
 				7A56101625D21BFE0091396E /* TransactionsByTagVC.swift in Sources */,
+				7A04EEBB27082883001469EB /* TransactionCDCell.swift in Sources */,
 				7ACD456C261D67A7000C8FD2 /* WidgetsVC.swift in Sources */,
 				7A340B0A26F9C11200D43523 /* Status+Extension.swift in Sources */,
 				7A90F53026F097BB00384F53 /* TagResource+CellModel.swift in Sources */,
@@ -2178,16 +2269,14 @@
 				7A7F039D26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */,
 				7A67980D25D3E15D002AA83A /* DiagnosticsVC.swift in Sources */,
 				7AF2156626F05FE3009F4F38 /* UIContextMenuConfiguration+Extension.swift in Sources */,
-				7A3E427D2703F8F7007E3A08 /* IGListCollectionContext+Refinements.swift in Sources */,
 				7A7CAB0326F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift in Sources */,
 				7A340BBB26F9C16900D43523 /* AccountTypeEnum.swift in Sources */,
 				7A3E428827041B44007E3A08 /* LoadingDelegate.swift in Sources */,
 				7A340BC226F9C16900D43523 /* CategoryResource.swift in Sources */,
-				7A3E427C2703F8F7007E3A08 /* ListIdentifiable.swift in Sources */,
 				7A1B52142702C1A900835111 /* ItemModelSC.swift in Sources */,
 				7AF2150026EF326C009F4F38 /* CGFloat+Extension.swift in Sources */,
-				7AA40A6D2705533100334A27 /* ListCollectionContext+Extension.swift in Sources */,
 				7AB609B02603F0D80038B85B /* AddTagTagsSelectionVC.swift in Sources */,
+				7A69F2602706A736008CA6CC /* TransactionCollectionCell.swift in Sources */,
 				7A340BAD26F9C16900D43523 /* CategoryRelationship.swift in Sources */,
 				7A340BB726F9C16900D43523 /* TransactionResource.swift in Sources */,
 				7A340BB126F9C16900D43523 /* TransactionStatusEnum.swift in Sources */,
@@ -2200,8 +2289,10 @@
 				7A340BC326F9C16900D43523 /* CategoryRelationshipParent.swift in Sources */,
 				7A3248372701C1A700A9037D /* SortedTransactionModel.swift in Sources */,
 				7AF2155826F050B3009F4F38 /* ASViewController.swift in Sources */,
+				7AAB8D652707CB3200A59D03 /* SortedTransactionModelAlt.swift in Sources */,
 				7A340B4026F9C14B00D43523 /* InfoPlist.swift in Sources */,
 				7AD266D526FADA1E00EFF4A2 /* NumberFormatter+Extension.swift in Sources */,
+				7A69F2702706BEA8008CA6CC /* SpinnerCell.swift in Sources */,
 				7A340B1126F9C11200D43523 /* AddTagToTransactionIntentResponse+Extension.swift in Sources */,
 				7A08A79526FC399F0035DD2F /* UIViewController+Extension.swift in Sources */,
 				7A56101A25D22AF10091396E /* AddTagTransactionSelectionVC.swift in Sources */,
@@ -2213,9 +2304,9 @@
 				7A90F56226F16FB200384F53 /* URL+Extensions.swift in Sources */,
 				7AF2151D26F04723009F4F38 /* SegmentedControlNode.swift in Sources */,
 				7A14D5EA261AC37100C072E3 /* AccountsVC.swift in Sources */,
+				7A69F26E2706B53F008CA6CC /* ListValueSectionController.swift in Sources */,
 				7A340B3D26F9C14B00D43523 /* CategoryTypeEnum.swift in Sources */,
 				7A3E4286270412FC007E3A08 /* SpinnerSC.swift in Sources */,
-				7A3E427B2703F8F7007E3A08 /* ListValueSectionController.swift in Sources */,
 				7A72D2F12672DEAF005FAC4F /* TabBarItem.swift in Sources */,
 				7AF2150126EF326C009F4F38 /* CGSize+Extension.swift in Sources */,
 				7A2F1978261DA6B20054A9B6 /* StickerView.swift in Sources */,
@@ -2233,15 +2324,16 @@
 				7A340BBF26F9C16900D43523 /* TagResource.swift in Sources */,
 				7A3248312701A73300A9037D /* SeparatorCellNode.swift in Sources */,
 				7A340BB326F9C16900D43523 /* TransactionRelationship.swift in Sources */,
+				7AC8AA8427059DD600E7BDDC /* IGListAdapterUpdateType+Extension.swift in Sources */,
 				7A438783263AAC9B008C5714 /* StatusIconHelpView.swift in Sources */,
 				7A340BBE26F9C16900D43523 /* AccountRelationship.swift in Sources */,
 				7A89B16A2702F58400330165 /* TransactionGroupingEnum.swift in Sources */,
 				7A1B52102702BD9D00835111 /* SortedSectionModel.swift in Sources */,
 				7A615D7326FA9D6D001F1834 /* UITextField+Extension.swift in Sources */,
 				7A1B52182702C82300835111 /* SortedSectionCoreModel.swift in Sources */,
-				7A3E427A2703F8F7007E3A08 /* IGListSingleSectionController+Refinements.swift in Sources */,
 				7A340B1626F9C11200D43523 /* ListTransactionsIntentResponse+Extension.swift in Sources */,
 				7A340B3B26F9C14B00D43523 /* AccountTypeOptionEnum.swift in Sources */,
+				7A69F26C2706B53F008CA6CC /* ListIdentifiable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2785,6 +2877,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		7A04EEB32708162E001469EB /* Provenance.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7A04EEB42708162E001469EB /* Provenance.xcdatamodel */,
+			);
+			currentVersion = 7A04EEB42708162E001469EB /* Provenance.xcdatamodel */;
+			path = Provenance.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 7AB34D1225C78230000A1E81 /* Project object */;
 }

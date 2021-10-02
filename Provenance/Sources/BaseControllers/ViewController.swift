@@ -3,10 +3,10 @@ import UIKit
 class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
-    configure()
+    configureView()
   }
   
-  private func configure() {
+  private func configureView() {
     view.backgroundColor = .systemBackground
   }
 }

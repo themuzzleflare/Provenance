@@ -1,9 +1,9 @@
 import SnapKit
 
-final class TransactionCell: UITableViewCell {
+final class TransactionCDCell: UITableViewCell {
     // MARK: - Properties
   
-  static let reuseIdentifier = "transactionCell"
+  static let reuseIdentifier = "transactionCoreDataCell"
   
   private let transactionDescriptionLabel = UILabel()
   private let transactionCreationDateLabel = UILabel()
@@ -11,12 +11,11 @@ final class TransactionCell: UITableViewCell {
   private let verticalStack = UIStackView()
   private let horizontalStack = UIStackView()
   
-  var transaction: TransactionType! {
+  var transaction: UpTransaction! {
     didSet {
       transactionDescription = transaction.transactionDescription
-      transactionCreationDate = transaction.transactionCreationDate
-      transactionAmount = transaction.transactionAmount
-      transactionAmountColour = transaction.transactionColour.uiColour
+      transactionCreationDate = transaction.creationDate?.toString(.dateTime(.medium))
+      transactionAmount = NumberFormatter.currency(currencyCode: "AUD").string(from: transaction.amount ?? 0.00)
     }
   }
   
@@ -81,7 +80,7 @@ final class TransactionCell: UITableViewCell {
 
   // MARK: - Configuration
 
-private extension TransactionCell {
+private extension TransactionCDCell {
   private func configureSelf() {
     separatorInset = .zero
   }

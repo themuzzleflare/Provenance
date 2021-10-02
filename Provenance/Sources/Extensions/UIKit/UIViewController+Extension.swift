@@ -21,4 +21,8 @@ extension UIViewController {
   static var diagnostics: UIViewController {
     return DiagnosticsVC()
   }
+  
+  static var addTagTransactionSelection: UIViewController {
+    return AddTagTransactionSelectionVC()
+  }
 }

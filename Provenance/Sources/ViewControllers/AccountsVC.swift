@@ -187,7 +187,7 @@ private extension AccountsVC {
   
   private func display(_ error: AFError) {
     accountsError = error.errorDescription ?? error.localizedDescription
-    accounts = []
+    accounts.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"
     }

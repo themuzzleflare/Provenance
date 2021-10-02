@@ -2,19 +2,12 @@ import IGListKit
 import AsyncDisplayKit
 
 final class SpinnerSC: ListSectionController {
-  override var description: String {
-    return "SpinnerSC"
-  }
-  
   private var object: String?
   
-  private weak var loadingDelegate: LoadingDelegate?
   weak var spinnerDelegate: SpinnerDelegate?
   
-  init(_ loadingDelegate: LoadingDelegate? = nil) {
-    self.loadingDelegate = loadingDelegate
+  override init() {
     super.init()
-    displayDelegate = self
   }
   
   override func sizeForItem(at index: Int) -> CGSize {
@@ -26,6 +19,7 @@ final class SpinnerSC: ListSectionController {
   }
   
   override func didUpdate(to object: Any) {
+    precondition(object is String)
     self.object = object as? String
   }
 }
@@ -42,26 +36,5 @@ extension SpinnerSC: ASSectionController {
   
   func sizeRangeForItem(at index: Int) -> ASSizeRange {
     return .cellNode(minHeight: 45, maxHeight: 45)
-  }
-}
-
-  // MARK: - ListDisplayDelegate
-
-extension SpinnerSC: ListDisplayDelegate {
-  func listAdapter(_ listAdapter: ListAdapter, willDisplay sectionController: ListSectionController) {
-    return
-  }
-  
-  func listAdapter(_ listAdapter: ListAdapter, didEndDisplaying sectionController: ListSectionController) {
-    return
-  }
-  
-  func listAdapter(_ listAdapter: ListAdapter, willDisplay sectionController: ListSectionController, cell: UICollectionViewCell, at index: Int) {
-    spinnerDelegate?.startLoading()
-    loadingDelegate?.startLoading()
-  }
-  
-  func listAdapter(_ listAdapter: ListAdapter, didEndDisplaying sectionController: ListSectionController, cell: UICollectionViewCell, at index: Int) {
-    return
   }
 }

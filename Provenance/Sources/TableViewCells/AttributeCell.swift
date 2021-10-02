@@ -54,7 +54,7 @@ final class AttributeCell: UITableViewCell {
 
   // MARK: - Configuration
 
-private extension AttributeCell {
+extension AttributeCell {
   private func configureSelf() {
     separatorInset = .zero
     selectionStyle = .none

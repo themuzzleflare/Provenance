@@ -18,8 +18,7 @@ extension SortedTransactionModel: ListDiffable {
   }
   
   func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
-    guard let object = object as? SortedTransactionModel else { return false }
-    return self.transactions == object.transactions
+    return true
   }
 }
 

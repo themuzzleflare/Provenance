@@ -75,7 +75,7 @@ extension IntentHandler: ListTransactionsIntentHandling {
       .accept("application/json")
     ]
     var queryParameters: Parameters = [
-      "page[size]": "100"
+      UpFacade.ParamKeys.pageSize: "100"
     ]
     if let apiKey = intent.apiKey, !apiKey.isEmpty {
       headers.add(.authorization(bearerToken: apiKey))
@@ -94,19 +94,19 @@ extension IntentHandler: ListTransactionsIntentHandling {
       return intent.until?.date?.toISO()
     }
     if let status = intent.status.transactionStatusEnum?.rawValue {
-      queryParameters.updateValue(status, forKey: "filter[status]")
+      queryParameters.updateValue(status, forKey: UpFacade.ParamKeys.filterStatus)
     }
     if let since = filterSince {
-      queryParameters.updateValue(since, forKey: "filter[since]")
+      queryParameters.updateValue(since, forKey: UpFacade.ParamKeys.filterSince)
     }
     if let until = filterUntil {
-      queryParameters.updateValue(until, forKey: "filter[until]")
+      queryParameters.updateValue(until, forKey: UpFacade.ParamKeys.filterUntil)
     }
     if let category = intent.category?.identifier {
-      queryParameters.updateValue(category, forKey: "filter[category]")
+      queryParameters.updateValue(category, forKey: UpFacade.ParamKeys.filterCategory)
     }
     if let tag = intent.tag {
-      queryParameters.updateValue(tag, forKey: "filter[tag]")
+      queryParameters.updateValue(tag, forKey: UpFacade.ParamKeys.filterTag)
     }
     AF.request(requestUrl, method: .get, parameters: queryParameters, headers: headers)
       .validate()

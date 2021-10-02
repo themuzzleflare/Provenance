@@ -109,8 +109,8 @@ private extension TransactionsByCategoryVC {
   }
   
   @objc private func refreshTransactions() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-      fetchTransactions()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.fetchTransactions()
     }
   }
   
@@ -149,13 +149,13 @@ private extension TransactionsByCategoryVC {
   }
   
   private func fetchTransactions() {
-    UpFacade.listTransactions(filterBy: category) { [self] (result) in
+    UpFacade.listTransactions(filterBy: category) { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(transactions):
-          display(transactions)
+          self.display(transactions)
         case let .failure(error):
-          display(error)
+          self.display(error)
         }
       }
     }
@@ -171,7 +171,7 @@ private extension TransactionsByCategoryVC {
   
   private func display(_ error: AFError) {
     transactionsError = error.errorDescription ?? error.localizedDescription
-    transactions = []
+    transactions.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"
     }

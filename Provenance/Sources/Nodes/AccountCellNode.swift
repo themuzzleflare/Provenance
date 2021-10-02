@@ -22,13 +22,13 @@ final class AccountCellNode: ASCellNode {
   
   override var isSelected: Bool {
     didSet {
-      backgroundColor = isSelected ? .systemGray4 : .secondarySystemGroupedBackground
+      backgroundColor = isSelected ? .gray.withAlphaComponent(0.3) : .secondarySystemGroupedBackground
     }
   }
   
   override var isHighlighted: Bool {
     didSet {
-      backgroundColor = isHighlighted ? .systemGray4 : .secondarySystemGroupedBackground
+      backgroundColor = isHighlighted ? .gray.withAlphaComponent(0.3) : .secondarySystemGroupedBackground
     }
   }
   

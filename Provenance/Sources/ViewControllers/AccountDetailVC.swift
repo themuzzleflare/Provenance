@@ -108,8 +108,8 @@ private extension AccountDetailVC {
   }
   
   @objc private func refreshData() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-      fetchingTasks()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.fetchingTasks()
     }
   }
   

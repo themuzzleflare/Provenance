@@ -117,7 +117,7 @@ private extension TransactionTagsVC {
   private func configureNavigation() {
     navigationItem.title = "Tags"
     navigationItem.largeTitleDisplayMode = .never
-    navigationItem.backBarButtonItem = UIBarButtonItem(image: .tag)
+    navigationItem.backBarButtonItem = .tag
     navigationItem.rightBarButtonItems = [addBarButtonItem, editButtonItem]
   }
   

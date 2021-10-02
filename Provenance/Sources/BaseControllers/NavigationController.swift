@@ -11,7 +11,7 @@ final class NavigationController: ASDKNavigationController {
 
   // MARK: - Configuration
 
-private extension NavigationController {
+extension NavigationController {
   private func configureSelf() {
     navigationBar.prefersLargeTitles = true
   }

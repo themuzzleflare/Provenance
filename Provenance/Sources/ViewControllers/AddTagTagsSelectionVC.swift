@@ -279,7 +279,7 @@ private extension AddTagTagsSelectionVC {
   
   private func display(_ error: AFError) {
     tagsError = error.errorDescription ?? error.localizedDescription
-    tags = []
+    tags.removeAll()
     setEditing(false, animated: false)
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"

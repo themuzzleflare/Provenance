@@ -2,18 +2,17 @@ import IGListKit
 import AsyncDisplayKit
 
 final class ItemModelSC: ListSectionController {
-  override var description: String {
-    return "ItemModelSC"
-  }
-  
   private var object: TransactionCellModel?
   
-  weak var selectionDelegate: SelectionDelegate?
+  private weak var selectionDelegate: SelectionDelegate?
+  private weak var loadingDelegate: LoadingDelegate?
   
-  init(_ selectionDelegate: SelectionDelegate? = nil) {
+  init(_ selectionDelegate: SelectionDelegate? = nil, _ loadingDelegate: LoadingDelegate? = nil) {
     self.selectionDelegate = selectionDelegate
+    self.loadingDelegate = loadingDelegate
     super.init()
     supplementaryViewSource = self
+    scrollDelegate = self
   }
   
   override func sizeForItem(at index: Int) -> CGSize {
@@ -25,6 +24,7 @@ final class ItemModelSC: ListSectionController {
   }
   
   override func didUpdate(to object: Any) {
+    precondition(object is TransactionCellModel)
     self.object = object as? TransactionCellModel
   }
   
@@ -89,5 +89,27 @@ extension ItemModelSC: ASSupplementaryNodeSource {
   
   func sizeRangeForSupplementaryElement(ofKind elementKind: String, at index: Int) -> ASSizeRange {
     return .separator
+  }
+}
+
+  // MARK: - ListScrollDelegate
+
+extension ItemModelSC: ListScrollDelegate {
+  func listAdapter(_ listAdapter: ListAdapter, didScroll sectionController: ListSectionController) {
+    return
+  }
+  
+  func listAdapter(_ listAdapter: ListAdapter, willBeginDragging sectionController: ListSectionController) {
+    return
+  }
+  
+  func listAdapter(_ listAdapter: ListAdapter, didEndDragging sectionController: ListSectionController, willDecelerate decelerate: Bool) {
+    if isLastSection {
+      loadingDelegate?.startLoading()
+    }
+  }
+  
+  func listAdapter(_ listAdapter: ListAdapter, didEndDeceleratingSectionController sectionController: ListSectionController) {
+    return
   }
 }

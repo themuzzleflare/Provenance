@@ -19,7 +19,7 @@ final class APIKeyCellNode: ASCellNode {
   
   override func didLoad() {
     super.didLoad()
-    marqueeLabelNode.fadeLength = 10
+    marqueeLabelNode.fadeLength = 30
     marqueeLabelNode.speed = .rate(100)
     marqueeLabelNode.font = .circularStdBook(size: .labelFontSize)
     marqueeLabelNode.textColor = apiKeyDisplay == "None" ? .placeholderText : .label

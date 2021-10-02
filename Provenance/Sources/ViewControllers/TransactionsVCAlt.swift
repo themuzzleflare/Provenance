@@ -1,8 +1,9 @@
 import IGListKit
-import AsyncDisplayKit
 import Alamofire
+import UIKit
+import CoreData
 
-final class TransactionsVC: ASViewController {
+final class TransactionsVCAlt: ViewController {
     // MARK: - Properties
   
   private lazy var filterBarButtonItem = UIBarButtonItem(image: .sliderHorizontal3, menu: filterMenu)
@@ -13,7 +14,7 @@ final class TransactionsVC: ASViewController {
     return ListAdapter(updater: ListAdapterUpdater(), viewController: self)
   }()
   
-  private let collectionNode = ASCollectionNode(collectionViewLayout: .flowLayout)
+  private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .sectionHeadersPinned)
   
   private let spinToken = "spinner"
   
@@ -80,10 +81,11 @@ final class TransactionsVC: ASViewController {
   
     // MARK: - Life Cycle
   
-  override init() {
-    super.init(node: collectionNode)
-    adapter.setASDKCollectionNode(collectionNode)
+  override init(nibName: String?, bundle: Bundle?) {
+    super.init(nibName: nil, bundle: nil)
+    adapter.collectionView = collectionView
     adapter.dataSource = self
+    adapter.scrollViewDelegate = self
   }
   
   deinit {
@@ -96,19 +98,26 @@ final class TransactionsVC: ASViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    view.addSubview(collectionView)
     configureObservers()
-    configureCollectionNode()
+    configureCollectionView()
     configureSelf()
     configureNavigation()
     fetchingTasks()
+  }
+  
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    collectionView.frame = view.bounds
   }
 }
 
   // MARK: - Configuration
 
-extension TransactionsVC {
-  private func configureCollectionNode() {
-    collectionNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshTransactions))
+extension TransactionsVCAlt {
+  private func configureCollectionView() {
+    collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    collectionView.refreshControl = UIRefreshControl(self, action: #selector(refreshTransactions))
   }
   
   private func configureSelf() {
@@ -164,7 +173,7 @@ extension TransactionsVC {
 
   // MARK: - Actions
 
-extension TransactionsVC {
+extension TransactionsVCAlt {
   @objc private func appMovedToForeground() {
     fetchingTasks()
   }
@@ -188,7 +197,7 @@ extension TransactionsVC {
     loading = false
     noTransactions = transactions.isEmpty
     adapter.performUpdates(animated: true)
-    collectionNode.view.refreshControl?.endRefreshing()
+    collectionView.refreshControl?.endRefreshing()
     searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
   }
   
@@ -234,6 +243,7 @@ extension TransactionsVC {
         switch result {
         case let .success(transactions):
           self.transactions.append(contentsOf: transactions)
+          self.saveTransactions(transactions)
         case let .failure(error):
           self.display(error)
         }
@@ -253,6 +263,7 @@ extension TransactionsVC {
     if navigationItem.rightBarButtonItem == nil {
       navigationItem.setRightBarButton(filterBarButtonItem, animated: true)
     }
+    saveTransactions(transactions)
   }
   
   private func display(_ error: AFError) {
@@ -268,20 +279,35 @@ extension TransactionsVC {
       navigationItem.setRightBarButton(nil, animated: true)
     }
   }
+  
+  private func saveTransactions(_ transactions: [TransactionResource]) {
+    transactions.forEach { (transaction) in
+      guard !UpTransaction.fetchAll().contains(where: { $0.id == UUID(uuidString: transaction.id) }) else {
+        return
+      }
+      let newTransaction = UpTransaction(context: AppDelegate.persistentContainer.viewContext)
+      newTransaction.id = UUID(uuidString: transaction.id)
+      newTransaction.transactionDescription = transaction.attributes.description
+      newTransaction.rawText = transaction.attributes.rawText
+      newTransaction.message = transaction.attributes.message
+      newTransaction.amount = transaction.attributes.amount.value.nsDecimalNumber
+      newTransaction.creationDate = transaction.attributes.createdAt.toDate()?.date
+      newTransaction.settlementDate = transaction.attributes.settledAt?.toDate()?.date
+    }
+    
+    do {
+      try AppDelegate.persistentContainer.viewContext.save()
+    } catch {
+      print("Failed to save: \(error)")
+    }
+  }
 }
 
   // MARK: - ListAdapterDataSource
 
-extension TransactionsVC: ListAdapterDataSource {
+extension TransactionsVCAlt: ListAdapterDataSource {
   func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
-    guard transactionGrouping != .all else {
-      var objects = filteredTransactions.sortedTransactionModels.sortedMixedModel
-      if loading {
-        objects.append(spinToken as ListDiffable)
-      }
-      return objects
-    }
-    var objects = filteredTransactions.sortedTransactionModels.sortedMixedModel.filter { type(of: $0) == transactionGrouping.valueType! }
+    var objects = filteredTransactions.sortedTransactionModelsAlt as [ListDiffable]
     if loading {
       objects.append(spinToken as ListDiffable)
     }
@@ -290,27 +316,22 @@ extension TransactionsVC: ListAdapterDataSource {
   
   func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
     if let obj = object as? String, obj == spinToken {
-      return SpinnerSC()
+      return .spinnerSectionController()
     } else {
-      switch object {
-      case is SortedSectionModel:
-        return SectionModelSC()
-      default:
-        return ItemModelSC(self, self)
-      }
+      return TransactionBindingSC()
     }
   }
   
   func emptyView(for listAdapter: ListAdapter) -> UIView? {
     if filteredTransactions.isEmpty && transactionsError.isEmpty {
       if transactions.isEmpty && !noTransactions {
-        return .loadingView(frame: collectionNode.bounds, contentType: .transactions)
+        return .loadingView(frame: collectionView.bounds, contentType: .transactions)
       } else {
-        return .noContentView(frame: collectionNode.bounds, type: .transactions)
+        return .noContentView(frame: collectionView.bounds, type: .transactions)
       }
     } else {
       if !transactionsError.isEmpty {
-        return .errorView(frame: collectionNode.bounds, text: transactionsError)
+        return .errorView(frame: collectionView.bounds, text: transactionsError)
       } else {
         return nil
       }
@@ -318,29 +339,12 @@ extension TransactionsVC: ListAdapterDataSource {
   }
 }
 
-  // MARK: - SelectionDelegate
+  // MARK: - UIScrollViewDelegate
 
-extension TransactionsVC: SelectionDelegate {
-  func didSelectItem(at indexPath: IndexPath) {
-    switch transactionGrouping.valueType {
-    case is TransactionCellModel.Type:
-      let transaction = filteredTransactions.sortedTransactionCoreModels.sortedMixedCoreModel.filter { type(of: $0) == TransactionResource.self }.transactionResources[indexPath.section]
-      let viewController = TransactionDetailVC(transaction: transaction)
-      navigationController?.pushViewController(viewController, animated: true)
-    default:
-      if let transaction = filteredTransactions.sortedTransactionCoreModels.sortedMixedCoreModel[indexPath.section] as? TransactionResource {
-        let viewController = TransactionDetailVC(transaction: transaction)
-        navigationController?.pushViewController(viewController, animated: true)
-      }
-    }
-  }
-}
-
-  // MARK: - LoadingDelegate
-
-extension TransactionsVC: LoadingDelegate {
-  func startLoading() {
-    if cursor != nil && !loading && !searchController.isActive && !searchController.searchBar.searchTextField.hasText {
+extension TransactionsVCAlt: UIScrollViewDelegate {
+  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
+    if cursor != nil && !loading && distance < 200 && !searchController.isActive && !searchController.searchBar.searchTextField.hasText {
       loading = true
       adapter.performUpdates(animated: true)
       DispatchQueue.global(qos: .default).async {
@@ -353,7 +357,7 @@ extension TransactionsVC: LoadingDelegate {
 
   // MARK: - UISearchBarDelegate
 
-extension TransactionsVC: UISearchBarDelegate {
+extension TransactionsVCAlt: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     adapter.performUpdates(animated: true)
   }

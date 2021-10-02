@@ -49,13 +49,13 @@ final class TransactionCellNode: ASCellNode {
   
   override var isSelected: Bool {
     didSet {
-      backgroundColor = isSelected ? .systemGray4 : .systemBackground
+      backgroundColor = isSelected ? .gray.withAlphaComponent(0.3) : .clear
     }
   }
   
   override var isHighlighted: Bool {
     didSet {
-      backgroundColor = isHighlighted ? .systemGray4 : .systemBackground
+      backgroundColor = isHighlighted ? .gray.withAlphaComponent(0.3) : .clear
     }
   }
   

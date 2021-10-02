@@ -71,9 +71,7 @@ private extension TagsVC {
     NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
-      DispatchQueue.main.async {
-        weakSelf.fetchTags()
-      }
+      weakSelf.fetchTags()
     }
   }
   
@@ -105,13 +103,13 @@ private extension TagsVC {
   }
   
   @objc private func addTags() {
-    let viewController = NavigationController(rootViewController: AddTagTransactionSelectionVC())
+    let viewController = NavigationController(rootViewController: .addTagTransactionSelection)
     present(.fullscreen(viewController), animated: true)
   }
   
   @objc private func refreshTags() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-      fetchTags()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.fetchTags()
     }
   }
   
@@ -150,13 +148,13 @@ private extension TagsVC {
   }
   
   private func fetchTags() {
-    UpFacade.listTags { [self] (result) in
+    UpFacade.listTags { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(tags):
-          display(tags)
+          self.display(tags)
         case let .failure(error):
-          display(error)
+          self.display(error)
         }
       }
     }
@@ -175,7 +173,7 @@ private extension TagsVC {
   
   private func display(_ error: AFError) {
     tagsError = error.errorDescription ?? error.localizedDescription
-    tags = []
+    tags.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"
     }

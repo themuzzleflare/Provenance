@@ -64,7 +64,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   // MARK: - Actions
 
-private extension SceneDelegate {
+extension SceneDelegate {
   private func checkApiKey() {
     if ProvenanceApp.userDefaults.apiKey.isEmpty {
       let alertController = UIAlertController.noApiKey(self)

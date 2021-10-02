@@ -186,7 +186,7 @@ private extension CategoriesVC {
   
   private func display(_ error: AFError) {
     categoriesError = error.errorDescription ?? error.localizedDescription
-    categories = []
+    categories.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"
     }

@@ -16,7 +16,8 @@ extension SortedSectionModel: ListDiffable {
   }
   
   func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
-    guard let object = object as? SortedSectionModel else { return false }
+    if self === object { return true }
+    guard object is SortedSectionModel else { return false }
     return true
   }
 }

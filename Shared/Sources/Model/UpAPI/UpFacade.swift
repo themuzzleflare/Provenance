@@ -39,11 +39,11 @@ class UpFacade {
     ]
     
     var parameters: Parameters = [
-      "page[size]": "20"
+      ParamKeys.pageSize: "20"
     ]
     
     if let cursor = cursor {
-      parameters.updateValue(cursor, forKey: "page[after]")
+      parameters.updateValue(cursor, forKey: ParamKeys.pageAfter)
     }
     
     AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
@@ -75,26 +75,24 @@ class UpFacade {
     ]
     
     var parameters: Parameters = [
-      "page[size]": "100"
+      ParamKeys.pageSize: "100"
     ]
     
     if let cursor = cursor {
-      parameters.updateValue(cursor, forKey: "page[after]")
+      parameters.updateValue(cursor, forKey: ParamKeys.pageAfter)
     }
     
     AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
       .validate()
       .responseDecodable(of: Transaction.self) { (response) in
         switch response.result {
-        case let .success(transactions) where transactions.links.next != nil:
-          if let param = transactions.links.nextCursor {
-            print("Calling completion with cursor: \(param)")
-            listCompleteTransactions(cursor: param, inputTransactions: (inputTransactions + transactions.data), completion: completion)
+        case let .success(transactions):
+          if let nextCursor = transactions.links.nextCursor {
+            print("Calling completion with cursor: \(nextCursor)")
+            listCompleteTransactions(cursor: nextCursor, inputTransactions: (inputTransactions + transactions.data), completion: completion)
           } else {
             completion(.success(inputTransactions + transactions.data))
           }
-        case let .success(transactions):
-          completion(.success(inputTransactions + transactions.data))
         case let .failure(error):
           completion(.failure(error))
         }
@@ -116,7 +114,7 @@ class UpFacade {
     ]
     
     let parameters: Parameters = [
-      "page[size]": "100"
+      ParamKeys.pageSize: "100"
     ]
     
     AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)/transactions", method: .get, parameters: parameters, headers: headers)
@@ -146,8 +144,8 @@ class UpFacade {
     ]
     
     let parameters: Parameters = [
-      "filter[tag]": tag.id,
-      "page[size]": "100"
+      ParamKeys.filterTag: tag.id,
+      ParamKeys.pageSize: "100"
     ]
     
     AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
@@ -177,8 +175,8 @@ class UpFacade {
     ]
     
     let parameters: Parameters = [
-      "filter[category]": category.id,
-      "page[size]": "100"
+      ParamKeys.filterCategory: category.id,
+      ParamKeys.pageSize: "100"
     ]
     
     AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
@@ -206,7 +204,7 @@ class UpFacade {
     ]
     
     let parameters: Parameters = [
-      "page[size]": "1"
+      ParamKeys.pageSize: "1"
     ]
     
     AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
@@ -240,7 +238,7 @@ class UpFacade {
     ]
     
     let parameters: Parameters = [
-      "page[size]": "1"
+      ParamKeys.pageSize: "1"
     ]
     
     AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)/transactions", method: .get, parameters: parameters, headers: headers)
@@ -324,7 +322,7 @@ class UpFacade {
     ]
     
     let parameters: Parameters = [
-      "page[size]": "100"
+      ParamKeys.pageSize: "100"
     ]
     
     AF.request("https://api.up.com.au/api/v1/accounts", method: .get, parameters: parameters, headers: headers)
@@ -404,7 +402,7 @@ class UpFacade {
     ]
     
     let parameters: Parameters = [
-      "page[size]": "100"
+      ParamKeys.pageSize: "100"
     ]
     
     AF.request("https://api.up.com.au/api/v1/tags", method: .get, parameters: parameters, headers: headers)
@@ -625,5 +623,31 @@ class UpFacade {
           completion(.failure(error))
         }
       }
+  }
+}
+
+extension UpFacade {
+  struct ParamKeys {
+      /// The number of records to return in each page.
+    static let pageSize = "page[size]"
+    
+      /// The transaction status for which to return records. This can be used to filter `HELD` transactions from those that are `SETTLED`.
+    static let filterStatus = "filter[status]"
+    
+      /// The start date-time from which to return records, formatted according to rfc-3339. Not to be used for pagination purposes.
+    static let filterSince = "filter[since]"
+    
+      /// The end date-time up to which to return records, formatted according to rfc-3339. Not to be used for pagination purposes.
+    static let filterUntil = "filter[until]"
+    
+      /// The category identifier for which to filter transactions. Both parent and child categories can be filtered through this parameter. Providing an invalid category identifier results in a `404` response.
+    static let filterCategory = "filter[category]"
+    
+      /// A transaction tag to filter for which to return records. If the tag does not exist, zero records are returned and a success response is given.
+    static let filterTag = "filter[tag]"
+    
+    static let pageBefore = "page[before]"
+    
+    static let pageAfter = "page[after]"
   }
 }

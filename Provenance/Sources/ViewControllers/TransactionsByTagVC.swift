@@ -181,7 +181,7 @@ extension TransactionsByTagVC {
   
   private func display(_ error: AFError) {
     transactionsError = error.errorDescription ?? error.localizedDescription
-    transactions = []
+    transactions.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"
     }

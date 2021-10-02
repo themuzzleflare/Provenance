@@ -1,24 +1,15 @@
 import SnapKit
+import IGListKit
 
-final class TransactionCell: UITableViewCell {
+final class TransactionCollectionCell: UICollectionViewCell {
     // MARK: - Properties
-  
-  static let reuseIdentifier = "transactionCell"
   
   private let transactionDescriptionLabel = UILabel()
   private let transactionCreationDateLabel = UILabel()
   private let transactionAmountLabel = UILabel()
   private let verticalStack = UIStackView()
   private let horizontalStack = UIStackView()
-  
-  var transaction: TransactionType! {
-    didSet {
-      transactionDescription = transaction.transactionDescription
-      transactionCreationDate = transaction.transactionCreationDate
-      transactionAmount = transaction.transactionAmount
-      transactionAmountColour = transaction.transactionColour.uiColour
-    }
-  }
+  private let separator = CALayer.separator
   
   private(set) var transactionDescription: String? {
     get {
@@ -58,36 +49,36 @@ final class TransactionCell: UITableViewCell {
   
     // MARK: - Life Cycle
   
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
-    configureSelf()
-    configureContentView()
-    configureTransactionDescription()
-    configureTransactionCreationDate()
-    configureTransactionAmount()
-    configureVerticalStackView()
-    configureHorizontalStackView()
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("Not implemented")
-  }
-  
   override func layoutSubviews() {
     super.layoutSubviews()
     horizontalStack.frame = contentView.bounds
+    separator.frame = CGRect(x: 0, y: contentView.bounds.height - 0.5, width: contentView.bounds.width, height: 0.5)
+  }
+  
+  override var isSelected: Bool {
+    didSet {
+      contentView.backgroundColor = isSelected ? .gray.withAlphaComponent(0.3) : .clear
+    }
+  }
+  
+  override var isHighlighted: Bool {
+    didSet {
+      contentView.backgroundColor = isHighlighted ? .gray.withAlphaComponent(0.3) : .clear
+    }
+  }
+  
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    separator.backgroundColor = .separator
   }
 }
 
   // MARK: - Configuration
 
-private extension TransactionCell {
-  private func configureSelf() {
-    separatorInset = .zero
-  }
-  
+extension TransactionCollectionCell {
   private func configureContentView() {
     contentView.addSubview(horizontalStack)
+    contentView.layer.addSublayer(separator)
   }
   
   private func configureTransactionDescription() {
@@ -124,5 +115,23 @@ private extension TransactionCell {
     horizontalStack.addArrangedSubview(transactionAmountLabel)
     horizontalStack.alignment = .center
     horizontalStack.distribution = .equalSpacing
+  }
+}
+
+  // MARK: - ListBindable
+
+extension TransactionCollectionCell: ListBindable {
+  func bindViewModel(_ viewModel: Any) {
+    guard let viewModel = viewModel as? TransactionCellModel else { return }
+    configureContentView()
+    configureTransactionDescription()
+    configureTransactionCreationDate()
+    configureTransactionAmount()
+    configureVerticalStackView()
+    configureHorizontalStackView()
+    transactionDescription = viewModel.transactionDescription
+    transactionCreationDate = viewModel.creationDate
+    transactionAmount = viewModel.amount
+    transactionAmountColour = viewModel.colour.uiColour
   }
 }

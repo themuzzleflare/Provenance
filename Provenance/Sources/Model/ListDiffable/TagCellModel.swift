@@ -20,7 +20,7 @@ extension TagCellModel: ListDiffable {
   }
   
   func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
-    guard let object = object as? TagCellModel else { return false }
+    guard object is TagCellModel else { return false }
     return true
   }
 }

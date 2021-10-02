@@ -2,10 +2,6 @@ import IGListKit
 import AsyncDisplayKit
 
 final class SectionModelSC: ListSectionController {
-  override var description: String {
-    return "SectionModelSC"
-  }
-  
   private var object: SortedSectionModel?
   
   override init() {
@@ -21,6 +17,7 @@ final class SectionModelSC: ListSectionController {
   }
   
   override func didUpdate(to object: Any) {
+    precondition(object is SortedSectionModel)
     self.object = object as? SortedSectionModel
   }
 }

@@ -70,8 +70,8 @@ extension UIView {
     let verticalStack = UIStackView(arrangedSubviews: [balanceLabel, displayNameLabel])
     view.addSubview(verticalStack)
     verticalStack.snp.makeConstraints { (make) in
-      make.left.equalToSuperview().inset(UIEdgeInsets.cellNode)
-      make.right.equalToSuperview().inset(UIEdgeInsets.cellNode)
+      make.left.equalToSuperview().inset(16)
+      make.right.equalToSuperview().inset(16)
       make.center.equalToSuperview()
     }
     verticalStack.axis = .vertical
