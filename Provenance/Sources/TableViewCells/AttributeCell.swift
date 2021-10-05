@@ -79,7 +79,7 @@ extension AttributeCell {
   }
   
   private func configureHorizontalStackView() {
-    horizontalStack.snp.makeConstraints { make in
+    horizontalStack.snp.makeConstraints { (make) in
       make.edges.equalToSuperview().inset(UIEdgeInsets.cellNode)
     }
     horizontalStack.addArrangedSubview(leftLabel)

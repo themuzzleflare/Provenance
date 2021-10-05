@@ -203,16 +203,21 @@ extension TransactionsVC {
   }
   
   private var filterMenu: UIMenu {
-    return .transactionsFilterMenu(categoryFilter: categoryFilter, groupingFilter: transactionGrouping, showSettledOnly: showSettledOnly) { (type) in
-      switch type {
-      case let .category(category):
-        self.categoryFilter = category
-      case let .grouping(grouping):
-        self.transactionGrouping = grouping
-      case let .settledOnly(settledOnly):
-        self.showSettledOnly = settledOnly
+    return .transactionsFilterMenu(
+      categoryFilter: categoryFilter,
+      groupingFilter: transactionGrouping,
+      showSettledOnly: showSettledOnly,
+      completion: { (type) in
+        switch type {
+        case let .category(category):
+          self.categoryFilter = category
+        case let .grouping(grouping):
+          self.transactionGrouping = grouping
+        case let .settledOnly(settledOnly):
+          self.showSettledOnly = settledOnly
+        }
       }
-    }
+    )
   }
   
   private func fetchTransactions() {

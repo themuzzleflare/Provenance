@@ -52,17 +52,11 @@ extension TransactionBindingSC: ListBindingSectionControllerSelectionDelegate {
     viewController?.navigationController?.pushViewController(controller, animated: true)
   }
   
-  func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, didDeselectItemAt index: Int, viewModel: Any) {
-    return
-  }
+  func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, didDeselectItemAt index: Int, viewModel: Any) {}
   
-  func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, didHighlightItemAt index: Int, viewModel: Any) {
-    return
-  }
+  func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, didHighlightItemAt index: Int, viewModel: Any) {}
   
-  func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, didUnhighlightItemAt index: Int, viewModel: Any) {
-    return
-  }
+  func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, didUnhighlightItemAt index: Int, viewModel: Any) {}
 }
 
   // MARK: - ListSupplementaryViewSource

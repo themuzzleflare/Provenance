@@ -95,13 +95,9 @@ extension ItemModelSC: ASSupplementaryNodeSource {
   // MARK: - ListScrollDelegate
 
 extension ItemModelSC: ListScrollDelegate {
-  func listAdapter(_ listAdapter: ListAdapter, didScroll sectionController: ListSectionController) {
-    return
-  }
+  func listAdapter(_ listAdapter: ListAdapter, didScroll sectionController: ListSectionController) {}
   
-  func listAdapter(_ listAdapter: ListAdapter, willBeginDragging sectionController: ListSectionController) {
-    return
-  }
+  func listAdapter(_ listAdapter: ListAdapter, willBeginDragging sectionController: ListSectionController) {}
   
   func listAdapter(_ listAdapter: ListAdapter, didEndDragging sectionController: ListSectionController, willDecelerate decelerate: Bool) {
     if isLastSection {
@@ -109,7 +105,5 @@ extension ItemModelSC: ListScrollDelegate {
     }
   }
   
-  func listAdapter(_ listAdapter: ListAdapter, didEndDeceleratingSectionController sectionController: ListSectionController) {
-    return
-  }
+  func listAdapter(_ listAdapter: ListAdapter, didEndDeceleratingSectionController sectionController: ListSectionController) {}
 }

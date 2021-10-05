@@ -203,9 +203,9 @@ private extension AddTagTagsSelectionVC {
   }
   
   @objc private func refreshTags() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: { [self] in
-      fetchTags()
-    })
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.fetchTags()
+    }
   }
   
   @objc private func toggleEditing() {
@@ -254,13 +254,13 @@ private extension AddTagTagsSelectionVC {
   }
   
   private func fetchTags() {
-    UpFacade.listTags { [self] (result) in
+    UpFacade.listTags { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(tags):
-          display(tags)
+          self.display(tags)
         case let .failure(error):
-          display(error)
+          self.display(error)
         }
       }
     }
@@ -346,24 +346,16 @@ extension AddTagTagsSelectionVC: ASTableDelegate {
   }
   
   func tableNode(_ tableNode: ASTableNode, didDeselectRowAt indexPath: IndexPath) {
-    switch isEditing {
-    case true:
+    if isEditing {
       updateToolbarItems()
-    case false:
-      break
     }
   }
   
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-    switch isEditing {
-    case true:
-      return nil
-    case false:
-      let tag = filteredTags[indexPath.row]
-      return UIContextMenuConfiguration(elements: [
-        .copyTagName(tag: tag)
-      ])
-    }
+    let tag = filteredTags[indexPath.row]
+    return isEditing ? nil : UIContextMenuConfiguration(elements: [
+      .copyTagName(tag: tag)
+    ])
   }
 }
 
@@ -401,13 +393,9 @@ extension AddTagTagsSelectionVC: NotificationBannerDelegate {
     showingBanner = true
   }
   
-  func notificationBannerWillDisappear(_ banner: BaseNotificationBanner) {
-    return
-  }
+  func notificationBannerWillDisappear(_ banner: BaseNotificationBanner) {}
   
-  func notificationBannerDidAppear(_ banner: BaseNotificationBanner) {
-    return
-  }
+  func notificationBannerDidAppear(_ banner: BaseNotificationBanner) {}
   
   func notificationBannerDidDisappear(_ banner: BaseNotificationBanner) {
     showingBanner = false

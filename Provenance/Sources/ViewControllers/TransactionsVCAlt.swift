@@ -80,8 +80,8 @@ final class TransactionsVCAlt: ViewController {
   
     // MARK: - Life Cycle
   
-  override init(nibName: String?, bundle: Bundle?) {
-    super.init(nibName: nil, bundle: nil)
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     adapter.collectionView = collectionView
     adapter.dataSource = self
     adapter.scrollViewDelegate = self
@@ -211,16 +211,21 @@ extension TransactionsVCAlt {
   }
   
   private var filterMenu: UIMenu {
-    return .transactionsFilterMenu(categoryFilter: categoryFilter, groupingFilter: transactionGrouping, showSettledOnly: showSettledOnly) { (type) in
-      switch type {
-      case let .category(category):
-        self.categoryFilter = category
-      case let .grouping(grouping):
-        self.transactionGrouping = grouping
-      case let .settledOnly(settledOnly):
-        self.showSettledOnly = settledOnly
+    return .transactionsFilterMenu(
+      categoryFilter: categoryFilter,
+      groupingFilter: transactionGrouping,
+      showSettledOnly: showSettledOnly,
+      completion: { (type) in
+        switch type {
+        case let .category(category):
+          self.categoryFilter = category
+        case let .grouping(grouping):
+          self.transactionGrouping = grouping
+        case let .settledOnly(settledOnly):
+          self.showSettledOnly = settledOnly
+        }
       }
-    }
+    )
   }
   
   private func fetchTransactions() {

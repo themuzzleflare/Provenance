@@ -83,9 +83,7 @@ private extension CategoriesVC {
     NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
-      DispatchQueue.main.async {
-        weakSelf.fetchCategories()
-      }
+      weakSelf.fetchCategories()
     }
     categoryFilterObserver = ProvenanceApp.userDefaults.observe(\.categoryFilter, options: .new) { [weak self] (_, change) in
       guard let weakSelf = self, let value = change.newValue, let categoryFilter = CategoryTypeEnum(rawValue: value) else { return }
@@ -123,8 +121,8 @@ private extension CategoriesVC {
   }
   
   @objc private func refreshCategories() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-      fetchCategories()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.fetchCategories()
     }
   }
   
@@ -164,13 +162,13 @@ private extension CategoriesVC {
   }
   
   private func fetchCategories() {
-    UpFacade.listCategories { [self] (result) in
+    UpFacade.listCategories { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(categories):
-          display(categories)
+          self.display(categories)
         case let .failure(error):
-          display(error)
+          self.display(error)
         }
       }
     }

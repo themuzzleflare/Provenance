@@ -29,7 +29,7 @@ final class TransactionsByTagVC: ASViewController {
   }
   
   private var transactionsError = String()
-    
+  
   private var filteredTransactions: [TransactionResource] {
     return transactions.filtered(searchBar: searchController.searchBar)
   }
@@ -83,9 +83,7 @@ private extension TransactionsByTagVC {
     NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
-      DispatchQueue.main.async {
-        weakSelf.fetchTransactions()
-      }
+      weakSelf.fetchTransactions()
     }
   }
   
@@ -119,8 +117,8 @@ extension TransactionsByTagVC {
   }
   
   @objc private func refreshTransactions() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-      fetchTransactions()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.fetchTransactions()
     }
   }
   
@@ -159,13 +157,13 @@ extension TransactionsByTagVC {
   }
   
   func fetchTransactions() {
-    UpFacade.listTransactions(filterBy: tag) { [self] (result) in
+    UpFacade.listTransactions(filterBy: tag) { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(transactions):
-          display(transactions)
+          self.display(transactions)
         case let .failure(error):
-          display(error)
+          self.display(error)
         }
       }
     }
@@ -238,18 +236,13 @@ extension TransactionsByTagVC: ASTableDelegate {
   }
   
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-    switch isEditing {
-    case true:
-      return nil
-    case false:
-      let transaction = filteredTransactions[indexPath.row]
-      return UIContextMenuConfiguration(elements: [
-        .copyTransactionDescription(transaction: transaction),
-        .copyTransactionCreationDate(transaction: transaction),
-        .copyTransactionAmount(transaction: transaction),
-        .removeTagFromTransaction(self, removing: tag, from: transaction)
-      ])
-    }
+    let transaction = filteredTransactions[indexPath.row]
+    return isEditing ? nil : UIContextMenuConfiguration(elements: [
+      .copyTransactionDescription(transaction: transaction),
+      .copyTransactionCreationDate(transaction: transaction),
+      .copyTransactionAmount(transaction: transaction),
+      .removeTagFromTransaction(self, removing: tag, from: transaction)
+    ])
   }
 }
 

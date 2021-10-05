@@ -78,9 +78,7 @@ private extension TransactionsByAccountVC {
     NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
-      DispatchQueue.main.async {
-        weakSelf.fetchingTasks()
-      }
+      weakSelf.fetchingTasks()
     }
   }
   
@@ -119,8 +117,8 @@ private extension TransactionsByAccountVC {
   }
   
   @objc private func refreshData() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-      fetchingTasks()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.fetchingTasks()
     }
   }
   
@@ -175,11 +173,11 @@ private extension TransactionsByAccountVC {
   }
   
   private func fetchAccount() {
-    UpFacade.retrieveAccount(for: account) { [self] (result) in
+    UpFacade.retrieveAccount(for: account) { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(account):
-          display(account)
+          self.display(account)
         case .failure:
           break
         }
@@ -188,13 +186,13 @@ private extension TransactionsByAccountVC {
   }
   
   private func fetchTransactions() {
-    UpFacade.listTransactions(filterBy: account) { [self] (result) in
+    UpFacade.listTransactions(filterBy: account) { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(transactions):
-          display(transactions)
+          self.display(transactions)
         case let .failure(error):
-          display(error)
+          self.display(error)
         }
       }
     }

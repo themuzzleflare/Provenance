@@ -48,8 +48,8 @@ final class AccountDetailVC: ViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureObserver()
     view.addSubview(tableView)
+    configureObserver()
     configureSelf()
     configureNavigation()
     configureTableView()

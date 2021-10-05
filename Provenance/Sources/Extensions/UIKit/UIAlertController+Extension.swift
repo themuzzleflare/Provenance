@@ -45,6 +45,7 @@ extension UIAlertController {
         textField.delegate = viewController
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
+        textField.spellCheckingType = .no
         textField.clearButtonMode = .whileEditing
         textField.placeholder = "Tag \((idx + 1).description)"
         textField.addTarget(viewController, action: selector, for: .editingChanged)
@@ -64,6 +65,7 @@ extension UIAlertController {
     alertController.addTextField { (textField) in
       textField.autocapitalizationType = .none
       textField.autocorrectionType = .no
+      textField.spellCheckingType = .no
       textField.clearButtonMode = .whileEditing
       textField.textContentType = .password
       textField.text = ProvenanceApp.userDefaults.apiKey
@@ -94,6 +96,7 @@ extension UIAlertController {
     alertController.addTextField { (textField) in
       textField.autocapitalizationType = .none
       textField.autocorrectionType = .no
+      textField.spellCheckingType = .no
       textField.textContentType = .password
       textField.clearButtonMode = .whileEditing
       sceneDelegate.textDidChangeObserver = NotificationCenter.default.addObserver(

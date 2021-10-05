@@ -7,6 +7,7 @@ final class IntentViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    view.backgroundColor = .clear
     view.addSubview(tableView)
     configureTableView()
   }
@@ -23,6 +24,7 @@ final class IntentViewController: UIViewController {
     tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     tableView.separatorInset = .zero
     tableView.showsVerticalScrollIndicator = false
+    tableView.backgroundColor = .clear
   }
 }
 

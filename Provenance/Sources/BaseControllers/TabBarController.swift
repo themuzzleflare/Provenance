@@ -1,5 +1,4 @@
 import AsyncDisplayKit
-import UIKit
 
 final class TabBarController: ASTabBarController {
     // MARK: - Life Cycle

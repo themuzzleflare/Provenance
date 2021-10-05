@@ -84,10 +84,12 @@ final class TransactionCell: UITableViewCell {
 private extension TransactionCell {
   private func configureSelf() {
     separatorInset = .zero
+    backgroundColor = .clear
   }
   
   private func configureContentView() {
     contentView.addSubview(horizontalStack)
+    contentView.backgroundColor = .clear
   }
   
   private func configureTransactionDescription() {

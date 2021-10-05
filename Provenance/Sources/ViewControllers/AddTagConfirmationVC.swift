@@ -53,9 +53,7 @@ private extension AddTagConfirmationVC {
   private func configureObserver() {
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
-      DispatchQueue.main.async {
-        weakSelf.tableNode.reloadData()
-      }
+      weakSelf.tableNode.reloadData()
     }
   }
   

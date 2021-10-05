@@ -6,12 +6,6 @@ extension UIView {
     return UIView()
   }
   
-  static var selectedBackgroundCellView: UIView {
-    let view = UIView.plainView
-    view.backgroundColor = .accentColor
-    return view
-  }
-  
   static func loadingView(frame: CGRect, contentType: ContentType) -> UIView {
     let view = UIView(frame: frame)
     let loadingIndicator = MBProgressHUD(view: view)

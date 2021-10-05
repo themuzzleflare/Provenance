@@ -25,7 +25,7 @@ final class TransactionTagsVC: ASViewController {
   private lazy var addBarButtonItem = UIBarButtonItem(
     barButtonSystemItem: .add,
     target: self,
-    action: #selector(openAddWorkflow)
+    action: #selector(addTags)
   )
   
   private lazy var selectionBarButtonItem = UIBarButtonItem(
@@ -141,14 +141,14 @@ extension TransactionTagsVC {
     fetchTransaction()
   }
   
-  @objc private func openAddWorkflow() {
+  @objc private func addTags() {
     let viewController = NavigationController(rootViewController: AddTagTagsSelectionVC(transaction: transaction, fromTransactionTags: true))
     present(.fullscreen(viewController), animated: true)
   }
   
   @objc private func refreshTags() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-      fetchTransaction()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.fetchTransaction()
     }
   }
   
@@ -261,11 +261,8 @@ extension TransactionTagsVC: ASTableDelegate {
   }
   
   func tableNode(_ tableNode: ASTableNode, didDeselectRowAt indexPath: IndexPath) {
-    switch isEditing {
-    case true:
+    if isEditing {
       updateToolbarItems()
-    case false:
-      break
     }
   }
   
@@ -278,15 +275,10 @@ extension TransactionTagsVC: ASTableDelegate {
   }
   
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-    switch isEditing {
-    case true:
-      return nil
-    case false:
-      let tag = tags[indexPath.row]
-      return UIContextMenuConfiguration(elements: [
-        .copyTagName(tag: tag),
-        .removeTagFromTransaction(self, removing: tag, from: transaction)
-      ])
-    }
+    let tag = tags[indexPath.row]
+    return isEditing ? nil : UIContextMenuConfiguration(elements: [
+      .copyTagName(tag: tag),
+      .removeTagFromTransaction(self, removing: tag, from: transaction)
+    ])
   }
 }

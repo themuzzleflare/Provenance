@@ -69,8 +69,8 @@ final class TransactionDetailVC: ViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureObserver()
     view.addSubview(tableView)
+    configureObserver()
     configureSelf()
     configureTableView()
     configureNavigation()
@@ -90,7 +90,7 @@ final class TransactionDetailVC: ViewController {
 
   // MARK: - Configuration
 
-private extension TransactionDetailVC {
+extension TransactionDetailVC {
   private func configureSelf() {
     title = "Transaction Details"
   }
@@ -124,7 +124,7 @@ private extension TransactionDetailVC {
 
   // MARK: - Actions
 
-private extension TransactionDetailVC {
+extension TransactionDetailVC {
   @objc private func appMovedToForeground() {
     fetchTransaction()
   }
@@ -135,8 +135,8 @@ private extension TransactionDetailVC {
   }
   
   @objc private func refreshTransaction() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-      fetchTransaction()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.fetchTransaction()
     }
   }
   
@@ -226,13 +226,13 @@ private extension TransactionDetailVC {
   }
   
   private func fetchTransaction() {
-    UpFacade.retrieveTransaction(for: transaction) { [self] (result) in
+    UpFacade.retrieveTransaction(for: transaction) { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(transaction):
-          display(transaction)
+          self.display(transaction)
         case let .failure(error):
-          display(error)
+          self.display(error)
         }
       }
     }

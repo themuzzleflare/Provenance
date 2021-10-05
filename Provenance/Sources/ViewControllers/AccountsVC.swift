@@ -84,9 +84,7 @@ private extension AccountsVC {
     NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
-      DispatchQueue.main.async {
-        weakSelf.fetchAccounts()
-      }
+      weakSelf.fetchAccounts()
     }
     accountFilterObserver = ProvenanceApp.userDefaults.observe(\.accountFilter, options: .new) { [weak self] (_, change) in
       guard let weakSelf = self, let value = change.newValue, let accountFilter = AccountTypeOptionEnum(rawValue: value) else { return }
@@ -124,8 +122,8 @@ private extension AccountsVC {
   }
   
   @objc private func refreshAccounts() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-      fetchAccounts()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.fetchAccounts()
     }
   }
   
@@ -165,13 +163,13 @@ private extension AccountsVC {
   }
   
   private func fetchAccounts() {
-    UpFacade.listAccounts { [self] (result) in
+    UpFacade.listAccounts { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(accounts):
-          display(accounts)
+          self.display(accounts)
         case let .failure(error):
-          display(error)
+          self.display(error)
         }
       }
     }

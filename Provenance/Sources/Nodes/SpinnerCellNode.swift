@@ -16,6 +16,8 @@ final class SpinnerCellNode: ASCellNode {
   }
 }
 
+  // MARK: - SpinnerDelegate
+
 extension SpinnerCellNode: SpinnerDelegate {
   func startLoading() {
     activityIndicator.startAnimating()

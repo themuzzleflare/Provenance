@@ -24,7 +24,7 @@ final class StatusIconHelpView: ASViewController {
 
   // MARK: - Configuration
 
-private extension StatusIconHelpView {
+extension StatusIconHelpView {
   private func configureSelf() {
     title = "Transaction Status Icons"
   }
@@ -38,7 +38,7 @@ private extension StatusIconHelpView {
 
   // MARK: - Actions
 
-private extension StatusIconHelpView {
+extension StatusIconHelpView {
   @objc private func closeWorkflow() {
     navigationController?.dismiss(animated: true)
   }

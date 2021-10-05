@@ -71,9 +71,7 @@ private extension AddTagTransactionSelectionVC {
     NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
-      DispatchQueue.main.async {
-        weakSelf.fetchTransactions()
-      }
+      weakSelf.fetchTransactions()
     }
   }
   
@@ -107,8 +105,8 @@ private extension AddTagTransactionSelectionVC {
   }
   
   @objc private func refreshTransactions() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-      fetchTransactions()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.fetchTransactions()
     }
   }
   
@@ -149,13 +147,13 @@ private extension AddTagTransactionSelectionVC {
   }
   
   private func fetchTransactions() {
-    UpFacade.listTransactions { [self] (result) in
+    UpFacade.listTransactions { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(transactions):
-          display(transactions)
+          self.display(transactions)
         case let .failure(error):
-          display(error)
+          self.display(error)
         }
       }
     }

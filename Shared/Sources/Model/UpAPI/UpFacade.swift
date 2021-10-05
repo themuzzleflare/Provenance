@@ -1,6 +1,6 @@
 import Alamofire
 
-class UpFacade {
+final class UpFacade {
   private static let jsonEncoder = JSONParameterEncoder.default
   
     /// Ping
@@ -27,8 +27,8 @@ class UpFacade {
     /// List transactions
     ///
     /// - Parameters:
-    ///  - cursor: The pagination cursor to apply to the request.
-    ///  - completion: Block to execute for handling the request response.
+    ///   - cursor: The pagination cursor to apply to the request.
+    ///   - completion: Block to execute for handling the request response.
     ///
     /// Retrieve a list of all transactions across all accounts for the currently authenticated user. The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present. To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string. These filter parameters **should not** be used for pagination. Results are ordered newest first to oldest last.
   
@@ -89,7 +89,11 @@ class UpFacade {
         case let .success(transactions):
           if let nextCursor = transactions.links.nextCursor {
             print("Calling completion with cursor: \(nextCursor)")
-            listCompleteTransactions(cursor: nextCursor, inputTransactions: (inputTransactions + transactions.data), completion: completion)
+            listCompleteTransactions(
+              cursor: nextCursor,
+              inputTransactions: (inputTransactions + transactions.data),
+              completion: completion
+            )
           } else {
             completion(.success(inputTransactions + transactions.data))
           }
@@ -642,6 +646,9 @@ extension UpFacade {
     
       /// The category identifier for which to filter transactions. Both parent and child categories can be filtered through this parameter. Providing an invalid category identifier results in a `404` response.
     static let filterCategory = "filter[category]"
+    
+      /// The unique identifier of a parent category for which to return only its children. Providing an invalid category identifier results in a `404` response.
+    static let filterParent = "filter[parent]"
     
       /// A transaction tag to filter for which to return records. If the tag does not exist, zero records are returned and a success response is given.
     static let filterTag = "filter[tag]"

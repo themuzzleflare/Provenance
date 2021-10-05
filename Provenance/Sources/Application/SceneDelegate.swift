@@ -25,9 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
   
   func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
-    guard userActivity.activityType == NSUserActivity.addedTagsToTransaction.activityType, let intentResponse = userActivity.interaction?.intentResponse as? AddTagToTransactionIntentResponse, let transaction = intentResponse.transaction?.identifier else {
-      return
-    }
+    guard userActivity.activityType == NSUserActivity.addedTagsToTransaction.activityType, let intentResponse = userActivity.interaction?.intentResponse as? AddTagToTransactionIntentResponse, let transaction = intentResponse.transaction?.identifier else { return }
     UpFacade.retrieveTransaction(for: transaction) { (result) in
       DispatchQueue.main.async {
         switch result {
