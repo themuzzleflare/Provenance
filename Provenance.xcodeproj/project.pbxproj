@@ -616,8 +616,6 @@
 		7A56101C25D25B600091396E /* TransactionsByCategoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByCategoryVC.swift; sourceTree = "<group>"; };
 		7A5A89EA26FBF0790010223B /* Image+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extension.swift"; sourceTree = "<group>"; };
 		7A5B06C326F2BCB6005CE3D1 /* Shared.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
-		7A5B06C426F2BCB6005CE3D1 /* Production.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Production.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
-		7A5B06C526F2BCB7005CE3D1 /* Development.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 		7A5BDE752616B99B00B5A5F9 /* CategoriesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesVC.swift; sourceTree = "<group>"; };
 		7A61533726F95ACD00382804 /* DateStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateStyle+Extension.swift"; sourceTree = "<group>"; };
 		7A61533B26F95D5200382804 /* TransactionType+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionType+Extension.swift"; sourceTree = "<group>"; };
@@ -667,6 +665,16 @@
 		7AA113C6261550B900386E2D /* DetailSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSection.swift; sourceTree = "<group>"; };
 		7AA124FC262682F300F50D6D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		7AA6C4EB2623F606003F7947 /* AboutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutVC.swift; sourceTree = "<group>"; };
+		7AAA297E270EC5BE00A641BB /* Provenance.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Provenance.debug.xcconfig; sourceTree = "<group>"; };
+		7AAA297F270EC5CE00A641BB /* Provenance.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Provenance.release.xcconfig; sourceTree = "<group>"; };
+		7AAA2980270EC5E400A641BB /* Stickers.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Stickers.debug.xcconfig; sourceTree = "<group>"; };
+		7AAA2981270EC5EF00A641BB /* Stickers.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Stickers.release.xcconfig; sourceTree = "<group>"; };
+		7AAA2982270EC5F900A641BB /* Widgets.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Widgets.debug.xcconfig; sourceTree = "<group>"; };
+		7AAA2983270EC60B00A641BB /* Widgets.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Widgets.release.xcconfig; sourceTree = "<group>"; };
+		7AAA2984270EC61500A641BB /* Intents.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Intents.debug.xcconfig; sourceTree = "<group>"; };
+		7AAA2985270EC61E00A641BB /* Intents.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Intents.release.xcconfig; sourceTree = "<group>"; };
+		7AAA2986270EC62B00A641BB /* IntentsUI.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = IntentsUI.debug.xcconfig; sourceTree = "<group>"; };
+		7AAA2987270EC63700A641BB /* IntentsUI.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = IntentsUI.release.xcconfig; sourceTree = "<group>"; };
 		7AAA5FAA26FF157500136E32 /* TransactionCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCellModel.swift; sourceTree = "<group>"; };
 		7AAADD5426F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIActivityIndicatorView+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7AAADD5626F17FF300C4A9D9 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
@@ -1029,9 +1037,17 @@
 		7A38860726BB62F900F57EA0 /* XcodeConfigurations */ = {
 			isa = PBXGroup;
 			children = (
-				7A5B06C526F2BCB7005CE3D1 /* Development.xcconfig */,
-				7A5B06C426F2BCB6005CE3D1 /* Production.xcconfig */,
 				7A5B06C326F2BCB6005CE3D1 /* Shared.xcconfig */,
+				7AAA297E270EC5BE00A641BB /* Provenance.debug.xcconfig */,
+				7AAA297F270EC5CE00A641BB /* Provenance.release.xcconfig */,
+				7AAA2980270EC5E400A641BB /* Stickers.debug.xcconfig */,
+				7AAA2981270EC5EF00A641BB /* Stickers.release.xcconfig */,
+				7AAA2982270EC5F900A641BB /* Widgets.debug.xcconfig */,
+				7AAA2983270EC60B00A641BB /* Widgets.release.xcconfig */,
+				7AAA2984270EC61500A641BB /* Intents.debug.xcconfig */,
+				7AAA2985270EC61E00A641BB /* Intents.release.xcconfig */,
+				7AAA2986270EC62B00A641BB /* IntentsUI.debug.xcconfig */,
+				7AAA2987270EC63700A641BB /* IntentsUI.release.xcconfig */,
 			);
 			path = XcodeConfigurations;
 			sourceTree = "<group>";
@@ -2455,18 +2471,15 @@
 /* Begin XCBuildConfiguration section */
 		7A17C1952657940E00E5EA23 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 964B0AFF552941F193B1E0FD /* Pods-Provenance Intents.debug.xcconfig */;
+			baseConfigurationReference = 7AAA2984270EC61500A641BB /* Intents.debug.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Intents/Resources/Intents.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				INFOPLIST_FILE = Intents/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "${PROVENANCE_BUNDLE_ID}.intents";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Intents Development";
 				SKIP_INSTALL = YES;
@@ -2477,18 +2490,15 @@
 		};
 		7A17C1962657940E00E5EA23 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F44CAF287D724CA2FDCB35F0 /* Pods-Provenance Intents.release.xcconfig */;
+			baseConfigurationReference = 7AAA2985270EC61E00A641BB /* Intents.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Intents/Resources/Intents.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				INFOPLIST_FILE = Intents/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "${PROVENANCE_BUNDLE_ID}.intents";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Intents Development";
 				SKIP_INSTALL = YES;
@@ -2499,18 +2509,15 @@
 		};
 		7A82FB4426F47EAB00C9C04E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4A69AA9B67AFAF5C76AC1FDD /* Pods-Provenance IntentsUI.debug.xcconfig */;
+			baseConfigurationReference = 7AAA2986270EC62B00A641BB /* IntentsUI.debug.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = IntentsUI/Resources/IntentsUI.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				INFOPLIST_FILE = IntentsUI/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "${PROVENANCE_BUNDLE_ID}.intentsui";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance IntentsUI Development";
 				SKIP_INSTALL = YES;
@@ -2521,18 +2528,15 @@
 		};
 		7A82FB4526F47EAB00C9C04E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2D014169F9EEA0917835C562 /* Pods-Provenance IntentsUI.release.xcconfig */;
+			baseConfigurationReference = 7AAA2987270EC63700A641BB /* IntentsUI.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = IntentsUI/Resources/IntentsUI.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				INFOPLIST_FILE = IntentsUI/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "${PROVENANCE_BUNDLE_ID}.intentsui";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance IntentsUI Development";
 				SKIP_INSTALL = YES;
@@ -2543,12 +2547,8 @@
 		};
 		7AB34D2C25C78232000A1E81 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7A5B06C526F2BCB7005CE3D1 /* Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = "${APP_ICON}";
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "${ACCENT_COLOUR}";
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = "${WIDGET_BACKGROUND}";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -2578,9 +2578,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "${CODESIGNING_IDENTITY}";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = "${PROVENANCE_BUILD_VERSION}";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2599,8 +2597,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = "${PROVENANCE_DEPLOYMENT_TARGET}";
-				MARKETING_VERSION = "${PROVENANCE_SHORT_VERSION_STRING}";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2613,12 +2609,8 @@
 		};
 		7AB34D2D25C78232000A1E81 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7A5B06C426F2BCB6005CE3D1 /* Production.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = "${APP_ICON}";
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "${ACCENT_COLOUR}";
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = "${WIDGET_BACKGROUND}";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -2648,9 +2640,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "${CODESIGNING_IDENTITY}";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = "${PROVENANCE_BUILD_VERSION}";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2663,8 +2653,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = "${PROVENANCE_DEPLOYMENT_TARGET}";
-				MARKETING_VERSION = "${PROVENANCE_SHORT_VERSION_STRING}";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -2677,17 +2665,14 @@
 		};
 		7AB34D2F25C78232000A1E81 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 807F847AFD560FFD17AA96DA /* Pods-Provenance.debug.xcconfig */;
+			baseConfigurationReference = 7AAA297E270EC5BE00A641BB /* Provenance.debug.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Provenance/Resources/Provenance.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				INFOPLIST_FILE = Provenance/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "${PROVENANCE_BUNDLE_ID}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Development";
 				SWIFT_VERSION = 5.0;
@@ -2697,17 +2682,14 @@
 		};
 		7AB34D3025C78232000A1E81 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0D092E02E7CA483DD8D5DE38 /* Pods-Provenance.release.xcconfig */;
+			baseConfigurationReference = 7AAA297F270EC5CE00A641BB /* Provenance.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Provenance/Resources/Provenance.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				INFOPLIST_FILE = Provenance/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "${PROVENANCE_BUNDLE_ID}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Development";
 				SWIFT_VERSION = 5.0;
@@ -2717,18 +2699,15 @@
 		};
 		7AD127EC2604735B00A39272 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46176A5C77FA0CFAB8C42136 /* Pods-Provenance Widgets.debug.xcconfig */;
+			baseConfigurationReference = 7AAA2982270EC5F900A641BB /* Widgets.debug.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Widgets/Resources/Widgets.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				INFOPLIST_FILE = Widgets/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "${PROVENANCE_BUNDLE_ID}.widgets";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Widgets Development";
 				SKIP_INSTALL = YES;
@@ -2740,18 +2719,15 @@
 		};
 		7AD127ED2604735B00A39272 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BFFD3DC6104CD7F7D32B02CB /* Pods-Provenance Widgets.release.xcconfig */;
+			baseConfigurationReference = 7AAA2983270EC60B00A641BB /* Widgets.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Widgets/Resources/Widgets.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				INFOPLIST_FILE = Widgets/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "${PROVENANCE_BUNDLE_ID}.widgets";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Widgets Development";
 				SKIP_INSTALL = YES;
@@ -2763,13 +2739,10 @@
 		};
 		7AD6ED9C2604A9180051A235 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7AAA2980270EC5E400A641BB /* Stickers.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "${IMESSAGE_APP_ICON}";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				INFOPLIST_FILE = Stickers/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = "${PROVENANCE_STICKERS_DEPLOYMENT_TARGET}";
-				PRODUCT_BUNDLE_IDENTIFIER = "${PROVENANCE_BUNDLE_ID}.stickers";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Stickers Development";
 				SKIP_INSTALL = YES;
@@ -2780,13 +2753,10 @@
 		};
 		7AD6ED9D2604A9180051A235 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7AAA2981270EC5EF00A641BB /* Stickers.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "${IMESSAGE_APP_ICON}";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				INFOPLIST_FILE = Stickers/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = "${PROVENANCE_STICKERS_DEPLOYMENT_TARGET}";
-				PRODUCT_BUNDLE_IDENTIFIER = "${PROVENANCE_BUNDLE_ID}.stickers";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Provenance Stickers Development";
 				SKIP_INSTALL = YES;

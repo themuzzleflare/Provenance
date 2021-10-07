@@ -1,0 +1,6 @@
+#include "Shared.xcconfig"
+#include "Pods/Target Support Files/Pods-Provenance IntentsUI/Pods-Provenance IntentsUI.release.xcconfig"
+
+PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intentsui
+INFOPLIST_FILE = IntentsUI/Resources/Info.plist
+CODE_SIGN_ENTITLEMENTS = IntentsUI/Resources/IntentsUI.entitlements
