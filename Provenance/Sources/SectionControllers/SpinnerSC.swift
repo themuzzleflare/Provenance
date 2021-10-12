@@ -24,7 +24,7 @@ final class SpinnerSC: ListSectionController {
   }
 }
 
-  // MARK: - ASSectionController
+// MARK: - ASSectionController
 
 extension SpinnerSC: ASSectionController {
   func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {

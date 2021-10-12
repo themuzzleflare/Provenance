@@ -3,7 +3,7 @@ import AsyncDisplayKit
 import Alamofire
 
 final class TransactionsByCategoryVC: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private var category: CategoryResource
   
@@ -32,7 +32,7 @@ final class TransactionsByCategoryVC: ASViewController {
   
   private var oldTransactionCellModels = [TransactionCellModel]()
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   init(category: CategoryResource) {
     self.category = category
@@ -62,7 +62,7 @@ final class TransactionsByCategoryVC: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension TransactionsByCategoryVC {
   private func configureSelf() {
@@ -74,7 +74,7 @@ private extension TransactionsByCategoryVC {
     NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
-      weakSelf.fetchTransactions()
+      weakSelf.applySnapshot()
     }
   }
   
@@ -99,7 +99,7 @@ private extension TransactionsByCategoryVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 private extension TransactionsByCategoryVC {
   @objc private func appMovedToForeground() {
@@ -176,7 +176,7 @@ private extension TransactionsByCategoryVC {
   }
 }
 
-  // MARK: - ASTableDataSource
+// MARK: - ASTableDataSource
 
 extension TransactionsByCategoryVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
@@ -192,7 +192,7 @@ extension TransactionsByCategoryVC: ASTableDataSource {
   }
 }
 
-  // MARK: - ASTableDelegate
+// MARK: - ASTableDelegate
 
 extension TransactionsByCategoryVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
@@ -203,7 +203,7 @@ extension TransactionsByCategoryVC: ASTableDelegate {
   }
 }
 
-  // MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension TransactionsByCategoryVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

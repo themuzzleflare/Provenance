@@ -1,11 +1,11 @@
 import AsyncDisplayKit
 
 final class AboutVC: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private let tableNode = ASTableNode(style: .grouped)
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override init() {
     super.init(node: tableNode)
@@ -23,7 +23,7 @@ final class AboutVC: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension AboutVC {
   private func configureSelf() {
@@ -45,7 +45,7 @@ private extension AboutVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 private extension AboutVC {
   @objc private func openSettings() {
@@ -59,7 +59,7 @@ private extension AboutVC {
   }
 }
 
-  // MARK: - ASTableDataSource
+// MARK: - ASTableDataSource
 
 extension AboutVC: ASTableDataSource {
   func numberOfSections(in tableNode: ASTableNode) -> Int {
@@ -136,7 +136,7 @@ extension AboutVC: ASTableDataSource {
   }
 }
 
-  // MARK: - ASTableDelegate
+// MARK: - ASTableDelegate
 
 extension AboutVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {

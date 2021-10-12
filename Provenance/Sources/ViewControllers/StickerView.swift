@@ -1,7 +1,7 @@
 import AsyncDisplayKit
 
 final class StickerView: ASViewController {
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   init(image: ASAnimatedImageProtocol) {
     super.init(node: StickerImageNode(sticker: image))
@@ -18,7 +18,7 @@ final class StickerView: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension StickerView {
   private func configureSelf() {

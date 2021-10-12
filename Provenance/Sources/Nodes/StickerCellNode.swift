@@ -10,7 +10,7 @@ final class StickerCellNode: ASCellNode {
     
     stickerImageNode.animatedImage = sticker
     
-    borderWidth = 1
+    borderWidth = 0.5
     borderColor = .separator
   }
   

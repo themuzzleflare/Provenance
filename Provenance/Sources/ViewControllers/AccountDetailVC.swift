@@ -2,7 +2,7 @@ import UIKit
 import MarqueeLabel
 
 final class AccountDetailVC: ViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private var account: AccountResource {
     didSet {
@@ -24,13 +24,15 @@ final class AccountDetailVC: ViewController {
   
   private lazy var dataSource = makeDataSource()
   
+  private var dateStyleObserver: NSKeyValueObservation?
+  
   private let tableView = UITableView(frame: .zero, style: .grouped)
   
   private var sections: [DetailSection] {
     return .accountDetailSections(account: account, transaction: transaction).filtered
   }
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   init(account: AccountResource, transaction: TransactionResource? = nil) {
     self.account = account
@@ -39,7 +41,7 @@ final class AccountDetailVC: ViewController {
   }
   
   deinit {
-    removeObserver()
+    removeObservers()
   }
   
   required init?(coder: NSCoder) {
@@ -49,7 +51,7 @@ final class AccountDetailVC: ViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(tableView)
-    configureObserver()
+    configureObservers()
     configureSelf()
     configureNavigation()
     configureTableView()
@@ -67,19 +69,25 @@ final class AccountDetailVC: ViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension AccountDetailVC {
   private func configureSelf() {
     title = "Account Details"
   }
   
-  private func configureObserver() {
+  private func configureObservers() {
     NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
+    dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+      guard let weakSelf = self else { return }
+      weakSelf.applySnapshot()
+    }
   }
   
-  private func removeObserver() {
+  private func removeObservers() {
     NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
+    dateStyleObserver?.invalidate()
+    dateStyleObserver = nil
   }
   
   private func configureNavigation() {
@@ -100,7 +108,7 @@ private extension AccountDetailVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 private extension AccountDetailVC {
   @objc private func appMovedToForeground() {
@@ -171,7 +179,7 @@ private extension AccountDetailVC {
   }
 }
 
-  // MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 extension AccountDetailVC: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

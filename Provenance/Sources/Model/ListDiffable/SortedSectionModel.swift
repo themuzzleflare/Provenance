@@ -8,7 +8,7 @@ final class SortedSectionModel {
   }
 }
 
-  // MARK: - ListDiffable
+// MARK: - ListDiffable
 
 extension SortedSectionModel: ListDiffable {
   func diffIdentifier() -> NSObjectProtocol {

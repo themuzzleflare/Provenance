@@ -46,7 +46,7 @@ enum TransactionCategory: String, CaseIterable {
 }
 
 extension TransactionCategory {
-  var name: String {
+  var description: String {
     switch self {
     case .gamesAndSoftware:
       return "Apps, Games & Software"
@@ -68,6 +68,14 @@ extension TransactionCategory {
       return "TV, Music & Streaming"
     default:
       return self.rawValue.replacingOccurrences(of: "and", with: "&").replacingOccurrences(of: "-", with: " ").capitalized
+    }
+  }
+}
+
+extension Array where Element == TransactionCategory {
+  var names: [String] {
+    return self.map { (category) in
+      return category.description
     }
   }
 }

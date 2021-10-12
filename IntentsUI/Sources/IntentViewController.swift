@@ -28,7 +28,7 @@ final class IntentViewController: UIViewController {
   }
 }
 
-  // MARK: - INUIHostedViewControlling
+// MARK: - INUIHostedViewControlling
 
 extension IntentViewController: INUIHostedViewControlling {
   func configureView(for parameters: Set<INParameter>, of interaction: INInteraction, interactiveBehavior: INUIInteractiveBehavior, context: INUIHostedViewContext, completion: @escaping (Bool, Set<INParameter>, CGSize) -> Void) {
@@ -45,7 +45,7 @@ extension IntentViewController: INUIHostedViewControlling {
   }
 }
 
-  // MARK: - UITableViewDataSource
+// MARK: - UITableViewDataSource
 
 extension IntentViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -62,7 +62,7 @@ extension IntentViewController: UITableViewDataSource {
   }
 }
 
-  // MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 extension IntentViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

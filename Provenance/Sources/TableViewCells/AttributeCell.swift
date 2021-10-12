@@ -1,7 +1,7 @@
 import SnapKit
 
 final class AttributeCell: UITableViewCell {
-    // MARK: - Properties
+  // MARK: - Properties
   
   static let reuseIdentifier = "attributeCell"
   
@@ -36,7 +36,7 @@ final class AttributeCell: UITableViewCell {
     }
   }
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -52,7 +52,7 @@ final class AttributeCell: UITableViewCell {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 extension AttributeCell {
   private func configureSelf() {

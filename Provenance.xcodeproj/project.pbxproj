@@ -74,10 +74,10 @@
 		7A340B0626F9C11200D43523 /* TransactionType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533B26F95D5200382804 /* TransactionType+Extension.swift */; };
 		7A340B0726F9C11200D43523 /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2151626EF439D009F4F38 /* Int+Extension.swift */; };
 		7A340B0826F9C11200D43523 /* AccountType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533F26F95EED00382804 /* AccountType+Extension.swift */; };
-		7A340B0A26F9C11200D43523 /* Status+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534B26F960D500382804 /* Status+Extension.swift */; };
+		7A340B0A26F9C11200D43523 /* StatusEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534B26F960D500382804 /* StatusEnum+Extension.swift */; };
 		7A340B0B26F9C11200D43523 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5626F17FF300C4A9D9 /* String+Extension.swift */; };
 		7A340B0C26F9C11200D43523 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9C253B26F30D5700509ED4 /* Color+Extension.swift */; };
-		7A340B0D26F9C11200D43523 /* DateStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533726F95ACD00382804 /* DateStyle+Extension.swift */; };
+		7A340B0D26F9C11200D43523 /* DateStyleEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533726F95ACD00382804 /* DateStyleEnum+Extension.swift */; };
 		7A340B0E26F9C11200D43523 /* CategoryType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534326F95FDE00382804 /* CategoryType+Extension.swift */; };
 		7A340B0F26F9C11200D43523 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F51F26F08ECA00384F53 /* UIFont+Extension.swift */; };
 		7A340B1026F9C11200D43523 /* NSUserActivity+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F043626F998EC00333191 /* NSUserActivity+Extension.swift */; };
@@ -89,10 +89,10 @@
 		7A340B1826F9C11300D43523 /* TransactionType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533B26F95D5200382804 /* TransactionType+Extension.swift */; };
 		7A340B1926F9C11300D43523 /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2151626EF439D009F4F38 /* Int+Extension.swift */; };
 		7A340B1A26F9C11300D43523 /* AccountType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533F26F95EED00382804 /* AccountType+Extension.swift */; };
-		7A340B1C26F9C11300D43523 /* Status+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534B26F960D500382804 /* Status+Extension.swift */; };
+		7A340B1C26F9C11300D43523 /* StatusEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534B26F960D500382804 /* StatusEnum+Extension.swift */; };
 		7A340B1D26F9C11300D43523 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5626F17FF300C4A9D9 /* String+Extension.swift */; };
 		7A340B1E26F9C11300D43523 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9C253B26F30D5700509ED4 /* Color+Extension.swift */; };
-		7A340B1F26F9C11300D43523 /* DateStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533726F95ACD00382804 /* DateStyle+Extension.swift */; };
+		7A340B1F26F9C11300D43523 /* DateStyleEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533726F95ACD00382804 /* DateStyleEnum+Extension.swift */; };
 		7A340B2026F9C11300D43523 /* CategoryType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534326F95FDE00382804 /* CategoryType+Extension.swift */; };
 		7A340B2226F9C11300D43523 /* NSUserActivity+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F043626F998EC00333191 /* NSUserActivity+Extension.swift */; };
 		7A340B2326F9C11300D43523 /* AddTagToTransactionIntentResponse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F043A26F99DF000333191 /* AddTagToTransactionIntentResponse+Extension.swift */; };
@@ -102,10 +102,10 @@
 		7A340B2A26F9C11300D43523 /* TransactionType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533B26F95D5200382804 /* TransactionType+Extension.swift */; };
 		7A340B2B26F9C11300D43523 /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2151626EF439D009F4F38 /* Int+Extension.swift */; };
 		7A340B2C26F9C11300D43523 /* AccountType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533F26F95EED00382804 /* AccountType+Extension.swift */; };
-		7A340B2E26F9C11300D43523 /* Status+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534B26F960D500382804 /* Status+Extension.swift */; };
+		7A340B2E26F9C11300D43523 /* StatusEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534B26F960D500382804 /* StatusEnum+Extension.swift */; };
 		7A340B2F26F9C11300D43523 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5626F17FF300C4A9D9 /* String+Extension.swift */; };
 		7A340B3026F9C11300D43523 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9C253B26F30D5700509ED4 /* Color+Extension.swift */; };
-		7A340B3126F9C11300D43523 /* DateStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533726F95ACD00382804 /* DateStyle+Extension.swift */; };
+		7A340B3126F9C11300D43523 /* DateStyleEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533726F95ACD00382804 /* DateStyleEnum+Extension.swift */; };
 		7A340B3226F9C11300D43523 /* CategoryType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534326F95FDE00382804 /* CategoryType+Extension.swift */; };
 		7A340B3426F9C11300D43523 /* NSUserActivity+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F043626F998EC00333191 /* NSUserActivity+Extension.swift */; };
 		7A340B3526F9C11300D43523 /* AddTagToTransactionIntentResponse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F043A26F99DF000333191 /* AddTagToTransactionIntentResponse+Extension.swift */; };
@@ -146,14 +146,14 @@
 		7A72D2F12672DEAF005FAC4F /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */; };
 		7A7CAB0326F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */; };
 		7A7CAB0526F1F161005CB30F /* FLAnimatedImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */; };
-		7A7F039D26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7F039C26FB0641003F1321 /* TransactionColour+Extension.swift */; };
-		7A7F039E26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7F039C26FB0641003F1321 /* TransactionColour+Extension.swift */; };
-		7A7F039F26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7F039C26FB0641003F1321 /* TransactionColour+Extension.swift */; };
+		7A7F039D26FB0641003F1321 /* TransactionColourEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7F039C26FB0641003F1321 /* TransactionColourEnum+Extension.swift */; };
+		7A7F039E26FB0641003F1321 /* TransactionColourEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7F039C26FB0641003F1321 /* TransactionColourEnum+Extension.swift */; };
+		7A7F039F26FB0641003F1321 /* TransactionColourEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7F039C26FB0641003F1321 /* TransactionColourEnum+Extension.swift */; };
 		7A7F03A026FB06AA003F1321 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F55F26F1634200384F53 /* UIColor+Extension.swift */; };
 		7A7F03A126FB06AB003F1321 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F55F26F1634200384F53 /* UIColor+Extension.swift */; };
 		7A7F03A226FB0859003F1321 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F55F26F1634200384F53 /* UIColor+Extension.swift */; };
 		7A7F03A326FB085E003F1321 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9C253B26F30D5700509ED4 /* Color+Extension.swift */; };
-		7A7F03A426FB0869003F1321 /* TransactionColour+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7F039C26FB0641003F1321 /* TransactionColour+Extension.swift */; };
+		7A7F03A426FB0869003F1321 /* TransactionColourEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7F039C26FB0641003F1321 /* TransactionColourEnum+Extension.swift */; };
 		7A7F03A526FB0B01003F1321 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
 		7A7F03A626FB0B10003F1321 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
 		7A7F03A726FB0F36003F1321 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2152C26F04CF3009F4F38 /* UIImage+Extension.swift */; };
@@ -182,11 +182,11 @@
 		7A8022FF26FC8508008600B0 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5626F17FF300C4A9D9 /* String+Extension.swift */; };
 		7A80230026FC852A008600B0 /* AddTagToTransactionIntentResponse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F043A26F99DF000333191 /* AddTagToTransactionIntentResponse+Extension.swift */; };
 		7A80230126FC852C008600B0 /* ListTransactionsIntentResponse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534F26F961F800382804 /* ListTransactionsIntentResponse+Extension.swift */; };
-		7A80230226FC852E008600B0 /* Status+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534B26F960D500382804 /* Status+Extension.swift */; };
+		7A80230226FC852E008600B0 /* StatusEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534B26F960D500382804 /* StatusEnum+Extension.swift */; };
 		7A80230326FC8530008600B0 /* CategoryType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61534326F95FDE00382804 /* CategoryType+Extension.swift */; };
 		7A80230426FC8532008600B0 /* AccountType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533F26F95EED00382804 /* AccountType+Extension.swift */; };
 		7A80230526FC8536008600B0 /* TransactionType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533B26F95D5200382804 /* TransactionType+Extension.swift */; };
-		7A80230626FC8538008600B0 /* DateStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533726F95ACD00382804 /* DateStyle+Extension.swift */; };
+		7A80230626FC8538008600B0 /* DateStyleEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61533726F95ACD00382804 /* DateStyleEnum+Extension.swift */; };
 		7A80230826FC853C008600B0 /* UIEdgeInsets+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214FD26EF326C009F4F38 /* UIEdgeInsets+Extension.swift */; };
 		7A80230926FC853D008600B0 /* UIEdgeInsets+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214FD26EF326C009F4F38 /* UIEdgeInsets+Extension.swift */; };
 		7A80230C26FC854A008600B0 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F51F26F08ECA00384F53 /* UIFont+Extension.swift */; };
@@ -617,12 +617,12 @@
 		7A5A89EA26FBF0790010223B /* Image+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extension.swift"; sourceTree = "<group>"; };
 		7A5B06C326F2BCB6005CE3D1 /* Shared.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 		7A5BDE752616B99B00B5A5F9 /* CategoriesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesVC.swift; sourceTree = "<group>"; };
-		7A61533726F95ACD00382804 /* DateStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateStyle+Extension.swift"; sourceTree = "<group>"; };
+		7A61533726F95ACD00382804 /* DateStyleEnum+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateStyleEnum+Extension.swift"; sourceTree = "<group>"; };
 		7A61533B26F95D5200382804 /* TransactionType+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionType+Extension.swift"; sourceTree = "<group>"; };
 		7A61533F26F95EED00382804 /* AccountType+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountType+Extension.swift"; sourceTree = "<group>"; };
 		7A61534326F95FDE00382804 /* CategoryType+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CategoryType+Extension.swift"; sourceTree = "<group>"; };
 		7A61534726F9606600382804 /* NSString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSString+Extension.swift"; sourceTree = "<group>"; };
-		7A61534B26F960D500382804 /* Status+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Status+Extension.swift"; sourceTree = "<group>"; };
+		7A61534B26F960D500382804 /* StatusEnum+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatusEnum+Extension.swift"; sourceTree = "<group>"; };
 		7A61534F26F961F800382804 /* ListTransactionsIntentResponse+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListTransactionsIntentResponse+Extension.swift"; sourceTree = "<group>"; };
 		7A615D7226FA9D6D001F1834 /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		7A67980C25D3E15D002AA83A /* DiagnosticsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsVC.swift; sourceTree = "<group>"; };
@@ -638,7 +638,7 @@
 		7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
 		7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASPINRemoteImageDownloader+Extension.swift"; sourceTree = "<group>"; };
 		7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FLAnimatedImage+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		7A7F039C26FB0641003F1321 /* TransactionColour+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionColour+Extension.swift"; sourceTree = "<group>"; };
+		7A7F039C26FB0641003F1321 /* TransactionColourEnum+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionColourEnum+Extension.swift"; sourceTree = "<group>"; };
 		7A8022E226FC5CD1008600B0 /* ASCellNode+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASCellNode+Extension.swift"; sourceTree = "<group>"; };
 		7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+Extension.swift"; sourceTree = "<group>"; };
 		7A82FB1726F466FE00C9C04E /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
@@ -1151,14 +1151,14 @@
 				7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */,
 				7AD266D426FADA1E00EFF4A2 /* NumberFormatter+Extension.swift */,
 				7AF214FD26EF326C009F4F38 /* UIEdgeInsets+Extension.swift */,
-				7A61533726F95ACD00382804 /* DateStyle+Extension.swift */,
+				7A61533726F95ACD00382804 /* DateStyleEnum+Extension.swift */,
 				7A61533B26F95D5200382804 /* TransactionType+Extension.swift */,
 				7A61533F26F95EED00382804 /* AccountType+Extension.swift */,
 				7A61534326F95FDE00382804 /* CategoryType+Extension.swift */,
-				7A61534B26F960D500382804 /* Status+Extension.swift */,
+				7A61534B26F960D500382804 /* StatusEnum+Extension.swift */,
 				7A61534F26F961F800382804 /* ListTransactionsIntentResponse+Extension.swift */,
 				7A0F043A26F99DF000333191 /* AddTagToTransactionIntentResponse+Extension.swift */,
-				7A7F039C26FB0641003F1321 /* TransactionColour+Extension.swift */,
+				7A7F039C26FB0641003F1321 /* TransactionColourEnum+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1538,10 +1538,10 @@
 			isa = PBXGroup;
 			children = (
 				E76E3574F6A354DDF4326A6D /* UpAPI */,
+				E76E343C03330EBAFF399F01 /* ProvenanceApp.swift */,
 				E76E3F141DA7CB229ACF2BB4 /* InfoPlist.swift */,
 				E76E39A7979ECA1C32E83696 /* AppWidgets.swift */,
 				E76E3BEE80249A4EF44A105F /* AppDateStyle.swift */,
-				E76E343C03330EBAFF399F01 /* ProvenanceApp.swift */,
 				E76E3BE831C09A2EB7F4E662 /* CategoryTypeEnum.swift */,
 				E76E3A1019DFEDB902EC17E3 /* AccountBalanceModel.swift */,
 				E76E3642C3EC34A27009A1D6 /* TransactionCategory.swift */,
@@ -1968,7 +1968,7 @@
 				7A8022F526FC848A008600B0 /* NSParagraphStyle+Extension.swift in Sources */,
 				7A340B3526F9C11300D43523 /* AddTagToTransactionIntentResponse+Extension.swift in Sources */,
 				7A8022F726FC848A008600B0 /* CGColor+Extension.swift in Sources */,
-				7A340B2E26F9C11300D43523 /* Status+Extension.swift in Sources */,
+				7A340B2E26F9C11300D43523 /* StatusEnum+Extension.swift in Sources */,
 				7AD739A22657C04D009FF994 /* IntentHandler.swift in Sources */,
 				7A340B3826F9C11300D43523 /* NSString+Extension.swift in Sources */,
 				7A340B2A26F9C11300D43523 /* TransactionType+Extension.swift in Sources */,
@@ -1980,8 +1980,8 @@
 				7AD266D726FADD9100EFF4A2 /* NumberFormatter+Extension.swift in Sources */,
 				7AD266DB26FADDF500EFF4A2 /* Double+Extension.swift in Sources */,
 				7A0662FB26F5573500720802 /* Intents.intentdefinition in Sources */,
-				7A7F039F26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */,
-				7A340B3126F9C11300D43523 /* DateStyle+Extension.swift in Sources */,
+				7A7F039F26FB0641003F1321 /* TransactionColourEnum+Extension.swift in Sources */,
+				7A340B3126F9C11300D43523 /* DateStyleEnum+Extension.swift in Sources */,
 				7A8022F626FC848A008600B0 /* CGSize+Extension.swift in Sources */,
 				7A340B2F26F9C11300D43523 /* String+Extension.swift in Sources */,
 				7A340B3026F9C11300D43523 /* Color+Extension.swift in Sources */,
@@ -2055,7 +2055,7 @@
 				7A7F03A326FB085E003F1321 /* Color+Extension.swift in Sources */,
 				7A8022EF26FC7C30008600B0 /* Bool+Extension.swift in Sources */,
 				7A8022FB26FC848A008600B0 /* CGSize+Extension.swift in Sources */,
-				7A7F03A426FB0869003F1321 /* TransactionColour+Extension.swift in Sources */,
+				7A7F03A426FB0869003F1321 /* TransactionColourEnum+Extension.swift in Sources */,
 				7A7F03A926FB0F3E003F1321 /* UIImage+Extension.swift in Sources */,
 				7A80230126FC852C008600B0 /* ListTransactionsIntentResponse+Extension.swift in Sources */,
 				7A8022FE26FC848A008600B0 /* NSAttributedString+Extension.swift in Sources */,
@@ -2069,8 +2069,8 @@
 				7A7F03A226FB0859003F1321 /* UIColor+Extension.swift in Sources */,
 				7A80230426FC8532008600B0 /* AccountType+Extension.swift in Sources */,
 				7A80230526FC8536008600B0 /* TransactionType+Extension.swift in Sources */,
-				7A80230626FC8538008600B0 /* DateStyle+Extension.swift in Sources */,
-				7A80230226FC852E008600B0 /* Status+Extension.swift in Sources */,
+				7A80230626FC8538008600B0 /* DateStyleEnum+Extension.swift in Sources */,
+				7A80230226FC852E008600B0 /* StatusEnum+Extension.swift in Sources */,
 				7A80231126FC854B008600B0 /* Int+Extension.swift in Sources */,
 				7A8022FC26FC848A008600B0 /* CGColor+Extension.swift in Sources */,
 				7A340BC926F9C1DC00D43523 /* UIFont+Extension.swift in Sources */,
@@ -2153,7 +2153,7 @@
 				7A08A79126FC1BA50035DD2F /* StringStyle+Extension.swift in Sources */,
 				7A3192E726FD88A400718A25 /* NSNotificationName+Extension.swift in Sources */,
 				7AF2151126EF4175009F4F38 /* ContentType.swift in Sources */,
-				7A340B0D26F9C11200D43523 /* DateStyle+Extension.swift in Sources */,
+				7A340B0D26F9C11200D43523 /* DateStyleEnum+Extension.swift in Sources */,
 				7A56101D25D25B600091396E /* TransactionsByCategoryVC.swift in Sources */,
 				7A130B6D2705747500E02B5E /* SpinnerDelegate.swift in Sources */,
 				7A0BF09926FFDC17004A3E0C /* CategoryCellModel.swift in Sources */,
@@ -2220,11 +2220,11 @@
 				7A8022E326FC5CD1008600B0 /* ASCellNode+Extension.swift in Sources */,
 				7A56101625D21BFE0091396E /* TransactionsByTagVC.swift in Sources */,
 				7ACD456C261D67A7000C8FD2 /* WidgetsVC.swift in Sources */,
-				7A340B0A26F9C11200D43523 /* Status+Extension.swift in Sources */,
+				7A340B0A26F9C11200D43523 /* StatusEnum+Extension.swift in Sources */,
 				7A90F53026F097BB00384F53 /* TagResource+CellModel.swift in Sources */,
 				7AF214FE26EF326C009F4F38 /* NSAttributedString+Extension.swift in Sources */,
 				7AA113BF26154F3800386E2D /* DetailItem.swift in Sources */,
-				7A7F039D26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */,
+				7A7F039D26FB0641003F1321 /* TransactionColourEnum+Extension.swift in Sources */,
 				7A67980D25D3E15D002AA83A /* DiagnosticsVC.swift in Sources */,
 				7AF2156626F05FE3009F4F38 /* UIContextMenuConfiguration+Extension.swift in Sources */,
 				7A7CAB0326F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift in Sources */,
@@ -2337,7 +2337,7 @@
 				7A340B2326F9C11300D43523 /* AddTagToTransactionIntentResponse+Extension.swift in Sources */,
 				7A340B1E26F9C11300D43523 /* Color+Extension.swift in Sources */,
 				7A340B1926F9C11300D43523 /* Int+Extension.swift in Sources */,
-				7A7F039E26FB0641003F1321 /* TransactionColour+Extension.swift in Sources */,
+				7A7F039E26FB0641003F1321 /* TransactionColourEnum+Extension.swift in Sources */,
 				7A8022ED26FC7C30008600B0 /* Bool+Extension.swift in Sources */,
 				7A8E41F126048320003D0E6A /* Widgets.swift in Sources */,
 				7A340B2826F9C11300D43523 /* ListTransactionsIntentResponse+Extension.swift in Sources */,
@@ -2347,7 +2347,7 @@
 				7A7F03A726FB0F36003F1321 /* UIImage+Extension.swift in Sources */,
 				7A7F03A026FB06AA003F1321 /* UIColor+Extension.swift in Sources */,
 				7A340B1A26F9C11300D43523 /* AccountType+Extension.swift in Sources */,
-				7A340B1C26F9C11300D43523 /* Status+Extension.swift in Sources */,
+				7A340B1C26F9C11300D43523 /* StatusEnum+Extension.swift in Sources */,
 				7A80230826FC853C008600B0 /* UIEdgeInsets+Extension.swift in Sources */,
 				7A340B1D26F9C11300D43523 /* String+Extension.swift in Sources */,
 				7AFBD90B26F400ED00460939 /* AccountBalanceProvider.swift in Sources */,
@@ -2371,7 +2371,7 @@
 				7A9C253A26F30ABD00509ED4 /* Font+Extension.swift in Sources */,
 				7A340B2026F9C11300D43523 /* CategoryType+Extension.swift in Sources */,
 				7A340B2726F9C11300D43523 /* UserDefaults+Extension.swift in Sources */,
-				7A340B1F26F9C11300D43523 /* DateStyle+Extension.swift in Sources */,
+				7A340B1F26F9C11300D43523 /* DateStyleEnum+Extension.swift in Sources */,
 				E76E3617DC6643B1CA152304 /* Tag.swift in Sources */,
 				E76E396BE9F5DB2AE85CC2D7 /* Account.swift in Sources */,
 				E76E31D88701A8BEE5FA1E15 /* Category.swift in Sources */,

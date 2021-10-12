@@ -2,7 +2,7 @@ import MarqueeLabel
 import Alamofire
 
 final class TransactionDetailVC: ViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private var transaction: TransactionResource {
     didSet {
@@ -52,7 +52,7 @@ final class TransactionDetailVC: ViewController {
     }
   }
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   init(transaction: TransactionResource) {
     self.transaction = transaction
@@ -88,7 +88,7 @@ final class TransactionDetailVC: ViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 extension TransactionDetailVC {
   private func configureSelf() {
@@ -122,7 +122,7 @@ extension TransactionDetailVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 extension TransactionDetailVC {
   @objc private func appMovedToForeground() {
@@ -247,7 +247,7 @@ extension TransactionDetailVC {
   }
 }
 
-  // MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 extension TransactionDetailVC: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

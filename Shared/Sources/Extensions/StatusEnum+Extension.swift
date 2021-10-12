@@ -1,6 +1,6 @@
 import Foundation
 
-extension Status {
+extension StatusEnum {
   var transactionStatusEnum: TransactionStatusEnum? {
     switch self {
     case .held:

@@ -1,6 +1,6 @@
 import SwiftDate
 
-class ProvenanceApp {
+struct ProvenanceApp {
   static let userDefaults = UserDefaults.provenance
   
   static func formatDate(for dateString: String, dateStyle: AppDateStyle) -> String {

@@ -1,19 +1,19 @@
 import UIKit
 
 protocol SegmentedControlNodeProtocol: AnyObject {
-    /// Insert a segment with the given action at the given index. Segments will prefer images over titles when both are provided. When the segment is selected UIAction.actionHandler is called. If a segment already exists with the action's identifier that segment will either be updated (if the index is the same) or it will be removed (if different).
+  /// Insert a segment with the given action at the given index. Segments will prefer images over titles when both are provided. When the segment is selected UIAction.actionHandler is called. If a segment already exists with the action's identifier that segment will either be updated (if the index is the same) or it will be removed (if different).
   @available(iOS 14.0, *)
   func insertSegment(action: UIAction, at segment: Int, animated: Bool)
   
-    /// Reconfigures the given segment with this action. Segments will prefer images over titles when both are provided. When the segment is selected UIAction.actionHandler is called. UIAction.identifier must either match the action of the existing segment at this index, or be unique within all actions associated with the segmented control, or this method will assert.
+  /// Reconfigures the given segment with this action. Segments will prefer images over titles when both are provided. When the segment is selected UIAction.actionHandler is called. UIAction.identifier must either match the action of the existing segment at this index, or be unique within all actions associated with the segmented control, or this method will assert.
   @available(iOS 14.0, *)
   func setAction(_ action: UIAction, forSegmentAt segment: Int)
   
-    /// Fetch the action for the given segment, if one has been assigned to that segment
+  /// Fetch the action for the given segment, if one has been assigned to that segment
   @available(iOS 14.0, *)
   func actionForSegment(at segment: Int) -> UIAction?
   
-    /// Returns the index of the segment associated with the given actionIdentifier, or NSNotFound if the identifier could not be found.
+  /// Returns the index of the segment associated with the given actionIdentifier, or NSNotFound if the identifier could not be found.
   @available(iOS 14.0, *)
   func segmentIndex(identifiedBy actionIdentifier: UIAction.Identifier) -> Int
   
@@ -21,7 +21,7 @@ protocol SegmentedControlNodeProtocol: AnyObject {
   
   var numberOfSegments: Int { get }
   
-    // For segments whose width value is 0, setting this property to YES attempts to adjust segment widths based on their content widths. Default is NO.
+  // For segments whose width value is 0, setting this property to YES attempts to adjust segment widths based on their content widths. Default is NO.
   
   var apportionsSegmentWidthsByContent: Bool { get set }
   
@@ -53,11 +53,11 @@ protocol SegmentedControlNodeProtocol: AnyObject {
   
   func isEnabledForSegment(at segment: Int) -> Bool
   
-    // ignored in momentary mode. returns last segment pressed. default is UISegmentedControlNoSegment until a segment is pressed
-    // the UIControlEventValueChanged action is invoked when the segment changes via a user event. set to UISegmentedControlNoSegment to turn off selection
+  // ignored in momentary mode. returns last segment pressed. default is UISegmentedControlNoSegment until a segment is pressed
+  // the UIControlEventValueChanged action is invoked when the segment changes via a user event. set to UISegmentedControlNoSegment to turn off selection
   var selectedSegmentIndex: Int { get set }
   
-    // The color to use for highlighting the currently selected segment.
+  // The color to use for highlighting the currently selected segment.
   @available(iOS 13.0, *)
   var selectedSegmentTintColor: UIColor? { get set }
   

@@ -15,7 +15,7 @@ final class CategoryCellModel {
   }
 }
 
-  // MARK: - ListDiffable
+// MARK: - ListDiffable
 
 extension CategoryCellModel: ListDiffable {
   func diffIdentifier() -> NSObjectProtocol {

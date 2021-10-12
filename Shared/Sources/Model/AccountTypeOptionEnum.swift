@@ -1,8 +1,8 @@
 import Foundation
 
 enum AccountTypeOptionEnum: Int, CaseIterable {
-  case transactional = 0
-  case saver = 1
+  case transactional
+  case saver
 }
 
 extension AccountTypeOptionEnum {

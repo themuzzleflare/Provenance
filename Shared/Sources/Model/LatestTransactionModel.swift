@@ -5,7 +5,7 @@ struct LatestTransactionModel: Identifiable {
   let description: String
   let creationDate: String
   let amount: String
-  let colour: TransactionColour
+  let colour: TransactionColourEnum
 }
 
 extension LatestTransactionModel {

@@ -3,7 +3,7 @@ import AsyncDisplayKit
 import Alamofire
 
 final class AccountsVC: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private lazy var searchController = UISearchController.accounts(self)
   
@@ -43,7 +43,7 @@ final class AccountsVC: ASViewController {
   
   private var oldAccountCellModels = [AccountCellModel]()
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override init() {
     super.init(node: collectionNode)
@@ -72,7 +72,7 @@ final class AccountsVC: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension AccountsVC {
   private func configureSelf() {
@@ -114,7 +114,7 @@ private extension AccountsVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 private extension AccountsVC {
   @objc private func appMovedToForeground() {
@@ -192,7 +192,7 @@ private extension AccountsVC {
   }
 }
 
-  // MARK: - ASCollectionDataSource
+// MARK: - ASCollectionDataSource
 
 extension AccountsVC: ASCollectionDataSource {
   func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
@@ -208,7 +208,7 @@ extension AccountsVC: ASCollectionDataSource {
   }
 }
 
-  // MARK: - ASCollectionDelegate
+// MARK: - ASCollectionDelegate
 
 extension AccountsVC: ASCollectionDelegate {
   func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
@@ -227,7 +227,7 @@ extension AccountsVC: ASCollectionDelegate {
   }
 }
 
-  // MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension AccountsVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

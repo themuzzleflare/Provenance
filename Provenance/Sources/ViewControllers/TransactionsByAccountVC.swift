@@ -4,7 +4,7 @@ import MarqueeLabel
 import Alamofire
 
 final class TransactionsByAccountVC: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private var account: AccountResource {
     didSet {
@@ -36,7 +36,7 @@ final class TransactionsByAccountVC: ASViewController {
   
   private var oldTransactionCellModels = [TransactionCellModel]()
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   init(account: AccountResource) {
     self.account = account
@@ -66,7 +66,7 @@ final class TransactionsByAccountVC: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension TransactionsByAccountVC {
   private func configureSelf() {
@@ -78,7 +78,7 @@ private extension TransactionsByAccountVC {
     NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
-      weakSelf.fetchingTasks()
+      weakSelf.applySnapshot()
     }
   }
   
@@ -104,7 +104,7 @@ private extension TransactionsByAccountVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 private extension TransactionsByAccountVC {
   @objc private func appMovedToForeground() {
@@ -220,7 +220,7 @@ private extension TransactionsByAccountVC {
   }
 }
 
-  // MARK: - ASTableDataSource
+// MARK: - ASTableDataSource
 
 extension TransactionsByAccountVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
@@ -236,7 +236,7 @@ extension TransactionsByAccountVC: ASTableDataSource {
   }
 }
 
-  // MARK: - ASTableDelegate
+// MARK: - ASTableDelegate
 
 extension TransactionsByAccountVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
@@ -247,7 +247,7 @@ extension TransactionsByAccountVC: ASTableDelegate {
   }
 }
 
-  // MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension TransactionsByAccountVC: UISearchBarDelegate {
   func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

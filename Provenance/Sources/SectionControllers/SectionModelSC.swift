@@ -22,7 +22,7 @@ final class SectionModelSC: ListSectionController {
   }
 }
 
-  // MARK: - ASSectionController
+// MARK: - ASSectionController
 
 extension SectionModelSC: ASSectionController {
   func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {

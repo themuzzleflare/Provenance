@@ -1,7 +1,7 @@
 import UIKit
 
 final class DiagnosticsVC: ViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private typealias DataSource = UITableViewDiffableDataSource<DetailSection, DetailItem>
   
@@ -15,7 +15,7 @@ final class DiagnosticsVC: ViewController {
     return .diagnosticsSections
   }
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -32,7 +32,7 @@ final class DiagnosticsVC: ViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension DiagnosticsVC {
   private func configureSelf() {
@@ -55,7 +55,7 @@ private extension DiagnosticsVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 private extension DiagnosticsVC {
   @objc private func closeWorkflow() {
@@ -84,7 +84,7 @@ private extension DiagnosticsVC {
   }
 }
 
-  // MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 extension DiagnosticsVC: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

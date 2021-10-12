@@ -3,7 +3,7 @@ import AsyncDisplayKit
 import Alamofire
 
 final class AddTagTransactionSelectionVC: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private lazy var searchController = UISearchController(self)
   
@@ -30,7 +30,7 @@ final class AddTagTransactionSelectionVC: ASViewController {
     return transactions.filtered(searchBar: searchController.searchBar)
   }
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override init() {
     super.init(node: tableNode)
@@ -59,7 +59,7 @@ final class AddTagTransactionSelectionVC: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension AddTagTransactionSelectionVC {
   private func configureSelf() {
@@ -71,7 +71,7 @@ private extension AddTagTransactionSelectionVC {
     NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
-      weakSelf.fetchTransactions()
+      weakSelf.applySnapshot()
     }
   }
   
@@ -97,7 +97,7 @@ private extension AddTagTransactionSelectionVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 private extension AddTagTransactionSelectionVC {
   @objc private func appMovedToForeground() {
@@ -176,7 +176,7 @@ private extension AddTagTransactionSelectionVC {
   }
 }
 
-  // MARK: - ASTableDataSource
+// MARK: - ASTableDataSource
 
 extension AddTagTransactionSelectionVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
@@ -192,7 +192,7 @@ extension AddTagTransactionSelectionVC: ASTableDataSource {
   }
 }
 
-  // MARK: - ASTableDelegate
+// MARK: - ASTableDelegate
 
 extension AddTagTransactionSelectionVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
@@ -203,7 +203,7 @@ extension AddTagTransactionSelectionVC: ASTableDelegate {
   }
 }
 
-  // MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension AddTagTransactionSelectionVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

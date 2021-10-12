@@ -46,7 +46,7 @@ final class ItemModelSC: ListSectionController {
   }
 }
 
-  // MARK: - ASSectionController
+// MARK: - ASSectionController
 
 extension ItemModelSC: ASSectionController {
   func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
@@ -61,7 +61,7 @@ extension ItemModelSC: ASSectionController {
   }
 }
 
-  // MARK: - ListSupplementaryViewSource
+// MARK: - ListSupplementaryViewSource
 
 extension ItemModelSC: ListSupplementaryViewSource {
   func supportedElementKinds() -> [String] {
@@ -77,7 +77,7 @@ extension ItemModelSC: ListSupplementaryViewSource {
   }
 }
 
-  // MARK: - ASSupplementaryNodeSource
+// MARK: - ASSupplementaryNodeSource
 
 extension ItemModelSC: ASSupplementaryNodeSource {
   func nodeBlockForSupplementaryElement(ofKind elementKind: String, at index: Int) -> ASCellNodeBlock {
@@ -92,7 +92,7 @@ extension ItemModelSC: ASSupplementaryNodeSource {
   }
 }
 
-  // MARK: - ListScrollDelegate
+// MARK: - ListScrollDelegate
 
 extension ItemModelSC: ListScrollDelegate {
   func listAdapter(_ listAdapter: ListAdapter, didScroll sectionController: ListSectionController) {}

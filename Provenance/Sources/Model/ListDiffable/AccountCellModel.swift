@@ -18,7 +18,7 @@ final class AccountCellModel {
   }
 }
 
-  // MARK: - ListDiffable
+// MARK: - ListDiffable
 
 extension AccountCellModel: ListDiffable {
   func diffIdentifier() -> NSObjectProtocol {

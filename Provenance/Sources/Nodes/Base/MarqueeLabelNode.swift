@@ -20,6 +20,8 @@ final class MarqueeLabelNode: ASDisplayNode {
   }
 }
 
+// MARK: - MarqueeLabelNodeProtocol
+
 extension MarqueeLabelNode: MarqueeLabelNodeProtocol {
   var type: MarqueeLabel.MarqueeType {
     get {

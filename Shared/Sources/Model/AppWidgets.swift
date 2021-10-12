@@ -1,8 +1,8 @@
 import Foundation
 
 enum AppWidgets: Int, CaseIterable {
-  case accountBalance = 0
-  case latestTransaction = 1
+  case accountBalance
+  case latestTransaction
 }
 
 extension AppWidgets {

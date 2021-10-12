@@ -3,7 +3,7 @@ import SwiftDate
 import AlamofireNetworkActivityIndicator
 
 @main class AppDelegate: UIResponder, UIApplicationDelegate {
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     NetworkActivityIndicatorManager.shared.isEnabled = true
@@ -18,7 +18,7 @@ import AlamofireNetworkActivityIndicator
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 extension AppDelegate {
   private func registerDefaults() {

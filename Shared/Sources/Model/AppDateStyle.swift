@@ -3,10 +3,10 @@ import Foundation
   /// An enumeration describing the date style used in the app.
 enum AppDateStyle: Int, CaseIterable {
     /// Absolute.
-  case absolute = 0
+  case absolute
   
     /// Relative.
-  case relative = 1
+  case relative
 }
 
 extension AppDateStyle {
@@ -19,7 +19,7 @@ extension AppDateStyle {
     }
   }
   
-  var dateStyle: DateStyle {
+  var dateStyle: DateStyleEnum {
     switch self {
     case .absolute:
       return .absolute

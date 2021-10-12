@@ -2,7 +2,7 @@ import NotificationBannerSwift
 import AsyncDisplayKit
 
 final class AddTagConfirmationVC: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private var transaction: TransactionResource
   
@@ -12,7 +12,7 @@ final class AddTagConfirmationVC: ASViewController {
   
   private var dateStyleObserver: NSKeyValueObservation?
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   init(transaction: TransactionResource, tags: [TagResource]) {
     self.transaction = transaction
@@ -43,7 +43,7 @@ final class AddTagConfirmationVC: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension AddTagConfirmationVC {
   private func configureSelf() {
@@ -74,7 +74,7 @@ private extension AddTagConfirmationVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 private extension AddTagConfirmationVC {
   @objc private func addTags() {
@@ -104,7 +104,7 @@ private extension AddTagConfirmationVC {
   }
 }
 
-  // MARK: - ASTableDataSource
+// MARK: - ASTableDataSource
 
 extension AddTagConfirmationVC: ASTableDataSource {
   func numberOfSections(in tableNode: ASTableNode) -> Int {

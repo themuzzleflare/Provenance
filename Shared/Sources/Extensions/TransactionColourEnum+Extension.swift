@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension TransactionColour {
+extension TransactionColourEnum {
   var uiColour: UIColor {
     switch self {
     case .primaryLabel, .unknown:

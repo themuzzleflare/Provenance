@@ -1,19 +1,19 @@
 import UIKit
 
 extension UICollectionViewLayout {
-    /// `UICollectionViewFlowLayout()`.
+  /// `UICollectionViewFlowLayout()`.
   static var flowLayout: UICollectionViewLayout {
     return UICollectionViewFlowLayout()
   }
   
-    /// A `UICollectionViewFlowLayout()` with `sectionHeadersPinToVisibleBounds` set to `true`.
+  /// A `UICollectionViewFlowLayout()` with `sectionHeadersPinToVisibleBounds` set to `true`.
   static var sectionHeadersPinned: UICollectionViewLayout {
     let layout = UICollectionViewFlowLayout()
     layout.sectionHeadersPinToVisibleBounds = true
     return layout
   }
   
-    /// `twoColumnGridLayout`.
+  /// `twoColumnGridLayout`.
   static var twoColumnGridLayout: UICollectionViewLayout {
     return UICollectionViewCompositionalLayout { (_, _) in
       let itemSize = NSCollectionLayoutSize(
@@ -43,7 +43,7 @@ extension UICollectionViewLayout {
     }
   }
   
-    /// `gridLayout`.
+  /// `gridLayout`.
   static var gridLayout: UICollectionViewLayout {
     let itemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(0.2),

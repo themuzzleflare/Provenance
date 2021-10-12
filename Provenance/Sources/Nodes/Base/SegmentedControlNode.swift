@@ -71,6 +71,8 @@ final class SegmentedControlNode: ASControlNode {
   }
 }
 
+// MARK: - SegmentedControlNodeProtocol
+
 extension SegmentedControlNode: SegmentedControlNodeProtocol {
   var state: UIControl.State {
     return segmentedControl.state

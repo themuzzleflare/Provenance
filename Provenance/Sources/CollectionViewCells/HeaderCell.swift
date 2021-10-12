@@ -26,7 +26,7 @@ final class HeaderCell: UICollectionViewCell {
   }
 }
 
-  // MARK: - ListBindable
+// MARK: - ListBindable
 
 extension HeaderCell: ListBindable {
   func bindViewModel(_ viewModel: Any) {

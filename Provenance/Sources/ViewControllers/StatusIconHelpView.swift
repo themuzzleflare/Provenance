@@ -1,11 +1,11 @@
 import AsyncDisplayKit
 
 final class StatusIconHelpView: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private let statusIconHelpDisplayNode = StatusIconHelpNode()
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override init() {
     super.init(node: statusIconHelpDisplayNode)
@@ -22,7 +22,7 @@ final class StatusIconHelpView: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 extension StatusIconHelpView {
   private func configureSelf() {
@@ -36,7 +36,7 @@ extension StatusIconHelpView {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 extension StatusIconHelpView {
   @objc private func closeWorkflow() {

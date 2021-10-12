@@ -3,7 +3,7 @@ import AsyncDisplayKit
 import Alamofire
 
 final class TagsVC: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private lazy var searchController = UISearchController(self)
   
@@ -30,7 +30,7 @@ final class TagsVC: ASViewController {
     return tags.filtered(searchBar: searchController.searchBar)
   }
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override init() {
     super.init(node: tableNode)
@@ -59,7 +59,7 @@ final class TagsVC: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension TagsVC {
   private func configureSelf() {
@@ -95,7 +95,7 @@ private extension TagsVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 private extension TagsVC {
   @objc private func appMovedToForeground() {
@@ -183,7 +183,7 @@ private extension TagsVC {
   }
 }
 
-  // MARK: - ASTableDataSource
+// MARK: - ASTableDataSource
 
 extension TagsVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
@@ -199,7 +199,7 @@ extension TagsVC: ASTableDataSource {
   }
 }
 
-  // MARK: - ASTableDelegate
+// MARK: - ASTableDelegate
 
 extension TagsVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
@@ -217,7 +217,7 @@ extension TagsVC: ASTableDelegate {
   }
 }
 
-  // MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension TagsVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

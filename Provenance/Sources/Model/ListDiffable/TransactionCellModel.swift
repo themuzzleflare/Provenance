@@ -9,7 +9,7 @@ final class TransactionCellModel: NSObject {
   let transactionDescription: String
   let creationDate: String
   let amount: String
-  let colour: TransactionColour
+  let colour: TransactionColourEnum
   
   init(transaction: TransactionResource) {
     self.id = transaction.id
@@ -19,7 +19,7 @@ final class TransactionCellModel: NSObject {
     self.colour = transaction.attributes.amount.transactionType.colour
   }
   
-  init(id: String, transactionDescription: String, creationDate: String, amount: String, colour: TransactionColour) {
+  init(id: String, transactionDescription: String, creationDate: String, amount: String, colour: TransactionColourEnum) {
     self.id = id
     self.transactionDescription = transactionDescription
     self.creationDate = creationDate
@@ -28,7 +28,7 @@ final class TransactionCellModel: NSObject {
   }
 }
 
-  // MARK: - ListDiffable
+// MARK: - ListDiffable
 
 extension TransactionCellModel: ListDiffable {
   func diffIdentifier() -> NSObjectProtocol {

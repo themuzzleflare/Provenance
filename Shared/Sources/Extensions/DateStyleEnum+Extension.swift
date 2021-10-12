@@ -1,6 +1,6 @@
 import Foundation
 
-extension DateStyle {
+extension DateStyleEnum {
   func description(_ transaction: TransactionResource) -> String {
     switch self {
     case .absolute:

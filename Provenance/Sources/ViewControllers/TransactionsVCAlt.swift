@@ -3,7 +3,7 @@ import Alamofire
 import UIKit
 
 final class TransactionsVCAlt: ViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private lazy var filterBarButtonItem = UIBarButtonItem(image: .sliderHorizontal3, menu: filterMenu)
   
@@ -78,7 +78,7 @@ final class TransactionsVCAlt: ViewController {
   
   private var loading: Bool = false
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -111,7 +111,7 @@ final class TransactionsVCAlt: ViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 extension TransactionsVCAlt {
   private func configureCollectionView() {
@@ -170,7 +170,7 @@ extension TransactionsVCAlt {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 extension TransactionsVCAlt {
   @objc private func appMovedToForeground() {
@@ -283,7 +283,7 @@ extension TransactionsVCAlt {
   }
 }
 
-  // MARK: - ListAdapterDataSource
+// MARK: - ListAdapterDataSource
 
 extension TransactionsVCAlt: ListAdapterDataSource {
   func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
@@ -319,7 +319,7 @@ extension TransactionsVCAlt: ListAdapterDataSource {
   }
 }
 
-  // MARK: - UIScrollViewDelegate
+// MARK: - UIScrollViewDelegate
 
 extension TransactionsVCAlt: UIScrollViewDelegate {
   func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
@@ -335,7 +335,7 @@ extension TransactionsVCAlt: UIScrollViewDelegate {
   }
 }
 
-  // MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension TransactionsVCAlt: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

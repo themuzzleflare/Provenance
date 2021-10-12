@@ -1,9 +1,11 @@
 import UIKit
 
 struct DetailItem: Identifiable {
-  var id: String
-  var value: String
+  let id: String
+  let value: String
 }
+
+// MARK: - Hashable
 
 extension DetailItem: Hashable {
   func hash(into hasher: inout Hasher) {
@@ -36,7 +38,7 @@ extension DetailItem {
   
   var valueFont: UIFont {
     switch id {
-    case "Raw Text", "Account ID":
+    case "Transaction ID", "Raw Text", "Account ID":
       return .sfMonoRegular(size: .labelFontSize)
     default:
       return .circularStdBook(size: .labelFontSize)

@@ -2,7 +2,7 @@ import IGListDiffKit
 import AsyncDisplayKit
 
 final class TransactionTagsVC: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private var transaction: TransactionResource {
     didSet {
@@ -50,7 +50,7 @@ final class TransactionTagsVC: ASViewController {
   
   private let tableNode = ASTableNode(style: .plain)
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   init(transaction: TransactionResource) {
     self.transaction = transaction
@@ -99,7 +99,7 @@ final class TransactionTagsVC: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension TransactionTagsVC {
   private func configureSelf() {
@@ -134,7 +134,7 @@ private extension TransactionTagsVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 extension TransactionTagsVC {
   @objc private func appMovedToForeground() {
@@ -214,7 +214,7 @@ extension TransactionTagsVC {
   }
 }
 
-  // MARK: - ASTableDataSource
+// MARK: - ASTableDataSource
 
 extension TransactionTagsVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
@@ -245,7 +245,7 @@ extension TransactionTagsVC: ASTableDataSource {
   }
 }
 
-  // MARK: - ASTableDelegate
+// MARK: - ASTableDelegate
 
 extension TransactionTagsVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {

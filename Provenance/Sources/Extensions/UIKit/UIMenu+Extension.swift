@@ -8,7 +8,7 @@ extension UIMenu {
         image: categoryFilter == .all ? .trayFull : .trayFullFill,
         children: TransactionCategory.allCases.map { (category) in
           UIAction(
-            title: category.name,
+            title: category.description,
             state: categoryFilter == category ? .on : .off,
             handler: { (_) in
               completion(.category(category))

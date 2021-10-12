@@ -8,7 +8,7 @@ final class TransactionCellNode: ASCellNode {
   private var transactionDescription: String
   private var creationDate: String
   private var amount: String
-  private var colour: TransactionColour
+  private var colour: TransactionColourEnum
   
   init(transaction: TransactionResource) {
     self.transactionDescription = transaction.attributes.description
@@ -89,7 +89,7 @@ final class TransactionCellNode: ASCellNode {
   }
 }
 
-  // MARK: - UIContextMenuInteractionDelegate
+// MARK: - UIContextMenuInteractionDelegate
 
 extension TransactionCellNode: UIContextMenuInteractionDelegate {
   func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {

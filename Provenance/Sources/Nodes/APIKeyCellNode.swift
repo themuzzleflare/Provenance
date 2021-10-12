@@ -2,7 +2,7 @@ import MarqueeLabel
 import AsyncDisplayKit
 
 final class APIKeyCellNode: ASCellNode {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private let marqueeLabelNode = MarqueeLabelNode()
   
@@ -10,7 +10,7 @@ final class APIKeyCellNode: ASCellNode {
     return ProvenanceApp.userDefaults.apiKey.isEmpty ? "None" : ProvenanceApp.userDefaults.apiKey
   }
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override init() {
     super.init()

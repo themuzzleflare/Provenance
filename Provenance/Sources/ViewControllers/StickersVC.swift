@@ -1,12 +1,12 @@
 import AsyncDisplayKit
 
 final class StickersVC: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private let collectionNode = ASCollectionNode(collectionViewLayout: .gridLayout)
   private let stickerGifs = [ASPINRemoteImageDownloader.stickerTwo, ASPINRemoteImageDownloader.stickerThree, ASPINRemoteImageDownloader.stickerSix, ASPINRemoteImageDownloader.stickerSeven]
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override init() {
     super.init(node: collectionNode)
@@ -29,7 +29,7 @@ final class StickersVC: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension StickersVC {
   private func configureSelf() {
@@ -47,7 +47,7 @@ private extension StickersVC {
   }
 }
 
-  // MARK: - ASCollectionDataSource
+// MARK: - ASCollectionDataSource
 
 extension StickersVC: ASCollectionDataSource {
   func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
@@ -63,7 +63,7 @@ extension StickersVC: ASCollectionDataSource {
   }
 }
 
-  // MARK: - ASCollectionDelegate
+// MARK: - ASCollectionDelegate
 
 extension StickersVC: ASCollectionDelegate {
   func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {

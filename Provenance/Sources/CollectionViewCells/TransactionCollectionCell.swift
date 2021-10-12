@@ -2,7 +2,7 @@ import SnapKit
 import IGListKit
 
 final class TransactionCollectionCell: UICollectionViewCell {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private let transactionDescriptionLabel = UILabel()
   private let transactionCreationDateLabel = UILabel()
@@ -47,7 +47,7 @@ final class TransactionCollectionCell: UICollectionViewCell {
     }
   }
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override func layoutSubviews() {
     super.layoutSubviews()
@@ -73,7 +73,7 @@ final class TransactionCollectionCell: UICollectionViewCell {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 extension TransactionCollectionCell {
   private func configureContentView() {
@@ -118,7 +118,7 @@ extension TransactionCollectionCell {
   }
 }
 
-  // MARK: - ListBindable
+// MARK: - ListBindable
 
 extension TransactionCollectionCell: ListBindable {
   func bindViewModel(_ viewModel: Any) {

@@ -10,7 +10,7 @@ final class SortedTransactionModelAlt {
   }
 }
 
-  // MARK: - ListDiffable
+// MARK: - ListDiffable
 
 extension SortedTransactionModelAlt: ListDiffable {
   func diffIdentifier() -> NSObjectProtocol {

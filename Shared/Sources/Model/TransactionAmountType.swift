@@ -1,9 +1,9 @@
 import Foundation
 
 enum TransactionAmountType: Int {
-  case debit = 0
-  case credit = 1
-  case amount = 2
+  case debit
+  case credit
+  case amount
 }
 
 extension TransactionAmountType {
@@ -18,7 +18,7 @@ extension TransactionAmountType {
     }
   }
   
-  var colour: TransactionColour {
+  var colour: TransactionColourEnum {
     switch self {
     case .debit:
       return .primaryLabel

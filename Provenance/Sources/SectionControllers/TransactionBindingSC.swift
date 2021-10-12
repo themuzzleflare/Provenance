@@ -10,7 +10,7 @@ final class TransactionBindingSC: ListBindingSectionController<SortedTransaction
   }
 }
 
-  // MARK: - ListBindingSectionControllerDataSource
+// MARK: - ListBindingSectionControllerDataSource
 
 extension TransactionBindingSC: ListBindingSectionControllerDataSource {
   func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, viewModelsFor object: Any) -> [ListDiffable] {
@@ -41,7 +41,7 @@ extension TransactionBindingSC: ListBindingSectionControllerDataSource {
   }
 }
 
-  // MARK: - ListBindingSectionControllerSelectionDelegate
+// MARK: - ListBindingSectionControllerSelectionDelegate
 
 extension TransactionBindingSC: ListBindingSectionControllerSelectionDelegate {
   func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, didSelectItemAt index: Int, viewModel: Any) {
@@ -59,7 +59,7 @@ extension TransactionBindingSC: ListBindingSectionControllerSelectionDelegate {
   func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, didUnhighlightItemAt index: Int, viewModel: Any) {}
 }
 
-  // MARK: - ListSupplementaryViewSource
+// MARK: - ListSupplementaryViewSource
 
 extension TransactionBindingSC: ListSupplementaryViewSource {
   func supportedElementKinds() -> [String] {

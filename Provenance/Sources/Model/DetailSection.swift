@@ -1,9 +1,11 @@
 import Foundation
 
 struct DetailSection: Identifiable {
-  var id: Int
-  var items: [DetailItem]
+  let id: Int
+  let items: [DetailItem]
 }
+
+// MARK: - Hashable
 
 extension DetailSection: Hashable {
   func hash(into hasher: inout Hasher) {
@@ -22,6 +24,15 @@ extension Array where Element == DetailSection {
         id: 1,
         items: [
           DetailItem(
+            id: "Transaction ID",
+            value: transaction.id
+          )
+        ]
+      ),
+      DetailSection(
+        id: 2,
+        items: [
+          DetailItem(
             id: "Status",
             value: transaction.attributes.status.description
           ),
@@ -36,7 +47,7 @@ extension Array where Element == DetailSection {
         ]
       ),
       DetailSection(
-        id: 2,
+        id: 3,
         items: [
           DetailItem(
             id: "Description",
@@ -44,7 +55,7 @@ extension Array where Element == DetailSection {
           ),
           DetailItem(
             id: "Raw Text",
-            value: transaction.attributes.rawText?.trimmingCharacters(in: .whitespacesAndNewlines) ?? .emptyString
+            value: transaction.attributes.rawText ?? .emptyString
           ),
           DetailItem(
             id: "Message",
@@ -53,7 +64,7 @@ extension Array where Element == DetailSection {
         ]
       ),
       DetailSection(
-        id: 3,
+        id: 4,
         items: [
           DetailItem(
             id: "Hold \(transaction.attributes.holdInfo?.amount.transactionType.description ?? TransactionAmountType.amount.description)",
@@ -74,7 +85,7 @@ extension Array where Element == DetailSection {
         ]
       ),
       DetailSection(
-        id: 4,
+        id: 5,
         items: [
           DetailItem(
             id: "Creation Date",
@@ -87,7 +98,7 @@ extension Array where Element == DetailSection {
         ]
       ),
       DetailSection(
-        id: 5,
+        id: 6,
         items: [
           DetailItem(
             id: "Parent Category",
@@ -100,7 +111,7 @@ extension Array where Element == DetailSection {
         ]
       ),
       DetailSection(
-        id: 6,
+        id: 7,
         items: [
           DetailItem(
             id: "Tags",
@@ -117,20 +128,25 @@ extension Array where Element == DetailSection {
         id: 1,
         items: [
           DetailItem(
-            id: "Account Balance",
-            value: account.attributes.balance.valueLong
-          ),
-          DetailItem(
-            id: "Latest Transaction",
-            value: transaction?.attributes.description ?? .emptyString
-          ),
-          DetailItem(
             id: "Account ID",
             value: account.id
           ),
           DetailItem(
             id: "Creation Date",
             value: account.attributes.creationDate
+          )
+        ]
+      ),
+      DetailSection(
+        id: 2,
+        items: [
+          DetailItem(
+            id: "Account Balance",
+            value: account.attributes.balance.valueLong
+          ),
+          DetailItem(
+            id: "Latest Transaction",
+            value: transaction?.attributes.description ?? .emptyString
           )
         ]
       )

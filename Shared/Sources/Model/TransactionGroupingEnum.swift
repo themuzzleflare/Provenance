@@ -1,9 +1,9 @@
 import Foundation
 
 enum TransactionGroupingEnum: Int, CaseIterable {
-  case all = 0
-  case dates = 1
-  case transactions = 2
+  case all
+  case dates
+  case transactions
 }
 
 extension TransactionGroupingEnum {

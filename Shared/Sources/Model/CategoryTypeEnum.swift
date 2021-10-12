@@ -1,8 +1,8 @@
 import Foundation
 
 enum CategoryTypeEnum: Int, CaseIterable {
-  case parent = 0
-  case child = 1
+  case parent
+  case child
 }
 
 extension CategoryTypeEnum {

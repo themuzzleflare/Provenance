@@ -3,7 +3,7 @@ import AsyncDisplayKit
 import Alamofire
 
 final class TransactionsVC: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private lazy var filterBarButtonItem = UIBarButtonItem(image: .sliderHorizontal3, menu: filterMenu)
   
@@ -78,7 +78,7 @@ final class TransactionsVC: ASViewController {
   
   private var loading: Bool = false
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override init() {
     super.init(node: collectionNode)
@@ -104,7 +104,7 @@ final class TransactionsVC: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 extension TransactionsVC {
   private func configureCollectionNode() {
@@ -162,7 +162,7 @@ extension TransactionsVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 extension TransactionsVC {
   @objc private func appMovedToForeground() {
@@ -275,7 +275,7 @@ extension TransactionsVC {
   }
 }
 
-  // MARK: - ListAdapterDataSource
+// MARK: - ListAdapterDataSource
 
 extension TransactionsVC: ListAdapterDataSource {
   func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
@@ -323,7 +323,7 @@ extension TransactionsVC: ListAdapterDataSource {
   }
 }
 
-  // MARK: - SelectionDelegate
+// MARK: - SelectionDelegate
 
 extension TransactionsVC: SelectionDelegate {
   func didSelectItem(at indexPath: IndexPath) {
@@ -341,7 +341,7 @@ extension TransactionsVC: SelectionDelegate {
   }
 }
 
-  // MARK: - LoadingDelegate
+// MARK: - LoadingDelegate
 
 extension TransactionsVC: LoadingDelegate {
   func startLoading() {
@@ -356,7 +356,7 @@ extension TransactionsVC: LoadingDelegate {
   }
 }
 
-  // MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension TransactionsVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

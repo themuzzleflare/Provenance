@@ -1,7 +1,7 @@
 import AsyncDisplayKit
 
 final class TabBarController: ASTabBarController {
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -9,7 +9,7 @@ final class TabBarController: ASTabBarController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 extension TabBarController {
   private func configureSelf() {

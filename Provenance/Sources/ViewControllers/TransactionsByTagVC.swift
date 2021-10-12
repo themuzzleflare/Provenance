@@ -3,7 +3,7 @@ import AsyncDisplayKit
 import Alamofire
 
 final class TransactionsByTagVC: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private var tag: TagResource
   
@@ -36,7 +36,7 @@ final class TransactionsByTagVC: ASViewController {
   
   private var oldTransactionCellModels = [TransactionCellModel]()
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   init(tag: TagResource) {
     self.tag = tag
@@ -71,7 +71,7 @@ final class TransactionsByTagVC: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension TransactionsByTagVC {
   private func configureSelf() {
@@ -83,7 +83,7 @@ private extension TransactionsByTagVC {
     NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
-      weakSelf.fetchTransactions()
+      weakSelf.applySnapshot()
     }
   }
   
@@ -109,7 +109,7 @@ private extension TransactionsByTagVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 extension TransactionsByTagVC {
   @objc private func appMovedToForeground() {
@@ -186,7 +186,7 @@ extension TransactionsByTagVC {
   }
 }
 
-  // MARK: - ASTableDataSource
+// MARK: - ASTableDataSource
 
 extension TransactionsByTagVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
@@ -217,7 +217,7 @@ extension TransactionsByTagVC: ASTableDataSource {
   }
 }
 
-  // MARK: - ASTableDelegate
+// MARK: - ASTableDelegate
 
 extension TransactionsByTagVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
@@ -246,7 +246,7 @@ extension TransactionsByTagVC: ASTableDelegate {
   }
 }
 
-  // MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension TransactionsByTagVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

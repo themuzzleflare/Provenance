@@ -3,7 +3,7 @@ import AsyncDisplayKit
 import Alamofire
 
 final class CategoriesVC: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private lazy var searchController = UISearchController.categories(self)
   
@@ -42,7 +42,8 @@ final class CategoriesVC: ASViewController {
   private var filteredCategories: [CategoryResource] {
     return categories.filtered(filter: categoryFilter, searchBar: searchController.searchBar)
   }
-    // MARK: - Life Cycle
+  
+  // MARK: - Life Cycle
   
   override init() {
     super.init(node: collectionNode)
@@ -71,7 +72,7 @@ final class CategoriesVC: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension CategoriesVC {
   private func configureSelf() {
@@ -113,7 +114,7 @@ private extension CategoriesVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 private extension CategoriesVC {
   @objc private func appMovedToForeground() {
@@ -191,7 +192,7 @@ private extension CategoriesVC {
   }
 }
 
-  // MARK: - ASCollectionDataSource
+// MARK: - ASCollectionDataSource
 
 extension CategoriesVC: ASCollectionDataSource {
   func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
@@ -207,7 +208,7 @@ extension CategoriesVC: ASCollectionDataSource {
   }
 }
 
-  // MARK: - ASCollectionDelegate
+// MARK: - ASCollectionDelegate
 
 extension CategoriesVC: ASCollectionDelegate {
   func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
@@ -225,7 +226,7 @@ extension CategoriesVC: ASCollectionDelegate {
   }
 }
 
-  // MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension CategoriesVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

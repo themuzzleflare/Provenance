@@ -4,7 +4,7 @@ import AsyncDisplayKit
 import Alamofire
 
 final class AddTagTagsSelectionVC: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private var transaction: TransactionResource
   
@@ -67,7 +67,7 @@ final class AddTagTagsSelectionVC: ASViewController {
     return tags.filtered(searchBar: searchController.searchBar)
   }
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   init(transaction: TransactionResource, fromTransactionTags: Bool = false) {
     self.transaction = transaction
@@ -128,7 +128,7 @@ final class AddTagTagsSelectionVC: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension AddTagTagsSelectionVC {
   private func configureSelf() {
@@ -165,7 +165,7 @@ private extension AddTagTagsSelectionVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 private extension AddTagTagsSelectionVC {
   @objc private func appMovedToForeground() {
@@ -290,7 +290,7 @@ private extension AddTagTagsSelectionVC {
   }
 }
 
-  // MARK: - ASTableDataSource
+// MARK: - ASTableDataSource
 
 extension AddTagTagsSelectionVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
@@ -310,7 +310,7 @@ extension AddTagTagsSelectionVC: ASTableDataSource {
   }
 }
 
-  // MARK: - ASTableDelegate
+// MARK: - ASTableDelegate
 
 extension AddTagTagsSelectionVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -359,7 +359,7 @@ extension AddTagTagsSelectionVC: ASTableDelegate {
   }
 }
 
-  // MARK: - UITextFieldDelegate
+// MARK: - UITextFieldDelegate
 
 extension AddTagTagsSelectionVC: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -370,7 +370,7 @@ extension AddTagTagsSelectionVC: UITextFieldDelegate {
   }
 }
 
-  // MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension AddTagTagsSelectionVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -386,7 +386,7 @@ extension AddTagTagsSelectionVC: UISearchBarDelegate {
   }
 }
 
-  // MARK: - NotificationBannerDelegate
+// MARK: - NotificationBannerDelegate
 
 extension AddTagTagsSelectionVC: NotificationBannerDelegate {
   func notificationBannerWillAppear(_ banner: BaseNotificationBanner) {

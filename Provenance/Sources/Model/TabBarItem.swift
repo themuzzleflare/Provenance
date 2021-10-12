@@ -1,11 +1,11 @@
 import UIKit
 
 enum TabBarItem: Int, CaseIterable {
-  case transactions = 0
-  case accounts = 1
-  case tags = 2
-  case categories = 3
-  case about = 4
+  case transactions
+  case accounts
+  case tags
+  case categories
+  case about
 }
 
 extension TabBarItem {
@@ -22,7 +22,7 @@ extension TabBarItem {
   var viewController: UIViewController {
     switch self {
     case .transactions:
-      return NavigationController(rootViewController: TransactionsVC())
+      return NavigationController(rootViewController: TransactionsVCAlt())
     case .accounts:
       return NavigationController(rootViewController: AccountsVC())
     case .tags:

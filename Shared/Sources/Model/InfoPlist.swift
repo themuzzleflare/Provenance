@@ -1,6 +1,6 @@
 import Foundation
 
-class InfoPlist {
+struct InfoPlist {
   static var cfBundleIdentifier: String {
     return Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as? String ?? ""
   }

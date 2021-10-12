@@ -60,7 +60,7 @@ extension TransactionStatusEnum {
     }
   }
   
-  var status: Status {
+  var status: StatusEnum {
     switch self {
     case .held:
       return .held

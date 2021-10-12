@@ -1,7 +1,7 @@
 import SnapKit
 
 final class TransactionCell: UITableViewCell {
-    // MARK: - Properties
+  // MARK: - Properties
   
   static let reuseIdentifier = "transactionCell"
   
@@ -56,7 +56,7 @@ final class TransactionCell: UITableViewCell {
     }
   }
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -79,7 +79,7 @@ final class TransactionCell: UITableViewCell {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension TransactionCell {
   private func configureSelf() {

@@ -1,7 +1,7 @@
 import AsyncDisplayKit
 
 final class NavigationController: ASDKNavigationController {
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -9,7 +9,7 @@ final class NavigationController: ASDKNavigationController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 extension NavigationController {
   private func configureSelf() {

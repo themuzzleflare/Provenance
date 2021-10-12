@@ -1,11 +1,11 @@
 import AsyncDisplayKit
 
 final class WidgetsVC: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private let widgetsScrollNode = WidgetsNode()
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   override init() {
     super.init(node: widgetsScrollNode)

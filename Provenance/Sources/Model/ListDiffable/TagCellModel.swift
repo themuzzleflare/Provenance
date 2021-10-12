@@ -12,7 +12,7 @@ final class TagCellModel {
   }
 }
 
-  // MARK: - ListDiffable
+// MARK: - ListDiffable
 
 extension TagCellModel: ListDiffable {
   func diffIdentifier() -> NSObjectProtocol {

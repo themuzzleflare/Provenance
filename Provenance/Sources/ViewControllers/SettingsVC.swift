@@ -2,7 +2,7 @@ import NotificationBannerSwift
 import AsyncDisplayKit
 
 final class SettingsVC: ASViewController {
-    // MARK: - Properties
+  // MARK: - Properties
   
   private var displayBanner: GrowingNotificationBanner?
   
@@ -14,7 +14,7 @@ final class SettingsVC: ASViewController {
   
   let tableNode = ASTableNode(style: .grouped)
   
-    // MARK: - Life Cycle
+  // MARK: - Life Cycle
   
   init(displayBanner: GrowingNotificationBanner? = nil) {
     self.displayBanner = displayBanner
@@ -45,7 +45,7 @@ final class SettingsVC: ASViewController {
   }
 }
 
-  // MARK: - Configuration
+// MARK: - Configuration
 
 private extension SettingsVC {
   private func configureSelf() {
@@ -82,7 +82,7 @@ private extension SettingsVC {
   }
 }
 
-  // MARK: - Actions
+// MARK: - Actions
 
 private extension SettingsVC {
   @objc private func closeWorkflow() {
@@ -90,7 +90,7 @@ private extension SettingsVC {
   }
 }
 
-  // MARK: - ASTableDataSource
+// MARK: - ASTableDataSource
 
 extension SettingsVC: ASTableDataSource {
   func numberOfSections(in tableNode: ASTableNode) -> Int {
@@ -140,7 +140,7 @@ extension SettingsVC: ASTableDataSource {
   }
 }
 
-  // MARK: - ASTableDelegate
+// MARK: - ASTableDelegate
 
 extension SettingsVC: ASTableDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
