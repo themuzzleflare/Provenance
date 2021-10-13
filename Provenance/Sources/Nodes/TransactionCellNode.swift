@@ -5,12 +5,14 @@ final class TransactionCellNode: ASCellNode {
   private let creationDateTextNode = ASTextNode()
   private let amountTextNode = ASTextNode()
   
+  private var usingContextMenu: Bool
   private var transactionDescription: String
   private var creationDate: String
   private var amount: String
   private var colour: TransactionColourEnum
   
-  init(transaction: TransactionResource) {
+  init(transaction: TransactionResource, contextMenu: Bool = true) {
+    self.usingContextMenu = contextMenu
     self.transactionDescription = transaction.attributes.description
     self.creationDate = transaction.attributes.creationDate
     self.amount = transaction.attributes.amount.valueShort
@@ -26,7 +28,8 @@ final class TransactionCellNode: ASCellNode {
     amountTextNode.attributedText = amount.styled(with: .transactionAmount, .color(colour.uiColour))
   }
   
-  init(transaction: TransactionCellModel?) {
+  init(transaction: TransactionCellModel?, contextMenu: Bool = true) {
+    self.usingContextMenu = contextMenu
     self.transactionDescription = transaction?.transactionDescription ?? .emptyString
     self.creationDate = transaction?.creationDate ?? .emptyString
     self.amount = transaction?.amount ?? .emptyString
@@ -44,7 +47,9 @@ final class TransactionCellNode: ASCellNode {
   
   override func didLoad() {
     super.didLoad()
-    view.addInteraction(UIContextMenuInteraction(delegate: self))
+    if usingContextMenu {
+      view.addInteraction(UIContextMenuInteraction(delegate: self))
+    }
   }
   
   override var isSelected: Bool {

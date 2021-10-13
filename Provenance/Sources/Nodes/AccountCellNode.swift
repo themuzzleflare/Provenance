@@ -31,9 +31,10 @@ final class AccountCellNode: ASCellNode {
       backgroundColor = isHighlighted ? .gray.withAlphaComponent(0.3) : .secondarySystemGroupedBackground
     }
   }
-  
+    
   override func asyncTraitCollectionDidChange(withPreviousTraitCollection previousTraitCollection: ASPrimitiveTraitCollection) {
     super.asyncTraitCollectionDidChange(withPreviousTraitCollection: previousTraitCollection)
+    guard previousTraitCollection.userInterfaceStyle != primitiveTraitCollection().userInterfaceStyle else { return }
     borderColor = .separator
   }
   

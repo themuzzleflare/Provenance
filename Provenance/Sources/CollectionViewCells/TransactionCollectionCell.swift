@@ -69,6 +69,7 @@ final class TransactionCollectionCell: UICollectionViewCell {
   
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
+    guard previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle else { return }
     separator.backgroundColor = .separator
   }
 }
@@ -118,6 +119,18 @@ extension TransactionCollectionCell {
   }
 }
 
+// MARK: - UIContextMenuInteractionDelegate
+
+extension TransactionCollectionCell: UIContextMenuInteractionDelegate {
+  func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+    return UIContextMenuConfiguration(elements: [
+      .copyTransactionDescription(transaction: transactionDescription ?? .emptyString),
+      .copyTransactionCreationDate(transaction: transactionCreationDate ?? .emptyString),
+      .copyTransactionAmount(transaction: transactionAmount ?? .emptyString)
+    ])
+  }
+}
+
 // MARK: - ListBindable
 
 extension TransactionCollectionCell: ListBindable {
@@ -133,5 +146,6 @@ extension TransactionCollectionCell: ListBindable {
     transactionCreationDate = viewModel.creationDate
     transactionAmount = viewModel.amount
     transactionAmountColour = viewModel.colour.uiColour
+    addInteraction(UIContextMenuInteraction(delegate: self))
   }
 }

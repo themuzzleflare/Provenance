@@ -211,9 +211,14 @@ extension TagsVC: ASTableDelegate {
   
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     let tag = filteredTags[indexPath.row]
-    return UIContextMenuConfiguration(elements: [
-      .copyTagName(tag: tag)
-    ])
+    return UIContextMenuConfiguration(
+      previewProvider: {
+        return TransactionsByTagVC(tag: tag)
+      },
+      elements: [
+        .copyTagName(tag: tag)
+      ]
+    )
   }
 }
 

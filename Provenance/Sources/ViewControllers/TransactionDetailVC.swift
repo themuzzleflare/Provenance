@@ -10,7 +10,24 @@ final class TransactionDetailVC: ViewController {
     }
   }
   
-  private typealias DataSource = UITableViewDiffableDataSource<DetailSection, DetailItem>
+  private class DataSource: UITableViewDiffableDataSource<DetailSection, DetailItem> {
+    var transaction: TransactionResource
+    
+    init(transaction: TransactionResource, tableView: UITableView, cellProvider: @escaping UITableViewDiffableDataSource<DetailSection, DetailItem>.CellProvider) {
+      self.transaction = transaction
+      super.init(tableView: tableView, cellProvider: cellProvider)
+    }
+    
+    convenience init(transaction: TransactionResource, tableView: UITableView, cellProvider: @escaping UITableViewDiffableDataSource<DetailSection, DetailItem>.CellProvider, defaultRowAnimation: UITableView.RowAnimation) {
+      self.init(transaction: transaction, tableView: tableView, cellProvider: cellProvider)
+      self.defaultRowAnimation = defaultRowAnimation
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+      guard section == 0 else { return nil }
+      return transaction.id
+    }
+  }
   
   private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailItem>
   
@@ -203,6 +220,7 @@ extension TransactionDetailVC {
   
   private func makeDataSource() -> DataSource {
     return DataSource(
+      transaction: transaction,
       tableView: tableView,
       cellProvider: { (tableView, indexPath, attribute) in
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as? AttributeCell else {
@@ -252,6 +270,11 @@ extension TransactionDetailVC {
 extension TransactionDetailVC: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return UITableView.automaticDimension
+  }
+  
+  func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    guard section == 0, let view = view as? UITableViewHeaderFooterView else { return }
+    view.textLabel?.font = .sfMonoRegular(size: .smallSystemFontSize)
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

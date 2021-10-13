@@ -195,7 +195,7 @@ extension TransactionsByTagVC: ASTableDataSource {
   
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let transaction = filteredTransactions[indexPath.row]
-    let node = TransactionCellNode(transaction: transaction)
+    let node = TransactionCellNode(transaction: transaction, contextMenu: false)
     return {
       node
     }
@@ -234,7 +234,7 @@ extension TransactionsByTagVC: ASTableDelegate {
   func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
     return "Remove"
   }
-  
+    
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     let transaction = filteredTransactions[indexPath.row]
     return isEditing ? nil : UIContextMenuConfiguration(elements: [

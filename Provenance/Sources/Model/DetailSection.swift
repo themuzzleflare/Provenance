@@ -24,15 +24,6 @@ extension Array where Element == DetailSection {
         id: 1,
         items: [
           DetailItem(
-            id: "Transaction ID",
-            value: transaction.id
-          )
-        ]
-      ),
-      DetailSection(
-        id: 2,
-        items: [
-          DetailItem(
             id: "Status",
             value: transaction.attributes.status.description
           ),
@@ -47,7 +38,7 @@ extension Array where Element == DetailSection {
         ]
       ),
       DetailSection(
-        id: 3,
+        id: 2,
         items: [
           DetailItem(
             id: "Description",
@@ -64,7 +55,7 @@ extension Array where Element == DetailSection {
         ]
       ),
       DetailSection(
-        id: 4,
+        id: 3,
         items: [
           DetailItem(
             id: "Hold \(transaction.attributes.holdInfo?.amount.transactionType.description ?? TransactionAmountType.amount.description)",
@@ -85,7 +76,7 @@ extension Array where Element == DetailSection {
         ]
       ),
       DetailSection(
-        id: 5,
+        id: 4,
         items: [
           DetailItem(
             id: "Creation Date",
@@ -98,7 +89,7 @@ extension Array where Element == DetailSection {
         ]
       ),
       DetailSection(
-        id: 6,
+        id: 5,
         items: [
           DetailItem(
             id: "Parent Category",
@@ -111,7 +102,7 @@ extension Array where Element == DetailSection {
         ]
       ),
       DetailSection(
-        id: 7,
+        id: 6,
         items: [
           DetailItem(
             id: "Tags",
@@ -128,12 +119,12 @@ extension Array where Element == DetailSection {
         id: 1,
         items: [
           DetailItem(
-            id: "Account ID",
-            value: account.id
+            id: "Account Balance",
+            value: account.attributes.balance.valueLong
           ),
           DetailItem(
-            id: "Creation Date",
-            value: account.attributes.creationDate
+            id: "Latest Transaction",
+            value: transaction?.attributes.description ?? .emptyString
           )
         ]
       ),
@@ -141,12 +132,12 @@ extension Array where Element == DetailSection {
         id: 2,
         items: [
           DetailItem(
-            id: "Account Balance",
-            value: account.attributes.balance.valueLong
+            id: "Account ID",
+            value: account.id
           ),
           DetailItem(
-            id: "Latest Transaction",
-            value: transaction?.attributes.description ?? .emptyString
+            id: "Creation Date",
+            value: account.attributes.creationDate
           )
         ]
       )

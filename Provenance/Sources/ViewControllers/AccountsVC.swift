@@ -220,10 +220,15 @@ extension AccountsVC: ASCollectionDelegate {
   
   func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     let account = filteredAccounts[indexPath.item]
-    return UIContextMenuConfiguration(elements: [
-      .copyAccountBalance(account: account),
-      .copyAccountDisplayName(account: account)
-    ])
+    return UIContextMenuConfiguration(
+      previewProvider: {
+        return TransactionsByAccountVC(account: account)
+      },
+      elements: [
+        .copyAccountBalance(account: account),
+        .copyAccountDisplayName(account: account)
+      ]
+    )
   }
 }
 

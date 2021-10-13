@@ -30,6 +30,7 @@ final class CategoryCellNode: ASCellNode {
   
   override func asyncTraitCollectionDidChange(withPreviousTraitCollection previousTraitCollection: ASPrimitiveTraitCollection) {
     super.asyncTraitCollectionDidChange(withPreviousTraitCollection: previousTraitCollection)
+    guard previousTraitCollection.userInterfaceStyle != primitiveTraitCollection().userInterfaceStyle else { return }
     borderColor = .separator
   }
   

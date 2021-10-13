@@ -220,9 +220,14 @@ extension CategoriesVC: ASCollectionDelegate {
   
   func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     let category = filteredCategories[indexPath.item]
-    return UIContextMenuConfiguration(elements: [
-      .copyCategoryName(category: category)
-    ])
+    return UIContextMenuConfiguration(
+      previewProvider: {
+        return TransactionsByCategoryVC(category: category)
+      },
+      elements: [
+        .copyCategoryName(category: category)
+      ]
+    )
   }
 }
 

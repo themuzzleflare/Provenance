@@ -289,6 +289,8 @@
 		7AF3BFE8270AC41500B1B81B /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3BFE7270AC41500B1B81B /* ErrorResponse.swift */; };
 		7AF3BFEA270AC41F00B1B81B /* ErrorObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3BFE9270AC41F00B1B81B /* ErrorObject.swift */; };
 		7AF3BFEC270AC42900B1B81B /* ErrorSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3BFEB270AC42900B1B81B /* ErrorSource.swift */; };
+		7AF9F11B27168A3000DD1E72 /* UITableViewDiffableDataSource+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF9F11A27168A3000DD1E72 /* UITableViewDiffableDataSource+Extension.swift */; };
+		7AF9F11D27168B0C00DD1E72 /* UICollectionViewDiffableDataSource+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF9F11C27168B0C00DD1E72 /* UICollectionViewDiffableDataSource+Extension.swift */; };
 		7AFBD8E926F34B2D00460939 /* TransactionCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBD8E826F34B2D00460939 /* TransactionCellView.swift */; };
 		7AFBD90B26F400ED00460939 /* AccountBalanceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBD90A26F400ED00460939 /* AccountBalanceProvider.swift */; };
 		7AFBD90D26F400FB00460939 /* AccountBalanceEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBD90C26F400FB00460939 /* AccountBalanceEntry.swift */; };
@@ -755,6 +757,8 @@
 		7AF3BFE7270AC41500B1B81B /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		7AF3BFE9270AC41F00B1B81B /* ErrorObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorObject.swift; sourceTree = "<group>"; };
 		7AF3BFEB270AC42900B1B81B /* ErrorSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorSource.swift; sourceTree = "<group>"; };
+		7AF9F11A27168A3000DD1E72 /* UITableViewDiffableDataSource+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewDiffableDataSource+Extension.swift"; sourceTree = "<group>"; };
+		7AF9F11C27168B0C00DD1E72 /* UICollectionViewDiffableDataSource+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewDiffableDataSource+Extension.swift"; sourceTree = "<group>"; };
 		7AFBD8E826F34B2D00460939 /* TransactionCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCellView.swift; sourceTree = "<group>"; };
 		7AFBD90A26F400ED00460939 /* AccountBalanceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountBalanceProvider.swift; sourceTree = "<group>"; };
 		7AFBD90C26F400FB00460939 /* AccountBalanceEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountBalanceEntry.swift; sourceTree = "<group>"; };
@@ -1435,6 +1439,8 @@
 				7AAADD5826F1812600C4A9D9 /* UIBarButtonItem+Extension.swift */,
 				7A615D7226FA9D6D001F1834 /* UITextField+Extension.swift */,
 				7A08A79426FC399F0035DD2F /* UIViewController+Extension.swift */,
+				7AF9F11A27168A3000DD1E72 /* UITableViewDiffableDataSource+Extension.swift */,
+				7AF9F11C27168B0C00DD1E72 /* UICollectionViewDiffableDataSource+Extension.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -2184,6 +2190,7 @@
 				7AD266D926FADDF500EFF4A2 /* Double+Extension.swift in Sources */,
 				7A340B1526F9C11200D43523 /* UserDefaults+Extension.swift in Sources */,
 				7AF214FF26EF326C009F4F38 /* NSParagraphStyle+Extension.swift in Sources */,
+				7AF9F11D27168B0C00DD1E72 /* UICollectionViewDiffableDataSource+Extension.swift in Sources */,
 				7A09E4B52686E30600C9F299 /* TransactionDetailVC.swift in Sources */,
 				7A5A89E726FBEE950010223B /* Font+Extension.swift in Sources */,
 				7AF2156E26F06C98009F4F38 /* UIRefreshControl+Extension.swift in Sources */,
@@ -2225,6 +2232,7 @@
 				7AF214FE26EF326C009F4F38 /* NSAttributedString+Extension.swift in Sources */,
 				7AA113BF26154F3800386E2D /* DetailItem.swift in Sources */,
 				7A7F039D26FB0641003F1321 /* TransactionColourEnum+Extension.swift in Sources */,
+				7AF9F11B27168A3000DD1E72 /* UITableViewDiffableDataSource+Extension.swift in Sources */,
 				7A67980D25D3E15D002AA83A /* DiagnosticsVC.swift in Sources */,
 				7AF2156626F05FE3009F4F38 /* UIContextMenuConfiguration+Extension.swift in Sources */,
 				7A7CAB0326F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift in Sources */,
