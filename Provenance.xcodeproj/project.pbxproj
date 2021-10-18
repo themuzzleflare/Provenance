@@ -135,7 +135,7 @@
 		7A615D7326FA9D6D001F1834 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A615D7226FA9D6D001F1834 /* UITextField+Extension.swift */; };
 		7A67980D25D3E15D002AA83A /* DiagnosticsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A67980C25D3E15D002AA83A /* DiagnosticsVC.swift */; };
 		7A69F25D2706A392008CA6CC /* TransactionBindingSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F25C2706A392008CA6CC /* TransactionBindingSC.swift */; };
-		7A69F2602706A736008CA6CC /* TransactionCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F25F2706A736008CA6CC /* TransactionCollectionCell.swift */; };
+		7A69F2602706A736008CA6CC /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F25F2706A736008CA6CC /* TransactionCell.swift */; };
 		7A69F2622706A73F008CA6CC /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F2612706A73F008CA6CC /* HeaderCell.swift */; };
 		7A69F2662706AEDE008CA6CC /* TransactionsVCAlt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F2652706AEDE008CA6CC /* TransactionsVCAlt.swift */; };
 		7A69F26B2706B53F008CA6CC /* IGListCollectionContext+Refinements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F2672706B53E008CA6CC /* IGListCollectionContext+Refinements.swift */; };
@@ -201,7 +201,16 @@
 		7A82FB3B26F47EAB00C9C04E /* IntentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB3A26F47EAB00C9C04E /* IntentViewController.swift */; };
 		7A82FB3E26F47EAB00C9C04E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A82FB3C26F47EAB00C9C04E /* MainInterface.storyboard */; };
 		7A82FB4226F47EAB00C9C04E /* Provenance IntentsUI.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7A82FB3726F47EAB00C9C04E /* Provenance IntentsUI.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		7A82FB4926F4869600C9C04E /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB4826F4869600C9C04E /* TransactionCell.swift */; };
+		7A82FB4926F4869600C9C04E /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB4826F4869600C9C04E /* TransactionTableViewCell.swift */; };
+		7A8C12B4271CEC7600F6A633 /* UICollectionViewCellDragState+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12B3271CEC7600F6A633 /* UICollectionViewCellDragState+Extension.swift */; };
+		7A8C12B6271CF7DA00F6A633 /* TagSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12B5271CF7D900F6A633 /* TagSectionModel.swift */; };
+		7A8C12B8271D002E00F6A633 /* TagSectionCoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12B7271D002E00F6A633 /* TagSectionCoreModel.swift */; };
+		7A8C12BA271D1CC600F6A633 /* TagSectionModelSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12B9271D1CC600F6A633 /* TagSectionModelSC.swift */; };
+		7A8C12BC271D1D2C00F6A633 /* TagCellModelSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12BB271D1D2C00F6A633 /* TagCellModelSC.swift */; };
+		7A8C12BE271D1E5000F6A633 /* SortedTagSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12BD271D1E5000F6A633 /* SortedTagSectionModel.swift */; };
+		7A8C12C0271D214400F6A633 /* SortedTagSectionCoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12BF271D214400F6A633 /* SortedTagSectionCoreModel.swift */; };
+		7A8C12C2271D280100F6A633 /* TagsVCAlt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12C1271D280100F6A633 /* TagsVCAlt.swift */; };
+		7A8C12C4271D283000F6A633 /* SortedTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12C3271D283000F6A633 /* SortedTags.swift */; };
 		7A8E41F126048320003D0E6A /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD1279A2604702600A39272 /* Widgets.swift */; };
 		7A90F52226F096D200384F53 /* AccountResource+CellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F52126F096D200384F53 /* AccountResource+CellModel.swift */; };
 		7A90F53026F097BB00384F53 /* TagResource+CellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F52F26F097BB00384F53 /* TagResource+CellModel.swift */; };
@@ -629,7 +638,7 @@
 		7A615D7226FA9D6D001F1834 /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		7A67980C25D3E15D002AA83A /* DiagnosticsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsVC.swift; sourceTree = "<group>"; };
 		7A69F25C2706A392008CA6CC /* TransactionBindingSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBindingSC.swift; sourceTree = "<group>"; };
-		7A69F25F2706A736008CA6CC /* TransactionCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCollectionCell.swift; sourceTree = "<group>"; };
+		7A69F25F2706A736008CA6CC /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		7A69F2612706A73F008CA6CC /* HeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
 		7A69F2652706AEDE008CA6CC /* TransactionsVCAlt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsVCAlt.swift; sourceTree = "<group>"; };
 		7A69F2672706B53E008CA6CC /* IGListCollectionContext+Refinements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IGListCollectionContext+Refinements.swift"; sourceTree = "<group>"; };
@@ -650,8 +659,17 @@
 		7A82FB3D26F47EAB00C9C04E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		7A82FB3F26F47EAB00C9C04E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A82FB4626F47F7B00C9C04E /* IntentsUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IntentsUI.entitlements; sourceTree = "<group>"; };
-		7A82FB4826F4869600C9C04E /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
+		7A82FB4826F4869600C9C04E /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
 		7A8BC0C72681586100D6D8D3 /* UserDefaults+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extension.swift"; sourceTree = "<group>"; };
+		7A8C12B3271CEC7600F6A633 /* UICollectionViewCellDragState+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCellDragState+Extension.swift"; sourceTree = "<group>"; };
+		7A8C12B5271CF7D900F6A633 /* TagSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSectionModel.swift; sourceTree = "<group>"; };
+		7A8C12B7271D002E00F6A633 /* TagSectionCoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSectionCoreModel.swift; sourceTree = "<group>"; };
+		7A8C12B9271D1CC600F6A633 /* TagSectionModelSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSectionModelSC.swift; sourceTree = "<group>"; };
+		7A8C12BB271D1D2C00F6A633 /* TagCellModelSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCellModelSC.swift; sourceTree = "<group>"; };
+		7A8C12BD271D1E5000F6A633 /* SortedTagSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedTagSectionModel.swift; sourceTree = "<group>"; };
+		7A8C12BF271D214400F6A633 /* SortedTagSectionCoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedTagSectionCoreModel.swift; sourceTree = "<group>"; };
+		7A8C12C1271D280100F6A633 /* TagsVCAlt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsVCAlt.swift; sourceTree = "<group>"; };
+		7A8C12C3271D283000F6A633 /* SortedTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedTags.swift; sourceTree = "<group>"; };
 		7A90F51F26F08ECA00384F53 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7A90F52126F096D200384F53 /* AccountResource+CellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountResource+CellModel.swift"; sourceTree = "<group>"; };
 		7A90F52F26F097BB00384F53 /* TagResource+CellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TagResource+CellModel.swift"; sourceTree = "<group>"; };
@@ -907,6 +925,7 @@
 				7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */,
 				7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */,
 				7A56101125D219770091396E /* TagsVC.swift */,
+				7A8C12C1271D280100F6A633 /* TagsVCAlt.swift */,
 				7A56101925D22AF10091396E /* AddTagTransactionSelectionVC.swift */,
 				7AB609AF2603F0D80038B85B /* AddTagTagsSelectionVC.swift */,
 				7AB609B22603F1130038B85B /* AddTagConfirmationVC.swift */,
@@ -954,8 +973,8 @@
 			isa = PBXGroup;
 			children = (
 				7A8DDBD72703034400DDC098 /* ListDiffable */,
-				7AA113C6261550B900386E2D /* DetailSection.swift */,
-				7AA113BE26154F3800386E2D /* DetailItem.swift */,
+				7AA1B2F8271D3DF800B1805A /* CoreModel */,
+				7AA1B2F7271D3DCD00B1805A /* Hashable */,
 				7AF2151026EF4175009F4F38 /* ContentType.swift */,
 				7A22713826817399001F63FF /* ShortcutType.swift */,
 				7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */,
@@ -982,6 +1001,8 @@
 				7A1B52132702C1A900835111 /* ItemModelSC.swift */,
 				7A3E4285270412FC007E3A08 /* SpinnerSC.swift */,
 				7A69F25C2706A392008CA6CC /* TransactionBindingSC.swift */,
+				7A8C12B9271D1CC600F6A633 /* TagSectionModelSC.swift */,
+				7A8C12BB271D1D2C00F6A633 /* TagCellModelSC.swift */,
 			);
 			path = SectionControllers;
 			sourceTree = "<group>";
@@ -1080,7 +1101,7 @@
 		7A69F25E2706A71F008CA6CC /* CollectionViewCells */ = {
 			isa = PBXGroup;
 			children = (
-				7A69F25F2706A736008CA6CC /* TransactionCollectionCell.swift */,
+				7A69F25F2706A736008CA6CC /* TransactionCell.swift */,
 				7A69F2612706A73F008CA6CC /* HeaderCell.swift */,
 				7A69F26F2706BEA8008CA6CC /* SpinnerCell.swift */,
 			);
@@ -1189,9 +1210,9 @@
 				7A0BF09826FFDC17004A3E0C /* CategoryCellModel.swift */,
 				7A3248362701C1A700A9037D /* SortedTransactionModel.swift */,
 				7AAB8D642707CB3200A59D03 /* SortedTransactionModelAlt.swift */,
-				7A1B520D2702BD5400835111 /* SortedTransactionCoreModel.swift */,
 				7A1B520F2702BD9D00835111 /* SortedSectionModel.swift */,
-				7A1B52172702C82300835111 /* SortedSectionCoreModel.swift */,
+				7A8C12B5271CF7D900F6A633 /* TagSectionModel.swift */,
+				7A8C12BD271D1E5000F6A633 /* SortedTagSectionModel.swift */,
 			);
 			path = ListDiffable;
 			sourceTree = "<group>";
@@ -1204,11 +1225,32 @@
 			path = Intents;
 			sourceTree = "<group>";
 		};
+		7AA1B2F7271D3DCD00B1805A /* Hashable */ = {
+			isa = PBXGroup;
+			children = (
+				7A8C12C3271D283000F6A633 /* SortedTags.swift */,
+				7AA113C6261550B900386E2D /* DetailSection.swift */,
+				7AA113BE26154F3800386E2D /* DetailItem.swift */,
+			);
+			path = Hashable;
+			sourceTree = "<group>";
+		};
+		7AA1B2F8271D3DF800B1805A /* CoreModel */ = {
+			isa = PBXGroup;
+			children = (
+				7A1B520D2702BD5400835111 /* SortedTransactionCoreModel.swift */,
+				7A1B52172702C82300835111 /* SortedSectionCoreModel.swift */,
+				7A8C12B7271D002E00F6A633 /* TagSectionCoreModel.swift */,
+				7A8C12BF271D214400F6A633 /* SortedTagSectionCoreModel.swift */,
+			);
+			path = CoreModel;
+			sourceTree = "<group>";
+		};
 		7AA819EF26F819FE00B5BD29 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				7A82FB3A26F47EAB00C9C04E /* IntentViewController.swift */,
-				7A82FB4826F4869600C9C04E /* TransactionCell.swift */,
+				7A82FB4826F4869600C9C04E /* TransactionTableViewCell.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -1441,6 +1483,7 @@
 				7A08A79426FC399F0035DD2F /* UIViewController+Extension.swift */,
 				7AF9F11A27168A3000DD1E72 /* UITableViewDiffableDataSource+Extension.swift */,
 				7AF9F11C27168B0C00DD1E72 /* UICollectionViewDiffableDataSource+Extension.swift */,
+				7A8C12B3271CEC7600F6A633 /* UICollectionViewCellDragState+Extension.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -1618,13 +1661,13 @@
 			buildConfigurationList = 7AB34D2E25C78232000A1E81 /* Build configuration list for PBXNativeTarget "Provenance" */;
 			buildPhases = (
 				AB3D8A48423395E602E12979 /* [CP] Check Pods Manifest.lock */,
+				7A54E10C26AA5AFE0011566E /* Run SwiftLint */,
 				7AB34D1625C78230000A1E81 /* Sources */,
 				7AB34D1725C78230000A1E81 /* Frameworks */,
 				7AB34D1825C78230000A1E81 /* Resources */,
 				9798B0B11892F97E0F40FEF6 /* [CP] Embed Pods Frameworks */,
 				7AD317A92604412200B4E008 /* Embed App Extensions */,
 				7AA125182626AB3900F50D6D /* Configure Settings.bundle/Root.plist */,
-				7A54E10C26AA5AFE0011566E /* Initialise SwiftLint */,
 				7ACA1A4F26AA498700DE1645 /* Initialise Crashlytics */,
 				7AFC6ECF2703E7EB0056270B /* Embed Frameworks */,
 			);
@@ -1843,7 +1886,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7A54E10C26AA5AFE0011566E /* Initialise SwiftLint */ = {
+		7A54E10C26AA5AFE0011566E /* Run SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1852,7 +1895,7 @@
 			);
 			inputPaths = (
 			);
-			name = "Initialise SwiftLint";
+			name = "Run SwiftLint";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -2083,7 +2126,7 @@
 				7A8022FA26FC848A008600B0 /* NSParagraphStyle+Extension.swift in Sources */,
 				7A80231226FC854B008600B0 /* NumberFormatter+Extension.swift in Sources */,
 				7A80230E26FC854B008600B0 /* UserDefaults+Extension.swift in Sources */,
-				7A82FB4926F4869600C9C04E /* TransactionCell.swift in Sources */,
+				7A82FB4926F4869600C9C04E /* TransactionTableViewCell.swift in Sources */,
 				E76E3D0B8FE8EA36B4B0BC82 /* Tag.swift in Sources */,
 				E76E34836BF3D69A08B7148B /* Account.swift in Sources */,
 				E76E304EC30730C06DA49676 /* Category.swift in Sources */,
@@ -2188,7 +2231,9 @@
 				7A340B1426F9C11200D43523 /* NSString+Extension.swift in Sources */,
 				7AE75E3725FF1C3B00C16AF6 /* NavigationController.swift in Sources */,
 				7AD266D926FADDF500EFF4A2 /* Double+Extension.swift in Sources */,
+				7A8C12C4271D283000F6A633 /* SortedTags.swift in Sources */,
 				7A340B1526F9C11200D43523 /* UserDefaults+Extension.swift in Sources */,
+				7A8C12BE271D1E5000F6A633 /* SortedTagSectionModel.swift in Sources */,
 				7AF214FF26EF326C009F4F38 /* NSParagraphStyle+Extension.swift in Sources */,
 				7AF9F11D27168B0C00DD1E72 /* UICollectionViewDiffableDataSource+Extension.swift in Sources */,
 				7A09E4B52686E30600C9F299 /* TransactionDetailVC.swift in Sources */,
@@ -2219,6 +2264,7 @@
 				7AAADD5B26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift in Sources */,
 				7A1B52162702C30100835111 /* TransactionsVC.swift in Sources */,
 				7AF214EE26EEC796009F4F38 /* UISearchBar+Extension.swift in Sources */,
+				7A8C12B8271D002E00F6A633 /* TagSectionCoreModel.swift in Sources */,
 				7A0A302226B5310E009E52FB /* RightDetailCellNode.swift in Sources */,
 				7AF2152B26F04BCC009F4F38 /* TransactionResource+CellModel.swift in Sources */,
 				7A3E428427041243007E3A08 /* SpinnerCellNode.swift in Sources */,
@@ -2231,17 +2277,20 @@
 				7A90F53026F097BB00384F53 /* TagResource+CellModel.swift in Sources */,
 				7AF214FE26EF326C009F4F38 /* NSAttributedString+Extension.swift in Sources */,
 				7AA113BF26154F3800386E2D /* DetailItem.swift in Sources */,
+				7A8C12BA271D1CC600F6A633 /* TagSectionModelSC.swift in Sources */,
 				7A7F039D26FB0641003F1321 /* TransactionColourEnum+Extension.swift in Sources */,
 				7AF9F11B27168A3000DD1E72 /* UITableViewDiffableDataSource+Extension.swift in Sources */,
 				7A67980D25D3E15D002AA83A /* DiagnosticsVC.swift in Sources */,
+				7A8C12C0271D214400F6A633 /* SortedTagSectionCoreModel.swift in Sources */,
 				7AF2156626F05FE3009F4F38 /* UIContextMenuConfiguration+Extension.swift in Sources */,
 				7A7CAB0326F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift in Sources */,
 				7A3E428827041B44007E3A08 /* LoadingDelegate.swift in Sources */,
 				7A1B52142702C1A900835111 /* ItemModelSC.swift in Sources */,
 				7AF2150026EF326C009F4F38 /* CGFloat+Extension.swift in Sources */,
 				7AB609B02603F0D80038B85B /* AddTagTagsSelectionVC.swift in Sources */,
-				7A69F2602706A736008CA6CC /* TransactionCollectionCell.swift in Sources */,
+				7A69F2602706A736008CA6CC /* TransactionCell.swift in Sources */,
 				7A340B0726F9C11200D43523 /* Int+Extension.swift in Sources */,
+				7A8C12B6271CF7DA00F6A633 /* TagSectionModel.swift in Sources */,
 				7A1BE9F426EDAD6D00A97F56 /* StickerImageNode.swift in Sources */,
 				7A340B0626F9C11200D43523 /* TransactionType+Extension.swift in Sources */,
 				7A0A302C26B54E8B009E52FB /* APIKeyCellNode.swift in Sources */,
@@ -2265,7 +2314,9 @@
 				7A3E4286270412FC007E3A08 /* SpinnerSC.swift in Sources */,
 				7A72D2F12672DEAF005FAC4F /* TabBarItem.swift in Sources */,
 				7AF2150126EF326C009F4F38 /* CGSize+Extension.swift in Sources */,
+				7A8C12B4271CEC7600F6A633 /* UICollectionViewCellDragState+Extension.swift in Sources */,
 				7A2F1978261DA6B20054A9B6 /* StickerView.swift in Sources */,
+				7A8C12BC271D1D2C00F6A633 /* TagCellModelSC.swift in Sources */,
 				7AF2151B26F046E9009F4F38 /* SegmentedControlNodeProtocol.swift in Sources */,
 				7A5A89EB26FBF0790010223B /* Image+Extension.swift in Sources */,
 				7A0A302A26B54C4A009E52FB /* DateStyleCellNode.swift in Sources */,
@@ -2300,6 +2351,7 @@
 				E76E3A10413CC8DB21E4721B /* HoldInfoObject.swift in Sources */,
 				7AF3BFEC270AC42900B1B81B /* ErrorSource.swift in Sources */,
 				E76E307045482AEAE9A7C5D5 /* SingleCategory.swift in Sources */,
+				7A8C12C2271D280100F6A633 /* TagsVCAlt.swift in Sources */,
 				E76E3FD27191DFB37DC95315 /* AccountResource.swift in Sources */,
 				E76E3EF49FDFF793CE2D65D6 /* AccountTypeEnum.swift in Sources */,
 				E76E3BB17404B8FA86647780 /* TagRelationship.swift in Sources */,

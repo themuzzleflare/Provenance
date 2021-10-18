@@ -7,7 +7,11 @@ final class TagsVC: ASViewController {
   
   private lazy var searchController = UISearchController(self)
   
-  private let tableNode = ASTableNode(style: .plain)
+  private lazy var adapter: ListAdapter = {
+    return ListAdapter(updater: ListAdapterUpdater(), viewController: self)
+  }()
+  
+  private let collectionNode = ASCollectionNode(collectionViewLayout: .flowLayout)
   
   private var apiKeyObserver: NSKeyValueObservation?
   
@@ -16,15 +20,13 @@ final class TagsVC: ASViewController {
   private var tags = [TagResource]() {
     didSet {
       noTags = tags.isEmpty
-      applySnapshot()
-      tableNode.view.refreshControl?.endRefreshing()
+      adapter.performUpdates(animated: true)
+      collectionNode.view.refreshControl?.endRefreshing()
       searchController.searchBar.placeholder = tags.searchBarPlaceholder
     }
   }
   
   private var tagsError = String()
-  
-  private var oldTagCellModels = [TagCellModel]()
   
   private var filteredTags: [TagResource] {
     return tags.filtered(searchBar: searchController.searchBar)
@@ -33,11 +35,14 @@ final class TagsVC: ASViewController {
   // MARK: - Life Cycle
   
   override init() {
-    super.init(node: tableNode)
+    super.init(node: collectionNode)
+    adapter.setASDKCollectionNode(collectionNode)
+    adapter.dataSource = self
   }
   
   deinit {
     removeObservers()
+    print("deinit")
   }
   
   required init?(coder: NSCoder) {
@@ -47,10 +52,10 @@ final class TagsVC: ASViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
-    configureTableNode()
+    configureCollectionNode()
     configureSelf()
     configureNavigation()
-    applySnapshot(override: true)
+    adapter.performUpdates(animated: false)
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -88,10 +93,8 @@ private extension TagsVC {
     navigationItem.searchController = searchController
   }
   
-  private func configureTableNode() {
-    tableNode.dataSource = self
-    tableNode.delegate = self
-    tableNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshTags))
+  private func configureCollectionNode() {
+    collectionNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshTags))
   }
 }
 
@@ -110,40 +113,6 @@ private extension TagsVC {
   @objc private func refreshTags() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchTags()
-    }
-  }
-  
-  private func applySnapshot(override: Bool = false) {
-    let result = ListDiffPaths(
-      fromSection: 0,
-      toSection: 0,
-      oldArray: oldTagCellModels,
-      newArray: filteredTags.tagCellModels,
-      option: .equality
-    ).forBatchUpdates()
-    if result.hasChanges || override || !tagsError.isEmpty || noTags {
-      if filteredTags.isEmpty && tagsError.isEmpty {
-        if tags.isEmpty && !noTags {
-          tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .tags)
-        } else {
-          tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .tags)
-        }
-      } else {
-        if !tagsError.isEmpty {
-          tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: tagsError)
-        } else {
-          if tableNode.view.backgroundView != nil {
-            tableNode.view.backgroundView = nil
-          }
-        }
-      }
-      let batchUpdates = { [self] in
-        tableNode.deleteRows(at: result.deletes, with: .automatic)
-        tableNode.insertRows(at: result.inserts, with: .automatic)
-        result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldTagCellModels = filteredTags.tagCellModels
-      }
-      tableNode.performBatchUpdates(batchUpdates)
     }
   }
   
@@ -183,42 +152,47 @@ private extension TagsVC {
   }
 }
 
-// MARK: - ASTableDataSource
+// MARK: - ListAdapterDataSource
 
-extension TagsVC: ASTableDataSource {
-  func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
-    return filteredTags.count
+extension TagsVC: ListAdapterDataSource {
+  func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
+    return filteredTags.tagSectionModels.sortedMixedModel
   }
   
-  func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let tag = filteredTags[indexPath.row]
-    let node = TagCellNode(tag: tag)
-    return {
-      node
+  func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
+    switch object {
+    case is SortedTagSectionModel:
+      return TagSectionModelSC()
+    default:
+      return TagCellModelSC(self)
+    }
+  }
+  
+  func emptyView(for listAdapter: ListAdapter) -> UIView? {
+    if filteredTags.isEmpty && tagsError.isEmpty {
+      if tags.isEmpty && !noTags {
+        return .loadingView(frame: collectionNode.bounds, contentType: .tags)
+      } else {
+        return .noContentView(frame: collectionNode.bounds, type: .tags)
+      }
+    } else {
+      if !tagsError.isEmpty {
+        return .errorView(frame: collectionNode.bounds, text: tagsError)
+      } else {
+        return nil
+      }
     }
   }
 }
 
-// MARK: - ASTableDelegate
+// MARK: - SelectionDelegate
 
-extension TagsVC: ASTableDelegate {
-  func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
-    let tag = filteredTags[indexPath.row]
-    let viewController = TransactionsByTagVC(tag: tag)
-    tableNode.deselectRow(at: indexPath, animated: true)
-    navigationController?.pushViewController(viewController, animated: true)
-  }
-  
-  func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-    let tag = filteredTags[indexPath.row]
-    return UIContextMenuConfiguration(
-      previewProvider: {
-        return TransactionsByTagVC(tag: tag)
-      },
-      elements: [
-        .copyTagName(tag: tag)
-      ]
-    )
+extension TagsVC: SelectionDelegate {
+  func didSelectItem(at indexPath: IndexPath) {
+    if let tag = filteredTags.tagSectionCoreModels.sortedMixedCoreModel[indexPath.section] as? TagResource {
+      let viewController = TransactionsByTagVC(tag: tag)
+      navigationController?.pushViewController(viewController, animated: true)
+    }
   }
 }
 
@@ -226,13 +200,13 @@ extension TagsVC: ASTableDelegate {
 
 extension TagsVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    applySnapshot()
+    adapter.performUpdates(animated: true)
   }
   
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     if searchBar.searchTextField.hasText {
       searchBar.clear()
-      applySnapshot()
+      adapter.performUpdates(animated: true)
     }
   }
 }

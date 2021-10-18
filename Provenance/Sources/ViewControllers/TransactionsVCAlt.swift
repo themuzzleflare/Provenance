@@ -89,6 +89,7 @@ final class TransactionsVCAlt: ViewController {
   
   deinit {
     removeObservers()
+    print("deinit")
   }
   
   required init?(coder: NSCoder) {

@@ -2,16 +2,16 @@ import AsyncDisplayKit
 import SwiftDate
 
 final class HeaderCellNode: ASCellNode {
-  private let dateTextNode = ASTextNode()
+  private let textNode = ASTextNode()
   
   init(object: SortedTransactionModel?) {
     super.init()
     
     automaticallyManagesSubnodes = true
     
-    dateTextNode.attributedText = object?.id.toString(.date(.medium)).styled(with: .provenance)
+    textNode.attributedText = object?.id.toString(.date(.medium)).styled(with: .provenance)
     
-    backgroundColor = .secondarySystemGroupedBackground
+    backgroundColor = .secondarySystemBackground
   }
   
   init(object: SortedSectionModel?) {
@@ -19,12 +19,32 @@ final class HeaderCellNode: ASCellNode {
     
     automaticallyManagesSubnodes = true
     
-    dateTextNode.attributedText = object?.id.toString(.date(.medium)).styled(with: .provenance)
+    textNode.attributedText = object?.id.toString(.date(.medium)).styled(with: .provenance)
     
-    backgroundColor = .secondarySystemGroupedBackground
+    backgroundColor = .secondarySystemBackground
+  }
+  
+  init(object: TagSectionModel?) {
+    super.init()
+    
+    automaticallyManagesSubnodes = true
+    
+    textNode.attributedText = object?.id.uppercased().styled(with: .provenance)
+    
+    backgroundColor = .secondarySystemBackground
+  }
+  
+  init(object: SortedTagSectionModel?) {
+    super.init()
+    
+    automaticallyManagesSubnodes = true
+    
+    textNode.attributedText = object?.id.uppercased().styled(with: .provenance)
+    
+    backgroundColor = .secondarySystemBackground
   }
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    return ASInsetLayoutSpec(insets: .sectionHeader, child: dateTextNode)
+    return ASInsetLayoutSpec(insets: .sectionHeader, child: textNode)
   }
 }

@@ -2,6 +2,7 @@ import UIKit
 
 final class HeaderView: UICollectionReusableView {
   private let dateLabel = UILabel()
+  private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
   
   var dateText: String? {
     get {
@@ -23,12 +24,13 @@ final class HeaderView: UICollectionReusableView {
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    dateLabel.frame = bounds.inset(by: .sectionHeader)
+    blurView.frame = bounds
+    dateLabel.frame = blurView.contentView.bounds.inset(by: .sectionHeader)
   }
   
   private func configure() {
-    addSubview(dateLabel)
-    backgroundColor = .secondarySystemGroupedBackground
+    addSubview(blurView)
+    blurView.contentView.addSubview(dateLabel)
     dateLabel.font = .circularStdBook(size: .labelFontSize)
   }
 }

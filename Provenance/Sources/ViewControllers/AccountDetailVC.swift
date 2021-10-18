@@ -42,6 +42,7 @@ final class AccountDetailVC: ViewController {
   
   deinit {
     removeObservers()
+    print("deinit")
   }
   
   required init?(coder: NSCoder) {

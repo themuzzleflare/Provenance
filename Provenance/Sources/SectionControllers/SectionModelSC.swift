@@ -4,10 +4,6 @@ import AsyncDisplayKit
 final class SectionModelSC: ListSectionController {
   private var object: SortedSectionModel?
   
-  override init() {
-    super.init()
-  }
-  
   override func sizeForItem(at index: Int) -> CGSize {
     return ASIGListSectionControllerMethods.sizeForItem(at: index)
   }

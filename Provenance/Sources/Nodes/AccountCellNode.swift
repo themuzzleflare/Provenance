@@ -6,32 +6,28 @@ final class AccountCellNode: ASCellNode {
   
   init(account: AccountResource) {
     super.init()
-    
     automaticallyManagesSubnodes = true
-    
     balanceTextNode.attributedText = account.attributes.balance.valueShort.styled(with: .accountBalance)
-    
     displayNameTextNode.attributedText = account.attributes.displayName.styled(with: .accountDisplayName)
     displayNameTextNode.maximumNumberOfLines = 2
-    
     cornerRadius = 12.5
     borderColor = .separator
     borderWidth = 1.0
-    backgroundColor = .secondarySystemGroupedBackground
+    backgroundColor = .secondarySystemBackground
   }
   
   override var isSelected: Bool {
     didSet {
-      backgroundColor = isSelected ? .gray.withAlphaComponent(0.3) : .secondarySystemGroupedBackground
+      backgroundColor = isSelected ? .gray.withAlphaComponent(0.3) : .secondarySystemBackground
     }
   }
   
   override var isHighlighted: Bool {
     didSet {
-      backgroundColor = isHighlighted ? .gray.withAlphaComponent(0.3) : .secondarySystemGroupedBackground
+      backgroundColor = isHighlighted ? .gray.withAlphaComponent(0.3) : .secondarySystemBackground
     }
   }
-    
+  
   override func asyncTraitCollectionDidChange(withPreviousTraitCollection previousTraitCollection: ASPrimitiveTraitCollection) {
     super.asyncTraitCollectionDidChange(withPreviousTraitCollection: previousTraitCollection)
     guard previousTraitCollection.userInterfaceStyle != primitiveTraitCollection().userInterfaceStyle else { return }

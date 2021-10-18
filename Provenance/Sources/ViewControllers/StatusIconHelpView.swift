@@ -11,6 +11,10 @@ final class StatusIconHelpView: ASViewController {
     super.init(node: statusIconHelpDisplayNode)
   }
   
+  deinit {
+    print("deinit")
+  }
+  
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }

@@ -18,11 +18,6 @@ final class TransactionDetailVC: ViewController {
       super.init(tableView: tableView, cellProvider: cellProvider)
     }
     
-    convenience init(transaction: TransactionResource, tableView: UITableView, cellProvider: @escaping UITableViewDiffableDataSource<DetailSection, DetailItem>.CellProvider, defaultRowAnimation: UITableView.RowAnimation) {
-      self.init(transaction: transaction, tableView: tableView, cellProvider: cellProvider)
-      self.defaultRowAnimation = defaultRowAnimation
-    }
-    
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
       guard section == 0 else { return nil }
       return transaction.id
@@ -78,6 +73,7 @@ final class TransactionDetailVC: ViewController {
   
   deinit {
     removeObserver()
+    print("deinit")
   }
   
   required init?(coder: NSCoder) {
@@ -212,9 +208,9 @@ extension TransactionDetailVC {
       self.category = nil
     }
     
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-      tableView.refreshControl?.endRefreshing()
-      configureNavigation()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.tableView.refreshControl?.endRefreshing()
+      self.configureNavigation()
     }
   }
   

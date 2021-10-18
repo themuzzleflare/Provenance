@@ -17,6 +17,10 @@ final class DiagnosticsVC: ViewController {
   
   // MARK: - Life Cycle
   
+  deinit {
+    print("deinit")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(tableView)

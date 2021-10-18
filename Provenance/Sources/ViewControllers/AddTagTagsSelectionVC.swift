@@ -77,6 +77,7 @@ final class AddTagTagsSelectionVC: ASViewController {
   
   deinit {
     removeObserver()
+    print("deinit")
   }
   
   required init?(coder: NSCoder) {
@@ -299,7 +300,7 @@ extension AddTagTagsSelectionVC: ASTableDataSource {
   
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let tag = filteredTags[indexPath.row]
-    let node = TagCellNode(tag: tag)
+    let node = TagCellNode(tag: tag, selection: false)
     return {
       node
     }

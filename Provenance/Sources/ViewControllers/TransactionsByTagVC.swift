@@ -45,6 +45,7 @@ final class TransactionsByTagVC: ASViewController {
   
   deinit {
     removeObservers()
+    print("deinit")
   }
   
   required init?(coder: NSCoder) {
@@ -195,7 +196,7 @@ extension TransactionsByTagVC: ASTableDataSource {
   
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let transaction = filteredTransactions[indexPath.row]
-    let node = TransactionCellNode(transaction: transaction, contextMenu: false)
+    let node = TransactionCellNode(transaction: transaction, contextMenu: false, selection: false)
     return {
       node
     }

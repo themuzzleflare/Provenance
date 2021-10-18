@@ -24,7 +24,7 @@ extension TransactionBindingSC: ListBindingSectionControllerDataSource {
       let cell: HeaderCell = collectionContext!.dequeueReusableCell(for: sectionController, at: index)
       return cell
     default:
-      let cell: TransactionCollectionCell = collectionContext!.dequeueReusableCell(for: sectionController, at: index)
+      let cell: TransactionCell = collectionContext!.dequeueReusableCell(for: sectionController, at: index)
       return cell
     }
   }

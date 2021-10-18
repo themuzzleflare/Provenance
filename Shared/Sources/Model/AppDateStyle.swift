@@ -1,11 +1,11 @@
 import Foundation
 
-  /// An enumeration describing the date style used in the app.
+/// An enumeration describing the date style used in the app.
 enum AppDateStyle: Int, CaseIterable {
-    /// Absolute.
+  /// Absolute.
   case absolute
   
-    /// Relative.
+  /// Relative.
   case relative
 }
 

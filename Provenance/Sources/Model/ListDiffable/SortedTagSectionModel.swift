@@ -1,11 +1,7 @@
 import IGListDiffKit
 
-final class TagCellModel: NSObject {
+final class SortedTagSectionModel {
   let id: String
-  
-  init(tag: TagResource) {
-    self.id = tag.id
-  }
   
   init(id: String) {
     self.id = id
@@ -14,13 +10,14 @@ final class TagCellModel: NSObject {
 
 // MARK: - ListDiffable
 
-extension TagCellModel: ListDiffable {
+extension SortedTagSectionModel: ListDiffable {
   func diffIdentifier() -> NSObjectProtocol {
     return id as NSObjectProtocol
   }
   
   func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
-    guard object is TagCellModel else { return false }
+    if self === object { return true }
+    guard object is SortedTagSectionModel else { return false }
     return true
   }
 }

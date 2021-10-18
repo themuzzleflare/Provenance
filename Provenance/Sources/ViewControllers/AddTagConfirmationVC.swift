@@ -20,14 +20,13 @@ final class AddTagConfirmationVC: ASViewController {
     super.init(node: tableNode)
   }
   
-  init(transaction: TransactionResource, tag: TagResource) {
-    self.transaction = transaction
-    self.tags = .singleTag(with: tag)
-    super.init(node: tableNode)
+  convenience init(transaction: TransactionResource, tag: TagResource) {
+    self.init(transaction: transaction, tags: .singleTag(with: tag))
   }
   
   deinit {
     removeObserver()
+    print("deinit")
   }
   
   required init?(coder: NSCoder) {
@@ -70,6 +69,7 @@ private extension AddTagConfirmationVC {
   
   private func configureTableNode() {
     tableNode.dataSource = self
+    tableNode.allowsSelection = false
     tableNode.view.showsVerticalScrollIndicator = false
   }
 }
@@ -126,8 +126,7 @@ extension AddTagConfirmationVC: ASTableDataSource {
   
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let tag = tags[indexPath.row]
-    let transactionCellNode = TransactionCellNode(transaction: transaction)
-    transactionCellNode.selectionStyle = .none
+    let transactionCellNode = TransactionCellNode(transaction: transaction, contextMenu: false)
     return {
       switch indexPath.section {
       case 0:

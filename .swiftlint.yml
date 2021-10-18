@@ -1,17 +1,14 @@
 disabled_rules:
-- identifier_name
-- cyclomatic_complexity
-- function_body_length
-- line_length
-- closure_parameter_position
-- file_length
-- type_body_length
-- force_cast
-- trailing_whitespace
-- force_try
-opt_in_rules:
-- empty_count
-- empty_string
+  - identifier_name
+  - cyclomatic_complexity
+  - function_body_length
+  - line_length
+  - closure_parameter_position
+  - file_length
+  - type_body_length
+  - force_cast
+  - trailing_whitespace
+  - force_try
 excluded:
-- Pods
-- Provenance/Sources/Extensions/IGListKit/IGListSwiftKit
+  - Pods
+  - Provenance/Sources/Extensions/IGListKit/IGListSwiftKit

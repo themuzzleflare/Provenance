@@ -1,5 +1,5 @@
 import Foundation
 
 struct SortedSectionCoreModel {
-  var id: Date
+  let id: Date
 }

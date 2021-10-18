@@ -5,10 +5,6 @@ final class SpinnerCellNode: ASCellNode {
     return UIActivityIndicatorView.mediumAnimating
   }
   
-  private var activityIndicator: UIActivityIndicatorView {
-    return view as! UIActivityIndicatorView
-  }
-  
   init(_ sectionController: SpinnerSC? = nil) {
     super.init()
     sectionController?.spinnerDelegate = self
@@ -20,6 +16,7 @@ final class SpinnerCellNode: ASCellNode {
 
 extension SpinnerCellNode: SpinnerDelegate {
   func startLoading() {
-    activityIndicator.startAnimating()
+    guard isNodeLoaded else { return }
+    (self.view as! UIActivityIndicatorView).startAnimating()
   }
 }

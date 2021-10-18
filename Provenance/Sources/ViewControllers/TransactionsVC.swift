@@ -88,6 +88,7 @@ final class TransactionsVC: ASViewController {
   
   deinit {
     removeObservers()
+    print("deinit")
   }
   
   required init?(coder: NSCoder) {

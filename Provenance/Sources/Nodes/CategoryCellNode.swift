@@ -13,18 +13,18 @@ final class CategoryCellNode: ASCellNode {
     cornerRadius = 12.5
     borderColor = .separator
     borderWidth = 1.0
-    backgroundColor = .secondarySystemGroupedBackground
+    backgroundColor = .secondarySystemBackground
   }
   
   override var isSelected: Bool {
     didSet {
-      backgroundColor = isSelected ? .gray.withAlphaComponent(0.3) : .secondarySystemGroupedBackground
+      backgroundColor = isSelected ? .gray.withAlphaComponent(0.3) : .secondarySystemBackground
     }
   }
   
   override var isHighlighted: Bool {
     didSet {
-      backgroundColor = isHighlighted ? .gray.withAlphaComponent(0.3) : .secondarySystemGroupedBackground
+      backgroundColor = isHighlighted ? .gray.withAlphaComponent(0.3) : .secondarySystemBackground
     }
   }
   

@@ -1,10 +1,8 @@
 import IGListKit
 import AsyncDisplayKit
 
-final class SpinnerSC: ListSectionController {
-  private var object: String?
-  
-  weak var spinnerDelegate: SpinnerDelegate?
+final class TagSectionModelSC: ListSectionController {
+  private var object: SortedTagSectionModel?
   
   override func sizeForItem(at index: Int) -> CGSize {
     return ASIGListSectionControllerMethods.sizeForItem(at: index)
@@ -15,16 +13,16 @@ final class SpinnerSC: ListSectionController {
   }
   
   override func didUpdate(to object: Any) {
-    precondition(object is String)
-    self.object = object as? String
+    precondition(object is SortedTagSectionModel)
+    self.object = object as? SortedTagSectionModel
   }
 }
 
 // MARK: - ASSectionController
 
-extension SpinnerSC: ASSectionController {
+extension TagSectionModelSC: ASSectionController {
   func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
-    let node = SpinnerCellNode(self)
+    let node = HeaderCellNode(object: object)
     return {
       node
     }

@@ -11,6 +11,10 @@ final class AboutVC: ASViewController {
     super.init(node: tableNode)
   }
   
+  deinit {
+    print("deinit")
+  }
+  
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }

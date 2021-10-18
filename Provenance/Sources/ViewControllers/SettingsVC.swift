@@ -23,6 +23,7 @@ final class SettingsVC: ASViewController {
   
   deinit {
     removeObserver()
+    print("deinit")
   }
   
   required init?(coder: NSCoder) {
@@ -178,7 +179,7 @@ extension SettingsVC: ASTableDelegate {
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     switch indexPath.section {
     case 0:
-      return ProvenanceApp.userDefaults.apiKey == .emptyString ? nil : UIContextMenuConfiguration(elements: [
+      return ProvenanceApp.userDefaults.apiKey.isEmpty ? nil : UIContextMenuConfiguration(elements: [
         .copyGeneric(title: "API Key", string: ProvenanceApp.userDefaults.apiKey)
       ])
     default:

@@ -11,6 +11,10 @@ final class WidgetsVC: ASViewController {
     super.init(node: widgetsScrollNode)
   }
   
+  deinit {
+    print("deinit")
+  }
+  
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }

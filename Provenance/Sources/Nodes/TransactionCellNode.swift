@@ -6,42 +6,37 @@ final class TransactionCellNode: ASCellNode {
   private let amountTextNode = ASTextNode()
   
   private var usingContextMenu: Bool
+  private var selection: Bool
   private var transactionDescription: String
   private var creationDate: String
   private var amount: String
   private var colour: TransactionColourEnum
   
-  init(transaction: TransactionResource, contextMenu: Bool = true) {
+  init(transaction: TransactionResource, contextMenu: Bool = true, selection: Bool = true) {
     self.usingContextMenu = contextMenu
+    self.selection = selection
     self.transactionDescription = transaction.attributes.description
     self.creationDate = transaction.attributes.creationDate
     self.amount = transaction.attributes.amount.valueShort
     self.colour = transaction.attributes.amount.transactionType.colour
     super.init()
-    
     automaticallyManagesSubnodes = true
-    
     descriptionTextNode.attributedText = transactionDescription.styled(with: .transactionDescription)
-    
     creationDateTextNode.attributedText = creationDate.styled(with: .transactionCreationDate)
-    
     amountTextNode.attributedText = amount.styled(with: .transactionAmount, .color(colour.uiColour))
   }
   
-  init(transaction: TransactionCellModel?, contextMenu: Bool = true) {
+  init(transaction: TransactionCellModel?, contextMenu: Bool = true, selection: Bool = true) {
     self.usingContextMenu = contextMenu
+    self.selection = selection
     self.transactionDescription = transaction?.transactionDescription ?? .emptyString
     self.creationDate = transaction?.creationDate ?? .emptyString
     self.amount = transaction?.amount ?? .emptyString
     self.colour = transaction?.colour ?? .unknown
     super.init()
-    
     automaticallyManagesSubnodes = true
-    
     descriptionTextNode.attributedText = transactionDescription.styled(with: .transactionDescription)
-    
     creationDateTextNode.attributedText = creationDate.styled(with: .transactionCreationDate)
-    
     amountTextNode.attributedText = amount.styled(with: .transactionAmount, .color(colour.uiColour))
   }
   
@@ -54,13 +49,13 @@ final class TransactionCellNode: ASCellNode {
   
   override var isSelected: Bool {
     didSet {
-      backgroundColor = isSelected ? .gray.withAlphaComponent(0.3) : .clear
+      backgroundColor = selection && isSelected ? .gray.withAlphaComponent(0.3) : .clear
     }
   }
   
   override var isHighlighted: Bool {
     didSet {
-      backgroundColor = isHighlighted ? .gray.withAlphaComponent(0.3) : .clear
+      backgroundColor = selection && isHighlighted ? .gray.withAlphaComponent(0.3) : .clear
     }
   }
   

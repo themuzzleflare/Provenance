@@ -1,8 +1,8 @@
 import Foundation
 
 struct SortedTransactionCoreModel {
-  var id: Date
-  var transactions: [TransactionResource]
+  let id: Date
+  let transactions: [TransactionResource]
 }
 
 extension SortedTransactionCoreModel {

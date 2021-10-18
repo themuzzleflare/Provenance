@@ -38,6 +38,7 @@ final class AddTagTransactionSelectionVC: ASViewController {
   
   deinit {
     removeObservers()
+    print("deinit")
   }
   
   required init?(coder: NSCoder) {
@@ -122,6 +123,7 @@ private extension AddTagTransactionSelectionVC {
       newArray: filteredTransactions.transactionCellModels,
       option: .equality
     ).forBatchUpdates()
+    
     if result.hasChanges || override || !transactionsError.isEmpty || noTransactions {
       if filteredTransactions.isEmpty && transactionsError.isEmpty {
         if transactions.isEmpty && !noTransactions {
@@ -136,6 +138,7 @@ private extension AddTagTransactionSelectionVC {
           if tableNode.view.backgroundView != nil { tableNode.view.backgroundView = nil }
         }
       }
+      
       let batchUpdates = { [self] in
         tableNode.deleteRows(at: result.deletes, with: .fade)
         tableNode.insertRows(at: result.inserts, with: .fade)
@@ -185,7 +188,7 @@ extension AddTagTransactionSelectionVC: ASTableDataSource {
   
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let transaction = filteredTransactions[indexPath.row]
-    let node = TransactionCellNode(transaction: transaction)
+    let node = TransactionCellNode(transaction: transaction, selection: false)
     return {
       node
     }

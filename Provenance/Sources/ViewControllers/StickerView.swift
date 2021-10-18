@@ -7,6 +7,10 @@ final class StickerView: ASViewController {
     super.init(node: StickerImageNode(sticker: image))
   }
   
+  deinit {
+    print("deinit")
+  }
+  
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }

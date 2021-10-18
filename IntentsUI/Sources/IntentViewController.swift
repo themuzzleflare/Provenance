@@ -20,7 +20,7 @@ final class IntentViewController: UIViewController {
   private func configureTableView() {
     tableView.dataSource = self
     tableView.delegate = self
-    tableView.register(TransactionCell.self, forCellReuseIdentifier: TransactionCell.reuseIdentifier)
+    tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
     tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     tableView.separatorInset = .zero
     tableView.showsVerticalScrollIndicator = false
@@ -53,8 +53,8 @@ extension IntentViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: TransactionCell.reuseIdentifier, for: indexPath) as? TransactionCell else {
-      fatalError("Unable to dequeue reusable cell with identifier: \(TransactionCell.reuseIdentifier)")
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as? TransactionTableViewCell else {
+      fatalError("Unable to dequeue reusable cell with identifier: \(TransactionTableViewCell.reuseIdentifier)")
     }
     let transaction = transactions[indexPath.row]
     cell.transaction = transaction

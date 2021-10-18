@@ -51,6 +51,7 @@ final class CategoriesVC: ASViewController {
   
   deinit {
     removeObservers()
+    print("deinit")
   }
   
   required init?(coder: NSCoder) {
