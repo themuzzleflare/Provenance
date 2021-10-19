@@ -138,22 +138,26 @@ private extension TransactionTagsVC {
 // MARK: - Actions
 
 extension TransactionTagsVC {
-  @objc private func appMovedToForeground() {
+  @objc
+  private func appMovedToForeground() {
     fetchTransaction()
   }
   
-  @objc private func addTags() {
+  @objc
+  private func addTags() {
     let viewController = NavigationController(rootViewController: AddTagTagsSelectionVC(transaction: transaction, fromTransactionTags: true))
     present(.fullscreen(viewController), animated: true)
   }
   
-  @objc private func refreshTags() {
+  @objc
+  private func refreshTags() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchTransaction()
     }
   }
   
-  @objc private func selectionAction() {
+  @objc
+  private func selectionAction() {
     switch tableNode.indexPathsForSelectedRows?.count {
     case tags.count:
       tableNode.indexPathsForSelectedRows?.forEach { tableNode.deselectRow(at: $0, animated: false) }
@@ -164,14 +168,16 @@ extension TransactionTagsVC {
     updateToolbarItems()
   }
   
-  @objc private func removeTags() {
+  @objc
+  private func removeTags() {
     if let selectedTags = tableNode.indexPathsForSelectedRows?.map { tags[$0.row] } {
       let alertController = UIAlertController.removeTagsFromTransaction(self, removing: selectedTags, from: transaction)
       present(alertController, animated: true)
     }
   }
   
-  @objc private func removeAllTags() {
+  @objc
+  private func removeAllTags() {
     let alertController = UIAlertController.removeTagsFromTransaction(self, removing: tags, from: transaction)
     present(alertController, animated: true)
   }

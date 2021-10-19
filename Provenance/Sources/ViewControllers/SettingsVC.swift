@@ -86,7 +86,8 @@ private extension SettingsVC {
 // MARK: - Actions
 
 private extension SettingsVC {
-  @objc private func closeWorkflow() {
+  @objc
+  private func closeWorkflow() {
     navigationController?.dismiss(animated: true)
   }
 }

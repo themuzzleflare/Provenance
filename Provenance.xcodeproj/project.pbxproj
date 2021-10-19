@@ -1118,8 +1118,8 @@
 		7A75631526A7ED6600963658 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				7A8BC0C62681583600D6D8D3 /* Extensions */,
 				E76E3C8D5DBAED10B9E031EC /* Model */,
+				7A8BC0C62681583600D6D8D3 /* Extensions */,
 			);
 			path = Sources;
 			sourceTree = "<group>";

@@ -112,17 +112,20 @@ private extension AccountDetailVC {
 // MARK: - Actions
 
 private extension AccountDetailVC {
-  @objc private func appMovedToForeground() {
+  @objc
+  private func appMovedToForeground() {
     fetchingTasks()
   }
   
-  @objc private func refreshData() {
+  @objc
+  private func refreshData() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchingTasks()
     }
   }
   
-  @objc private func closeWorkflow() {
+  @objc
+  private func closeWorkflow() {
     navigationController?.dismiss(animated: true)
   }
   

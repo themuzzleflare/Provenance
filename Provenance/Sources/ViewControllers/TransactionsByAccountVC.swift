@@ -108,16 +108,19 @@ private extension TransactionsByAccountVC {
 // MARK: - Actions
 
 private extension TransactionsByAccountVC {
-  @objc private func appMovedToForeground() {
+  @objc
+  private func appMovedToForeground() {
     fetchingTasks()
   }
   
-  @objc private func openAccountInfo() {
+  @objc
+  private func openAccountInfo() {
     let viewController = NavigationController(rootViewController: AccountDetailVC(account: account, transaction: transactions.first))
     present(viewController, animated: true)
   }
   
-  @objc private func refreshData() {
+  @objc
+  private func refreshData() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchingTasks()
     }

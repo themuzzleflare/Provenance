@@ -157,7 +157,7 @@ extension UserDefaults {
 }
 
 extension UserDefaults {
-  private struct Keys {
+  private enum Keys {
     static let apiKey = "apiKey"
     static let dateStyle = "dateStyle"
     static let accountFilter = "accountFilter"

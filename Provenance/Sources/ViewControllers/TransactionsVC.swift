@@ -166,11 +166,13 @@ extension TransactionsVC {
 // MARK: - Actions
 
 extension TransactionsVC {
-  @objc private func appMovedToForeground() {
+  @objc
+  private func appMovedToForeground() {
     fetchingTasks()
   }
   
-  @objc private func switchDateStyle() {
+  @objc
+  private func switchDateStyle() {
     switch ProvenanceApp.userDefaults.appDateStyle {
     case .absolute:
       ProvenanceApp.userDefaults.appDateStyle = .relative
@@ -179,7 +181,8 @@ extension TransactionsVC {
     }
   }
   
-  @objc private func refreshTransactions() {
+  @objc
+  private func refreshTransactions() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchingTasks()
     }

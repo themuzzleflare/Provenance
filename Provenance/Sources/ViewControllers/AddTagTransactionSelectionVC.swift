@@ -101,17 +101,20 @@ private extension AddTagTransactionSelectionVC {
 // MARK: - Actions
 
 private extension AddTagTransactionSelectionVC {
-  @objc private func appMovedToForeground() {
+  @objc
+  private func appMovedToForeground() {
     fetchTransactions()
   }
   
-  @objc private func refreshTransactions() {
+  @objc
+  private func refreshTransactions() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchTransactions()
     }
   }
   
-  @objc private func closeWorkflow() {
+  @objc
+  private func closeWorkflow() {
     navigationController?.dismiss(animated: true)
   }
   

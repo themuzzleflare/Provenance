@@ -43,7 +43,8 @@ extension StatusIconHelpView {
 // MARK: - Actions
 
 extension StatusIconHelpView {
-  @objc private func closeWorkflow() {
+  @objc
+  private func closeWorkflow() {
     navigationController?.dismiss(animated: true)
   }
 }

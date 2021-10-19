@@ -68,7 +68,8 @@ extension DateStyleCellNode {
     dateStyleObserver = nil
   }
   
-  @objc private func changedSelection() {
+  @objc
+  private func changedSelection() {
     if let dateStyle = AppDateStyle(rawValue: segmentedControlNode.selectedSegmentIndex) {
       styleSelection = dateStyle
     }

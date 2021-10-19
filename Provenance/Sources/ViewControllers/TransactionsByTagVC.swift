@@ -115,11 +115,13 @@ private extension TransactionsByTagVC {
 // MARK: - Actions
 
 extension TransactionsByTagVC {
-  @objc private func appMovedToForeground() {
+  @objc
+  private func appMovedToForeground() {
     fetchTransactions()
   }
   
-  @objc private func refreshTransactions() {
+  @objc
+  private func refreshTransactions() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchTransactions()
     }

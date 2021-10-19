@@ -1,7 +1,10 @@
 import UIKit
 
 extension UIMenu {
-  static func transactionsFilterMenu(categoryFilter: TransactionCategory, groupingFilter: TransactionGroupingEnum, showSettledOnly: Bool, completion: @escaping (FilterMenuAction) -> Void) -> UIMenu {
+  static func transactionsFilterMenu(categoryFilter: TransactionCategory,
+                                     groupingFilter: TransactionGroupingEnum,
+                                     showSettledOnly: Bool,
+                                     completion: @escaping (FilterMenuAction) -> Void) -> UIMenu {
     return UIMenu(children: [
       UIMenu(
         title: "Category",

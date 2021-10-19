@@ -103,11 +103,13 @@ private extension TransactionsByCategoryVC {
 // MARK: - Actions
 
 private extension TransactionsByCategoryVC {
-  @objc private func appMovedToForeground() {
+  @objc
+  private func appMovedToForeground() {
     fetchTransactions()
   }
   
-  @objc private func refreshTransactions() {
+  @objc
+  private func refreshTransactions() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchTransactions()
     }

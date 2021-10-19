@@ -1,6 +1,6 @@
 import Alamofire
 
-struct UpFacade {
+enum UpFacade {
   private static let jsonEncoder = JSONParameterEncoder.default
   
   /// Ping
@@ -631,7 +631,7 @@ struct UpFacade {
 }
 
 extension UpFacade {
-  struct ParamKeys {
+  enum ParamKeys {
     /// The number of records to return in each page.
     static let pageSize = "page[size]"
     

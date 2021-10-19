@@ -77,7 +77,8 @@ private extension AddTagConfirmationVC {
 // MARK: - Actions
 
 private extension AddTagConfirmationVC {
-  @objc private func addTags() {
+  @objc
+  private func addTags() {
     navigationItem.setRightBarButton(.activityIndicator, animated: false)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
       UpFacade.modifyTags(adding: tags, to: transaction) { (error) in

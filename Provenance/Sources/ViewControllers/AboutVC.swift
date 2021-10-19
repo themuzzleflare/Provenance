@@ -52,12 +52,14 @@ private extension AboutVC {
 // MARK: - Actions
 
 private extension AboutVC {
-  @objc private func openSettings() {
+  @objc
+  private func openSettings() {
     let viewController = NavigationController(rootViewController: .settings)
     present(viewController, animated: true)
   }
   
-  @objc private func openDiagnostics() {
+  @objc
+  private func openDiagnostics() {
     let viewController = NavigationController(rootViewController: .diagnostics)
     present(viewController, animated: true)
   }

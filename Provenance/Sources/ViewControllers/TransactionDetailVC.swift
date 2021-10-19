@@ -138,16 +138,19 @@ extension TransactionDetailVC {
 // MARK: - Actions
 
 extension TransactionDetailVC {
-  @objc private func appMovedToForeground() {
+  @objc
+  private func appMovedToForeground() {
     fetchTransaction()
   }
   
-  @objc private func openStatusIconHelpView() {
+  @objc
+  private func openStatusIconHelpView() {
     let viewController = NavigationController(rootViewController: StatusIconHelpView())
     present(viewController, animated: true)
   }
   
-  @objc private func refreshTransaction() {
+  @objc
+  private func refreshTransaction() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchTransaction()
     }

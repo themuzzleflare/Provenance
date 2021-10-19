@@ -118,11 +118,13 @@ private extension CategoriesVC {
 // MARK: - Actions
 
 private extension CategoriesVC {
-  @objc private func appMovedToForeground() {
+  @objc
+  private func appMovedToForeground() {
     fetchCategories()
   }
   
-  @objc private func refreshCategories() {
+  @objc
+  private func refreshCategories() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchCategories()
     }

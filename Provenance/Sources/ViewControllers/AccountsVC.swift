@@ -118,11 +118,13 @@ private extension AccountsVC {
 // MARK: - Actions
 
 private extension AccountsVC {
-  @objc private func appMovedToForeground() {
+  @objc
+  private func appMovedToForeground() {
     fetchAccounts()
   }
   
-  @objc private func refreshAccounts() {
+  @objc
+  private func refreshAccounts() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchAccounts()
     }

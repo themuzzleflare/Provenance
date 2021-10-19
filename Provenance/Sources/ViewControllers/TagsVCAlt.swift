@@ -132,16 +132,19 @@ private extension TagsVCAlt {
 // MARK: - Actions
 
 private extension TagsVCAlt {
-  @objc private func appMovedToForeground() {
+  @objc
+  private func appMovedToForeground() {
     fetchTags()
   }
   
-  @objc private func addTags() {
+  @objc
+  private func addTags() {
     let viewController = NavigationController(rootViewController: .addTagTransactionSelection)
     present(.fullscreen(viewController), animated: true)
   }
   
-  @objc private func refreshTags() {
+  @objc
+  private func refreshTags() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchTags()
     }

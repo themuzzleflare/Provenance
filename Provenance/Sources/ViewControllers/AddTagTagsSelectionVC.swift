@@ -169,47 +169,55 @@ private extension AddTagTagsSelectionVC {
 // MARK: - Actions
 
 private extension AddTagTagsSelectionVC {
-  @objc private func appMovedToForeground() {
+  @objc
+  private func appMovedToForeground() {
     fetchTags()
   }
   
-  @objc private func closeWorkflow() {
+  @objc
+  private func closeWorkflow() {
     navigationController?.dismiss(animated: true)
   }
   
-  @objc private func selectionAction() {
-    tableNode.indexPathsForSelectedRows?.forEach {
-      tableNode.deselectRow(at: $0, animated: false)
+  @objc
+  private func selectionAction() {
+    tableNode.indexPathsForSelectedRows?.forEach { (indexPath) in
+      tableNode.deselectRow(at: indexPath, animated: false)
     }
     updateToolbarItems()
   }
   
-  @objc private func nextAction() {
+  @objc
+  private func nextAction() {
     if let selectedTags = tableNode.indexPathsForSelectedRows?.map { filteredTags[$0.row] } {
       let viewController = AddTagConfirmationVC(transaction: transaction, tags: selectedTags)
       navigationController?.pushViewController(viewController, animated: true)
     }
   }
   
-  @objc private func addTagsTextFieldChanged() {
+  @objc
+  private func addTagsTextFieldChanged() {
     if let alert = presentedViewController as? UIAlertController, let action = alert.actions.last {
       let text = alert.textFields?.textsJoined ?? .emptyString
       action.isEnabled = !text.isEmpty
     }
   }
   
-  @objc private func openAddWorkflow() {
+  @objc
+  private func openAddWorkflow() {
     let alertController = UIAlertController.submitNewTags(self, selector: #selector(addTagsTextFieldChanged), transaction: transaction)
     present(alertController, animated: true)
   }
   
-  @objc private func refreshTags() {
+  @objc
+  private func refreshTags() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchTags()
     }
   }
   
-  @objc private func toggleEditing() {
+  @objc
+  private func toggleEditing() {
     setEditing(!isEditing, animated: true)
   }
   

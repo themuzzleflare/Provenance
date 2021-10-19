@@ -62,7 +62,8 @@ private extension DiagnosticsVC {
 // MARK: - Actions
 
 private extension DiagnosticsVC {
-  @objc private func closeWorkflow() {
+  @objc
+  private func closeWorkflow() {
     navigationController?.dismiss(animated: true)
   }
   

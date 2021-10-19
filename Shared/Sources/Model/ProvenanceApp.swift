@@ -2,7 +2,7 @@ import SwiftDate
 
 typealias App = ProvenanceApp
 
-struct ProvenanceApp {
+enum ProvenanceApp {
   static let userDefaults = UserDefaults.provenance
   
   static func formatDate(for dateString: String, dateStyle: AppDateStyle) -> String {
