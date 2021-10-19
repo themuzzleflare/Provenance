@@ -32,7 +32,9 @@ final class IntentViewController: UIViewController {
 
 extension IntentViewController: INUIHostedViewControlling {
   func configureView(for parameters: Set<INParameter>, of interaction: INInteraction, interactiveBehavior: INUIInteractiveBehavior, context: INUIHostedViewContext, completion: @escaping (Bool, Set<INParameter>, CGSize) -> Void) {
-    guard let intentResponse = interaction.intentResponse as? ListTransactionsIntentResponse, let transactionTypes = intentResponse.transactions else {
+    guard let intentResponse = interaction.intentResponse as? ListTransactionsIntentResponse,
+          let transactionTypes = intentResponse.transactions
+    else {
       completion(false, Set(), .zero)
       return
     }

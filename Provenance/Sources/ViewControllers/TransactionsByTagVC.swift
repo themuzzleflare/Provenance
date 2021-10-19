@@ -81,7 +81,9 @@ private extension TransactionsByTagVC {
   }
   
   private func configureObservers() {
-    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(appMovedToForeground),
+                                           name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       weakSelf.applySnapshot()
@@ -235,7 +237,7 @@ extension TransactionsByTagVC: ASTableDelegate {
   func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
     return "Remove"
   }
-    
+  
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     let transaction = filteredTransactions[indexPath.row]
     return isEditing ? nil : UIContextMenuConfiguration(elements: [

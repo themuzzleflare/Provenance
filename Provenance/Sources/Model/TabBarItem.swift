@@ -22,11 +22,11 @@ extension TabBarItem {
   var viewController: UIViewController {
     switch self {
     case .transactions:
-      return NavigationController(rootViewController: TransactionsVC())
+      return NavigationController(rootViewController: TransactionsVCAlt())
     case .accounts:
       return NavigationController(rootViewController: AccountsVC())
     case .tags:
-      return NavigationController(rootViewController: TagsVC())
+      return NavigationController(rootViewController: TagsVCAlt())
     case .categories:
       return NavigationController(rootViewController: CategoriesVC())
     case .about:

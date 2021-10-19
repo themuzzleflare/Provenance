@@ -553,16 +553,6 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7AFC6ECF2703E7EB0056270B /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -1668,8 +1658,7 @@
 				9798B0B11892F97E0F40FEF6 /* [CP] Embed Pods Frameworks */,
 				7AD317A92604412200B4E008 /* Embed App Extensions */,
 				7AA125182626AB3900F50D6D /* Configure Settings.bundle/Root.plist */,
-				7ACA1A4F26AA498700DE1645 /* Initialise Crashlytics */,
-				7AFC6ECF2703E7EB0056270B /* Embed Frameworks */,
+				7ACA1A4F26AA498700DE1645 /* Run Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -1725,7 +1714,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1250;
-				LastUpgradeCheck = 1300;
+				LastUpgradeCheck = 1310;
 				ORGANIZATIONNAME = "Tavitian Cloud";
 				TargetAttributes = {
 					7A17C1892657940E00E5EA23 = {
@@ -1922,7 +1911,7 @@
 			shellPath = /bin/sh;
 			shellScript = "PLISTBUDDY=\"/usr/libexec/PlistBuddy\"\nINFO_PLIST=\"$CODESIGNING_FOLDER_PATH/Info.plist\"\nSETTINGS_PLIST=\"$CODESIGNING_FOLDER_PATH/Settings.bundle/Root.plist\"\nBUNDLE_ID_VALUE=\"`$PLISTBUDDY -c \\\"Print CFBundleIdentifier\\\" \\\"$INFO_PLIST\\\"`\"\nCOPYRIGHT_VALUE=\"`$PLISTBUDDY -c \\\"Print NSHumanReadableCopyright\\\" \\\"$INFO_PLIST\\\"`\"\nVERSION_NUMBER=\"`$PLISTBUDDY -c \\\"Print CFBundleShortVersionString\\\" \\\"$INFO_PLIST\\\"`\"\nBUILD_NUMBER=\"`$PLISTBUDDY -c \\\"Print CFBundleVersion\\\" \\\"$INFO_PLIST\\\"`\"\nCOPYRIGHT=\"$COPYRIGHT_VALUE\"\nVERSION=\"$VERSION_NUMBER\"\nBUILD=\"$BUILD_NUMBER\"\nAPP_GROUP=group.$BUNDLE_ID_VALUE\n\n$PLISTBUDDY -c \"Set :ApplicationGroupContainerIdentifier $APP_GROUP\" \"$SETTINGS_PLIST\"\n$PLISTBUDDY -c \"Set :PreferenceSpecifiers:9:DefaultValue '$VERSION'\" \"$SETTINGS_PLIST\"\n$PLISTBUDDY -c \"Set :PreferenceSpecifiers:10:DefaultValue '$BUILD'\" \"$SETTINGS_PLIST\"\n$PLISTBUDDY -c \"Set :PreferenceSpecifiers:11:FooterText '$COPYRIGHT'\" \"$SETTINGS_PLIST\"\n";
 		};
-		7ACA1A4F26AA498700DE1645 /* Initialise Crashlytics */ = {
+		7ACA1A4F26AA498700DE1645 /* Run Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1933,7 +1922,7 @@
 				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
 				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
 			);
-			name = "Initialise Crashlytics";
+			name = "Run Crashlytics";
 			outputFileListPaths = (
 			);
 			outputPaths = (

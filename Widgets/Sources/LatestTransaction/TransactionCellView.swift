@@ -9,7 +9,7 @@ struct TransactionCellView: View {
         Text(transaction.description)
           .font(.circularStdMedium(size: .labelFontSize))
         Text(transaction.creationDate)
-          .font(.circularStdBookItalic(size: .smallSystemFontSize))
+          .font(.circularStdBook(size: .smallSystemFontSize))
           .foregroundColor(.secondary)
       }
       .multilineTextAlignment(.leading)
