@@ -2,23 +2,23 @@ import AsyncDisplayKit
 
 final class StatusIconHelpView: ASViewController {
   // MARK: - Properties
-  
+
   private let statusIconHelpDisplayNode = StatusIconHelpNode()
-  
+
   // MARK: - Life Cycle
-  
+
   override init() {
     super.init(node: statusIconHelpDisplayNode)
   }
-  
+
   deinit {
     print("deinit")
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     configureSelf()
@@ -32,7 +32,7 @@ extension StatusIconHelpView {
   private func configureSelf() {
     title = "Transaction Status Icons"
   }
-  
+
   private func configureNavigation() {
     navigationItem.title = "Transaction Status Icons"
     navigationItem.largeTitleDisplayMode = .never

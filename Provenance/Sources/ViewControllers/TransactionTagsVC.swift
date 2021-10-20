@@ -3,7 +3,7 @@ import AsyncDisplayKit
 
 final class TransactionTagsVC: ASViewController {
   // MARK: - Properties
-  
+
   private var transaction: TransactionResource {
     didSet {
       if transaction.relationships.tags.data.isEmpty {
@@ -15,57 +15,57 @@ final class TransactionTagsVC: ASViewController {
       }
     }
   }
-  
+
   private var oldTagCellModels = [TagCellModel]()
-  
+
   private var tags: [TagResource] {
     return transaction.relationships.tags.data.tagResources
   }
-  
+
   private lazy var addBarButtonItem = UIBarButtonItem(
     barButtonSystemItem: .add,
     target: self,
     action: #selector(addTags)
   )
-  
+
   private lazy var selectionBarButtonItem = UIBarButtonItem(
     title: "Select All",
     style: .plain,
     target: self,
     action: #selector(selectionAction)
   )
-  
+
   private lazy var removeAllBarButtonItem = UIBarButtonItem(
     title: "Remove All",
     style: .plain,
     target: self,
     action: #selector(removeAllTags)
   )
-  
+
   private lazy var removeBarButtonItem = UIBarButtonItem(
     barButtonSystemItem: .trash,
     target: self,
     action: #selector(removeTags)
   )
-  
+
   private let tableNode = ASTableNode(style: .plain)
-  
+
   // MARK: - Life Cycle
-  
+
   init(transaction: TransactionResource) {
     self.transaction = transaction
     super.init(node: tableNode)
   }
-  
+
   deinit {
     removeObserver()
     print("deinit")
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObserver()
@@ -75,22 +75,22 @@ final class TransactionTagsVC: ASViewController {
     configureTableNode()
     applySnapshot(override: true)
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     fetchTransaction()
   }
-  
+
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     navigationController?.setToolbarHidden(!isEditing, animated: true)
   }
-  
+
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     navigationController?.setToolbarHidden(true, animated: false)
   }
-  
+
   override func setEditing(_ editing: Bool, animated: Bool) {
     super.setEditing(editing, animated: animated)
     tableNode.view.setEditing(editing, animated: animated)
@@ -106,26 +106,26 @@ private extension TransactionTagsVC {
   private func configureSelf() {
     title = "Transaction Tags"
   }
-  
+
   private func configureObserver() {
     NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
   }
-  
+
   private func removeObserver() {
     NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
   }
-  
+
   private func configureNavigation() {
     navigationItem.title = "Tags"
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.backBarButtonItem = .tag
     navigationItem.rightBarButtonItems = [addBarButtonItem, editButtonItem]
   }
-  
+
   private func configureToolbar() {
     setToolbarItems([selectionBarButtonItem, removeAllBarButtonItem, .flexibleSpace(), removeBarButtonItem], animated: false)
   }
-  
+
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
@@ -142,20 +142,20 @@ extension TransactionTagsVC {
   private func appMovedToForeground() {
     fetchTransaction()
   }
-  
+
   @objc
   private func addTags() {
     let viewController = NavigationController(rootViewController: AddTagTagsSelectionVC(transaction: transaction, fromTransactionTags: true))
     present(.fullscreen(viewController), animated: true)
   }
-  
+
   @objc
   private func refreshTags() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchTransaction()
     }
   }
-  
+
   @objc
   private func selectionAction() {
     switch tableNode.indexPathsForSelectedRows?.count {
@@ -167,7 +167,7 @@ extension TransactionTagsVC {
     }
     updateToolbarItems()
   }
-  
+
   @objc
   private func removeTags() {
     if let selectedTags = tableNode.indexPathsForSelectedRows?.map { tags[$0.row] } {
@@ -175,19 +175,19 @@ extension TransactionTagsVC {
       present(alertController, animated: true)
     }
   }
-  
+
   @objc
   private func removeAllTags() {
     let alertController = UIAlertController.removeTagsFromTransaction(self, removing: tags, from: transaction)
     present(alertController, animated: true)
   }
-  
+
   private func updateToolbarItems() {
     selectionBarButtonItem.title = tableNode.indexPathsForSelectedRows?.count == tags.count ? "Deselect All" : "Select All"
     removeAllBarButtonItem.isEnabled = tableNode.indexPathsForSelectedRows?.count != tags.count
     removeBarButtonItem.isEnabled = tableNode.indexPathsForSelectedRows != nil
   }
-  
+
   private func applySnapshot(override: Bool = false) {
     let result = ListDiffPaths(
       fromSection: 0,
@@ -206,9 +206,9 @@ extension TransactionTagsVC {
       tableNode.performBatchUpdates(batchUpdates)
     }
   }
-  
+
   func fetchTransaction() {
-    UpFacade.retrieveTransaction(for: transaction) { (result) in
+    Up.retrieveTransaction(for: transaction) { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(transaction):
@@ -227,7 +227,7 @@ extension TransactionTagsVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
     return tags.count
   }
-  
+
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let tag = tags[indexPath.row]
     let node = TagCellNode(tag: tag, selection: false)
@@ -235,11 +235,11 @@ extension TransactionTagsVC: ASTableDataSource {
       node
     }
   }
-  
+
   func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
     return true
   }
-  
+
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
     switch editingStyle {
     case .delete:
@@ -266,21 +266,21 @@ extension TransactionTagsVC: ASTableDelegate {
       navigationController?.pushViewController(viewController, animated: true)
     }
   }
-  
+
   func tableNode(_ tableNode: ASTableNode, didDeselectRowAt indexPath: IndexPath) {
     if isEditing {
       updateToolbarItems()
     }
   }
-  
+
   func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
     return .delete
   }
-  
+
   func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
     return "Remove"
   }
-  
+
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     let tag = tags[indexPath.row]
     return isEditing ? nil : UIContextMenuConfiguration(elements: [

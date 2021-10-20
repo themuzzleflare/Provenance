@@ -7,7 +7,7 @@ final class SpinnerCell: UICollectionViewCell {
     self.contentView.addSubview(view)
     return view
   }()
-  
+
   override func layoutSubviews() {
     super.layoutSubviews()
     let bounds = contentView.bounds

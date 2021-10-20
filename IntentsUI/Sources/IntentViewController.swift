@@ -2,21 +2,21 @@ import IntentsUI
 
 final class IntentViewController: UIViewController {
   private var transactions = [TransactionType]()
-  
+
   private let tableView = UITableView(frame: .zero, style: .plain)
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .clear
     view.addSubview(tableView)
     configureTableView()
   }
-  
+
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     tableView.frame = view.bounds
   }
-  
+
   private func configureTableView() {
     tableView.dataSource = self
     tableView.delegate = self
@@ -41,7 +41,7 @@ extension IntentViewController: INUIHostedViewControlling {
     self.transactions = transactionTypes
     completion(true, parameters, self.desiredSize)
   }
-  
+
   var desiredSize: CGSize {
     return self.extensionContext!.hostedViewMaximumAllowedSize
   }
@@ -53,7 +53,7 @@ extension IntentViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return transactions.count
   }
-  
+
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as? TransactionTableViewCell else {
       fatalError("Unable to dequeue reusable cell with identifier: \(TransactionTableViewCell.reuseIdentifier)")

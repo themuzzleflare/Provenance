@@ -5,16 +5,19 @@ import AlamofireNetworkActivityIndicator
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
   // MARK: - Life Cycle
-  
-  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+  func application(_ application: UIApplication,
+                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     NetworkActivityIndicatorManager.shared.isEnabled = true
     SwiftDate.defaultRegion = .current
     configureFirebase()
     registerDefaults()
     return true
   }
-  
-  func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+
+  func application(_ application: UIApplication,
+                   configurationForConnecting connectingSceneSession: UISceneSession,
+                   options: UIScene.ConnectionOptions) -> UISceneConfiguration {
     return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
   }
 }
@@ -33,12 +36,12 @@ extension AppDelegate {
           defaults[key] = preference["DefaultValue"]
         }
       }
-      ProvenanceApp.userDefaults.register(defaults: defaults)
+      App.userDefaults.register(defaults: defaults)
     } catch {
       fatalError("registerDefaults failed with error: \(error.localizedDescription)")
     }
   }
-  
+
   private func configureFirebase() {
     let providerFactory = ProvenanceAppCheckProviderFactory()
     AppCheck.setAppCheckProviderFactory(providerFactory)

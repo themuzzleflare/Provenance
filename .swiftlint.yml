@@ -6,8 +6,8 @@ disabled_rules:
   - file_length
   - type_body_length
   - force_cast
-  - trailing_whitespace
   - force_try
+  - type_name
 opt_in_rules:
   - anonymous_argument_in_multiline_closure
   - anyobject_protocol

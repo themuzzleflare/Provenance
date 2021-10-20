@@ -4,14 +4,14 @@ final class TransactionCellNode: ASCellNode {
   private let descriptionTextNode = ASTextNode()
   private let creationDateTextNode = ASTextNode()
   private let amountTextNode = ASTextNode()
-  
+
   private var usingContextMenu: Bool
   private var selection: Bool
   private var transactionDescription: String
   private var creationDate: String
   private var amount: String
   private var colour: TransactionColourEnum
-  
+
   init(transaction: TransactionResource, contextMenu: Bool = true, selection: Bool = true) {
     self.usingContextMenu = contextMenu
     self.selection = selection
@@ -25,13 +25,13 @@ final class TransactionCellNode: ASCellNode {
     creationDateTextNode.attributedText = creationDate.styled(with: .transactionCreationDate)
     amountTextNode.attributedText = amount.styled(with: .transactionAmount, .color(colour.uiColour))
   }
-  
+
   init(transaction: TransactionCellModel?, contextMenu: Bool = true, selection: Bool = true) {
     self.usingContextMenu = contextMenu
     self.selection = selection
-    self.transactionDescription = transaction?.transactionDescription ?? .emptyString
-    self.creationDate = transaction?.creationDate ?? .emptyString
-    self.amount = transaction?.amount ?? .emptyString
+    self.transactionDescription = transaction?.transactionDescription ?? ""
+    self.creationDate = transaction?.creationDate ?? ""
+    self.amount = transaction?.amount ?? ""
     self.colour = transaction?.colour ?? .unknown
     super.init()
     automaticallyManagesSubnodes = true
@@ -39,26 +39,26 @@ final class TransactionCellNode: ASCellNode {
     creationDateTextNode.attributedText = creationDate.styled(with: .transactionCreationDate)
     amountTextNode.attributedText = amount.styled(with: .transactionAmount, .color(colour.uiColour))
   }
-  
+
   override func didLoad() {
     super.didLoad()
     if usingContextMenu {
       view.addInteraction(UIContextMenuInteraction(delegate: self))
     }
   }
-  
+
   override var isSelected: Bool {
     didSet {
       backgroundColor = selection && isSelected ? .gray.withAlphaComponent(0.3) : .clear
     }
   }
-  
+
   override var isHighlighted: Bool {
     didSet {
       backgroundColor = selection && isHighlighted ? .gray.withAlphaComponent(0.3) : .clear
     }
   }
-  
+
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
     let verticalStack = ASStackLayoutSpec(
       direction: .vertical,
@@ -70,10 +70,10 @@ final class TransactionCellNode: ASCellNode {
         creationDateTextNode
       ]
     )
-    
+
     verticalStack.style.flexShrink = 1.0
     verticalStack.style.flexGrow = 1.0
-    
+
     let horizontalStack = ASStackLayoutSpec(
       direction: .horizontal,
       spacing: 5,
@@ -84,7 +84,7 @@ final class TransactionCellNode: ASCellNode {
         amountTextNode
       ]
     )
-    
+
     return ASInsetLayoutSpec(insets: .cellNode, child: horizontalStack)
   }
 }

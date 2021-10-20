@@ -5,7 +5,7 @@ class ASViewController: ASDKViewController<ASDisplayNode> {
     super.viewDidLoad()
     configureNode()
   }
-  
+
   private func configureNode() {
     node.backgroundColor = .systemBackground
   }

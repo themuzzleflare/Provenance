@@ -5,14 +5,14 @@ extension UICollectionViewLayout {
   static var flowLayout: UICollectionViewLayout {
     return UICollectionViewFlowLayout()
   }
-  
+
   /// A `UICollectionViewFlowLayout()` with `sectionHeadersPinToVisibleBounds` set to `true`.
   static var sectionHeadersPinned: UICollectionViewLayout {
     let layout = UICollectionViewFlowLayout()
     layout.sectionHeadersPinToVisibleBounds = true
     return layout
   }
-  
+
   /// `twoColumnGridLayout`.
   static var twoColumnGridLayout: UICollectionViewLayout {
     return UICollectionViewCompositionalLayout { (_, _) in
@@ -42,7 +42,7 @@ extension UICollectionViewLayout {
       return section
     }
   }
-  
+
   /// `gridLayout`.
   static var gridLayout: UICollectionViewLayout {
     let itemSize = NSCollectionLayoutSize(

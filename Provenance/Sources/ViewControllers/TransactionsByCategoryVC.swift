@@ -4,17 +4,17 @@ import Alamofire
 
 final class TransactionsByCategoryVC: ASViewController {
   // MARK: - Properties
-  
+
   private var category: CategoryResource
-  
+
   private lazy var searchController = UISearchController(self)
-  
+
   private let tableNode = ASTableNode(style: .plain)
-  
+
   private var dateStyleObserver: NSKeyValueObservation?
-  
+
   private var noTransactions: Bool = false
-  
+
   private var transactions = [TransactionResource]() {
     didSet {
       noTransactions = transactions.isEmpty
@@ -23,31 +23,31 @@ final class TransactionsByCategoryVC: ASViewController {
       searchController.searchBar.placeholder = transactions.searchBarPlaceholder
     }
   }
-  
+
   private var transactionsError = String()
-  
+
   private var filteredTransactions: [TransactionResource] {
     return transactions.filtered(searchBar: searchController.searchBar)
   }
-  
+
   private var oldTransactionCellModels = [TransactionCellModel]()
-  
+
   // MARK: - Life Cycle
-  
+
   init(category: CategoryResource) {
     self.category = category
     super.init(node: tableNode)
   }
-  
+
   deinit {
     removeObservers()
     print("deinit")
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
@@ -56,7 +56,7 @@ final class TransactionsByCategoryVC: ASViewController {
     configureTableNode()
     applySnapshot(override: true)
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     fetchTransactions()
@@ -70,21 +70,21 @@ private extension TransactionsByCategoryVC {
     title = "Transactions by Category"
     definesPresentationContext = true
   }
-  
+
   private func configureObservers() {
     NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
-    dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+    dateStyleObserver = App.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       weakSelf.applySnapshot()
     }
   }
-  
+
   private func removeObservers() {
     NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil
   }
-  
+
   private func configureNavigation() {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .never
@@ -92,7 +92,7 @@ private extension TransactionsByCategoryVC {
     navigationItem.searchController = searchController
     navigationItem.hidesSearchBarWhenScrolling = false
   }
-  
+
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
@@ -107,14 +107,14 @@ private extension TransactionsByCategoryVC {
   private func appMovedToForeground() {
     fetchTransactions()
   }
-  
+
   @objc
   private func refreshTransactions() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchTransactions()
     }
   }
-  
+
   private func applySnapshot(override: Bool = false) {
     let result = ListDiffPaths(
       fromSection: 0,
@@ -148,9 +148,9 @@ private extension TransactionsByCategoryVC {
       tableNode.performBatchUpdates(batchUpdates)
     }
   }
-  
+
   private func fetchTransactions() {
-    UpFacade.listTransactions(filterBy: category) { (result) in
+    Up.listTransactions(filterBy: category) { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(transactions):
@@ -161,15 +161,15 @@ private extension TransactionsByCategoryVC {
       }
     }
   }
-  
+
   private func display(_ transactions: [TransactionResource]) {
-    transactionsError = .emptyString
+    transactionsError = ""
     self.transactions = transactions
     if navigationItem.title != category.attributes.name {
       navigationItem.title = category.attributes.name
     }
   }
-  
+
   private func display(_ error: AFError) {
     transactionsError = error.errorDescription ?? error.localizedDescription
     transactions.removeAll()
@@ -185,7 +185,7 @@ extension TransactionsByCategoryVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
     return filteredTransactions.count
   }
-  
+
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let transaction = filteredTransactions[indexPath.row]
     let node = TransactionCellNode(transaction: transaction, selection: false)
@@ -212,7 +212,7 @@ extension TransactionsByCategoryVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     applySnapshot()
   }
-  
+
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     if searchBar.searchTextField.hasText {
       searchBar.clear()

@@ -4,7 +4,7 @@ import SwiftDate
 
 final class HeaderCell: UICollectionViewCell {
   private let dateLabel = UILabel()
-  
+
   private(set) var dateText: String? {
     get {
       return dateLabel.text
@@ -13,12 +13,12 @@ final class HeaderCell: UICollectionViewCell {
       dateLabel.text = newValue
     }
   }
-  
+
   override func layoutSubviews() {
     super.layoutSubviews()
     dateLabel.frame = contentView.bounds.inset(by: .sectionHeader)
   }
-  
+
   private func configure() {
     contentView.addSubview(dateLabel)
     contentView.backgroundColor = .secondarySystemGroupedBackground

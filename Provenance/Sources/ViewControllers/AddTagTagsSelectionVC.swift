@@ -5,50 +5,50 @@ import Alamofire
 
 final class AddTagTagsSelectionVC: ASViewController {
   // MARK: - Properties
-  
+
   private var transaction: TransactionResource
-  
+
   private var fromTransactionTags: Bool
-  
+
   private lazy var editingBarButtonItem = UIBarButtonItem(
     title: isEditing ? "Cancel" : "Select",
     style: isEditing ? .done : .plain,
     target: self,
     action: #selector(toggleEditing)
   )
-  
+
   private lazy var addBarButtonItem = UIBarButtonItem(
     barButtonSystemItem: .add,
     target: self,
     action: #selector(openAddWorkflow)
   )
-  
+
   private lazy var selectionBarButtonItem = UIBarButtonItem(
     title: "Deselect All",
     style: .plain,
     target: self,
     action: #selector(selectionAction)
   )
-  
+
   private lazy var selectionLabelBarButtonItem = UIBarButtonItem(
     title: "\(tableNode.indexPathsForSelectedRows?.count.description ?? "0") of 6 selected"
   )
-  
+
   private lazy var nextBarButtonItem = UIBarButtonItem(
     title: "Next",
     style: .plain,
     target: self,
     action: #selector(nextAction)
   )
-  
+
   private lazy var searchController = UISearchController(self)
-  
+
   private let tableNode = ASTableNode(style: .plain)
-  
+
   private var showingBanner: Bool = false
-  
+
   private var noTags: Bool = false
-  
+
   private var tags = [TagResource]() {
     didSet {
       noTags = tags.isEmpty
@@ -58,32 +58,32 @@ final class AddTagTagsSelectionVC: ASViewController {
       searchController.searchBar.placeholder = tags.searchBarPlaceholder
     }
   }
-  
+
   private var tagsError = String()
-  
+
   private var oldTagCellModels = [TagCellModel]()
-  
+
   private var filteredTags: [TagResource] {
     return tags.filtered(searchBar: searchController.searchBar)
   }
-  
+
   // MARK: - Life Cycle
-  
+
   init(transaction: TransactionResource, fromTransactionTags: Bool = false) {
     self.transaction = transaction
     self.fromTransactionTags = fromTransactionTags
     super.init(node: tableNode)
   }
-  
+
   deinit {
     removeObserver()
     print("deinit")
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObserver()
@@ -93,7 +93,7 @@ final class AddTagTagsSelectionVC: ASViewController {
     configureTableNode()
     applySnapshot(override: true)
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     fetchTags()
@@ -101,17 +101,17 @@ final class AddTagTagsSelectionVC: ASViewController {
       navigationItem.leftBarButtonItem = .close(self, action: #selector(closeWorkflow))
     }
   }
-  
+
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     navigationController?.setToolbarHidden(!isEditing, animated: true)
   }
-  
+
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     navigationController?.setToolbarHidden(true, animated: false)
   }
-  
+
   override func setEditing(_ editing: Bool, animated: Bool) {
     super.setEditing(editing, animated: animated)
     tableNode.view.setEditing(editing, animated: animated)
@@ -136,15 +136,18 @@ private extension AddTagTagsSelectionVC {
     title = "Tag Selection"
     definesPresentationContext = true
   }
-  
+
   private func configureObserver() {
-    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(appMovedToForeground),
+                                           name: .willEnterForegroundNotification,
+                                           object: nil)
   }
-  
+
   private func removeObserver() {
     NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
   }
-  
+
   private func configureNavigation() {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .never
@@ -152,12 +155,12 @@ private extension AddTagTagsSelectionVC {
     navigationItem.hidesSearchBarWhenScrolling = false
     navigationItem.backButtonDisplayMode = .minimal
   }
-  
+
   private func configureToolbar() {
     selectionLabelBarButtonItem.tintColor = .label
     setToolbarItems([selectionBarButtonItem, .flexibleSpace(), selectionLabelBarButtonItem, .flexibleSpace(), nextBarButtonItem], animated: false)
   }
-  
+
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
@@ -173,12 +176,12 @@ private extension AddTagTagsSelectionVC {
   private func appMovedToForeground() {
     fetchTags()
   }
-  
+
   @objc
   private func closeWorkflow() {
     navigationController?.dismiss(animated: true)
   }
-  
+
   @objc
   private func selectionAction() {
     tableNode.indexPathsForSelectedRows?.forEach { (indexPath) in
@@ -186,7 +189,7 @@ private extension AddTagTagsSelectionVC {
     }
     updateToolbarItems()
   }
-  
+
   @objc
   private func nextAction() {
     if let selectedTags = tableNode.indexPathsForSelectedRows?.map { filteredTags[$0.row] } {
@@ -194,40 +197,40 @@ private extension AddTagTagsSelectionVC {
       navigationController?.pushViewController(viewController, animated: true)
     }
   }
-  
+
   @objc
   private func addTagsTextFieldChanged() {
     if let alert = presentedViewController as? UIAlertController, let action = alert.actions.last {
-      let text = alert.textFields?.textsJoined ?? .emptyString
+      let text = alert.textFields?.textsJoined ?? ""
       action.isEnabled = !text.isEmpty
     }
   }
-  
+
   @objc
   private func openAddWorkflow() {
     let alertController = UIAlertController.submitNewTags(self, selector: #selector(addTagsTextFieldChanged), transaction: transaction)
     present(alertController, animated: true)
   }
-  
+
   @objc
   private func refreshTags() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchTags()
     }
   }
-  
+
   @objc
   private func toggleEditing() {
     setEditing(!isEditing, animated: true)
   }
-  
+
   private func updateToolbarItems() {
     selectionBarButtonItem.isEnabled = tableNode.indexPathsForSelectedRows != nil
     selectionLabelBarButtonItem.title = "\(tableNode.indexPathsForSelectedRows?.count.description ?? "0") of 6 selected"
     selectionLabelBarButtonItem.style = tableNode.indexPathsForSelectedRows?.count == 6 ? .done : .plain
     nextBarButtonItem.isEnabled = tableNode.indexPathsForSelectedRows != nil
   }
-  
+
   private func applySnapshot(override: Bool = false) {
     let result = ListDiffPaths(
       fromSection: 0,
@@ -236,6 +239,7 @@ private extension AddTagTagsSelectionVC {
       newArray: filteredTags.tagCellModels,
       option: .equality
     ).forBatchUpdates()
+
     if result.hasChanges || override || !tagsError.isEmpty || noTags {
       if filteredTags.isEmpty && tagsError.isEmpty {
         if tags.isEmpty && !noTags {
@@ -252,18 +256,20 @@ private extension AddTagTagsSelectionVC {
           }
         }
       }
+
       let batchUpdates = { [self] in
         tableNode.deleteRows(at: result.deletes, with: .automatic)
         tableNode.insertRows(at: result.inserts, with: .automatic)
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
         oldTagCellModels = filteredTags.tagCellModels
       }
+
       tableNode.performBatchUpdates(batchUpdates)
     }
   }
-  
+
   private func fetchTags() {
-    UpFacade.listTags { (result) in
+    Up.listTags { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(tags):
@@ -274,9 +280,9 @@ private extension AddTagTagsSelectionVC {
       }
     }
   }
-  
+
   private func display(_ tags: [TagResource]) {
-    tagsError = .emptyString
+    tagsError = ""
     self.tags = tags
     if navigationItem.title != "Select Tag" || navigationItem.title != "Select Tags" {
       navigationItem.title = isEditing ? "Select Tags" : "Select Tag"
@@ -285,7 +291,7 @@ private extension AddTagTagsSelectionVC {
       navigationItem.setRightBarButtonItems([addBarButtonItem, editingBarButtonItem], animated: true)
     }
   }
-  
+
   private func display(_ error: AFError) {
     tagsError = error.errorDescription ?? error.localizedDescription
     tags.removeAll()
@@ -305,7 +311,7 @@ extension AddTagTagsSelectionVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
     return filteredTags.count
   }
-  
+
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let tag = filteredTags[indexPath.row]
     let node = TagCellNode(tag: tag, selection: false)
@@ -313,7 +319,7 @@ extension AddTagTagsSelectionVC: ASTableDataSource {
       node
     }
   }
-  
+
   func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
     return isEditing
   }
@@ -341,7 +347,7 @@ extension AddTagTagsSelectionVC: ASTableDelegate {
     }
     return nil
   }
-  
+
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
     switch isEditing {
     case true:
@@ -353,13 +359,13 @@ extension AddTagTagsSelectionVC: ASTableDelegate {
       navigationController?.pushViewController(viewController, animated: true)
     }
   }
-  
+
   func tableNode(_ tableNode: ASTableNode, didDeselectRowAt indexPath: IndexPath) {
     if isEditing {
       updateToolbarItems()
     }
   }
-  
+
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     let tag = filteredTags[indexPath.row]
     return isEditing ? nil : UIContextMenuConfiguration(elements: [
@@ -372,8 +378,8 @@ extension AddTagTagsSelectionVC: ASTableDelegate {
 
 extension AddTagTagsSelectionVC: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    let currentText = textField.text ?? .emptyString
-    guard let stringRange = Range(range, in: textField.text ?? .emptyString) else { return false }
+    let currentText = textField.text ?? ""
+    guard let stringRange = Range(range, in: textField.text ?? "") else { return false }
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
     return updatedText.count <= 30
   }
@@ -386,7 +392,7 @@ extension AddTagTagsSelectionVC: UISearchBarDelegate {
     applySnapshot()
     updateToolbarItems()
   }
-  
+
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     if searchBar.searchTextField.hasText {
       searchBar.clear()
@@ -401,12 +407,12 @@ extension AddTagTagsSelectionVC: NotificationBannerDelegate {
   func notificationBannerWillAppear(_ banner: BaseNotificationBanner) {
     showingBanner = true
   }
-  
-  func notificationBannerWillDisappear(_ banner: BaseNotificationBanner) {}
-  
-  func notificationBannerDidAppear(_ banner: BaseNotificationBanner) {}
-  
+
   func notificationBannerDidDisappear(_ banner: BaseNotificationBanner) {
     showingBanner = false
   }
+
+  func notificationBannerWillDisappear(_ banner: BaseNotificationBanner) {}
+
+  func notificationBannerDidAppear(_ banner: BaseNotificationBanner) {}
 }

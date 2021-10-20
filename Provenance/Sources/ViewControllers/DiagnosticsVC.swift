@@ -2,25 +2,25 @@ import UIKit
 
 final class DiagnosticsVC: ViewController {
   // MARK: - Properties
-  
+
   private typealias DataSource = UITableViewDiffableDataSource<DetailSection, DetailItem>
-  
+
   private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailItem>
-  
+
   private lazy var dataSource = makeDataSource()
-  
+
   private let tableView = UITableView(frame: .zero, style: .grouped)
-  
+
   private var sections: [DetailSection] {
     return .diagnosticsSections
   }
-  
+
   // MARK: - Life Cycle
-  
+
   deinit {
     print("deinit")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(tableView)
@@ -29,7 +29,7 @@ final class DiagnosticsVC: ViewController {
     configureTableView()
     applySnapshot()
   }
-  
+
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     tableView.frame = view.bounds
@@ -42,13 +42,13 @@ private extension DiagnosticsVC {
   private func configureSelf() {
     title = "Diagnostics"
   }
-  
+
   private func configureNavigation() {
     navigationItem.title = "Diagnostics"
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.leftBarButtonItem = .close(self, action: #selector(closeWorkflow))
   }
-  
+
   private func configureTableView() {
     tableView.dataSource = dataSource
     tableView.delegate = self
@@ -66,7 +66,7 @@ private extension DiagnosticsVC {
   private func closeWorkflow() {
     navigationController?.dismiss(animated: true)
   }
-  
+
   private func makeDataSource() -> DataSource {
     return DataSource(
       tableView: tableView,
@@ -80,7 +80,7 @@ private extension DiagnosticsVC {
       }
     )
   }
-  
+
   private func applySnapshot(animate: Bool = false) {
     var snapshot = Snapshot()
     snapshot.appendSections(sections)
@@ -95,7 +95,7 @@ extension DiagnosticsVC: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return UITableView.automaticDimension
   }
-  
+
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     guard let attribute = dataSource.itemIdentifier(for: indexPath), attribute.value != "Unknown" else { return nil }
     return UIContextMenuConfiguration(elements: [

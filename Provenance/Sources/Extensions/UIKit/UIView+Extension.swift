@@ -5,7 +5,7 @@ extension UIView {
   static var plainView: UIView {
     return UIView()
   }
-  
+
   static func loadingView(frame: CGRect, contentType: ContentType) -> UIView {
     let view = UIView(frame: frame)
     let loadingIndicator = MBProgressHUD(view: view)
@@ -15,7 +15,7 @@ extension UIView {
     loadingIndicator.show(animated: true)
     return view
   }
-  
+
   static func noContentView(frame: CGRect, type: ContentType) -> UIView {
     let view = UIView(frame: frame)
     let icon = UIImageView(image: .xmarkDiamond)
@@ -39,7 +39,7 @@ extension UIView {
     verticalStack.spacing = 10
     return view
   }
-  
+
   static func errorView(frame: CGRect, text: String) -> UIView {
     let view = UIView(frame: frame)
     let label = UILabel()
@@ -56,7 +56,7 @@ extension UIView {
     label.text = text
     return view
   }
-  
+
   static func accountTransactionsHeaderView(frame: CGRect, account: AccountResource) -> UIView {
     let view = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: 117))
     let balanceLabel = UILabel()

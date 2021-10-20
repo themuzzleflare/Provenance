@@ -11,7 +11,7 @@ extension DetailItem: Hashable {
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)
   }
-  
+
   static func == (lhs: DetailItem, rhs: DetailItem) -> Bool {
     lhs.id == rhs.id && lhs.value == rhs.value
   }
@@ -26,7 +26,7 @@ extension DetailItem {
       return .none
     }
   }
-  
+
   var cellAccessoryType: UITableViewCell.AccessoryType {
     switch id {
     case "Account", "Transfer Account", "Parent Category", "Category", "Tags":
@@ -35,7 +35,7 @@ extension DetailItem {
       return .none
     }
   }
-  
+
   var valueFont: UIFont {
     switch id {
     case "Transaction ID", "Raw Text", "Account ID":

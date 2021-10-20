@@ -6,34 +6,34 @@ extension UIAlertController {
     alertController.addAction(.dismiss)
     return alertController
   }
-  
+
   static func alertWithDismissPopButton(_ navigationController: UINavigationController?, title: String, message: String) -> UIAlertController {
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
     alertController.addAction(.dismissAndPop(navigationController))
     return alertController
   }
-  
+
   static func removeTagFromTransaction(_ viewController: TransactionsByTagVC, removing tag: TagResource, from transaction: TransactionResource) -> UIAlertController {
     let alertController = UIAlertController(title: "Confirmation", message: "Are you sure you want to remove \(tag.id) from \(transaction.attributes.description)?", preferredStyle: .actionSheet)
     alertController.addAction(.removeTagFromTransaction(viewController, removing: tag, from: transaction))
     alertController.addAction(.cancel)
     return alertController
   }
-  
+
   static func removeTagFromTransaction(_ viewController: TransactionTagsVC, removing tag: TagResource, from transaction: TransactionResource) -> UIAlertController {
     let alertController = UIAlertController(title: "Confirmation", message: "Are you sure you want to remove \(tag.id) from \(transaction.attributes.description)?", preferredStyle: .actionSheet)
     alertController.addAction(.removeTagFromTransaction(viewController, removing: tag, from: transaction))
     alertController.addAction(.cancel)
     return alertController
   }
-  
+
   static func removeTagsFromTransaction(_ viewController: TransactionTagsVC, removing tags: [TagResource], from transaction: TransactionResource) -> UIAlertController {
     let alertController = UIAlertController(title: "Confirmation", message: "Are you sure you want to remove \(tags.joinedWithComma) from \(transaction.attributes.description)?", preferredStyle: .actionSheet)
     alertController.addAction(.removeTagsFromTransaction(viewController, removing: tags, from: transaction))
     alertController.addAction(.cancel)
     return alertController
   }
-  
+
   static func submitNewTags(_ viewController: AddTagTagsSelectionVC, selector: Selector, transaction: TransactionResource) -> UIAlertController {
     let alertController = UIAlertController(
       title: "Create Tags",
@@ -55,7 +55,7 @@ extension UIAlertController {
     alertController.addAction(.submitNewTags(viewController.navigationController, transaction: transaction, alertController: alertController))
     return alertController
   }
-  
+
   static func saveApiKey(_ viewController: SettingsVC) -> UIAlertController {
     let alertController = UIAlertController(
       title: "API Key",
@@ -68,14 +68,14 @@ extension UIAlertController {
       textField.spellCheckingType = .no
       textField.clearButtonMode = .whileEditing
       textField.textContentType = .password
-      textField.text = ProvenanceApp.userDefaults.apiKey
+      textField.text = App.userDefaults.apiKey
       viewController.textDidChangeObserver = NotificationCenter.default.addObserver(
         forName: UITextField.textDidChangeNotification,
         object: textField,
         queue: .main,
         using: { (notification) in
           if let change = notification.object as? UITextField, let text = change.text {
-            viewController.submitActionProxy.isEnabled = text.count >= 1 && text != ProvenanceApp.userDefaults.apiKey
+            viewController.submitActionProxy.isEnabled = text.count >= 1 && text != App.userDefaults.apiKey
           } else {
             viewController.submitActionProxy.isEnabled = false
           }
@@ -86,7 +86,7 @@ extension UIAlertController {
     alertController.addAction(.saveApiKey(alertController: alertController, viewController: viewController))
     return alertController
   }
-  
+
   static func noApiKey(_ sceneDelegate: SceneDelegate) -> UIAlertController {
     let alertController = UIAlertController(
       title: "API Key Required",
@@ -105,7 +105,7 @@ extension UIAlertController {
         queue: .main,
         using: { (notification) in
           if let change = notification.object as? UITextField, let text = change.text {
-            sceneDelegate.submitActionProxy.isEnabled = text.count >= 1 && text != ProvenanceApp.userDefaults.apiKey
+            sceneDelegate.submitActionProxy.isEnabled = text.count >= 1 && text != App.userDefaults.apiKey
           } else {
             sceneDelegate.submitActionProxy.isEnabled = false
           }

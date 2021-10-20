@@ -5,9 +5,7 @@ final class StickerImageNode: ASDisplayNode {
 
   init(sticker: ASAnimatedImageProtocol) {
     super.init()
-
     automaticallyManagesSubnodes = true
-
     imageNode.animatedImage = sticker
     imageNode.style.maxWidth = ASDimension(unit: .points, value: 300)
     imageNode.style.maxHeight = ASDimension(unit: .points, value: 300)

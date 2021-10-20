@@ -2,10 +2,10 @@ import Foundation
 
 enum InfoPlist {
   static var cfBundleIdentifier: String {
-    return Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as? String ?? .emptyString
+    return Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as? String ?? ""
   }
-  
+
   static var nsHumanReadableCopyright: String {
-    return Bundle.main.object(forInfoDictionaryKey: "NSHumanReadableCopyright") as? String ?? .emptyString
+    return Bundle.main.object(forInfoDictionaryKey: "NSHumanReadableCopyright") as? String ?? ""
   }
 }

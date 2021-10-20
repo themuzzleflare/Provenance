@@ -3,33 +3,33 @@ import AsyncDisplayKit
 
 final class SettingsVC: ASViewController {
   // MARK: - Properties
-  
+
   private var displayBanner: GrowingNotificationBanner?
-  
+
   var submitActionProxy: UIAlertAction!
-  
+
   private var apiKeyObserver: NSKeyValueObservation?
-  
+
   var textDidChangeObserver: NSObjectProtocol!
-  
+
   let tableNode = ASTableNode(style: .grouped)
-  
+
   // MARK: - Life Cycle
-  
+
   init(displayBanner: GrowingNotificationBanner? = nil) {
     self.displayBanner = displayBanner
     super.init(node: tableNode)
   }
-  
+
   deinit {
     removeObserver()
     print("deinit")
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObserver()
@@ -37,7 +37,7 @@ final class SettingsVC: ASViewController {
     configureNavigation()
     configureTableNode()
   }
-  
+
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     if let displayBanner = displayBanner {
@@ -52,9 +52,9 @@ private extension SettingsVC {
   private func configureSelf() {
     title = "Settings"
   }
-  
+
   private func configureObserver() {
-    apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+    apiKeyObserver = App.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       DispatchQueue.main.async {
         if let alert = weakSelf.presentedViewController as? UIAlertController {
@@ -64,18 +64,18 @@ private extension SettingsVC {
       }
     }
   }
-  
+
   private func removeObserver() {
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
   }
-  
+
   private func configureNavigation() {
     navigationItem.title = "Settings"
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.leftBarButtonItem = .close(self, action: #selector(closeWorkflow))
   }
-  
+
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
@@ -98,11 +98,11 @@ extension SettingsVC: ASTableDataSource {
   func numberOfSections(in tableNode: ASTableNode) -> Int {
     return 3
   }
-  
+
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
     return 1
   }
-  
+
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let settingsNode = ASTextCellNode(text: "Settings", selectionStyle: .default, accessoryType: .disclosureIndicator)
     return {
@@ -118,7 +118,7 @@ extension SettingsVC: ASTableDataSource {
       }
     }
   }
-  
+
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     switch section {
     case 0:
@@ -127,7 +127,7 @@ extension SettingsVC: ASTableDataSource {
       return nil
     }
   }
-  
+
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     switch section {
     case 0:
@@ -153,7 +153,7 @@ extension SettingsVC: ASTableDelegate {
       return nil
     }
   }
-  
+
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     switch section {
     case 2:
@@ -162,7 +162,7 @@ extension SettingsVC: ASTableDelegate {
       return UITableView.automaticDimension
     }
   }
-  
+
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
     switch indexPath.section {
     case 0:
@@ -176,12 +176,12 @@ extension SettingsVC: ASTableDelegate {
       break
     }
   }
-  
+
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     switch indexPath.section {
     case 0:
-      return ProvenanceApp.userDefaults.apiKey.isEmpty ? nil : UIContextMenuConfiguration(elements: [
-        .copyGeneric(title: "API Key", string: ProvenanceApp.userDefaults.apiKey)
+      return App.userDefaults.apiKey.isEmpty ? nil : UIContextMenuConfiguration(elements: [
+        .copyGeneric(title: "API Key", string: App.userDefaults.apiKey)
       ])
     default:
       return nil

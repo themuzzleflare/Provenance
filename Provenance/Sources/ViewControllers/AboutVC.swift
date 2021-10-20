@@ -2,23 +2,23 @@ import AsyncDisplayKit
 
 final class AboutVC: ASViewController {
   // MARK: - Properties
-  
+
   private let tableNode = ASTableNode(style: .grouped)
-  
+
   // MARK: - Life Cycle
-  
+
   override init() {
     super.init(node: tableNode)
   }
-  
+
   deinit {
     print("deinit")
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     configureSelf()
@@ -33,7 +33,7 @@ private extension AboutVC {
   private func configureSelf() {
     title = "About"
   }
-  
+
   private func configureNavigation() {
     navigationItem.title = "About"
     navigationItem.largeTitleDisplayMode = .never
@@ -41,7 +41,7 @@ private extension AboutVC {
     navigationItem.leftBarButtonItem = .openDiagnostics(self, action: #selector(openDiagnostics))
     navigationItem.rightBarButtonItem = .openSettings(self, action: #selector(openSettings))
   }
-  
+
   private func configureTableNode() {
     tableNode.dataSource = self
     tableNode.delegate = self
@@ -57,7 +57,7 @@ private extension AboutVC {
     let viewController = NavigationController(rootViewController: .settings)
     present(viewController, animated: true)
   }
-  
+
   @objc
   private func openDiagnostics() {
     let viewController = NavigationController(rootViewController: .diagnostics)
@@ -71,7 +71,7 @@ extension AboutVC: ASTableDataSource {
   func numberOfSections(in tableNode: ASTableNode) -> Int {
     return 3
   }
-  
+
   func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
     switch section {
     case 0:
@@ -84,7 +84,7 @@ extension AboutVC: ASTableDataSource {
       fatalError("Unknown section")
     }
   }
-  
+
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let section = indexPath.section
     let row = indexPath.row
@@ -96,9 +96,9 @@ extension AboutVC: ASTableDataSource {
         case 0:
           return .aboutTop
         case 1:
-          return RightDetailCellNode(text: "Version", detailText: ProvenanceApp.userDefaults.appVersion)
+          return RightDetailCellNode(text: "Version", detailText: App.userDefaults.appVersion)
         case 2:
-          return RightDetailCellNode(text: "Build", detailText: ProvenanceApp.userDefaults.appBuild)
+          return RightDetailCellNode(text: "Build", detailText: App.userDefaults.appBuild)
         default:
           fatalError("Unknown row")
         }
@@ -131,7 +131,7 @@ extension AboutVC: ASTableDataSource {
       }
     }
   }
-  
+
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     switch section {
     case 2:
@@ -173,7 +173,7 @@ extension AboutVC: ASTableDelegate {
       break
     }
   }
-  
+
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     let section = indexPath.section
     let row = indexPath.row
@@ -181,12 +181,12 @@ extension AboutVC: ASTableDelegate {
     case 0:
       switch row {
       case 1:
-        return ProvenanceApp.userDefaults.appVersion == "Unknown" ? nil : UIContextMenuConfiguration(elements: [
-          .copyGeneric(title: "Version", string: ProvenanceApp.userDefaults.appVersion)
+        return App.userDefaults.appVersion == "Unknown" ? nil : UIContextMenuConfiguration(elements: [
+          .copyGeneric(title: "Version", string: App.userDefaults.appVersion)
         ])
       case 2:
-        return ProvenanceApp.userDefaults.appBuild == "Unknown" ? nil : UIContextMenuConfiguration(elements: [
-          .copyGeneric(title: "Build", string: ProvenanceApp.userDefaults.appBuild)
+        return App.userDefaults.appBuild == "Unknown" ? nil : UIContextMenuConfiguration(elements: [
+          .copyGeneric(title: "Build", string: App.userDefaults.appBuild)
         ])
       default:
         return nil

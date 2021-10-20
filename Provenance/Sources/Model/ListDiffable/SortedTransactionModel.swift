@@ -3,7 +3,7 @@ import IGListDiffKit
 final class SortedTransactionModel {
   let id: Date
   let transactions: [TransactionCellModel]
-  
+
   init(id: Date, transactions: [TransactionCellModel]) {
     self.id = id
     self.transactions = transactions
@@ -16,7 +16,7 @@ extension SortedTransactionModel: ListDiffable {
   func diffIdentifier() -> NSObjectProtocol {
     return id as NSObjectProtocol
   }
-  
+
   func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
     return true
   }

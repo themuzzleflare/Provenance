@@ -4,7 +4,7 @@ final class AboutTopCellNode: ASCellNode {
   private let logoImageNode = ASImageNode()
   private let nameTextNode = ASTextNode()
   private let descriptionTextNode = ASTextNode()
-  
+
   override init() {
     super.init()
     automaticallyManagesSubnodes = true
@@ -17,7 +17,7 @@ final class AboutTopCellNode: ASCellNode {
     nameTextNode.attributedText = "Provenance".styled(with: .aboutName)
     descriptionTextNode.attributedText = "Provenance is a lightweight application that interacts with the Up Banking Developer API to display information about your bank accounts, transactions, categories, tags, and more.".styled(with: .aboutDescription)
   }
-  
+
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
     let verticalStack = ASStackLayoutSpec(
       direction: .vertical,
@@ -30,7 +30,7 @@ final class AboutTopCellNode: ASCellNode {
         descriptionTextNode
       ]
     )
-    
+
     return ASInsetLayoutSpec(insets: .cellNode, child: verticalStack)
   }
 }

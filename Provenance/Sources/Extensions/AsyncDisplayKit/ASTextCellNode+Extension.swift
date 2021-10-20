@@ -10,7 +10,7 @@ extension ASTextCellNode {
       ],
       insets: insets ?? .cellNode
     )
-    self.text = text ?? .emptyString
+    self.text = text ?? ""
     self.selectionStyle = selectionStyle ?? .default
     self.accessoryType = accessoryType ?? .none
   }

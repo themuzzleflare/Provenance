@@ -5,7 +5,7 @@ extension Bool {
   var integer: Int {
     return self ? 1 : 0
   }
-  
+
   /// Return "true" if true, or "false" if false.
   var string: String {
     return self ? "true" : "false"

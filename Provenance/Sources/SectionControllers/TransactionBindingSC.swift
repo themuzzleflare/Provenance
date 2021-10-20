@@ -17,18 +17,20 @@ extension TransactionBindingSC: ListBindingSectionControllerDataSource {
     guard let object = object as? SortedTransactionModelAlt else { return [] }
     return object.transactions.transactionCellModels
   }
-  
+
   func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, cellForViewModel viewModel: Any, at index: Int) -> UICollectionViewCell & ListBindable {
     switch viewModel {
     case is SortedSectionModel:
       let cell: HeaderCell = collectionContext!.dequeueReusableCell(for: sectionController, at: index)
       return cell
-    default:
+    case is TransactionCellModel:
       let cell: TransactionCell = collectionContext!.dequeueReusableCell(for: sectionController, at: index)
       return cell
+    default:
+      fatalError()
     }
   }
-  
+
   func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, sizeForViewModel viewModel: Any, at index: Int) -> CGSize {
     switch viewModel {
     case is SortedSectionModel:
@@ -51,11 +53,11 @@ extension TransactionBindingSC: ListBindingSectionControllerSelectionDelegate {
     collectionContext?.deselectItem(at: index, sectionController: sectionController, animated: true)
     viewController?.navigationController?.pushViewController(controller, animated: true)
   }
-  
+
   func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, didDeselectItemAt index: Int, viewModel: Any) {}
-  
+
   func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, didHighlightItemAt index: Int, viewModel: Any) {}
-  
+
   func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, didUnhighlightItemAt index: Int, viewModel: Any) {}
 }
 
@@ -65,13 +67,13 @@ extension TransactionBindingSC: ListSupplementaryViewSource {
   func supportedElementKinds() -> [String] {
     return [UICollectionView.elementKindSectionHeader]
   }
-  
+
   func viewForSupplementaryElement(ofKind elementKind: String, at index: Int) -> UICollectionReusableView {
     let view: HeaderView = collectionContext!.dequeueReusableSupplementaryView(ofKind: elementKind, forSectionController: self, atIndex: index)
     view.dateText = object?.id.toString(.date(.medium))
     return view
   }
-  
+
   func sizeForSupplementaryView(ofKind elementKind: String, at index: Int) -> CGSize {
     return .cellNode(height: 45)
   }

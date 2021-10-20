@@ -3,7 +3,7 @@ import AsyncDisplayKit
 final class AccountCellNode: ASCellNode {
   private let balanceTextNode = ASTextNode()
   private let displayNameTextNode = ASTextNode()
-  
+
   init(account: AccountResource) {
     super.init()
     automaticallyManagesSubnodes = true
@@ -15,25 +15,25 @@ final class AccountCellNode: ASCellNode {
     borderWidth = 1.0
     backgroundColor = .secondarySystemBackground
   }
-  
+
   override var isSelected: Bool {
     didSet {
       backgroundColor = isSelected ? .gray.withAlphaComponent(0.3) : .secondarySystemBackground
     }
   }
-  
+
   override var isHighlighted: Bool {
     didSet {
       backgroundColor = isHighlighted ? .gray.withAlphaComponent(0.3) : .secondarySystemBackground
     }
   }
-  
+
   override func asyncTraitCollectionDidChange(withPreviousTraitCollection previousTraitCollection: ASPrimitiveTraitCollection) {
     super.asyncTraitCollectionDidChange(withPreviousTraitCollection: previousTraitCollection)
     guard previousTraitCollection.userInterfaceStyle != primitiveTraitCollection().userInterfaceStyle else { return }
     borderColor = .separator
   }
-  
+
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
     let verticalStack = ASStackLayoutSpec(
       direction: .vertical,
@@ -45,7 +45,7 @@ final class AccountCellNode: ASCellNode {
         displayNameTextNode
       ]
     )
-    
+
     return ASInsetLayoutSpec(insets: .cellNode, child: verticalStack)
   }
 }

@@ -3,52 +3,52 @@ import MarqueeLabel
 
 final class AccountDetailVC: ViewController {
   // MARK: - Properties
-  
+
   private var account: AccountResource {
     didSet {
       applySnapshot()
       tableView.refreshControl?.endRefreshing()
     }
   }
-  
+
   private var transaction: TransactionResource? {
     didSet {
       applySnapshot()
       tableView.refreshControl?.endRefreshing()
     }
   }
-  
+
   private typealias DataSource = UITableViewDiffableDataSource<DetailSection, DetailItem>
-  
+
   private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailItem>
-  
+
   private lazy var dataSource = makeDataSource()
-  
+
   private var dateStyleObserver: NSKeyValueObservation?
-  
+
   private let tableView = UITableView(frame: .zero, style: .grouped)
-  
+
   private var sections: [DetailSection] {
     return .accountDetailSections(account: account, transaction: transaction).filtered
   }
-  
+
   // MARK: - Life Cycle
-  
+
   init(account: AccountResource, transaction: TransactionResource? = nil) {
     self.account = account
     self.transaction = transaction
     super.init(nibName: nil, bundle: nil)
   }
-  
+
   deinit {
     removeObservers()
     print("deinit")
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(tableView)
@@ -58,12 +58,12 @@ final class AccountDetailVC: ViewController {
     configureTableView()
     applySnapshot(animate: false)
   }
-  
+
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     tableView.frame = view.bounds
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     fetchingTasks()
@@ -76,28 +76,30 @@ private extension AccountDetailVC {
   private func configureSelf() {
     title = "Account Details"
   }
-  
+
   private func configureObservers() {
-    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
-    dateStyleObserver = ProvenanceApp.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
-      guard let weakSelf = self else { return }
-      weakSelf.applySnapshot()
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(appMovedToForeground),
+                                           name: .willEnterForegroundNotification,
+                                           object: nil)
+    dateStyleObserver = App.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+      self?.applySnapshot()
     }
   }
-  
+
   private func removeObservers() {
     NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil
   }
-  
+
   private func configureNavigation() {
     navigationItem.title = account.attributes.displayName
     navigationItem.titleView = MarqueeLabel(text: account.attributes.displayName)
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.leftBarButtonItem = .close(self, action: #selector(closeWorkflow))
   }
-  
+
   private func configureTableView() {
     tableView.dataSource = dataSource
     tableView.delegate = self
@@ -116,24 +118,24 @@ private extension AccountDetailVC {
   private func appMovedToForeground() {
     fetchingTasks()
   }
-  
+
   @objc
   private func refreshData() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchingTasks()
     }
   }
-  
+
   @objc
   private func closeWorkflow() {
     navigationController?.dismiss(animated: true)
   }
-  
+
   private func fetchingTasks() {
     fetchAccount()
     fetchTransaction()
   }
-  
+
   private func makeDataSource() -> DataSource {
     return DataSource(
       tableView: tableView,
@@ -148,16 +150,16 @@ private extension AccountDetailVC {
       }
     )
   }
-  
+
   private func applySnapshot(animate: Bool = true) {
     var snapshot = Snapshot()
     snapshot.appendSections(sections)
     sections.forEach { snapshot.appendItems($0.items, toSection: $0) }
     dataSource.apply(snapshot, animatingDifferences: animate)
   }
-  
+
   private func fetchAccount() {
-    UpFacade.retrieveAccount(for: account) { (result) in
+    Up.retrieveAccount(for: account) { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(account):
@@ -168,9 +170,9 @@ private extension AccountDetailVC {
       }
     }
   }
-  
+
   private func fetchTransaction() {
-    UpFacade.retrieveLatestTransaction(for: account) { (result) in
+    Up.retrieveLatestTransaction(for: account) { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(transaction):

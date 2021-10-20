@@ -11,7 +11,7 @@ extension DetailSection: Hashable {
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)
   }
-  
+
   static func == (lhs: DetailSection, rhs: DetailSection) -> Bool {
     lhs.id == rhs.id
   }
@@ -29,11 +29,11 @@ extension Array where Element == DetailSection {
           ),
           DetailItem(
             id: "Account",
-            value: account?.attributes.displayName ?? .emptyString
+            value: account?.attributes.displayName ?? ""
           ),
           DetailItem(
             id: "Transfer Account",
-            value: transferAccount?.attributes.displayName ?? .emptyString
+            value: transferAccount?.attributes.displayName ?? ""
           )
         ]
       ),
@@ -46,11 +46,11 @@ extension Array where Element == DetailSection {
           ),
           DetailItem(
             id: "Raw Text",
-            value: transaction.attributes.rawText ?? .emptyString
+            value: transaction.attributes.rawText ?? ""
           ),
           DetailItem(
             id: "Message",
-            value: transaction.attributes.message ?? .emptyString
+            value: transaction.attributes.message ?? ""
           )
         ]
       ),
@@ -84,7 +84,7 @@ extension Array where Element == DetailSection {
           ),
           DetailItem(
             id: "Settlement Date",
-            value: transaction.attributes.settlementDate ?? .emptyString
+            value: transaction.attributes.settlementDate ?? ""
           )
         ]
       ),
@@ -93,11 +93,11 @@ extension Array where Element == DetailSection {
         items: [
           DetailItem(
             id: "Parent Category",
-            value: parentCategory?.attributes.name ?? .emptyString
+            value: parentCategory?.attributes.name ?? ""
           ),
           DetailItem(
             id: "Category",
-            value: category?.attributes.name ?? .emptyString
+            value: category?.attributes.name ?? ""
           )
         ]
       ),
@@ -112,7 +112,7 @@ extension Array where Element == DetailSection {
       )
     ]
   }
-  
+
   static func accountDetailSections(account: AccountResource, transaction: TransactionResource?) -> [DetailSection] {
     return [
       DetailSection(
@@ -124,7 +124,7 @@ extension Array where Element == DetailSection {
           ),
           DetailItem(
             id: "Latest Transaction",
-            value: transaction?.attributes.description ?? .emptyString
+            value: transaction?.attributes.description ?? ""
           )
         ]
       ),
@@ -143,7 +143,7 @@ extension Array where Element == DetailSection {
       )
     ]
   }
-  
+
   static var diagnosticsSections: [DetailSection] {
     return [
       DetailSection(
@@ -151,17 +151,17 @@ extension Array where Element == DetailSection {
         items: [
           DetailItem(
             id: "Version",
-            value: ProvenanceApp.userDefaults.appVersion
+            value: App.userDefaults.appVersion
           ),
           DetailItem(
             id: "Build",
-            value: ProvenanceApp.userDefaults.appBuild
+            value: App.userDefaults.appBuild
           )
         ]
       )
     ]
   }
-  
+
   var filtered: [DetailSection] {
     return self.filter { (section) in
       return !section.items.allSatisfy { (item) in

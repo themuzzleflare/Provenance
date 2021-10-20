@@ -3,20 +3,20 @@ import AsyncDisplayKit
 
 final class APIKeyCellNode: ASCellNode {
   // MARK: - Properties
-  
+
   private let marqueeLabelNode = MarqueeLabelNode()
-  
+
   private var apiKeyDisplay: String {
-    return ProvenanceApp.userDefaults.apiKey.isEmpty ? "None" : ProvenanceApp.userDefaults.apiKey
+    return App.userDefaults.apiKey.isEmpty ? "None" : App.userDefaults.apiKey
   }
-  
+
   // MARK: - Life Cycle
-  
+
   override init() {
     super.init()
     automaticallyManagesSubnodes = true
   }
-  
+
   override func didLoad() {
     super.didLoad()
     marqueeLabelNode.fadeLength = 30
@@ -25,7 +25,7 @@ final class APIKeyCellNode: ASCellNode {
     marqueeLabelNode.textColor = apiKeyDisplay == "None" ? .placeholderText : .label
     marqueeLabelNode.text = apiKeyDisplay
   }
-  
+
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
     return ASInsetLayoutSpec(insets: .cellNode, child: marqueeLabelNode)
   }

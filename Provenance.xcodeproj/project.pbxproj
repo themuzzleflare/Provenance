@@ -677,8 +677,6 @@
 		7AA6C4EB2623F606003F7947 /* AboutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutVC.swift; sourceTree = "<group>"; };
 		7AAA297E270EC5BE00A641BB /* Provenance.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Provenance.debug.xcconfig; sourceTree = "<group>"; };
 		7AAA297F270EC5CE00A641BB /* Provenance.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Provenance.release.xcconfig; sourceTree = "<group>"; };
-		7AAA2980270EC5E400A641BB /* Stickers.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Stickers.debug.xcconfig; sourceTree = "<group>"; };
-		7AAA2981270EC5EF00A641BB /* Stickers.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Stickers.release.xcconfig; sourceTree = "<group>"; };
 		7AAA2982270EC5F900A641BB /* Widgets.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Widgets.debug.xcconfig; sourceTree = "<group>"; };
 		7AAA2983270EC60B00A641BB /* Widgets.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Widgets.release.xcconfig; sourceTree = "<group>"; };
 		7AAA2984270EC61500A641BB /* Intents.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Intents.debug.xcconfig; sourceTree = "<group>"; };
@@ -721,6 +719,13 @@
 		7AD595C52705355700339BD1 /* MarqueeLabelNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeLabelNode.swift; sourceTree = "<group>"; };
 		7AD6ED932604A9150051A235 /* Provenance Stickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance Stickers.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AD6ED972604A9180051A235 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7ADC6EEF271FDB1E00A7E8AE /* Provenance.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Provenance.xcconfig; sourceTree = "<group>"; };
+		7ADC6EF0271FDB2800A7E8AE /* Stickers.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Stickers.xcconfig; sourceTree = "<group>"; };
+		7ADC6EF1271FDB3100A7E8AE /* Widgets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Widgets.xcconfig; sourceTree = "<group>"; };
+		7ADC6EF2271FDB3C00A7E8AE /* Intents.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Intents.xcconfig; sourceTree = "<group>"; };
+		7ADC6EF3271FDB4600A7E8AE /* IntentsUI.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = IntentsUI.xcconfig; sourceTree = "<group>"; };
+		7ADC6EF4271FDC6D00A7E8AE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		7ADC6EF5271FDC6D00A7E8AE /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		7ADC817D26A7F67F009D4E4E /* CircularStd-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CircularStd-Medium.otf"; sourceTree = "<group>"; };
 		7ADC817E26A7F67F009D4E4E /* CircularStd-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CircularStd-Book.otf"; sourceTree = "<group>"; };
 		7ADC817F26A7F67F009D4E4E /* CircularStd-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CircularStd-Bold.otf"; sourceTree = "<group>"; };
@@ -1053,10 +1058,13 @@
 			isa = PBXGroup;
 			children = (
 				7A5B06C326F2BCB6005CE3D1 /* Shared.xcconfig */,
+				7ADC6EEF271FDB1E00A7E8AE /* Provenance.xcconfig */,
+				7ADC6EF0271FDB2800A7E8AE /* Stickers.xcconfig */,
+				7ADC6EF1271FDB3100A7E8AE /* Widgets.xcconfig */,
+				7ADC6EF2271FDB3C00A7E8AE /* Intents.xcconfig */,
+				7ADC6EF3271FDB4600A7E8AE /* IntentsUI.xcconfig */,
 				7AAA297E270EC5BE00A641BB /* Provenance.debug.xcconfig */,
 				7AAA297F270EC5CE00A641BB /* Provenance.release.xcconfig */,
-				7AAA2980270EC5E400A641BB /* Stickers.debug.xcconfig */,
-				7AAA2981270EC5EF00A641BB /* Stickers.release.xcconfig */,
 				7AAA2982270EC5F900A641BB /* Widgets.debug.xcconfig */,
 				7AAA2983270EC60B00A641BB /* Widgets.release.xcconfig */,
 				7AAA2984270EC61500A641BB /* Intents.debug.xcconfig */,
@@ -1266,6 +1274,8 @@
 		7AB34D1125C78230000A1E81 = {
 			isa = PBXGroup;
 			children = (
+				7ADC6EF5271FDC6D00A7E8AE /* LICENSE */,
+				7ADC6EF4271FDC6D00A7E8AE /* README.md */,
 				7A38860726BB62F900F57EA0 /* XcodeConfigurations */,
 				7A75631426A7ED3100963658 /* Shared */,
 				7AB34D1C25C78230000A1E81 /* Provenance */,
@@ -2788,7 +2798,7 @@
 		};
 		7AD6ED9C2604A9180051A235 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AAA2980270EC5E400A641BB /* Stickers.debug.xcconfig */;
+			baseConfigurationReference = 7ADC6EF0271FDB2800A7E8AE /* Stickers.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;
@@ -2802,7 +2812,7 @@
 		};
 		7AD6ED9D2604A9180051A235 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AAA2981270EC5EF00A641BB /* Stickers.release.xcconfig */;
+			baseConfigurationReference = 7ADC6EF0271FDB2800A7E8AE /* Stickers.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JDL5FY6SCC;

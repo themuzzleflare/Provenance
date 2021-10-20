@@ -10,18 +10,18 @@ extension UISearchController {
     self.searchBar.autocapitalizationType = .none
     self.searchBar.spellCheckingType = .no
   }
-  
+
   static func accounts(_ delegate: UISearchBarDelegate) -> UISearchController {
     let searchController = UISearchController(delegate)
     searchController.searchBar.scopeButtonTitles = AccountTypeOptionEnum.allCases.map { $0.description }
-    searchController.searchBar.selectedScopeButtonIndex = ProvenanceApp.userDefaults.accountFilter
+    searchController.searchBar.selectedScopeButtonIndex = App.userDefaults.accountFilter
     return searchController
   }
-  
+
   static func categories(_ delegate: UISearchBarDelegate) -> UISearchController {
     let searchController = UISearchController(delegate)
     searchController.searchBar.scopeButtonTitles = CategoryTypeEnum.allCases.map { $0.description }
-    searchController.searchBar.selectedScopeButtonIndex = ProvenanceApp.userDefaults.categoryFilter
+    searchController.searchBar.selectedScopeButtonIndex = App.userDefaults.categoryFilter
     return searchController
   }
 }

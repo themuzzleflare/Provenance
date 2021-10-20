@@ -1,15 +1,15 @@
 import AsyncDisplayKit
 
-final class TabBarController: ASTabBarController {  
+final class TabBarController: ASTabBarController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setViewControllers(TabBarItem.defaultTabs, animated: false)
   }
-    
+
   override func restoreUserActivityState(_ activity: NSUserActivity) {
     super.restoreUserActivityState(activity)
     guard activity.activityType == NSUserActivity.addedTagsToTransaction.activityType, let intentResponse = activity.interaction?.intentResponse as? AddTagToTransactionIntentResponse, let transaction = intentResponse.transaction?.identifier else { return }
-    UpFacade.retrieveTransaction(for: transaction) { (result) in
+    Up.retrieveTransaction(for: transaction) { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(transaction):

@@ -4,19 +4,19 @@ import Alamofire
 
 final class TagsVC: ASViewController {
   // MARK: - Properties
-  
+
   private lazy var searchController = UISearchController(self)
-  
+
   private lazy var adapter: ListAdapter = {
     return ListAdapter(updater: ListAdapterUpdater(), viewController: self)
   }()
-  
+
   private let collectionNode = ASCollectionNode(collectionViewLayout: .flowLayout)
-  
+
   private var apiKeyObserver: NSKeyValueObservation?
-  
+
   private var noTags: Bool = false
-  
+
   private var tags = [TagResource]() {
     didSet {
       noTags = tags.isEmpty
@@ -25,30 +25,30 @@ final class TagsVC: ASViewController {
       searchController.searchBar.placeholder = tags.searchBarPlaceholder
     }
   }
-  
+
   private var tagsError = String()
-  
+
   private var filteredTags: [TagResource] {
     return tags.filtered(searchBar: searchController.searchBar)
   }
-  
+
   // MARK: - Life Cycle
-  
+
   override init() {
     super.init(node: collectionNode)
     adapter.setASDKCollectionNode(collectionNode)
     adapter.dataSource = self
   }
-  
+
   deinit {
     removeObservers()
     print("deinit")
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
@@ -57,7 +57,7 @@ final class TagsVC: ASViewController {
     configureNavigation()
     adapter.performUpdates(animated: false)
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     fetchTags()
@@ -71,28 +71,30 @@ private extension TagsVC {
     title = "Tags"
     definesPresentationContext = true
   }
-  
+
   private func configureObservers() {
-    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
-    apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
-      guard let weakSelf = self else { return }
-      weakSelf.fetchTags()
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(appMovedToForeground),
+                                           name: .willEnterForegroundNotification,
+                                           object: nil)
+    apiKeyObserver = App.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+      self?.fetchTags()
     }
   }
-  
+
   private func removeObservers() {
     NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
   }
-  
+
   private func configureNavigation() {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .always
     navigationItem.backBarButtonItem = .tag
     navigationItem.searchController = searchController
   }
-  
+
   private func configureCollectionNode() {
     collectionNode.view.refreshControl = UIRefreshControl(self, action: #selector(refreshTags))
   }
@@ -105,22 +107,22 @@ private extension TagsVC {
   private func appMovedToForeground() {
     fetchTags()
   }
-  
+
   @objc
   private func addTags() {
     let viewController = NavigationController(rootViewController: .addTagTransactionSelection)
     present(.fullscreen(viewController), animated: true)
   }
-  
+
   @objc
   private func refreshTags() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchTags()
     }
   }
-  
+
   private func fetchTags() {
-    UpFacade.listTags { (result) in
+    Up.listTags { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(tags):
@@ -131,9 +133,9 @@ private extension TagsVC {
       }
     }
   }
-  
+
   private func display(_ tags: [TagResource]) {
-    tagsError = .emptyString
+    tagsError = ""
     self.tags = tags
     if navigationItem.title != "Tags" {
       navigationItem.title = "Tags"
@@ -142,7 +144,7 @@ private extension TagsVC {
       navigationItem.setRightBarButton(.addTags(self, action: #selector(addTags)), animated: true)
     }
   }
-  
+
   private func display(_ error: AFError) {
     tagsError = error.errorDescription ?? error.localizedDescription
     tags.removeAll()
@@ -161,7 +163,7 @@ extension TagsVC: ListAdapterDataSource {
   func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
     return filteredTags.tagSectionModels.sortedMixedModel
   }
-  
+
   func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
     switch object {
     case is SortedTagSectionModel:
@@ -170,7 +172,7 @@ extension TagsVC: ListAdapterDataSource {
       return TagCellModelSC(self)
     }
   }
-  
+
   func emptyView(for listAdapter: ListAdapter) -> UIView? {
     if filteredTags.isEmpty && tagsError.isEmpty {
       if tags.isEmpty && !noTags {
@@ -205,7 +207,7 @@ extension TagsVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     adapter.performUpdates(animated: true)
   }
-  
+
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     if searchBar.searchTextField.hasText {
       searchBar.clear()

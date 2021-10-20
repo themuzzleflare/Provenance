@@ -18,7 +18,7 @@ extension TabBarItem {
     )
     return viewController
   }
-  
+
   var viewController: UIViewController {
     switch self {
     case .transactions:
@@ -33,7 +33,7 @@ extension TabBarItem {
       return NavigationController(rootViewController: AboutVC())
     }
   }
-  
+
   var title: String {
     switch self {
     case .transactions:
@@ -48,7 +48,7 @@ extension TabBarItem {
       return "About"
     }
   }
-  
+
   var image: UIImage? {
     switch self {
     case .transactions:
@@ -63,7 +63,7 @@ extension TabBarItem {
       return .infoCircle
     }
   }
-  
+
   var selectedImage: UIImage? {
     switch self {
     case .transactions:
@@ -78,7 +78,7 @@ extension TabBarItem {
       return .infoCircleFill
     }
   }
-  
+
   var shortcutType: ShortcutType {
     switch self {
     case .transactions:

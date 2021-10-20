@@ -4,7 +4,7 @@ final class SpinnerCellNode: ASCellNode {
   private let activityIndicatorViewBlock: ASDisplayNodeViewBlock = {
     return UIActivityIndicatorView.mediumAnimating
   }
-  
+
   init(_ sectionController: SpinnerSC? = nil) {
     super.init()
     sectionController?.spinnerDelegate = self

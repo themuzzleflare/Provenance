@@ -4,28 +4,28 @@ import Alamofire
 
 final class AccountsVC: ASViewController {
   // MARK: - Properties
-  
+
   private lazy var searchController = UISearchController.accounts(self)
-  
+
   private let collectionNode = ASCollectionNode(collectionViewLayout: .twoColumnGridLayout)
-  
-  private var accountFilter: AccountTypeOptionEnum = ProvenanceApp.userDefaults.appAccountFilter {
+
+  private var accountFilter: AccountTypeOptionEnum = App.userDefaults.appAccountFilter {
     didSet {
-      if ProvenanceApp.userDefaults.accountFilter != accountFilter.rawValue {
-        ProvenanceApp.userDefaults.accountFilter = accountFilter.rawValue
+      if App.userDefaults.accountFilter != accountFilter.rawValue {
+        App.userDefaults.accountFilter = accountFilter.rawValue
       }
       if searchController.searchBar.selectedScopeButtonIndex != accountFilter.rawValue {
         searchController.searchBar.selectedScopeButtonIndex = accountFilter.rawValue
       }
     }
   }
-  
+
   private var apiKeyObserver: NSKeyValueObservation?
-  
+
   private var accountFilterObserver: NSKeyValueObservation?
-  
+
   private var noAccounts: Bool = false
-  
+
   private var accounts = [AccountResource]() {
     didSet {
       noAccounts = accounts.isEmpty
@@ -34,30 +34,30 @@ final class AccountsVC: ASViewController {
       searchController.searchBar.placeholder = accounts.searchBarPlaceholder
     }
   }
-  
+
   private var accountsError = String()
-  
+
   private var filteredAccounts: [AccountResource] {
     return accounts.filtered(filter: accountFilter, searchBar: searchController.searchBar)
   }
-  
+
   private var oldAccountCellModels = [AccountCellModel]()
-  
+
   // MARK: - Life Cycle
-  
+
   override init() {
     super.init(node: collectionNode)
   }
-  
+
   deinit {
     removeObservers()
     print("deinit")
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
@@ -66,7 +66,7 @@ final class AccountsVC: ASViewController {
     configureCollectionNode()
     applySnapshot(override: true)
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     fetchAccounts()
@@ -80,19 +80,19 @@ private extension AccountsVC {
     title = "Accounts"
     definesPresentationContext = true
   }
-  
+
   private func configureObservers() {
     NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
-    apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+    apiKeyObserver = App.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       weakSelf.fetchAccounts()
     }
-    accountFilterObserver = ProvenanceApp.userDefaults.observe(\.accountFilter, options: .new) { [weak self] (_, change) in
+    accountFilterObserver = App.userDefaults.observe(\.accountFilter, options: .new) { [weak self] (_, change) in
       guard let weakSelf = self, let value = change.newValue, let accountFilter = AccountTypeOptionEnum(rawValue: value) else { return }
       weakSelf.accountFilter = accountFilter
     }
   }
-  
+
   private func removeObservers() {
     NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
     apiKeyObserver?.invalidate()
@@ -100,14 +100,14 @@ private extension AccountsVC {
     accountFilterObserver?.invalidate()
     accountFilterObserver = nil
   }
-  
+
   private func configureNavigation() {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .always
     navigationItem.backBarButtonItem = .walletPass
     navigationItem.searchController = searchController
   }
-  
+
   private func configureCollectionNode() {
     collectionNode.dataSource = self
     collectionNode.delegate = self
@@ -122,14 +122,14 @@ private extension AccountsVC {
   private func appMovedToForeground() {
     fetchAccounts()
   }
-  
+
   @objc
   private func refreshAccounts() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchAccounts()
     }
   }
-  
+
   private func applySnapshot(override: Bool = false) {
     let result = ListDiffPaths(
       fromSection: 0,
@@ -164,9 +164,9 @@ private extension AccountsVC {
       collectionNode.performBatchUpdates(batchUpdates)
     }
   }
-  
+
   private func fetchAccounts() {
-    UpFacade.listAccounts { (result) in
+    Up.listAccounts { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(accounts):
@@ -177,15 +177,15 @@ private extension AccountsVC {
       }
     }
   }
-  
+
   private func display(_ accounts: [AccountResource]) {
-    accountsError = .emptyString
+    accountsError = ""
     self.accounts = accounts
     if navigationItem.title != "Accounts" {
       navigationItem.title = "Accounts"
     }
   }
-  
+
   private func display(_ error: AFError) {
     accountsError = error.errorDescription ?? error.localizedDescription
     accounts.removeAll()
@@ -201,7 +201,7 @@ extension AccountsVC: ASCollectionDataSource {
   func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
     return filteredAccounts.count
   }
-  
+
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
     let account = filteredAccounts[indexPath.item]
     let node = AccountCellNode(account: account)
@@ -220,7 +220,7 @@ extension AccountsVC: ASCollectionDelegate {
     collectionNode.deselectItem(at: indexPath, animated: true)
     navigationController?.pushViewController(viewController, animated: true)
   }
-  
+
   func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     let account = filteredAccounts[indexPath.item]
     return UIContextMenuConfiguration(
@@ -241,14 +241,14 @@ extension AccountsVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     applySnapshot()
   }
-  
+
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     if searchBar.searchTextField.hasText {
       searchBar.clear()
       applySnapshot()
     }
   }
-  
+
   func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
     if let value = AccountTypeOptionEnum(rawValue: selectedScope) {
       accountFilter = value

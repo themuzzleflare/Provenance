@@ -4,28 +4,28 @@ import Alamofire
 
 final class CategoriesVC: ASViewController {
   // MARK: - Properties
-  
+
   private lazy var searchController = UISearchController.categories(self)
-  
+
   private let collectionNode = ASCollectionNode(collectionViewLayout: .twoColumnGridLayout)
-  
-  private var categoryFilter: CategoryTypeEnum = ProvenanceApp.userDefaults.appCategoryFilter {
+
+  private var categoryFilter: CategoryTypeEnum = App.userDefaults.appCategoryFilter {
     didSet {
-      if ProvenanceApp.userDefaults.categoryFilter != categoryFilter.rawValue {
-        ProvenanceApp.userDefaults.categoryFilter = categoryFilter.rawValue
+      if App.userDefaults.categoryFilter != categoryFilter.rawValue {
+        App.userDefaults.categoryFilter = categoryFilter.rawValue
       }
       if searchController.searchBar.selectedScopeButtonIndex != categoryFilter.rawValue {
         searchController.searchBar.selectedScopeButtonIndex = categoryFilter.rawValue
       }
     }
   }
-  
+
   private var apiKeyObserver: NSKeyValueObservation?
-  
+
   private var categoryFilterObserver: NSKeyValueObservation?
-  
+
   private var noCategories: Bool = false
-  
+
   private var categories = [CategoryResource]() {
     didSet {
       noCategories = categories.isEmpty
@@ -34,30 +34,30 @@ final class CategoriesVC: ASViewController {
       searchController.searchBar.placeholder = categories.searchBarPlaceholder
     }
   }
-  
+
   private var categoriesError = String()
-  
+
   private var oldCategoryCellModels = [CategoryCellModel]()
-  
+
   private var filteredCategories: [CategoryResource] {
     return categories.filtered(filter: categoryFilter, searchBar: searchController.searchBar)
   }
-  
+
   // MARK: - Life Cycle
-  
+
   override init() {
     super.init(node: collectionNode)
   }
-  
+
   deinit {
     removeObservers()
     print("deinit")
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     configureObservers()
@@ -66,7 +66,7 @@ final class CategoriesVC: ASViewController {
     configureCollectionNode()
     applySnapshot(override: true)
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     fetchCategories()
@@ -80,19 +80,19 @@ private extension CategoriesVC {
     title = "Categories"
     definesPresentationContext = true
   }
-  
+
   private func configureObservers() {
     NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
-    apiKeyObserver = ProvenanceApp.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+    apiKeyObserver = App.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       weakSelf.fetchCategories()
     }
-    categoryFilterObserver = ProvenanceApp.userDefaults.observe(\.categoryFilter, options: .new) { [weak self] (_, change) in
+    categoryFilterObserver = App.userDefaults.observe(\.categoryFilter, options: .new) { [weak self] (_, change) in
       guard let weakSelf = self, let value = change.newValue, let categoryFilter = CategoryTypeEnum(rawValue: value) else { return }
       weakSelf.categoryFilter = categoryFilter
     }
   }
-  
+
   private func removeObservers() {
     NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
     apiKeyObserver?.invalidate()
@@ -100,14 +100,14 @@ private extension CategoriesVC {
     categoryFilterObserver?.invalidate()
     categoryFilterObserver = nil
   }
-  
+
   private func configureNavigation() {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .always
     navigationItem.backBarButtonItem = .trayFull
     navigationItem.searchController = searchController
   }
-  
+
   private func configureCollectionNode() {
     collectionNode.dataSource = self
     collectionNode.delegate = self
@@ -122,14 +122,14 @@ private extension CategoriesVC {
   private func appMovedToForeground() {
     fetchCategories()
   }
-  
+
   @objc
   private func refreshCategories() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchCategories()
     }
   }
-  
+
   private func applySnapshot(override: Bool = false) {
     let result = ListDiffPaths(
       fromSection: 0,
@@ -164,9 +164,9 @@ private extension CategoriesVC {
       collectionNode.performBatch(animated: true, updates: batchUpdates)
     }
   }
-  
+
   private func fetchCategories() {
-    UpFacade.listCategories { (result) in
+    Up.listCategories { (result) in
       DispatchQueue.main.async {
         switch result {
         case let .success(categories):
@@ -177,15 +177,15 @@ private extension CategoriesVC {
       }
     }
   }
-  
+
   private func display(_ categories: [CategoryResource]) {
-    categoriesError = .emptyString
+    categoriesError = ""
     self.categories = categories
     if navigationItem.title != "Categories" {
       navigationItem.title = "Categories"
     }
   }
-  
+
   private func display(_ error: AFError) {
     categoriesError = error.errorDescription ?? error.localizedDescription
     categories.removeAll()
@@ -201,7 +201,7 @@ extension CategoriesVC: ASCollectionDataSource {
   func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
     return filteredCategories.count
   }
-  
+
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
     let category = filteredCategories[indexPath.item]
     let node = CategoryCellNode(category: category)
@@ -220,7 +220,7 @@ extension CategoriesVC: ASCollectionDelegate {
     collectionNode.deselectItem(at: indexPath, animated: true)
     navigationController?.pushViewController(viewController, animated: true)
   }
-  
+
   func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     let category = filteredCategories[indexPath.item]
     return UIContextMenuConfiguration(
@@ -240,14 +240,14 @@ extension CategoriesVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     applySnapshot()
   }
-  
+
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     if searchBar.searchTextField.hasText {
       searchBar.clear()
       applySnapshot()
     }
   }
-  
+
   func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
     if let value = CategoryTypeEnum(rawValue: selectedScope) {
       categoryFilter = value
