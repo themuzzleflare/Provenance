@@ -11,7 +11,7 @@ final class TransactionDetailVC: ViewController {
   }
 
   private class DataSource: UITableViewDiffableDataSource<DetailSection, DetailItem> {
-    var transaction: TransactionResource
+    private var transaction: TransactionResource
 
     init(transaction: TransactionResource, tableView: UITableView, cellProvider: @escaping UITableViewDiffableDataSource<DetailSection, DetailItem>.CellProvider) {
       self.transaction = transaction

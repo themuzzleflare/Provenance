@@ -72,10 +72,12 @@ private extension TransactionsByCategoryVC {
   }
 
   private func configureObservers() {
-    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(appMovedToForeground),
+                                           name: .willEnterForegroundNotification,
+                                           object: nil)
     dateStyleObserver = App.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
-      guard let weakSelf = self else { return }
-      weakSelf.applySnapshot()
+      self?.applySnapshot()
     }
   }
 
@@ -123,6 +125,7 @@ private extension TransactionsByCategoryVC {
       newArray: filteredTransactions.transactionCellModels,
       option: .equality
     ).forBatchUpdates()
+
     if result.hasChanges || override || !transactionsError.isEmpty || noTransactions {
       if filteredTransactions.isEmpty && transactionsError.isEmpty {
         if transactions.isEmpty && !noTransactions {
@@ -139,12 +142,14 @@ private extension TransactionsByCategoryVC {
           }
         }
       }
+
       let batchUpdates = { [self] in
         tableNode.deleteRows(at: result.deletes, with: .fade)
         tableNode.insertRows(at: result.inserts, with: .fade)
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
         oldTransactionCellModels = filteredTransactions.transactionCellModels
       }
+
       tableNode.performBatchUpdates(batchUpdates)
     }
   }

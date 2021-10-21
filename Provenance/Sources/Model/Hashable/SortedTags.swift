@@ -1,14 +1,8 @@
 import Foundation
 
 struct SortedTags: Identifiable {
-  var id: String
-
-  var tags: [String]
-
-  init(id: String, tags: [String]) {
-    self.id = id
-    self.tags = tags
-  }
+  let id: String
+  let tags: [String]
 }
 
 extension SortedTags: Hashable {

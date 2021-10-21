@@ -26,7 +26,7 @@ extension UserDefaults {
     }
     set {
       setValue(newValue, forKey: Keys.dateStyle)
-      WidgetCenter.shared.reloadTimelines(ofKind: AppWidgets.latestTransaction.kind)
+      WidgetCenter.shared.reloadTimelines(ofKind: Widgets.latestTransaction.kind)
     }
   }
 

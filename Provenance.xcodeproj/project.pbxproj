@@ -1430,8 +1430,8 @@
 				7AFBD90A26F400ED00460939 /* AccountBalanceProvider.swift */,
 				7AFBD90C26F400FB00460939 /* AccountBalanceEntry.swift */,
 				7AFBD90E26F4010400460939 /* AccountBalanceEntryView.swift */,
-				7AE54D072611671D005D38A5 /* AccountBalance.swift */,
 				7A4ADBAC2720F6F9009765A3 /* AccountBalanceView.swift */,
+				7AE54D072611671D005D38A5 /* AccountBalance.swift */,
 			);
 			path = AccountBalance;
 			sourceTree = "<group>";
@@ -1443,8 +1443,8 @@
 				7AFBD91226F4019100460939 /* LatestTransactionEntry.swift */,
 				7AFBD91426F4019900460939 /* LatestTransactionEntryView.swift */,
 				7AFBD8E826F34B2D00460939 /* TransactionCellView.swift */,
-				7A35ECA32657B88400568ECA /* LatestTransaction.swift */,
 				7A4ADBAA2720F6EC009765A3 /* LatestTransactionView.swift */,
+				7A35ECA32657B88400568ECA /* LatestTransaction.swift */,
 			);
 			path = LatestTransaction;
 			sourceTree = "<group>";
