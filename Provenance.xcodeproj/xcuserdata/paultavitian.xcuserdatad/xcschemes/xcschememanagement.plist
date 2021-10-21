@@ -29,46 +29,41 @@
 			<key>orderHint</key>
 			<integer>9</integer>
 		</dict>
-		<key>Provenance Development.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>0</integer>
-		</dict>
 		<key>Provenance Intents.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>isShown</key>
-			<true/>
-			<key>orderHint</key>
-			<integer>3</integer>
-		</dict>
-		<key>Provenance IntentsUI.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>37</integer>
-		</dict>
-		<key>Provenance Production.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
-		</dict>
-		<key>Provenance Stickers.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>isShown</key>
-			<true/>
-			<key>orderHint</key>
-			<integer>4</integer>
-		</dict>
-		<key>Provenance Widgets.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>isShown</key>
 			<true/>
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
+		<key>Provenance IntentsUI.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>Provenance Stickers.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>isShown</key>
+			<true/>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>Provenance Widgets.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>isShown</key>
+			<true/>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>Provenance WidgetsExtension.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>7</integer>
+		</dict>
+		<key>Provenance.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
 		</dict>
 		<key>ProvenanceKit.xcscheme_^#shared#^_</key>
 		<dict>
@@ -79,6 +74,11 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>7A17C1892657940E00E5EA23</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7A82FB3626F47EAB00C9C04E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -9,7 +9,7 @@ final class AboutTopCellNode: ASCellNode {
     super.init()
     automaticallyManagesSubnodes = true
     selectionStyle = .none
-    logoImageNode.animatedImage = ASPINRemoteImageDownloader.upLogoDrawMidnightYellowTransparentBackground
+    logoImageNode.animatedImage = AnimatedImage.upLogoDrawMidnightYellowTransparentBackground.asAnimatedImage
     logoImageNode.backgroundColor = .accentColor
     logoImageNode.cornerRadius = 20
     logoImageNode.style.width = ASDimension(unit: .points, value: 100)

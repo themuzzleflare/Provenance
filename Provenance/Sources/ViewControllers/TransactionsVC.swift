@@ -54,7 +54,8 @@ final class TransactionsVC: ASViewController {
 
   private var preFilteredTransactions: [TransactionResource] {
     return transactions.filter { (transaction) in
-      return (!showSettledOnly || transaction.attributes.status.isSettled) && (categoryFilter == .all || categoryFilter.rawValue == transaction.relationships.category.data?.id)
+      return (!showSettledOnly || transaction.attributes.status.isSettled) &&
+      (categoryFilter == .all || categoryFilter.rawValue == transaction.relationships.category.data?.id)
     }
   }
 
@@ -118,7 +119,10 @@ extension TransactionsVC {
   }
 
   private func configureObservers() {
-    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(appMovedToForeground),
+                                           name: .willEnterForegroundNotification,
+                                           object: nil)
     apiKeyObserver = App.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       self?.fetchingTasks()
     }

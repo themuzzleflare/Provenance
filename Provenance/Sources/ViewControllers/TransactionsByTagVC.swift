@@ -83,7 +83,8 @@ private extension TransactionsByTagVC {
   private func configureObservers() {
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(appMovedToForeground),
-                                           name: .willEnterForegroundNotification, object: nil)
+                                           name: .willEnterForegroundNotification,
+                                           object: nil)
     dateStyleObserver = App.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       guard let weakSelf = self else { return }
       weakSelf.applySnapshot()

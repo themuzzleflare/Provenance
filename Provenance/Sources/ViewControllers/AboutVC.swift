@@ -135,7 +135,7 @@ extension AboutVC: ASTableDataSource {
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     switch section {
     case 2:
-      return InfoPlist.nsHumanReadableCopyright
+      return Info.nsHumanReadableCopyright
     default:
       return nil
     }

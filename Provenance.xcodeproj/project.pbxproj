@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -120,6 +120,9 @@
 		7A3E428827041B44007E3A08 /* LoadingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3E428727041B44007E3A08 /* LoadingDelegate.swift */; };
 		7A438783263AAC9B008C5714 /* StatusIconHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A438782263AAC9B008C5714 /* StatusIconHelpView.swift */; };
 		7A455CA22607FBFE00A7F2B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
+		7A4ADBA92720F6DE009765A3 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4ADBA82720F6DE009765A3 /* ErrorView.swift */; };
+		7A4ADBAB2720F6EC009765A3 /* LatestTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4ADBAA2720F6EC009765A3 /* LatestTransactionView.swift */; };
+		7A4ADBAD2720F6F9009765A3 /* AccountBalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4ADBAC2720F6F9009765A3 /* AccountBalanceView.swift */; };
 		7A56101225D219770091396E /* TagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101125D219770091396E /* TagsVC.swift */; };
 		7A56101625D21BFE0091396E /* TransactionsByTagVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101525D21BFE0091396E /* TransactionsByTagVC.swift */; };
 		7A56101A25D22AF10091396E /* AddTagTransactionSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101925D22AF10091396E /* AddTagTransactionSelectionVC.swift */; };
@@ -144,7 +147,6 @@
 		7A69F26E2706B53F008CA6CC /* ListValueSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F26A2706B53F008CA6CC /* ListValueSectionController.swift */; };
 		7A69F2702706BEA8008CA6CC /* SpinnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F26F2706BEA8008CA6CC /* SpinnerCell.swift */; };
 		7A72D2F12672DEAF005FAC4F /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */; };
-		7A7CAB0326F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */; };
 		7A7CAB0526F1F161005CB30F /* FLAnimatedImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */; };
 		7A7F039D26FB0641003F1321 /* TransactionColourEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7F039C26FB0641003F1321 /* TransactionColourEnum+Extension.swift */; };
 		7A7F039E26FB0641003F1321 /* TransactionColourEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7F039C26FB0641003F1321 /* TransactionColourEnum+Extension.swift */; };
@@ -225,6 +227,7 @@
 		7AA113C7261550B900386E2D /* DetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA113C6261550B900386E2D /* DetailSection.swift */; };
 		7AA124FD262682F300F50D6D /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7AA124FC262682F300F50D6D /* Settings.bundle */; };
 		7AA6C4EC2623F606003F7947 /* AboutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA6C4EB2623F606003F7947 /* AboutVC.swift */; };
+		7AA8540627210C9E003289C5 /* AnimatedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA8540527210C9E003289C5 /* AnimatedImage.swift */; };
 		7AAA5FAB26FF157500136E32 /* TransactionCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAA5FAA26FF157500136E32 /* TransactionCellModel.swift */; };
 		7AAADD5526F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5426F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift */; };
 		7AAADD5926F1812600C4A9D9 /* UIBarButtonItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5826F1812600C4A9D9 /* UIBarButtonItem+Extension.swift */; };
@@ -611,6 +614,9 @@
 		7A3E4285270412FC007E3A08 /* SpinnerSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerSC.swift; sourceTree = "<group>"; };
 		7A3E428727041B44007E3A08 /* LoadingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingDelegate.swift; sourceTree = "<group>"; };
 		7A438782263AAC9B008C5714 /* StatusIconHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusIconHelpView.swift; sourceTree = "<group>"; };
+		7A4ADBA82720F6DE009765A3 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		7A4ADBAA2720F6EC009765A3 /* LatestTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestTransactionView.swift; sourceTree = "<group>"; };
+		7A4ADBAC2720F6F9009765A3 /* AccountBalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountBalanceView.swift; sourceTree = "<group>"; };
 		7A56101125D219770091396E /* TagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsVC.swift; sourceTree = "<group>"; };
 		7A56101525D21BFE0091396E /* TransactionsByTagVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByTagVC.swift; sourceTree = "<group>"; };
 		7A56101925D22AF10091396E /* AddTagTransactionSelectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagTransactionSelectionVC.swift; sourceTree = "<group>"; };
@@ -637,7 +643,6 @@
 		7A69F26A2706B53F008CA6CC /* ListValueSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListValueSectionController.swift; sourceTree = "<group>"; };
 		7A69F26F2706BEA8008CA6CC /* SpinnerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerCell.swift; sourceTree = "<group>"; };
 		7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
-		7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASPINRemoteImageDownloader+Extension.swift"; sourceTree = "<group>"; };
 		7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FLAnimatedImage+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7A7F039C26FB0641003F1321 /* TransactionColourEnum+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionColourEnum+Extension.swift"; sourceTree = "<group>"; };
 		7A8022E226FC5CD1008600B0 /* ASCellNode+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASCellNode+Extension.swift"; sourceTree = "<group>"; };
@@ -675,6 +680,7 @@
 		7AA113C6261550B900386E2D /* DetailSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSection.swift; sourceTree = "<group>"; };
 		7AA124FC262682F300F50D6D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		7AA6C4EB2623F606003F7947 /* AboutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutVC.swift; sourceTree = "<group>"; };
+		7AA8540527210C9E003289C5 /* AnimatedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedImage.swift; sourceTree = "<group>"; };
 		7AAA297E270EC5BE00A641BB /* Provenance.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Provenance.debug.xcconfig; sourceTree = "<group>"; };
 		7AAA297F270EC5CE00A641BB /* Provenance.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Provenance.release.xcconfig; sourceTree = "<group>"; };
 		7AAA2982270EC5F900A641BB /* Widgets.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Widgets.debug.xcconfig; sourceTree = "<group>"; };
@@ -974,6 +980,7 @@
 				7A22713826817399001F63FF /* ShortcutType.swift */,
 				7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */,
 				7AF2155F26F057F1009F4F38 /* FilterMenuAction.swift */,
+				7AA8540527210C9E003289C5 /* AnimatedImage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1008,6 +1015,7 @@
 				7AD1279A2604702600A39272 /* Widgets.swift */,
 				7AFBD90826F400D000460939 /* AccountBalance */,
 				7AFBD90926F400D500460939 /* LatestTransaction */,
+				7A4ADBA82720F6DE009765A3 /* ErrorView.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -1274,8 +1282,8 @@
 		7AB34D1125C78230000A1E81 = {
 			isa = PBXGroup;
 			children = (
-				7ADC6EF5271FDC6D00A7E8AE /* LICENSE */,
 				7ADC6EF4271FDC6D00A7E8AE /* README.md */,
+				7ADC6EF5271FDC6D00A7E8AE /* LICENSE */,
 				7A38860726BB62F900F57EA0 /* XcodeConfigurations */,
 				7A75631426A7ED3100963658 /* Shared */,
 				7AB34D1C25C78230000A1E81 /* Provenance */,
@@ -1423,6 +1431,7 @@
 				7AFBD90C26F400FB00460939 /* AccountBalanceEntry.swift */,
 				7AFBD90E26F4010400460939 /* AccountBalanceEntryView.swift */,
 				7AE54D072611671D005D38A5 /* AccountBalance.swift */,
+				7A4ADBAC2720F6F9009765A3 /* AccountBalanceView.swift */,
 			);
 			path = AccountBalance;
 			sourceTree = "<group>";
@@ -1435,6 +1444,7 @@
 				7AFBD91426F4019900460939 /* LatestTransactionEntryView.swift */,
 				7AFBD8E826F34B2D00460939 /* TransactionCellView.swift */,
 				7A35ECA32657B88400568ECA /* LatestTransaction.swift */,
+				7A4ADBAA2720F6EC009765A3 /* LatestTransactionView.swift */,
 			);
 			path = LatestTransaction;
 			sourceTree = "<group>";
@@ -1442,7 +1452,6 @@
 		7AFC6EAE2703DFF40056270B /* AsyncDisplayKit */ = {
 			isa = PBXGroup;
 			children = (
-				7A7CAB0226F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift */,
 				7AF2150626EF32C5009F4F38 /* ASSizeRange+Extension.swift */,
 				7AF2150526EF32C5009F4F38 /* ASTextCellNode+Extension.swift */,
 				7A8022E226FC5CD1008600B0 /* ASCellNode+Extension.swift */,
@@ -1667,7 +1676,7 @@
 				7AB34D1825C78230000A1E81 /* Resources */,
 				9798B0B11892F97E0F40FEF6 /* [CP] Embed Pods Frameworks */,
 				7AD317A92604412200B4E008 /* Embed App Extensions */,
-				7AA125182626AB3900F50D6D /* Configure Settings.bundle/Root.plist */,
+				7AA125182626AB3900F50D6D /* Configure Settings Bundle */,
 				7ACA1A4F26AA498700DE1645 /* Run Crashlytics */,
 			);
 			buildRules = (
@@ -1723,6 +1732,7 @@
 		7AB34D1225C78230000A1E81 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1310;
 				ORGANIZATIONNAME = "Tavitian Cloud";
@@ -1903,7 +1913,7 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
-		7AA125182626AB3900F50D6D /* Configure Settings.bundle/Root.plist */ = {
+		7AA125182626AB3900F50D6D /* Configure Settings Bundle */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1912,14 +1922,14 @@
 			);
 			inputPaths = (
 			);
-			name = "Configure Settings.bundle/Root.plist";
+			name = "Configure Settings Bundle";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "PLISTBUDDY=\"/usr/libexec/PlistBuddy\"\nINFO_PLIST=\"$CODESIGNING_FOLDER_PATH/Info.plist\"\nSETTINGS_PLIST=\"$CODESIGNING_FOLDER_PATH/Settings.bundle/Root.plist\"\nBUNDLE_ID_VALUE=\"`$PLISTBUDDY -c \\\"Print CFBundleIdentifier\\\" \\\"$INFO_PLIST\\\"`\"\nCOPYRIGHT_VALUE=\"`$PLISTBUDDY -c \\\"Print NSHumanReadableCopyright\\\" \\\"$INFO_PLIST\\\"`\"\nVERSION_NUMBER=\"`$PLISTBUDDY -c \\\"Print CFBundleShortVersionString\\\" \\\"$INFO_PLIST\\\"`\"\nBUILD_NUMBER=\"`$PLISTBUDDY -c \\\"Print CFBundleVersion\\\" \\\"$INFO_PLIST\\\"`\"\nCOPYRIGHT=\"$COPYRIGHT_VALUE\"\nVERSION=\"$VERSION_NUMBER\"\nBUILD=\"$BUILD_NUMBER\"\nAPP_GROUP=group.$BUNDLE_ID_VALUE\n\n$PLISTBUDDY -c \"Set :ApplicationGroupContainerIdentifier $APP_GROUP\" \"$SETTINGS_PLIST\"\n$PLISTBUDDY -c \"Set :PreferenceSpecifiers:9:DefaultValue '$VERSION'\" \"$SETTINGS_PLIST\"\n$PLISTBUDDY -c \"Set :PreferenceSpecifiers:10:DefaultValue '$BUILD'\" \"$SETTINGS_PLIST\"\n$PLISTBUDDY -c \"Set :PreferenceSpecifiers:11:FooterText '$COPYRIGHT'\" \"$SETTINGS_PLIST\"\n";
+			shellScript = "PLISTBUDDY=\"/usr/libexec/PlistBuddy\"\n\nSETTINGS_BUNDLE=\"$CODESIGNING_FOLDER_PATH/Settings.bundle\"\nROOT_PLIST=\"$SETTINGS_BUNDLE/Root.plist\"\nACKNOWLEDGEMENTS_PLIST=\"$SETTINGS_BUNDLE/Acknowledgements.plist\"\n\nCOPYRIGHT=\"`$PLISTBUDDY -c \\\"Print NSHumanReadableCopyright\\\" \\\"$INFOPLIST_FILE\\\"`\"\nAPP_GROUP=\"group.$PRODUCT_BUNDLE_IDENTIFIER\"\n\n$PLISTBUDDY -c \"Set :ApplicationGroupContainerIdentifier $APP_GROUP\" \"$ROOT_PLIST\"\n$PLISTBUDDY -c \"Set :PreferenceSpecifiers:9:DefaultValue $MARKETING_VERSION\" \"$ROOT_PLIST\"\n$PLISTBUDDY -c \"Set :PreferenceSpecifiers:10:DefaultValue $CURRENT_PROJECT_VERSION\" \"$ROOT_PLIST\"\n$PLISTBUDDY -c \"Set :PreferenceSpecifiers:11:FooterText $COPYRIGHT\" \"$ROOT_PLIST\"\n";
 		};
 		7ACA1A4F26AA498700DE1645 /* Run Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2282,7 +2292,6 @@
 				7A67980D25D3E15D002AA83A /* DiagnosticsVC.swift in Sources */,
 				7A8C12C0271D214400F6A633 /* SortedTagSectionCoreModel.swift in Sources */,
 				7AF2156626F05FE3009F4F38 /* UIContextMenuConfiguration+Extension.swift in Sources */,
-				7A7CAB0326F1EFAE005CB30F /* ASPINRemoteImageDownloader+Extension.swift in Sources */,
 				7A3E428827041B44007E3A08 /* LoadingDelegate.swift in Sources */,
 				7A1B52142702C1A900835111 /* ItemModelSC.swift in Sources */,
 				7AF2150026EF326C009F4F38 /* CGFloat+Extension.swift in Sources */,
@@ -2346,6 +2355,7 @@
 				E76E3804AD82394788F2E397 /* Transaction.swift in Sources */,
 				E76E3ED4BED6B2730769BC67 /* RoundUpObject.swift in Sources */,
 				E76E3E68009F841CBE55648D /* SingleAccount.swift in Sources */,
+				7AA8540627210C9E003289C5 /* AnimatedImage.swift in Sources */,
 				E76E30F6CABE1D5736231864 /* CashbackObject.swift in Sources */,
 				E76E3A10413CC8DB21E4721B /* HoldInfoObject.swift in Sources */,
 				7AF3BFEC270AC42900B1B81B /* ErrorSource.swift in Sources */,
@@ -2426,6 +2436,7 @@
 				7AD266D626FADD9000EFF4A2 /* NumberFormatter+Extension.swift in Sources */,
 				7A8022F326FC8489008600B0 /* CGFloat+Extension.swift in Sources */,
 				7A80231326FC854D008600B0 /* UIFont+Extension.swift in Sources */,
+				7A4ADBAD2720F6F9009765A3 /* AccountBalanceView.swift in Sources */,
 				7AFBD91326F4019100460939 /* LatestTransactionEntry.swift in Sources */,
 				7A9C253A26F30ABD00509ED4 /* Font+Extension.swift in Sources */,
 				7A340B2026F9C11300D43523 /* CategoryType+Extension.swift in Sources */,
@@ -2444,6 +2455,7 @@
 				E76E343C116C9C359B6AFC64 /* Transaction.swift in Sources */,
 				E76E30F53C0CE59496841E7E /* RoundUpObject.swift in Sources */,
 				E76E3AAD3AAD70D34A5F08CD /* SingleAccount.swift in Sources */,
+				7A4ADBAB2720F6EC009765A3 /* LatestTransactionView.swift in Sources */,
 				E76E3FE65CFD2ADDAFDE91F6 /* CashbackObject.swift in Sources */,
 				E76E318AA529E88166430E73 /* HoldInfoObject.swift in Sources */,
 				E76E3402B9D9DC57365103DB /* SingleCategory.swift in Sources */,
@@ -2462,6 +2474,7 @@
 				E76E34A2E3F3D4587907DCA8 /* TransactionStatusEnum.swift in Sources */,
 				E76E34732C5C1C802EDFE1E3 /* TransactionRelationship.swift in Sources */,
 				E76E30683EFFE68F917EF185 /* TransactionsLinksObject.swift in Sources */,
+				7A4ADBA92720F6DE009765A3 /* ErrorView.swift in Sources */,
 				E76E388F66DD3BECDDB1CF4E /* CategoryRelationshipParent.swift in Sources */,
 				E76E3BEE4CA582F99FDB5E31 /* TagInputResourceIdentifier.swift in Sources */,
 				E76E3717C63C1F81DAAC9364 /* TransactionRelationshipTag.swift in Sources */,
@@ -2532,18 +2545,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AAA2984270EC61500A641BB /* Intents.debug.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Provenance Intents Development";
 				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -2551,18 +2555,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AAA2985270EC61E00A641BB /* Intents.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Provenance Intents Development";
 				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -2570,18 +2565,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AAA2986270EC62B00A641BB /* IntentsUI.debug.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Provenance IntentsUI Development";
 				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -2589,18 +2575,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AAA2987270EC63700A641BB /* IntentsUI.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Provenance IntentsUI Development";
 				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -2610,7 +2587,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2638,7 +2615,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -2650,19 +2627,18 @@
 					"$(inherited)",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SUPPRESS_WARNINGS = YES;
 			};
 			name = Debug;
 		};
@@ -2672,7 +2648,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2706,18 +2682,17 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_SUPPRESS_WARNINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -2726,16 +2701,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AAA297E270EC5BE00A641BB /* Provenance.debug.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Provenance Development";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -2743,16 +2710,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AAA297F270EC5CE00A641BB /* Provenance.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Provenance Development";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -2760,19 +2719,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AAA2982270EC5F900A641BB /* Widgets.debug.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Provenance Widgets Development";
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -2780,19 +2729,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AAA2983270EC60B00A641BB /* Widgets.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Provenance Widgets Development";
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -2800,13 +2739,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7ADC6EF0271FDB2800A7E8AE /* Stickers.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Provenance Stickers Development";
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Debug;
 		};
@@ -2814,13 +2748,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7ADC6EF0271FDB2800A7E8AE /* Stickers.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Provenance Stickers Development";
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};

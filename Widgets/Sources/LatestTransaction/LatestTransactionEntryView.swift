@@ -8,41 +8,9 @@ struct LatestTransactionEntryView: View {
   var body: some View {
     Group {
       if let transaction = entry.transaction {
-        switch family {
-        case .systemSmall:
-          VStack {
-            Text(transaction.description)
-              .font(.circularStdBold(size: 20))
-            Text(transaction.amount)
-          }
-          .padding()
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
-        case .systemMedium, .systemLarge, .systemExtraLarge:
-          VStack {
-            Text("Latest Transaction")
-              .font(.circularStdBold(size: 23))
-              .foregroundColor(.accentColor)
-            Spacer()
-            TransactionCellView(transaction: transaction)
-          }
-          .padding()
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
+        LatestTransactionView(family: family, transaction: transaction)
       } else if let error = entry.error {
-        switch family {
-        case .systemSmall:
-          Text(error.errorDescription ?? error.localizedDescription)
-            .padding()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-        case .systemMedium, .systemLarge, .systemExtraLarge:
-          VStack {
-            Text("Error")
-              .font(.circularStdBold(size: 18))
-            Text(error.errorDescription ?? error.localizedDescription)
-          }
-          .padding()
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
+        ErrorView(family: family, error: error)
       }
     }
     .background(Color.widgetBackground)

@@ -1,5 +1,7 @@
 #include "Shared.xcconfig"
 
 PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intents
+PRODUCT_NAME = Provenance Intents
+PROVISIONING_PROFILE_SPECIFIER = Provenance Intents Development
 INFOPLIST_FILE = Intents/Resources/Info.plist
 CODE_SIGN_ENTITLEMENTS = Intents/Resources/Intents.entitlements

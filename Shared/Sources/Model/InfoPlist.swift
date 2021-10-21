@@ -1,5 +1,7 @@
 import Foundation
 
+typealias Info = InfoPlist
+
 enum InfoPlist {
   static var cfBundleIdentifier: String {
     return Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as? String ?? ""

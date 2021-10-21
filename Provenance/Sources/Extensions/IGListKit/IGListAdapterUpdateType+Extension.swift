@@ -9,6 +9,8 @@ extension IGListAdapterUpdateType {
       return "Perform Updates"
     case .reloadData:
       return "Reload Data"
+    @unknown default:
+      return "Unknown Default"
     }
   }
 }

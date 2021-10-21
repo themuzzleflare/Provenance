@@ -1,6 +1,8 @@
 #include "Shared.xcconfig"
 
-IPHONEOS_DEPLOYMENT_TARGET = 11.4
+IPHONEOS_DEPLOYMENT_TARGET = 10.0
 PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.stickers
+PRODUCT_NAME = Provenance Stickers
+PROVISIONING_PROFILE_SPECIFIER = Provenance Stickers Development
 INFOPLIST_FILE = Stickers/Resources/Info.plist
 ASSETCATALOG_COMPILER_APPICON_NAME = iMessageAppIcon

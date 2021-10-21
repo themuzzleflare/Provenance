@@ -1,5 +1,7 @@
 #include "Shared.xcconfig"
 
 PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.intentsui
+PRODUCT_NAME = Provenance IntentsUI
+PROVISIONING_PROFILE_SPECIFIER = Provenance IntentsUI Development
 INFOPLIST_FILE = IntentsUI/Resources/Info.plist
 CODE_SIGN_ENTITLEMENTS = IntentsUI/Resources/IntentsUI.entitlements

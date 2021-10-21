@@ -47,7 +47,7 @@ extension TransactionBindingSC: ListBindingSectionControllerDataSource {
 
 extension TransactionBindingSC: ListBindingSectionControllerSelectionDelegate {
   func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, didSelectItemAt index: Int, viewModel: Any) {
-    guard let object = object as? SortedTransactionModelAlt, viewModel is TransactionCellModel else { return }
+    guard let object = object, viewModel is TransactionCellModel else { return }
     let transaction = object.transactions[index]
     let controller = TransactionDetailVC(transaction: transaction)
     collectionContext?.deselectItem(at: index, sectionController: sectionController, animated: true)

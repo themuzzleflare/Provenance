@@ -170,7 +170,7 @@ extension TransactionTagsVC {
 
   @objc
   private func removeTags() {
-    if let selectedTags = tableNode.indexPathsForSelectedRows?.map { tags[$0.row] } {
+    if let selectedTags = tableNode.indexPathsForSelectedRows?.map({ tags[$0.row] }) {
       let alertController = UIAlertController.removeTagsFromTransaction(self, removing: selectedTags, from: transaction)
       present(alertController, animated: true)
     }

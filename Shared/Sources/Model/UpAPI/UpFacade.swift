@@ -11,7 +11,10 @@ enum UpFacade {
   ///   - key: The personal access token to ping with.
   ///   - completion: Block to execute for handling the request response.
   ///
-  /// Make a basic ping request to the API. This is useful to verify that authentication is functioning correctly. On authentication success an HTTP `200` status is returned. On failure an HTTP `401` error response is returned.
+  /// Make a basic ping request to the API.
+  /// This is useful to verify that authentication is functioning correctly.
+  /// On authentication success an HTTP `200` status is returned.
+  /// On failure an HTTP `401` error response is returned.
 
   static func ping(with key: String, completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
@@ -32,7 +35,11 @@ enum UpFacade {
   ///   - cursor: The pagination cursor to apply to the request.
   ///   - completion: Block to execute for handling the request response.
   ///
-  /// Retrieve a list of all transactions across all accounts for the currently authenticated user. The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present. To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string. These filter parameters **should not** be used for pagination. Results are ordered newest first to oldest last.
+  /// Retrieve a list of all transactions across all accounts for the currently authenticated user.
+  /// The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present.
+  /// To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string.
+  /// These filter parameters **should not** be used for pagination.
+  /// Results are ordered newest first to oldest last.
 
   static func listTransactions(cursor: String? = nil,
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
@@ -69,7 +76,10 @@ enum UpFacade {
   ///   - inputTransactions: An array of `TransactionResource` objects to prepend to the response.
   ///   - completion: Block to execute for handling the request response.
   ///
-  /// Retrieve a list of all transactions across all accounts for the currently authenticated user. To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string. These filter parameters **should not** be used for pagination. Results are ordered newest first to oldest last.
+  /// Retrieve a list of all transactions across all accounts for the currently authenticated user.
+  /// To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string.
+  /// These filter parameters **should not** be used for pagination.
+  /// Results are ordered newest first to oldest last.
 
   static func listCompleteTransactions(cursor: String? = nil,
                                        inputTransactions: [TransactionResource] = [],
@@ -114,7 +124,11 @@ enum UpFacade {
   ///   - account: The account to list transactions for.
   ///   - completion: Block to execute for handling the request response.
   ///
-  /// Retrieve a list of all transactions for a specific account. The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present. To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string. These filter parameters **should not** be used for pagination. Results are ordered newest first to oldest last.
+  /// Retrieve a list of all transactions for a specific account.
+  /// The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present.
+  /// To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string.
+  /// These filter parameters **should not** be used for pagination.
+  /// Results are ordered newest first to oldest last.
 
   static func listTransactions(filterBy account: AccountResource,
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
@@ -145,7 +159,11 @@ enum UpFacade {
   ///   - tag: The tag to list transactions for.
   ///   - completion: Block to execute for handling the request response.
   ///
-  /// Retrieve a list of all transactions for a specific tag. The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present. To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string. These filter parameters **should not** be used for pagination. Results are ordered newest first to oldest last.
+  /// Retrieve a list of all transactions for a specific tag.
+  /// The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present.
+  /// To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string.
+  /// These filter parameters **should not** be used for pagination.
+  /// Results are ordered newest first to oldest last.
 
   static func listTransactions(filterBy tag: TagResource,
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
@@ -177,7 +195,11 @@ enum UpFacade {
   ///   - category: The category to list transactions for.
   ///   - completion: Block to execute for handling the request response.
   ///
-  /// Retrieve a list of all transactions for a specific category. The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present. To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string. These filter parameters **should not** be used for pagination. Results are ordered newest first to oldest last.
+  /// Retrieve a list of all transactions for a specific category.
+  /// The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present.
+  /// To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string.
+  /// These filter parameters **should not** be used for pagination.
+  /// Results are ordered newest first to oldest last.
 
   static func listTransactions(filterBy category: CategoryResource,
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
@@ -328,7 +350,8 @@ enum UpFacade {
   ///
   /// - Parameter completion: Block to execute for handling the request response.
   ///
-  /// Retrieve a paginated list of all accounts for the currently authenticated user. The returned list is paginated and can be scrolled by following the `prev` and `next` links where present.
+  /// Retrieve a paginated list of all accounts for the currently authenticated user.
+  /// The returned list is paginated and can be scrolled by following the `prev` and `next` links where present.
 
   static func listAccounts(completion: @escaping (Result<[AccountResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
@@ -410,7 +433,10 @@ enum UpFacade {
   ///
   /// - Parameter completion: Block to execute for handling the request response.
   ///
-  /// Retrieve a list of all tags currently in use. The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present. Results are ordered lexicographically. The `transactions` relationship for each tag exposes a link to get the transactions with the given tag.
+  /// Retrieve a list of all tags currently in use.
+  /// The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present.
+  /// Results are ordered lexicographically.
+  /// The `transactions` relationship for each tag exposes a link to get the transactions with the given tag.
 
   static func listTags(completion: @escaping (Result<[TagResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
@@ -441,7 +467,11 @@ enum UpFacade {
   ///   - transaction: The transaction to add the tags to.
   ///   - completion: Block to execute for handling the request response.
   ///
-  /// Associates one or more tags with a specific transaction. No more than 6 tags may be present on any single transaction. Duplicate tags are silently ignored. An HTTP `204` is returned on success. The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
+  /// Associates one or more tags with a specific transaction.
+  /// No more than 6 tags may be present on any single transaction.
+  /// Duplicate tags are silently ignored.
+  /// An HTTP `204` is returned on success.
+  /// The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
 
   static func modifyTags(adding tags: [TagResource],
                          to transaction: TransactionResource,
@@ -465,7 +495,11 @@ enum UpFacade {
   ///   - transaction: The unique identifier for the transaction to add the tags to.
   ///   - completion: Block to execute for handling the request response.
   ///
-  /// Associates one or more tags with a specific transaction. No more than 6 tags may be present on any single transaction. Duplicate tags are silently ignored. An HTTP `204` is returned on success. The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
+  /// Associates one or more tags with a specific transaction.
+  /// No more than 6 tags may be present on any single transaction.
+  /// Duplicate tags are silently ignored.
+  /// An HTTP `204` is returned on success.
+  /// The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
 
   static func modifyTags(adding tags: [String],
                          to transaction: String,
@@ -489,7 +523,11 @@ enum UpFacade {
   ///   - transaction: The transaction to add the tag to.
   ///   - completion: Block to execute for handling the request response.
   ///
-  /// Associates one or more tags with a specific transaction. No more than 6 tags may be present on any single transaction. Duplicate tags are silently ignored. An HTTP `204` is returned on success. The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
+  /// Associates one or more tags with a specific transaction.
+  /// No more than 6 tags may be present on any single transaction.
+  /// Duplicate tags are silently ignored.
+  /// An HTTP `204` is returned on success.
+  /// The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
 
   static func modifyTags(adding tag: TagResource, to transaction: TransactionResource, completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
@@ -511,7 +549,10 @@ enum UpFacade {
   ///   - transaction: The transaction to remove the tags from.
   ///   - completion: Block to execute for handling the request response.
   ///
-  /// Disassociates one or more tags from a specific transaction. Tags that are not associated are silently ignored. An HTTP `204` is returned on success. The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
+  /// Disassociates one or more tags from a specific transaction.
+  /// Tags that are not associated are silently ignored.
+  /// An HTTP `204` is returned on success.
+  /// The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
 
   static func modifyTags(removing tags: [TagResource],
                          from transaction: TransactionResource,
@@ -535,7 +576,10 @@ enum UpFacade {
   ///   - transaction: The unique identifier for the transaction to remove the tags from.
   ///   - completion: Block to execute for handling the request response.
   ///
-  /// Disassociates one or more tags from a specific transaction. Tags that are not associated are silently ignored. An HTTP `204` is returned on success. The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
+  /// Disassociates one or more tags from a specific transaction.
+  /// Tags that are not associated are silently ignored.
+  /// An HTTP `204` is returned on success.
+  /// The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
 
   static func modifyTags(removing tags: [String],
                          from transaction: String,
@@ -559,7 +603,10 @@ enum UpFacade {
   ///   - transaction: The transaction to remove the tag from.
   ///   - completion: Block to execute for handling the request response.
   ///
-  /// Disassociates one or more tags from a specific transaction. Tags that are not associated are silently ignored. An HTTP `204` is returned on success. The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
+  /// Disassociates one or more tags from a specific transaction.
+  /// Tags that are not associated are silently ignored.
+  /// An HTTP `204` is returned on success.
+  /// The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
 
   static func modifyTags(removing tag: TagResource,
                          from transaction: TransactionResource,

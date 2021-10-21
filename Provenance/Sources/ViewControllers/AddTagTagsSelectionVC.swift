@@ -192,7 +192,7 @@ private extension AddTagTagsSelectionVC {
 
   @objc
   private func nextAction() {
-    if let selectedTags = tableNode.indexPathsForSelectedRows?.map { filteredTags[$0.row] } {
+    if let selectedTags = tableNode.indexPathsForSelectedRows?.map({ filteredTags[$0.row] }) {
       let viewController = AddTagConfirmationVC(transaction: transaction, tags: selectedTags)
       navigationController?.pushViewController(viewController, animated: true)
     }
