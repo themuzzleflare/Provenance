@@ -127,8 +127,7 @@ extension TransactionsVC {
       self?.fetchingTasks()
     }
     dateStyleObserver = App.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
-      guard let weakSelf = self else { return }
-      weakSelf.adapter.performUpdates(animated: true)
+      self?.adapter.performUpdates(animated: true)
     }
     settledOnlyObserver = App.userDefaults.observe(\.settledOnly, options: .new) { [weak self] (_, change) in
       guard let value = change.newValue else { return }
@@ -311,7 +310,7 @@ extension TransactionsVC: ListAdapterDataSource {
     case is TransactionCellModel:
       return ItemModelSC(self, self)
     default:
-      fatalError()
+      fatalError("Unknown object")
     }
   }
 
@@ -349,7 +348,7 @@ extension TransactionsVC: SelectionDelegate {
         navigationController?.pushViewController(viewController, animated: true)
       }
     default:
-      fatalError()
+      fatalError("Unknown transaction grouping value type")
     }
   }
 }

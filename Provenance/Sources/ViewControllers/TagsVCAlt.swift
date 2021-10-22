@@ -170,6 +170,7 @@ private extension TagsVCAlt {
 
   private func applySnapshot(animate: Bool = true) {
     var snapshot = Snapshot()
+
     snapshot.appendSections(filteredTags.sortedTags)
     filteredTags.sortedTags.forEach { snapshot.appendItems($0.tags, toSection: $0) }
 

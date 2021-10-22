@@ -9,7 +9,7 @@ final class AccountsVC: ASViewController {
 
   private let collectionNode = ASCollectionNode(collectionViewLayout: .twoColumnGridLayout)
 
-  private var accountFilter: AccountTypeOptionEnum = App.userDefaults.appAccountFilter {
+  private lazy var accountFilter: AccountTypeOptionEnum = App.userDefaults.appAccountFilter {
     didSet {
       if App.userDefaults.accountFilter != accountFilter.rawValue {
         App.userDefaults.accountFilter = accountFilter.rawValue
@@ -37,11 +37,11 @@ final class AccountsVC: ASViewController {
 
   private var accountsError = String()
 
+  private var oldAccountCellModels = [AccountCellModel]()
+
   private var filteredAccounts: [AccountResource] {
     return accounts.filtered(filter: accountFilter, searchBar: searchController.searchBar)
   }
-
-  private var oldAccountCellModels = [AccountCellModel]()
 
   // MARK: - Life Cycle
 
@@ -82,14 +82,16 @@ private extension AccountsVC {
   }
 
   private func configureObservers() {
-    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(appMovedToForeground),
+                                           name: .willEnterForegroundNotification,
+                                           object: nil)
     apiKeyObserver = App.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
-      guard let weakSelf = self else { return }
-      weakSelf.fetchAccounts()
+      self?.fetchAccounts()
     }
     accountFilterObserver = App.userDefaults.observe(\.accountFilter, options: .new) { [weak self] (_, change) in
-      guard let weakSelf = self, let value = change.newValue, let accountFilter = AccountTypeOptionEnum(rawValue: value) else { return }
-      weakSelf.accountFilter = accountFilter
+      guard let value = change.newValue, let accountFilter = AccountTypeOptionEnum(rawValue: value) else { return }
+      self?.accountFilter = accountFilter
     }
   }
 
@@ -138,6 +140,7 @@ private extension AccountsVC {
       newArray: filteredAccounts.accountCellModels,
       option: .equality
     ).forBatchUpdates()
+
     if result.hasChanges || override || !accountsError.isEmpty || noAccounts {
       if filteredAccounts.isEmpty && accountsError.isEmpty {
         if accounts.isEmpty && !noAccounts {
@@ -154,6 +157,7 @@ private extension AccountsVC {
           }
         }
       }
+
       let batchUpdates = { [self] in
         collectionNode.deleteItems(at: result.deletes)
         collectionNode.insertItems(at: result.inserts)
@@ -161,6 +165,7 @@ private extension AccountsVC {
         collectionNode.reloadItems(at: result.updates)
         oldAccountCellModels = filteredAccounts.accountCellModels
       }
+
       collectionNode.performBatchUpdates(batchUpdates)
     }
   }

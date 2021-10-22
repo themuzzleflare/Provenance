@@ -9,7 +9,7 @@ final class CategoriesVC: ASViewController {
 
   private let collectionNode = ASCollectionNode(collectionViewLayout: .twoColumnGridLayout)
 
-  private var categoryFilter: CategoryTypeEnum = App.userDefaults.appCategoryFilter {
+  private lazy var categoryFilter: CategoryTypeEnum = App.userDefaults.appCategoryFilter {
     didSet {
       if App.userDefaults.categoryFilter != categoryFilter.rawValue {
         App.userDefaults.categoryFilter = categoryFilter.rawValue
@@ -82,14 +82,16 @@ private extension CategoriesVC {
   }
 
   private func configureObservers() {
-    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(appMovedToForeground),
+                                           name: .willEnterForegroundNotification,
+                                           object: nil)
     apiKeyObserver = App.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
-      guard let weakSelf = self else { return }
-      weakSelf.fetchCategories()
+      self?.fetchCategories()
     }
     categoryFilterObserver = App.userDefaults.observe(\.categoryFilter, options: .new) { [weak self] (_, change) in
-      guard let weakSelf = self, let value = change.newValue, let categoryFilter = CategoryTypeEnum(rawValue: value) else { return }
-      weakSelf.categoryFilter = categoryFilter
+      guard let value = change.newValue, let categoryFilter = CategoryTypeEnum(rawValue: value) else { return }
+      self?.categoryFilter = categoryFilter
     }
   }
 
@@ -138,6 +140,7 @@ private extension CategoriesVC {
       newArray: filteredCategories.categoryCellModels,
       option: .equality
     ).forBatchUpdates()
+
     if result.hasChanges || override || !categoriesError.isEmpty || noCategories {
       if filteredCategories.isEmpty && categoriesError.isEmpty {
         if categories.isEmpty && !noCategories {
@@ -154,6 +157,7 @@ private extension CategoriesVC {
           }
         }
       }
+
       let batchUpdates = { [self] in
         collectionNode.deleteItems(at: result.deletes)
         collectionNode.insertItems(at: result.inserts)
@@ -161,6 +165,7 @@ private extension CategoriesVC {
         collectionNode.reloadItems(at: result.updates)
         oldCategoryCellModels = filteredCategories.categoryCellModels
       }
+
       collectionNode.performBatch(animated: true, updates: batchUpdates)
     }
   }

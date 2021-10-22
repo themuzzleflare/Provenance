@@ -196,6 +196,7 @@ extension TransactionTagsVC {
       newArray: tags.tagCellModels,
       option: .equality
     ).forBatchUpdates()
+
     if result.hasChanges || override {
       let batchUpdates = { [self] in
         tableNode.deleteRows(at: result.deletes, with: .automatic)
@@ -203,6 +204,7 @@ extension TransactionTagsVC {
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
         oldTagCellModels = tags.tagCellModels
       }
+
       tableNode.performBatchUpdates(batchUpdates)
     }
   }
