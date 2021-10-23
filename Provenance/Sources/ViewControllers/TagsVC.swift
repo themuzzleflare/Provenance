@@ -1,4 +1,4 @@
-import IGListDiffKit
+import IGListKit
 import AsyncDisplayKit
 import Alamofire
 
@@ -7,9 +7,7 @@ final class TagsVC: ASViewController {
 
   private lazy var searchController = UISearchController(self)
 
-  private lazy var adapter: ListAdapter = {
-    return ListAdapter(updater: ListAdapterUpdater(), viewController: self)
-  }()
+  private lazy var adapter = ListAdapter(updater: ListAdapterUpdater(), viewController: self)
 
   private let collectionNode = ASCollectionNode(collectionViewLayout: .flowLayout)
 
@@ -42,7 +40,7 @@ final class TagsVC: ASViewController {
 
   deinit {
     removeObservers()
-    print("deinit")
+    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -77,7 +75,7 @@ private extension TagsVC {
                                            selector: #selector(appMovedToForeground),
                                            name: .willEnterForegroundNotification,
                                            object: nil)
-    apiKeyObserver = App.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+    apiKeyObserver = UserDefaults.provenance.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       self?.fetchTags()
     }
   }

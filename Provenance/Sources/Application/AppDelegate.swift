@@ -30,13 +30,16 @@ extension AppDelegate {
       let settingsData = try Data(contentsOf: .settingsBundle.appendingPathComponent("Root.plist"))
       let settingsPlist = try PropertyListSerialization.propertyList(from: settingsData, format: nil) as? [String: Any]
       let settingsPreferences = settingsPlist?["PreferenceSpecifiers"] as? [[String: Any]]
+
       var defaults = [String: Any]()
+
       settingsPreferences?.forEach { (preference) in
         if let key = preference["Key"] as? String {
           defaults[key] = preference["DefaultValue"]
         }
       }
-      App.userDefaults.register(defaults: defaults)
+
+      UserDefaults.provenance.register(defaults: defaults)
     } catch {
       fatalError("registerDefaults failed with error: \(error.localizedDescription)")
     }

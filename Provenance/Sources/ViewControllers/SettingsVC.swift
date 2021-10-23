@@ -6,11 +6,7 @@ final class SettingsVC: ASViewController {
 
   private var displayBanner: GrowingNotificationBanner?
 
-  var submitActionProxy: UIAlertAction!
-
   private var apiKeyObserver: NSKeyValueObservation?
-
-  var textDidChangeObserver: NSObjectProtocol!
 
   let tableNode = ASTableNode(style: .grouped)
 
@@ -23,7 +19,7 @@ final class SettingsVC: ASViewController {
 
   deinit {
     removeObserver()
-    print("deinit")
+    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -54,14 +50,12 @@ private extension SettingsVC {
   }
 
   private func configureObserver() {
-    apiKeyObserver = App.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
-      guard let weakSelf = self else { return }
-      DispatchQueue.main.async {
-        if let alert = weakSelf.presentedViewController as? UIAlertController {
-          alert.dismiss(animated: true)
-        }
-        weakSelf.tableNode.reloadData()
+    apiKeyObserver = UserDefaults.provenance.observe(\.apiKey, options: .new) { [weak self] (_, change) in
+      if let alertController = self?.presentedViewController as? UIAlertController {
+        alertController.textFields?.first?.text = change.newValue
+        alertController.actions.last?.isEnabled = false
       }
+      self?.tableNode.reloadData()
     }
   }
 
@@ -85,10 +79,19 @@ private extension SettingsVC {
 
 // MARK: - Actions
 
-private extension SettingsVC {
+extension SettingsVC {
   @objc
   private func closeWorkflow() {
     navigationController?.dismiss(animated: true)
+  }
+
+  @objc
+  private func textChanged() {
+    guard let alert = presentedViewController as? UIAlertController,
+          let action = alert.actions.last,
+          let text = alert.textFields?.first?.text
+    else { return }
+    action.isEnabled = text.count >= 1 && text != UserDefaults.provenance.apiKey
   }
 }
 
@@ -148,7 +151,7 @@ extension SettingsVC: ASTableDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     switch section {
     case 2:
-      return .plainView
+      return UIView()
     default:
       return nil
     }
@@ -167,7 +170,7 @@ extension SettingsVC: ASTableDelegate {
     switch indexPath.section {
     case 0:
       tableNode.deselectRow(at: indexPath, animated: true)
-      let alertController = UIAlertController.saveApiKey(self)
+      let alertController = UIAlertController.saveApiKey(self, selector: #selector(self.textChanged))
       present(alertController, animated: true)
     case 2:
       tableNode.deselectRow(at: indexPath, animated: true)
@@ -180,8 +183,8 @@ extension SettingsVC: ASTableDelegate {
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     switch indexPath.section {
     case 0:
-      return App.userDefaults.apiKey.isEmpty ? nil : UIContextMenuConfiguration(elements: [
-        .copyGeneric(title: "API Key", string: App.userDefaults.apiKey)
+      return UserDefaults.provenance.apiKey.isEmpty ? nil : UIContextMenuConfiguration(elements: [
+        .copyGeneric(title: "API Key", string: UserDefaults.provenance.apiKey)
       ])
     default:
       return nil

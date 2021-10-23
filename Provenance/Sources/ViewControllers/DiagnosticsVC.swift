@@ -18,7 +18,7 @@ final class DiagnosticsVC: ViewController {
   // MARK: - Life Cycle
 
   deinit {
-    print("deinit")
+    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   override func viewDidLoad() {

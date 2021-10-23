@@ -24,3 +24,11 @@ extension AccountTypeOptionEnum {
     }
   }
 }
+
+extension Array where Element == AccountTypeOptionEnum {
+  var names: [String] {
+    return self.map { (type) in
+      return type.description
+    }
+  }
+}

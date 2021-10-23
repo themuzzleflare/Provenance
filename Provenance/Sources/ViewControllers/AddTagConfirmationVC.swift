@@ -26,7 +26,7 @@ final class AddTagConfirmationVC: ASViewController {
 
   deinit {
     removeObserver()
-    print("deinit")
+    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -50,9 +50,8 @@ private extension AddTagConfirmationVC {
   }
 
   private func configureObserver() {
-    dateStyleObserver = App.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
-      guard let weakSelf = self else { return }
-      weakSelf.tableNode.reloadData()
+    dateStyleObserver = UserDefaults.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+      self?.tableNode.reloadData()
     }
   }
 
@@ -135,7 +134,7 @@ extension AddTagConfirmationVC: ASTableDataSource {
       case 1:
         return transactionCellNode
       case 2:
-        return ASTextCellNode(text: "You are adding \(self.tags.joinedWithComma) to \(self.transaction.attributes.description), which was \(App.userDefaults.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: UITableViewCell.SelectionStyle.none)
+        return ASTextCellNode(text: "You are adding \(self.tags.joinedWithComma) to \(self.transaction.attributes.description), which was \(UserDefaults.provenance.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: UITableViewCell.SelectionStyle.none)
       default:
         fatalError("Unknown section")
       }

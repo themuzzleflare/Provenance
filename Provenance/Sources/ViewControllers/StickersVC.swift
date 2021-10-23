@@ -13,7 +13,7 @@ final class StickersVC: ASViewController {
   }
 
   deinit {
-    print("deinit")
+    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {

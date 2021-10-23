@@ -3,7 +3,7 @@ import AsyncDisplayKit
 final class TabBarController: ASTabBarController {
   override func viewDidLoad() {
     super.viewDidLoad()
-    setViewControllers(TabBarItem.defaultTabs, animated: false)
+    setViewControllers(TabBarItem.defaultTabs, animated: true)
   }
 
   override func restoreUserActivityState(_ activity: NSUserActivity) {

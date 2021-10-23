@@ -2,10 +2,6 @@ import SnapKit
 import MBProgressHUD
 
 extension UIView {
-  static var plainView: UIView {
-    return UIView()
-  }
-
   static func loadingView(frame: CGRect, contentType: ContentType) -> UIView {
     let view = UIView(frame: frame)
     let loadingIndicator = MBProgressHUD(view: view)

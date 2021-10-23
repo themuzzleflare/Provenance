@@ -19,7 +19,7 @@ extension DateStyleEnum {
     case .relative:
       return .relative
     case .appDefault, .unknown:
-      return App.userDefaults.appDateStyle
+      return UserDefaults.provenance.appDateStyle
     }
   }
 }

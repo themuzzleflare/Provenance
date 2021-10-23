@@ -12,7 +12,7 @@ final class AboutVC: ASViewController {
   }
 
   deinit {
-    print("deinit")
+    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -96,9 +96,9 @@ extension AboutVC: ASTableDataSource {
         case 0:
           return .aboutTop
         case 1:
-          return RightDetailCellNode(text: "Version", detailText: App.userDefaults.appVersion)
+          return RightDetailCellNode(text: "Version", detailText: UserDefaults.provenance.appVersion)
         case 2:
-          return RightDetailCellNode(text: "Build", detailText: App.userDefaults.appBuild)
+          return RightDetailCellNode(text: "Build", detailText: UserDefaults.provenance.appBuild)
         default:
           fatalError("Unknown row")
         }
@@ -181,12 +181,12 @@ extension AboutVC: ASTableDelegate {
     case 0:
       switch row {
       case 1:
-        return App.userDefaults.appVersion == "Unknown" ? nil : UIContextMenuConfiguration(elements: [
-          .copyGeneric(title: "Version", string: App.userDefaults.appVersion)
+        return UserDefaults.provenance.appVersion == "Unknown" ? nil : UIContextMenuConfiguration(elements: [
+          .copyGeneric(title: "Version", string: UserDefaults.provenance.appVersion)
         ])
       case 2:
-        return App.userDefaults.appBuild == "Unknown" ? nil : UIContextMenuConfiguration(elements: [
-          .copyGeneric(title: "Build", string: App.userDefaults.appBuild)
+        return UserDefaults.provenance.appBuild == "Unknown" ? nil : UIContextMenuConfiguration(elements: [
+          .copyGeneric(title: "Build", string: UserDefaults.provenance.appBuild)
         ])
       default:
         return nil

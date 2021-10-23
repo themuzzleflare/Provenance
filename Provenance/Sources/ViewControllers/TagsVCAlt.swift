@@ -104,7 +104,7 @@ private extension TagsVCAlt {
                                            selector: #selector(appMovedToForeground),
                                            name: .willEnterForegroundNotification,
                                            object: nil)
-    apiKeyObserver = App.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+    apiKeyObserver = UserDefaults.provenance.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       self?.fetchTags()
     }
   }

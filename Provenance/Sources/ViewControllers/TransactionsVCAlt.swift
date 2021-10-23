@@ -9,9 +9,7 @@ final class TransactionsVCAlt: ViewController {
 
   private lazy var searchController = UISearchController(self)
 
-  private lazy var adapter: ListAdapter = {
-    return ListAdapter(updater: ListAdapterUpdater(), viewController: self)
-  }()
+  private lazy var adapter = ListAdapter(updater: ListAdapterUpdater(), viewController: self)
 
   private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .sectionHeadersPinned)
 
@@ -33,10 +31,10 @@ final class TransactionsVCAlt: ViewController {
 
   private var transactionsError = String()
 
-  private lazy var transactionGrouping: TransactionGroupingEnum = App.userDefaults.appTransactionGrouping {
+  private lazy var transactionGrouping: TransactionGroupingEnum = UserDefaults.provenance.appTransactionGrouping {
     didSet {
-      if App.userDefaults.transactionGrouping != transactionGrouping.rawValue {
-        App.userDefaults.transactionGrouping = transactionGrouping.rawValue
+      if UserDefaults.provenance.transactionGrouping != transactionGrouping.rawValue {
+        UserDefaults.provenance.transactionGrouping = transactionGrouping.rawValue
       }
       filterUpdates()
     }
@@ -59,19 +57,19 @@ final class TransactionsVCAlt: ViewController {
     }
   }
 
-  private lazy var categoryFilter: TransactionCategory = App.userDefaults.appSelectedCategory {
+  private lazy var categoryFilter: TransactionCategory = UserDefaults.provenance.appSelectedCategory {
     didSet {
-      if App.userDefaults.selectedCategory != categoryFilter.rawValue {
-        App.userDefaults.selectedCategory = categoryFilter.rawValue
+      if UserDefaults.provenance.selectedCategory != categoryFilter.rawValue {
+        UserDefaults.provenance.selectedCategory = categoryFilter.rawValue
       }
       filterUpdates()
     }
   }
 
-  private lazy var showSettledOnly: Bool = App.userDefaults.settledOnly {
+  private lazy var showSettledOnly: Bool = UserDefaults.provenance.settledOnly {
     didSet {
-      if App.userDefaults.settledOnly != showSettledOnly {
-        App.userDefaults.settledOnly = showSettledOnly
+      if UserDefaults.provenance.settledOnly != showSettledOnly {
+        UserDefaults.provenance.settledOnly = showSettledOnly
       }
       filterUpdates()
     }
@@ -90,7 +88,7 @@ final class TransactionsVCAlt: ViewController {
 
   deinit {
     removeObservers()
-    print("deinit")
+    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -131,21 +129,21 @@ extension TransactionsVCAlt {
                                            selector: #selector(appMovedToForeground),
                                            name: .willEnterForegroundNotification,
                                            object: nil)
-    apiKeyObserver = App.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+    apiKeyObserver = UserDefaults.provenance.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       self?.fetchingTasks()
     }
-    dateStyleObserver = App.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+    dateStyleObserver = UserDefaults.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       self?.adapter.performUpdates(animated: true)
     }
-    settledOnlyObserver = App.userDefaults.observe(\.settledOnly, options: .new) { [weak self] (_, change) in
+    settledOnlyObserver = UserDefaults.provenance.observe(\.settledOnly, options: .new) { [weak self] (_, change) in
       guard let value = change.newValue else { return }
       self?.showSettledOnly = value
     }
-    paginationCursorObserver = App.userDefaults.observe(\.paginationCursor, options: .new) { [weak self] (_, change) in
+    paginationCursorObserver = UserDefaults.provenance.observe(\.paginationCursor, options: .new) { [weak self] (_, change) in
       guard let value = change.newValue else { return }
       self?.cursor = value.isEmpty ? nil : value
     }
-    transactionGroupingObserver = App.userDefaults.observe(\.transactionGrouping, options: .new) { [weak self] (_, change) in
+    transactionGroupingObserver = UserDefaults.provenance.observe(\.transactionGrouping, options: .new) { [weak self] (_, change) in
       guard let value = change.newValue, let grouping = TransactionGroupingEnum(rawValue: value) else { return }
       self?.transactionGrouping = grouping
     }
@@ -183,11 +181,11 @@ extension TransactionsVCAlt {
 
   @objc
   private func switchDateStyle() {
-    switch App.userDefaults.appDateStyle {
+    switch UserDefaults.provenance.appDateStyle {
     case .absolute:
-      App.userDefaults.appDateStyle = .relative
+      UserDefaults.provenance.appDateStyle = .relative
     case .relative:
-      App.userDefaults.appDateStyle = .absolute
+      UserDefaults.provenance.appDateStyle = .absolute
     }
   }
 
@@ -302,7 +300,7 @@ extension TransactionsVCAlt: ListAdapterDataSource {
 
   func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
     switch object {
-    case is String:
+    case spinToken as String:
       return .spinnerSectionController()
     case is SortedTransactionModelAlt:
       return TransactionBindingSC()

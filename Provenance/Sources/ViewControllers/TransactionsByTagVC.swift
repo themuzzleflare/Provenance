@@ -30,11 +30,11 @@ final class TransactionsByTagVC: ASViewController {
 
   private var transactionsError = String()
 
+  private var oldTransactionCellModels = [TransactionCellModel]()
+
   private var filteredTransactions: [TransactionResource] {
     return transactions.filtered(searchBar: searchController.searchBar)
   }
-
-  private var oldTransactionCellModels = [TransactionCellModel]()
 
   // MARK: - Life Cycle
 
@@ -45,7 +45,7 @@ final class TransactionsByTagVC: ASViewController {
 
   deinit {
     removeObservers()
-    print("deinit")
+    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -85,9 +85,8 @@ private extension TransactionsByTagVC {
                                            selector: #selector(appMovedToForeground),
                                            name: .willEnterForegroundNotification,
                                            object: nil)
-    dateStyleObserver = App.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
-      guard let weakSelf = self else { return }
-      weakSelf.applySnapshot()
+    dateStyleObserver = UserDefaults.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+      self?.applySnapshot()
     }
   }
 
@@ -136,6 +135,7 @@ extension TransactionsByTagVC {
       newArray: filteredTransactions.transactionCellModels,
       option: .equality
     ).forBatchUpdates()
+
     if result.hasChanges || override || !transactionsError.isEmpty || noTransactions {
       if filteredTransactions.isEmpty && transactionsError.isEmpty {
         if transactions.isEmpty && !noTransactions {
@@ -152,12 +152,14 @@ extension TransactionsByTagVC {
           }
         }
       }
+
       let batchUpdates = { [self] in
         tableNode.deleteRows(at: result.deletes, with: .fade)
         tableNode.insertRows(at: result.inserts, with: .fade)
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
         oldTransactionCellModels = filteredTransactions.transactionCellModels
       }
+
       tableNode.performBatchUpdates(batchUpdates)
     }
   }

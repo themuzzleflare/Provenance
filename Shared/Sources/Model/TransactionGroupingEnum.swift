@@ -18,3 +18,11 @@ extension TransactionGroupingEnum {
     }
   }
 }
+
+extension Array where Element == TransactionGroupingEnum {
+  var names: [String] {
+    return self.map { (grouping) in
+      return grouping.description
+    }
+  }
+}

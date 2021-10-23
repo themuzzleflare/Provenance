@@ -15,3 +15,11 @@ extension CategoryTypeEnum {
     }
   }
 }
+
+extension Array where Element == CategoryTypeEnum {
+  var names: [String] {
+    return self.map { (type) in
+      return type.description
+    }
+  }
+}

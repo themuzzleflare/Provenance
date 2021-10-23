@@ -59,7 +59,7 @@ final class TransactionTagsVC: ASViewController {
 
   deinit {
     removeObserver()
-    print("deinit")
+    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {

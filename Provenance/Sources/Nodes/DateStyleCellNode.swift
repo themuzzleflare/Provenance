@@ -4,10 +4,10 @@ final class DateStyleCellNode: ASCellNode {
   private let dateStyleTextNode = ASTextNode()
   private let segmentedControlNode = SegmentedControlNode()
 
-  private lazy var styleSelection: AppDateStyle = App.userDefaults.appDateStyle {
+  private lazy var styleSelection: AppDateStyle = UserDefaults.provenance.appDateStyle {
     didSet {
-      if App.userDefaults.dateStyle != styleSelection.rawValue {
-        App.userDefaults.dateStyle = styleSelection.rawValue
+      if UserDefaults.provenance.dateStyle != styleSelection.rawValue {
+        UserDefaults.provenance.dateStyle = styleSelection.rawValue
       }
       if segmentedControlNode.selectedSegmentIndex != styleSelection.rawValue {
         segmentedControlNode.selectedSegmentIndex = styleSelection.rawValue
@@ -26,6 +26,7 @@ final class DateStyleCellNode: ASCellNode {
 
   deinit {
     removeObserver()
+    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   override func didLoad() {
@@ -54,7 +55,7 @@ final class DateStyleCellNode: ASCellNode {
 
 extension DateStyleCellNode {
   private func configureObserver() {
-    dateStyleObserver = App.userDefaults.observe(\.dateStyle, options: .new) { [weak self] (_, change) in
+    dateStyleObserver = UserDefaults.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, change) in
       guard let value = change.newValue, let dateStyle = AppDateStyle(rawValue: value) else { return }
       self?.styleSelection = dateStyle
     }

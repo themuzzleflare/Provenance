@@ -45,7 +45,7 @@ enum UpFacade {
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     var parameters: Parameters = [
@@ -61,7 +61,7 @@ enum UpFacade {
       .responseDecodable(of: Transaction.self) { (response) in
         switch response.result {
         case let .success(transactions):
-          App.userDefaults.paginationCursor = transactions.links.nextCursor ?? ""
+          UserDefaults.provenance.paginationCursor = transactions.links.nextCursor ?? ""
           completion(.success(transactions.data))
         case let .failure(error):
           completion(.failure(error))
@@ -86,7 +86,7 @@ enum UpFacade {
                                        completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     var parameters: Parameters = [
@@ -134,7 +134,7 @@ enum UpFacade {
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     let parameters: Parameters = [
@@ -169,7 +169,7 @@ enum UpFacade {
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     let parameters: Parameters = [
@@ -205,7 +205,7 @@ enum UpFacade {
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     let parameters: Parameters = [
@@ -234,7 +234,7 @@ enum UpFacade {
   static func retrieveLatestTransaction(completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     let parameters: Parameters = [
@@ -269,7 +269,7 @@ enum UpFacade {
                                         completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     let parameters: Parameters = [
@@ -304,7 +304,7 @@ enum UpFacade {
                                   completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)", method: .get, headers: headers)
@@ -331,7 +331,7 @@ enum UpFacade {
                                   completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     AF.request("https://api.up.com.au/api/v1/transactions/\(transactionId)", method: .get, headers: headers)
@@ -356,7 +356,7 @@ enum UpFacade {
   static func listAccounts(completion: @escaping (Result<[AccountResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     let parameters: Parameters = [
@@ -387,7 +387,7 @@ enum UpFacade {
                               completion: @escaping (Result<AccountResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)", method: .get, headers: headers)
@@ -414,7 +414,7 @@ enum UpFacade {
                               completion: @escaping (Result<AccountResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     AF.request("https://api.up.com.au/api/v1/accounts/\(accountId)", method: .get, headers: headers)
@@ -441,7 +441,7 @@ enum UpFacade {
   static func listTags(completion: @escaping (Result<[TagResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     let parameters: Parameters = [
@@ -478,7 +478,7 @@ enum UpFacade {
                          completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
       .contentType("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags", method: .post, parameters: ModifyTags(tags: tags), encoder: jsonEncoder, headers: headers)
@@ -506,7 +506,7 @@ enum UpFacade {
                          completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
       .contentType("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     AF.request("https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags", method: .post, parameters: ModifyTags(tags: tags), encoder: jsonEncoder, headers: headers)
@@ -532,7 +532,7 @@ enum UpFacade {
   static func modifyTags(adding tag: TagResource, to transaction: TransactionResource, completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
       .contentType("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags", method: .post, parameters: ModifyTags(tag: tag), encoder: jsonEncoder, headers: headers)
@@ -559,7 +559,7 @@ enum UpFacade {
                          completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
       .contentType("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags", method: .delete, parameters: ModifyTags(tags: tags), encoder: jsonEncoder, headers: headers)
@@ -586,7 +586,7 @@ enum UpFacade {
                          completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
       .contentType("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     AF.request("https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags", method: .delete, parameters: ModifyTags(tags: tags), encoder: jsonEncoder, headers: headers)
@@ -613,7 +613,7 @@ enum UpFacade {
                          completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
       .contentType("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags", method: .delete, parameters: ModifyTags(tag: tag), encoder: jsonEncoder, headers: headers)
@@ -632,7 +632,7 @@ enum UpFacade {
   static func listCategories(completion: @escaping (Result<[CategoryResource], AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     AF.request("https://api.up.com.au/api/v1/categories", method: .get, headers: headers)
@@ -659,7 +659,7 @@ enum UpFacade {
                                completion: @escaping (Result<CategoryResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     AF.request("https://api.up.com.au/api/v1/categories/\(category.id)", method: .get, headers: headers)
@@ -686,7 +686,7 @@ enum UpFacade {
                                completion: @escaping (Result<CategoryResource, AFError>) -> Void) {
     let headers: HTTPHeaders = [
       .accept("application/json"),
-      .authorization(bearerToken: App.userDefaults.apiKey)
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
     AF.request("https://api.up.com.au/api/v1/categories/\(categoryId)", method: .get, headers: headers)

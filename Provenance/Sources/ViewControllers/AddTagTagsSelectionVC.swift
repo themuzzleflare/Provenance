@@ -77,7 +77,7 @@ final class AddTagTagsSelectionVC: ASViewController {
 
   deinit {
     removeObserver()
-    print("deinit")
+    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -199,7 +199,7 @@ private extension AddTagTagsSelectionVC {
   }
 
   @objc
-  private func addTagsTextFieldChanged() {
+  private func textChanged() {
     if let alert = presentedViewController as? UIAlertController, let action = alert.actions.last {
       let text = alert.textFields?.textsJoined ?? ""
       action.isEnabled = !text.isEmpty
@@ -208,7 +208,7 @@ private extension AddTagTagsSelectionVC {
 
   @objc
   private func openAddWorkflow() {
-    let alertController = UIAlertController.submitNewTags(self, selector: #selector(addTagsTextFieldChanged), transaction: transaction)
+    let alertController = UIAlertController.submitNewTags(self, selector: #selector(textChanged), transaction: transaction)
     present(alertController, animated: true)
   }
 
@@ -225,6 +225,7 @@ private extension AddTagTagsSelectionVC {
   }
 
   private func updateToolbarItems() {
+    editingBarButtonItem.isEnabled = !filteredTags.isEmpty
     selectionBarButtonItem.isEnabled = tableNode.indexPathsForSelectedRows != nil
     selectionLabelBarButtonItem.title = "\(tableNode.indexPathsForSelectedRows?.count.description ?? "0") of 6 selected"
     selectionLabelBarButtonItem.style = tableNode.indexPathsForSelectedRows?.count == 6 ? .done : .plain

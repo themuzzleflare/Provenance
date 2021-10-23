@@ -18,7 +18,11 @@ extension DetailSection: Hashable {
 }
 
 extension Array where Element == DetailSection {
-  static func transactionDetailSections(transaction: TransactionResource, account: AccountResource?, transferAccount: AccountResource?, parentCategory: CategoryResource?, category: CategoryResource?) -> [DetailSection] {
+  static func transactionDetailSections(transaction: TransactionResource,
+                                        account: AccountResource?,
+                                        transferAccount: AccountResource?,
+                                        parentCategory: CategoryResource?,
+                                        category: CategoryResource?) -> [DetailSection] {
     return [
       DetailSection(
         id: 1,
@@ -151,11 +155,11 @@ extension Array where Element == DetailSection {
         items: [
           DetailItem(
             id: "Version",
-            value: App.userDefaults.appVersion
+            value: UserDefaults.provenance.appVersion
           ),
           DetailItem(
             id: "Build",
-            value: App.userDefaults.appBuild
+            value: UserDefaults.provenance.appBuild
           )
         ]
       )

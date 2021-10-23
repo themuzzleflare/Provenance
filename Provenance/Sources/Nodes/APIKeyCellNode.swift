@@ -7,7 +7,7 @@ final class APIKeyCellNode: ASCellNode {
   private let marqueeLabelNode = MarqueeLabelNode()
 
   private var apiKeyDisplay: String {
-    return App.userDefaults.apiKey.isEmpty ? "None" : App.userDefaults.apiKey
+    return UserDefaults.provenance.apiKey.isEmpty ? "None" : UserDefaults.provenance.apiKey
   }
 
   // MARK: - Life Cycle
@@ -15,6 +15,10 @@ final class APIKeyCellNode: ASCellNode {
   override init() {
     super.init()
     automaticallyManagesSubnodes = true
+  }
+
+  deinit {
+    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   override func didLoad() {

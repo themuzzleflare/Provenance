@@ -9,10 +9,10 @@ final class CategoriesVC: ASViewController {
 
   private let collectionNode = ASCollectionNode(collectionViewLayout: .twoColumnGridLayout)
 
-  private lazy var categoryFilter: CategoryTypeEnum = App.userDefaults.appCategoryFilter {
+  private lazy var categoryFilter: CategoryTypeEnum = UserDefaults.provenance.appCategoryFilter {
     didSet {
-      if App.userDefaults.categoryFilter != categoryFilter.rawValue {
-        App.userDefaults.categoryFilter = categoryFilter.rawValue
+      if UserDefaults.provenance.categoryFilter != categoryFilter.rawValue {
+        UserDefaults.provenance.categoryFilter = categoryFilter.rawValue
       }
       if searchController.searchBar.selectedScopeButtonIndex != categoryFilter.rawValue {
         searchController.searchBar.selectedScopeButtonIndex = categoryFilter.rawValue
@@ -51,7 +51,7 @@ final class CategoriesVC: ASViewController {
 
   deinit {
     removeObservers()
-    print("deinit")
+    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -86,10 +86,10 @@ private extension CategoriesVC {
                                            selector: #selector(appMovedToForeground),
                                            name: .willEnterForegroundNotification,
                                            object: nil)
-    apiKeyObserver = App.userDefaults.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+    apiKeyObserver = UserDefaults.provenance.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       self?.fetchCategories()
     }
-    categoryFilterObserver = App.userDefaults.observe(\.categoryFilter, options: .new) { [weak self] (_, change) in
+    categoryFilterObserver = UserDefaults.provenance.observe(\.categoryFilter, options: .new) { [weak self] (_, change) in
       guard let value = change.newValue, let categoryFilter = CategoryTypeEnum(rawValue: value) else { return }
       self?.categoryFilter = categoryFilter
     }
