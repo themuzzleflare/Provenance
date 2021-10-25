@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>signingCertificate</key>
+	<string>Apple Development</string>
+	<key>teamID</key>
+	<string>JDL5FY6SCC</string>
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>cloud.tavitian.provenance</key>
