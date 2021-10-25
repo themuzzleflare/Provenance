@@ -28,6 +28,7 @@
 		7A122EE6268AB37800BF90BB /* TransactionTagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A122EE5268AB37800BF90BB /* TransactionTagsVC.swift */; };
 		7A130B6B2705672900E02B5E /* MarqueeLabelNodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A130B6A2705672900E02B5E /* MarqueeLabelNodeProtocol.swift */; };
 		7A130B6D2705747500E02B5E /* SpinnerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A130B6C2705747500E02B5E /* SpinnerDelegate.swift */; };
+		7A13D25F272433E000A7B5D0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A13D25E272433E000A7B5D0 /* GoogleService-Info.plist */; };
 		7A14D5EA261AC37100C072E3 /* AccountsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A14D5E9261AC37100C072E3 /* AccountsVC.swift */; };
 		7A17C18C2657940E00E5EA23 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A17C18B2657940E00E5EA23 /* Intents.framework */; };
 		7A17C1932657940E00E5EA23 /* Provenance Intents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7A17C18A2657940E00E5EA23 /* Provenance Intents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -40,7 +41,6 @@
 		7A1BE9F426EDAD6D00A97F56 /* StickerImageNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1BE9F326EDAD6D00A97F56 /* StickerImageNode.swift */; };
 		7A202B5D262908EC00D2450A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A202B5C262908EC00D2450A /* SceneDelegate.swift */; };
 		7A22713926817399001F63FF /* ShortcutType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A22713826817399001F63FF /* ShortcutType.swift */; };
-		7A2456E42723F07900A023CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A2456E32723F07900A023CF /* GoogleService-Info.plist */; };
 		7A2F18FE261D9CC80054A9B6 /* StickerSeven.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F18F6261D9CC60054A9B6 /* StickerSeven.gif */; };
 		7A2F1900261D9CC80054A9B6 /* StickerTwo.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F18F8261D9CC70054A9B6 /* StickerTwo.gif */; };
 		7A2F1901261D9CC80054A9B6 /* StickerSix.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F18F9261D9CC80054A9B6 /* StickerSix.gif */; };
@@ -119,6 +119,7 @@
 		7A3E428427041243007E3A08 /* SpinnerCellNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3E428327041243007E3A08 /* SpinnerCellNode.swift */; };
 		7A3E4286270412FC007E3A08 /* SpinnerSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3E4285270412FC007E3A08 /* SpinnerSC.swift */; };
 		7A3E428827041B44007E3A08 /* LoadingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3E428727041B44007E3A08 /* LoadingDelegate.swift */; };
+		7A4043AF27263ED8002FE4F6 /* UIAlertAction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2156926F062FE009F4F38 /* UIAlertAction+Extension.swift */; };
 		7A438783263AAC9B008C5714 /* StatusIconHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A438782263AAC9B008C5714 /* StatusIconHelpView.swift */; };
 		7A455CA22607FBFE00A7F2B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
 		7A4ADBA92720F6DE009765A3 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4ADBA82720F6DE009765A3 /* ErrorView.swift */; };
@@ -245,6 +246,7 @@
 		7AB34D5D25C7CDCB000A1E81 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */; };
 		7AB609B02603F0D80038B85B /* AddTagTagsSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609AF2603F0D80038B85B /* AddTagTagsSelectionVC.swift */; };
 		7AB609B32603F1130038B85B /* AddTagConfirmationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB609B22603F1130038B85B /* AddTagConfirmationVC.swift */; };
+		7AC81B1C2723FC9900CFF8E6 /* NSDirectionalEdgeInsets+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC81B1B2723FC9900CFF8E6 /* NSDirectionalEdgeInsets+Extension.swift */; };
 		7AC8AA8427059DD600E7BDDC /* IGListAdapterUpdateType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC8AA8327059DD600E7BDDC /* IGListAdapterUpdateType+Extension.swift */; };
 		7AC9F7D326AE4E9C0096D486 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC9F7D226AE4E9C0096D486 /* ViewController.swift */; };
 		7ACA1A4E26AA448C00DE1645 /* ProvenanceAppCheckProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACA1A4D26AA448C00DE1645 /* ProvenanceAppCheckProviderFactory.swift */; };
@@ -295,7 +297,6 @@
 		7AF2156026F057F1009F4F38 /* FilterMenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2155F26F057F1009F4F38 /* FilterMenuAction.swift */; };
 		7AF2156426F05F74009F4F38 /* UIMenuElement+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2156326F05F74009F4F38 /* UIMenuElement+Extension.swift */; };
 		7AF2156626F05FE3009F4F38 /* UIContextMenuConfiguration+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2156526F05FE3009F4F38 /* UIContextMenuConfiguration+Extension.swift */; };
-		7AF2156B26F062FE009F4F38 /* UIAlertAction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2156926F062FE009F4F38 /* UIAlertAction+Extension.swift */; };
 		7AF2156C26F062FE009F4F38 /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2156A26F062FE009F4F38 /* UIAlertController+Extension.swift */; };
 		7AF2156E26F06C98009F4F38 /* UIRefreshControl+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2156D26F06C98009F4F38 /* UIRefreshControl+Extension.swift */; };
 		7AF2157026F07F93009F4F38 /* WidgetsNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2156F26F07F93009F4F38 /* WidgetsNode.swift */; };
@@ -584,6 +585,7 @@
 		7A122EE5268AB37800BF90BB /* TransactionTagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTagsVC.swift; sourceTree = "<group>"; };
 		7A130B6A2705672900E02B5E /* MarqueeLabelNodeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeLabelNodeProtocol.swift; sourceTree = "<group>"; };
 		7A130B6C2705747500E02B5E /* SpinnerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerDelegate.swift; sourceTree = "<group>"; };
+		7A13D25E272433E000A7B5D0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7A14D5E9261AC37100C072E3 /* AccountsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsVC.swift; sourceTree = "<group>"; };
 		7A17C18A2657940E00E5EA23 /* Provenance Intents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance Intents.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A17C18B2657940E00E5EA23 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
@@ -599,7 +601,7 @@
 		7A1BE9F326EDAD6D00A97F56 /* StickerImageNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerImageNode.swift; sourceTree = "<group>"; };
 		7A202B5C262908EC00D2450A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7A22713826817399001F63FF /* ShortcutType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutType.swift; sourceTree = "<group>"; };
-		7A2456E32723F07900A023CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7A2CB0D22726731300B6F58D /* ExportOptions.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ExportOptions.plist; sourceTree = "<group>"; };
 		7A2F18F6261D9CC60054A9B6 /* StickerSeven.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerSeven.gif; sourceTree = "<group>"; };
 		7A2F18F8261D9CC70054A9B6 /* StickerTwo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerTwo.gif; sourceTree = "<group>"; };
 		7A2F18F9261D9CC80054A9B6 /* StickerSix.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerSix.gif; sourceTree = "<group>"; };
@@ -710,6 +712,7 @@
 		7AB34D5C25C7CDCB000A1E81 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		7AB609AF2603F0D80038B85B /* AddTagTagsSelectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagTagsSelectionVC.swift; sourceTree = "<group>"; };
 		7AB609B22603F1130038B85B /* AddTagConfirmationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagConfirmationVC.swift; sourceTree = "<group>"; };
+		7AC81B1B2723FC9900CFF8E6 /* NSDirectionalEdgeInsets+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSDirectionalEdgeInsets+Extension.swift"; sourceTree = "<group>"; };
 		7AC8AA8327059DD600E7BDDC /* IGListAdapterUpdateType+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IGListAdapterUpdateType+Extension.swift"; sourceTree = "<group>"; };
 		7AC9F7D226AE4E9C0096D486 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		7ACA1A4D26AA448C00DE1645 /* ProvenanceAppCheckProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvenanceAppCheckProviderFactory.swift; sourceTree = "<group>"; };
@@ -1199,7 +1202,7 @@
 		7A8BC0D02681599E00D6D8D3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				7A2456E32723F07900A023CF /* GoogleService-Info.plist */,
+				7A13D25E272433E000A7B5D0 /* GoogleService-Info.plist */,
 				7AB34D2B25C78232000A1E81 /* Info.plist */,
 				7A9DE23C25DE35AB00175697 /* Provenance.entitlements */,
 				7AA124FC262682F300F50D6D /* Settings.bundle */,
@@ -1286,6 +1289,7 @@
 			children = (
 				7ADC6EF4271FDC6D00A7E8AE /* README.md */,
 				7ADC6EF5271FDC6D00A7E8AE /* LICENSE */,
+				7A2CB0D22726731300B6F58D /* ExportOptions.plist */,
 				7A38860726BB62F900F57EA0 /* XcodeConfigurations */,
 				7A75631426A7ED3100963658 /* Shared */,
 				7AB34D1C25C78230000A1E81 /* Provenance */,
@@ -1496,6 +1500,7 @@
 				7AF9F11C27168B0C00DD1E72 /* UICollectionViewDiffableDataSource+Extension.swift */,
 				7A8C12B3271CEC7600F6A633 /* UICollectionViewCellDragState+Extension.swift */,
 				7A89EFBF27224B3200C06A08 /* UIWindow+Extension.swift */,
+				7AC81B1B2723FC9900CFF8E6 /* NSDirectionalEdgeInsets+Extension.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -1820,7 +1825,7 @@
 				7A2F18FE261D9CC80054A9B6 /* StickerSeven.gif in Resources */,
 				7A340AF126F9C0F500D43523 /* SF-Mono-Regular.otf in Resources */,
 				7AA124FD262682F300F50D6D /* Settings.bundle in Resources */,
-				7A2456E42723F07900A023CF /* GoogleService-Info.plist in Resources */,
+				7A13D25F272433E000A7B5D0 /* GoogleService-Info.plist in Resources */,
 				7A340AEF26F9C0F500D43523 /* CircularStd-Bold.otf in Resources */,
 				7A340AEE26F9C0F500D43523 /* CircularStd-BookItalic.ttf in Resources */,
 				7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */,
@@ -2218,7 +2223,6 @@
 				7A56101D25D25B600091396E /* TransactionsByCategoryVC.swift in Sources */,
 				7A130B6D2705747500E02B5E /* SpinnerDelegate.swift in Sources */,
 				7A0BF09926FFDC17004A3E0C /* CategoryCellModel.swift in Sources */,
-				7AF2156B26F062FE009F4F38 /* UIAlertAction+Extension.swift in Sources */,
 				7A90F52226F096D200384F53 /* AccountResource+CellModel.swift in Sources */,
 				7A90F55E26F15DF900384F53 /* GrowingNotificationBanner+Extension.swift in Sources */,
 				7A130B6B2705672900E02B5E /* MarqueeLabelNodeProtocol.swift in Sources */,
@@ -2244,6 +2248,7 @@
 				7AE75E3725FF1C3B00C16AF6 /* NavigationController.swift in Sources */,
 				7AD266D926FADDF500EFF4A2 /* Double+Extension.swift in Sources */,
 				7A8C12C4271D283000F6A633 /* SortedTags.swift in Sources */,
+				7AC81B1C2723FC9900CFF8E6 /* NSDirectionalEdgeInsets+Extension.swift in Sources */,
 				7A340B1526F9C11200D43523 /* UserDefaults+Extension.swift in Sources */,
 				7A8C12BE271D1E5000F6A633 /* SortedTagSectionModel.swift in Sources */,
 				7AF214FF26EF326C009F4F38 /* NSParagraphStyle+Extension.swift in Sources */,
@@ -2341,6 +2346,7 @@
 				7AF3BFE8270AC41500B1B81B /* ErrorResponse.swift in Sources */,
 				7A438783263AAC9B008C5714 /* StatusIconHelpView.swift in Sources */,
 				7A1B52102702BD9D00835111 /* SortedSectionModel.swift in Sources */,
+				7A4043AF27263ED8002FE4F6 /* UIAlertAction+Extension.swift in Sources */,
 				7A615D7326FA9D6D001F1834 /* UITextField+Extension.swift in Sources */,
 				7A1B52182702C82300835111 /* SortedSectionCoreModel.swift in Sources */,
 				7A340B1626F9C11200D43523 /* ListTransactionsIntentResponse+Extension.swift in Sources */,

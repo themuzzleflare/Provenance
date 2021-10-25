@@ -7,7 +7,7 @@ final class CategoriesVC: ASViewController {
 
   private lazy var searchController = UISearchController.categories(self)
 
-  private let collectionNode = ASCollectionNode(collectionViewLayout: .twoColumnGridLayout)
+  private let collectionNode = ASCollectionNode(collectionViewLayout: .twoColumnGrid)
 
   private lazy var categoryFilter: CategoryTypeEnum = UserDefaults.provenance.appCategoryFilter {
     didSet {

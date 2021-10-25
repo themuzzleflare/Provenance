@@ -21,7 +21,7 @@ extension UIAlertAction {
   static func removeTagFromTransaction(_ viewController: TransactionsByTagVC,
                                        removing tag: TagResource,
                                        from transaction: TransactionResource) -> UIAlertAction {
-    return UIAlertAction(title: "Remove", style: .destructive) { (_) in
+    return UIAlertAction(title: "Remove", style: .destructive, handler: { (_) in
       Up.modifyTags(removing: tag, from: transaction) { (error) in
         DispatchQueue.main.async {
           if let error = error {
@@ -42,13 +42,13 @@ extension UIAlertAction {
           }
         }
       }
-    }
+    })
   }
 
   static func removeTagFromTransaction(_ viewController: TransactionTagsVC,
                                        removing tag: TagResource,
                                        from transaction: TransactionResource) -> UIAlertAction {
-    return UIAlertAction(title: "Remove", style: .destructive) { (_) in
+    return UIAlertAction(title: "Remove", style: .destructive, handler: { (_) in
       Up.modifyTags(removing: tag, from: transaction) { (error) in
         DispatchQueue.main.async {
           if let error = error {
@@ -69,13 +69,13 @@ extension UIAlertAction {
           }
         }
       }
-    }
+    })
   }
 
   static func removeTagsFromTransaction(_ viewController: TransactionTagsVC,
                                         removing tags: [TagResource],
                                         from transaction: TransactionResource) -> UIAlertAction {
-    return UIAlertAction(title: "Remove", style: .destructive) { (_) in
+    return UIAlertAction(title: "Remove", style: .destructive, handler: { (_) in
       Up.modifyTags(removing: tags, from: transaction) { (error) in
         DispatchQueue.main.async {
           if let error = error {
@@ -96,7 +96,7 @@ extension UIAlertAction {
           }
         }
       }
-    }
+    })
   }
 
   static func submitNewTags(navigationController: UINavigationController?,

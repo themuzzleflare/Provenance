@@ -3,7 +3,7 @@ import AsyncDisplayKit
 final class StickersVC: ASViewController {
   // MARK: - Properties
 
-  private let collectionNode = ASCollectionNode(collectionViewLayout: .gridLayout)
+  private let collectionNode = ASCollectionNode(collectionViewLayout: .grid)
   private let stickerGifs: [AnimatedImage] = [.stickerTwo, .stickerThree, .stickerSix, .stickerSeven]
 
   // MARK: - Life Cycle

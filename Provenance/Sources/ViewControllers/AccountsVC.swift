@@ -7,7 +7,7 @@ final class AccountsVC: ASViewController {
 
   private lazy var searchController = UISearchController.accounts(self)
 
-  private let collectionNode = ASCollectionNode(collectionViewLayout: .twoColumnGridLayout)
+  private let collectionNode = ASCollectionNode(collectionViewLayout: .twoColumnGrid)
 
   private lazy var accountFilter: AccountTypeOptionEnum = UserDefaults.provenance.appAccountFilter {
     didSet {
