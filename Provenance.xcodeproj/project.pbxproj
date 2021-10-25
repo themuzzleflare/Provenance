@@ -28,7 +28,6 @@
 		7A122EE6268AB37800BF90BB /* TransactionTagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A122EE5268AB37800BF90BB /* TransactionTagsVC.swift */; };
 		7A130B6B2705672900E02B5E /* MarqueeLabelNodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A130B6A2705672900E02B5E /* MarqueeLabelNodeProtocol.swift */; };
 		7A130B6D2705747500E02B5E /* SpinnerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A130B6C2705747500E02B5E /* SpinnerDelegate.swift */; };
-		7A13D25F272433E000A7B5D0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A13D25E272433E000A7B5D0 /* GoogleService-Info.plist */; };
 		7A14D5EA261AC37100C072E3 /* AccountsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A14D5E9261AC37100C072E3 /* AccountsVC.swift */; };
 		7A17C18C2657940E00E5EA23 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A17C18B2657940E00E5EA23 /* Intents.framework */; };
 		7A17C1932657940E00E5EA23 /* Provenance Intents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7A17C18A2657940E00E5EA23 /* Provenance Intents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -273,6 +272,7 @@
 		7AE53BF52685C4790010862E /* up-zap-spin-transparent-bg.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7AE53BF42685C4790010862E /* up-zap-spin-transparent-bg.gif */; };
 		7AE54D082611671D005D38A5 /* AccountBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE54D072611671D005D38A5 /* AccountBalance.swift */; };
 		7AE75E3725FF1C3B00C16AF6 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE75E3625FF1C3B00C16AF6 /* NavigationController.swift */; };
+		7AEF38552726A63C00FDF8B0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7AEF38542726A63C00FDF8B0 /* GoogleService-Info.plist */; };
 		7AF214EE26EEC796009F4F38 /* UISearchBar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214ED26EEC796009F4F38 /* UISearchBar+Extension.swift */; };
 		7AF214F326EEE6F9009F4F38 /* TagCellNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214F226EEE6F9009F4F38 /* TagCellNode.swift */; };
 		7AF214F526EF1451009F4F38 /* CategoryCellNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214F426EF1451009F4F38 /* CategoryCellNode.swift */; };
@@ -585,7 +585,6 @@
 		7A122EE5268AB37800BF90BB /* TransactionTagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTagsVC.swift; sourceTree = "<group>"; };
 		7A130B6A2705672900E02B5E /* MarqueeLabelNodeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeLabelNodeProtocol.swift; sourceTree = "<group>"; };
 		7A130B6C2705747500E02B5E /* SpinnerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerDelegate.swift; sourceTree = "<group>"; };
-		7A13D25E272433E000A7B5D0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7A14D5E9261AC37100C072E3 /* AccountsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsVC.swift; sourceTree = "<group>"; };
 		7A17C18A2657940E00E5EA23 /* Provenance Intents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance Intents.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A17C18B2657940E00E5EA23 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
@@ -748,6 +747,7 @@
 		7AE53BF42685C4790010862E /* up-zap-spin-transparent-bg.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "up-zap-spin-transparent-bg.gif"; sourceTree = "<group>"; };
 		7AE54D072611671D005D38A5 /* AccountBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountBalance.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7AE75E3625FF1C3B00C16AF6 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		7AEF38542726A63C00FDF8B0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7AF214ED26EEC796009F4F38 /* UISearchBar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Extension.swift"; sourceTree = "<group>"; };
 		7AF214F226EEE6F9009F4F38 /* TagCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCellNode.swift; sourceTree = "<group>"; };
 		7AF214F426EF1451009F4F38 /* CategoryCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCellNode.swift; sourceTree = "<group>"; };
@@ -1202,7 +1202,7 @@
 		7A8BC0D02681599E00D6D8D3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				7A13D25E272433E000A7B5D0 /* GoogleService-Info.plist */,
+				7AEF38542726A63C00FDF8B0 /* GoogleService-Info.plist */,
 				7AB34D2B25C78232000A1E81 /* Info.plist */,
 				7A9DE23C25DE35AB00175697 /* Provenance.entitlements */,
 				7AA124FC262682F300F50D6D /* Settings.bundle */,
@@ -1825,7 +1825,7 @@
 				7A2F18FE261D9CC80054A9B6 /* StickerSeven.gif in Resources */,
 				7A340AF126F9C0F500D43523 /* SF-Mono-Regular.otf in Resources */,
 				7AA124FD262682F300F50D6D /* Settings.bundle in Resources */,
-				7A13D25F272433E000A7B5D0 /* GoogleService-Info.plist in Resources */,
+				7AEF38552726A63C00FDF8B0 /* GoogleService-Info.plist in Resources */,
 				7A340AEF26F9C0F500D43523 /* CircularStd-Bold.otf in Resources */,
 				7A340AEE26F9C0F500D43523 /* CircularStd-BookItalic.ttf in Resources */,
 				7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */,
