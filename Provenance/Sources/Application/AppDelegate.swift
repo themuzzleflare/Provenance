@@ -47,8 +47,8 @@ extension AppDelegate {
   }
 
   private func configureFirebase() {
-    FirebaseApp.configure()
     let providerFactory = ProvenanceAppCheckProviderFactory()
     AppCheck.setAppCheckProviderFactory(providerFactory)
+    FirebaseApp.configure()
   }
 }
