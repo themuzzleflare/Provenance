@@ -28,6 +28,13 @@ extension String {
   var addTagToTransactionTagsResolutionResult: AddTagToTransactionTagsResolutionResult {
     return .success(with: self)
   }
+
+  func split(count: Int) -> [String] {
+    let chars = Array(self)
+    return stride(from: 0, to: chars.count, by: count)
+      .map { chars[$0 ..< min($0 + count, chars.count)] }
+      .map { String($0) }
+  }
 }
 
 extension Array where Element == String {

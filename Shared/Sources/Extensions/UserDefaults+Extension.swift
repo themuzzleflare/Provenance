@@ -1,5 +1,9 @@
 import WidgetKit
 
+#if canImport(FirebaseAnalytics)
+import FirebaseAnalytics
+#endif
+
 extension UserDefaults {
   /// A `UserDefaults` instance for the application group.
   static let provenance = UserDefaults(suiteName: "group.cloud.tavitian.provenance") ?? .standard
@@ -23,6 +27,11 @@ extension UserDefaults {
     set {
       setValue(newValue, forKey: Keys.dateStyle)
       WidgetCenter.shared.reloadTimelines(ofKind: Widgets.latestTransaction.kind)
+#if canImport(FirebaseAnalytics)
+      if let dateStyleEnum = AppDateStyle(rawValue: dateStyle) {
+        FirebaseAnalytics.Analytics.setUserProperty(dateStyleEnum.description, forName: "date_style")
+      }
+#endif
     }
   }
 
@@ -33,6 +42,11 @@ extension UserDefaults {
     }
     set {
       setValue(newValue, forKey: Keys.accountFilter)
+#if canImport(FirebaseAnalytics)
+      if let filterEnum = AccountTypeOptionEnum(rawValue: accountFilter) {
+        FirebaseAnalytics.Analytics.setUserProperty(filterEnum.description, forName: "account_filter")
+      }
+#endif
     }
   }
 
@@ -43,6 +57,11 @@ extension UserDefaults {
     }
     set {
       setValue(newValue, forKey: Keys.categoryFilter)
+#if canImport(FirebaseAnalytics)
+      if let filterEnum = CategoryTypeEnum(rawValue: categoryFilter) {
+        FirebaseAnalytics.Analytics.setUserProperty(filterEnum.description, forName: "category_filter")
+      }
+#endif
     }
   }
 
@@ -53,6 +72,9 @@ extension UserDefaults {
     }
     set {
       setValue(newValue, forKey: Keys.settledOnly)
+#if canImport(FirebaseAnalytics)
+      FirebaseAnalytics.Analytics.setUserProperty(settledOnly.description, forName: "settled_only")
+#endif
     }
   }
 
@@ -63,6 +85,11 @@ extension UserDefaults {
     }
     set {
       setValue(newValue, forKey: Keys.transactionGrouping)
+#if canImport(FirebaseAnalytics)
+      if let groupingEnum = TransactionGroupingEnum(rawValue: transactionGrouping) {
+        FirebaseAnalytics.Analytics.setUserProperty(groupingEnum.description, forName: "transaction_grouping")
+      }
+#endif
     }
   }
 

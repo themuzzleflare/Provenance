@@ -7,7 +7,7 @@ target 'Provenance' do
   use_frameworks!
   
   pod 'Firebase/Crashlytics'
-  pod 'Firebase/AnalyticsWithoutAdIdSupport'
+  pod 'Firebase/Analytics'
   pod 'Firebase/AppCheck'
   pod 'Alamofire'
   pod 'AlamofireNetworkActivityIndicator'
