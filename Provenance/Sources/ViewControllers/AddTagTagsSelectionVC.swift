@@ -241,7 +241,7 @@ private extension AddTagTagsSelectionVC {
       option: .equality
     ).forBatchUpdates()
 
-    if result.hasChanges || override || !tagsError.isEmpty || noTags {
+    if result.hasChanges || override || !tagsError.isEmpty || noTags || searchController.searchBar.searchTextField.hasText {
       if filteredTags.isEmpty && tagsError.isEmpty {
         if tags.isEmpty && !noTags {
           tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .tags)
@@ -398,6 +398,7 @@ extension AddTagTagsSelectionVC: UISearchBarDelegate {
     if searchBar.searchTextField.hasText {
       searchBar.clear()
       applySnapshot()
+      updateToolbarItems()
     }
   }
 }

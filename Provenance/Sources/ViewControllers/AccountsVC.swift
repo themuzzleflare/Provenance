@@ -141,7 +141,7 @@ private extension AccountsVC {
       option: .equality
     ).forBatchUpdates()
 
-    if result.hasChanges || override || !accountsError.isEmpty || noAccounts {
+    if result.hasChanges || override || !accountsError.isEmpty || noAccounts || searchController.searchBar.searchTextField.hasText {
       if filteredAccounts.isEmpty && accountsError.isEmpty {
         if accounts.isEmpty && !noAccounts {
           collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds, contentType: .accounts)

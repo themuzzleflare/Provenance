@@ -1,7 +1,7 @@
 import MarqueeLabel
 import AsyncDisplayKit
 
-final class MarqueeLabelNode: ASDisplayNode {
+class MarqueeLabelNode: ASDisplayNode {
   private let marqueeLabelViewBlock: ASDisplayNodeViewBlock = {
     return MarqueeLabel()
   }

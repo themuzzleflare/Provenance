@@ -29,7 +29,7 @@ extension UserDefaults {
       WidgetCenter.shared.reloadTimelines(ofKind: Widgets.latestTransaction.kind)
 #if canImport(FirebaseAnalytics)
       if let dateStyleEnum = AppDateStyle(rawValue: dateStyle) {
-        FirebaseAnalytics.Analytics.setUserProperty(dateStyleEnum.description, forName: "date_style")
+        FirebaseAnalytics.Analytics.setUserProperty(dateStyleEnum.description, forName: AnalyticsUserProperties.dateStyle)
       }
 #endif
     }
@@ -44,7 +44,7 @@ extension UserDefaults {
       setValue(newValue, forKey: Keys.accountFilter)
 #if canImport(FirebaseAnalytics)
       if let filterEnum = AccountTypeOptionEnum(rawValue: accountFilter) {
-        FirebaseAnalytics.Analytics.setUserProperty(filterEnum.description, forName: "account_filter")
+        FirebaseAnalytics.Analytics.setUserProperty(filterEnum.description, forName: AnalyticsUserProperties.accountFilter)
       }
 #endif
     }
@@ -59,7 +59,7 @@ extension UserDefaults {
       setValue(newValue, forKey: Keys.categoryFilter)
 #if canImport(FirebaseAnalytics)
       if let filterEnum = CategoryTypeEnum(rawValue: categoryFilter) {
-        FirebaseAnalytics.Analytics.setUserProperty(filterEnum.description, forName: "category_filter")
+        FirebaseAnalytics.Analytics.setUserProperty(filterEnum.description, forName: AnalyticsUserProperties.categoryFilter)
       }
 #endif
     }
@@ -73,7 +73,7 @@ extension UserDefaults {
     set {
       setValue(newValue, forKey: Keys.settledOnly)
 #if canImport(FirebaseAnalytics)
-      FirebaseAnalytics.Analytics.setUserProperty(settledOnly.description, forName: "settled_only")
+      FirebaseAnalytics.Analytics.setUserProperty(settledOnly.description, forName: AnalyticsUserProperties.settledOnly)
 #endif
     }
   }
@@ -87,7 +87,7 @@ extension UserDefaults {
       setValue(newValue, forKey: Keys.transactionGrouping)
 #if canImport(FirebaseAnalytics)
       if let groupingEnum = TransactionGroupingEnum(rawValue: transactionGrouping) {
-        FirebaseAnalytics.Analytics.setUserProperty(groupingEnum.description, forName: "transaction_grouping")
+        FirebaseAnalytics.Analytics.setUserProperty(groupingEnum.description, forName: AnalyticsUserProperties.transactionGrouping)
       }
 #endif
     }
@@ -194,5 +194,13 @@ extension UserDefaults {
     static let paginationCursor = "paginationCursor"
     static let appVersion = "appVersion"
     static let appBuild = "appBuild"
+  }
+
+  private enum AnalyticsUserProperties {
+    static let dateStyle = "date_style"
+    static let accountFilter = "account_filter"
+    static let categoryFilter = "category_filter"
+    static let settledOnly = "settled_only"
+    static let transactionGrouping = "transaction_grouping"
   }
 }

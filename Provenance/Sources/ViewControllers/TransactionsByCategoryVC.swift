@@ -126,7 +126,7 @@ private extension TransactionsByCategoryVC {
       option: .equality
     ).forBatchUpdates()
 
-    if result.hasChanges || override || !transactionsError.isEmpty || noTransactions {
+    if result.hasChanges || override || !transactionsError.isEmpty || noTransactions || searchController.searchBar.searchTextField.hasText {
       if filteredTransactions.isEmpty && transactionsError.isEmpty {
         if transactions.isEmpty && !noTransactions {
           tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .transactions)

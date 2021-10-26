@@ -141,7 +141,7 @@ private extension CategoriesVC {
       option: .equality
     ).forBatchUpdates()
 
-    if result.hasChanges || override || !categoriesError.isEmpty || noCategories {
+    if result.hasChanges || override || !categoriesError.isEmpty || noCategories || searchController.searchBar.searchTextField.hasText {
       if filteredCategories.isEmpty && categoriesError.isEmpty {
         if categories.isEmpty && !noCategories {
           collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds, contentType: .categories)

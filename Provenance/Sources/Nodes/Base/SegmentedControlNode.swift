@@ -1,6 +1,6 @@
 import AsyncDisplayKit
 
-final class SegmentedControlNode: ASControlNode {
+class SegmentedControlNode: ASControlNode {
   private let segmentedControlViewBlock: ASDisplayNodeViewBlock = {
     return UISegmentedControl()
   }
