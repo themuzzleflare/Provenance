@@ -69,7 +69,10 @@ private extension AddTagTransactionSelectionVC {
   }
 
   private func configureObservers() {
-    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(appMovedToForeground),
+                                           name: .willEnterForegroundNotification,
+                                           object: nil)
     dateStyleObserver = UserDefaults.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       self?.applySnapshot()
     }
@@ -147,6 +150,7 @@ private extension AddTagTransactionSelectionVC {
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
         oldTransactionCellModels = filteredTransactions.transactionCellModels
       }
+
       tableNode.performBatchUpdates(batchUpdates)
     }
   }
