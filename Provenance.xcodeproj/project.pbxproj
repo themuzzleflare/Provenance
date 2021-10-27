@@ -201,6 +201,7 @@
 		7A80231126FC854B008600B0 /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2151626EF439D009F4F38 /* Int+Extension.swift */; };
 		7A80231226FC854B008600B0 /* NumberFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD266D426FADA1E00EFF4A2 /* NumberFormatter+Extension.swift */; };
 		7A80231326FC854D008600B0 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F51F26F08ECA00384F53 /* UIFont+Extension.swift */; };
+		7A8035F9272925B30059FFCE /* TabBarControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8035F8272925B30059FFCE /* TabBarControllerUITests.swift */; };
 		7A82FB3826F47EAB00C9C04E /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A82FB2026F47B3C00C9C04E /* IntentsUI.framework */; };
 		7A82FB3B26F47EAB00C9C04E /* IntentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB3A26F47EAB00C9C04E /* IntentViewController.swift */; };
 		7A82FB3E26F47EAB00C9C04E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A82FB3C26F47EAB00C9C04E /* MainInterface.storyboard */; };
@@ -520,6 +521,13 @@
 			remoteGlobalIDString = 7A17C1892657940E00E5EA23;
 			remoteInfo = IntentsHandler;
 		};
+		7A8035F027291F1A0059FFCE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7AB34D1225C78230000A1E81 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7AB34D1925C78230000A1E81;
+			remoteInfo = Provenance;
+		};
 		7A82FB4026F47EAB00C9C04E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7AB34D1225C78230000A1E81 /* Project object */;
@@ -651,6 +659,8 @@
 		7A7F039C26FB0641003F1321 /* TransactionColourEnum+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionColourEnum+Extension.swift"; sourceTree = "<group>"; };
 		7A8022E226FC5CD1008600B0 /* ASCellNode+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASCellNode+Extension.swift"; sourceTree = "<group>"; };
 		7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+Extension.swift"; sourceTree = "<group>"; };
+		7A8035EA27291F1A0059FFCE /* Provenance UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Provenance UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A8035F8272925B30059FFCE /* TabBarControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarControllerUITests.swift; sourceTree = "<group>"; };
 		7A82FB1726F466FE00C9C04E /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
 		7A82FB2026F47B3C00C9C04E /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
 		7A82FB3726F47EAB00C9C04E /* Provenance IntentsUI.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance IntentsUI.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -748,6 +758,7 @@
 		7AE53BF42685C4790010862E /* up-zap-spin-transparent-bg.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "up-zap-spin-transparent-bg.gif"; sourceTree = "<group>"; };
 		7AE54D072611671D005D38A5 /* AccountBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountBalance.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7AE75E3625FF1C3B00C16AF6 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		7AEAE8E127292C1900788AC6 /* UITests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = UITests.xcconfig; sourceTree = "<group>"; };
 		7AF214ED26EEC796009F4F38 /* UISearchBar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Extension.swift"; sourceTree = "<group>"; };
 		7AF214F226EEE6F9009F4F38 /* TagCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCellNode.swift; sourceTree = "<group>"; };
 		7AF214F426EF1451009F4F38 /* CategoryCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCellNode.swift; sourceTree = "<group>"; };
@@ -855,6 +866,13 @@
 			files = (
 				7A17C18C2657940E00E5EA23 /* Intents.framework in Frameworks */,
 				E1252480AC5A66A260CCA218 /* Pods_Provenance_Intents.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A8035E727291F1A0059FFCE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -982,10 +1000,10 @@
 				7AA1B2F8271D3DF800B1805A /* CoreModel */,
 				7AA1B2F7271D3DCD00B1805A /* Hashable */,
 				7AF2151026EF4175009F4F38 /* ContentType.swift */,
-				7A22713826817399001F63FF /* ShortcutType.swift */,
-				7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */,
 				7AF2155F26F057F1009F4F38 /* FilterMenuAction.swift */,
 				7AA8540527210C9E003289C5 /* AnimatedImage.swift */,
+				7A22713826817399001F63FF /* ShortcutType.swift */,
+				7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1084,6 +1102,7 @@
 				7AAA2985270EC61E00A641BB /* Intents.release.xcconfig */,
 				7AAA2986270EC62B00A641BB /* IntentsUI.debug.xcconfig */,
 				7AAA2987270EC63700A641BB /* IntentsUI.release.xcconfig */,
+				7AEAE8E127292C1900788AC6 /* UITests.xcconfig */,
 			);
 			path = XcodeConfigurations;
 			sourceTree = "<group>";
@@ -1153,6 +1172,14 @@
 				7A9082F826927B8D005CCB26 /* Intents */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		7A8035EB27291F1A0059FFCE /* Provenance UITests */ = {
+			isa = PBXGroup;
+			children = (
+				7A8035F8272925B30059FFCE /* TabBarControllerUITests.swift */,
+			);
+			path = "Provenance UITests";
 			sourceTree = "<group>";
 		};
 		7A82FB3926F47EAB00C9C04E /* IntentsUI */ = {
@@ -1297,6 +1324,7 @@
 				7AD127DE2604735800A39272 /* Widgets */,
 				7A17C18D2657940E00E5EA23 /* Intents */,
 				7A82FB3926F47EAB00C9C04E /* IntentsUI */,
+				7A8035EB27291F1A0059FFCE /* Provenance UITests */,
 				7AB34D1B25C78230000A1E81 /* Products */,
 				D3A54786F5922BD1BB89FF35 /* Pods */,
 				EAF805222779581B0B1EB216 /* Frameworks */,
@@ -1311,6 +1339,7 @@
 				7AD6ED932604A9150051A235 /* Provenance Stickers.appex */,
 				7A17C18A2657940E00E5EA23 /* Provenance Intents.appex */,
 				7A82FB3726F47EAB00C9C04E /* Provenance IntentsUI.appex */,
+				7A8035EA27291F1A0059FFCE /* Provenance UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1655,6 +1684,24 @@
 			productReference = 7A17C18A2657940E00E5EA23 /* Provenance Intents.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		7A8035E927291F1A0059FFCE /* Provenance UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7A8035F227291F1A0059FFCE /* Build configuration list for PBXNativeTarget "Provenance UITests" */;
+			buildPhases = (
+				7A8035E627291F1A0059FFCE /* Sources */,
+				7A8035E727291F1A0059FFCE /* Frameworks */,
+				7A8035E827291F1A0059FFCE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7A8035F127291F1A0059FFCE /* PBXTargetDependency */,
+			);
+			name = "Provenance UITests";
+			productName = "Provenance UITests";
+			productReference = 7A8035EA27291F1A0059FFCE /* Provenance UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		7A82FB3626F47EAB00C9C04E /* Provenance IntentsUI */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7A82FB4326F47EAB00C9C04E /* Build configuration list for PBXNativeTarget "Provenance IntentsUI" */;
@@ -1741,12 +1788,16 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastSwiftUpdateCheck = 1250;
+				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1310;
 				ORGANIZATIONNAME = "Tavitian Cloud";
 				TargetAttributes = {
 					7A17C1892657940E00E5EA23 = {
 						CreatedOnToolsVersion = 12.5;
+					};
+					7A8035E927291F1A0059FFCE = {
+						CreatedOnToolsVersion = 13.1;
+						TestTargetID = 7AB34D1925C78230000A1E81;
 					};
 					7A82FB3626F47EAB00C9C04E = {
 						CreatedOnToolsVersion = 12.5.1;
@@ -1780,6 +1831,7 @@
 				7AD6ED922604A9150051A235 /* Provenance Stickers */,
 				7A17C1892657940E00E5EA23 /* Provenance Intents */,
 				7A82FB3626F47EAB00C9C04E /* Provenance IntentsUI */,
+				7A8035E927291F1A0059FFCE /* Provenance UITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1795,6 +1847,13 @@
 				7A340AFE26F9C0FC00D43523 /* CircularStd-Bold.otf in Resources */,
 				7A7F03A626FB0B10003F1321 /* Assets.xcassets in Resources */,
 				7A340AFF26F9C0FC00D43523 /* CircularStd-Medium.otf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A8035E827291F1A0059FFCE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2106,6 +2165,14 @@
 				E76E371C51946CBD7ABE3D36 /* TransactionAmountType.swift in Sources */,
 				E76E3429A30CDFDE6375A4E1 /* LatestTransactionModel.swift in Sources */,
 				E76E3698AB11A3165AFDCB8B /* TransactionGroupingEnum.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A8035E627291F1A0059FFCE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7A8035F9272925B30059FFCE /* TabBarControllerUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2514,6 +2581,11 @@
 			target = 7A17C1892657940E00E5EA23 /* Provenance Intents */;
 			targetProxy = 7A17C1912657940E00E5EA23 /* PBXContainerItemProxy */;
 		};
+		7A8035F127291F1A0059FFCE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7AB34D1925C78230000A1E81 /* Provenance */;
+			targetProxy = 7A8035F027291F1A0059FFCE /* PBXContainerItemProxy */;
+		};
 		7A82FB4126F47EAB00C9C04E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 7A82FB3626F47EAB00C9C04E /* Provenance IntentsUI */;
@@ -2574,6 +2646,38 @@
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		7A8035F327291F1A0059FFCE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7AEAE8E127292C1900788AC6 /* UITests.xcconfig */;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Provenance;
+			};
+			name = Debug;
+		};
+		7A8035F427291F1A0059FFCE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7AEAE8E127292C1900788AC6 /* UITests.xcconfig */;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Provenance;
 			};
 			name = Release;
 		};
@@ -2783,6 +2887,15 @@
 			buildConfigurations = (
 				7A17C1952657940E00E5EA23 /* Debug */,
 				7A17C1962657940E00E5EA23 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7A8035F227291F1A0059FFCE /* Build configuration list for PBXNativeTarget "Provenance UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7A8035F327291F1A0059FFCE /* Debug */,
+				7A8035F427291F1A0059FFCE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

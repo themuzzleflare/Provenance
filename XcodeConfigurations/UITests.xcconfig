@@ -1,0 +1,7 @@
+#include "Shared.xcconfig"
+
+IPHONEOS_DEPLOYMENT_TARGET = 15.0
+PRODUCT_BUNDLE_IDENTIFIER = cloud.tavitian.provenance.uitests.xcrunner
+PRODUCT_NAME = Provenance UITests
+PROVISIONING_PROFILE_SPECIFIER = Provenance UITests Development
+SUPPORTS_MACCATALYST = No
