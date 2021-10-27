@@ -696,14 +696,14 @@
 		7AA124FC262682F300F50D6D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		7AA6C4EB2623F606003F7947 /* AboutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutVC.swift; sourceTree = "<group>"; };
 		7AA8540527210C9E003289C5 /* AnimatedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedImage.swift; sourceTree = "<group>"; };
-		7AAA297E270EC5BE00A641BB /* Provenance.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Provenance.debug.xcconfig; sourceTree = "<group>"; };
-		7AAA297F270EC5CE00A641BB /* Provenance.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Provenance.release.xcconfig; sourceTree = "<group>"; };
-		7AAA2982270EC5F900A641BB /* Widgets.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Widgets.debug.xcconfig; sourceTree = "<group>"; };
-		7AAA2983270EC60B00A641BB /* Widgets.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Widgets.release.xcconfig; sourceTree = "<group>"; };
-		7AAA2984270EC61500A641BB /* Intents.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Intents.debug.xcconfig; sourceTree = "<group>"; };
-		7AAA2985270EC61E00A641BB /* Intents.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Intents.release.xcconfig; sourceTree = "<group>"; };
-		7AAA2986270EC62B00A641BB /* IntentsUI.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = IntentsUI.debug.xcconfig; sourceTree = "<group>"; };
-		7AAA2987270EC63700A641BB /* IntentsUI.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = IntentsUI.release.xcconfig; sourceTree = "<group>"; };
+		7AAA297E270EC5BE00A641BB /* Provenance.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Provenance.debug.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		7AAA297F270EC5CE00A641BB /* Provenance.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Provenance.release.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		7AAA2982270EC5F900A641BB /* Widgets.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Widgets.debug.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		7AAA2983270EC60B00A641BB /* Widgets.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Widgets.release.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		7AAA2984270EC61500A641BB /* Intents.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Intents.debug.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		7AAA2985270EC61E00A641BB /* Intents.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Intents.release.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		7AAA2986270EC62B00A641BB /* IntentsUI.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = IntentsUI.debug.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		7AAA2987270EC63700A641BB /* IntentsUI.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = IntentsUI.release.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 		7AAA5FAA26FF157500136E32 /* TransactionCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCellModel.swift; sourceTree = "<group>"; };
 		7AAADD5426F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIActivityIndicatorView+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7AAADD5626F17FF300C4A9D9 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
@@ -740,11 +740,11 @@
 		7AD595C52705355700339BD1 /* MarqueeLabelNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeLabelNode.swift; sourceTree = "<group>"; };
 		7AD6ED932604A9150051A235 /* Provenance Stickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance Stickers.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AD6ED972604A9180051A235 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7ADC6EEF271FDB1E00A7E8AE /* Provenance.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Provenance.xcconfig; sourceTree = "<group>"; };
-		7ADC6EF0271FDB2800A7E8AE /* Stickers.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Stickers.xcconfig; sourceTree = "<group>"; };
-		7ADC6EF1271FDB3100A7E8AE /* Widgets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Widgets.xcconfig; sourceTree = "<group>"; };
-		7ADC6EF2271FDB3C00A7E8AE /* Intents.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Intents.xcconfig; sourceTree = "<group>"; };
-		7ADC6EF3271FDB4600A7E8AE /* IntentsUI.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = IntentsUI.xcconfig; sourceTree = "<group>"; };
+		7ADC6EEF271FDB1E00A7E8AE /* Provenance.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Provenance.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		7ADC6EF0271FDB2800A7E8AE /* Stickers.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Stickers.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		7ADC6EF1271FDB3100A7E8AE /* Widgets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Widgets.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		7ADC6EF2271FDB3C00A7E8AE /* Intents.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Intents.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		7ADC6EF3271FDB4600A7E8AE /* IntentsUI.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = IntentsUI.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 		7ADC6EF4271FDC6D00A7E8AE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7ADC6EF5271FDC6D00A7E8AE /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		7ADC817D26A7F67F009D4E4E /* CircularStd-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CircularStd-Medium.otf"; sourceTree = "<group>"; };
@@ -758,7 +758,7 @@
 		7AE53BF42685C4790010862E /* up-zap-spin-transparent-bg.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "up-zap-spin-transparent-bg.gif"; sourceTree = "<group>"; };
 		7AE54D072611671D005D38A5 /* AccountBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountBalance.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7AE75E3625FF1C3B00C16AF6 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
-		7AEAE8E127292C1900788AC6 /* UITests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = UITests.xcconfig; sourceTree = "<group>"; };
+		7AEAE8E127292C1900788AC6 /* UITests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = UITests.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 		7AF214ED26EEC796009F4F38 /* UISearchBar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Extension.swift"; sourceTree = "<group>"; };
 		7AF214F226EEE6F9009F4F38 /* TagCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCellNode.swift; sourceTree = "<group>"; };
 		7AF214F426EF1451009F4F38 /* CategoryCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCellNode.swift; sourceTree = "<group>"; };
@@ -1174,12 +1174,12 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		7A8035EB27291F1A0059FFCE /* Provenance UITests */ = {
+		7A8035EB27291F1A0059FFCE /* UITests */ = {
 			isa = PBXGroup;
 			children = (
 				7A8035F8272925B30059FFCE /* TabBarControllerUITests.swift */,
 			);
-			path = "Provenance UITests";
+			path = UITests;
 			sourceTree = "<group>";
 		};
 		7A82FB3926F47EAB00C9C04E /* IntentsUI */ = {
@@ -1324,7 +1324,7 @@
 				7AD127DE2604735800A39272 /* Widgets */,
 				7A17C18D2657940E00E5EA23 /* Intents */,
 				7A82FB3926F47EAB00C9C04E /* IntentsUI */,
-				7A8035EB27291F1A0059FFCE /* Provenance UITests */,
+				7A8035EB27291F1A0059FFCE /* UITests */,
 				7AB34D1B25C78230000A1E81 /* Products */,
 				D3A54786F5922BD1BB89FF35 /* Pods */,
 				EAF805222779581B0B1EB216 /* Frameworks */,
