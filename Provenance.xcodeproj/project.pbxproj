@@ -633,6 +633,7 @@
 		7A56101525D21BFE0091396E /* TransactionsByTagVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByTagVC.swift; sourceTree = "<group>"; };
 		7A56101925D22AF10091396E /* AddTagTransactionSelectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagTransactionSelectionVC.swift; sourceTree = "<group>"; };
 		7A56101C25D25B600091396E /* TransactionsByCategoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByCategoryVC.swift; sourceTree = "<group>"; };
+		7A58092E272A345B00EF8E86 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		7A5A89EA26FBF0790010223B /* Image+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extension.swift"; sourceTree = "<group>"; };
 		7A5B06C326F2BCB6005CE3D1 /* Shared.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 		7A5BDE752616B99B00B5A5F9 /* CategoriesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesVC.swift; sourceTree = "<group>"; };
@@ -1128,6 +1129,14 @@
 			path = IGListSwiftKit;
 			sourceTree = "<group>";
 		};
+		7A58092D272A342200EF8E86 /* ci_scripts */ = {
+			isa = PBXGroup;
+			children = (
+				7A58092E272A345B00EF8E86 /* ci_post_clone.sh */,
+			);
+			path = ci_scripts;
+			sourceTree = "<group>";
+		};
 		7A69F25E2706A71F008CA6CC /* CollectionViewCells */ = {
 			isa = PBXGroup;
 			children = (
@@ -1314,6 +1323,7 @@
 		7AB34D1125C78230000A1E81 = {
 			isa = PBXGroup;
 			children = (
+				7A58092D272A342200EF8E86 /* ci_scripts */,
 				7ADC6EF4271FDC6D00A7E8AE /* README.md */,
 				7ADC6EF5271FDC6D00A7E8AE /* LICENSE */,
 				7A2CB0D22726731300B6F58D /* ExportOptions.plist */,
