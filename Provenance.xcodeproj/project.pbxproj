@@ -301,6 +301,7 @@
 		7AF2156C26F062FE009F4F38 /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2156A26F062FE009F4F38 /* UIAlertController+Extension.swift */; };
 		7AF2156E26F06C98009F4F38 /* UIRefreshControl+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2156D26F06C98009F4F38 /* UIRefreshControl+Extension.swift */; };
 		7AF2157026F07F93009F4F38 /* WidgetsNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2156F26F07F93009F4F38 /* WidgetsNode.swift */; };
+		7AF24CC0272B6BB400B4256B /* XCTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF24CBF272B6BB400B4256B /* XCTabBarItem.swift */; };
 		7AF3BFE8270AC41500B1B81B /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3BFE7270AC41500B1B81B /* ErrorResponse.swift */; };
 		7AF3BFEA270AC41F00B1B81B /* ErrorObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3BFE9270AC41F00B1B81B /* ErrorObject.swift */; };
 		7AF3BFEC270AC42900B1B81B /* ErrorSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3BFEB270AC42900B1B81B /* ErrorSource.swift */; };
@@ -790,6 +791,7 @@
 		7AF2156A26F062FE009F4F38 /* UIAlertController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extension.swift"; sourceTree = "<group>"; };
 		7AF2156D26F06C98009F4F38 /* UIRefreshControl+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+Extension.swift"; sourceTree = "<group>"; };
 		7AF2156F26F07F93009F4F38 /* WidgetsNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetsNode.swift; sourceTree = "<group>"; };
+		7AF24CBF272B6BB400B4256B /* XCTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTabBarItem.swift; sourceTree = "<group>"; };
 		7AF3BFE7270AC41500B1B81B /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		7AF3BFE9270AC41F00B1B81B /* ErrorObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorObject.swift; sourceTree = "<group>"; };
 		7AF3BFEB270AC42900B1B81B /* ErrorSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorSource.swift; sourceTree = "<group>"; };
@@ -1187,6 +1189,7 @@
 			isa = PBXGroup;
 			children = (
 				7A8035F8272925B30059FFCE /* TabBarControllerUITests.swift */,
+				7AF24CBF272B6BB400B4256B /* XCTabBarItem.swift */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
@@ -1323,10 +1326,10 @@
 		7AB34D1125C78230000A1E81 = {
 			isa = PBXGroup;
 			children = (
-				7A58092D272A342200EF8E86 /* ci_scripts */,
 				7ADC6EF4271FDC6D00A7E8AE /* README.md */,
 				7ADC6EF5271FDC6D00A7E8AE /* LICENSE */,
 				7A2CB0D22726731300B6F58D /* ExportOptions.plist */,
+				7A58092D272A342200EF8E86 /* ci_scripts */,
 				7A38860726BB62F900F57EA0 /* XcodeConfigurations */,
 				7A75631426A7ED3100963658 /* Shared */,
 				7AB34D1C25C78230000A1E81 /* Provenance */,
@@ -2182,6 +2185,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7AF24CC0272B6BB400B4256B /* XCTabBarItem.swift in Sources */,
 				7A8035F9272925B30059FFCE /* TabBarControllerUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2663,12 +2667,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AEAE8E127292C1900788AC6 /* UITests.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = Provenance;
@@ -2679,12 +2685,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AEAE8E127292C1900788AC6 /* UITests.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = JDL5FY6SCC;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = Provenance;

@@ -60,6 +60,7 @@ final class AccountsVC: ASViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    view.accessibilityIdentifier = "accountsView"
     configureObservers()
     configureSelf()
     configureNavigation()

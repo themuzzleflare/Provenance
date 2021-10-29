@@ -96,6 +96,7 @@ final class TransactionsVC: ASViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    view.accessibilityIdentifier = "transactionsView"
     configureObservers()
     configureCollectionNode()
     configureSelf()

@@ -49,6 +49,7 @@ final class TagsVC: ASViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    view.accessibilityIdentifier = "tagsView"
     configureObservers()
     configureCollectionNode()
     configureSelf()
