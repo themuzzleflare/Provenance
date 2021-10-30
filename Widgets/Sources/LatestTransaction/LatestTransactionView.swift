@@ -13,8 +13,6 @@ struct LatestTransactionView: View {
           .font(.circularStdBold(size: 20))
         Text(transaction.amount)
       }
-      .padding()
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
     case .systemMedium, .systemLarge, .systemExtraLarge:
       VStack {
         Text("Latest Transaction")
@@ -23,16 +21,12 @@ struct LatestTransactionView: View {
         Spacer()
         TransactionCellView(transaction: transaction)
       }
-      .padding()
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
     @unknown default:
       VStack {
         Text(transaction.description)
           .font(.circularStdBold(size: 20))
         Text(transaction.amount)
       }
-      .padding()
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
   }
 }

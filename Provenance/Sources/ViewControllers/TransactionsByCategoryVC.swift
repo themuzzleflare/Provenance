@@ -26,11 +26,11 @@ final class TransactionsByCategoryVC: ASViewController {
 
   private var transactionsError = String()
 
+  private var oldTransactionCellModels = [TransactionCellModel]()
+
   private var filteredTransactions: [TransactionResource] {
     return transactions.filtered(searchBar: searchController.searchBar)
   }
-
-  private var oldTransactionCellModels = [TransactionCellModel]()
 
   // MARK: - Life Cycle
 

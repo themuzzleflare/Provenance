@@ -9,8 +9,13 @@ struct LatestTransactionEntryView: View {
     Group {
       if let transaction = entry.transaction {
         LatestTransactionView(family: family, transaction: transaction)
+          .widgetURL("provenance://transactions/\(transaction.id)".url)
+          .padding()
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
       } else if let error = entry.error {
         ErrorView(family: family, error: error)
+          .padding()
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
       }
     }
     .background(Color.widgetBackground)

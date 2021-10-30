@@ -30,18 +30,36 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
 
   func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-    guard let url = URLContexts.first?.url.absoluteString else { return }
-    let accountId = url.replacingOccurrences(of: "provenance://accounts/", with: "")
-    Up.retrieveAccount(for: accountId) { (result) in
-      switch result {
-      case let .success(account):
-        if let tabBarController = self.window?.rootViewController as? TabBarController,
-           let navigationController = tabBarController.selectedViewController as? NavigationController {
-          let viewController = TransactionsByAccountVC(account: account)
-          navigationController.pushViewController(viewController, animated: true)
+    URLContexts.forEach { (context) in
+      let url = context.url.absoluteString
+      if url.hasPrefix("provenance://accounts/") {
+        let accountId = url.replacingOccurrences(of: "provenance://accounts/", with: "")
+        Up.retrieveAccount(for: accountId) { (result) in
+          switch result {
+          case let .success(account):
+            if let tabBarController = self.window?.rootViewController as? TabBarController,
+               let navigationController = tabBarController.selectedViewController as? NavigationController {
+              let viewController = TransactionsByAccountVC(account: account)
+              navigationController.pushViewController(viewController, animated: true)
+            }
+          case .failure:
+            break
+          }
         }
-      case .failure:
-        break
+      } else if url.hasPrefix("provenance://transactions/") {
+        let transactionId = url.replacingOccurrences(of: "provenance://transactions/", with: "")
+        Up.retrieveTransaction(for: transactionId) { (result) in
+          switch result {
+          case let .success(transaction):
+            if let tabBarController = self.window?.rootViewController as? TabBarController,
+               let navigationController = tabBarController.selectedViewController as? NavigationController {
+              let viewController = TransactionDetailVC(transaction: transaction)
+              navigationController.pushViewController(viewController, animated: true)
+            }
+          case .failure:
+            break
+          }
+        }
       }
     }
   }

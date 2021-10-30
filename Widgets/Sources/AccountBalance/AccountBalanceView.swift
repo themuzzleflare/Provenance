@@ -13,9 +13,6 @@ struct AccountBalanceView: View {
           .font(.circularStdBold(size: 20))
         Text(account.displayName)
       }
-      .widgetURL("provenance://accounts/\(account.id)".url)
-      .padding()
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
     case .systemMedium, .systemLarge, .systemExtraLarge:
       VStack {
         Text("Account Balance")
@@ -26,18 +23,12 @@ struct AccountBalanceView: View {
           .font(.circularStdBold(size: 20))
         Text(account.displayName)
       }
-      .widgetURL("provenance://accounts/\(account.id)".url)
-      .padding()
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
     @unknown default:
       VStack {
         Text(account.balance)
           .font(.circularStdBold(size: 20))
         Text(account.displayName)
       }
-      .widgetURL("provenance://accounts/\(account.id)".url)
-      .padding()
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
   }
 }
