@@ -164,10 +164,6 @@
 		7A7F03A826FB0F37003F1321 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2152C26F04CF3009F4F38 /* UIImage+Extension.swift */; };
 		7A7F03A926FB0F3E003F1321 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2152C26F04CF3009F4F38 /* UIImage+Extension.swift */; };
 		7A8022E326FC5CD1008600B0 /* ASCellNode+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8022E226FC5CD1008600B0 /* ASCellNode+Extension.swift */; };
-		7A8022EC26FC7C30008600B0 /* Bool+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */; };
-		7A8022ED26FC7C30008600B0 /* Bool+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */; };
-		7A8022EE26FC7C30008600B0 /* Bool+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */; };
-		7A8022EF26FC7C30008600B0 /* Bool+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */; };
 		7A8022F026FC8489008600B0 /* NSParagraphStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214F926EF326B009F4F38 /* NSParagraphStyle+Extension.swift */; };
 		7A8022F126FC8489008600B0 /* CGSize+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF214FB26EF326C009F4F38 /* CGSize+Extension.swift */; };
 		7A8022F226FC8489008600B0 /* CGColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF2150A26EF34C5009F4F38 /* CGColor+Extension.swift */; };
@@ -650,7 +646,6 @@
 		7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FLAnimatedImage+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7A7F039C26FB0641003F1321 /* TransactionColourEnum+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionColourEnum+Extension.swift"; sourceTree = "<group>"; };
 		7A8022E226FC5CD1008600B0 /* ASCellNode+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASCellNode+Extension.swift"; sourceTree = "<group>"; };
-		7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+Extension.swift"; sourceTree = "<group>"; };
 		7A82FB1726F466FE00C9C04E /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
 		7A82FB2026F47B3C00C9C04E /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
 		7A82FB3726F47EAB00C9C04E /* Provenance IntentsUI.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance IntentsUI.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1184,7 +1179,6 @@
 				7AF214FA26EF326B009F4F38 /* CGFloat+Extension.swift */,
 				7AF214FB26EF326C009F4F38 /* CGSize+Extension.swift */,
 				7AD266D826FADDF500EFF4A2 /* Double+Extension.swift */,
-				7A8022EB26FC7C30008600B0 /* Bool+Extension.swift */,
 				7AD266D426FADA1E00EFF4A2 /* NumberFormatter+Extension.swift */,
 				7AF214FD26EF326C009F4F38 /* UIEdgeInsets+Extension.swift */,
 				7A61533726F95ACD00382804 /* DateStyleEnum+Extension.swift */,
@@ -2029,7 +2023,6 @@
 			files = (
 				7A340B3426F9C11300D43523 /* NSUserActivity+Extension.swift in Sources */,
 				7A80230926FC853D008600B0 /* UIEdgeInsets+Extension.swift in Sources */,
-				7A8022EE26FC7C30008600B0 /* Bool+Extension.swift in Sources */,
 				7A7F03A826FB0F37003F1321 /* UIImage+Extension.swift in Sources */,
 				7A8022F526FC848A008600B0 /* NSParagraphStyle+Extension.swift in Sources */,
 				7A340B3526F9C11300D43523 /* AddTagToTransactionIntentResponse+Extension.swift in Sources */,
@@ -2119,7 +2112,6 @@
 				7A340BC826F9C1B200D43523 /* UIEdgeInsets+Extension.swift in Sources */,
 				7A80230F26FC854B008600B0 /* NSUserActivity+Extension.swift in Sources */,
 				7A7F03A326FB085E003F1321 /* Color+Extension.swift in Sources */,
-				7A8022EF26FC7C30008600B0 /* Bool+Extension.swift in Sources */,
 				7A8022FB26FC848A008600B0 /* CGSize+Extension.swift in Sources */,
 				7A7F03A426FB0869003F1321 /* TransactionColourEnum+Extension.swift in Sources */,
 				7A7F03A926FB0F3E003F1321 /* UIImage+Extension.swift in Sources */,
@@ -2270,7 +2262,6 @@
 				7A0BF09526FFDC05004A3E0C /* AccountCellModel.swift in Sources */,
 				7A340B0B26F9C11200D43523 /* String+Extension.swift in Sources */,
 				7A340B0F26F9C11200D43523 /* UIFont+Extension.swift in Sources */,
-				7A8022EC26FC7C30008600B0 /* Bool+Extension.swift in Sources */,
 				7AB34D5D25C7CDCB000A1E81 /* SettingsVC.swift in Sources */,
 				7A0A302626B5422F009E52FB /* StickerCellNode.swift in Sources */,
 				7A69F25D2706A392008CA6CC /* TransactionBindingSC.swift in Sources */,
@@ -2417,7 +2408,6 @@
 				7A340B1E26F9C11300D43523 /* Color+Extension.swift in Sources */,
 				7A340B1926F9C11300D43523 /* Int+Extension.swift in Sources */,
 				7A7F039E26FB0641003F1321 /* TransactionColourEnum+Extension.swift in Sources */,
-				7A8022ED26FC7C30008600B0 /* Bool+Extension.swift in Sources */,
 				7A8E41F126048320003D0E6A /* Widgets.swift in Sources */,
 				7A340B2826F9C11300D43523 /* ListTransactionsIntentResponse+Extension.swift in Sources */,
 				7AFBD91126F4018800460939 /* LatestTransactionProvider.swift in Sources */,

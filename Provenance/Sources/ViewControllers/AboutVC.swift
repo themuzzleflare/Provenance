@@ -21,7 +21,6 @@ final class AboutVC: ASViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.accessibilityIdentifier = "aboutView"
     configureSelf()
     configureNavigation()
     configureTableNode()

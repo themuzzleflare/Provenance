@@ -103,7 +103,6 @@ enum UpFacade {
         switch response.result {
         case let .success(transactions):
           if let nextCursor = transactions.links.nextCursor {
-            print("Calling completion with cursor: \(nextCursor)")
             listCompleteTransactions(
               cursor: nextCursor,
               inputTransactions: (inputTransactions + transactions.data),
@@ -707,22 +706,29 @@ extension UpFacade {
     /// The number of records to return in each page.
     static let pageSize = "page[size]"
 
-    /// The transaction status for which to return records. This can be used to filter `HELD` transactions from those that are `SETTLED`.
+    /// The transaction status for which to return records.
+    /// This can be used to filter `HELD` transactions from those that are `SETTLED`.
     static let filterStatus = "filter[status]"
 
-    /// The start date-time from which to return records, formatted according to rfc-3339. Not to be used for pagination purposes.
+    /// The start date-time from which to return records, formatted according to rfc-3339.
+    /// Not to be used for pagination purposes.
     static let filterSince = "filter[since]"
 
-    /// The end date-time up to which to return records, formatted according to rfc-3339. Not to be used for pagination purposes.
+    /// The end date-time up to which to return records, formatted according to rfc-3339.
+    /// Not to be used for pagination purposes.
     static let filterUntil = "filter[until]"
 
-    /// The category identifier for which to filter transactions. Both parent and child categories can be filtered through this parameter. Providing an invalid category identifier results in a `404` response.
+    /// The category identifier for which to filter transactions.
+    /// Both parent and child categories can be filtered through this parameter.
+    /// Providing an invalid category identifier results in a `404` response.
     static let filterCategory = "filter[category]"
 
-    /// The unique identifier of a parent category for which to return only its children. Providing an invalid category identifier results in a `404` response.
+    /// The unique identifier of a parent category for which to return only its children.
+    /// Providing an invalid category identifier results in a `404` response.
     static let filterParent = "filter[parent]"
 
-    /// A transaction tag to filter for which to return records. If the tag does not exist, zero records are returned and a success response is given.
+    /// A transaction tag to filter for which to return records.
+    /// If the tag does not exist, zero records are returned and a success response is given.
     static let filterTag = "filter[tag]"
 
     static let pageBefore = "page[before]"

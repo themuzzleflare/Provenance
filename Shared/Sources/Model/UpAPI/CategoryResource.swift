@@ -4,7 +4,8 @@ struct CategoryResource: Codable, Identifiable {
   /// The type of this resource: `categories`
   var type = "categories"
 
-  /// The unique identifier for this category. This is a human-readable but URL-safe value.
+  /// The unique identifier for this category.
+  /// This is a human-readable but URL-safe value.
   var id: String
 
   var attributes: CategoryAttribute
@@ -30,7 +31,8 @@ extension CategoryResource {
 extension Array where Element == CategoryResource {
   func filtered(filter: CategoryTypeEnum, searchBar: UISearchBar) -> [CategoryResource] {
     return self.filter { (category) in
-      return !searchBar.searchTextField.hasText || (category.attributes.name.localizedStandardContains(searchBar.text!) && category.categoryTypeEnum == filter)
+      return !searchBar.searchTextField.hasText ||
+      (category.attributes.name.localizedStandardContains(searchBar.text!) && category.categoryTypeEnum == filter)
     }
   }
 

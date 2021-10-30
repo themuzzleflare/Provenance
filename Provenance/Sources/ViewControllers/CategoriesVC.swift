@@ -60,7 +60,6 @@ final class CategoriesVC: ASViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.accessibilityIdentifier = "categoriesView"
     configureObservers()
     configureSelf()
     configureNavigation()
