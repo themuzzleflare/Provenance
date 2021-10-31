@@ -76,7 +76,7 @@ final class TransactionTableViewCell: UITableViewCell {
 
 // MARK: - Configuration
 
-private extension TransactionTableViewCell {
+extension TransactionTableViewCell {
   private func configureSelf() {
     separatorInset = .zero
     backgroundColor = .clear

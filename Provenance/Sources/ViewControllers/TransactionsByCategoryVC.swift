@@ -65,7 +65,7 @@ final class TransactionsByCategoryVC: ASViewController {
 
 // MARK: - Configuration
 
-private extension TransactionsByCategoryVC {
+extension TransactionsByCategoryVC {
   private func configureSelf() {
     title = "Transactions by Category"
     definesPresentationContext = true
@@ -104,7 +104,7 @@ private extension TransactionsByCategoryVC {
 
 // MARK: - Actions
 
-private extension TransactionsByCategoryVC {
+extension TransactionsByCategoryVC {
   @objc
   private func appMovedToForeground() {
     fetchTransactions()

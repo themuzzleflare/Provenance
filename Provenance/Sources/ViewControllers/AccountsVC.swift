@@ -75,7 +75,7 @@ final class AccountsVC: ASViewController {
 
 // MARK: - Configuration
 
-private extension AccountsVC {
+extension AccountsVC {
   private func configureSelf() {
     title = "Accounts"
     definesPresentationContext = true
@@ -119,7 +119,7 @@ private extension AccountsVC {
 
 // MARK: - Actions
 
-private extension AccountsVC {
+extension AccountsVC {
   @objc
   private func appMovedToForeground() {
     fetchAccounts()

@@ -62,7 +62,7 @@ final class AddTagTransactionSelectionVC: ASViewController {
 
 // MARK: - Configuration
 
-private extension AddTagTransactionSelectionVC {
+extension AddTagTransactionSelectionVC {
   private func configureSelf() {
     title = "Transaction Selection"
     definesPresentationContext = true
@@ -102,7 +102,7 @@ private extension AddTagTransactionSelectionVC {
 
 // MARK: - Actions
 
-private extension AddTagTransactionSelectionVC {
+extension AddTagTransactionSelectionVC {
   @objc
   private func appMovedToForeground() {
     fetchTransactions()

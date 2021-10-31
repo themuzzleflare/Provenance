@@ -75,7 +75,7 @@ final class CategoriesVC: ASViewController {
 
 // MARK: - Configuration
 
-private extension CategoriesVC {
+extension CategoriesVC {
   private func configureSelf() {
     title = "Categories"
     definesPresentationContext = true
@@ -119,7 +119,7 @@ private extension CategoriesVC {
 
 // MARK: - Actions
 
-private extension CategoriesVC {
+extension CategoriesVC {
   @objc
   private func appMovedToForeground() {
     fetchCategories()

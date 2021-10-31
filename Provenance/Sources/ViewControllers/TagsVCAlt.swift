@@ -17,7 +17,10 @@ final class TagsVCAlt: ViewController {
       super.init(tableView: tableView, cellProvider: cellProvider)
     }
 
-    convenience init(parent: TagsVCAlt, tableView: UITableView, cellProvider: @escaping UITableViewDiffableDataSource<SortedTags, String>.CellProvider, defaultRowAnimation: UITableView.RowAnimation) {
+    convenience init(parent: TagsVCAlt,
+                     tableView: UITableView,
+                     cellProvider: @escaping UITableViewDiffableDataSource<SortedTags, String>.CellProvider,
+                     defaultRowAnimation: UITableView.RowAnimation) {
       self.init(parent: parent, tableView: tableView, cellProvider: cellProvider)
       self.defaultRowAnimation = defaultRowAnimation
     }
@@ -64,6 +67,7 @@ final class TagsVCAlt: ViewController {
 
   deinit {
     removeObservers()
+    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -93,7 +97,7 @@ final class TagsVCAlt: ViewController {
 
 // MARK: - Configuration
 
-private extension TagsVCAlt {
+extension TagsVCAlt {
   private func configureSelf() {
     title = "Tags"
     definesPresentationContext = true
@@ -133,7 +137,7 @@ private extension TagsVCAlt {
 
 // MARK: - Actions
 
-private extension TagsVCAlt {
+extension TagsVCAlt {
   @objc
   private func appMovedToForeground() {
     fetchTags()

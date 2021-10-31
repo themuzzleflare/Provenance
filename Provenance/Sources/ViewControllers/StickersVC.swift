@@ -35,7 +35,7 @@ final class StickersVC: ASViewController {
 
 // MARK: - Configuration
 
-private extension StickersVC {
+extension StickersVC {
   private func configureSelf() {
     title = "Stickers"
   }

@@ -102,13 +102,16 @@ final class TransactionTagsVC: ASViewController {
 
 // MARK: - Configuration
 
-private extension TransactionTagsVC {
+extension TransactionTagsVC {
   private func configureSelf() {
     title = "Transaction Tags"
   }
 
   private func configureObserver() {
-    NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(appMovedToForeground),
+                                           name: .willEnterForegroundNotification,
+                                           object: nil)
   }
 
   private func removeObserver() {

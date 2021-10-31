@@ -74,7 +74,7 @@ final class TransactionsByTagVC: ASViewController {
 
 // MARK: - Configuration
 
-private extension TransactionsByTagVC {
+extension TransactionsByTagVC {
   private func configureSelf() {
     title = "Transactions by Tag"
     definesPresentationContext = true

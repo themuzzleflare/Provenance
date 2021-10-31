@@ -69,7 +69,7 @@ final class TransactionsByAccountVC: ASViewController {
 
 // MARK: - Configuration
 
-private extension TransactionsByAccountVC {
+extension TransactionsByAccountVC {
   private func configureSelf() {
     title = "Transactions by Account"
     definesPresentationContext = false
@@ -109,7 +109,7 @@ private extension TransactionsByAccountVC {
 
 // MARK: - Actions
 
-private extension TransactionsByAccountVC {
+extension TransactionsByAccountVC {
   @objc
   private func appMovedToForeground() {
     fetchingTasks()

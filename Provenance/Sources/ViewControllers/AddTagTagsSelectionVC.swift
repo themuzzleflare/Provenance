@@ -131,7 +131,7 @@ final class AddTagTagsSelectionVC: ASViewController {
 
 // MARK: - Configuration
 
-private extension AddTagTagsSelectionVC {
+extension AddTagTagsSelectionVC {
   private func configureSelf() {
     title = "Tag Selection"
     definesPresentationContext = true
@@ -171,7 +171,7 @@ private extension AddTagTagsSelectionVC {
 
 // MARK: - Actions
 
-private extension AddTagTagsSelectionVC {
+extension AddTagTagsSelectionVC {
   @objc
   private func appMovedToForeground() {
     fetchTags()

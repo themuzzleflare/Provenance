@@ -26,7 +26,7 @@
 			<key>CFBundleURLIconFile</key>
 			<string>up-logo-white-sunset-transparent-bg</string>
 			<key>CFBundleURLName</key>
-			<string>cloud.tavitian.provenance</string>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>provenance</string>

@@ -38,7 +38,7 @@ final class DiagnosticsVC: ViewController {
 
 // MARK: - Configuration
 
-private extension DiagnosticsVC {
+extension DiagnosticsVC {
   private func configureSelf() {
     title = "Diagnostics"
   }
@@ -61,7 +61,7 @@ private extension DiagnosticsVC {
 
 // MARK: - Actions
 
-private extension DiagnosticsVC {
+extension DiagnosticsVC {
   @objc
   private func closeWorkflow() {
     navigationController?.dismiss(animated: true)

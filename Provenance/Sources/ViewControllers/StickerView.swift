@@ -24,7 +24,7 @@ final class StickerView: ASViewController {
 
 // MARK: - Configuration
 
-private extension StickerView {
+extension StickerView {
   private func configureSelf() {
     title = "Sticker View"
   }

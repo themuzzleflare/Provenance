@@ -64,7 +64,7 @@ final class TagsVC: ASViewController {
 
 // MARK: - Configuration
 
-private extension TagsVC {
+extension TagsVC {
   private func configureSelf() {
     title = "Tags"
     definesPresentationContext = true
@@ -100,7 +100,7 @@ private extension TagsVC {
 
 // MARK: - Actions
 
-private extension TagsVC {
+extension TagsVC {
   @objc
   private func appMovedToForeground() {
     fetchTags()

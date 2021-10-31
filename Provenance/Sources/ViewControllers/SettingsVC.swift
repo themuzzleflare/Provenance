@@ -44,7 +44,7 @@ final class SettingsVC: ASViewController {
 
 // MARK: - Configuration
 
-private extension SettingsVC {
+extension SettingsVC {
   private func configureSelf() {
     title = "Settings"
   }

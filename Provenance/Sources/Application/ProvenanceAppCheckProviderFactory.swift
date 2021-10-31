@@ -1,3 +1,4 @@
+import Foundation
 import Firebase
 
 final class ProvenanceAppCheckProviderFactory: NSObject, AppCheckProviderFactory {

@@ -44,7 +44,7 @@ final class AddTagConfirmationVC: ASViewController {
 
 // MARK: - Configuration
 
-private extension AddTagConfirmationVC {
+extension AddTagConfirmationVC {
   private func configureSelf() {
     title = "Add Tag Confirmation"
   }
@@ -75,7 +75,7 @@ private extension AddTagConfirmationVC {
 
 // MARK: - Actions
 
-private extension AddTagConfirmationVC {
+extension AddTagConfirmationVC {
   @objc
   private func addTags() {
     navigationItem.setRightBarButton(.activityIndicator, animated: false)

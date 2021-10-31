@@ -641,6 +641,7 @@
 		7A69F2692706B53F008CA6CC /* IGListSingleSectionController+Refinements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IGListSingleSectionController+Refinements.swift"; sourceTree = "<group>"; };
 		7A69F26A2706B53F008CA6CC /* ListValueSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListValueSectionController.swift; sourceTree = "<group>"; };
 		7A69F26F2706BEA8008CA6CC /* SpinnerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerCell.swift; sourceTree = "<group>"; };
+		7A72881B272F5FB500213433 /* bitrise.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = bitrise.yml; sourceTree = "<group>"; };
 		7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
 		7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FLAnimatedImage+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7A7F039C26FB0641003F1321 /* TransactionColourEnum+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionColourEnum+Extension.swift"; sourceTree = "<group>"; };
@@ -1280,6 +1281,7 @@
 		7AB34D1125C78230000A1E81 = {
 			isa = PBXGroup;
 			children = (
+				7A72881B272F5FB500213433 /* bitrise.yml */,
 				7ADC6EF4271FDC6D00A7E8AE /* README.md */,
 				7ADC6EF5271FDC6D00A7E8AE /* LICENSE */,
 				7A38860726BB62F900F57EA0 /* XcodeConfigurations */,
@@ -2543,9 +2545,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AAA2984270EC61500A641BB /* Intents.debug.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				PROVISIONING_PROFILE_SPECIFIER = "Provenance Intents Development";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -2556,9 +2555,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AAA2985270EC61E00A641BB /* Intents.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				PROVISIONING_PROFILE_SPECIFIER = "Provenance Intents Development";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -2723,9 +2719,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AAA2982270EC5F900A641BB /* Widgets.debug.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				PROVISIONING_PROFILE_SPECIFIER = "Provenance Widgets Development";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -2736,9 +2729,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AAA2983270EC60B00A641BB /* Widgets.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = JDL5FY6SCC;
-				PROVISIONING_PROFILE_SPECIFIER = "Provenance Widgets Development";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

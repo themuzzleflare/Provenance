@@ -72,7 +72,7 @@ final class AccountDetailVC: ViewController {
 
 // MARK: - Configuration
 
-private extension AccountDetailVC {
+extension AccountDetailVC {
   private func configureSelf() {
     title = "Account Details"
   }
@@ -113,7 +113,7 @@ private extension AccountDetailVC {
 
 // MARK: - Actions
 
-private extension AccountDetailVC {
+extension AccountDetailVC {
   @objc
   private func appMovedToForeground() {
     fetchingTasks()

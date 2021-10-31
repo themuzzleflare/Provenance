@@ -29,7 +29,7 @@ final class AboutVC: ASViewController {
 
 // MARK: - Configuration
 
-private extension AboutVC {
+extension AboutVC {
   private func configureSelf() {
     title = "About"
   }
@@ -51,7 +51,7 @@ private extension AboutVC {
 
 // MARK: - Actions
 
-private extension AboutVC {
+extension AboutVC {
   @objc
   private func openSettings() {
     let viewController = NavigationController(rootViewController: .settings)
