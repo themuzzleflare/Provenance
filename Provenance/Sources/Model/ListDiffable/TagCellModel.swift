@@ -1,4 +1,4 @@
-import IGListDiffKit
+import IGListKit
 
 final class TagCellModel: NSObject {
   let id: String

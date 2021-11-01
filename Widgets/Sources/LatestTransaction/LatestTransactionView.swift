@@ -2,7 +2,8 @@ import SwiftUI
 import WidgetKit
 
 struct LatestTransactionView: View {
-  let family: WidgetFamily
+  @Environment(\.widgetFamily) private var family
+
   let transaction: LatestTransactionModel
 
   var body: some View {

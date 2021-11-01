@@ -29,10 +29,10 @@
 				<string>ListTransactionsIntent</string>
 			</array>
 		</dict>
-		<key>NSExtensionMainStoryboard</key>
-		<string>MainInterface</string>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.intents-ui-service</string>
+		<key>NSExtensionPrincipalClass</key>
+		<string>$(PRODUCT_MODULE_NAME).IntentViewController</string>
 	</dict>
 	<key>UIAppFonts</key>
 	<array>

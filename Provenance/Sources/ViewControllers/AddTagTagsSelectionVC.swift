@@ -1,5 +1,5 @@
 import NotificationBannerSwift
-import IGListDiffKit
+import IGListKit
 import AsyncDisplayKit
 import Alamofire
 

@@ -1,5 +1,6 @@
 import SnapKit
 import IGListKit
+import UIKit
 
 final class TransactionCell: UICollectionViewCell {
   // MARK: - Properties

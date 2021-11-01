@@ -2,7 +2,8 @@ import SwiftUI
 import WidgetKit
 
 struct AccountBalanceView: View {
-  let family: WidgetFamily
+  @Environment(\.widgetFamily) private var family
+
   let account: AccountBalanceModel
 
   var body: some View {

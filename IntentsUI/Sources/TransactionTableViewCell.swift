@@ -1,4 +1,5 @@
 import SnapKit
+import UIKit
 
 final class TransactionTableViewCell: UITableViewCell {
   // MARK: - Properties

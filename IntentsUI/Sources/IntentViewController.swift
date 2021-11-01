@@ -1,4 +1,5 @@
 import IntentsUI
+import UIKit
 
 final class IntentViewController: UIViewController {
   private var transactions = [TransactionType]()

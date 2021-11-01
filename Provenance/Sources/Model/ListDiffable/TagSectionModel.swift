@@ -1,4 +1,4 @@
-import IGListDiffKit
+import IGListKit
 
 final class TagSectionModel {
   let id: String

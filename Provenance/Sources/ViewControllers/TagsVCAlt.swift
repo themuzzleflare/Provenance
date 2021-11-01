@@ -1,4 +1,4 @@
-import IGListDiffKit
+import IGListKit
 import UIKit
 import Alamofire
 

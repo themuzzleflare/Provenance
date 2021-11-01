@@ -3,7 +3,8 @@ import WidgetKit
 import Alamofire
 
 struct ErrorView: View {
-  let family: WidgetFamily
+  @Environment(\.widgetFamily) private var family
+
   let error: AFError
 
   var body: some View {

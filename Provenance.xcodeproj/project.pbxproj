@@ -199,7 +199,6 @@
 		7A80231326FC854D008600B0 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F51F26F08ECA00384F53 /* UIFont+Extension.swift */; };
 		7A82FB3826F47EAB00C9C04E /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A82FB2026F47B3C00C9C04E /* IntentsUI.framework */; };
 		7A82FB3B26F47EAB00C9C04E /* IntentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB3A26F47EAB00C9C04E /* IntentViewController.swift */; };
-		7A82FB3E26F47EAB00C9C04E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A82FB3C26F47EAB00C9C04E /* MainInterface.storyboard */; };
 		7A82FB4226F47EAB00C9C04E /* Provenance IntentsUI.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7A82FB3726F47EAB00C9C04E /* Provenance IntentsUI.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7A82FB4926F4869600C9C04E /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB4826F4869600C9C04E /* TransactionTableViewCell.swift */; };
 		7A89EFC027224B3200C06A08 /* UIWindow+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89EFBF27224B3200C06A08 /* UIWindow+Extension.swift */; };
@@ -650,7 +649,6 @@
 		7A82FB2026F47B3C00C9C04E /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
 		7A82FB3726F47EAB00C9C04E /* Provenance IntentsUI.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance IntentsUI.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A82FB3A26F47EAB00C9C04E /* IntentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentViewController.swift; sourceTree = "<group>"; };
-		7A82FB3D26F47EAB00C9C04E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		7A82FB3F26F47EAB00C9C04E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A82FB4626F47F7B00C9C04E /* IntentsUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IntentsUI.entitlements; sourceTree = "<group>"; };
 		7A82FB4826F4869600C9C04E /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
@@ -1263,7 +1261,6 @@
 		7AA819F026F81A0400B5BD29 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				7A82FB3C26F47EAB00C9C04E /* MainInterface.storyboard */,
 				7A82FB3F26F47EAB00C9C04E /* Info.plist */,
 				7A82FB4626F47F7B00C9C04E /* IntentsUI.entitlements */,
 			);
@@ -1801,7 +1798,6 @@
 				7A340AF926F9C0FB00D43523 /* CircularStd-Bold.otf in Resources */,
 				7A340AFB26F9C0FB00D43523 /* SF-Mono-Regular.otf in Resources */,
 				7A7F03A526FB0B01003F1321 /* Assets.xcassets in Resources */,
-				7A82FB3E26F47EAB00C9C04E /* MainInterface.storyboard in Resources */,
 				7A340AFA26F9C0FB00D43523 /* CircularStd-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2522,14 +2518,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		7A82FB3C26F47EAB00C9C04E /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				7A82FB3D26F47EAB00C9C04E /* Base */,
-			);
-			name = MainInterface.storyboard;
-			sourceTree = "<group>";
-		};
 		7AB34D2825C78232000A1E81 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

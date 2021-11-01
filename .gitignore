@@ -1,4 +1,3 @@
 .DS_Store
-Podfile.lock
 *.xcworkspace
 Pods

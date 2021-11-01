@@ -1,4 +1,4 @@
-import IGListDiffKit
+import IGListKit
 import AsyncDisplayKit
 
 final class TransactionTagsVC: ASViewController {
