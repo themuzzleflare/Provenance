@@ -26,6 +26,8 @@ final class TransactionDetailVC: ViewController {
     }
   }
 
+  private var dateStyleObserver: NSKeyValueObservation?
+
   private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailItem>
 
   private lazy var dataSource = makeDataSource()
@@ -115,10 +117,15 @@ extension TransactionDetailVC {
                                            selector: #selector(appMovedToForeground),
                                            name: .willEnterForegroundNotification,
                                            object: nil)
+    dateStyleObserver = UserDefaults.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+      self?.applySnapshot()
+    }
   }
 
   private func removeObserver() {
     NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
+    dateStyleObserver?.invalidate()
+    dateStyleObserver = nil
   }
 
   private func configureTableView() {
