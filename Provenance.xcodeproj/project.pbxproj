@@ -2689,6 +2689,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AAA297E270EC5BE00A641BB /* Provenance.debug.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = JDL5FY6SCC;
+				PROVISIONING_PROFILE_SPECIFIER = "Provenance Development";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -2698,6 +2701,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AAA297F270EC5CE00A641BB /* Provenance.release.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = JDL5FY6SCC;
+				PROVISIONING_PROFILE_SPECIFIER = "Provenance Development";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
