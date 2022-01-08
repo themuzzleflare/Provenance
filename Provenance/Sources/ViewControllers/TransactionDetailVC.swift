@@ -20,6 +20,10 @@ final class TransactionDetailVC: ViewController {
       super.init(tableView: tableView, cellProvider: cellProvider)
     }
 
+    deinit {
+      print("\(#function) \(String(describing: type(of: self)))")
+    }
+
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
       guard section == 0 else { return nil }
       return transaction.id

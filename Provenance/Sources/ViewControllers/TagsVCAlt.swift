@@ -25,6 +25,10 @@ final class TagsVCAlt: ViewController {
       self.defaultRowAnimation = defaultRowAnimation
     }
 
+    deinit {
+      print("\(#function) \(String(describing: type(of: self)))")
+    }
+
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
       return parent?.filteredTags.sortedTags[section].id.capitalized
     }

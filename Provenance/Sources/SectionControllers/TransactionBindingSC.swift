@@ -27,7 +27,7 @@ extension TransactionBindingSC: ListBindingSectionControllerDataSource {
       let cell: TransactionCell = collectionContext!.dequeueReusableCell(for: sectionController, at: index)
       return cell
     default:
-      fatalError()
+      fatalError("Unknown view model")
     }
   }
 

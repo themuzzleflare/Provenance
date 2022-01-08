@@ -191,7 +191,7 @@ extension TransactionsVC {
   private func transactionsUpdates() {
     loading = false
     noTransactions = transactions.isEmpty
-    adapter.performUpdates(animated: true)
+    adapter.performUpdates(animated: true, completion: nil)
     collectionNode.view.refreshControl?.endRefreshing()
     searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
   }
@@ -199,7 +199,7 @@ extension TransactionsVC {
   private func filterUpdates() {
     filterBarButtonItem.menu = filterMenu
     searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
-    adapter.performUpdates(animated: true)
+    adapter.performUpdates(animated: true, completion: nil)
   }
 
   private func fetchingTasks() {
@@ -357,7 +357,7 @@ extension TransactionsVC: LoadingDelegate {
   func startLoading() {
     if cursor != nil && !loading && !searchController.isActive && !searchController.searchBar.searchTextField.hasText {
       loading = true
-      adapter.performUpdates(animated: true)
+      adapter.performUpdates(animated: true, completion: nil)
       DispatchQueue.global(qos: .default).async {
         sleep(2)
         self.fetchTransactionsWithCursor()
@@ -370,13 +370,13 @@ extension TransactionsVC: LoadingDelegate {
 
 extension TransactionsVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    adapter.performUpdates(animated: true)
+    adapter.performUpdates(animated: true, completion: nil)
   }
 
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     if searchBar.searchTextField.hasText {
       searchBar.clear()
-      adapter.performUpdates(animated: true)
+      adapter.performUpdates(animated: true, completion: nil)
     }
   }
 }

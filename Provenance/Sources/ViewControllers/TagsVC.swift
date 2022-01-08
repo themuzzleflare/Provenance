@@ -203,13 +203,13 @@ extension TagsVC: SelectionDelegate {
 
 extension TagsVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    adapter.performUpdates(animated: true)
+    adapter.performUpdates(animated: true, completion: nil)
   }
 
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     if searchBar.searchTextField.hasText {
       searchBar.clear()
-      adapter.performUpdates(animated: true)
+      adapter.performUpdates(animated: true, completion: nil)
     }
   }
 }
