@@ -1,6 +1,6 @@
 import Foundation
 
-struct TransactionRelationship: Codable {
+struct TransactionRelationships: Codable {
   var account: TransactionRelationshipAccount
 
   /// If this transaction is a transfer between accounts, this field will contain the account the transaction went to/came from.
@@ -9,7 +9,7 @@ struct TransactionRelationship: Codable {
 
   var category: TransactionRelationshipCategory
 
-  var parentCategory: TransactionRelationshipCategory
+  var parentCategory: TransactionRelationshipParentCategory
 
-  var tags: TransactionRelationshipTag
+  var tags: TransactionRelationshipTags
 }

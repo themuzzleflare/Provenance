@@ -7,11 +7,15 @@ struct LatestTransactionEntry: TimelineEntry {
   let error: AFError?
 }
 
+// MARK: -
+
 extension LatestTransactionEntry {
   static var placeholder: LatestTransactionEntry {
     return LatestTransactionEntry(date: Date(), transaction: .placeholder, error: nil)
   }
 }
+
+// MARK: -
 
 extension Array where Element == LatestTransactionEntry {
   static func singleEntry(with entry: LatestTransactionEntry) -> [LatestTransactionEntry] {

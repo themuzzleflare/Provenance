@@ -7,8 +7,15 @@ struct TagResource: Codable, Identifiable {
   /// The label of the tag, which also acts as the tag’s unique identifier.
   var id: String
 
-  var relationships: TagRelationship?
+  var relationships: TagRelationships
+
+  init(id: String) {
+    self.id = id
+    self.relationships = .empty
+  }
 }
+
+// MARK: -
 
 extension TagResource {
   var relationshipData: RelationshipData {
@@ -19,6 +26,8 @@ extension TagResource {
     return TagInputResourceIdentifier(id: self.id)
   }
 }
+
+// MARK: -
 
 extension Array where Element == TagResource {
   static func singleTag(with tag: TagResource) -> [TagResource] {

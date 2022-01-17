@@ -30,4 +30,3 @@ opt_in_rules:
   - discouraged_optional_boolean
 excluded:
   - Pods
-  - Provenance/Sources/Extensions/IGListKit/IGListSwiftKit

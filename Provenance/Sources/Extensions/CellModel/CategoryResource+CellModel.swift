@@ -6,6 +6,8 @@ extension CategoryResource {
   }
 }
 
+// MARK: -
+
 extension Array where Element == CategoryResource {
   var categoryCellModels: [CategoryCellModel] {
     return self.map { (category) in

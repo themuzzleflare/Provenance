@@ -6,6 +6,8 @@ enum TransactionAmountType: Int {
   case amount
 }
 
+// MARK: -
+
 extension TransactionAmountType {
   var description: String {
     switch self {

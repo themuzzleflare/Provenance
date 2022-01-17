@@ -5,6 +5,8 @@ enum AccountTypeOptionEnum: Int, CaseIterable {
   case saver
 }
 
+// MARK: -
+
 extension AccountTypeOptionEnum {
   var description: String {
     switch self {
@@ -24,6 +26,8 @@ extension AccountTypeOptionEnum {
     }
   }
 }
+
+// MARK: -
 
 extension Array where Element == AccountTypeOptionEnum {
   var names: [String] {

@@ -41,6 +41,7 @@ extension AppDelegate {
       }
 
       UserDefaults.provenance.register(defaults: defaults)
+      print(UserDefaults.provenance.dictionaryRepresentation())
     } catch {
       fatalError("registerDefaults failed with error: \(error.localizedDescription)")
     }

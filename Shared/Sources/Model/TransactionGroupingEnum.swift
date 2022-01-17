@@ -6,6 +6,8 @@ enum TransactionGroupingEnum: Int, CaseIterable {
   case transactions
 }
 
+// MARK: -
+
 extension TransactionGroupingEnum {
   var description: String {
     switch self {
@@ -18,6 +20,8 @@ extension TransactionGroupingEnum {
     }
   }
 }
+
+// MARK: -
 
 extension Array where Element == TransactionGroupingEnum {
   var names: [String] {

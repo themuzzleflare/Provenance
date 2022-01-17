@@ -5,6 +5,8 @@ enum CategoryTypeEnum: Int, CaseIterable {
   case child
 }
 
+// MARK: -
+
 extension CategoryTypeEnum {
   var description: String {
     switch self {
@@ -15,6 +17,8 @@ extension CategoryTypeEnum {
     }
   }
 }
+
+// MARK: -
 
 extension Array where Element == CategoryTypeEnum {
   var names: [String] {

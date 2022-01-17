@@ -199,7 +199,7 @@ extension TransactionsVCAlt {
   private func transactionsUpdates() {
     loading = false
     noTransactions = transactions.isEmpty
-    adapter.performUpdates(animated: true)
+    adapter.performUpdates(animated: true, completion: nil)
     collectionView.refreshControl?.endRefreshing()
     searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
   }
@@ -207,7 +207,7 @@ extension TransactionsVCAlt {
   private func filterUpdates() {
     filterBarButtonItem.menu = filterMenu
     searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
-    adapter.performUpdates(animated: true)
+    adapter.performUpdates(animated: true, completion: nil)
   }
 
   private func fetchingTasks() {
@@ -335,7 +335,7 @@ extension TransactionsVCAlt: UIScrollViewDelegate {
     let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
     if cursor != nil && !loading && distance < 200 && !searchController.isActive && !searchController.searchBar.searchTextField.hasText {
       loading = true
-      adapter.performUpdates(animated: true)
+      adapter.performUpdates(animated: true, completion: nil)
       DispatchQueue.global(qos: .default).async {
         sleep(2)
         self.fetchTransactionsWithCursor()
@@ -348,13 +348,13 @@ extension TransactionsVCAlt: UIScrollViewDelegate {
 
 extension TransactionsVCAlt: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    adapter.performUpdates(animated: true)
+    adapter.performUpdates(animated: true, completion: nil)
   }
 
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     if searchBar.searchTextField.hasText {
       searchBar.clear()
-      adapter.performUpdates(animated: true)
+      adapter.performUpdates(animated: true, completion: nil)
     }
   }
 }

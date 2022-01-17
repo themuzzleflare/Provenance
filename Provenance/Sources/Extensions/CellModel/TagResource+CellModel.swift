@@ -6,6 +6,8 @@ extension TagResource {
   }
 }
 
+// MARK: -
+
 extension Array where Element == TagResource {
   var tagCellModels: [TagCellModel] {
     return self.map { (tag) in

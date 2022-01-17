@@ -7,12 +7,14 @@ struct TransactionResource: Codable, Identifiable {
   /// The unique identifier for this transaction.
   var id: String
 
-  var attributes: TransactionAttribute
+  var attributes: TransactionAttributes
 
-  var relationships: TransactionRelationship
+  var relationships: TransactionRelationships
 
   var links: SelfLink?
 }
+
+// MARK: -
 
 extension TransactionResource {
   func latestTransactionModel(configuration: DateStyleSelectionIntent) -> LatestTransactionModel {
@@ -35,6 +37,8 @@ extension TransactionResource {
     }
   }
 }
+
+// MARK: -
 
 extension Array where Element == TransactionResource {
   func filtered(searchBar: UISearchBar) -> [TransactionResource] {

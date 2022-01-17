@@ -1,3 +1,4 @@
+import Foundation
 import WidgetKit
 
 #if canImport(FirebaseAnalytics)
@@ -180,6 +181,8 @@ extension UserDefaults {
     return string(forKey: Keys.appBuild) ?? "Unknown"
   }
 }
+
+// MARK: -
 
 extension UserDefaults {
   private enum Keys {

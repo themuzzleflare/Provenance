@@ -8,14 +8,20 @@ struct CategoryResource: Codable, Identifiable {
   /// This is a human-readable but URL-safe value.
   var id: String
 
-  var attributes: CategoryAttribute
+  var attributes: CategoryAttributes
 
-  var relationships: CategoryRelationship
+  var relationships: CategoryRelationships
 
   var links: SelfLink?
 }
 
+// MARK: -
+
 extension CategoryResource {
+  var categoryInputResourceIdentifier: CategoryInputResourceIdentifier {
+    return CategoryInputResourceIdentifier(id: self.id)
+  }
+
   var categoryTypeEnum: CategoryTypeEnum {
     return relationships.parent.data == nil ? .parent : .child
   }
@@ -28,11 +34,19 @@ extension CategoryResource {
   }
 }
 
+// MARK: -
+
 extension Array where Element == CategoryResource {
   func filtered(filter: CategoryTypeEnum, searchBar: UISearchBar) -> [CategoryResource] {
     return self.filter { (category) in
       return !searchBar.searchTextField.hasText ||
       (category.attributes.name.localizedStandardContains(searchBar.text!) && category.categoryTypeEnum == filter)
+    }
+  }
+
+  func filtered(searchBar: UISearchBar) -> [CategoryResource] {
+    return self.filter { (category) in
+      return !searchBar.searchTextField.hasText || category.attributes.name.localizedStandardContains(searchBar.text!)
     }
   }
 

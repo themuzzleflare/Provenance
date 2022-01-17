@@ -6,6 +6,8 @@ extension AccountResource {
   }
 }
 
+// MARK: -
+
 extension Array where Element == AccountResource {
   var accountCellModels: [AccountCellModel] {
     return self.map { (account) in

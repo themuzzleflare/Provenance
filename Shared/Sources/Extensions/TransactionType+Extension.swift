@@ -10,6 +10,8 @@ extension TransactionType {
   }
 }
 
+// MARK: -
+
 extension Array where Element: TransactionType {
   var collection: INObjectCollection<TransactionType> {
     return INObjectCollection(items: self)

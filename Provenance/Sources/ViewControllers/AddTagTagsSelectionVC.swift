@@ -355,7 +355,7 @@ extension AddTagTagsSelectionVC: ASTableDelegate {
       updateToolbarItems()
     case false:
       let tag = filteredTags[indexPath.row]
-      let viewController = AddTagConfirmationVC(transaction: transaction, tag: tag)
+      let viewController = AddTagConfirmationVC(transaction: transaction, tags: tag)
       tableNode.deselectRow(at: indexPath, animated: true)
       navigationController?.pushViewController(viewController, animated: true)
     }

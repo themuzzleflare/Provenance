@@ -22,6 +22,8 @@ extension SortedTransactionModelAlt: ListDiffable {
   }
 }
 
+// MARK: -
+
 extension SortedTransactionModelAlt {
   var sortedSectionModel: SortedSectionModel {
     return SortedSectionModel(id: self.id)

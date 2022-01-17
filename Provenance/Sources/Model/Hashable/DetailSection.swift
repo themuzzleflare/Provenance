@@ -17,6 +17,8 @@ extension DetailSection: Hashable {
   }
 }
 
+// MARK: -
+
 extension Array where Element == DetailSection {
   static func transactionDetailSections(transaction: TransactionResource,
                                         account: AccountResource?,
@@ -138,6 +140,14 @@ extension Array where Element == DetailSection {
           DetailItem(
             id: "Account ID",
             value: account.id
+          ),
+          DetailItem(
+            id: "Account Type",
+            value: account.attributes.accountType.description
+          ),
+          DetailItem(
+            id: "Ownership Type",
+            value: account.attributes.ownershipType.description
           ),
           DetailItem(
             id: "Creation Date",

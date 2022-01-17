@@ -1,3 +1,4 @@
+import UIKit
 import IGListKit
 import AsyncDisplayKit
 import Alamofire
@@ -125,7 +126,7 @@ extension TransactionsVC {
       self?.fetchingTasks()
     }
     dateStyleObserver = UserDefaults.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
-      self?.adapter.performUpdates(animated: true)
+      self?.adapter.performUpdates(animated: true, completion: nil)
     }
     settledOnlyObserver = UserDefaults.provenance.observe(\.settledOnly, options: .new) { [weak self] (_, change) in
       guard let value = change.newValue else { return }

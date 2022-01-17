@@ -7,12 +7,14 @@ struct AccountResource: Codable, Identifiable {
   /// The unique identifier for this account.
   var id: String
 
-  var attributes: AccountAttribute
+  var attributes: AccountAttributes
 
-  var relationships: AccountRelationship
+  var relationships: AccountRelationships
 
   var links: SelfLink?
 }
+
+// MARK: -
 
 extension AccountResource {
   var accountBalanceModel: AccountBalanceModel {
@@ -32,6 +34,8 @@ extension AccountResource {
     )
   }
 }
+
+// MARK: -
 
 extension Array where Element == AccountResource {
   func filtered(filter: AccountTypeOptionEnum, searchBar: UISearchBar) -> [AccountResource] {

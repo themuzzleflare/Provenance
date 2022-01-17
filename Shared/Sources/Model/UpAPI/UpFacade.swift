@@ -1,3 +1,4 @@
+import Foundation
 import Alamofire
 
 typealias Up = UpFacade
@@ -22,7 +23,9 @@ enum UpFacade {
       .authorization(bearerToken: key)
     ]
 
-    AF.request("https://api.up.com.au/api/v1/util/ping", method: .get, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/util/ping",
+               method: .get,
+               headers: headers)
       .validate()
       .response { (response) in
         completion(response.error)
@@ -56,9 +59,12 @@ enum UpFacade {
       parameters.updateValue(cursor, forKey: ParamKeys.pageAfter)
     }
 
-    AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/transactions",
+               method: .get,
+               parameters: parameters,
+               headers: headers)
       .validate()
-      .responseDecodable(of: Transaction.self) { (response) in
+      .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):
           UserDefaults.provenance.paginationCursor = transactions.links.nextCursor ?? ""
@@ -97,9 +103,12 @@ enum UpFacade {
       parameters.updateValue(cursor, forKey: ParamKeys.pageAfter)
     }
 
-    AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/transactions",
+               method: .get,
+               parameters: parameters,
+               headers: headers)
       .validate()
-      .responseDecodable(of: Transaction.self) { (response) in
+      .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):
           if let nextCursor = transactions.links.nextCursor {
@@ -140,9 +149,12 @@ enum UpFacade {
       ParamKeys.pageSize: "100"
     ]
 
-    AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)/transactions", method: .get, parameters: parameters, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)/transactions",
+               method: .get,
+               parameters: parameters,
+               headers: headers)
       .validate()
-      .responseDecodable(of: Transaction.self) { (response) in
+      .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):
           completion(.success(transactions.data))
@@ -176,9 +188,12 @@ enum UpFacade {
       ParamKeys.pageSize: "100"
     ]
 
-    AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/transactions",
+               method: .get,
+               parameters: parameters,
+               headers: headers)
       .validate()
-      .responseDecodable(of: Transaction.self) { (response) in
+      .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):
           completion(.success(transactions.data))
@@ -212,9 +227,12 @@ enum UpFacade {
       ParamKeys.pageSize: "100"
     ]
 
-    AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/transactions",
+               method: .get,
+               parameters: parameters,
+               headers: headers)
       .validate()
-      .responseDecodable(of: Transaction.self) { (response) in
+      .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):
           completion(.success(transactions.data))
@@ -240,9 +258,12 @@ enum UpFacade {
       ParamKeys.pageSize: "1"
     ]
 
-    AF.request("https://api.up.com.au/api/v1/transactions", method: .get, parameters: parameters, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/transactions",
+               method: .get,
+               parameters: parameters,
+               headers: headers)
       .validate()
-      .responseDecodable(of: Transaction.self) { (response) in
+      .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):
           if let transaction = transactions.data.first {
@@ -275,9 +296,12 @@ enum UpFacade {
       ParamKeys.pageSize: "1"
     ]
 
-    AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)/transactions", method: .get, parameters: parameters, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)/transactions",
+               method: .get,
+               parameters: parameters,
+               headers: headers)
       .validate()
-      .responseDecodable(of: Transaction.self) { (response) in
+      .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):
           if let transaction = transactions.data.first {
@@ -306,9 +330,11 @@ enum UpFacade {
       .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)", method: .get, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)",
+               method: .get,
+               headers: headers)
       .validate()
-      .responseDecodable(of: SingleTransaction.self) { (response) in
+      .responseDecodable(of: TransactionResponse.self) { (response) in
         switch response.result {
         case let .success(transaction):
           completion(.success(transaction.data))
@@ -333,9 +359,11 @@ enum UpFacade {
       .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transactionId)", method: .get, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transactionId)",
+               method: .get,
+               headers: headers)
       .validate()
-      .responseDecodable(of: SingleTransaction.self) { (response) in
+      .responseDecodable(of: TransactionResponse.self) { (response) in
         switch response.result {
         case let .success(transaction):
           completion(.success(transaction.data))
@@ -362,9 +390,12 @@ enum UpFacade {
       ParamKeys.pageSize: "100"
     ]
 
-    AF.request("https://api.up.com.au/api/v1/accounts", method: .get, parameters: parameters, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/accounts",
+               method: .get,
+               parameters: parameters,
+               headers: headers)
       .validate()
-      .responseDecodable(of: Account.self) { (response) in
+      .responseDecodable(of: AccountsResponse.self) { (response) in
         switch response.result {
         case let .success(accounts):
           completion(.success(accounts.data))
@@ -389,9 +420,11 @@ enum UpFacade {
       .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
-    AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)", method: .get, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)",
+               method: .get,
+               headers: headers)
       .validate()
-      .responseDecodable(of: SingleAccount.self) { (response) in
+      .responseDecodable(of: AccountResponse.self) { (response) in
         switch response.result {
         case let .success(account):
           completion(.success(account.data))
@@ -416,9 +449,11 @@ enum UpFacade {
       .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
-    AF.request("https://api.up.com.au/api/v1/accounts/\(accountId)", method: .get, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/accounts/\(accountId)",
+               method: .get,
+               headers: headers)
       .validate()
-      .responseDecodable(of: SingleAccount.self) { (response) in
+      .responseDecodable(of: AccountResponse.self) { (response) in
         switch response.result {
         case let .success(account):
           completion(.success(account.data))
@@ -447,9 +482,12 @@ enum UpFacade {
       ParamKeys.pageSize: "100"
     ]
 
-    AF.request("https://api.up.com.au/api/v1/tags", method: .get, parameters: parameters, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/tags",
+               method: .get,
+               parameters: parameters,
+               headers: headers)
       .validate()
-      .responseDecodable(of: Tag.self) { (response) in
+      .responseDecodable(of: TagsResponse.self) { (response) in
         switch response.result {
         case let .success(tags):
           completion(.success(tags.data))
@@ -480,7 +518,11 @@ enum UpFacade {
       .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags", method: .post, parameters: ModifyTags(tags: tags), encoder: jsonEncoder, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
+               method: .post,
+               parameters: ModifyTags(tags: tags),
+               encoder: jsonEncoder,
+               headers: headers)
       .validate()
       .response { (response) in
         completion(response.error)
@@ -508,7 +550,11 @@ enum UpFacade {
       .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags", method: .post, parameters: ModifyTags(tags: tags), encoder: jsonEncoder, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags",
+               method: .post,
+               parameters: ModifyTags(tags: tags),
+               encoder: jsonEncoder,
+               headers: headers)
       .validate()
       .response { (response) in
         completion(response.error)
@@ -528,13 +574,19 @@ enum UpFacade {
   /// An HTTP `204` is returned on success.
   /// The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
 
-  static func modifyTags(adding tag: TagResource, to transaction: TransactionResource, completion: @escaping (AFError?) -> Void) {
+  static func modifyTags(adding tags: TagResource...,
+                         to transaction: TransactionResource,
+                         completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
       .contentType("application/json"),
       .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags", method: .post, parameters: ModifyTags(tag: tag), encoder: jsonEncoder, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
+               method: .post,
+               parameters: ModifyTags(tags: tags),
+               encoder: jsonEncoder,
+               headers: headers)
       .validate()
       .response { (response) in
         completion(response.error)
@@ -561,7 +613,11 @@ enum UpFacade {
       .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags", method: .delete, parameters: ModifyTags(tags: tags), encoder: jsonEncoder, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
+               method: .delete,
+               parameters: ModifyTags(tags: tags),
+               encoder: jsonEncoder,
+               headers: headers)
       .validate()
       .response { (response) in
         completion(response.error)
@@ -588,7 +644,11 @@ enum UpFacade {
       .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags", method: .delete, parameters: ModifyTags(tags: tags), encoder: jsonEncoder, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags",
+               method: .delete,
+               parameters: ModifyTags(tags: tags),
+               encoder: jsonEncoder,
+               headers: headers)
       .validate()
       .response { (response) in
         completion(response.error)
@@ -607,7 +667,7 @@ enum UpFacade {
   /// An HTTP `204` is returned on success.
   /// The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
 
-  static func modifyTags(removing tag: TagResource,
+  static func modifyTags(removing tags: TagResource...,
                          from transaction: TransactionResource,
                          completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
@@ -615,7 +675,11 @@ enum UpFacade {
       .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags", method: .delete, parameters: ModifyTags(tag: tag), encoder: jsonEncoder, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
+               method: .delete,
+               parameters: ModifyTags(tags: tags),
+               encoder: jsonEncoder,
+               headers: headers)
       .validate()
       .response { (response) in
         completion(response.error)
@@ -634,9 +698,11 @@ enum UpFacade {
       .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
-    AF.request("https://api.up.com.au/api/v1/categories", method: .get, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/categories",
+               method: .get,
+               headers: headers)
       .validate()
-      .responseDecodable(of: Category.self) { (response) in
+      .responseDecodable(of: CategoriesResponse.self) { (response) in
         switch response.result {
         case let .success(categories):
           completion(.success(categories.data))
@@ -661,9 +727,11 @@ enum UpFacade {
       .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
-    AF.request("https://api.up.com.au/api/v1/categories/\(category.id)", method: .get, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/categories/\(category.id)",
+               method: .get,
+               headers: headers)
       .validate()
-      .responseDecodable(of: SingleCategory.self) { (response) in
+      .responseDecodable(of: CategoryResponse.self) { (response) in
         switch response.result {
         case let .success(category):
           completion(.success(category.data))
@@ -688,9 +756,11 @@ enum UpFacade {
       .authorization(bearerToken: UserDefaults.provenance.apiKey)
     ]
 
-    AF.request("https://api.up.com.au/api/v1/categories/\(categoryId)", method: .get, headers: headers)
+    AF.request("https://api.up.com.au/api/v1/categories/\(categoryId)",
+               method: .get,
+               headers: headers)
       .validate()
-      .responseDecodable(of: SingleCategory.self) { (response) in
+      .responseDecodable(of: CategoryResponse.self) { (response) in
         switch response.result {
         case let .success(category):
           completion(.success(category.data))
@@ -699,7 +769,42 @@ enum UpFacade {
         }
       }
   }
+
+  /// Categorize transaction
+  ///
+  /// - Parameters:
+  ///   - transaction: The transaction to categorise.
+  ///   - category: The category to apply to the operation.
+  ///   - completion: Block to execute for handling the request response.
+  ///
+  /// Updates the category associated with a transaction.
+  /// Only transactions for which `isCategorizable` is set to true support this operation.
+  /// The `id` is taken from the list exposed on `/categories` and cannot be one of the top-level (parent) categories.
+  /// To de-categorize a transaction, set the entire `data` key to `null`.
+  /// An HTTP `204` is returned on success.
+  /// The associated category, along with its request URL is also exposed via the `category` relationship on the transaction resource returned from `/transactions/{id}`.
+
+  static func categorise(transaction: TransactionResource,
+                         category: CategoryResource? = nil,
+                         completion: @escaping (AFError?) -> Void) {
+    let headers: HTTPHeaders = [
+      .contentType("application/json"),
+      .authorization(bearerToken: UserDefaults.provenance.apiKey)
+    ]
+
+    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/category",
+               method: .patch,
+               parameters: ModifyCategories(category: category),
+               encoder: jsonEncoder,
+               headers: headers)
+      .validate()
+      .response { (response) in
+        completion(response.error)
+      }
+  }
 }
+
+// MARK: -
 
 extension UpFacade {
   enum ParamKeys {
@@ -730,6 +835,14 @@ extension UpFacade {
     /// A transaction tag to filter for which to return records.
     /// If the tag does not exist, zero records are returned and a success response is given.
     static let filterTag = "filter[tag]"
+
+    /// The type of account for which to return records.
+    /// This can be used to filter Savers from spending accounts.
+    static let filterAccountType = "filter[accountType]"
+
+    /// The account ownership structure for which to return records.
+    /// This can be used to filter 2Up accounts from Up accounts.
+    static let filterOwnershipType = "filter[ownershipType]"
 
     static let pageBefore = "page[before]"
 

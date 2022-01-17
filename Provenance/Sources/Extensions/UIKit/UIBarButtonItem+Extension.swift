@@ -19,7 +19,7 @@ extension UIBarButtonItem {
     return UIBarButtonItem(barButtonSystemItem: .close, target: target, action: action)
   }
 
-  static func addTags(_ target: UIViewController, action: Selector) -> UIBarButtonItem {
+  static func add(_ target: UIViewController, action: Selector) -> UIBarButtonItem {
     return UIBarButtonItem(barButtonSystemItem: .add, target: target, action: action)
   }
 

@@ -132,6 +132,12 @@ extension CategoriesVC {
     }
   }
 
+  @objc
+  private func modifyCategories() {
+    let viewController = NavigationController(rootViewController: AddCategoryTransactionSelectionVC())
+    present(.fullscreen(viewController), animated: true)
+  }
+
   private func applySnapshot(override: Bool = false) {
     let result = ListDiffPaths(
       fromSection: 0,
@@ -189,6 +195,9 @@ extension CategoriesVC {
     if navigationItem.title != "Categories" {
       navigationItem.title = "Categories"
     }
+    if navigationItem.rightBarButtonItem == nil {
+      navigationItem.setRightBarButton(.add(self, action: #selector(modifyCategories)), animated: true)
+    }
   }
 
   private func display(_ error: AFError) {
@@ -196,6 +205,9 @@ extension CategoriesVC {
     categories.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"
+    }
+    if navigationItem.rightBarButtonItem != nil {
+      navigationItem.setRightBarButton(nil, animated: true)
     }
   }
 }

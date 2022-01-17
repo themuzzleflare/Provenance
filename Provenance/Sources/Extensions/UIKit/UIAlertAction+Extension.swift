@@ -1,7 +1,7 @@
+import UIKit
 import NotificationBannerSwift
 
 extension UIAlertAction {
-  /// `UIAlertAction(title: "Dismiss", style: .default)`.
   static var dismiss: UIAlertAction {
     return UIAlertAction(title: "Dismiss", style: .default)
   }
@@ -13,9 +13,34 @@ extension UIAlertAction {
     })
   }
 
-  /// `UIAlertAction(title: "Cancel", style: .cancel)`.
   static var cancel: UIAlertAction {
     return UIAlertAction(title: "Cancel", style: .cancel)
+  }
+
+  static func removeCategory(_ viewController: TransactionDetailVC,
+                             from transaction: TransactionResource) -> UIAlertAction {
+    return UIAlertAction(title: "Remove", style: .destructive, handler: { (_) in
+      Up.categorise(transaction: transaction) { (error) in
+        DispatchQueue.main.async {
+          if let error = error {
+            GrowingNotificationBanner(
+              title: "Failed",
+              subtitle: error.errorDescription ?? error.localizedDescription,
+              style: .danger,
+              duration: 2.0
+            ).show()
+          } else {
+            GrowingNotificationBanner(
+              title: "Success",
+              subtitle: "The category for \(transaction.attributes.description) was removed.",
+              style: .success,
+              duration: 2.0
+            ).show()
+          }
+          viewController.fetchTransaction()
+        }
+      }
+    })
   }
 
   static func removeTagFromTransaction(_ viewController: TransactionsByTagVC,
@@ -112,7 +137,8 @@ extension UIAlertAction {
     return alertAction
   }
 
-  static func saveApiKey(alertController: UIAlertController, viewController: SettingsVC) -> UIAlertAction {
+  static func saveApiKey(alertController: UIAlertController,
+                         viewController: SettingsVC) -> UIAlertAction {
     let alertAction = UIAlertAction(title: "Save", style: .default, handler: { [weak alertController] (_) in
       if let textField = alertController?.textFields?.first,
          let text = textField.text {
@@ -152,7 +178,8 @@ extension UIAlertAction {
     return alertAction
   }
 
-  static func noApiKey(sceneDelegate: SceneDelegate, alertController: UIAlertController) -> UIAlertAction {
+  static func noApiKey(sceneDelegate: SceneDelegate,
+                       alertController: UIAlertController) -> UIAlertAction {
     let alertAction = UIAlertAction(title: "Save", style: .default, handler: { [weak alertController] (_) in
       if let textField = alertController?.textFields?.first,
          let text = textField.text {

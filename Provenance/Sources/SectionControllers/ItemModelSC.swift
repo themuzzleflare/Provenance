@@ -1,3 +1,5 @@
+import Foundation
+import UIKit
 import IGListKit
 import AsyncDisplayKit
 
@@ -29,7 +31,7 @@ final class ItemModelSC: ListSectionController {
   }
 
   override func didSelectItem(at index: Int) {
-    collectionContext?.deselectItem(at: index, sectionController: self, animated: true)
+    collectionContext.deselectItem(at: index, sectionController: self, animated: true)
     selectionDelegate?.didSelectItem(at: IndexPath(item: index, section: section))
   }
 

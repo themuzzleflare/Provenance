@@ -21,6 +21,10 @@ extension String {
     return TagInputResourceIdentifier(id: self)
   }
 
+  var categoryInputResourceIdentifier: CategoryInputResourceIdentifier {
+    return CategoryInputResourceIdentifier(id: self)
+  }
+
   var stringResolutionResult: INStringResolutionResult {
     return .success(with: self)
   }
@@ -36,6 +40,8 @@ extension String {
       .map { String($0) }
   }
 }
+
+// MARK: -
 
 extension Array where Element == String {
   var tagInputResourceIdentifiers: [TagInputResourceIdentifier] {

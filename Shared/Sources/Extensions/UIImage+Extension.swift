@@ -164,4 +164,6 @@ extension UIImage {
   static var squareStackFill: UIImage {
     return UIImage(systemName: "square.stack.fill")!
   }
+
+  static let pencil = UIImage(systemName: "pencil")
 }

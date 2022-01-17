@@ -6,6 +6,8 @@ extension TransactionResource {
   }
 }
 
+// MARK: -
+
 extension Array where Element == TransactionResource {
   var transactionCellModels: [TransactionCellModel] {
     return self.map { (transaction) in

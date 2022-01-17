@@ -21,7 +21,7 @@ final class HeaderCell: UICollectionViewCell {
 
   private func configure() {
     contentView.addSubview(dateLabel)
-    contentView.backgroundColor = .secondarySystemGroupedBackground
+    contentView.backgroundColor = .secondarySystemBackground
     dateLabel.font = .circularStdBook(size: .labelFontSize)
   }
 }

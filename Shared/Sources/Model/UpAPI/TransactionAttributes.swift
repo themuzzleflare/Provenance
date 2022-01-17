@@ -1,6 +1,6 @@
 import SwiftDate
 
-struct TransactionAttribute: Codable {
+struct TransactionAttributes: Codable {
   /// The current processing status of this transaction, according to whether or not this transaction has settled or is still held.
   var status: TransactionStatusEnum
 
@@ -14,6 +14,9 @@ struct TransactionAttribute: Codable {
 
   /// Attached message for this transaction, such as a payment message, or a transfer note.
   var message: String?
+
+  /// Boolean flag set to true on transactions that support the use of categories.
+  var isCategorizable: Bool
 
   /// If this transaction is currently in the `HELD` status, or was ever in the `HELD` status, the `amount` and `foreignAmount` of the transaction while `HELD`.
   var holdInfo: HoldInfoObject?
@@ -43,7 +46,9 @@ struct TransactionAttribute: Codable {
   var createdAt: String
 }
 
-extension TransactionAttribute {
+// MARK: -
+
+extension TransactionAttributes {
   var createdAtDateComponents: DateComponents? {
     return createdAt.toDate()?.dateComponents
   }
@@ -57,12 +62,12 @@ extension TransactionAttribute {
   }
 
   var creationDate: String {
-    return App.formatDate(for: createdAt, dateStyle: UserDefaults.provenance.appDateStyle)
+    return Utils.formatDate(for: createdAt, dateStyle: UserDefaults.provenance.appDateStyle)
   }
 
   var settlementDate: String? {
     if let settledAt = settledAt {
-      return App.formatDate(for: settledAt, dateStyle: UserDefaults.provenance.appDateStyle)
+      return Utils.formatDate(for: settledAt, dateStyle: UserDefaults.provenance.appDateStyle)
     } else {
       return nil
     }

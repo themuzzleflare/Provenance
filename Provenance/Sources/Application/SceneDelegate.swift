@@ -25,6 +25,97 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
 
   func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+    if userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+       let incomingURL = userActivity.webpageURL,
+       let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true),
+       let path = components.path {
+      if path.hasPrefix("/transactions") {
+        let transactionId = path.replacingOccurrences(of: "/transactions/", with: "")
+        if transactionId == path {
+          if let tabBarController = self.window?.rootViewController as? TabBarController {
+            tabBarController.selectedIndex = 0
+          }
+        } else {
+          Up.retrieveTransaction(for: transactionId) { (result) in
+            switch result {
+            case let .success(transaction):
+              if let tabBarController = self.window?.rootViewController as? TabBarController,
+                 let navigationController = tabBarController.selectedViewController as? NavigationController {
+                let viewController = TransactionDetailVC(transaction: transaction)
+                navigationController.pushViewController(viewController, animated: true)
+              }
+            case .failure:
+              break
+            }
+          }
+        }
+      } else if path.hasPrefix("/accounts") {
+        let accountId = path.replacingOccurrences(of: "/accounts/", with: "")
+        if accountId == path {
+          if let tabBarController = self.window?.rootViewController as? TabBarController {
+            tabBarController.selectedIndex = 1
+          }
+        } else {
+          Up.retrieveAccount(for: accountId) { (result) in
+            switch result {
+            case let .success(account):
+              if let tabBarController = self.window?.rootViewController as? TabBarController,
+                 let navigationController = tabBarController.selectedViewController as? NavigationController {
+                let viewController = TransactionsByAccountVC(account: account)
+                navigationController.pushViewController(viewController, animated: true)
+              }
+            case .failure:
+              break
+            }
+          }
+        }
+      } else if path.hasPrefix("/tags") {
+        let tagId = path.replacingOccurrences(of: "/tags/", with: "")
+        if tagId == path {
+          if let tabBarController = self.window?.rootViewController as? TabBarController {
+            tabBarController.selectedIndex = 2
+          }
+        } else {
+          Up.listTags { (result) in
+            switch result {
+            case let .success(tags):
+              if let tabBarController = self.window?.rootViewController as? TabBarController,
+                 let navigationController = tabBarController.selectedViewController as? NavigationController,
+                 let tag = tags.first(where: { $0.id == tagId }) {
+                let viewController = TransactionsByTagVC(tag: tag)
+                navigationController.pushViewController(viewController, animated: true)
+              }
+            case .failure:
+              break
+            }
+          }
+        }
+      } else if path.hasPrefix("/categories") {
+        let categoryId = path.replacingOccurrences(of: "/categories/", with: "")
+        if categoryId == path {
+          if let tabBarController = self.window?.rootViewController as? TabBarController {
+            tabBarController.selectedIndex = 3
+          }
+        } else {
+          Up.retrieveCategory(for: categoryId) { (result) in
+            switch result {
+            case let .success(category):
+              if let tabBarController = self.window?.rootViewController as? TabBarController,
+                 let navigationController = tabBarController.selectedViewController as? NavigationController {
+                let viewController = TransactionsByCategoryVC(category: category)
+                navigationController.pushViewController(viewController, animated: true)
+              }
+            case .failure:
+              break
+            }
+          }
+        }
+      } else if path.hasPrefix("/about") {
+        if let tabBarController = self.window?.rootViewController as? TabBarController {
+          tabBarController.selectedIndex = 4
+        }
+      }
+    }
     guard let tabBarController = self.window?.rootViewController as? TabBarController else { return }
     tabBarController.restoreUserActivityState(userActivity)
   }

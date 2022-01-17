@@ -1,15 +1,26 @@
 import UIKit
 
 extension UIAlertController {
-  static func alertWithDismissButton(title: String, message: String) -> UIAlertController {
+  static func alertWithDismissButton(title: String,
+                                     message: String) -> UIAlertController {
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
     alertController.addAction(.dismiss)
     return alertController
   }
 
-  static func alertWithDismissPopButton(_ navigationController: UINavigationController?, title: String, message: String) -> UIAlertController {
+  static func alertWithDismissPopButton(_ navigationController: UINavigationController?,
+                                        title: String,
+                                        message: String) -> UIAlertController {
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
     alertController.addAction(.dismissAndPop(navigationController))
+    return alertController
+  }
+
+  static func removeCategory(_ viewController: TransactionDetailVC,
+                             from transaction: TransactionResource) -> UIAlertController {
+    let alertController = UIAlertController(title: "Confirmation", message: "Are you sure you want to remove the category from \(transaction.attributes.description)?", preferredStyle: .actionSheet)
+    alertController.addAction(.removeCategory(viewController, from: transaction))
+    alertController.addAction(.cancel)
     return alertController
   }
 
@@ -64,7 +75,8 @@ extension UIAlertController {
     return alertController
   }
 
-  static func saveApiKey(_ viewController: SettingsVC, selector: Selector) -> UIAlertController {
+  static func saveApiKey(_ viewController: SettingsVC,
+                         selector: Selector) -> UIAlertController {
     let alertController = UIAlertController(
       title: "API Key",
       message: "Enter a new API Key.",
@@ -84,7 +96,8 @@ extension UIAlertController {
     return alertController
   }
 
-  static func noApiKey(_ sceneDelegate: SceneDelegate, selector: Selector) -> UIAlertController {
+  static func noApiKey(_ sceneDelegate: SceneDelegate,
+                       selector: Selector) -> UIAlertController {
     let alertController = UIAlertController(
       title: "API Key Required",
       message: "You don't have an API Key set. You can set one now.",

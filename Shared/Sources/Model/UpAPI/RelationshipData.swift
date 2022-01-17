@@ -8,11 +8,15 @@ struct RelationshipData: Codable, Identifiable {
   var id: String
 }
 
+// MARK: -
+
 extension RelationshipData {
   var tagResource: TagResource {
     return TagResource(id: self.id)
   }
 }
+
+// MARK: -
 
 extension Array where Element == RelationshipData {
   var tagResources: [TagResource] {

@@ -5,6 +5,8 @@ enum TransactionStatusEnum: String, Codable {
   case settled = "SETTLED"
 }
 
+// MARK: -
+
 extension TransactionStatusEnum {
   var isSettled: Bool {
     switch self {

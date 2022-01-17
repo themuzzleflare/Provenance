@@ -1,3 +1,4 @@
+import UIKit
 import NotificationBannerSwift
 import AsyncDisplayKit
 
@@ -20,8 +21,8 @@ final class AddTagConfirmationVC: ASViewController {
     super.init(node: tableNode)
   }
 
-  convenience init(transaction: TransactionResource, tag: TagResource) {
-    self.init(transaction: transaction, tags: .singleTag(with: tag))
+  convenience init(transaction: TransactionResource, tags: TagResource...) {
+    self.init(transaction: transaction, tags: tags)
   }
 
   deinit {

@@ -1,3 +1,4 @@
+import UIKit
 import MarqueeLabel
 import Alamofire
 
@@ -171,6 +172,11 @@ extension TransactionDetailVC {
     }
   }
 
+  func editCategory() {
+    let viewController = NavigationController(rootViewController: AddCategoryCategorySelectionVC(transaction: transaction, fromTransactionDetail: true))
+    present(.fullscreen(viewController), animated: true)
+  }
+
   private func fetchingTasks() {
     Up.retrieveAccount(for: transaction.relationships.account.data.id) { (result) in
       DispatchQueue.main.async {
@@ -257,7 +263,7 @@ extension TransactionDetailVC {
     dataSource.apply(snapshot, animatingDifferences: animate)
   }
 
-  private func fetchTransaction() {
+  func fetchTransaction() {
     Up.retrieveTransaction(for: transaction) { (result) in
       DispatchQueue.main.async {
         switch result {
@@ -330,8 +336,10 @@ extension TransactionDetailVC: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     guard let attribute = dataSource.itemIdentifier(for: indexPath), attribute.id != "Tags" else { return nil }
-    return UIContextMenuConfiguration(elements: [
-      .copyAttribute(attribute: attribute)
-    ])
+    var elements: [UIMenuElement] = [.copyAttribute(attribute: attribute)]
+    if attribute.id == "Category" {
+      elements.append(contentsOf: [.editCategory(self), .removeCategory(self, from: transaction)])
+    }
+    return UIContextMenuConfiguration(elements: elements)
   }
 }

@@ -17,6 +17,8 @@ extension DetailItem: Hashable {
   }
 }
 
+// MARK: -
+
 extension DetailItem {
   var cellSelectionStyle: UITableViewCell.SelectionStyle {
     switch id {

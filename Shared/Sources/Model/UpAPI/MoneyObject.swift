@@ -14,6 +14,8 @@ struct MoneyObject: Codable {
   var valueInBaseUnits: Int64
 }
 
+// MARK: -
+
 extension MoneyObject {
   var transactionType: TransactionAmountType {
     switch valueInBaseUnits.signum() {

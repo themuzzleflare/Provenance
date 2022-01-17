@@ -8,6 +8,8 @@ enum AnimatedImage {
   case upLogoDrawMidnightYellowTransparentBackground
 }
 
+// MARK: -
+
 extension AnimatedImage {
   var asAnimatedImage: ASAnimatedImageProtocol {
     switch self {

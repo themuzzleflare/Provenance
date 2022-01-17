@@ -45,6 +45,8 @@ enum TransactionCategory: String, CaseIterable {
   case technology
 }
 
+// MARK: -
+
 extension TransactionCategory {
   var description: String {
     switch self {
@@ -71,6 +73,8 @@ extension TransactionCategory {
     }
   }
 }
+
+// MARK: -
 
 extension Array where Element == TransactionCategory {
   var names: [String] {

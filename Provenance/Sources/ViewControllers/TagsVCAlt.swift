@@ -221,7 +221,7 @@ extension TagsVCAlt {
       navigationItem.title = "Tags"
     }
     if navigationItem.rightBarButtonItem == nil {
-      navigationItem.setRightBarButton(.addTags(self, action: #selector(addTags)), animated: true)
+      navigationItem.setRightBarButton(.add(self, action: #selector(addTags)), animated: true)
     }
   }
 

@@ -8,15 +8,15 @@ struct ModifyTags: Codable {
     self.data = tags.tagInputResourceIdentifiers
   }
 
-  init(tag: TagResource) {
-    self.data = .singleTag(with: tag.tagInputResourceIdentifier)
+  init(tags: TagResource...) {
+    self.data = tags.tagInputResourceIdentifiers
   }
 
   init(tags: [String]) {
     self.data = tags.tagInputResourceIdentifiers
   }
 
-  init(tag: String) {
-    self.data = .singleTag(with: tag.tagInputResourceIdentifier)
+  init(tags: String...) {
+    self.data = tags.tagInputResourceIdentifiers
   }
 }

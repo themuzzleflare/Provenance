@@ -5,11 +5,15 @@ struct SortedTransactionCoreModel {
   let transactions: [TransactionResource]
 }
 
+// MARK: -
+
 extension SortedTransactionCoreModel {
   var sortedSectionCoreModel: SortedSectionCoreModel {
     return SortedSectionCoreModel(id: self.id)
   }
 }
+
+// MARK: -
 
 extension Array where Element == SortedTransactionCoreModel {
   var sortedMixedCoreModel: [Any] {
@@ -21,6 +25,8 @@ extension Array where Element == SortedTransactionCoreModel {
     return data
   }
 }
+
+// MARK: -
 
 extension Array {
   var transactionResources: [TransactionResource] {

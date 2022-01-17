@@ -1,6 +1,6 @@
+import UIKit
 import SnapKit
 import IGListKit
-import UIKit
 
 final class TransactionCell: UICollectionViewCell {
   // MARK: - Properties
@@ -83,7 +83,7 @@ extension TransactionCell {
   }
 
   private func configureTransactionDescription() {
-    transactionDescriptionLabel.font = .circularStdBold(size: .labelFontSize)
+    transactionDescriptionLabel.font = .circularStdMedium(size: .labelFontSize)
     transactionDescriptionLabel.textAlignment = .left
     transactionDescriptionLabel.numberOfLines = 0
   }

@@ -1,9 +1,13 @@
+import UIKit
 import AsyncDisplayKit
 
 final class CategoryCellNode: ASCellNode {
   private let categoryTextNode = ASTextNode()
 
+  private var category: CategoryResource
+
   init(category: CategoryResource) {
+    self.category = category
     super.init()
     automaticallyManagesSubnodes = true
     categoryTextNode.attributedText = category.attributes.name.styled(with: .categoryName)

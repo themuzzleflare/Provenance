@@ -8,6 +8,8 @@ struct TagInputResourceIdentifier: Codable, Identifiable {
   var id: String
 }
 
+// MARK: -
+
 extension Array where Element == TagInputResourceIdentifier {
   static func singleTag(with tag: TagInputResourceIdentifier) -> [TagInputResourceIdentifier] {
     return [tag]

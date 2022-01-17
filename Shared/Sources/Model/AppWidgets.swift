@@ -7,6 +7,8 @@ enum AppWidgets: Int, CaseIterable {
   case latestTransaction
 }
 
+// MARK: -
+
 extension AppWidgets {
   var kind: String {
     switch self {

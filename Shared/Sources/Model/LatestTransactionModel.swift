@@ -8,6 +8,8 @@ struct LatestTransactionModel: Identifiable {
   let colour: TransactionColourEnum
 }
 
+// MARK: -
+
 extension LatestTransactionModel {
   static var placeholder: LatestTransactionModel {
     return LatestTransactionModel(

@@ -6,6 +6,8 @@ struct AccountBalanceModel: Identifiable {
   let balance: String
 }
 
+// MARK: -
+
 extension AccountBalanceModel {
   static var placeholder: AccountBalanceModel {
     return AccountBalanceModel(

@@ -5,6 +5,8 @@ struct SortedTags: Identifiable {
   let tags: [String]
 }
 
+// MARK: -
+
 extension SortedTags: Hashable {
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)
@@ -14,6 +16,8 @@ extension SortedTags: Hashable {
     lhs.id == rhs.id
   }
 }
+
+// MARK: -
 
 extension Array where Element == SortedTags {
   var sectionIndexTitles: [String] {

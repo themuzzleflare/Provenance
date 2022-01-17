@@ -1,14 +1,14 @@
+import UIKit
 import SnapKit
 import MBProgressHUD
 
 extension UIView {
   static func loadingView(frame: CGRect, contentType: ContentType) -> UIView {
     let view = UIView(frame: frame)
-    let loadingIndicator = MBProgressHUD(view: view)
-    loadingIndicator.animationType = .zoomIn
-    loadingIndicator.detailsLabel.attributedText = contentType.loadingDescription.styled(with: .provenance)
-    view.addSubview(loadingIndicator)
-    loadingIndicator.show(animated: true)
+    let hud = MBProgressHUD(view: view, animationType: .zoomIn)
+    hud.detailsLabel.attributedText = contentType.loadingDescription.styled(with: .provenance)
+    view.addSubview(hud)
+    hud.show(animated: true)
     return view
   }
 

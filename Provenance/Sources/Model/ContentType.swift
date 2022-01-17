@@ -7,6 +7,8 @@ enum ContentType: Int {
   case categories
 }
 
+// MARK: -
+
 extension ContentType {
   var plural: String {
     switch self {

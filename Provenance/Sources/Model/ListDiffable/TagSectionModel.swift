@@ -24,11 +24,15 @@ extension TagSectionModel: ListDiffable {
   }
 }
 
+// MARK: -
+
 extension TagSectionModel {
   var sortedTagSectionModel: SortedTagSectionModel {
     return SortedTagSectionModel(id: self.id)
   }
 }
+
+// MARK: -
 
 extension Array where Element: TagSectionModel {
   var sectionIndexTitles: [String] {

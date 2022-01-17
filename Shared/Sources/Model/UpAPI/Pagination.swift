@@ -10,6 +10,8 @@ struct Pagination: Codable {
   var next: String?
 }
 
+// MARK: -
+
 extension Pagination {
   var prevCursor: String? {
     guard let prev = prev,

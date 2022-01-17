@@ -1,4 +1,7 @@
+import Foundation
+import UIKit
 import IGListKit
+import IGListSwiftKit
 import SwiftDate
 
 final class TransactionBindingSC: ListBindingSectionController<SortedTransactionModelAlt> {
@@ -21,11 +24,9 @@ extension TransactionBindingSC: ListBindingSectionControllerDataSource {
   func sectionController(_ sectionController: ListBindingSectionController<ListDiffable>, cellForViewModel viewModel: Any, at index: Int) -> UICollectionViewCell & ListBindable {
     switch viewModel {
     case is SortedSectionModel:
-      let cell: HeaderCell = collectionContext!.dequeueReusableCell(for: sectionController, at: index)
-      return cell
+      return collectionContext.dequeueReusableCell(for: self, at: index) as HeaderCell
     case is TransactionCellModel:
-      let cell: TransactionCell = collectionContext!.dequeueReusableCell(for: sectionController, at: index)
-      return cell
+      return collectionContext.dequeueReusableCell(for: self, at: index) as TransactionCell
     default:
       fatalError("Unknown view model")
     }
@@ -50,7 +51,7 @@ extension TransactionBindingSC: ListBindingSectionControllerSelectionDelegate {
     guard let object = object, viewModel is TransactionCellModel else { return }
     let transaction = object.transactions[index]
     let controller = TransactionDetailVC(transaction: transaction)
-    collectionContext?.deselectItem(at: index, sectionController: sectionController, animated: true)
+    collectionContext.deselectItem(at: index, sectionController: sectionController, animated: true)
     viewController?.navigationController?.pushViewController(controller, animated: true)
   }
 
@@ -69,7 +70,7 @@ extension TransactionBindingSC: ListSupplementaryViewSource {
   }
 
   func viewForSupplementaryElement(ofKind elementKind: String, at index: Int) -> UICollectionReusableView {
-    let view: HeaderView = collectionContext!.dequeueReusableSupplementaryView(ofKind: elementKind, forSectionController: self, atIndex: index)
+    let view = collectionContext.dequeueReusableSupplementaryView(ofKind: elementKind, forSectionController: self, atIndex: index) as HeaderView
     view.dateText = object?.id.toString(.date(.medium))
     return view
   }

@@ -18,7 +18,7 @@ final class TagsVC: ASViewController {
   private var tags = [TagResource]() {
     didSet {
       noTags = tags.isEmpty
-      adapter.performUpdates(animated: true)
+      adapter.performUpdates(animated: true, completion: nil)
       collectionNode.view.refreshControl?.endRefreshing()
       searchController.searchBar.placeholder = tags.searchBarPlaceholder
     }
@@ -53,7 +53,7 @@ final class TagsVC: ASViewController {
     configureCollectionNode()
     configureSelf()
     configureNavigation()
-    adapter.performUpdates(animated: false)
+    adapter.performUpdates(animated: true, completion: nil)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -139,7 +139,7 @@ extension TagsVC {
       navigationItem.title = "Tags"
     }
     if navigationItem.rightBarButtonItem == nil {
-      navigationItem.setRightBarButton(.addTags(self, action: #selector(addTags)), animated: true)
+      navigationItem.setRightBarButton(.add(self, action: #selector(addTags)), animated: true)
     }
   }
 

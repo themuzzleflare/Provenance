@@ -5,11 +5,15 @@ struct TagSectionCoreModel {
   let tags: [TagResource]
 }
 
+// MARK: -
+
 extension TagSectionCoreModel {
   var sortedTagSectionCoreModel: SortedTagSectionCoreModel {
     return SortedTagSectionCoreModel(id: self.id)
   }
 }
+
+// MARK: -
 
 extension Array where Element == TagSectionCoreModel {
   var sortedMixedCoreModel: [Any] {

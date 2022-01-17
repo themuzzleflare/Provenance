@@ -8,6 +8,8 @@ enum TabBarItem: Int, CaseIterable {
   case about
 }
 
+// MARK: -
+
 extension TabBarItem {
   static var defaultTabs = TabBarItem.allCases.map { (item) -> UIViewController in
     let viewController = item.viewController

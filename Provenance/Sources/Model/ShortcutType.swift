@@ -8,6 +8,8 @@ enum ShortcutType: String {
   case about = "aboutShortcut"
 }
 
+// MARK: -
+
 extension ShortcutType {
   var tabBarItem: TabBarItem {
     switch self {
