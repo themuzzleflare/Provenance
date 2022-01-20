@@ -12,6 +12,7 @@ final class TransactionTagsVC: ASViewController {
         applySnapshot()
         updateToolbarItems()
         tableNode.view.refreshControl?.endRefreshing()
+        addBarButtonItem.isEnabled = !isEditing && tags.count < 6
       }
     }
   }
@@ -94,7 +95,7 @@ final class TransactionTagsVC: ASViewController {
   override func setEditing(_ editing: Bool, animated: Bool) {
     super.setEditing(editing, animated: animated)
     tableNode.view.setEditing(editing, animated: animated)
-    addBarButtonItem.isEnabled = !editing
+    addBarButtonItem.isEnabled = !editing && tags.count < 6
     updateToolbarItems()
     navigationController?.setToolbarHidden(!editing, animated: true)
   }

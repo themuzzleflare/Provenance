@@ -185,7 +185,7 @@ extension UserDefaults {
 // MARK: -
 
 extension UserDefaults {
-  private enum Keys {
+  enum Keys {
     static let apiKey = "apiKey"
     static let dateStyle = "dateStyle"
     static let accountFilter = "accountFilter"
@@ -197,6 +197,8 @@ extension UserDefaults {
     static let paginationCursor = "paginationCursor"
     static let appVersion = "appVersion"
     static let appBuild = "appBuild"
+
+    static let all = [apiKey, dateStyle, accountFilter, categoryFilter, settledOnly, transactionGrouping, selectedAccount, selectedCategory, paginationCursor, appVersion, appBuild]
   }
 
   private enum AnalyticsUserProperties {

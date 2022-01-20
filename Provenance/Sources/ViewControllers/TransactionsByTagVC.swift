@@ -1,3 +1,4 @@
+import UIKit
 import IGListKit
 import AsyncDisplayKit
 import Alamofire
@@ -100,7 +101,6 @@ extension TransactionsByTagVC {
     navigationItem.title = "Loading"
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.backBarButtonItem = .dollarsignCircle
-    navigationItem.rightBarButtonItem = editButtonItem
     navigationItem.searchController = searchController
     navigationItem.hidesSearchBarWhenScrolling = false
   }
@@ -183,6 +183,9 @@ extension TransactionsByTagVC {
     if navigationItem.title != tag.id {
       navigationItem.title = tag.id
     }
+    if navigationItem.rightBarButtonItem == nil {
+      navigationItem.setRightBarButton(editButtonItem, animated: true)
+    }
   }
 
   private func display(_ error: AFError) {
@@ -190,6 +193,9 @@ extension TransactionsByTagVC {
     transactions.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"
+    }
+    if navigationItem.rightBarButtonItem != nil {
+      navigationItem.setRightBarButton(nil, animated: true)
     }
   }
 }

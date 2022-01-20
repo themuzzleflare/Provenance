@@ -1,3 +1,4 @@
+import Foundation
 import Intents
 import SwiftDate
 import Alamofire
@@ -27,7 +28,6 @@ extension IntentHandler: AccountSelectionIntentHandling {
 
 extension IntentHandler: ListTransactionsIntentHandling {
   func resolveSince(for intent: ListTransactionsIntent, with completion: @escaping (ListTransactionsSinceResolutionResult) -> Void) {
-    SwiftDate.defaultRegion = .current
     if let since = intent.since, let date = since.date {
       if date.isInFuture {
         completion(.unsupported(forReason: .dateInFuture))
@@ -73,12 +73,11 @@ extension IntentHandler: ListTransactionsIntentHandling {
   }
 
   func handle(intent: ListTransactionsIntent, completion: @escaping (ListTransactionsIntentResponse) -> Void) {
-    SwiftDate.defaultRegion = .current
     var requestUrl = String()
     var headers: HTTPHeaders = [
       .accept("application/json")
     ]
-    var queryParameters: Parameters = [
+    var params: Parameters = [
       Up.ParamKeys.pageSize: "100"
     ]
     if let apiKey = intent.apiKey, !apiKey.isEmpty {
@@ -98,21 +97,21 @@ extension IntentHandler: ListTransactionsIntentHandling {
       return intent.until?.date?.toISO()
     }
     if let status = intent.status.transactionStatusEnum?.rawValue {
-      queryParameters.updateValue(status, forKey: Up.ParamKeys.filterStatus)
+      params.updateValue(status, forKey: Up.ParamKeys.filterStatus)
     }
     if let since = filterSince {
-      queryParameters.updateValue(since, forKey: Up.ParamKeys.filterSince)
+      params.updateValue(since, forKey: Up.ParamKeys.filterSince)
     }
     if let until = filterUntil {
-      queryParameters.updateValue(until, forKey: Up.ParamKeys.filterUntil)
+      params.updateValue(until, forKey: Up.ParamKeys.filterUntil)
     }
     if let category = intent.category?.identifier {
-      queryParameters.updateValue(category, forKey: Up.ParamKeys.filterCategory)
+      params.updateValue(category, forKey: Up.ParamKeys.filterCategory)
     }
     if let tag = intent.tag {
-      queryParameters.updateValue(tag, forKey: Up.ParamKeys.filterTag)
+      params.updateValue(tag, forKey: Up.ParamKeys.filterTag)
     }
-    AF.request(requestUrl, method: .get, parameters: queryParameters, headers: headers)
+    AF.request(requestUrl, method: .get, parameters: params, headers: headers)
       .validate()
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {

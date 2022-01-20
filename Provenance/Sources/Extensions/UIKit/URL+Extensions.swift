@@ -1,9 +1,8 @@
+import Foundation
 import UIKit
 
 extension URL {
-  static var settingsBundle: URL {
-    return Bundle.main.url(forResource: "Settings", withExtension: "bundle")!
-  }
+  static let settingsBundle = Bundle.main.url(forResource: "Settings", withExtension: "bundle")!
 
   static var settingsApp: URL {
     return URL(string: UIApplication.openSettingsURLString)!

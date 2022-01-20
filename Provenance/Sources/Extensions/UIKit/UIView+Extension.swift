@@ -6,7 +6,7 @@ extension UIView {
   static func loadingView(frame: CGRect, contentType: ContentType) -> UIView {
     let view = UIView(frame: frame)
     let hud = MBProgressHUD(view: view, animationType: .zoomIn)
-    hud.detailsLabel.attributedText = contentType.loadingDescription.styled(with: .provenance)
+    hud.label.attributedText = contentType.loadingDescription.styled(with: .provenance)
     view.addSubview(hud)
     hud.show(animated: true)
     return view

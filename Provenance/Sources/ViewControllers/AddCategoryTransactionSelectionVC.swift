@@ -2,9 +2,13 @@ import UIKit
 import IGListKit
 import AsyncDisplayKit
 import Alamofire
+import MBProgressHUD
+import NotificationBannerSwift
 
 final class AddCategoryTransactionSelectionVC: ASViewController {
   // MARK: - Properties
+
+  private var category: CategoryResource?
 
   private lazy var searchController = UISearchController(self)
 
@@ -39,7 +43,8 @@ final class AddCategoryTransactionSelectionVC: ASViewController {
 
   // MARK: - Life Cycle
 
-  override init() {
+  init(category: CategoryResource? = nil) {
+    self.category = category
     super.init(node: tableNode)
   }
 
@@ -93,6 +98,7 @@ extension AddCategoryTransactionSelectionVC {
 
   private func configureNavigation() {
     navigationItem.title = "Loading"
+    navigationItem.prompt = "Only categorisable transactions are supported."
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.leftBarButtonItem = .close(self, action: #selector(closeWorkflow))
     navigationItem.searchController = searchController
@@ -213,9 +219,37 @@ extension AddCategoryTransactionSelectionVC: ASTableDataSource {
 extension AddCategoryTransactionSelectionVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
     let transaction = filteredTransactions[indexPath.row]
-    let viewController = AddCategoryCategorySelectionVC(transaction: transaction)
     tableNode.deselectRow(at: indexPath, animated: true)
-    navigationController?.pushViewController(viewController, animated: true)
+    if let category = category {
+      let hud = MBProgressHUD(view: view, animationType: .zoomIn)
+      hud.label.attributedText = "Processing".styled(with: .provenance)
+      view.addSubview(hud)
+      hud.show(animated: true)
+      Up.categorise(transaction: transaction, category: category) { (error) in
+        DispatchQueue.main.async {
+          if let error = error {
+            GrowingNotificationBanner(
+              title: "Failed",
+              subtitle: error.errorDescription ?? error.localizedDescription,
+              style: .danger,
+              duration: 2.0
+            ).show()
+          } else {
+            GrowingNotificationBanner(
+              title: "Success",
+              subtitle: "The category for \(transaction.attributes.description) was set to \(category.attributes.name).",
+              style: .success,
+              duration: 2.0
+            ).show()
+          }
+          hud.hide(animated: true)
+          self.closeWorkflow()
+        }
+      }
+    } else {
+      let viewController = AddCategoryCategorySelectionVC(transaction: transaction)
+      navigationController?.pushViewController(viewController, animated: true)
+    }
   }
 }
 

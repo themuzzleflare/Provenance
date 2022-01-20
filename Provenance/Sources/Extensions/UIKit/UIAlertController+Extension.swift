@@ -24,6 +24,14 @@ extension UIAlertController {
     return alertController
   }
 
+  static func removeCategory(_ viewController: TransactionsByCategoryVC,
+                             from transaction: TransactionResource) -> UIAlertController {
+    let alertController = UIAlertController(title: "Confirmation", message: "Are you sure you want to remove the category from \(transaction.attributes.description)?", preferredStyle: .actionSheet)
+    alertController.addAction(.removeCategory(viewController, from: transaction))
+    alertController.addAction(.cancel)
+    return alertController
+  }
+
   static func removeTagFromTransaction(_ viewController: TransactionsByTagVC,
                                        removing tag: TagResource,
                                        from transaction: TransactionResource) -> UIAlertController {

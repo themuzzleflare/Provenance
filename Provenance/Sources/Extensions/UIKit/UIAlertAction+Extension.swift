@@ -43,6 +43,32 @@ extension UIAlertAction {
     })
   }
 
+  static func removeCategory(_ viewController: TransactionsByCategoryVC,
+                             from transaction: TransactionResource) -> UIAlertAction {
+    return UIAlertAction(title: "Remove", style: .destructive, handler: { (_) in
+      Up.categorise(transaction: transaction) { (error) in
+        DispatchQueue.main.async {
+          if let error = error {
+            GrowingNotificationBanner(
+              title: "Failed",
+              subtitle: error.errorDescription ?? error.localizedDescription,
+              style: .danger,
+              duration: 2.0
+            ).show()
+          } else {
+            GrowingNotificationBanner(
+              title: "Success",
+              subtitle: "The category for \(transaction.attributes.description) was removed.",
+              style: .success,
+              duration: 2.0
+            ).show()
+          }
+          viewController.fetchTransactions()
+        }
+      }
+    })
+  }
+
   static func removeTagFromTransaction(_ viewController: TransactionsByTagVC,
                                        removing tag: TagResource,
                                        from transaction: TransactionResource) -> UIAlertAction {

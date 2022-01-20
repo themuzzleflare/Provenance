@@ -1,5 +1,5 @@
-import IGListKit
 import UIKit
+import IGListKit
 import Alamofire
 
 final class TagsVCAlt: ViewController {

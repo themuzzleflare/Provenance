@@ -56,6 +56,13 @@ extension UIMenuElement {
     }
   }
 
+  static func removeCategory(_ viewController: TransactionsByCategoryVC, from transaction: TransactionResource) -> UIAction {
+    return UIAction(title: "Remove", image: .trash, attributes: .destructive) { (_) in
+      let alertController = UIAlertController.removeCategory(viewController, from: transaction)
+      viewController.present(alertController, animated: true)
+    }
+  }
+
   static func removeTagFromTransaction(_ viewController: TransactionsByTagVC, removing tag: TagResource, from transaction: TransactionResource) -> UIAction {
     return UIAction(title: "Remove", image: .trash, attributes: .destructive) { (_) in
       let alertController = UIAlertController.removeTagFromTransaction(viewController, removing: tag, from: transaction)

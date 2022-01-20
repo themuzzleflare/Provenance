@@ -3,11 +3,7 @@ import Foundation
 typealias Info = InfoPlist
 
 enum InfoPlist {
-  static var cfBundleIdentifier: String {
-    return Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as? String ?? ""
-  }
+  static let cfBundleIdentifier: String = Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String ?? ""
 
-  static var nsHumanReadableCopyright: String {
-    return Bundle.main.object(forInfoDictionaryKey: "NSHumanReadableCopyright") as? String ?? ""
-  }
+  static let nsHumanReadableCopyright: String = Bundle.main.infoDictionary?["NSHumanReadableCopyright"] as? String ?? ""
 }

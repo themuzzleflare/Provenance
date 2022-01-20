@@ -81,7 +81,7 @@ final class TransactionDetailVC: ViewController {
   }
 
   deinit {
-    removeObserver()
+    removeObservers()
     print("\(#function) \(String(describing: type(of: self)))")
   }
 
@@ -92,7 +92,7 @@ final class TransactionDetailVC: ViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(tableView)
-    configureObserver()
+    configureObservers()
     configureSelf()
     configureTableView()
     configureNavigation()
@@ -117,7 +117,7 @@ extension TransactionDetailVC {
     title = "Transaction Details"
   }
 
-  private func configureObserver() {
+  private func configureObservers() {
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(appMovedToForeground),
                                            name: .willEnterForegroundNotification,
@@ -127,7 +127,7 @@ extension TransactionDetailVC {
     }
   }
 
-  private func removeObserver() {
+  private func removeObservers() {
     NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil

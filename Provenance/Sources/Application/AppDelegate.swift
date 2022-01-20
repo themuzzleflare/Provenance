@@ -2,6 +2,7 @@ import UIKit
 import Firebase
 import SwiftDate
 import AlamofireNetworkActivityIndicator
+import Keys
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -41,9 +42,12 @@ extension AppDelegate {
       }
 
       UserDefaults.provenance.register(defaults: defaults)
-      print(UserDefaults.provenance.dictionaryRepresentation())
+#if DEBUG
+      UserDefaults.provenance.apiKey = ProvenanceKeys().upAPIToken
+      dump(UserDefaults.provenance.dictionaryWithValues(forKeys: UserDefaults.Keys.all))
+#endif
     } catch {
-      fatalError("registerDefaults failed with error: \(error.localizedDescription)")
+      fatalError(error.localizedDescription)
     }
   }
 

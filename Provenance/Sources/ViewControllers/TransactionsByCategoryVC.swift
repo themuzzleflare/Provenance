@@ -1,6 +1,8 @@
+import UIKit
 import IGListKit
 import AsyncDisplayKit
 import Alamofire
+import MarqueeLabel
 
 final class TransactionsByCategoryVC: ASViewController {
   // MARK: - Properties
@@ -21,6 +23,10 @@ final class TransactionsByCategoryVC: ASViewController {
       applySnapshot()
       tableNode.view.refreshControl?.endRefreshing()
       searchController.searchBar.placeholder = transactions.searchBarPlaceholder
+      editButtonItem.isEnabled = !transactions.isEmpty
+      if transactions.isEmpty && isEditing {
+        setEditing(false, animated: false)
+      }
     }
   }
 
@@ -61,6 +67,11 @@ final class TransactionsByCategoryVC: ASViewController {
     super.viewWillAppear(animated)
     fetchTransactions()
   }
+
+  override func setEditing(_ editing: Bool, animated: Bool) {
+    super.setEditing(editing, animated: animated)
+    tableNode.view.setEditing(editing, animated: animated)
+  }
 }
 
 // MARK: - Configuration
@@ -89,6 +100,7 @@ extension TransactionsByCategoryVC {
 
   private func configureNavigation() {
     navigationItem.title = "Loading"
+    navigationItem.titleView = MarqueeLabel(text: category.attributes.name)
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.backBarButtonItem = .dollarsignCircle
     navigationItem.searchController = searchController
@@ -115,6 +127,12 @@ extension TransactionsByCategoryVC {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.fetchTransactions()
     }
+  }
+
+  @objc
+  private func addTransaction() {
+    let viewController = NavigationController(rootViewController: AddCategoryTransactionSelectionVC(category: category))
+    present(.fullscreen(viewController), animated: true)
   }
 
   private func applySnapshot(override: Bool = false) {
@@ -154,7 +172,7 @@ extension TransactionsByCategoryVC {
     }
   }
 
-  private func fetchTransactions() {
+  func fetchTransactions() {
     Up.listTransactions(filterBy: category) { (result) in
       DispatchQueue.main.async {
         switch result {
@@ -173,6 +191,13 @@ extension TransactionsByCategoryVC {
     if navigationItem.title != category.attributes.name {
       navigationItem.title = category.attributes.name
     }
+    if navigationItem.rightBarButtonItems == nil {
+      var barButtonItems: [UIBarButtonItem] = [editButtonItem]
+      if category.categoryTypeEnum == .child {
+        barButtonItems.append(.add(self, action: #selector(addTransaction)))
+      }
+      navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
+    }
   }
 
   private func display(_ error: AFError) {
@@ -180,6 +205,9 @@ extension TransactionsByCategoryVC {
     transactions.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"
+    }
+    if navigationItem.rightBarButtonItems != nil {
+      navigationItem.setRightBarButtonItems(nil, animated: true)
     }
   }
 }
@@ -193,9 +221,24 @@ extension TransactionsByCategoryVC: ASTableDataSource {
 
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let transaction = filteredTransactions[indexPath.row]
-    let node = TransactionCellNode(transaction: transaction, selection: false)
+    let node = TransactionCellNode(transaction: transaction, contextMenu: false, selection: false)
     return {
       node
+    }
+  }
+
+  func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    return true
+  }
+
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    switch editingStyle {
+    case .delete:
+      let transaction = filteredTransactions[indexPath.row]
+      let alertController = UIAlertController.removeCategory(self, from: transaction)
+      present(alertController, animated: true)
+    default:
+      break
     }
   }
 }
@@ -208,6 +251,24 @@ extension TransactionsByCategoryVC: ASTableDelegate {
     let viewController = TransactionDetailVC(transaction: transaction)
     tableNode.deselectRow(at: indexPath, animated: true)
     navigationController?.pushViewController(viewController, animated: true)
+  }
+
+  func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    return .delete
+  }
+
+  func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+    return "Remove"
+  }
+
+  func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    let transaction = filteredTransactions[indexPath.row]
+    return isEditing ? nil : UIContextMenuConfiguration(elements: [
+      .copyTransactionDescription(transaction: transaction),
+      .copyTransactionCreationDate(transaction: transaction),
+      .copyTransactionAmount(transaction: transaction),
+      .removeCategory(self, from: transaction)
+    ])
   }
 }
 

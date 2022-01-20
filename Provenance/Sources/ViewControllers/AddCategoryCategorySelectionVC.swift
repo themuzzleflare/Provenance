@@ -104,6 +104,7 @@ extension AddCategoryCategorySelectionVC {
 
   private func configureNavigation() {
     navigationItem.title = "Loading"
+    navigationItem.prompt = "Only child categories are supported."
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.backButtonDisplayMode = .minimal
     navigationItem.searchController = searchController
@@ -139,6 +140,7 @@ extension AddCategoryCategorySelectionVC {
 
   @objc
   private func removeCategory() {
+    collectionNode.allowsSelection = false
     navigationItem.setRightBarButton(.activityIndicator, animated: false)
     Up.categorise(transaction: transaction) { (error) in
       DispatchQueue.main.async {
@@ -225,7 +227,7 @@ extension AddCategoryCategorySelectionVC {
   }
 
   private func display(_ error: AFError) {
-    categoriesError = error.errorDescription ?? error.localizedDescription
+    categoriesError = error.localizedDescription
     categories.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"
