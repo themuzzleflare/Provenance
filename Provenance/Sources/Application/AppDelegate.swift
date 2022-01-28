@@ -42,6 +42,7 @@ extension AppDelegate {
       }
 
       UserDefaults.provenance.register(defaults: defaults)
+
 #if DEBUG
       UserDefaults.provenance.apiKey = ProvenanceKeys().upAPIToken
       dump(UserDefaults.provenance.dictionaryWithValues(forKeys: UserDefaults.Keys.all))

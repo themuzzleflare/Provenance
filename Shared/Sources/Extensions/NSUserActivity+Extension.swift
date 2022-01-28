@@ -1,7 +1,5 @@
 import Foundation
 
 extension NSUserActivity {
-  static var addedTagsToTransaction: NSUserActivity {
-    return NSUserActivity(activityType: "addedTagsToTransaction")
-  }
+  static let addedTagsToTransaction = NSUserActivity(activityType: "addedTagsToTransaction")
 }

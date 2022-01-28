@@ -1,15 +1,9 @@
 import UIKit
 
 extension UIColor {
-  static var accentColor: UIColor {
-    return UIColor(named: "AccentColor")!
-  }
+  static let accentColor = UIColor(named: "AccentColor")!
 
-  static var greenColour: UIColor {
-    return UIColor(named: "greenColour")!
-  }
+  static let greenColour = UIColor(named: "greenColour")!
 
-  static var widgetBackground: UIColor {
-    return UIColor(named: "WidgetBackground")!
-  }
+  static let widgetBackground = UIColor(named: "WidgetBackground")!
 }

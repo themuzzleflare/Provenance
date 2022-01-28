@@ -60,11 +60,11 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-FIRAnalyticsVerboseLoggingDisabled"
+            argument = "-noFIRAnalyticsDebugEnabled"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-noFIRAnalyticsDebugEnabled"
+            argument = "-FIRAnalyticsVerboseLoggingDisabled"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

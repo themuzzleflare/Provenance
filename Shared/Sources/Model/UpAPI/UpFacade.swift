@@ -4,7 +4,9 @@ import Alamofire
 typealias Up = UpFacade
 
 enum UpFacade {
-  private static let jsonEncoder = JSONParameterEncoder.default
+  private static let delegate = UpDelegate()
+  private static let interceptor = UpInterceptor()
+  private static let session = Session(delegate: delegate, interceptor: interceptor)
 
   /// Ping
   ///
@@ -19,13 +21,11 @@ enum UpFacade {
 
   static func ping(with key: String, completion: @escaping (AFError?) -> Void) {
     let headers: HTTPHeaders = [
-      .accept("application/json"),
       .authorization(bearerToken: key)
     ]
 
-    AF.request("https://api.up.com.au/api/v1/util/ping",
-               method: .get,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/util/ping",
+                    headers: headers)
       .validate()
       .response { (response) in
         completion(response.error)
@@ -46,11 +46,6 @@ enum UpFacade {
 
   static func listTransactions(cursor: String? = nil,
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
     var parameters: Parameters = [
       ParamKeys.pageSize: "20"
     ]
@@ -59,10 +54,8 @@ enum UpFacade {
       parameters.updateValue(cursor, forKey: ParamKeys.pageAfter)
     }
 
-    AF.request("https://api.up.com.au/api/v1/transactions",
-               method: .get,
-               parameters: parameters,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/transactions",
+                    parameters: parameters)
       .validate()
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
@@ -90,11 +83,6 @@ enum UpFacade {
   static func listCompleteTransactions(cursor: String? = nil,
                                        inputTransactions: [TransactionResource] = [],
                                        completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
     var parameters: Parameters = [
       ParamKeys.pageSize: "100"
     ]
@@ -103,10 +91,8 @@ enum UpFacade {
       parameters.updateValue(cursor, forKey: ParamKeys.pageAfter)
     }
 
-    AF.request("https://api.up.com.au/api/v1/transactions",
-               method: .get,
-               parameters: parameters,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/transactions",
+                    parameters: parameters)
       .validate()
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
@@ -140,19 +126,12 @@ enum UpFacade {
 
   static func listTransactions(filterBy account: AccountResource,
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
     let parameters: Parameters = [
       ParamKeys.pageSize: "100"
     ]
 
-    AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)/transactions",
-               method: .get,
-               parameters: parameters,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/accounts/\(account.id)/transactions",
+                    parameters: parameters)
       .validate()
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
@@ -178,20 +157,13 @@ enum UpFacade {
 
   static func listTransactions(filterBy tag: TagResource,
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
     let parameters: Parameters = [
       ParamKeys.filterTag: tag.id,
       ParamKeys.pageSize: "100"
     ]
 
-    AF.request("https://api.up.com.au/api/v1/transactions",
-               method: .get,
-               parameters: parameters,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/transactions",
+                    parameters: parameters)
       .validate()
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
@@ -217,20 +189,13 @@ enum UpFacade {
 
   static func listTransactions(filterBy category: CategoryResource,
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
     let parameters: Parameters = [
       ParamKeys.filterCategory: category.id,
       ParamKeys.pageSize: "100"
     ]
 
-    AF.request("https://api.up.com.au/api/v1/transactions",
-               method: .get,
-               parameters: parameters,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/transactions",
+                    parameters: parameters)
       .validate()
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
@@ -249,19 +214,12 @@ enum UpFacade {
   /// Retrieve the latest transaction across all accounts.
 
   static func retrieveLatestTransaction(completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
     let parameters: Parameters = [
       ParamKeys.pageSize: "1"
     ]
 
-    AF.request("https://api.up.com.au/api/v1/transactions",
-               method: .get,
-               parameters: parameters,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/transactions",
+                    parameters: parameters)
       .validate()
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
@@ -287,19 +245,12 @@ enum UpFacade {
 
   static func retrieveLatestTransaction(for account: AccountResource,
                                         completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
     let parameters: Parameters = [
       ParamKeys.pageSize: "1"
     ]
 
-    AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)/transactions",
-               method: .get,
-               parameters: parameters,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/accounts/\(account.id)/transactions",
+                    parameters: parameters)
       .validate()
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
@@ -325,14 +276,7 @@ enum UpFacade {
 
   static func retrieveTransaction(for transaction: TransactionResource,
                                   completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)",
-               method: .get,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)")
       .validate()
       .responseDecodable(of: TransactionResponse.self) { (response) in
         switch response.result {
@@ -354,14 +298,7 @@ enum UpFacade {
 
   static func retrieveTransaction(for transactionId: String,
                                   completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transactionId)",
-               method: .get,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/transactions/\(transactionId)")
       .validate()
       .responseDecodable(of: TransactionResponse.self) { (response) in
         switch response.result {
@@ -381,19 +318,12 @@ enum UpFacade {
   /// The returned list is paginated and can be scrolled by following the `prev` and `next` links where present.
 
   static func listAccounts(completion: @escaping (Result<[AccountResource], AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
     let parameters: Parameters = [
       ParamKeys.pageSize: "100"
     ]
 
-    AF.request("https://api.up.com.au/api/v1/accounts",
-               method: .get,
-               parameters: parameters,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/accounts",
+                    parameters: parameters)
       .validate()
       .responseDecodable(of: AccountsResponse.self) { (response) in
         switch response.result {
@@ -415,14 +345,7 @@ enum UpFacade {
 
   static func retrieveAccount(for account: AccountResource,
                               completion: @escaping (Result<AccountResource, AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
-    AF.request("https://api.up.com.au/api/v1/accounts/\(account.id)",
-               method: .get,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/accounts/\(account.id)")
       .validate()
       .responseDecodable(of: AccountResponse.self) { (response) in
         switch response.result {
@@ -444,14 +367,7 @@ enum UpFacade {
 
   static func retrieveAccount(for accountId: String,
                               completion: @escaping (Result<AccountResource, AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
-    AF.request("https://api.up.com.au/api/v1/accounts/\(accountId)",
-               method: .get,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/accounts/\(accountId)")
       .validate()
       .responseDecodable(of: AccountResponse.self) { (response) in
         switch response.result {
@@ -473,19 +389,12 @@ enum UpFacade {
   /// The `transactions` relationship for each tag exposes a link to get the transactions with the given tag.
 
   static func listTags(completion: @escaping (Result<[TagResource], AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
     let parameters: Parameters = [
       ParamKeys.pageSize: "100"
     ]
 
-    AF.request("https://api.up.com.au/api/v1/tags",
-               method: .get,
-               parameters: parameters,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/tags",
+                    parameters: parameters)
       .validate()
       .responseDecodable(of: TagsResponse.self) { (response) in
         switch response.result {
@@ -513,16 +422,10 @@ enum UpFacade {
   static func modifyTags(adding tags: [TagResource],
                          to transaction: TransactionResource,
                          completion: @escaping (AFError?) -> Void) {
-    let headers: HTTPHeaders = [
-      .contentType("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
-               method: .post,
-               parameters: ModifyTags(tags: tags),
-               encoder: jsonEncoder,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
+                    method: .post,
+                    parameters: ModifyTags(tags: tags),
+                    encoder: .json)
       .validate()
       .response { (response) in
         completion(response.error)
@@ -545,16 +448,10 @@ enum UpFacade {
   static func modifyTags(adding tags: [String],
                          to transaction: String,
                          completion: @escaping (AFError?) -> Void) {
-    let headers: HTTPHeaders = [
-      .contentType("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags",
-               method: .post,
-               parameters: ModifyTags(tags: tags),
-               encoder: jsonEncoder,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags",
+                    method: .post,
+                    parameters: ModifyTags(tags: tags),
+                    encoder: .json)
       .validate()
       .response { (response) in
         completion(response.error)
@@ -577,16 +474,10 @@ enum UpFacade {
   static func modifyTags(adding tags: TagResource...,
                          to transaction: TransactionResource,
                          completion: @escaping (AFError?) -> Void) {
-    let headers: HTTPHeaders = [
-      .contentType("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
-               method: .post,
-               parameters: ModifyTags(tags: tags),
-               encoder: jsonEncoder,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
+                    method: .post,
+                    parameters: ModifyTags(tags: tags),
+                    encoder: .json)
       .validate()
       .response { (response) in
         completion(response.error)
@@ -608,16 +499,10 @@ enum UpFacade {
   static func modifyTags(removing tags: [TagResource],
                          from transaction: TransactionResource,
                          completion: @escaping (AFError?) -> Void) {
-    let headers: HTTPHeaders = [
-      .contentType("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
-               method: .delete,
-               parameters: ModifyTags(tags: tags),
-               encoder: jsonEncoder,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
+                    method: .delete,
+                    parameters: ModifyTags(tags: tags),
+                    encoder: .json)
       .validate()
       .response { (response) in
         completion(response.error)
@@ -639,16 +524,10 @@ enum UpFacade {
   static func modifyTags(removing tags: [String],
                          from transaction: String,
                          completion: @escaping (AFError?) -> Void) {
-    let headers: HTTPHeaders = [
-      .contentType("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags",
-               method: .delete,
-               parameters: ModifyTags(tags: tags),
-               encoder: jsonEncoder,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags",
+                    method: .delete,
+                    parameters: ModifyTags(tags: tags),
+                    encoder: .json)
       .validate()
       .response { (response) in
         completion(response.error)
@@ -670,16 +549,10 @@ enum UpFacade {
   static func modifyTags(removing tags: TagResource...,
                          from transaction: TransactionResource,
                          completion: @escaping (AFError?) -> Void) {
-    let headers: HTTPHeaders = [
-      .contentType("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
-               method: .delete,
-               parameters: ModifyTags(tags: tags),
-               encoder: jsonEncoder,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
+                    method: .delete,
+                    parameters: ModifyTags(tags: tags),
+                    encoder: .json)
       .validate()
       .response { (response) in
         completion(response.error)
@@ -693,14 +566,7 @@ enum UpFacade {
   /// Retrieve a list of all categories and their ancestry. The returned list is not paginated.
 
   static func listCategories(completion: @escaping (Result<[CategoryResource], AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
-    AF.request("https://api.up.com.au/api/v1/categories",
-               method: .get,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/categories")
       .validate()
       .responseDecodable(of: CategoriesResponse.self) { (response) in
         switch response.result {
@@ -722,14 +588,7 @@ enum UpFacade {
 
   static func retrieveCategory(for category: CategoryResource,
                                completion: @escaping (Result<CategoryResource, AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
-    AF.request("https://api.up.com.au/api/v1/categories/\(category.id)",
-               method: .get,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/categories/\(category.id)")
       .validate()
       .responseDecodable(of: CategoryResponse.self) { (response) in
         switch response.result {
@@ -751,14 +610,7 @@ enum UpFacade {
 
   static func retrieveCategory(for categoryId: String,
                                completion: @escaping (Result<CategoryResource, AFError>) -> Void) {
-    let headers: HTTPHeaders = [
-      .accept("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
-    AF.request("https://api.up.com.au/api/v1/categories/\(categoryId)",
-               method: .get,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/categories/\(categoryId)")
       .validate()
       .responseDecodable(of: CategoryResponse.self) { (response) in
         switch response.result {
@@ -787,22 +639,54 @@ enum UpFacade {
   static func categorise(transaction: TransactionResource,
                          category: CategoryResource? = nil,
                          completion: @escaping (AFError?) -> Void) {
-    let headers: HTTPHeaders = [
-      .contentType("application/json"),
-      .authorization(bearerToken: UserDefaults.provenance.apiKey)
-    ]
-
-    AF.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/category",
-               method: .patch,
-               parameters: ModifyCategories(category: category),
-               encoder: jsonEncoder,
-               headers: headers)
+    session.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/category",
+                    method: .patch,
+                    parameters: ModifyCategories(category: category),
+                    encoder: .json)
       .validate()
       .response { (response) in
         completion(response.error)
       }
   }
 }
+
+// MARK: - Concurrency
+
+#if compiler(>=5.5.2) && canImport(_Concurrency)
+
+extension UpFacade {
+  /// List transactions
+  ///
+  /// - Parameters:
+  ///   - cursor: The pagination cursor to apply to the request.
+  ///
+  /// Retrieve a list of all transactions across all accounts for the currently authenticated user.
+  /// The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present.
+  /// To narrow the results to a specific date range pass one or both of `filter[since]` and `filter[until]` in the query string.
+  /// These filter parameters **should not** be used for pagination.
+  /// Results are ordered newest first to oldest last.
+
+  static func listTransactions(cursor: String? = nil) async throws -> [TransactionResource] {
+    var parameters: Parameters = [
+      ParamKeys.pageSize: "20"
+    ]
+
+    if let cursor = cursor {
+      parameters.updateValue(cursor, forKey: ParamKeys.pageAfter)
+    }
+
+    let response = try await session.request("https://api.up.com.au/api/v1/transactions",
+                                             parameters: parameters)
+      .validate()
+      .serializingDecodable(TransactionsResponse.self).value
+
+    UserDefaults.provenance.paginationCursor = response.links.nextCursor ?? ""
+
+    return response.data
+  }
+}
+
+#endif
 
 // MARK: -
 

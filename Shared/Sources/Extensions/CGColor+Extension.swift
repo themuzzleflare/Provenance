@@ -1,7 +1,7 @@
 import UIKit
+import CoreGraphics
 
 extension CGColor {
-  /// `UIColor.separator.cgColor`.
   static var separator: CGColor {
     return UIColor.separator.cgColor
   }

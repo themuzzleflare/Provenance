@@ -1,167 +1,88 @@
 import SwiftUI
+import SFSafeSymbols
 
 extension Image {
-  static var upLogoRounded: Image {
-    return Image("UpLogoRounded")
-  }
+  static let upLogoRounded = Image("UpLogoRounded")
 
-  static var actbalsmall: Image {
-    return Image("actbalsmall")
-  }
+  static let actbalsmall = Image("actbalsmall")
 
-  static var lttrnssmall: Image {
-    return Image("lttrnssmall")
-  }
+  static let lttrnssmall = Image("lttrnssmall")
 
-  static var dollarsignCircle: Image {
-    return Image(systemName: "dollarsign.circle")
-  }
+  static let dollarsignCircle = Image(systemSymbol: .dollarsignCircle)
 
-  static var dollarsignCircleFill: Image {
-    return Image(systemName: "dollarsign.circle.fill")
-  }
+  static let dollarsignCircleFill = Image(systemSymbol: .dollarsignCircleFill)
 
-  static var walletPass: Image {
-    return Image(systemName: "wallet.pass")
-  }
+  static let walletPass = Image(systemSymbol: .walletPass)
 
-  static var walletPassFill: Image {
-    return Image(systemName: "wallet.pass.fill")
-  }
+  static let walletPassFill = Image(systemSymbol: .walletPassFill)
 
-  static var tag: Image {
-    return Image(systemName: "tag")
-  }
+  static let tag = Image(systemSymbol: .tag)
 
-  static var tagFill: Image {
-    return Image(systemName: "tag.fill")
-  }
+  static let tagFill = Image(systemSymbol: .tagFill)
 
-  static var trayFull: Image {
-    return Image(systemName: "tray.full")
-  }
+  static let trayFull = Image(systemSymbol: .trayFull)
 
-  static var trayFullFill: Image {
-    return Image(systemName: "tray.full.fill")
-  }
+  static let trayFullFill = Image(systemSymbol: .trayFullFill)
 
-  static var infoCircle: Image {
-    return Image(systemName: "info.circle")
-  }
+  static let infoCircle = Image(systemSymbol: .infoCircle)
 
-  static var infoCircleFill: Image {
-    return Image(systemName: "info.circle.fill")
-  }
+  static let infoCircleFill = Image(systemSymbol: .infoCircleFill)
 
-  static var arrowUpArrowDown: Image {
-    return Image(systemName: "arrow.up.arrow.down")
-  }
+  static let arrowUpArrowDown = Image(systemSymbol: .arrowUpArrowDown)
 
-  static var arrowUpArrowDownCircle: Image {
-    return Image(systemName: "arrow.up.arrow.down.circle")
-  }
+  static let arrowUpArrowDownCircle = Image(systemSymbol: .arrowUpArrowDownCircle)
 
-  static var arrowUpArrowDownCircleFill: Image {
-    return Image(systemName: "arrow.up.arrow.down.circle.fill")
-  }
+  static let arrowUpArrowDownCircleFill = Image(systemSymbol: .arrowUpArrowDownCircleFill)
 
-  static var checkmarkCircle: Image {
-    return Image(systemName: "checkmark.circle")
-  }
+  static let checkmarkCircle = Image(systemSymbol: .checkmarkCircle)
 
-  static var checkmarkCircleFill: Image {
-    return Image(systemName: "checkmark.circle.fill")
-  }
+  static let checkmarkCircleFill = Image(systemSymbol: .checkmarkCircleFill)
 
-  static var clock: Image {
-    return Image(systemName: "clock")
-  }
+  static let clock = Image(systemSymbol: .clock)
 
-  static var clockFill: Image {
-    return Image(systemName: "clock.fill")
-  }
+  static let clockFill = Image(systemSymbol: .clockFill)
 
-  static var boltHorizontalCircle: Image {
-    return Image(systemName: "bolt.horizontal.circle")
-  }
+  static let boltHorizontalCircle = Image(systemSymbol: .boltHorizontalCircle)
 
-  static var boltHorizontalCircleFill: Image {
-    return Image(systemName: "bolt.horizontal.circle.fill")
-  }
+  static let boltHorizontalCircleFill = Image(systemSymbol: .boltHorizontalCircleFill)
 
-  static var calendarCircle: Image {
-    return Image(systemName: "calendar.circle")
-  }
+  static let calendarCircle = Image(systemSymbol: .calendarCircle)
 
-  static var calendarBadgeClock: Image {
-    return Image(systemName: "calendar.badge.clock")
-  }
+  static let calendarBadgeClock = Image(systemSymbol: .calendarBadgeClock)
 
-  static var chevronLeftSlashChevronRight: Image {
-    return Image(systemName: "chevron.left.slash.chevron.right")
-  }
+  static let chevronLeftSlashChevronRight = Image(systemSymbol: .chevronLeftSlashChevronRight)
 
-  static var docOnClipboard: Image {
-    return Image(systemName: "doc.on.clipboard")
-  }
+  static let docOnClipboard = Image(systemSymbol: .docOnClipboard)
 
-  static var envelope: Image {
-    return Image(systemName: "envelope")
-  }
+  static let envelope = Image(systemSymbol: .envelope)
 
-  static var envelopeFill: Image {
-    return Image(systemName: "envelope.fill")
-  }
+  static let envelopeFill = Image(systemSymbol: .envelopeFill)
 
-  static var exclamationmarkTriangleFill: Image {
-    return Image(systemName: "exclamationmark.triangle.fill")
-  }
+  static let exclamationmarkTriangleFill = Image(systemSymbol: .exclamationmarkTriangleFill)
 
-  static var gear: Image {
-    return Image(systemName: "gear")
-  }
+  static let gear = Image(systemSymbol: .gear)
 
-  static var gearshape: Image {
-    return Image(systemName: "gearshape")
-  }
+  static let gearshape = Image(systemSymbol: .gearshape)
 
-  static var linkCircle: Image {
-    return Image(systemName: "link.circle")
-  }
+  static let linkCircle = Image(systemSymbol: .linkCircle)
 
-  static var link: Image {
-    return Image(systemName: "link")
-  }
+  static let link = Image(systemSymbol: .link)
 
-  static var sliderHorizontal3: Image {
-    return Image(systemName: "slider.horizontal.3")
-  }
+  static let sliderHorizontal3 = Image(systemSymbol: .sliderHorizontal3)
 
-  static var sliderVertical3: Image {
-    return Image(systemName: "slider.vertical.3")
-  }
+  static let sliderVertical3 = Image(systemSymbol: .sliderVertical3)
 
-  static var textAlignright: Image {
-    return Image(systemName: "text.alignright")
-  }
+  static let textAlignright = Image(systemSymbol: .textAlignright)
 
-  static var trash: Image {
-    return Image(systemName: "trash")
-  }
+  static let trash = Image(systemSymbol: .trash)
 
-  static var xmarkDiamond: Image {
-    return Image(systemName: "xmark.diamond")
-  }
+  static let xmarkDiamond = Image(systemSymbol: .xmarkDiamond)
 
-  static var xmarkDiamondFill: Image {
-    return Image(systemName: "xmark.diamond.fill")
-  }
+  static let xmarkDiamondFill = Image(systemSymbol: .xmarkDiamondFill)
 
-  static var squareStack: Image {
-    return Image(systemName: "square.stack")
-  }
+  static let squareStack = Image(systemSymbol: .squareStack)
 
-  static var squareStackFill: Image {
-    return Image(systemName: "square.stack.fill")
-  }
+  static let squareStackFill = Image(systemSymbol: .squareStackFill)
+
+  static let pencil = Image(systemSymbol: .pencil)
 }

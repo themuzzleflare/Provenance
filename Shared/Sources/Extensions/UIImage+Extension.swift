@@ -1,169 +1,88 @@
 import UIKit
+import SFSafeSymbols
 
 extension UIImage {
-  static var upLogoRounded: UIImage {
-    return UIImage(named: "UpLogoRounded")!
-  }
+  static let upLogoRounded = UIImage(named: "UpLogoRounded")!
 
-  static var actbalsmall: UIImage {
-    return UIImage(named: "actbalsmall")!
-  }
+  static let actbalsmall = UIImage(named: "actbalsmall")!
 
-  static var lttrnssmall: UIImage {
-    return UIImage(named: "lttrnssmall")!
-  }
+  static let lttrnssmall = UIImage(named: "lttrnssmall")!
 
-  static var dollarsignCircle: UIImage {
-    return UIImage(systemName: "dollarsign.circle")!
-  }
+  static let dollarsignCircle = UIImage(systemSymbol: .dollarsignCircle)
 
-  static var dollarsignCircleFill: UIImage {
-    return UIImage(systemName: "dollarsign.circle.fill")!
-  }
+  static let dollarsignCircleFill = UIImage(systemSymbol: .dollarsignCircleFill)
 
-  static var walletPass: UIImage {
-    return UIImage(systemName: "wallet.pass")!
-  }
+  static let walletPass = UIImage(systemSymbol: .walletPass)
 
-  static var walletPassFill: UIImage {
-    return UIImage(systemName: "wallet.pass.fill")!
-  }
+  static let walletPassFill = UIImage(systemSymbol: .walletPassFill)
 
-  static var tag: UIImage {
-    return UIImage(systemName: "tag")!
-  }
+  static let tag = UIImage(systemSymbol: .tag)
 
-  static var tagFill: UIImage {
-    return UIImage(systemName: "tag.fill")!
-  }
+  static let tagFill = UIImage(systemSymbol: .tagFill)
 
-  static var trayFull: UIImage {
-    return UIImage(systemName: "tray.full")!
-  }
+  static let trayFull = UIImage(systemSymbol: .trayFull)
 
-  static var trayFullFill: UIImage {
-    return UIImage(systemName: "tray.full.fill")!
-  }
+  static let trayFullFill = UIImage(systemSymbol: .trayFullFill)
 
-  static var infoCircle: UIImage {
-    return UIImage(systemName: "info.circle")!
-  }
+  static let infoCircle = UIImage(systemSymbol: .infoCircle)
 
-  static var infoCircleFill: UIImage {
-    return UIImage(systemName: "info.circle.fill")!
-  }
+  static let infoCircleFill = UIImage(systemSymbol: .infoCircleFill)
 
-  static var arrowUpArrowDown: UIImage {
-    return UIImage(systemName: "arrow.up.arrow.down")!
-  }
+  static let arrowUpArrowDown = UIImage(systemSymbol: .arrowUpArrowDown)
 
-  static var arrowUpArrowDownCircle: UIImage {
-    return UIImage(systemName: "arrow.up.arrow.down.circle")!
-  }
+  static let arrowUpArrowDownCircle = UIImage(systemSymbol: .arrowUpArrowDownCircle)
 
-  static var arrowUpArrowDownCircleFill: UIImage {
-    return UIImage(systemName: "arrow.up.arrow.down.circle.fill")!
-  }
+  static let arrowUpArrowDownCircleFill = UIImage(systemSymbol: .arrowUpArrowDownCircleFill)
 
-  static var checkmarkCircle: UIImage {
-    return UIImage(systemName: "checkmark.circle")!
-  }
+  static let checkmarkCircle = UIImage(systemSymbol: .checkmarkCircle)
 
-  static var checkmarkCircleFill: UIImage {
-    return UIImage(systemName: "checkmark.circle.fill")!
-  }
+  static let checkmarkCircleFill = UIImage(systemSymbol: .checkmarkCircleFill)
 
-  static var clock: UIImage {
-    return UIImage(systemName: "clock")!
-  }
+  static let clock = UIImage(systemSymbol: .clock)
 
-  static var clockFill: UIImage {
-    return UIImage(systemName: "clock.fill")!
-  }
+  static let clockFill = UIImage(systemSymbol: .clockFill)
 
-  static var boltHorizontalCircle: UIImage {
-    return UIImage(systemName: "bolt.horizontal.circle")!
-  }
+  static let boltHorizontalCircle = UIImage(systemSymbol: .boltHorizontalCircle)
 
-  static var boltHorizontalCircleFill: UIImage {
-    return UIImage(systemName: "bolt.horizontal.circle.fill")!
-  }
+  static let boltHorizontalCircleFill = UIImage(systemSymbol: .boltHorizontalCircleFill)
 
-  static var calendarCircle: UIImage {
-    return UIImage(systemName: "calendar.circle")!
-  }
+  static let calendarCircle = UIImage(systemSymbol: .calendarCircle)
 
-  static var calendarBadgeClock: UIImage {
-    return UIImage(systemName: "calendar.badge.clock")!
-  }
+  static let calendarBadgeClock = UIImage(systemSymbol: .calendarBadgeClock)
 
-  static var chevronLeftSlashChevronRight: UIImage {
-    return UIImage(systemName: "chevron.left.slash.chevron.right")!
-  }
+  static let chevronLeftSlashChevronRight = UIImage(systemSymbol: .chevronLeftSlashChevronRight)
 
-  static var docOnClipboard: UIImage {
-    return UIImage(systemName: "doc.on.clipboard")!
-  }
+  static let docOnClipboard = UIImage(systemSymbol: .docOnClipboard)
 
-  static var envelope: UIImage {
-    return UIImage(systemName: "envelope")!
-  }
+  static let envelope = UIImage(systemSymbol: .envelope)
 
-  static var envelopeFill: UIImage {
-    return UIImage(systemName: "envelope.fill")!
-  }
+  static let envelopeFill = UIImage(systemSymbol: .envelopeFill)
 
-  static var exclamationmarkTriangleFill: UIImage {
-    return UIImage(systemName: "exclamationmark.triangle.fill")!
-  }
+  static let exclamationmarkTriangleFill = UIImage(systemSymbol: .exclamationmarkTriangleFill)
 
-  static var gear: UIImage {
-    return UIImage(systemName: "gear")!
-  }
+  static let gear = UIImage(systemSymbol: .gear)
 
-  static var gearshape: UIImage {
-    return UIImage(systemName: "gearshape")!
-  }
+  static let gearshape = UIImage(systemSymbol: .gearshape)
 
-  static var linkCircle: UIImage {
-    return UIImage(systemName: "link.circle")!
-  }
+  static let linkCircle = UIImage(systemSymbol: .linkCircle)
 
-  static var link: UIImage {
-    return UIImage(systemName: "link")!
-  }
+  static let link = UIImage(systemSymbol: .link)
 
-  static var sliderHorizontal3: UIImage {
-    return UIImage(systemName: "slider.horizontal.3")!
-  }
+  static let sliderHorizontal3 = UIImage(systemSymbol: .sliderHorizontal3)
 
-  static var sliderVertical3: UIImage {
-    return UIImage(systemName: "slider.vertical.3")!
-  }
+  static let sliderVertical3 = UIImage(systemSymbol: .sliderVertical3)
 
-  static var textAlignright: UIImage {
-    return UIImage(systemName: "text.alignright")!
-  }
+  static let textAlignright = UIImage(systemSymbol: .textAlignright)
 
-  static var trash: UIImage {
-    return UIImage(systemName: "trash")!
-  }
+  static let trash = UIImage(systemSymbol: .trash)
 
-  static var xmarkDiamond: UIImage {
-    return UIImage(systemName: "xmark.diamond")!
-  }
+  static let xmarkDiamond = UIImage(systemSymbol: .xmarkDiamond)
 
-  static var xmarkDiamondFill: UIImage {
-    return UIImage(systemName: "xmark.diamond.fill")!
-  }
+  static let xmarkDiamondFill = UIImage(systemSymbol: .xmarkDiamondFill)
 
-  static var squareStack: UIImage {
-    return UIImage(systemName: "square.stack")!
-  }
+  static let squareStack = UIImage(systemSymbol: .squareStack)
 
-  static var squareStackFill: UIImage {
-    return UIImage(systemName: "square.stack.fill")!
-  }
+  static let squareStackFill = UIImage(systemSymbol: .squareStackFill)
 
-  static let pencil = UIImage(systemName: "pencil")
+  static let pencil = UIImage(systemSymbol: .pencil)
 }

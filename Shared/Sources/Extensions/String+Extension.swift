@@ -1,10 +1,7 @@
+import Foundation
 import Intents
 
 extension String {
-  var integer: Int? {
-    return Int(self)
-  }
-
   var url: URL? {
     return URL(string: self)
   }
@@ -21,23 +18,12 @@ extension String {
     return TagInputResourceIdentifier(id: self)
   }
 
-  var categoryInputResourceIdentifier: CategoryInputResourceIdentifier {
-    return CategoryInputResourceIdentifier(id: self)
-  }
-
   var stringResolutionResult: INStringResolutionResult {
     return .success(with: self)
   }
 
   var addTagToTransactionTagsResolutionResult: AddTagToTransactionTagsResolutionResult {
     return .success(with: self)
-  }
-
-  func split(count: Int) -> [String] {
-    let chars = Array(self)
-    return stride(from: 0, to: chars.count, by: count)
-      .map { chars[$0 ..< min($0 + count, chars.count)] }
-      .map { String($0) }
   }
 }
 

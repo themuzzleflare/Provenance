@@ -1,6 +1,6 @@
+import UIKit
 import IGListKit
 import Alamofire
-import UIKit
 
 final class TransactionsVCAlt: ViewController {
   // MARK: - Properties
@@ -133,7 +133,7 @@ extension TransactionsVCAlt {
       self?.fetchingTasks()
     }
     dateStyleObserver = UserDefaults.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
-      self?.adapter.performUpdates(animated: true)
+      self?.adapter.performUpdates(animated: true, completion: nil)
     }
     settledOnlyObserver = UserDefaults.provenance.observe(\.settledOnly, options: .new) { [weak self] (_, change) in
       guard let value = change.newValue else { return }
@@ -230,6 +230,11 @@ extension TransactionsVCAlt {
         }
       }
     )
+  }
+
+  private func fetchFakeTransactions() {
+    let jsonResponse: TransactionsResponse = Utils.load("transactions.json")
+    display(jsonResponse.data)
   }
 
   private func fetchTransactions() {

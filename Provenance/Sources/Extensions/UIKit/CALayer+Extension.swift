@@ -1,4 +1,4 @@
-import UIKit
+import QuartzCore
 
 extension CALayer {
   static var separator: CALayer {

@@ -6,7 +6,6 @@ import FirebaseAnalytics
 #endif
 
 extension UserDefaults {
-  /// A `UserDefaults` instance for the application group.
   static let provenance = UserDefaults(suiteName: "group.cloud.tavitian.provenance") ?? .standard
 
   /// The string of the "apiKey" key.
@@ -28,11 +27,9 @@ extension UserDefaults {
     set {
       setValue(newValue, forKey: Keys.dateStyle)
       WidgetCenter.shared.reloadTimelines(ofKind: Widgets.latestTransaction.kind)
-#if canImport(FirebaseAnalytics)
       if let dateStyleEnum = AppDateStyle(rawValue: dateStyle) {
-        FirebaseAnalytics.Analytics.setUserProperty(dateStyleEnum.description, forName: AnalyticsUserProperties.dateStyle)
+        updateAnalyticsProperty(dateStyleEnum.description, forName: AnalyticsUserProperties.dateStyle)
       }
-#endif
     }
   }
 
@@ -43,11 +40,9 @@ extension UserDefaults {
     }
     set {
       setValue(newValue, forKey: Keys.accountFilter)
-#if canImport(FirebaseAnalytics)
       if let filterEnum = AccountTypeOptionEnum(rawValue: accountFilter) {
-        FirebaseAnalytics.Analytics.setUserProperty(filterEnum.description, forName: AnalyticsUserProperties.accountFilter)
+        updateAnalyticsProperty(filterEnum.description, forName: AnalyticsUserProperties.accountFilter)
       }
-#endif
     }
   }
 
@@ -58,11 +53,9 @@ extension UserDefaults {
     }
     set {
       setValue(newValue, forKey: Keys.categoryFilter)
-#if canImport(FirebaseAnalytics)
       if let filterEnum = CategoryTypeEnum(rawValue: categoryFilter) {
-        FirebaseAnalytics.Analytics.setUserProperty(filterEnum.description, forName: AnalyticsUserProperties.categoryFilter)
+        updateAnalyticsProperty(filterEnum.description, forName: AnalyticsUserProperties.categoryFilter)
       }
-#endif
     }
   }
 
@@ -73,9 +66,7 @@ extension UserDefaults {
     }
     set {
       setValue(newValue, forKey: Keys.settledOnly)
-#if canImport(FirebaseAnalytics)
-      FirebaseAnalytics.Analytics.setUserProperty(settledOnly.description, forName: AnalyticsUserProperties.settledOnly)
-#endif
+      updateAnalyticsProperty(settledOnly.description, forName: AnalyticsUserProperties.settledOnly)
     }
   }
 
@@ -86,11 +77,9 @@ extension UserDefaults {
     }
     set {
       setValue(newValue, forKey: Keys.transactionGrouping)
-#if canImport(FirebaseAnalytics)
       if let groupingEnum = TransactionGroupingEnum(rawValue: transactionGrouping) {
-        FirebaseAnalytics.Analytics.setUserProperty(groupingEnum.description, forName: AnalyticsUserProperties.transactionGrouping)
+        updateAnalyticsProperty(groupingEnum.description, forName: AnalyticsUserProperties.transactionGrouping)
       }
-#endif
     }
   }
 
@@ -179,6 +168,12 @@ extension UserDefaults {
   /// The build number of the application.
   var appBuild: String {
     return string(forKey: Keys.appBuild) ?? "Unknown"
+  }
+
+  private func updateAnalyticsProperty(_ value: String, forName name: String) {
+#if canImport(FirebaseAnalytics)
+    FirebaseAnalytics.Analytics.setUserProperty(value, forName: name)
+#endif
   }
 }
 

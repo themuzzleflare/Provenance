@@ -95,7 +95,7 @@ extension AboutVC: ASTableDataSource {
       case 0:
         switch row {
         case 0:
-          return .aboutTop
+          return AboutTopCellNode()
         case 1:
           return RightDetailCellNode(text: "Version", detailText: UserDefaults.provenance.appVersion)
         case 2:

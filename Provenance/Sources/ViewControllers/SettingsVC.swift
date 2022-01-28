@@ -1,3 +1,4 @@
+import UIKit
 import NotificationBannerSwift
 import AsyncDisplayKit
 
@@ -111,9 +112,9 @@ extension SettingsVC: ASTableDataSource {
     return {
       switch indexPath.section {
       case 0:
-        return .apiKey
+        return APIKeyCellNode()
       case 1:
-        return .dateStyle
+        return DateStyleCellNode()
       case 2:
         return settingsNode
       default:

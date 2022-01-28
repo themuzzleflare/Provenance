@@ -1,3 +1,4 @@
+import Foundation
 import Intents
 
 extension Array where Element: NSString {

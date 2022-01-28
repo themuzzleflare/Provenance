@@ -12,7 +12,8 @@ final class IntentHandler: INExtension {
 // MARK: - AccountSelectionIntentHandling
 
 extension IntentHandler: AccountSelectionIntentHandling {
-  func provideAccountOptionsCollection(for intent: AccountSelectionIntent, with completion: @escaping (INObjectCollection<AccountType>?, Error?) -> Void) {
+  func provideAccountOptionsCollection(for intent: AccountSelectionIntent,
+                                       with completion: @escaping (INObjectCollection<AccountType>?, Error?) -> Void) {
     Up.listAccounts { (result) in
       switch result {
       case let .success(accounts):
@@ -27,7 +28,8 @@ extension IntentHandler: AccountSelectionIntentHandling {
 // MARK: - ListTransactionsIntentHandling
 
 extension IntentHandler: ListTransactionsIntentHandling {
-  func resolveSince(for intent: ListTransactionsIntent, with completion: @escaping (ListTransactionsSinceResolutionResult) -> Void) {
+  func resolveSince(for intent: ListTransactionsIntent,
+                    with completion: @escaping (ListTransactionsSinceResolutionResult) -> Void) {
     if let since = intent.since, let date = since.date {
       if date.isInFuture {
         completion(.unsupported(forReason: .dateInFuture))
@@ -39,7 +41,8 @@ extension IntentHandler: ListTransactionsIntentHandling {
     }
   }
 
-  func provideAccountOptionsCollection(for intent: ListTransactionsIntent, with completion: @escaping (INObjectCollection<AccountType>?, Error?) -> Void) {
+  func provideAccountOptionsCollection(for intent: ListTransactionsIntent,
+                                       with completion: @escaping (INObjectCollection<AccountType>?, Error?) -> Void) {
     Up.listAccounts { (result) in
       switch result {
       case let .success(accounts):
@@ -50,7 +53,8 @@ extension IntentHandler: ListTransactionsIntentHandling {
     }
   }
 
-  func provideCategoryOptionsCollection(for intent: ListTransactionsIntent, with completion: @escaping (INObjectCollection<CategoryType>?, Error?) -> Void) {
+  func provideCategoryOptionsCollection(for intent: ListTransactionsIntent,
+                                        with completion: @escaping (INObjectCollection<CategoryType>?, Error?) -> Void) {
     Up.listCategories { (result) in
       switch result {
       case let .success(categories):
@@ -61,7 +65,8 @@ extension IntentHandler: ListTransactionsIntentHandling {
     }
   }
 
-  func provideTagOptionsCollection(for intent: ListTransactionsIntent, with completion: @escaping (INObjectCollection<NSString>?, Error?) -> Void) {
+  func provideTagOptionsCollection(for intent: ListTransactionsIntent,
+                                   with completion: @escaping (INObjectCollection<NSString>?, Error?) -> Void) {
     Up.listTags { (result) in
       switch result {
       case let .success(tags):
@@ -72,7 +77,8 @@ extension IntentHandler: ListTransactionsIntentHandling {
     }
   }
 
-  func handle(intent: ListTransactionsIntent, completion: @escaping (ListTransactionsIntentResponse) -> Void) {
+  func handle(intent: ListTransactionsIntent,
+              completion: @escaping (ListTransactionsIntentResponse) -> Void) {
     var requestUrl = String()
     var headers: HTTPHeaders = [
       .accept("application/json")
@@ -111,7 +117,7 @@ extension IntentHandler: ListTransactionsIntentHandling {
     if let tag = intent.tag {
       params.updateValue(tag, forKey: Up.ParamKeys.filterTag)
     }
-    AF.request(requestUrl, method: .get, parameters: params, headers: headers)
+    AF.request(requestUrl, parameters: params, headers: headers)
       .validate()
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
@@ -131,7 +137,8 @@ extension IntentHandler: ListTransactionsIntentHandling {
 // MARK: - AddTagToTransactionIntentHandling
 
 extension IntentHandler: AddTagToTransactionIntentHandling {
-  func provideTransactionOptionsCollection(for intent: AddTagToTransactionIntent, with completion: @escaping (INObjectCollection<TransactionType>?, Error?) -> Void) {
+  func provideTransactionOptionsCollection(for intent: AddTagToTransactionIntent,
+                                           with completion: @escaping (INObjectCollection<TransactionType>?, Error?) -> Void) {
     Up.listTransactions { (result) in
       switch result {
       case let .success(transactions):
@@ -142,7 +149,8 @@ extension IntentHandler: AddTagToTransactionIntentHandling {
     }
   }
 
-  func provideTagsOptionsCollection(for intent: AddTagToTransactionIntent, with completion: @escaping (INObjectCollection<NSString>?, Error?) -> Void) {
+  func provideTagsOptionsCollection(for intent: AddTagToTransactionIntent,
+                                    with completion: @escaping (INObjectCollection<NSString>?, Error?) -> Void) {
     Up.listTags { (result) in
       switch result {
       case let .success(tags):
@@ -153,7 +161,8 @@ extension IntentHandler: AddTagToTransactionIntentHandling {
     }
   }
 
-  func resolveTransaction(for intent: AddTagToTransactionIntent, with completion: @escaping (TransactionTypeResolutionResult) -> Void) {
+  func resolveTransaction(for intent: AddTagToTransactionIntent,
+                          with completion: @escaping (TransactionTypeResolutionResult) -> Void) {
     if let transaction = intent.transaction {
       completion(.success(with: transaction))
     } else {
@@ -161,7 +170,8 @@ extension IntentHandler: AddTagToTransactionIntentHandling {
     }
   }
 
-  func resolveTags(for intent: AddTagToTransactionIntent, with completion: @escaping ([AddTagToTransactionTagsResolutionResult]) -> Void) {
+  func resolveTags(for intent: AddTagToTransactionIntent,
+                   with completion: @escaping ([AddTagToTransactionTagsResolutionResult]) -> Void) {
     if let tags = intent.tags {
       if tags.count > 6 {
         completion([.unsupported(forReason: .tooManyTags)])
@@ -175,7 +185,8 @@ extension IntentHandler: AddTagToTransactionIntentHandling {
     }
   }
 
-  func handle(intent: AddTagToTransactionIntent, completion: @escaping (AddTagToTransactionIntentResponse) -> Void) {
+  func handle(intent: AddTagToTransactionIntent,
+              completion: @escaping (AddTagToTransactionIntentResponse) -> Void) {
     guard let transaction = intent.transaction, let transactionIdentifier = transaction.identifier else {
       completion(.failure(error: "Invalid transaction identifier."))
       return
@@ -197,7 +208,8 @@ extension IntentHandler: AddTagToTransactionIntentHandling {
 // MARK: - RemoveTagFromTransactionIntentHandling
 
 extension IntentHandler: RemoveTagFromTransactionIntentHandling {
-  func provideTransactionOptionsCollection(for intent: RemoveTagFromTransactionIntent, with completion: @escaping (INObjectCollection<TransactionType>?, Error?) -> Void) {
+  func provideTransactionOptionsCollection(for intent: RemoveTagFromTransactionIntent,
+                                           with completion: @escaping (INObjectCollection<TransactionType>?, Error?) -> Void) {
     Up.listTransactions { (result) in
       switch result {
       case let .success(transactions):
@@ -208,7 +220,8 @@ extension IntentHandler: RemoveTagFromTransactionIntentHandling {
     }
   }
 
-  func provideTagsOptionsCollection(for intent: RemoveTagFromTransactionIntent, with completion: @escaping (INObjectCollection<NSString>?, Error?) -> Void) {
+  func provideTagsOptionsCollection(for intent: RemoveTagFromTransactionIntent,
+                                    with completion: @escaping (INObjectCollection<NSString>?, Error?) -> Void) {
     guard let transaction = intent.transaction?.identifier else {
       completion(nil, nil)
       return
@@ -223,7 +236,8 @@ extension IntentHandler: RemoveTagFromTransactionIntentHandling {
     }
   }
 
-  func resolveTransaction(for intent: RemoveTagFromTransactionIntent, with completion: @escaping (RemoveTagFromTransactionTransactionResolutionResult) -> Void) {
+  func resolveTransaction(for intent: RemoveTagFromTransactionIntent,
+                          with completion: @escaping (RemoveTagFromTransactionTransactionResolutionResult) -> Void) {
     if let transactionType = intent.transaction, let transactionId = transactionType.identifier {
       Up.retrieveTransaction(for: transactionId) { (result) in
         switch result {
@@ -242,7 +256,8 @@ extension IntentHandler: RemoveTagFromTransactionIntentHandling {
     }
   }
 
-  func resolveTags(for intent: RemoveTagFromTransactionIntent, with completion: @escaping ([INStringResolutionResult]) -> Void) {
+  func resolveTags(for intent: RemoveTagFromTransactionIntent,
+                   with completion: @escaping ([INStringResolutionResult]) -> Void) {
     if let tags = intent.tags {
       completion(tags.stringResolutionResults)
     } else {
@@ -250,7 +265,8 @@ extension IntentHandler: RemoveTagFromTransactionIntentHandling {
     }
   }
 
-  func handle(intent: RemoveTagFromTransactionIntent, completion: @escaping (RemoveTagFromTransactionIntentResponse) -> Void) {
+  func handle(intent: RemoveTagFromTransactionIntent,
+              completion: @escaping (RemoveTagFromTransactionIntentResponse) -> Void) {
     guard let transaction = intent.transaction, let transactionIdentifier = transaction.identifier else {
       completion(.failure(error: "Invalid transaction identifier."))
       return

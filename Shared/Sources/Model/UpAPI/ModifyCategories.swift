@@ -1,7 +1,8 @@
 import Foundation
 
 struct ModifyCategories: Codable {
-  /// The category to set on the transaction. Set this entire key to `null` de-categorize a transaction.
+  /// The category to set on the transaction.
+  /// Set this entire key to `null` de-categorize a transaction.
   var data: CategoryInputResourceIdentifier?
 
   init(category: CategoryResource? = nil) {

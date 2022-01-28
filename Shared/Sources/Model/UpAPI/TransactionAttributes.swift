@@ -1,3 +1,4 @@
+import Foundation
 import SwiftDate
 
 struct TransactionAttributes: Codable {
@@ -62,12 +63,12 @@ extension TransactionAttributes {
   }
 
   var creationDate: String {
-    return Utils.formatDate(for: createdAt, dateStyle: UserDefaults.provenance.appDateStyle)
+    return Utils.formatDate(for: createdAt)
   }
 
   var settlementDate: String? {
     if let settledAt = settledAt {
-      return Utils.formatDate(for: settledAt, dateStyle: UserDefaults.provenance.appDateStyle)
+      return Utils.formatDate(for: settledAt)
     } else {
       return nil
     }

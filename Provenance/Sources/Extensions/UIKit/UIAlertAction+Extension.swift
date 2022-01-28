@@ -6,7 +6,6 @@ extension UIAlertAction {
     return UIAlertAction(title: "Dismiss", style: .default)
   }
 
-  /// Dismiss action that pops the current view controller from the navigation stack.
   static func dismissAndPop(_ navigationController: UINavigationController?) -> UIAlertAction {
     return UIAlertAction(title: "Dismiss", style: .default, handler: { (_) in
       navigationController?.popViewController(animated: true)

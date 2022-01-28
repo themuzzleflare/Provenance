@@ -24,6 +24,7 @@ target 'Provenance' do
   pod 'SnapKit'
   pod 'BonMot'
   pod 'MBProgressHUD'
+  pod 'SFSafeSymbols'
   
 end
   
@@ -32,6 +33,7 @@ target 'Provenance Intents' do
   
   pod 'SwiftDate'
   pod 'Alamofire'
+  pod 'SFSafeSymbols'
   
 end
 
@@ -41,6 +43,7 @@ target 'Provenance IntentsUI' do
   pod 'SnapKit'
   pod 'SwiftDate'
   pod 'Alamofire'
+  pod 'SFSafeSymbols'
   
 end
 
@@ -49,6 +52,7 @@ target 'Provenance Widgets' do
   
   pod 'SwiftDate'
   pod 'Alamofire'
+  pod 'SFSafeSymbols'
 
 end
 

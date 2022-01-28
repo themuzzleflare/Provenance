@@ -1,0 +1,6277 @@
+{
+  "data": [
+    {
+      "type": "transactions",
+      "id": "2fa18431-b275-4001-92bc-3440adaeac69",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MACQ ESTUDENT PAYMENT 105979",
+        "description": "Macquarie University eStudent",
+        "message": "SSAF",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-90.00",
+          "valueInBaseUnits": -9000
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-25T13:45:50+11:00",
+        "createdAt": "2022-01-25T13:45:50+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/2fa18431-b275-4001-92bc-3440adaeac67/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/2fa18431-b275-4001-92bc-3440adaeac67/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/2fa18431-b275-4001-92bc-3440adaeac67"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "2fa18431-b275-4001-92bc-3440adaeac67",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MS ARPY SUZAN ISKIKI",
+        "description": "Arpy Iskikian",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "90.00",
+          "valueInBaseUnits": 9000
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-25T13:23:50+11:00",
+        "createdAt": "2022-01-25T13:23:50+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/2fa18431-b275-4001-92bc-3440adaeac67/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/2fa18431-b275-4001-92bc-3440adaeac67/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/2fa18431-b275-4001-92bc-3440adaeac67"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "2f2456ab-5ceb-450b-b48c-dc8330d7db59",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 1,WEST GOSFORD",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-6.00",
+            "valueInBaseUnits": -600
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-6.00",
+          "valueInBaseUnits": -600
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-23T05:04:42+11:00",
+        "createdAt": "2022-01-20T08:49:31+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "car-insurance-and-maintenance"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/2f2456ab-5ceb-450b-b48c-dc8330d7db59/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/car-insurance-and-maintenance"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [
+            {
+              "type": "tags",
+              "id": "Abracadabra"
+            }
+          ],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/2f2456ab-5ceb-450b-b48c-dc8330d7db59/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/2f2456ab-5ceb-450b-b48c-dc8330d7db59"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "670c4c41-cfe7-406f-936e-d4b2d66399e3",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "Hungry Jacks, Woolloomooloo",
+        "description": "Hungry Jack's",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-2.00",
+            "valueInBaseUnits": -200
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-2.00",
+          "valueInBaseUnits": -200
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-21T05:01:33+11:00",
+        "createdAt": "2022-01-20T08:35:08+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "games-and-software"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/670c4c41-cfe7-406f-936e-d4b2d66399e3/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/games-and-software"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "good-life"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/good-life"
+          }
+        },
+        "tags": {
+          "data": [
+            {
+              "type": "tags",
+              "id": "ahahh"
+            }
+          ],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/670c4c41-cfe7-406f-936e-d4b2d66399e3/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/670c4c41-cfe7-406f-936e-d4b2d66399e3"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "a7ec8b53-d0b5-4a7b-8583-d34be8f9761c",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MS ARPY SUZAN ISKIKI",
+        "description": "Arpy Iskikian",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "8.00",
+          "valueInBaseUnits": 800
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-20T08:12:21+11:00",
+        "createdAt": "2022-01-20T08:12:21+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "car-insurance-and-maintenance"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/a7ec8b53-d0b5-4a7b-8583-d34be8f9761c/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/car-insurance-and-maintenance"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [
+            {
+              "type": "tags",
+              "id": "ahahh"
+            },
+            {
+              "type": "tags",
+              "id": "boodta"
+            },
+            {
+              "type": "tags",
+              "id": "k"
+            },
+            {
+              "type": "tags",
+              "id": "lmao"
+            }
+          ],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/a7ec8b53-d0b5-4a7b-8583-d34be8f9761c/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/a7ec8b53-d0b5-4a7b-8583-d34be8f9761c"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "40fbc954-8430-4c2d-96f4-3bbb143b98c7",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "Hungry Jacks, West Gosford",
+        "description": "Hungry Jack's",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-4.00",
+            "valueInBaseUnits": -400
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-4.00",
+          "valueInBaseUnits": -400
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-19T05:23:11+11:00",
+        "createdAt": "2022-01-18T17:14:26+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/40fbc954-8430-4c2d-96f4-3bbb143b98c7/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [
+            {
+              "type": "tags",
+              "id": "ahahh"
+            },
+            {
+              "type": "tags",
+              "id": "birtkd"
+            },
+            {
+              "type": "tags",
+              "id": "k"
+            },
+            {
+              "type": "tags",
+              "id": "loligs"
+            },
+            {
+              "type": "tags",
+              "id": "peter2"
+            },
+            {
+              "type": "tags",
+              "id": "peter3"
+            }
+          ],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/40fbc954-8430-4c2d-96f4-3bbb143b98c7/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/40fbc954-8430-4c2d-96f4-3bbb143b98c7"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "f14ba901-c612-4059-bc3d-821a54ef4767",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 24378F,GOSFORD",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-12.00",
+            "valueInBaseUnits": -1200
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-12.00",
+          "valueInBaseUnits": -1200
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-21T05:01:33+11:00",
+        "createdAt": "2022-01-18T08:46:07+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/f14ba901-c612-4059-bc3d-821a54ef4767/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/f14ba901-c612-4059-bc3d-821a54ef4767/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/f14ba901-c612-4059-bc3d-821a54ef4767"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "9f76d9ab-ecbb-4dd3-9a95-02284ebbcb0d",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MS ARPY SUZAN ISKIKI",
+        "description": "Arpy Iskikian",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "15.00",
+          "valueInBaseUnits": 1500
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-18T08:14:03+11:00",
+        "createdAt": "2022-01-18T08:14:03+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/9f76d9ab-ecbb-4dd3-9a95-02284ebbcb0d/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [
+            {
+              "type": "tags",
+              "id": "Maria"
+            },
+            {
+              "type": "tags",
+              "id": "ahahh"
+            },
+            {
+              "type": "tags",
+              "id": "boodta"
+            },
+            {
+              "type": "tags",
+              "id": "k"
+            },
+            {
+              "type": "tags",
+              "id": "lol"
+            },
+            {
+              "type": "tags",
+              "id": "olive"
+            }
+          ],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/9f76d9ab-ecbb-4dd3-9a95-02284ebbcb0d/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/9f76d9ab-ecbb-4dd3-9a95-02284ebbcb0d"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "44b1124e-b2ab-41b5-88e9-118b8a386b5b",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 1,WEST GOSFORD",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-11.50",
+            "valueInBaseUnits": -1150
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-11.50",
+          "valueInBaseUnits": -1150
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-20T05:47:55+11:00",
+        "createdAt": "2022-01-17T16:48:03+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/44b1124e-b2ab-41b5-88e9-118b8a386b5b/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/44b1124e-b2ab-41b5-88e9-118b8a386b5b/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/44b1124e-b2ab-41b5-88e9-118b8a386b5b"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "036cfed5-3227-413f-8c1f-392ad2bced1d",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "KFC WEST GOSFORD QPS, GOSFORD",
+        "description": "KFC",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-12.45",
+            "valueInBaseUnits": -1245
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-12.45",
+          "valueInBaseUnits": -1245
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-20T03:52:48+11:00",
+        "createdAt": "2022-01-17T16:32:16+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/036cfed5-3227-413f-8c1f-392ad2bced1d/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/036cfed5-3227-413f-8c1f-392ad2bced1d/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/036cfed5-3227-413f-8c1f-392ad2bced1d"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "37f6277d-7278-46d1-9893-4f2593359797",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "HARRY TAVITIAN",
+        "description": "Harry Tavitian",
+        "message": "From dad",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "25.00",
+          "valueInBaseUnits": 2500
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-17T15:21:33+11:00",
+        "createdAt": "2022-01-17T15:21:33+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "cycling"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/37f6277d-7278-46d1-9893-4f2593359797/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/cycling"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [
+            {
+              "type": "tags",
+              "id": "ahahh"
+            },
+            {
+              "type": "tags",
+              "id": "birtkd"
+            },
+            {
+              "type": "tags",
+              "id": "k"
+            },
+            {
+              "type": "tags",
+              "id": "loligs"
+            },
+            {
+              "type": "tags",
+              "id": "olive"
+            },
+            {
+              "type": "tags",
+              "id": "peter3"
+            }
+          ],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/37f6277d-7278-46d1-9893-4f2593359797/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/37f6277d-7278-46d1-9893-4f2593359797"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "a6dc0b8a-2509-4341-aa91-8610532c729e",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 24378F,GOSFORD",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-5.50",
+            "valueInBaseUnits": -550
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-5.50",
+          "valueInBaseUnits": -550
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-17T04:12:26+11:00",
+        "createdAt": "2022-01-14T20:09:56+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "car-insurance-and-maintenance"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/a6dc0b8a-2509-4341-aa91-8610532c729e/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/car-insurance-and-maintenance"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/a6dc0b8a-2509-4341-aa91-8610532c729e/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/a6dc0b8a-2509-4341-aa91-8610532c729e"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "ef802b66-79f1-4934-b644-cd336437589d",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": null,
+        "description": "Transfer from Savings",
+        "message": "",
+        "isCategorizable": false,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "5.00",
+          "valueInBaseUnits": 500
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-14T13:02:32+11:00",
+        "createdAt": "2022-01-14T13:02:32+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": {
+            "type": "accounts",
+            "id": "0fd25489-71f2-4717-bf9e-da752758795e"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/0fd25489-71f2-4717-bf9e-da752758795e"
+          }
+        },
+        "category": {
+          "data": null
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [
+            {
+              "type": "tags",
+              "id": "peter2"
+            }
+          ],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/ef802b66-79f1-4934-b644-cd336437589d/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/ef802b66-79f1-4934-b644-cd336437589d"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "05d0ca26-862c-424c-8701-8252d09820c1",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": null,
+        "description": "Transfer to Spending",
+        "message": "",
+        "isCategorizable": false,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-5.00",
+          "valueInBaseUnits": -500
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-14T13:02:31+11:00",
+        "createdAt": "2022-01-14T13:02:31+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "0fd25489-71f2-4717-bf9e-da752758795e"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/0fd25489-71f2-4717-bf9e-da752758795e"
+          }
+        },
+        "transferAccount": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "category": {
+          "data": null
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/05d0ca26-862c-424c-8701-8252d09820c1/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/05d0ca26-862c-424c-8701-8252d09820c1"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "d96f08d7-39a7-4e93-a17e-d40c357c9382",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": null,
+        "description": "Transfer from Spending",
+        "message": "",
+        "isCategorizable": false,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "5.00",
+          "valueInBaseUnits": 500
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-14T12:58:01+11:00",
+        "createdAt": "2022-01-14T12:58:01+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "0fd25489-71f2-4717-bf9e-da752758795e"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/0fd25489-71f2-4717-bf9e-da752758795e"
+          }
+        },
+        "transferAccount": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "category": {
+          "data": null
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [
+            {
+              "type": "tags",
+              "id": "k"
+            }
+          ],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/d96f08d7-39a7-4e93-a17e-d40c357c9382/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/d96f08d7-39a7-4e93-a17e-d40c357c9382"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "0830257c-fdb3-4d37-9dee-16e1305f7c1b",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": null,
+        "description": "Transfer to Savings",
+        "message": "",
+        "isCategorizable": false,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-5.00",
+          "valueInBaseUnits": -500
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-14T12:58:01+11:00",
+        "createdAt": "2022-01-14T12:58:01+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": {
+            "type": "accounts",
+            "id": "0fd25489-71f2-4717-bf9e-da752758795e"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/0fd25489-71f2-4717-bf9e-da752758795e"
+          }
+        },
+        "category": {
+          "data": null
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/0830257c-fdb3-4d37-9dee-16e1305f7c1b/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/0830257c-fdb3-4d37-9dee-16e1305f7c1b"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "843d7682-4ac4-416d-8a57-831d2723724e",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": null,
+        "description": "Bonus Payment",
+        "message": null,
+        "isCategorizable": false,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "5.00",
+          "valueInBaseUnits": 500
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-14T11:05:14+11:00",
+        "createdAt": "2022-01-14T11:05:14+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/843d7682-4ac4-416d-8a57-831d2723724e/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/843d7682-4ac4-416d-8a57-831d2723724e"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "fdfe5d2b-3b07-4ae3-8c53-3aa8a73b32dc",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 24378F,GOSFORD",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-5.50",
+            "valueInBaseUnits": -550
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-5.50",
+          "valueInBaseUnits": -550
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-17T04:12:25+11:00",
+        "createdAt": "2022-01-14T08:36:48+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/fdfe5d2b-3b07-4ae3-8c53-3aa8a73b32dc/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/fdfe5d2b-3b07-4ae3-8c53-3aa8a73b32dc/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/fdfe5d2b-3b07-4ae3-8c53-3aa8a73b32dc"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "86b508d1-7081-4eee-ba4e-71e082b1995d",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "Hungry Jacks, West Gosford",
+        "description": "Hungry Jack's",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-8.00",
+            "valueInBaseUnits": -800
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-8.00",
+          "valueInBaseUnits": -800
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-15T05:24:44+11:00",
+        "createdAt": "2022-01-14T07:43:19+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/86b508d1-7081-4eee-ba4e-71e082b1995d/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/86b508d1-7081-4eee-ba4e-71e082b1995d/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/86b508d1-7081-4eee-ba4e-71e082b1995d"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "0cc22114-ac00-4cca-ba4e-8364d845e14c",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MS ARPY SUZAN ISKIKI",
+        "description": "Arpy Iskikian",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "15.00",
+          "valueInBaseUnits": 1500
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-14T07:36:29+11:00",
+        "createdAt": "2022-01-14T07:36:29+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "car-insurance-and-maintenance"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/0cc22114-ac00-4cca-ba4e-8364d845e14c/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/car-insurance-and-maintenance"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/0cc22114-ac00-4cca-ba4e-8364d845e14c/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/0cc22114-ac00-4cca-ba4e-8364d845e14c"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "bf48dcc7-29b3-458c-9727-8f5c6cb01eee",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "Hungry Jacks, West Gosford",
+        "description": "Hungry Jack's",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-8.00",
+            "valueInBaseUnits": -800
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-8.00",
+          "valueInBaseUnits": -800
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-12T04:56:06+11:00",
+        "createdAt": "2022-01-11T20:11:08+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/bf48dcc7-29b3-458c-9727-8f5c6cb01eee/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/bf48dcc7-29b3-458c-9727-8f5c6cb01eee/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/bf48dcc7-29b3-458c-9727-8f5c6cb01eee"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "1f81e729-6ea5-4426-b625-cd06229f8d27",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 1,WEST GOSFORD",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-9.00",
+            "valueInBaseUnits": -900
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-9.00",
+          "valueInBaseUnits": -900
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-13T05:19:12+11:00",
+        "createdAt": "2022-01-10T15:47:05+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/1f81e729-6ea5-4426-b625-cd06229f8d27/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/1f81e729-6ea5-4426-b625-cd06229f8d27/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/1f81e729-6ea5-4426-b625-cd06229f8d27"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "3edbb602-9ed4-4b4a-92ce-4f46bac18675",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "Hungry Jacks, West Gosford",
+        "description": "Hungry Jack's",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-9.60",
+            "valueInBaseUnits": -960
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-9.60",
+          "valueInBaseUnits": -960
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-11T04:49:50+11:00",
+        "createdAt": "2022-01-10T15:36:58+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "car-insurance-and-maintenance"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/3edbb602-9ed4-4b4a-92ce-4f46bac18675/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/car-insurance-and-maintenance"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/3edbb602-9ed4-4b4a-92ce-4f46bac18675/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/3edbb602-9ed4-4b4a-92ce-4f46bac18675"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "fab79d85-358b-4521-bb72-139480dc9251",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "HARRY TAVITIAN",
+        "description": "Harry Tavitian",
+        "message": "From dad",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "25.00",
+          "valueInBaseUnits": 2500
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-10T10:34:33+11:00",
+        "createdAt": "2022-01-10T10:34:33+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "games-and-software"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/fab79d85-358b-4521-bb72-139480dc9251/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/games-and-software"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "good-life"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/good-life"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/fab79d85-358b-4521-bb72-139480dc9251/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/fab79d85-358b-4521-bb72-139480dc9251"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "1abc1ff2-01e5-4150-940d-45ece0e72b98",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "0.01",
+          "valueInBaseUnits": 1
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-08T09:15:01+11:00",
+        "createdAt": "2022-01-08T09:15:01+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "car-insurance-and-maintenance"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/1abc1ff2-01e5-4150-940d-45ece0e72b98/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/car-insurance-and-maintenance"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/1abc1ff2-01e5-4150-940d-45ece0e72b98/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/1abc1ff2-01e5-4150-940d-45ece0e72b98"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "16904fd3-bd2f-42e5-a81c-78ca3ffd00da",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": null,
+        "description": "ANZ",
+        "message": "Transfer",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-10.00",
+          "valueInBaseUnits": -1000
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-07T18:00:50+11:00",
+        "createdAt": "2022-01-07T18:00:50+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "car-insurance-and-maintenance"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/16904fd3-bd2f-42e5-a81c-78ca3ffd00da/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/car-insurance-and-maintenance"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/16904fd3-bd2f-42e5-a81c-78ca3ffd00da/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/16904fd3-bd2f-42e5-a81c-78ca3ffd00da"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "20fe0b86-3ab7-4dc4-b2db-f809bac5416a",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 1,WEST GOSFORD",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-9.00",
+            "valueInBaseUnits": -900
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-9.00",
+          "valueInBaseUnits": -900
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-10T03:55:44+11:00",
+        "createdAt": "2022-01-07T17:18:49+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/20fe0b86-3ab7-4dc4-b2db-f809bac5416a/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/20fe0b86-3ab7-4dc4-b2db-f809bac5416a/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/20fe0b86-3ab7-4dc4-b2db-f809bac5416a"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "55a5da2b-0338-43e5-b75f-ecc30624c43d",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MCDONALDS GOSFORD,WEST GOSFORD",
+        "description": "McDonald's",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-15.75",
+            "valueInBaseUnits": -1575
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-15.75",
+          "valueInBaseUnits": -1575
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-12T04:56:06+11:00",
+        "createdAt": "2022-01-07T17:01:09+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/55a5da2b-0338-43e5-b75f-ecc30624c43d/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/55a5da2b-0338-43e5-b75f-ecc30624c43d/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/55a5da2b-0338-43e5-b75f-ecc30624c43d"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "aa83939e-bec0-459a-a268-830666067ead",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "DOORDASH*MCDONALDS, MELBOURNE",
+        "description": "McDonald's",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-10.38",
+            "valueInBaseUnits": -1038
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-10.38",
+          "valueInBaseUnits": -1038
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-08T05:12:07+11:00",
+        "createdAt": "2022-01-06T20:00:54+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "takeaway"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/aa83939e-bec0-459a-a268-830666067ead/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/takeaway"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "good-life"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/good-life"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/aa83939e-bec0-459a-a268-830666067ead/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/aa83939e-bec0-459a-a268-830666067ead"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "87249857-ef82-4ad1-8b2b-f1d5059a9ac6",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 22582F    WEST",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-11.00",
+          "valueInBaseUnits": -1100
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-06T08:52:41+11:00",
+        "createdAt": "2022-01-06T08:52:41+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/87249857-ef82-4ad1-8b2b-f1d5059a9ac6/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/87249857-ef82-4ad1-8b2b-f1d5059a9ac6/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/87249857-ef82-4ad1-8b2b-f1d5059a9ac6"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "7a440180-0360-4507-a0cd-d22e7274a614",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "Hungry Jacks              West",
+        "description": "Hungry Jack's",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-8.00",
+          "valueInBaseUnits": -800
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-06T08:36:43+11:00",
+        "createdAt": "2022-01-06T08:36:43+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "family"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/7a440180-0360-4507-a0cd-d22e7274a614/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/family"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "personal"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/personal"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/7a440180-0360-4507-a0cd-d22e7274a614/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/7a440180-0360-4507-a0cd-d22e7274a614"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "bdf7e330-22a1-4af7-96a1-aa6cbc7f18b0",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MS ARPY SUZAN ISKIKI",
+        "description": "Arpy Iskikian",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "65.00",
+          "valueInBaseUnits": 6500
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-06T07:54:25+11:00",
+        "createdAt": "2022-01-06T07:54:25+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/bdf7e330-22a1-4af7-96a1-aa6cbc7f18b0/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/bdf7e330-22a1-4af7-96a1-aa6cbc7f18b0/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/bdf7e330-22a1-4af7-96a1-aa6cbc7f18b0"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "233a7670-1c0c-44e8-b2b9-f00fd753a8d3",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "Hungry Jacks, Woolloomooloo",
+        "description": "Hungry Jack's",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-2.00",
+            "valueInBaseUnits": -200
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-2.00",
+          "valueInBaseUnits": -200
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-05T04:11:13+11:00",
+        "createdAt": "2022-01-04T20:43:52+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/233a7670-1c0c-44e8-b2b9-f00fd753a8d3/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/233a7670-1c0c-44e8-b2b9-f00fd753a8d3/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/233a7670-1c0c-44e8-b2b9-f00fd753a8d3"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "4fa45cff-39d3-4ba6-856a-9ba885acda3d",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "0.82",
+          "valueInBaseUnits": 82
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-04T10:18:43+11:00",
+        "createdAt": "2022-01-04T10:18:43+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/4fa45cff-39d3-4ba6-856a-9ba885acda3d/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/4fa45cff-39d3-4ba6-856a-9ba885acda3d/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/4fa45cff-39d3-4ba6-856a-9ba885acda3d"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "f99a5c2f-bed7-43aa-b010-59816810e298",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 22582F    WEST",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-14.50",
+          "valueInBaseUnits": -1450
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-04T08:43:25+11:00",
+        "createdAt": "2022-01-04T08:43:25+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/f99a5c2f-bed7-43aa-b010-59816810e298/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/f99a5c2f-bed7-43aa-b010-59816810e298/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/f99a5c2f-bed7-43aa-b010-59816810e298"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "fc93b6f9-7cca-45f0-820a-e809e60670c7",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "Hungry Jacks              West",
+        "description": "Hungry Jack's",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-3.50",
+          "valueInBaseUnits": -350
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-04T08:31:20+11:00",
+        "createdAt": "2022-01-04T08:31:20+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "takeaway"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/fc93b6f9-7cca-45f0-820a-e809e60670c7/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/takeaway"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "good-life"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/good-life"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/fc93b6f9-7cca-45f0-820a-e809e60670c7/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/fc93b6f9-7cca-45f0-820a-e809e60670c7"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "e94de4ac-8103-4eda-9204-8446dcfcdb0c",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "15.00",
+          "valueInBaseUnits": 1500
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-04T08:22:34+11:00",
+        "createdAt": "2022-01-04T08:22:34+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/e94de4ac-8103-4eda-9204-8446dcfcdb0c/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/e94de4ac-8103-4eda-9204-8446dcfcdb0c/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/e94de4ac-8103-4eda-9204-8446dcfcdb0c"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "1390e55d-84c1-4c24-81a5-f66b8aa77c8b",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 1,WEST GOSFORD",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-5.50",
+            "valueInBaseUnits": -550
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-5.50",
+          "valueInBaseUnits": -550
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-06T05:13:00+11:00",
+        "createdAt": "2022-01-03T15:17:00+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/1390e55d-84c1-4c24-81a5-f66b8aa77c8b/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/1390e55d-84c1-4c24-81a5-f66b8aa77c8b/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/1390e55d-84c1-4c24-81a5-f66b8aa77c8b"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "4ddc966e-669d-45e1-b092-1a700ac8ad57",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "KFC WEST GOSFORD QPS, GOSFORD",
+        "description": "KFC",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-14.45",
+            "valueInBaseUnits": -1445
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-14.45",
+          "valueInBaseUnits": -1445
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-06T05:13:00+11:00",
+        "createdAt": "2022-01-03T15:07:21+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "takeaway"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/4ddc966e-669d-45e1-b092-1a700ac8ad57/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/takeaway"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "good-life"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/good-life"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/4ddc966e-669d-45e1-b092-1a700ac8ad57/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/4ddc966e-669d-45e1-b092-1a700ac8ad57"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "9653d61f-6895-4169-9976-0312e540210e",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "25.00",
+          "valueInBaseUnits": 2500
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-03T14:49:34+11:00",
+        "createdAt": "2022-01-03T14:49:34+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/9653d61f-6895-4169-9976-0312e540210e/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/9653d61f-6895-4169-9976-0312e540210e/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/9653d61f-6895-4169-9976-0312e540210e"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "8206cdf3-db98-4f95-bc47-bd27c18af17c",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "PAYPAL *APPLE.COM/B,4029357733",
+        "description": "Apple",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-1.49",
+            "valueInBaseUnits": -149
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-1.49",
+          "valueInBaseUnits": -149
+        },
+        "foreignAmount": null,
+        "settledAt": "2022-01-04T04:45:34+11:00",
+        "createdAt": "2022-01-02T09:41:51+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "technology"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/8206cdf3-db98-4f95-bc47-bd27c18af17c/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/technology"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "personal"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/personal"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/8206cdf3-db98-4f95-bc47-bd27c18af17c/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/8206cdf3-db98-4f95-bc47-bd27c18af17c"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "b95f4f3f-760d-46c6-a16b-a3736503da4c",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 1,WEST GOSFORD",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-5.50",
+            "valueInBaseUnits": -550
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-5.50",
+          "valueInBaseUnits": -550
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-30T03:25:36+11:00",
+        "createdAt": "2021-12-27T15:15:44+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/b95f4f3f-760d-46c6-a16b-a3736503da4c/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/b95f4f3f-760d-46c6-a16b-a3736503da4c/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/b95f4f3f-760d-46c6-a16b-a3736503da4c"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "cd56dc78-d37a-4bf6-b3bb-ebe127312d5c",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "5.55",
+          "valueInBaseUnits": 555
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-27T15:13:15+11:00",
+        "createdAt": "2021-12-27T15:13:15+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/cd56dc78-d37a-4bf6-b3bb-ebe127312d5c/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/cd56dc78-d37a-4bf6-b3bb-ebe127312d5c/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/cd56dc78-d37a-4bf6-b3bb-ebe127312d5c"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "3646ffbe-c493-4bc7-aaeb-a95c6bb0b345",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 24378F,GOSFORD",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-8.50",
+            "valueInBaseUnits": -850
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-8.50",
+          "valueInBaseUnits": -850
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-29T03:21:47+11:00",
+        "createdAt": "2021-12-26T21:07:35+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/3646ffbe-c493-4bc7-aaeb-a95c6bb0b345/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/3646ffbe-c493-4bc7-aaeb-a95c6bb0b345/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/3646ffbe-c493-4bc7-aaeb-a95c6bb0b345"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "e2262e6a-3d57-4798-91e3-36aea470fab7",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "8.55",
+          "valueInBaseUnits": 855
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-26T21:05:11+11:00",
+        "createdAt": "2021-12-26T21:05:11+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/e2262e6a-3d57-4798-91e3-36aea470fab7/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/e2262e6a-3d57-4798-91e3-36aea470fab7/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/e2262e6a-3d57-4798-91e3-36aea470fab7"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "09cd1de9-c695-4994-b69c-d39b7683ba9a",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "1.30",
+          "valueInBaseUnits": 130
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-23T09:31:52+11:00",
+        "createdAt": "2021-12-23T09:31:52+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/09cd1de9-c695-4994-b69c-d39b7683ba9a/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/09cd1de9-c695-4994-b69c-d39b7683ba9a/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/09cd1de9-c695-4994-b69c-d39b7683ba9a"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "04fac61b-f4a2-4367-9367-ac1aebdfb680",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "Hungry Jacks, West Gosford",
+        "description": "Hungry Jack's",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-1.50",
+            "valueInBaseUnits": -150
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-1.50",
+          "valueInBaseUnits": -150
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-21T06:52:53+11:00",
+        "createdAt": "2021-12-20T20:16:48+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "takeaway"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/04fac61b-f4a2-4367-9367-ac1aebdfb680/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/takeaway"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "good-life"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/good-life"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/04fac61b-f4a2-4367-9367-ac1aebdfb680/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/04fac61b-f4a2-4367-9367-ac1aebdfb680"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "8e20f11f-9def-443a-91c4-a3382a5f358a",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "Hungry Jacks, West Gosford",
+        "description": "Hungry Jack's",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-4.00",
+            "valueInBaseUnits": -400
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-4.00",
+          "valueInBaseUnits": -400
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-21T06:52:52+11:00",
+        "createdAt": "2021-12-20T20:06:31+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "takeaway"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/8e20f11f-9def-443a-91c4-a3382a5f358a/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/takeaway"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "good-life"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/good-life"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/8e20f11f-9def-443a-91c4-a3382a5f358a/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/8e20f11f-9def-443a-91c4-a3382a5f358a"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "2f8e1d07-1038-42f0-b34f-ca4f6a391c5c",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 1,WEST GOSFORD",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-14.50",
+            "valueInBaseUnits": -1450
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-14.50",
+          "valueInBaseUnits": -1450
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-23T04:35:03+11:00",
+        "createdAt": "2021-12-20T17:14:22+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/2f8e1d07-1038-42f0-b34f-ca4f6a391c5c/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/2f8e1d07-1038-42f0-b34f-ca4f6a391c5c/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/2f8e1d07-1038-42f0-b34f-ca4f6a391c5c"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "6a5ee390-c1ba-4c56-8b66-f8cdd469d12f",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "20.00",
+          "valueInBaseUnits": 2000
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-20T15:43:58+11:00",
+        "createdAt": "2021-12-20T15:43:58+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/6a5ee390-c1ba-4c56-8b66-f8cdd469d12f/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/6a5ee390-c1ba-4c56-8b66-f8cdd469d12f/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/6a5ee390-c1ba-4c56-8b66-f8cdd469d12f"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "2c8349f5-6de1-41fc-ac8a-7978e989c5b5",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 22582F    WEST",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-5.50",
+          "valueInBaseUnits": -550
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-19T07:59:30+11:00",
+        "createdAt": "2021-12-19T07:59:30+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "clothing-and-accessories"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/2c8349f5-6de1-41fc-ac8a-7978e989c5b5/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/clothing-and-accessories"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "personal"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/personal"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/2c8349f5-6de1-41fc-ac8a-7978e989c5b5/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/2c8349f5-6de1-41fc-ac8a-7978e989c5b5"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "f2627454-89d9-4e37-9409-b0f16931ab7a",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "5.00",
+          "valueInBaseUnits": 500
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-19T07:59:09+11:00",
+        "createdAt": "2021-12-19T07:59:09+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/f2627454-89d9-4e37-9409-b0f16931ab7a/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/f2627454-89d9-4e37-9409-b0f16931ab7a/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/f2627454-89d9-4e37-9409-b0f16931ab7a"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "d5f38720-ce28-4abb-b35a-f834ca1aaa94",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "Hungry Jacks              West",
+        "description": "Hungry Jack's",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-2.00",
+          "valueInBaseUnits": -200
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-17T19:06:50+11:00",
+        "createdAt": "2021-12-17T19:06:50+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/d5f38720-ce28-4abb-b35a-f834ca1aaa94/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/d5f38720-ce28-4abb-b35a-f834ca1aaa94/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/d5f38720-ce28-4abb-b35a-f834ca1aaa94"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "7021653b-f022-471f-b451-2a54be60ab36",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "2.70",
+          "valueInBaseUnits": 270
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-17T17:50:10+11:00",
+        "createdAt": "2021-12-17T17:50:10+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/7021653b-f022-471f-b451-2a54be60ab36/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/7021653b-f022-471f-b451-2a54be60ab36/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/7021653b-f022-471f-b451-2a54be60ab36"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "9bc0df19-f4a0-44fb-b8ab-7cbd299a28fa",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 1,WEST GOSFORD",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-5.50",
+            "valueInBaseUnits": -550
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-5.50",
+          "valueInBaseUnits": -550
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-18T04:43:41+11:00",
+        "createdAt": "2021-12-16T14:42:20+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/9bc0df19-f4a0-44fb-b8ab-7cbd299a28fa/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/9bc0df19-f4a0-44fb-b8ab-7cbd299a28fa/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/9bc0df19-f4a0-44fb-b8ab-7cbd299a28fa"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "0221795d-7a42-4f5c-a4ac-29aec506aeae",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "PAYPAL *ALDIMOBILE ,4029357733",
+        "description": "ALDI Mobile",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-15.00",
+            "valueInBaseUnits": -1500
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-15.00",
+          "valueInBaseUnits": -1500
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-18T04:43:41+11:00",
+        "createdAt": "2021-12-16T12:53:42+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "mobile-phone"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/0221795d-7a42-4f5c-a4ac-29aec506aeae/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/mobile-phone"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "personal"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/personal"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/0221795d-7a42-4f5c-a4ac-29aec506aeae/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/0221795d-7a42-4f5c-a4ac-29aec506aeae"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "d9687b64-b949-478e-87d7-8c369ecf53b8",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "18.90",
+          "valueInBaseUnits": 1890
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-16T12:52:57+11:00",
+        "createdAt": "2021-12-16T12:52:57+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/d9687b64-b949-478e-87d7-8c369ecf53b8/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/d9687b64-b949-478e-87d7-8c369ecf53b8/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/d9687b64-b949-478e-87d7-8c369ecf53b8"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "ad37efab-c3b0-4896-875f-aca764f3bbc6",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 22582F    WEST",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-5.50",
+          "valueInBaseUnits": -550
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-15T18:27:38+11:00",
+        "createdAt": "2021-12-15T18:27:38+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/ad37efab-c3b0-4896-875f-aca764f3bbc6/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/ad37efab-c3b0-4896-875f-aca764f3bbc6/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/ad37efab-c3b0-4896-875f-aca764f3bbc6"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "03505026-6464-40ff-8f9a-e0d28afa0e3b",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "6.00",
+          "valueInBaseUnits": 600
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-15T18:20:35+11:00",
+        "createdAt": "2021-12-15T18:20:35+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/03505026-6464-40ff-8f9a-e0d28afa0e3b/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/03505026-6464-40ff-8f9a-e0d28afa0e3b/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/03505026-6464-40ff-8f9a-e0d28afa0e3b"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "918c9adb-f6d6-4e5a-bf5b-a3c6b12762eb",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "KFC WEST GOSFORD          GOSF",
+        "description": "KFC",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-11.95",
+          "valueInBaseUnits": -1195
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-14T18:41:16+11:00",
+        "createdAt": "2021-12-14T18:41:16+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "takeaway"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/918c9adb-f6d6-4e5a-bf5b-a3c6b12762eb/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/takeaway"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "good-life"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/good-life"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/918c9adb-f6d6-4e5a-bf5b-a3c6b12762eb/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/918c9adb-f6d6-4e5a-bf5b-a3c6b12762eb"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "1c1f9424-223b-42bf-8459-343929042c93",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "12.70",
+          "valueInBaseUnits": 1270
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-14T11:36:48+11:00",
+        "createdAt": "2021-12-14T11:36:48+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/1c1f9424-223b-42bf-8459-343929042c93/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/1c1f9424-223b-42bf-8459-343929042c93/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/1c1f9424-223b-42bf-8459-343929042c93"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "9dcad549-5277-4347-9ce2-a3c3af724401",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "COLES 0821                WEST",
+        "description": "Coles",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-2.50",
+          "valueInBaseUnits": -250
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-13T20:41:02+11:00",
+        "createdAt": "2021-12-13T20:41:02+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/9dcad549-5277-4347-9ce2-a3c3af724401/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [
+            {
+              "type": "tags",
+              "id": "Abracadabra"
+            },
+            {
+              "type": "tags",
+              "id": "Maria"
+            },
+            {
+              "type": "tags",
+              "id": "boodta"
+            },
+            {
+              "type": "tags",
+              "id": "halo"
+            },
+            {
+              "type": "tags",
+              "id": "lmao"
+            },
+            {
+              "type": "tags",
+              "id": "lol"
+            }
+          ],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/9dcad549-5277-4347-9ce2-a3c3af724401/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/9dcad549-5277-4347-9ce2-a3c3af724401"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "63b4dc8b-bf6e-4e07-baf3-84f60c26c7fe",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 24378F    GOSF",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-5.50",
+          "valueInBaseUnits": -550
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-13T16:10:14+11:00",
+        "createdAt": "2021-12-13T16:10:14+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/63b4dc8b-bf6e-4e07-baf3-84f60c26c7fe/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/63b4dc8b-bf6e-4e07-baf3-84f60c26c7fe/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/63b4dc8b-bf6e-4e07-baf3-84f60c26c7fe"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "e735a55a-d7fc-4a73-a940-1bb30798ab3a",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "KFC WEST GOSFORD          GOSF",
+        "description": "KFC",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-11.95",
+          "valueInBaseUnits": -1195
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-13T16:03:06+11:00",
+        "createdAt": "2021-12-13T16:03:06+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "takeaway"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/e735a55a-d7fc-4a73-a940-1bb30798ab3a/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/takeaway"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "good-life"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/good-life"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/e735a55a-d7fc-4a73-a940-1bb30798ab3a/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/e735a55a-d7fc-4a73-a940-1bb30798ab3a"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "53259399-356d-4b73-859a-a7522528a4fe",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "20.00",
+          "valueInBaseUnits": 2000
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-13T15:22:54+11:00",
+        "createdAt": "2021-12-13T15:22:54+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/53259399-356d-4b73-859a-a7522528a4fe/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/53259399-356d-4b73-859a-a7522528a4fe/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/53259399-356d-4b73-859a-a7522528a4fe"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "8300d4a0-ca95-47bf-8da4-e764de791c3d",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "PAYPAL *APPLE.COM/B,4029357733",
+        "description": "Apple",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-1.49",
+            "valueInBaseUnits": -149
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-1.49",
+          "valueInBaseUnits": -149
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-14T07:06:04+11:00",
+        "createdAt": "2021-12-11T11:16:05+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "technology"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/8300d4a0-ca95-47bf-8da4-e764de791c3d/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/technology"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "personal"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/personal"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/8300d4a0-ca95-47bf-8da4-e764de791c3d/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/8300d4a0-ca95-47bf-8da4-e764de791c3d"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "13ffcb76-d30f-45b7-9628-972035ecf69f",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "1.00",
+          "valueInBaseUnits": 100
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-11T11:11:50+11:00",
+        "createdAt": "2021-12-11T11:11:50+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/13ffcb76-d30f-45b7-9628-972035ecf69f/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/13ffcb76-d30f-45b7-9628-972035ecf69f/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/13ffcb76-d30f-45b7-9628-972035ecf69f"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "4546f617-931d-4d94-8d50-b79ea41fe367",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "COLES 0821                WEST",
+        "description": "Coles",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-1.00",
+          "valueInBaseUnits": -100
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-08T08:54:15+11:00",
+        "createdAt": "2021-12-08T08:54:15+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "groceries"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/4546f617-931d-4d94-8d50-b79ea41fe367/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/groceries"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "home"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/home"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/4546f617-931d-4d94-8d50-b79ea41fe367/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/4546f617-931d-4d94-8d50-b79ea41fe367"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "f642441e-23fa-4d5f-ab05-58ad789a2f9e",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": null,
+        "description": "Macquarie",
+        "message": "Transfer",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-1.00",
+          "valueInBaseUnits": -100
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-07T16:06:53+11:00",
+        "createdAt": "2021-12-07T16:06:53+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/f642441e-23fa-4d5f-ab05-58ad789a2f9e/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/f642441e-23fa-4d5f-ab05-58ad789a2f9e/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/f642441e-23fa-4d5f-ab05-58ad789a2f9e"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "13a4f201-f0a9-4fdf-932f-42c6246e4168",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "PAYPAL *APPLE.COM/B,4029357733",
+        "description": "Apple",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-1.49",
+            "valueInBaseUnits": -149
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-1.49",
+          "valueInBaseUnits": -149
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-09T06:34:19+11:00",
+        "createdAt": "2021-12-07T09:22:17+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "technology"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/13a4f201-f0a9-4fdf-932f-42c6246e4168/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/technology"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "personal"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/personal"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/13a4f201-f0a9-4fdf-932f-42c6246e4168/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/13a4f201-f0a9-4fdf-932f-42c6246e4168"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "6d40d64d-8144-492e-a0d1-8f14e5a73caa",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 24378F    GOSF",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-9.50",
+          "valueInBaseUnits": -950
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-07T07:11:11+11:00",
+        "createdAt": "2021-12-07T07:11:11+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/6d40d64d-8144-492e-a0d1-8f14e5a73caa/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/6d40d64d-8144-492e-a0d1-8f14e5a73caa/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/6d40d64d-8144-492e-a0d1-8f14e5a73caa"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "1d382b40-42ae-490c-ab20-d8ecfe4f9577",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "10.00",
+          "valueInBaseUnits": 1000
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-07T07:09:12+11:00",
+        "createdAt": "2021-12-07T07:09:12+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/1d382b40-42ae-490c-ab20-d8ecfe4f9577/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/1d382b40-42ae-490c-ab20-d8ecfe4f9577/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/1d382b40-42ae-490c-ab20-d8ecfe4f9577"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "326b0b3e-3cd1-4db3-b5f5-1d449065601b",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": null,
+        "description": "86 400",
+        "message": "Transfer",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-3.00",
+          "valueInBaseUnits": -300
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-06T18:51:52+11:00",
+        "createdAt": "2021-12-06T18:51:52+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/326b0b3e-3cd1-4db3-b5f5-1d449065601b/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/326b0b3e-3cd1-4db3-b5f5-1d449065601b/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/326b0b3e-3cd1-4db3-b5f5-1d449065601b"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "944b1550-0242-415a-bb14-8e29f0c58f65",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "KFC WEST GOSFORD          GOSF",
+        "description": "KFC",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-14.45",
+          "valueInBaseUnits": -1445
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-06T18:16:14+11:00",
+        "createdAt": "2021-12-06T18:16:14+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "takeaway"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/944b1550-0242-415a-bb14-8e29f0c58f65/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/takeaway"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "good-life"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/good-life"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/944b1550-0242-415a-bb14-8e29f0c58f65/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/944b1550-0242-415a-bb14-8e29f0c58f65"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "9804d93e-7d8d-40bc-8815-65bbbd3ff11f",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "20.00",
+          "valueInBaseUnits": 2000
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-06T17:44:59+11:00",
+        "createdAt": "2021-12-06T17:44:59+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/9804d93e-7d8d-40bc-8815-65bbbd3ff11f/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/9804d93e-7d8d-40bc-8815-65bbbd3ff11f/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/9804d93e-7d8d-40bc-8815-65bbbd3ff11f"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "43d13874-dd8b-4fb0-932e-a3275b1f3627",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "1.00",
+          "valueInBaseUnits": 100
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-05T10:41:36+11:00",
+        "createdAt": "2021-12-05T10:41:36+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/43d13874-dd8b-4fb0-932e-a3275b1f3627/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/43d13874-dd8b-4fb0-932e-a3275b1f3627/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/43d13874-dd8b-4fb0-932e-a3275b1f3627"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "1c82b826-ae8b-4019-819a-47ddd750ae97",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 24378F    GOSF",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-6.50",
+          "valueInBaseUnits": -650
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-30T22:42:12+11:00",
+        "createdAt": "2021-11-30T22:42:12+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/1c82b826-ae8b-4019-819a-47ddd750ae97/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/1c82b826-ae8b-4019-819a-47ddd750ae97/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/1c82b826-ae8b-4019-819a-47ddd750ae97"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "8886a517-8cfe-4bd5-9b23-4604bc8c8930",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMZNPRIMEAU MEMBE,SYDNEY SOUTH",
+        "description": "Amazon Prime",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-6.99",
+            "valueInBaseUnits": -699
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-6.99",
+          "valueInBaseUnits": -699
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-01T08:14:50+11:00",
+        "createdAt": "2021-11-30T16:03:14+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "tv-and-music"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/8886a517-8cfe-4bd5-9b23-4604bc8c8930/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/tv-and-music"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "good-life"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/good-life"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/8886a517-8cfe-4bd5-9b23-4604bc8c8930/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/8886a517-8cfe-4bd5-9b23-4604bc8c8930"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "41a76e4d-96d7-4aec-a342-caa2af22eaba",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 24378F    GOSF",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-5.00",
+          "valueInBaseUnits": -500
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-30T15:39:10+11:00",
+        "createdAt": "2021-11-30T15:39:10+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/41a76e4d-96d7-4aec-a342-caa2af22eaba/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/41a76e4d-96d7-4aec-a342-caa2af22eaba/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/41a76e4d-96d7-4aec-a342-caa2af22eaba"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "7c9be67d-9389-4d37-92a9-f4b88c4b008e",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "PAYPAL *APPLE.COM/B,4029357733",
+        "description": "Apple",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-6.49",
+            "valueInBaseUnits": -649
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-6.49",
+          "valueInBaseUnits": -649
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-02T08:17:14+11:00",
+        "createdAt": "2021-11-30T09:15:48+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/7c9be67d-9389-4d37-92a9-f4b88c4b008e/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/7c9be67d-9389-4d37-92a9-f4b88c4b008e/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/7c9be67d-9389-4d37-92a9-f4b88c4b008e"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "09dd502b-e231-440d-ab45-2251d2a518b8",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "22.70",
+          "valueInBaseUnits": 2270
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-30T09:03:32+11:00",
+        "createdAt": "2021-11-30T09:03:32+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/09dd502b-e231-440d-ab45-2251d2a518b8/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/09dd502b-e231-440d-ab45-2251d2a518b8/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/09dd502b-e231-440d-ab45-2251d2a518b8"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "ba5fd6b5-f037-4c07-aaa3-c2468bc5e5b7",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 24378F,GOSFORD",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-5.50",
+            "valueInBaseUnits": -550
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-5.50",
+          "valueInBaseUnits": -550
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-12-02T08:17:13+11:00",
+        "createdAt": "2021-11-29T18:07:55+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/ba5fd6b5-f037-4c07-aaa3-c2468bc5e5b7/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/ba5fd6b5-f037-4c07-aaa3-c2468bc5e5b7/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/ba5fd6b5-f037-4c07-aaa3-c2468bc5e5b7"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "a14f07e3-b3df-4a24-b7d4-3297e481638e",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "KFC WEST GOSFORD          GOSF",
+        "description": "KFC",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-13.95",
+          "valueInBaseUnits": -1395
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-29T18:02:49+11:00",
+        "createdAt": "2021-11-29T18:02:49+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "takeaway"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/a14f07e3-b3df-4a24-b7d4-3297e481638e/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/takeaway"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "good-life"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/good-life"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/a14f07e3-b3df-4a24-b7d4-3297e481638e/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/a14f07e3-b3df-4a24-b7d4-3297e481638e"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "292491f0-22a2-4f60-b28a-312f8b9eeae8",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "20.00",
+          "valueInBaseUnits": 2000
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-29T17:29:10+11:00",
+        "createdAt": "2021-11-29T17:29:10+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/292491f0-22a2-4f60-b28a-312f8b9eeae8/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/292491f0-22a2-4f60-b28a-312f8b9eeae8/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/292491f0-22a2-4f60-b28a-312f8b9eeae8"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "94ac400e-2c88-4fee-874e-6caf1dd0ad05",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 22582F    WEST",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-5.00",
+          "valueInBaseUnits": -500
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-28T17:42:45+11:00",
+        "createdAt": "2021-11-28T17:42:45+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/94ac400e-2c88-4fee-874e-6caf1dd0ad05/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/94ac400e-2c88-4fee-874e-6caf1dd0ad05/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/94ac400e-2c88-4fee-874e-6caf1dd0ad05"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "92ef5d6e-1eb3-41f9-a891-906aed5a8ab5",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": null,
+        "description": "Arpy Iskikian",
+        "message": "Transfer",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-18.00",
+          "valueInBaseUnits": -1800
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-28T14:36:01+11:00",
+        "createdAt": "2021-11-28T14:36:01+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/92ef5d6e-1eb3-41f9-a891-906aed5a8ab5/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/92ef5d6e-1eb3-41f9-a891-906aed5a8ab5/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/92ef5d6e-1eb3-41f9-a891-906aed5a8ab5"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "29eb06aa-f63c-4265-9e44-b0a3def39f98",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 22582F    WEST",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-5.50",
+          "valueInBaseUnits": -550
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-28T14:21:33+11:00",
+        "createdAt": "2021-11-28T14:21:33+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/29eb06aa-f63c-4265-9e44-b0a3def39f98/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/29eb06aa-f63c-4265-9e44-b0a3def39f98/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/29eb06aa-f63c-4265-9e44-b0a3def39f98"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "825ef512-a475-48b3-8a1e-51b104f85ff8",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "JB HI FI ERINA FAIR, ERINA",
+        "description": "JB Hi-Fi",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-282.40",
+            "valueInBaseUnits": -28240
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-282.40",
+          "valueInBaseUnits": -28240
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-30T03:46:47+11:00",
+        "createdAt": "2021-11-28T13:59:57+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "technology"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/825ef512-a475-48b3-8a1e-51b104f85ff8/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/technology"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "personal"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/personal"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/825ef512-a475-48b3-8a1e-51b104f85ff8/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/825ef512-a475-48b3-8a1e-51b104f85ff8"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "e59d4b93-e13a-4911-923a-3f52d7a833ee",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "18.00",
+          "valueInBaseUnits": 1800
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-28T13:33:43+11:00",
+        "createdAt": "2021-11-28T13:33:43+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/e59d4b93-e13a-4911-923a-3f52d7a833ee/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/e59d4b93-e13a-4911-923a-3f52d7a833ee/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/e59d4b93-e13a-4911-923a-3f52d7a833ee"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "fcfb5664-3190-4b43-957f-ac870c1eac54",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "AMPOL GOSFORD W 22582F    WEST",
+        "description": "Ampol",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-8.80",
+          "valueInBaseUnits": -880
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-28T13:30:22+11:00",
+        "createdAt": "2021-11-28T13:30:22+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "fuel"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/fcfb5664-3190-4b43-957f-ac870c1eac54/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/fuel"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "transport"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/transport"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/fcfb5664-3190-4b43-957f-ac870c1eac54/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/fcfb5664-3190-4b43-957f-ac870c1eac54"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "39fea394-c21b-4711-ac41-05a67ad77d64",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": null,
+        "description": "Transfer from Savings",
+        "message": "",
+        "isCategorizable": false,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "300.00",
+          "valueInBaseUnits": 30000
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-28T13:28:54+11:00",
+        "createdAt": "2021-11-28T13:28:54+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": {
+            "type": "accounts",
+            "id": "0fd25489-71f2-4717-bf9e-da752758795e"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/0fd25489-71f2-4717-bf9e-da752758795e"
+          }
+        },
+        "category": {
+          "data": null
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/39fea394-c21b-4711-ac41-05a67ad77d64/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/39fea394-c21b-4711-ac41-05a67ad77d64"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "fb4bcd0f-1d22-4ba0-b42d-012d44b5f891",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": null,
+        "description": "Transfer to Spending",
+        "message": "",
+        "isCategorizable": false,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-300.00",
+          "valueInBaseUnits": -30000
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-28T13:28:54+11:00",
+        "createdAt": "2021-11-28T13:28:54+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "0fd25489-71f2-4717-bf9e-da752758795e"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/0fd25489-71f2-4717-bf9e-da752758795e"
+          }
+        },
+        "transferAccount": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "category": {
+          "data": null
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/fb4bcd0f-1d22-4ba0-b42d-012d44b5f891/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/fb4bcd0f-1d22-4ba0-b42d-012d44b5f891"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "1a53e46f-2a08-4b13-89fa-63af66b96be7",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "KFC WEST GOSFORD          GOSF",
+        "description": "KFC",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-16.45",
+          "valueInBaseUnits": -1645
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-28T10:46:36+11:00",
+        "createdAt": "2021-11-28T10:46:36+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "takeaway"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/1a53e46f-2a08-4b13-89fa-63af66b96be7/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/takeaway"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "good-life"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/good-life"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/1a53e46f-2a08-4b13-89fa-63af66b96be7/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/1a53e46f-2a08-4b13-89fa-63af66b96be7"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "e4327b95-7cdc-4990-9655-658efb2262fe",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": null,
+        "description": "Transfer from Spending",
+        "message": "",
+        "isCategorizable": false,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "300.00",
+          "valueInBaseUnits": 30000
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-28T10:30:09+11:00",
+        "createdAt": "2021-11-28T10:30:09+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "0fd25489-71f2-4717-bf9e-da752758795e"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/0fd25489-71f2-4717-bf9e-da752758795e"
+          }
+        },
+        "transferAccount": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "category": {
+          "data": null
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/e4327b95-7cdc-4990-9655-658efb2262fe/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/e4327b95-7cdc-4990-9655-658efb2262fe"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "763f11db-04f5-4469-a9c4-20eee9829b73",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": null,
+        "description": "Transfer to Savings",
+        "message": "",
+        "isCategorizable": false,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-300.00",
+          "valueInBaseUnits": -30000
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-28T10:30:09+11:00",
+        "createdAt": "2021-11-28T10:30:09+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": {
+            "type": "accounts",
+            "id": "0fd25489-71f2-4717-bf9e-da752758795e"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/0fd25489-71f2-4717-bf9e-da752758795e"
+          }
+        },
+        "category": {
+          "data": null
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/763f11db-04f5-4469-a9c4-20eee9829b73/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/763f11db-04f5-4469-a9c4-20eee9829b73"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "40bdb764-8a99-4872-9b0e-1958bb07b816",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "320.00",
+          "valueInBaseUnits": 32000
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-28T10:29:27+11:00",
+        "createdAt": "2021-11-28T10:29:27+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/40bdb764-8a99-4872-9b0e-1958bb07b816/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/40bdb764-8a99-4872-9b0e-1958bb07b816/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/40bdb764-8a99-4872-9b0e-1958bb07b816"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "b7ef92cf-2ab8-48d4-819f-066d2b18dde8",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "COLES 08211, WEST GOSFORD",
+        "description": "Coles",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": {
+          "amount": {
+            "currencyCode": "AUD",
+            "value": "-1.00",
+            "valueInBaseUnits": -100
+          },
+          "foreignAmount": null
+        },
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-1.00",
+          "valueInBaseUnits": -100
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-26T05:44:18+11:00",
+        "createdAt": "2021-11-24T20:50:26+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "groceries"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/b7ef92cf-2ab8-48d4-819f-066d2b18dde8/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/groceries"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "home"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/home"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/b7ef92cf-2ab8-48d4-819f-066d2b18dde8/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/b7ef92cf-2ab8-48d4-819f-066d2b18dde8"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "68d21b91-28d4-4c89-9e5a-500a34b382d5",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "MR PAUL TAVITIAN",
+        "description": "ANZ",
+        "message": "",
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "1.00",
+          "valueInBaseUnits": 100
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-24T12:12:54+11:00",
+        "createdAt": "2021-11-24T12:12:54+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null,
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/68d21b91-28d4-4c89-9e5a-500a34b382d5/relationships/category"
+          }
+        },
+        "parentCategory": {
+          "data": null
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/68d21b91-28d4-4c89-9e5a-500a34b382d5/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/68d21b91-28d4-4c89-9e5a-500a34b382d5"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "97ac3a25-ff0c-4830-b62b-73aab66bc398",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "COLES 0821                WEST",
+        "description": "Coles",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-2.40",
+          "valueInBaseUnits": -240
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-24T08:30:09+11:00",
+        "createdAt": "2021-11-24T08:30:09+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "groceries"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/97ac3a25-ff0c-4830-b62b-73aab66bc398/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/groceries"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "home"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/home"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/97ac3a25-ff0c-4830-b62b-73aab66bc398/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/97ac3a25-ff0c-4830-b62b-73aab66bc398"
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "c4205a11-da95-4859-8c82-b574695307bd",
+      "attributes": {
+        "status": "SETTLED",
+        "rawText": "KFC WEST GOSFORD          GOSF",
+        "description": "KFC",
+        "message": null,
+        "isCategorizable": true,
+        "holdInfo": null,
+        "roundUp": null,
+        "cashback": null,
+        "amount": {
+          "currencyCode": "AUD",
+          "value": "-7.95",
+          "valueInBaseUnits": -795
+        },
+        "foreignAmount": null,
+        "settledAt": "2021-11-23T20:26:28+11:00",
+        "createdAt": "2021-11-23T20:26:28+11:00"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "accounts",
+            "id": "28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/accounts/28c76929-885a-4133-9b1d-bf6a07aa8b78"
+          }
+        },
+        "transferAccount": {
+          "data": null
+        },
+        "category": {
+          "data": {
+            "type": "categories",
+            "id": "takeaway"
+          },
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/c4205a11-da95-4859-8c82-b574695307bd/relationships/category",
+            "related": "https://api.up.com.au/api/v1/categories/takeaway"
+          }
+        },
+        "parentCategory": {
+          "data": {
+            "type": "categories",
+            "id": "good-life"
+          },
+          "links": {
+            "related": "https://api.up.com.au/api/v1/categories/good-life"
+          }
+        },
+        "tags": {
+          "data": [],
+          "links": {
+            "self": "https://api.up.com.au/api/v1/transactions/c4205a11-da95-4859-8c82-b574695307bd/relationships/tags"
+          }
+        }
+      },
+      "links": {
+        "self": "https://api.up.com.au/api/v1/transactions/c4205a11-da95-4859-8c82-b574695307bd"
+      }
+    }
+  ],
+  "links": {
+    "prev": null,
+    "next": "https://api.up.com.au/api/v1/transactions?page%5Bafter%5D=WyIyMDIxLTExLTIzVDAwOjIwOjM0LjUxMDYyMjAwMFoiLCJkOGMyN2IwNC01NTk4LTQ4M2EtOWUzNy0yOTRlOWU1ZWI0OGUiXQ%3D%3D&page%5Bsize%5D=100"
+  }
+}
