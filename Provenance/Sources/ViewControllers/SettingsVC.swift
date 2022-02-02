@@ -51,7 +51,7 @@ extension SettingsVC {
   }
 
   private func configureObserver() {
-    apiKeyObserver = UserDefaults.provenance.observe(\.apiKey, options: .new) { [weak self] (_, change) in
+    apiKeyObserver = Store.provenance.observe(\.apiKey, options: .new) { [weak self] (_, change) in
       DispatchQueue.main.async {
         if let alertController = self?.presentedViewController as? UIAlertController {
           alertController.textFields?.first?.text = change.newValue
@@ -94,7 +94,7 @@ extension SettingsVC {
           let action = alert.actions.last,
           let text = alert.textFields?.first?.text
     else { return }
-    action.isEnabled = text.count >= 1 && text != UserDefaults.provenance.apiKey
+    action.isEnabled = text.count >= 1 && text != Store.provenance.apiKey
   }
 }
 
@@ -185,8 +185,8 @@ extension SettingsVC: ASTableDelegate {
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
     switch indexPath.section {
     case 0:
-      return UserDefaults.provenance.apiKey.isEmpty ? nil : UIContextMenuConfiguration(elements: [
-        .copyGeneric(title: "API Key", string: UserDefaults.provenance.apiKey)
+      return Store.provenance.apiKey.isEmpty ? nil : UIContextMenuConfiguration(elements: [
+        .copyGeneric(title: "API Key", string: Store.provenance.apiKey)
       ])
     default:
       return nil

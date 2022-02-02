@@ -97,9 +97,9 @@ extension AboutVC: ASTableDataSource {
         case 0:
           return AboutTopCellNode()
         case 1:
-          return RightDetailCellNode(text: "Version", detailText: UserDefaults.provenance.appVersion)
+          return RightDetailCellNode(text: "Version", detailText: Store.provenance.appVersion)
         case 2:
-          return RightDetailCellNode(text: "Build", detailText: UserDefaults.provenance.appBuild)
+          return RightDetailCellNode(text: "Build", detailText: Store.provenance.appBuild)
         default:
           fatalError("Unknown row")
         }
@@ -182,12 +182,12 @@ extension AboutVC: ASTableDelegate {
     case 0:
       switch row {
       case 1:
-        return UserDefaults.provenance.appVersion == "Unknown" ? nil : UIContextMenuConfiguration(elements: [
-          .copyGeneric(title: "Version", string: UserDefaults.provenance.appVersion)
+        return Store.provenance.appVersion == "Unknown" ? nil : UIContextMenuConfiguration(elements: [
+          .copyGeneric(title: "Version", string: Store.provenance.appVersion)
         ])
       case 2:
-        return UserDefaults.provenance.appBuild == "Unknown" ? nil : UIContextMenuConfiguration(elements: [
-          .copyGeneric(title: "Build", string: UserDefaults.provenance.appBuild)
+        return Store.provenance.appBuild == "Unknown" ? nil : UIContextMenuConfiguration(elements: [
+          .copyGeneric(title: "Build", string: Store.provenance.appBuild)
         ])
       default:
         return nil

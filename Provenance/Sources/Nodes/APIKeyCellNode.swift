@@ -8,7 +8,7 @@ final class APIKeyCellNode: ASCellNode {
   private let marqueeLabelNode = MarqueeLabelNode()
 
   private var apiKeyDisplay: String {
-    return UserDefaults.provenance.apiKey.isEmpty ? "None" : UserDefaults.provenance.apiKey
+    return Store.provenance.apiKey.isEmpty ? "None" : Store.provenance.apiKey
   }
 
   // MARK: - Life Cycle

@@ -41,11 +41,11 @@ extension AppDelegate {
         }
       }
 
-      UserDefaults.provenance.register(defaults: defaults)
+      Store.provenance.register(defaults: defaults)
 
 #if DEBUG
-      UserDefaults.provenance.apiKey = ProvenanceKeys().upAPIToken
-      dump(UserDefaults.provenance.dictionaryWithValues(forKeys: UserDefaults.Keys.all))
+      Store.provenance.apiKey = ProvenanceKeys().upAPIToken
+      dump(Store.provenance.dictionaryWithValues(forKeys: UserDefaults.Keys.all))
 #endif
     } catch {
       fatalError(error.localizedDescription)

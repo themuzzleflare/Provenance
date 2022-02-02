@@ -14,14 +14,14 @@ extension UISearchController {
   static func accounts(_ delegate: UISearchBarDelegate) -> UISearchController {
     let searchController = UISearchController(delegate)
     searchController.searchBar.scopeButtonTitles = AccountTypeOptionEnum.allCases.names
-    searchController.searchBar.selectedScopeButtonIndex = UserDefaults.provenance.accountFilter
+    searchController.searchBar.selectedScopeButtonIndex = Store.provenance.accountFilter
     return searchController
   }
 
   static func categories(_ delegate: UISearchBarDelegate) -> UISearchController {
     let searchController = UISearchController(delegate)
     searchController.searchBar.scopeButtonTitles = CategoryTypeEnum.allCases.names
-    searchController.searchBar.selectedScopeButtonIndex = UserDefaults.provenance.categoryFilter
+    searchController.searchBar.selectedScopeButtonIndex = Store.provenance.categoryFilter
     return searchController
   }
 }

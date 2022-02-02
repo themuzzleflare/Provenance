@@ -5,6 +5,8 @@ import WidgetKit
 import FirebaseAnalytics
 #endif
 
+typealias Store = UserDefaults
+
 extension UserDefaults {
   static let provenance = UserDefaults(suiteName: "group.cloud.tavitian.provenance") ?? .standard
 

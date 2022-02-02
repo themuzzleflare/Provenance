@@ -10,10 +10,10 @@ final class AccountsVC: ASViewController {
 
   private let collectionNode = ASCollectionNode(collectionViewLayout: .twoColumnGrid)
 
-  private lazy var accountFilter: AccountTypeOptionEnum = UserDefaults.provenance.appAccountFilter {
+  private lazy var accountFilter: AccountTypeOptionEnum = Store.provenance.appAccountFilter {
     didSet {
-      if UserDefaults.provenance.accountFilter != accountFilter.rawValue {
-        UserDefaults.provenance.accountFilter = accountFilter.rawValue
+      if Store.provenance.accountFilter != accountFilter.rawValue {
+        Store.provenance.accountFilter = accountFilter.rawValue
       }
       DispatchQueue.main.async { [self] in
         if searchController.searchBar.selectedScopeButtonIndex != accountFilter.rawValue {
@@ -89,10 +89,10 @@ extension AccountsVC {
                                            selector: #selector(appMovedToForeground),
                                            name: .willEnterForegroundNotification,
                                            object: nil)
-    apiKeyObserver = UserDefaults.provenance.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+    apiKeyObserver = Store.provenance.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       self?.fetchAccounts()
     }
-    accountFilterObserver = UserDefaults.provenance.observe(\.accountFilter, options: .new) { [weak self] (_, change) in
+    accountFilterObserver = Store.provenance.observe(\.accountFilter, options: .new) { [weak self] (_, change) in
       guard let value = change.newValue, let accountFilter = AccountTypeOptionEnum(rawValue: value) else { return }
       self?.accountFilter = accountFilter
     }

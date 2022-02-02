@@ -69,7 +69,7 @@ enum UpFacade {
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):
-          UserDefaults.provenance.paginationCursor = transactions.links.nextCursor ?? ""
+          Store.provenance.paginationCursor = transactions.links.nextCursor ?? ""
           completion(.success(transactions.data))
         case let .failure(error):
           completion(.failure(error))
@@ -596,7 +596,7 @@ extension UpFacade {
       .validate(validation)
       .serializingDecodable(TransactionsResponse.self).value
 
-    UserDefaults.provenance.paginationCursor = response.links.nextCursor ?? ""
+    Store.provenance.paginationCursor = response.links.nextCursor ?? ""
 
     return response.data
   }

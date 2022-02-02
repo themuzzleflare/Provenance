@@ -167,7 +167,7 @@ extension UIAlertAction {
     let alertAction = UIAlertAction(title: "Save", style: .default, handler: { [weak alertController] (_) in
       if let textField = alertController?.textFields?.first,
          let text = textField.text {
-        if textField.hasText && text != UserDefaults.provenance.apiKey {
+        if textField.hasText && text != Store.provenance.apiKey {
           Up.ping(with: text) { (error) in
             DispatchQueue.main.async {
               if let error = error {
@@ -184,7 +184,7 @@ extension UIAlertAction {
                   style: .success,
                   duration: 2.0
                 ).show()
-                UserDefaults.provenance.apiKey = text
+                Store.provenance.apiKey = text
                 viewController.tableNode.reloadData()
               }
             }
@@ -208,7 +208,7 @@ extension UIAlertAction {
     let alertAction = UIAlertAction(title: "Save", style: .default, handler: { [weak alertController] (_) in
       if let textField = alertController?.textFields?.first,
          let text = textField.text {
-        if textField.hasText && text != UserDefaults.provenance.apiKey {
+        if textField.hasText && text != Store.provenance.apiKey {
           Up.ping(with: text) { (error) in
             DispatchQueue.main.async {
               if let error = error {
@@ -228,7 +228,7 @@ extension UIAlertAction {
                   duration: 2.0
                 )
                 let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
-                UserDefaults.provenance.apiKey = text
+                Store.provenance.apiKey = text
                 sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
               }
             }

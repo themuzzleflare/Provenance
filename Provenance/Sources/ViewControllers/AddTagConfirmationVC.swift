@@ -51,7 +51,7 @@ extension AddTagConfirmationVC {
   }
 
   private func configureObserver() {
-    dateStyleObserver = UserDefaults.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+    dateStyleObserver = Store.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       DispatchQueue.main.async {
         self?.tableNode.reloadData()
       }
@@ -137,7 +137,7 @@ extension AddTagConfirmationVC: ASTableDataSource {
       case 1:
         return transactionCellNode
       case 2:
-        return ASTextCellNode(text: "You are adding \(self.tags.joinedWithComma) to \(self.transaction.attributes.description), which was \(UserDefaults.provenance.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: UITableViewCell.SelectionStyle.none)
+        return ASTextCellNode(text: "You are adding \(self.tags.joinedWithComma) to \(self.transaction.attributes.description), which was \(Store.provenance.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: UITableViewCell.SelectionStyle.none)
       default:
         fatalError("Unknown section")
       }

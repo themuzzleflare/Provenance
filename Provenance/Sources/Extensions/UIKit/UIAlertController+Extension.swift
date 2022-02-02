@@ -97,7 +97,7 @@ extension UIAlertController {
       textField.spellCheckingType = .no
       textField.clearButtonMode = .whileEditing
       textField.textContentType = .password
-      textField.text = UserDefaults.provenance.apiKey
+      textField.text = Store.provenance.apiKey
     }
     alertController.addAction(.cancel)
     alertController.addAction(.saveApiKey(alertController: alertController, viewController: viewController))

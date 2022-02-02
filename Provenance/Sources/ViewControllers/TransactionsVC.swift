@@ -32,10 +32,10 @@ final class TransactionsVC: ASViewController {
 
   private var transactionsError = String()
 
-  private lazy var transactionGrouping: TransactionGroupingEnum = UserDefaults.provenance.appTransactionGrouping {
+  private lazy var transactionGrouping: TransactionGroupingEnum = Store.provenance.appTransactionGrouping {
     didSet {
-      if UserDefaults.provenance.transactionGrouping != transactionGrouping.rawValue {
-        UserDefaults.provenance.transactionGrouping = transactionGrouping.rawValue
+      if Store.provenance.transactionGrouping != transactionGrouping.rawValue {
+        Store.provenance.transactionGrouping = transactionGrouping.rawValue
       }
       filterUpdates()
     }
@@ -58,19 +58,19 @@ final class TransactionsVC: ASViewController {
     }
   }
 
-  private lazy var categoryFilter: TransactionCategory = UserDefaults.provenance.appSelectedCategory {
+  private lazy var categoryFilter: TransactionCategory = Store.provenance.appSelectedCategory {
     didSet {
-      if UserDefaults.provenance.selectedCategory != categoryFilter.rawValue {
-        UserDefaults.provenance.selectedCategory = categoryFilter.rawValue
+      if Store.provenance.selectedCategory != categoryFilter.rawValue {
+        Store.provenance.selectedCategory = categoryFilter.rawValue
       }
       filterUpdates()
     }
   }
 
-  private lazy var showSettledOnly: Bool = UserDefaults.provenance.settledOnly {
+  private lazy var showSettledOnly: Bool = Store.provenance.settledOnly {
     didSet {
-      if UserDefaults.provenance.settledOnly != showSettledOnly {
-        UserDefaults.provenance.settledOnly = showSettledOnly
+      if Store.provenance.settledOnly != showSettledOnly {
+        Store.provenance.settledOnly = showSettledOnly
       }
       filterUpdates()
     }
@@ -122,23 +122,23 @@ extension TransactionsVC {
                                            selector: #selector(appMovedToForeground),
                                            name: .willEnterForegroundNotification,
                                            object: nil)
-    apiKeyObserver = UserDefaults.provenance.observe(\.apiKey, options: .new) { [weak self] (_, _) in
+    apiKeyObserver = Store.provenance.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       self?.fetchingTasks()
     }
-    dateStyleObserver = UserDefaults.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
+    dateStyleObserver = Store.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       DispatchQueue.main.async {
         self?.adapter.performUpdates(animated: true, completion: nil)
       }
     }
-    settledOnlyObserver = UserDefaults.provenance.observe(\.settledOnly, options: .new) { [weak self] (_, change) in
+    settledOnlyObserver = Store.provenance.observe(\.settledOnly, options: .new) { [weak self] (_, change) in
       guard let value = change.newValue else { return }
       self?.showSettledOnly = value
     }
-    paginationCursorObserver = UserDefaults.provenance.observe(\.paginationCursor, options: .new) { [weak self] (_, change) in
+    paginationCursorObserver = Store.provenance.observe(\.paginationCursor, options: .new) { [weak self] (_, change) in
       guard let value = change.newValue else { return }
       self?.cursor = value.isEmpty ? nil : value
     }
-    transactionGroupingObserver = UserDefaults.provenance.observe(\.transactionGrouping, options: .new) { [weak self] (_, change) in
+    transactionGroupingObserver = Store.provenance.observe(\.transactionGrouping, options: .new) { [weak self] (_, change) in
       guard let value = change.newValue, let grouping = TransactionGroupingEnum(rawValue: value) else { return }
       self?.transactionGrouping = grouping
     }
@@ -176,11 +176,11 @@ extension TransactionsVC {
 
   @objc
   private func switchDateStyle() {
-    switch UserDefaults.provenance.appDateStyle {
+    switch Store.provenance.appDateStyle {
     case .absolute:
-      UserDefaults.provenance.appDateStyle = .relative
+      Store.provenance.appDateStyle = .relative
     case .relative:
-      UserDefaults.provenance.appDateStyle = .absolute
+      Store.provenance.appDateStyle = .absolute
     }
   }
 

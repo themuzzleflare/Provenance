@@ -178,11 +178,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 extension SceneDelegate {
   private func checkApiKey() {
-    if UserDefaults.provenance.apiKey.isEmpty && window?.rootViewController?.presentedViewController == nil {
+    if Store.provenance.apiKey.isEmpty && window?.rootViewController?.presentedViewController == nil {
       let alertController = UIAlertController.noApiKey(self, selector: #selector(textChanged))
       window?.rootViewController?.present(alertController, animated: true)
-    } else if !UserDefaults.provenance.apiKey.isEmpty, let alertController = window?.rootViewController?.presentedViewController as? UIAlertController {
-      alertController.textFields?.first?.text = UserDefaults.provenance.apiKey
+    } else if !Store.provenance.apiKey.isEmpty, let alertController = window?.rootViewController?.presentedViewController as? UIAlertController {
+      alertController.textFields?.first?.text = Store.provenance.apiKey
       alertController.dismiss(animated: true)
     }
   }
@@ -193,6 +193,6 @@ extension SceneDelegate {
           let action = alert.actions.last,
           let text = alert.textFields?.first?.text
     else { return }
-    action.isEnabled = text.count >= 1 && text != UserDefaults.provenance.apiKey
+    action.isEnabled = text.count >= 1 && text != Store.provenance.apiKey
   }
 }
