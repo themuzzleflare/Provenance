@@ -7,16 +7,4 @@ struct ModifyTags: Codable {
   init(tags: [TagResource]) {
     self.data = tags.tagInputResourceIdentifiers
   }
-
-  init(tags: TagResource...) {
-    self.data = tags.tagInputResourceIdentifiers
-  }
-
-  init(tags: [String]) {
-    self.data = tags.tagInputResourceIdentifiers
-  }
-
-  init(tags: String...) {
-    self.data = tags.tagInputResourceIdentifiers
-  }
 }

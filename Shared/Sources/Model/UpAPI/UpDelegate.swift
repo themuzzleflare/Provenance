@@ -16,11 +16,4 @@ final class UpDelegate: SessionDelegate {
     super.urlSession(session, taskIsWaitingForConnectivity: task)
     print("taskIsWaitingForConnectivity")
   }
-
-  override func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-    super.urlSession(session, task: task, didCompleteWithError: error)
-    if let error = error {
-      print("didCompleteWithError: \(error.localizedDescription)")
-    }
-  }
 }

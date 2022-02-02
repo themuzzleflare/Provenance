@@ -4,9 +4,18 @@ import Alamofire
 typealias Up = UpFacade
 
 enum UpFacade {
+  private static let baseUrl = "https://api.up.com.au/api/v1"
   private static let delegate = UpDelegate()
   private static let interceptor = UpInterceptor()
-  private static let session = Session(delegate: delegate, interceptor: interceptor)
+  private static let eventMonitor = UpEventMonitor()
+  private static let session = Session(delegate: delegate, interceptor: interceptor, eventMonitors: [eventMonitor])
+  private static let validation: DataRequest.Validation = { (_, response, data) in
+    if let data = data, let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data), let firstError = errorResponse.errors.first {
+      let error = UpError(statusCode: response.statusCode, detail: firstError.detail)
+      return .failure(error)
+    }
+    return .success(())
+  }
 
   /// Ping
   ///
@@ -24,9 +33,9 @@ enum UpFacade {
       .authorization(bearerToken: key)
     ]
 
-    session.request("https://api.up.com.au/api/v1/util/ping",
+    session.request("\(baseUrl)/util/ping",
                     headers: headers)
-      .validate()
+      .validate(validation)
       .response { (response) in
         completion(response.error)
       }
@@ -54,9 +63,9 @@ enum UpFacade {
       parameters.updateValue(cursor, forKey: ParamKeys.pageAfter)
     }
 
-    session.request("https://api.up.com.au/api/v1/transactions",
+    session.request("\(baseUrl)/transactions",
                     parameters: parameters)
-      .validate()
+      .validate(validation)
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):
@@ -91,9 +100,9 @@ enum UpFacade {
       parameters.updateValue(cursor, forKey: ParamKeys.pageAfter)
     }
 
-    session.request("https://api.up.com.au/api/v1/transactions",
+    session.request("\(baseUrl)/transactions",
                     parameters: parameters)
-      .validate()
+      .validate(validation)
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):
@@ -130,9 +139,9 @@ enum UpFacade {
       ParamKeys.pageSize: "100"
     ]
 
-    session.request("https://api.up.com.au/api/v1/accounts/\(account.id)/transactions",
+    session.request("\(baseUrl)/accounts/\(account.id)/transactions",
                     parameters: parameters)
-      .validate()
+      .validate(validation)
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):
@@ -162,9 +171,9 @@ enum UpFacade {
       ParamKeys.pageSize: "100"
     ]
 
-    session.request("https://api.up.com.au/api/v1/transactions",
+    session.request("\(baseUrl)/transactions",
                     parameters: parameters)
-      .validate()
+      .validate(validation)
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):
@@ -194,9 +203,9 @@ enum UpFacade {
       ParamKeys.pageSize: "100"
     ]
 
-    session.request("https://api.up.com.au/api/v1/transactions",
+    session.request("\(baseUrl)/transactions",
                     parameters: parameters)
-      .validate()
+      .validate(validation)
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):
@@ -218,9 +227,9 @@ enum UpFacade {
       ParamKeys.pageSize: "1"
     ]
 
-    session.request("https://api.up.com.au/api/v1/transactions",
+    session.request("\(baseUrl)/transactions",
                     parameters: parameters)
-      .validate()
+      .validate(validation)
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):
@@ -249,9 +258,9 @@ enum UpFacade {
       ParamKeys.pageSize: "1"
     ]
 
-    session.request("https://api.up.com.au/api/v1/accounts/\(account.id)/transactions",
+    session.request("\(baseUrl)/accounts/\(account.id)/transactions",
                     parameters: parameters)
-      .validate()
+      .validate(validation)
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):
@@ -269,15 +278,15 @@ enum UpFacade {
   /// Retrieve transaction
   ///
   /// - Parameters:
-  ///   - transaction: The transaction to retrieve.
+  ///   - transactionId: The unique identifier for the transaction to retrieve.
   ///   - completion: Block to execute for handling the request response.
   ///
   /// Retrieve a specific transaction by providing its unique identifier.
 
-  static func retrieveTransaction(for transaction: TransactionResource,
+  static func retrieveTransaction(for transactionId: String,
                                   completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
-    session.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)")
-      .validate()
+    session.request("\(baseUrl)/transactions/\(transactionId)")
+      .validate(validation)
       .responseDecodable(of: TransactionResponse.self) { (response) in
         switch response.result {
         case let .success(transaction):
@@ -291,23 +300,14 @@ enum UpFacade {
   /// Retrieve transaction
   ///
   /// - Parameters:
-  ///   - transactionId: The unique identifier for the transaction to retrieve.
+  ///   - transaction: The transaction to retrieve.
   ///   - completion: Block to execute for handling the request response.
   ///
   /// Retrieve a specific transaction by providing its unique identifier.
 
-  static func retrieveTransaction(for transactionId: String,
+  static func retrieveTransaction(for transaction: TransactionResource,
                                   completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
-    session.request("https://api.up.com.au/api/v1/transactions/\(transactionId)")
-      .validate()
-      .responseDecodable(of: TransactionResponse.self) { (response) in
-        switch response.result {
-        case let .success(transaction):
-          completion(.success(transaction.data))
-        case let .failure(error):
-          completion(.failure(error))
-        }
-      }
+    retrieveTransaction(for: transaction.id, completion: completion)
   }
 
   /// List accounts
@@ -322,35 +322,13 @@ enum UpFacade {
       ParamKeys.pageSize: "100"
     ]
 
-    session.request("https://api.up.com.au/api/v1/accounts",
+    session.request("\(baseUrl)/accounts",
                     parameters: parameters)
-      .validate()
+      .validate(validation)
       .responseDecodable(of: AccountsResponse.self) { (response) in
         switch response.result {
         case let .success(accounts):
           completion(.success(accounts.data))
-        case let .failure(error):
-          completion(.failure(error))
-        }
-      }
-  }
-
-  /// Retrieve account
-  ///
-  /// - Parameters:
-  ///   - account: The account to retrieve.
-  ///   - completion: Block to execute for handling the request response.
-  ///
-  /// Retrieve a specific account by providing its unique identifier.
-
-  static func retrieveAccount(for account: AccountResource,
-                              completion: @escaping (Result<AccountResource, AFError>) -> Void) {
-    session.request("https://api.up.com.au/api/v1/accounts/\(account.id)")
-      .validate()
-      .responseDecodable(of: AccountResponse.self) { (response) in
-        switch response.result {
-        case let .success(account):
-          completion(.success(account.data))
         case let .failure(error):
           completion(.failure(error))
         }
@@ -367,8 +345,8 @@ enum UpFacade {
 
   static func retrieveAccount(for accountId: String,
                               completion: @escaping (Result<AccountResource, AFError>) -> Void) {
-    session.request("https://api.up.com.au/api/v1/accounts/\(accountId)")
-      .validate()
+    session.request("\(baseUrl)/accounts/\(accountId)")
+      .validate(validation)
       .responseDecodable(of: AccountResponse.self) { (response) in
         switch response.result {
         case let .success(account):
@@ -377,6 +355,19 @@ enum UpFacade {
           completion(.failure(error))
         }
       }
+  }
+
+  /// Retrieve account
+  ///
+  /// - Parameters:
+  ///   - account: The account to retrieve.
+  ///   - completion: Block to execute for handling the request response.
+  ///
+  /// Retrieve a specific account by providing its unique identifier.
+
+  static func retrieveAccount(for account: AccountResource,
+                              completion: @escaping (Result<AccountResource, AFError>) -> Void) {
+    retrieveAccount(for: account.id, completion: completion)
   }
 
   /// List tags
@@ -393,9 +384,9 @@ enum UpFacade {
       ParamKeys.pageSize: "100"
     ]
 
-    session.request("https://api.up.com.au/api/v1/tags",
+    session.request("\(baseUrl)/tags",
                     parameters: parameters)
-      .validate()
+      .validate(validation)
       .responseDecodable(of: TagsResponse.self) { (response) in
         switch response.result {
         case let .success(tags):
@@ -420,39 +411,13 @@ enum UpFacade {
   /// The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
 
   static func modifyTags(adding tags: [TagResource],
-                         to transaction: TransactionResource,
-                         completion: @escaping (AFError?) -> Void) {
-    session.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
-                    method: .post,
-                    parameters: ModifyTags(tags: tags),
-                    encoder: .json)
-      .validate()
-      .response { (response) in
-        completion(response.error)
-      }
-  }
-
-  /// Add tags to transaction
-  ///
-  /// - Parameters:
-  ///   - tags: The labels of the tags to add.
-  ///   - transaction: The unique identifier for the transaction to add the tags to.
-  ///   - completion: Block to execute for handling the request response.
-  ///
-  /// Associates one or more tags with a specific transaction.
-  /// No more than 6 tags may be present on any single transaction.
-  /// Duplicate tags are silently ignored.
-  /// An HTTP `204` is returned on success.
-  /// The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
-
-  static func modifyTags(adding tags: [String],
                          to transaction: String,
                          completion: @escaping (AFError?) -> Void) {
-    session.request("https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags",
+    session.request("\(baseUrl)/transactions/\(transaction)/relationships/tags",
                     method: .post,
                     parameters: ModifyTags(tags: tags),
                     encoder: .json)
-      .validate()
+      .validate(validation)
       .response { (response) in
         completion(response.error)
       }
@@ -461,8 +426,8 @@ enum UpFacade {
   /// Add tags to transaction
   ///
   /// - Parameters:
-  ///   - tag: The tag to add.
-  ///   - transaction: The transaction to add the tag to.
+  ///   - tags: The tags to add.
+  ///   - transaction: The transaction to add the tags to.
   ///   - completion: Block to execute for handling the request response.
   ///
   /// Associates one or more tags with a specific transaction.
@@ -471,14 +436,32 @@ enum UpFacade {
   /// An HTTP `204` is returned on success.
   /// The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
 
-  static func modifyTags(adding tags: TagResource...,
+  static func modifyTags(adding tags: [TagResource],
                          to transaction: TransactionResource,
                          completion: @escaping (AFError?) -> Void) {
-    session.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
-                    method: .post,
+    modifyTags(adding: tags, to: transaction.id, completion: completion)
+  }
+
+  /// Remove tags from transaction
+  ///
+  /// - Parameters:
+  ///   - tags: The tags to remove.
+  ///   - transaction: The transaction to remove the tags from.
+  ///   - completion: Block to execute for handling the request response.
+  ///
+  /// Disassociates one or more tags from a specific transaction.
+  /// Tags that are not associated are silently ignored.
+  /// An HTTP `204` is returned on success.
+  /// The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
+
+  static func modifyTags(removing tags: [TagResource],
+                         from transaction: String,
+                         completion: @escaping (AFError?) -> Void) {
+    session.request("\(baseUrl)/transactions/\(transaction)/relationships/tags",
+                    method: .delete,
                     parameters: ModifyTags(tags: tags),
                     encoder: .json)
-      .validate()
+      .validate(validation)
       .response { (response) in
         completion(response.error)
       }
@@ -499,64 +482,7 @@ enum UpFacade {
   static func modifyTags(removing tags: [TagResource],
                          from transaction: TransactionResource,
                          completion: @escaping (AFError?) -> Void) {
-    session.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
-                    method: .delete,
-                    parameters: ModifyTags(tags: tags),
-                    encoder: .json)
-      .validate()
-      .response { (response) in
-        completion(response.error)
-      }
-  }
-
-  /// Remove tags from transaction
-  ///
-  /// - Parameters:
-  ///   - tags: The labels of the tags to remove.
-  ///   - transaction: The unique identifier for the transaction to remove the tags from.
-  ///   - completion: Block to execute for handling the request response.
-  ///
-  /// Disassociates one or more tags from a specific transaction.
-  /// Tags that are not associated are silently ignored.
-  /// An HTTP `204` is returned on success.
-  /// The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
-
-  static func modifyTags(removing tags: [String],
-                         from transaction: String,
-                         completion: @escaping (AFError?) -> Void) {
-    session.request("https://api.up.com.au/api/v1/transactions/\(transaction)/relationships/tags",
-                    method: .delete,
-                    parameters: ModifyTags(tags: tags),
-                    encoder: .json)
-      .validate()
-      .response { (response) in
-        completion(response.error)
-      }
-  }
-
-  /// Remove tags from transaction
-  ///
-  /// - Parameters:
-  ///   - tag: The tag to remove.
-  ///   - transaction: The transaction to remove the tag from.
-  ///   - completion: Block to execute for handling the request response.
-  ///
-  /// Disassociates one or more tags from a specific transaction.
-  /// Tags that are not associated are silently ignored.
-  /// An HTTP `204` is returned on success.
-  /// The associated tags, along with this request URL, are also exposed via the `tags` relationship on the transaction resource returned from `/transactions/{id}`.
-
-  static func modifyTags(removing tags: TagResource...,
-                         from transaction: TransactionResource,
-                         completion: @escaping (AFError?) -> Void) {
-    session.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/tags",
-                    method: .delete,
-                    parameters: ModifyTags(tags: tags),
-                    encoder: .json)
-      .validate()
-      .response { (response) in
-        completion(response.error)
-      }
+    modifyTags(removing: tags, from: transaction.id, completion: completion)
   }
 
   /// List categories
@@ -566,34 +492,12 @@ enum UpFacade {
   /// Retrieve a list of all categories and their ancestry. The returned list is not paginated.
 
   static func listCategories(completion: @escaping (Result<[CategoryResource], AFError>) -> Void) {
-    session.request("https://api.up.com.au/api/v1/categories")
-      .validate()
+    session.request("\(baseUrl)/categories")
+      .validate(validation)
       .responseDecodable(of: CategoriesResponse.self) { (response) in
         switch response.result {
         case let .success(categories):
           completion(.success(categories.data))
-        case let .failure(error):
-          completion(.failure(error))
-        }
-      }
-  }
-
-  /// Retrieve category
-  ///
-  /// - Parameters:
-  ///   - category: The category to retrieve.
-  ///   - completion: Block to execute for handling the request response.
-  ///
-  /// Retrieve a specific category by providing its unique identifier.
-
-  static func retrieveCategory(for category: CategoryResource,
-                               completion: @escaping (Result<CategoryResource, AFError>) -> Void) {
-    session.request("https://api.up.com.au/api/v1/categories/\(category.id)")
-      .validate()
-      .responseDecodable(of: CategoryResponse.self) { (response) in
-        switch response.result {
-        case let .success(category):
-          completion(.success(category.data))
         case let .failure(error):
           completion(.failure(error))
         }
@@ -610,8 +514,8 @@ enum UpFacade {
 
   static func retrieveCategory(for categoryId: String,
                                completion: @escaping (Result<CategoryResource, AFError>) -> Void) {
-    session.request("https://api.up.com.au/api/v1/categories/\(categoryId)")
-      .validate()
+    session.request("\(baseUrl)/categories/\(categoryId)")
+      .validate(validation)
       .responseDecodable(of: CategoryResponse.self) { (response) in
         switch response.result {
         case let .success(category):
@@ -620,6 +524,19 @@ enum UpFacade {
           completion(.failure(error))
         }
       }
+  }
+
+  /// Retrieve category
+  ///
+  /// - Parameters:
+  ///   - category: The category to retrieve.
+  ///   - completion: Block to execute for handling the request response.
+  ///
+  /// Retrieve a specific category by providing its unique identifier.
+
+  static func retrieveCategory(for category: CategoryResource,
+                               completion: @escaping (Result<CategoryResource, AFError>) -> Void) {
+    retrieveCategory(for: category.id, completion: completion)
   }
 
   /// Categorize transaction
@@ -639,11 +556,11 @@ enum UpFacade {
   static func categorise(transaction: TransactionResource,
                          category: CategoryResource? = nil,
                          completion: @escaping (AFError?) -> Void) {
-    session.request("https://api.up.com.au/api/v1/transactions/\(transaction.id)/relationships/category",
+    session.request("\(baseUrl)/transactions/\(transaction.id)/relationships/category",
                     method: .patch,
                     parameters: ModifyCategories(category: category),
                     encoder: .json)
-      .validate()
+      .validate(validation)
       .response { (response) in
         completion(response.error)
       }
@@ -657,8 +574,7 @@ enum UpFacade {
 extension UpFacade {
   /// List transactions
   ///
-  /// - Parameters:
-  ///   - cursor: The pagination cursor to apply to the request.
+  /// - Parameter cursor: The pagination cursor to apply to the request.
   ///
   /// Retrieve a list of all transactions across all accounts for the currently authenticated user.
   /// The returned list is [paginated](https://developer.up.com.au/#pagination) and can be scrolled by following the `next` and `prev` links where present.
@@ -675,9 +591,9 @@ extension UpFacade {
       parameters.updateValue(cursor, forKey: ParamKeys.pageAfter)
     }
 
-    let response = try await session.request("https://api.up.com.au/api/v1/transactions",
+    let response = try await session.request("\(baseUrl)/transactions",
                                              parameters: parameters)
-      .validate()
+      .validate(validation)
       .serializingDecodable(TransactionsResponse.self).value
 
     UserDefaults.provenance.paginationCursor = response.links.nextCursor ?? ""

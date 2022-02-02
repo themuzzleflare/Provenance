@@ -177,28 +177,30 @@ extension TagsVCAlt {
   }
 
   private func applySnapshot(animate: Bool = true) {
-    var snapshot = Snapshot()
+    DispatchQueue.main.async { [self] in
+      var snapshot = Snapshot()
 
-    snapshot.appendSections(filteredTags.sortedTags)
-    filteredTags.sortedTags.forEach { snapshot.appendItems($0.tags, toSection: $0) }
+      snapshot.appendSections(filteredTags.sortedTags)
+      filteredTags.sortedTags.forEach { snapshot.appendItems($0.tags, toSection: $0) }
 
-    if filteredTags.isEmpty && tagsError.isEmpty {
-      if tags.isEmpty && !noTags {
-        tableView.backgroundView = .loadingView(frame: tableView.bounds, contentType: .tags)
+      if filteredTags.isEmpty && tagsError.isEmpty {
+        if tags.isEmpty && !noTags {
+          tableView.backgroundView = .loadingView(frame: tableView.bounds, contentType: .tags)
+        } else {
+          tableView.backgroundView = .noContentView(frame: tableView.bounds, type: .tags)
+        }
       } else {
-        tableView.backgroundView = .noContentView(frame: tableView.bounds, type: .tags)
-      }
-    } else {
-      if !tagsError.isEmpty {
-        tableView.backgroundView = .errorView(frame: tableView.bounds, text: tagsError)
-      } else {
-        if tableView.backgroundView != nil {
-          tableView.backgroundView = nil
+        if !tagsError.isEmpty {
+          tableView.backgroundView = .errorView(frame: tableView.bounds, text: tagsError)
+        } else {
+          if tableView.backgroundView != nil {
+            tableView.backgroundView = nil
+          }
         }
       }
-    }
 
-    dataSource.apply(snapshot, animatingDifferences: animate)
+      dataSource.apply(snapshot, animatingDifferences: animate)
+    }
   }
 
   private func fetchTags() {
@@ -226,7 +228,7 @@ extension TagsVCAlt {
   }
 
   private func display(_ error: AFError) {
-    tagsError = error.errorDescription ?? error.localizedDescription
+    tagsError = error.underlyingError?.localizedDescription ?? error.localizedDescription
     tags.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"

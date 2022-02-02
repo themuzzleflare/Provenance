@@ -15,8 +15,10 @@ final class AccountsVC: ASViewController {
       if UserDefaults.provenance.accountFilter != accountFilter.rawValue {
         UserDefaults.provenance.accountFilter = accountFilter.rawValue
       }
-      if searchController.searchBar.selectedScopeButtonIndex != accountFilter.rawValue {
-        searchController.searchBar.selectedScopeButtonIndex = accountFilter.rawValue
+      DispatchQueue.main.async { [self] in
+        if searchController.searchBar.selectedScopeButtonIndex != accountFilter.rawValue {
+          searchController.searchBar.selectedScopeButtonIndex = accountFilter.rawValue
+        }
       }
     }
   }
@@ -134,40 +136,42 @@ extension AccountsVC {
   }
 
   private func applySnapshot(override: Bool = false) {
-    let result = ListDiffPaths(
-      fromSection: 0,
-      toSection: 0,
-      oldArray: oldAccountCellModels,
-      newArray: filteredAccounts.accountCellModels,
-      option: .equality
-    ).forBatchUpdates()
+    DispatchQueue.main.async { [self] in
+      let result = ListDiffPaths(
+        fromSection: 0,
+        toSection: 0,
+        oldArray: oldAccountCellModels,
+        newArray: filteredAccounts.accountCellModels,
+        option: .equality
+      ).forBatchUpdates()
 
-    if result.hasChanges || override || !accountsError.isEmpty || noAccounts || searchController.searchBar.searchTextField.hasText {
-      if filteredAccounts.isEmpty && accountsError.isEmpty {
-        if accounts.isEmpty && !noAccounts {
-          collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds, contentType: .accounts)
+      if result.hasChanges || override || !accountsError.isEmpty || noAccounts || searchController.searchBar.searchTextField.hasText {
+        if filteredAccounts.isEmpty && accountsError.isEmpty {
+          if accounts.isEmpty && !noAccounts {
+            collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds, contentType: .accounts)
+          } else {
+            collectionNode.view.backgroundView = .noContentView(frame: collectionNode.bounds, type: .accounts)
+          }
         } else {
-          collectionNode.view.backgroundView = .noContentView(frame: collectionNode.bounds, type: .accounts)
-        }
-      } else {
-        if !accountsError.isEmpty {
-          collectionNode.view.backgroundView = .errorView(frame: collectionNode.bounds, text: accountsError)
-        } else {
-          if collectionNode.view.backgroundView != nil {
-            collectionNode.view.backgroundView = nil
+          if !accountsError.isEmpty {
+            collectionNode.view.backgroundView = .errorView(frame: collectionNode.bounds, text: accountsError)
+          } else {
+            if collectionNode.view.backgroundView != nil {
+              collectionNode.view.backgroundView = nil
+            }
           }
         }
-      }
 
-      let batchUpdates = { [self] in
-        collectionNode.deleteItems(at: result.deletes)
-        collectionNode.insertItems(at: result.inserts)
-        result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
-        collectionNode.reloadItems(at: result.updates)
-        oldAccountCellModels = filteredAccounts.accountCellModels
-      }
+        let batchUpdates = {
+          collectionNode.deleteItems(at: result.deletes)
+          collectionNode.insertItems(at: result.inserts)
+          result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
+          collectionNode.reloadItems(at: result.updates)
+          oldAccountCellModels = filteredAccounts.accountCellModels
+        }
 
-      collectionNode.performBatchUpdates(batchUpdates)
+        collectionNode.performBatchUpdates(batchUpdates)
+      }
     }
   }
 
@@ -193,7 +197,7 @@ extension AccountsVC {
   }
 
   private func display(_ error: AFError) {
-    accountsError = error.errorDescription ?? error.localizedDescription
+    accountsError = error.underlyingError?.localizedDescription ?? error.localizedDescription
     accounts.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"

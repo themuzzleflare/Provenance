@@ -126,7 +126,9 @@ extension TransactionsVC {
       self?.fetchingTasks()
     }
     dateStyleObserver = UserDefaults.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
-      self?.adapter.performUpdates(animated: true, completion: nil)
+      DispatchQueue.main.async {
+        self?.adapter.performUpdates(animated: true, completion: nil)
+      }
     }
     settledOnlyObserver = UserDefaults.provenance.observe(\.settledOnly, options: .new) { [weak self] (_, change) in
       guard let value = change.newValue else { return }
@@ -198,9 +200,11 @@ extension TransactionsVC {
   }
 
   private func filterUpdates() {
-    filterBarButtonItem.menu = filterMenu
-    searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
-    adapter.performUpdates(animated: true, completion: nil)
+    DispatchQueue.main.async { [self] in
+      filterBarButtonItem.menu = filterMenu
+      searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
+      adapter.performUpdates(animated: true, completion: nil)
+    }
   }
 
   private func fetchingTasks() {
@@ -266,7 +270,7 @@ extension TransactionsVC {
   }
 
   private func display(_ error: AFError) {
-    transactionsError = error.errorDescription ?? error.localizedDescription
+    transactionsError = error.underlyingError?.localizedDescription ?? error.localizedDescription
     transactions.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"

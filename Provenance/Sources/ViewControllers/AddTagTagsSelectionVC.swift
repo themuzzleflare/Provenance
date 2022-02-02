@@ -234,39 +234,41 @@ extension AddTagTagsSelectionVC {
   }
 
   private func applySnapshot(override: Bool = false) {
-    let result = ListDiffPaths(
-      fromSection: 0,
-      toSection: 0,
-      oldArray: oldTagCellModels,
-      newArray: filteredTags.tagCellModels,
-      option: .equality
-    ).forBatchUpdates()
+    DispatchQueue.main.async { [self] in
+      let result = ListDiffPaths(
+        fromSection: 0,
+        toSection: 0,
+        oldArray: oldTagCellModels,
+        newArray: filteredTags.tagCellModels,
+        option: .equality
+      ).forBatchUpdates()
 
-    if result.hasChanges || override || !tagsError.isEmpty || noTags || searchController.searchBar.searchTextField.hasText {
-      if filteredTags.isEmpty && tagsError.isEmpty {
-        if tags.isEmpty && !noTags {
-          tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .tags)
+      if result.hasChanges || override || !tagsError.isEmpty || noTags || searchController.searchBar.searchTextField.hasText {
+        if filteredTags.isEmpty && tagsError.isEmpty {
+          if tags.isEmpty && !noTags {
+            tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .tags)
+          } else {
+            tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .tags)
+          }
         } else {
-          tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .tags)
-        }
-      } else {
-        if !tagsError.isEmpty {
-          tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: tagsError)
-        } else {
-          if tableNode.view.backgroundView != nil {
-            tableNode.view.backgroundView = nil
+          if !tagsError.isEmpty {
+            tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: tagsError)
+          } else {
+            if tableNode.view.backgroundView != nil {
+              tableNode.view.backgroundView = nil
+            }
           }
         }
-      }
 
-      let batchUpdates = { [self] in
-        tableNode.deleteRows(at: result.deletes, with: .automatic)
-        tableNode.insertRows(at: result.inserts, with: .automatic)
-        result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldTagCellModels = filteredTags.tagCellModels
-      }
+        let batchUpdates = {
+          tableNode.deleteRows(at: result.deletes, with: .automatic)
+          tableNode.insertRows(at: result.inserts, with: .automatic)
+          result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
+          oldTagCellModels = filteredTags.tagCellModels
+        }
 
-      tableNode.performBatchUpdates(batchUpdates)
+        tableNode.performBatchUpdates(batchUpdates)
+      }
     }
   }
 
@@ -295,7 +297,7 @@ extension AddTagTagsSelectionVC {
   }
 
   private func display(_ error: AFError) {
-    tagsError = error.errorDescription ?? error.localizedDescription
+    tagsError = error.underlyingError?.localizedDescription ?? error.localizedDescription
     tags.removeAll()
     setEditing(false, animated: false)
     if navigationItem.title != "Error" {

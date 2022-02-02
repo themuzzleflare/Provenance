@@ -19,7 +19,7 @@ extension IntentHandler: AccountSelectionIntentHandling {
       case let .success(accounts):
         completion(accounts.accountTypes.collection, nil)
       case let .failure(error):
-        completion(nil, error)
+        completion(nil, error.underlyingError ?? error)
       }
     }
   }
@@ -48,7 +48,7 @@ extension IntentHandler: ListTransactionsIntentHandling {
       case let .success(accounts):
         completion(accounts.accountTypes.collection, nil)
       case let .failure(error):
-        completion(nil, error)
+        completion(nil, error.underlyingError ?? error)
       }
     }
   }
@@ -60,7 +60,7 @@ extension IntentHandler: ListTransactionsIntentHandling {
       case let .success(categories):
         completion(categories.categoryTypes.collection, nil)
       case let .failure(error):
-        completion(nil, error)
+        completion(nil, error.underlyingError ?? error)
       }
     }
   }
@@ -72,7 +72,7 @@ extension IntentHandler: ListTransactionsIntentHandling {
       case let .success(tags):
         completion(tags.nsStringArray.collection, nil)
       case let .failure(error):
-        completion(nil, error)
+        completion(nil, error.underlyingError ?? error)
       }
     }
   }
@@ -128,7 +128,7 @@ extension IntentHandler: ListTransactionsIntentHandling {
             completion(.success(transactions: transactions.data.transactionTypes, transactionsCount: transactions.data.count.nsNumber))
           }
         case let .failure(error):
-          completion(.failure(error: error.errorDescription ?? error.localizedDescription))
+          completion(.failure(error: error.underlyingError?.localizedDescription ?? error.localizedDescription))
         }
       }
   }
@@ -144,7 +144,7 @@ extension IntentHandler: AddTagToTransactionIntentHandling {
       case let .success(transactions):
         completion(transactions.transactionTypes.collection, nil)
       case let .failure(error):
-        completion(nil, error)
+        completion(nil, error.underlyingError ?? error)
       }
     }
   }
@@ -156,7 +156,7 @@ extension IntentHandler: AddTagToTransactionIntentHandling {
       case let .success(tags):
         completion(tags.nsStringArray.collection, nil)
       case let .failure(error):
-        completion(nil, error)
+        completion(nil, error.underlyingError ?? error)
       }
     }
   }
@@ -195,9 +195,9 @@ extension IntentHandler: AddTagToTransactionIntentHandling {
       completion(.failure(error: "No tags selected."))
       return
     }
-    Up.modifyTags(adding: tags, to: transactionIdentifier) { (error) in
+    Up.modifyTags(adding: tags.tagResources, to: transactionIdentifier) { (error) in
       if let error = error {
-        completion(.failure(error: error.errorDescription ?? error.localizedDescription))
+        completion(.failure(error: error.underlyingError?.localizedDescription ?? error.localizedDescription))
       } else {
         completion(.success(tags: tags, transaction: transaction, userActivity: .addedTagsToTransaction))
       }
@@ -215,7 +215,7 @@ extension IntentHandler: RemoveTagFromTransactionIntentHandling {
       case let .success(transactions):
         completion(transactions.transactionTypes.collection, nil)
       case let .failure(error):
-        completion(nil, error)
+        completion(nil, error.underlyingError ?? error)
       }
     }
   }
@@ -231,7 +231,7 @@ extension IntentHandler: RemoveTagFromTransactionIntentHandling {
       case let .success(transaction):
         completion(transaction.tagsArray.collection, nil)
       case let .failure(error):
-        completion(nil, error)
+        completion(nil, error.underlyingError ?? error)
       }
     }
   }
@@ -275,9 +275,9 @@ extension IntentHandler: RemoveTagFromTransactionIntentHandling {
       completion(.failure(error: "No tags selected."))
       return
     }
-    Up.modifyTags(removing: tags, from: transactionIdentifier) { (error) in
+    Up.modifyTags(removing: tags.tagResources, from: transactionIdentifier) { (error) in
       if let error = error {
-        completion(.failure(error: error.errorDescription ?? error.localizedDescription))
+        completion(.failure(error: error.underlyingError?.localizedDescription ?? error.localizedDescription))
       } else {
         completion(.success(tags: tags, transaction: transaction))
       }

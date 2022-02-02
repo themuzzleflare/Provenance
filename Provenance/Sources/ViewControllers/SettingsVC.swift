@@ -52,11 +52,13 @@ extension SettingsVC {
 
   private func configureObserver() {
     apiKeyObserver = UserDefaults.provenance.observe(\.apiKey, options: .new) { [weak self] (_, change) in
-      if let alertController = self?.presentedViewController as? UIAlertController {
-        alertController.textFields?.first?.text = change.newValue
-        alertController.actions.last?.isEnabled = false
+      DispatchQueue.main.async {
+        if let alertController = self?.presentedViewController as? UIAlertController {
+          alertController.textFields?.first?.text = change.newValue
+          alertController.actions.last?.isEnabled = false
+        }
+        self?.tableNode.reloadData()
       }
-      self?.tableNode.reloadData()
     }
   }
 
@@ -108,7 +110,6 @@ extension SettingsVC: ASTableDataSource {
   }
 
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let settingsNode = ASTextCellNode(text: "Settings", selectionStyle: .default, accessoryType: .disclosureIndicator)
     return {
       switch indexPath.section {
       case 0:
@@ -116,7 +117,7 @@ extension SettingsVC: ASTableDataSource {
       case 1:
         return DateStyleCellNode()
       case 2:
-        return settingsNode
+        return ASTextCellNode(text: "Settings", selectionStyle: .default, accessoryType: .disclosureIndicator)
       default:
         fatalError("Unknown section")
       }

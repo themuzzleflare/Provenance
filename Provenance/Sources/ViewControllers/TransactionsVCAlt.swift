@@ -278,7 +278,7 @@ extension TransactionsVCAlt {
   }
 
   private func display(_ error: AFError) {
-    transactionsError = error.errorDescription ?? error.localizedDescription
+    transactionsError = error.underlyingError?.localizedDescription ?? error.localizedDescription
     transactions.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"

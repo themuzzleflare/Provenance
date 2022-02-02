@@ -61,9 +61,8 @@ extension StickersVC: ASCollectionDataSource {
 
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
     let sticker = stickerGifs[indexPath.item]
-    let node = StickerCellNode(sticker: sticker.asAnimatedImage)
     return {
-      node
+      StickerCellNode(sticker: sticker.asAnimatedImage)
     }
   }
 }

@@ -136,39 +136,41 @@ extension TransactionsByCategoryVC {
   }
 
   private func applySnapshot(override: Bool = false) {
-    let result = ListDiffPaths(
-      fromSection: 0,
-      toSection: 0,
-      oldArray: oldTransactionCellModels,
-      newArray: filteredTransactions.transactionCellModels,
-      option: .equality
-    ).forBatchUpdates()
+    DispatchQueue.main.async { [self] in
+      let result = ListDiffPaths(
+        fromSection: 0,
+        toSection: 0,
+        oldArray: oldTransactionCellModels,
+        newArray: filteredTransactions.transactionCellModels,
+        option: .equality
+      ).forBatchUpdates()
 
-    if result.hasChanges || override || !transactionsError.isEmpty || noTransactions || searchController.searchBar.searchTextField.hasText {
-      if filteredTransactions.isEmpty && transactionsError.isEmpty {
-        if transactions.isEmpty && !noTransactions {
-          tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .transactions)
+      if result.hasChanges || override || !transactionsError.isEmpty || noTransactions || searchController.searchBar.searchTextField.hasText {
+        if filteredTransactions.isEmpty && transactionsError.isEmpty {
+          if transactions.isEmpty && !noTransactions {
+            tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .transactions)
+          } else {
+            tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .transactions)
+          }
         } else {
-          tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .transactions)
-        }
-      } else {
-        if !transactionsError.isEmpty {
-          tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: transactionsError)
-        } else {
-          if tableNode.view.backgroundView != nil {
-            tableNode.view.backgroundView = nil
+          if !transactionsError.isEmpty {
+            tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: transactionsError)
+          } else {
+            if tableNode.view.backgroundView != nil {
+              tableNode.view.backgroundView = nil
+            }
           }
         }
-      }
 
-      let batchUpdates = { [self] in
-        tableNode.deleteRows(at: result.deletes, with: .fade)
-        tableNode.insertRows(at: result.inserts, with: .fade)
-        result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldTransactionCellModels = filteredTransactions.transactionCellModels
-      }
+        let batchUpdates = {
+          tableNode.deleteRows(at: result.deletes, with: .fade)
+          tableNode.insertRows(at: result.inserts, with: .fade)
+          result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
+          oldTransactionCellModels = filteredTransactions.transactionCellModels
+        }
 
-      tableNode.performBatchUpdates(batchUpdates)
+        tableNode.performBatchUpdates(batchUpdates)
+      }
     }
   }
 
@@ -201,7 +203,7 @@ extension TransactionsByCategoryVC {
   }
 
   private func display(_ error: AFError) {
-    transactionsError = error.errorDescription ?? error.localizedDescription
+    transactionsError = error.underlyingError?.localizedDescription ?? error.localizedDescription
     transactions.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"

@@ -14,8 +14,8 @@ extension String {
     return NSDecimalNumber(string: self)
   }
 
-  var tagInputResourceIdentifier: TagInputResourceIdentifier {
-    return TagInputResourceIdentifier(id: self)
+  var tagResource: TagResource {
+    return TagResource(id: self)
   }
 
   var stringResolutionResult: INStringResolutionResult {
@@ -30,9 +30,9 @@ extension String {
 // MARK: -
 
 extension Array where Element == String {
-  var tagInputResourceIdentifiers: [TagInputResourceIdentifier] {
+  var tagResources: [TagResource] {
     return self.map { (tag) in
-      return tag.tagInputResourceIdentifier
+      return tag.tagResource
     }
   }
 

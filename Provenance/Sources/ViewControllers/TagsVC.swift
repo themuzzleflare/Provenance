@@ -145,7 +145,7 @@ extension TagsVC {
   }
 
   private func display(_ error: AFError) {
-    tagsError = error.errorDescription ?? error.localizedDescription
+    tagsError = error.underlyingError?.localizedDescription ?? error.localizedDescription
     tags.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"

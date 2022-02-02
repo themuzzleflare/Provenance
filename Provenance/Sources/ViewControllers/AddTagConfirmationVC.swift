@@ -52,7 +52,9 @@ extension AddTagConfirmationVC {
 
   private func configureObserver() {
     dateStyleObserver = UserDefaults.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
-      self?.tableNode.reloadData()
+      DispatchQueue.main.async {
+        self?.tableNode.reloadData()
+      }
     }
   }
 
@@ -86,7 +88,7 @@ extension AddTagConfirmationVC {
           if let error = error {
             GrowingNotificationBanner(
               title: "Failed",
-              subtitle: error.errorDescription ?? error.localizedDescription,
+              subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
               style: .danger,
               duration: 2.0
             ).show()

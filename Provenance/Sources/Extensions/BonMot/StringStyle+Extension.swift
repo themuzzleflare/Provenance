@@ -1,3 +1,5 @@
+import Foundation
+import UIKit
 import BonMot
 
 typealias StringStyle = BonMot.StringStyle

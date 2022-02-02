@@ -10,8 +10,10 @@ final class DateStyleCellNode: ASCellNode {
       if UserDefaults.provenance.dateStyle != styleSelection.rawValue {
         UserDefaults.provenance.dateStyle = styleSelection.rawValue
       }
-      if segmentedControlNode.selectedSegmentIndex != styleSelection.rawValue {
-        segmentedControlNode.selectedSegmentIndex = styleSelection.rawValue
+      DispatchQueue.main.async { [self] in
+        if segmentedControlNode.selectedSegmentIndex != styleSelection.rawValue {
+          segmentedControlNode.selectedSegmentIndex = styleSelection.rawValue
+        }
       }
     }
   }
@@ -36,6 +38,10 @@ final class DateStyleCellNode: ASCellNode {
     AppDateStyle.allCases.forEach { segmentedControlNode.insertSegment(withTitle: $0.description, at: $0.rawValue, animated: false) }
     segmentedControlNode.selectedSegmentIndex = styleSelection.rawValue
     segmentedControlNode.addTarget(self, action: #selector(changedSelection), forControlEvents: .valueChanged)
+  }
+
+  override func layout() {
+    super.layout()
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {

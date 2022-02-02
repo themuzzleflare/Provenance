@@ -147,7 +147,7 @@ extension AddCategoryCategorySelectionVC {
         if let error = error {
           GrowingNotificationBanner(
             title: "Failed",
-            subtitle: error.errorDescription ?? error.localizedDescription,
+            subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
             style: .danger,
             duration: 2.0
           ).show()
@@ -165,40 +165,42 @@ extension AddCategoryCategorySelectionVC {
   }
 
   private func applySnapshot(override: Bool = false) {
-    let result = ListDiffPaths(
-      fromSection: 0,
-      toSection: 0,
-      oldArray: oldCategoryCellModels,
-      newArray: filteredCategories.categoryCellModels,
-      option: .equality
-    ).forBatchUpdates()
+    DispatchQueue.main.async { [self] in
+      let result = ListDiffPaths(
+        fromSection: 0,
+        toSection: 0,
+        oldArray: oldCategoryCellModels,
+        newArray: filteredCategories.categoryCellModels,
+        option: .equality
+      ).forBatchUpdates()
 
-    if result.hasChanges || override || !categoriesError.isEmpty || noCategories || searchController.searchBar.searchTextField.hasText {
-      if filteredCategories.isEmpty && categoriesError.isEmpty {
-        if categories.isEmpty && !noCategories {
-          collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds, contentType: .categories)
+      if result.hasChanges || override || !categoriesError.isEmpty || noCategories || searchController.searchBar.searchTextField.hasText {
+        if filteredCategories.isEmpty && categoriesError.isEmpty {
+          if categories.isEmpty && !noCategories {
+            collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds, contentType: .categories)
+          } else {
+            collectionNode.view.backgroundView = .noContentView(frame: collectionNode.bounds, type: .categories)
+          }
         } else {
-          collectionNode.view.backgroundView = .noContentView(frame: collectionNode.bounds, type: .categories)
-        }
-      } else {
-        if !categoriesError.isEmpty {
-          collectionNode.view.backgroundView = .errorView(frame: collectionNode.bounds, text: categoriesError)
-        } else {
-          if collectionNode.view.backgroundView != nil {
-            collectionNode.view.backgroundView = nil
+          if !categoriesError.isEmpty {
+            collectionNode.view.backgroundView = .errorView(frame: collectionNode.bounds, text: categoriesError)
+          } else {
+            if collectionNode.view.backgroundView != nil {
+              collectionNode.view.backgroundView = nil
+            }
           }
         }
-      }
 
-      let batchUpdates = { [self] in
-        collectionNode.deleteItems(at: result.deletes)
-        collectionNode.insertItems(at: result.inserts)
-        result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
-        collectionNode.reloadItems(at: result.updates)
-        oldCategoryCellModels = filteredCategories.categoryCellModels
-      }
+        let batchUpdates = {
+          collectionNode.deleteItems(at: result.deletes)
+          collectionNode.insertItems(at: result.inserts)
+          result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
+          collectionNode.reloadItems(at: result.updates)
+          oldCategoryCellModels = filteredCategories.categoryCellModels
+        }
 
-      collectionNode.performBatch(animated: true, updates: batchUpdates)
+        collectionNode.performBatch(animated: true, updates: batchUpdates)
+      }
     }
   }
 
@@ -227,7 +229,7 @@ extension AddCategoryCategorySelectionVC {
   }
 
   private func display(_ error: AFError) {
-    categoriesError = error.localizedDescription
+    categoriesError = error.underlyingError?.localizedDescription ?? error.localizedDescription
     categories.removeAll()
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"
@@ -269,7 +271,7 @@ extension AddCategoryCategorySelectionVC: ASCollectionDelegate {
         if let error = error {
           GrowingNotificationBanner(
             title: "Failed",
-            subtitle: error.errorDescription ?? error.localizedDescription,
+            subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
             style: .danger,
             duration: 2.0
           ).show()

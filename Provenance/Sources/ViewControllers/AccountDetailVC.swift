@@ -152,10 +152,12 @@ extension AccountDetailVC {
   }
 
   private func applySnapshot(animate: Bool = true) {
-    var snapshot = Snapshot()
-    snapshot.appendSections(sections)
-    sections.forEach { snapshot.appendItems($0.items, toSection: $0) }
-    dataSource.apply(snapshot, animatingDifferences: animate)
+    DispatchQueue.main.async { [self] in
+      var snapshot = Snapshot()
+      snapshot.appendSections(sections)
+      sections.forEach { snapshot.appendItems($0.items, toSection: $0) }
+      dataSource.apply(snapshot, animatingDifferences: animate)
+    }
   }
 
   private func fetchAccount() {

@@ -7,11 +7,3 @@ struct TagInputResourceIdentifier: Codable, Identifiable {
   /// The label of the tag, which also acts as the tag’s unique identifier.
   var id: String
 }
-
-// MARK: -
-
-extension Array where Element == TagInputResourceIdentifier {
-  static func singleTag(with tag: TagInputResourceIdentifier) -> [TagInputResourceIdentifier] {
-    return [tag]
-  }
-}

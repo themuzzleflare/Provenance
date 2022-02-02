@@ -24,7 +24,7 @@ extension UIAlertAction {
           if let error = error {
             GrowingNotificationBanner(
               title: "Failed",
-              subtitle: error.errorDescription ?? error.localizedDescription,
+              subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
               style: .danger,
               duration: 2.0
             ).show()
@@ -50,7 +50,7 @@ extension UIAlertAction {
           if let error = error {
             GrowingNotificationBanner(
               title: "Failed",
-              subtitle: error.errorDescription ?? error.localizedDescription,
+              subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
               style: .danger,
               duration: 2.0
             ).show()
@@ -72,12 +72,12 @@ extension UIAlertAction {
                                        removing tag: TagResource,
                                        from transaction: TransactionResource) -> UIAlertAction {
     return UIAlertAction(title: "Remove", style: .destructive, handler: { (_) in
-      Up.modifyTags(removing: tag, from: transaction) { (error) in
+      Up.modifyTags(removing: [tag], from: transaction) { (error) in
         DispatchQueue.main.async {
           if let error = error {
             GrowingNotificationBanner(
               title: "Failed",
-              subtitle: error.errorDescription ?? error.localizedDescription,
+              subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
               style: .danger,
               duration: 2.0
             ).show()
@@ -99,12 +99,12 @@ extension UIAlertAction {
                                        removing tag: TagResource,
                                        from transaction: TransactionResource) -> UIAlertAction {
     return UIAlertAction(title: "Remove", style: .destructive, handler: { (_) in
-      Up.modifyTags(removing: tag, from: transaction) { (error) in
+      Up.modifyTags(removing: [tag], from: transaction) { (error) in
         DispatchQueue.main.async {
           if let error = error {
             GrowingNotificationBanner(
               title: "Failed",
-              subtitle: error.errorDescription ?? error.localizedDescription,
+              subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
               style: .danger,
               duration: 2.0
             ).show()
@@ -131,7 +131,7 @@ extension UIAlertAction {
           if let error = error {
             GrowingNotificationBanner(
               title: "Failed",
-              subtitle: error.errorDescription ?? error.localizedDescription,
+              subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
               style: .danger,
               duration: 2.0
             ).show()
@@ -173,7 +173,7 @@ extension UIAlertAction {
               if let error = error {
                 GrowingNotificationBanner(
                   title: "Failed",
-                  subtitle: error.errorDescription ?? error.localizedDescription,
+                  subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
                   style: .danger,
                   duration: 2.0
                 ).show()
@@ -214,7 +214,7 @@ extension UIAlertAction {
               if let error = error {
                 let notificationBanner = GrowingNotificationBanner(
                   title: "Failed",
-                  subtitle: error.errorDescription ?? error.localizedDescription,
+                  subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
                   style: .danger,
                   duration: 2.0
                 )

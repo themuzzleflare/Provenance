@@ -10,15 +10,15 @@ struct ErrorView: View {
   var body: some View {
     switch family {
     case .systemSmall:
-      Text(error.localizedDescription)
+      Text(error.underlyingError?.localizedDescription ?? error.localizedDescription)
     case .systemMedium, .systemLarge, .systemExtraLarge:
       VStack {
         Text("Error")
           .font(.circularStdBold(size: 18))
-        Text(error.localizedDescription)
+        Text(error.underlyingError?.localizedDescription ?? error.localizedDescription)
       }
     @unknown default:
-      Text(error.localizedDescription)
+      Text(error.underlyingError?.localizedDescription ?? error.localizedDescription)
     }
   }
 }
