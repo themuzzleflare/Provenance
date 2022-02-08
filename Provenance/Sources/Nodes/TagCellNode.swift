@@ -4,22 +4,16 @@ import AsyncDisplayKit
 final class TagCellNode: ASCellNode {
   private let tagTextNode = ASTextNode()
 
+  private var model: TagCellModel
   private var selection: Bool
 
-  init(tag: TagResource, selection: Bool = true) {
+  init(tag: TagCellModel, selection: Bool = true) {
+    self.model = tag
     self.selection = selection
     super.init()
     automaticallyManagesSubnodes = true
     accessoryType = .disclosureIndicator
     tagTextNode.attributedText = tag.id.styled(with: .provenance)
-  }
-
-  init(tag: TagCellModel?, selection: Bool = true) {
-    self.selection = selection
-    super.init()
-    automaticallyManagesSubnodes = true
-    accessoryType = .disclosureIndicator
-    tagTextNode.attributedText = tag?.id.styled(with: .provenance)
   }
 
   override var isSelected: Bool {

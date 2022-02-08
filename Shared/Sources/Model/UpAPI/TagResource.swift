@@ -16,6 +16,14 @@ struct TagResource: Codable, Identifiable {
   }
 }
 
+// MARK: - CustomStringConvertible
+
+extension TagResource: CustomStringConvertible {
+  var description: String {
+    return id
+  }
+}
+
 // MARK: -
 
 extension TagResource {

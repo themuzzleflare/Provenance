@@ -15,6 +15,14 @@ struct TransactionResource: Codable, Identifiable {
   var links: SelfLink?
 }
 
+// MARK: - CustomStringConvertible
+
+extension TransactionResource: CustomStringConvertible {
+  var description: String {
+    return attributes.description
+  }
+}
+
 // MARK: -
 
 extension TransactionResource {

@@ -203,9 +203,7 @@ extension SegmentedControlNode: SegmentedControlNodeProtocol {
       return segmentedControl.selectedSegmentIndex
     }
     set {
-      DispatchQueue.main.async {
-        self.segmentedControl.selectedSegmentIndex = newValue
-      }
+      segmentedControl.selectedSegmentIndex = newValue
     }
   }
 

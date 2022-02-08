@@ -1,6 +1,6 @@
 import UIKit
-import NotificationBannerSwift
 import AsyncDisplayKit
+import NotificationBannerSwift
 
 final class SettingsVC: ASViewController {
   // MARK: - Properties
@@ -20,7 +20,6 @@ final class SettingsVC: ASViewController {
 
   deinit {
     removeObserver()
-    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -52,7 +51,7 @@ extension SettingsVC {
 
   private func configureObserver() {
     apiKeyObserver = Store.provenance.observe(\.apiKey, options: .new) { [weak self] (_, change) in
-      DispatchQueue.main.async {
+      ASPerformBlockOnMainThread {
         if let alertController = self?.presentedViewController as? UIAlertController {
           alertController.textFields?.first?.text = change.newValue
           alertController.actions.last?.isEnabled = false

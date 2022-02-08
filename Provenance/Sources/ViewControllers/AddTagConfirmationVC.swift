@@ -1,6 +1,6 @@
 import UIKit
-import NotificationBannerSwift
 import AsyncDisplayKit
+import NotificationBannerSwift
 
 final class AddTagConfirmationVC: ASViewController {
   // MARK: - Properties
@@ -27,7 +27,6 @@ final class AddTagConfirmationVC: ASViewController {
 
   deinit {
     removeObserver()
-    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -52,7 +51,7 @@ extension AddTagConfirmationVC {
 
   private func configureObserver() {
     dateStyleObserver = Store.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
-      DispatchQueue.main.async {
+      ASPerformBlockOnMainThread {
         self?.tableNode.reloadData()
       }
     }
@@ -82,27 +81,23 @@ extension AddTagConfirmationVC {
   @objc
   private func addTags() {
     navigationItem.setRightBarButton(.activityIndicator, animated: false)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-      Up.modifyTags(adding: tags, to: transaction) { (error) in
-        DispatchQueue.main.async {
-          if let error = error {
-            GrowingNotificationBanner(
-              title: "Failed",
-              subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
-              style: .danger,
-              duration: 2.0
-            ).show()
-          } else {
-            GrowingNotificationBanner(
-              title: "Success",
-              subtitle: "\(tags.joinedWithComma) \(tags.count == 1 ? "was" : "were") added to \(transaction.attributes.description).",
-              style: .success,
-              duration: 2.0
-            ).show()
-          }
-          navigationController?.popViewController(animated: true)
-        }
+    Up.modifyTags(adding: tags, to: transaction) { (error) in
+      if let error = error {
+        GrowingNotificationBanner(
+          title: "Failed",
+          subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
+          style: .danger,
+          duration: 2.0
+        ).show()
+      } else {
+        GrowingNotificationBanner(
+          title: "Success",
+          subtitle: "\(self.tags.joinedWithComma) \(self.tags.count == 1 ? "was" : "were") added to \(self.transaction.attributes.description).",
+          style: .success,
+          duration: 2.0
+        ).show()
       }
+      self.navigationController?.popViewController(animated: true)
     }
   }
 }
@@ -129,13 +124,12 @@ extension AddTagConfirmationVC: ASTableDataSource {
 
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let tag = tags[indexPath.row]
-    let transactionCellNode = TransactionCellNode(transaction: transaction, contextMenu: false)
     return {
       switch indexPath.section {
       case 0:
         return ASTextCellNode(text: tag.id, selectionStyle: UITableViewCell.SelectionStyle.none)
       case 1:
-        return transactionCellNode
+        return TransactionCellNode(transaction: self.transaction.transactionCellModel, contextMenu: false)
       case 2:
         return ASTextCellNode(text: "You are adding \(self.tags.joinedWithComma) to \(self.transaction.attributes.description), which was \(Store.provenance.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: UITableViewCell.SelectionStyle.none)
       default:

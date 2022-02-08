@@ -17,19 +17,7 @@ extension Array where Element == TransactionResource {
 
   var sortedTransactionModels: [SortedTransactionModel] {
     return Dictionary(grouping: self, by: { $0.attributes.sortingDate }).sorted { $0.key > $1.key }.map { (section) in
-      return SortedTransactionModel(id: section.key, transactions: section.value.transactionCellModels)
-    }
-  }
-
-  var sortedTransactionModelsAlt: [SortedTransactionModelAlt] {
-    return Dictionary(grouping: self, by: { $0.attributes.sortingDate }).sorted { $0.key > $1.key }.map { (section) in
-      return SortedTransactionModelAlt(id: section.key, transactions: section.value)
-    }
-  }
-
-  var sortedTransactionCoreModels: [SortedTransactionCoreModel] {
-    return Dictionary(grouping: self, by: { $0.attributes.sortingDate }).sorted { $0.key > $1.key }.map { (section) in
-      return SortedTransactionCoreModel(id: section.key, transactions: section.value)
+      return SortedTransactionModel(id: section.key, transactions: section.value)
     }
   }
 }

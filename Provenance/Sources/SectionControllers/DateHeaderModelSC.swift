@@ -3,8 +3,8 @@ import UIKit
 import IGListKit
 import AsyncDisplayKit
 
-final class SectionModelSC: ListSectionController {
-  private var object: SortedSectionModel?
+final class DateHeaderModelSC: ListSectionController {
+  private var object: DateHeaderModel?
 
   override func sizeForItem(at index: Int) -> CGSize {
     return ASIGListSectionControllerMethods.sizeForItem(at: index)
@@ -15,18 +15,17 @@ final class SectionModelSC: ListSectionController {
   }
 
   override func didUpdate(to object: Any) {
-    precondition(object is SortedSectionModel)
-    self.object = object as? SortedSectionModel
+    precondition(object is DateHeaderModel)
+    self.object = object as? DateHeaderModel
   }
 }
 
 // MARK: - ASSectionController
 
-extension SectionModelSC: ASSectionController {
+extension DateHeaderModelSC: ASSectionController {
   func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
-    let node = HeaderCellNode(object: object)
     return {
-      node
+      DateHeaderCellNode(object: self.object!)
     }
   }
 

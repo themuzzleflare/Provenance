@@ -1,6 +1,6 @@
 import UIKit
-import IGListKit
 import AsyncDisplayKit
+import IGListKit
 import Alamofire
 
 final class TransactionsByTagVC: ASViewController {
@@ -46,7 +46,6 @@ final class TransactionsByTagVC: ASViewController {
 
   deinit {
     removeObservers()
-    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -87,7 +86,9 @@ extension TransactionsByTagVC {
                                            name: .willEnterForegroundNotification,
                                            object: nil)
     dateStyleObserver = Store.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
-      self?.applySnapshot()
+      ASPerformBlockOnMainThread {
+        self?.applySnapshot()
+      }
     }
   }
 
@@ -117,64 +118,60 @@ extension TransactionsByTagVC {
 extension TransactionsByTagVC {
   @objc
   private func appMovedToForeground() {
-    fetchTransactions()
-  }
-
-  @objc
-  private func refreshTransactions() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+    ASPerformBlockOnMainThread {
       self.fetchTransactions()
     }
   }
 
+  @objc
+  private func refreshTransactions() {
+    fetchTransactions()
+  }
+
   private func applySnapshot(override: Bool = false) {
-    DispatchQueue.main.async { [self] in
-      let result = ListDiffPaths(
-        fromSection: 0,
-        toSection: 0,
-        oldArray: oldTransactionCellModels,
-        newArray: filteredTransactions.transactionCellModels,
-        option: .equality
-      ).forBatchUpdates()
+    let result = ListDiffPaths(
+      fromSection: 0,
+      toSection: 0,
+      oldArray: oldTransactionCellModels,
+      newArray: filteredTransactions.transactionCellModels,
+      option: .equality
+    ).forBatchUpdates()
 
-      if result.hasChanges || override || !transactionsError.isEmpty || noTransactions || searchController.searchBar.searchTextField.hasText {
-        if filteredTransactions.isEmpty && transactionsError.isEmpty {
-          if transactions.isEmpty && !noTransactions {
-            tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .transactions)
-          } else {
-            tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .transactions)
-          }
+    if result.hasChanges || override || !transactionsError.isEmpty || noTransactions || searchController.searchBar.searchTextField.hasText {
+      if filteredTransactions.isEmpty && transactionsError.isEmpty {
+        if transactions.isEmpty && !noTransactions {
+          tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .transactions)
         } else {
-          if !transactionsError.isEmpty {
-            tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: transactionsError)
-          } else {
-            if tableNode.view.backgroundView != nil {
-              tableNode.view.backgroundView = nil
-            }
+          tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .transactions)
+        }
+      } else {
+        if !transactionsError.isEmpty {
+          tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: transactionsError)
+        } else {
+          if tableNode.view.backgroundView != nil {
+            tableNode.view.backgroundView = nil
           }
         }
-
-        let batchUpdates = {
-          tableNode.deleteRows(at: result.deletes, with: .fade)
-          tableNode.insertRows(at: result.inserts, with: .fade)
-          result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-          oldTransactionCellModels = filteredTransactions.transactionCellModels
-        }
-
-        tableNode.performBatchUpdates(batchUpdates)
       }
+
+      let batchUpdates = { [self] in
+        tableNode.deleteRows(at: result.deletes, with: .fade)
+        tableNode.insertRows(at: result.inserts, with: .fade)
+        result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
+        oldTransactionCellModels = filteredTransactions.transactionCellModels
+      }
+
+      tableNode.performBatchUpdates(batchUpdates)
     }
   }
 
   func fetchTransactions() {
     Up.listTransactions(filterBy: tag) { (result) in
-      DispatchQueue.main.async {
-        switch result {
-        case let .success(transactions):
-          self.display(transactions)
-        case let .failure(error):
-          self.display(error)
-        }
+      switch result {
+      case let .success(transactions):
+        self.display(transactions)
+      case let .failure(error):
+        self.display(error)
       }
     }
   }
@@ -211,9 +208,8 @@ extension TransactionsByTagVC: ASTableDataSource {
 
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let transaction = filteredTransactions[indexPath.row]
-    let node = TransactionCellNode(transaction: transaction, contextMenu: false, selection: false)
     return {
-      node
+      TransactionCellNode(transaction: transaction.transactionCellModel, contextMenu: false, selection: false)
     }
   }
 

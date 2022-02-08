@@ -103,11 +103,9 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.7.0):
     - GoogleUtilities/Logger
-  - IGListDiffKit (4.1.0)
-  - IGListKit (4.1.0):
-    - IGListDiffKit (= 4.1.0)
-  - IGListSwiftKit (4.1.0):
-    - IGListKit (= 4.1.0)
+  - IGListDiffKit (4.0.0)
+  - IGListKit (4.0.0):
+    - IGListDiffKit (= 4.0.0)
   - Keys (1.0.1)
   - MarqueeLabel (4.0.5)
   - MBProgressHUD (1.2.0)
@@ -172,9 +170,6 @@ DEPENDENCIES:
   - Firebase/AppCheck
   - Firebase/Crashlytics
   - FLAnimatedImage
-  - IGListDiffKit (from `https://github.com/Instagram/IGListKit.git`)
-  - IGListKit (from `https://github.com/Instagram/IGListKit.git`)
-  - IGListSwiftKit (from `https://github.com/Instagram/IGListKit.git`)
   - Keys (from `Pods/CocoaPodsKeys`)
   - MarqueeLabel
   - MBProgressHUD
@@ -202,6 +197,8 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
+    - IGListDiffKit
+    - IGListKit
     - MarqueeLabel
     - MBProgressHUD
     - nanopb
@@ -217,25 +214,8 @@ SPEC REPOS:
     - Texture
 
 EXTERNAL SOURCES:
-  IGListDiffKit:
-    :git: https://github.com/Instagram/IGListKit.git
-  IGListKit:
-    :git: https://github.com/Instagram/IGListKit.git
-  IGListSwiftKit:
-    :git: https://github.com/Instagram/IGListKit.git
   Keys:
     :path: Pods/CocoaPodsKeys
-
-CHECKOUT OPTIONS:
-  IGListDiffKit:
-    :commit: d55479ec5cf552fc5ecdff44ea976a49455ccf6f
-    :git: https://github.com/Instagram/IGListKit.git
-  IGListKit:
-    :commit: d55479ec5cf552fc5ecdff44ea976a49455ccf6f
-    :git: https://github.com/Instagram/IGListKit.git
-  IGListSwiftKit:
-    :commit: d55479ec5cf552fc5ecdff44ea976a49455ccf6f
-    :git: https://github.com/Instagram/IGListKit.git
 
 SPEC CHECKSUMS:
   Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
@@ -252,9 +232,8 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: aa3cb422fab2b05d2efac543a5720d1a85b9dea5
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
-  IGListDiffKit: 7d70583ef1f7883b23b40a21051844c6036128ca
-  IGListKit: a2345833762c4ebdf576ed6a51e35db701f0c2f0
-  IGListSwiftKit: a2b846f2aa8a1440964b4bce2d97423d685d06b6
+  IGListDiffKit: 665d6cf43ce726e676013db9c7d6c4294259b6b2
+  IGListKit: fd5a5d21935298f5849fa49d426843cff97b77c7
   Keys: a576f4c9c1c641ca913a959a9c62ed3f215a8de9
   MarqueeLabel: 00cc0bcd087111dca575878b3531af980559707d
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
@@ -270,6 +249,6 @@ SPEC CHECKSUMS:
   SwiftLint: 6bc52a21f0fd44cab9aa2dc8e534fb9f5e3ec507
   Texture: 2e8ab2519452515f7f5a520f5a8f7e0a413abfa3
 
-PODFILE CHECKSUM: 2858f9b668e134f572a0a342631f7ce2cdfc23c5
+PODFILE CHECKSUM: 3a1c4b8fdb89ce1166d99e6ef697ae753d1539e1
 
 COCOAPODS: 1.11.2

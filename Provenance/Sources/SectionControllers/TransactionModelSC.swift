@@ -3,15 +3,18 @@ import UIKit
 import IGListKit
 import AsyncDisplayKit
 
-final class TagCellModelSC: ListSectionController {
-  private var object: TagCellModel?
+final class TransactionModelSC: ListSectionController {
+  private var object: TransactionCellModel?
 
   private weak var selectionDelegate: SelectionDelegate?
+  private weak var loadingDelegate: LoadingDelegate?
 
-  init(_ selectionDelegate: SelectionDelegate? = nil) {
+  init(_ selectionDelegate: SelectionDelegate? = nil, _ loadingDelegate: LoadingDelegate? = nil) {
     self.selectionDelegate = selectionDelegate
+    self.loadingDelegate = loadingDelegate
     super.init()
     supplementaryViewSource = self
+    scrollDelegate = self
   }
 
   override func sizeForItem(at index: Int) -> CGSize {
@@ -23,12 +26,12 @@ final class TagCellModelSC: ListSectionController {
   }
 
   override func didUpdate(to object: Any) {
-    precondition(object is TagCellModel)
-    self.object = object as? TagCellModel
+    precondition(object is TransactionCellModel)
+    self.object = object as? TransactionCellModel
   }
 
   override func didSelectItem(at index: Int) {
-    collectionContext.deselectItem(at: index, sectionController: self, animated: true)
+    collectionContext?.deselectItem(at: index, sectionController: self, animated: true)
     selectionDelegate?.didSelectItem(at: IndexPath(item: index, section: section))
   }
 
@@ -47,11 +50,10 @@ final class TagCellModelSC: ListSectionController {
 
 // MARK: - ASSectionController
 
-extension TagCellModelSC: ASSectionController {
+extension TransactionModelSC: ASSectionController {
   func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
-    let node = TagCellNode(tag: object)
     return {
-      node
+      TransactionCellNode(transaction: self.object!)
     }
   }
 
@@ -62,7 +64,7 @@ extension TagCellModelSC: ASSectionController {
 
 // MARK: - ListSupplementaryViewSource
 
-extension TagCellModelSC: ListSupplementaryViewSource {
+extension TransactionModelSC: ListSupplementaryViewSource {
   func supportedElementKinds() -> [String] {
     return [ASCollectionView.elementKindSectionFooter]
   }
@@ -78,15 +80,30 @@ extension TagCellModelSC: ListSupplementaryViewSource {
 
 // MARK: - ASSupplementaryNodeSource
 
-extension TagCellModelSC: ASSupplementaryNodeSource {
+extension TransactionModelSC: ASSupplementaryNodeSource {
   func nodeBlockForSupplementaryElement(ofKind elementKind: String, at index: Int) -> ASCellNodeBlock {
-    let node = SeparatorCellNode()
     return {
-      node
+      SeparatorCellNode()
     }
   }
 
   func sizeRangeForSupplementaryElement(ofKind elementKind: String, at index: Int) -> ASSizeRange {
     return .separator
   }
+}
+
+// MARK: - ListScrollDelegate
+
+extension TransactionModelSC: ListScrollDelegate {
+  func listAdapter(_ listAdapter: ListAdapter, didEndDragging sectionController: ListSectionController, willDecelerate decelerate: Bool) {
+    if isLastSection {
+      loadingDelegate?.startLoading()
+    }
+  }
+
+  func listAdapter(_ listAdapter: ListAdapter, didScroll sectionController: ListSectionController) {}
+
+  func listAdapter(_ listAdapter: ListAdapter, willBeginDragging sectionController: ListSectionController) {}
+
+  func listAdapter(_ listAdapter: ListAdapter, didEndDeceleratingSectionController sectionController: ListSectionController) {}
 }

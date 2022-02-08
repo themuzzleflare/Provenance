@@ -1,7 +1,7 @@
 import UIKit
-import NotificationBannerSwift
-import IGListKit
 import AsyncDisplayKit
+import IGListKit
+import NotificationBannerSwift
 import Alamofire
 
 final class AddTagTagsSelectionVC: ASViewController {
@@ -78,7 +78,6 @@ final class AddTagTagsSelectionVC: ASViewController {
 
   deinit {
     removeObserver()
-    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -175,7 +174,9 @@ extension AddTagTagsSelectionVC {
 extension AddTagTagsSelectionVC {
   @objc
   private func appMovedToForeground() {
-    fetchTags()
+    ASPerformBlockOnMainThread {
+      self.fetchTags()
+    }
   }
 
   @objc
@@ -215,9 +216,7 @@ extension AddTagTagsSelectionVC {
 
   @objc
   private func refreshTags() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      self.fetchTags()
-    }
+    fetchTags()
   }
 
   @objc
@@ -234,53 +233,49 @@ extension AddTagTagsSelectionVC {
   }
 
   private func applySnapshot(override: Bool = false) {
-    DispatchQueue.main.async { [self] in
-      let result = ListDiffPaths(
-        fromSection: 0,
-        toSection: 0,
-        oldArray: oldTagCellModels,
-        newArray: filteredTags.tagCellModels,
-        option: .equality
-      ).forBatchUpdates()
+    let result = ListDiffPaths(
+      fromSection: 0,
+      toSection: 0,
+      oldArray: oldTagCellModels,
+      newArray: filteredTags.tagCellModels,
+      option: .equality
+    ).forBatchUpdates()
 
-      if result.hasChanges || override || !tagsError.isEmpty || noTags || searchController.searchBar.searchTextField.hasText {
-        if filteredTags.isEmpty && tagsError.isEmpty {
-          if tags.isEmpty && !noTags {
-            tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .tags)
-          } else {
-            tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .tags)
-          }
+    if result.hasChanges || override || !tagsError.isEmpty || noTags || searchController.searchBar.searchTextField.hasText {
+      if filteredTags.isEmpty && tagsError.isEmpty {
+        if tags.isEmpty && !noTags {
+          tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .tags)
         } else {
-          if !tagsError.isEmpty {
-            tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: tagsError)
-          } else {
-            if tableNode.view.backgroundView != nil {
-              tableNode.view.backgroundView = nil
-            }
+          tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .tags)
+        }
+      } else {
+        if !tagsError.isEmpty {
+          tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: tagsError)
+        } else {
+          if tableNode.view.backgroundView != nil {
+            tableNode.view.backgroundView = nil
           }
         }
-
-        let batchUpdates = {
-          tableNode.deleteRows(at: result.deletes, with: .automatic)
-          tableNode.insertRows(at: result.inserts, with: .automatic)
-          result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-          oldTagCellModels = filteredTags.tagCellModels
-        }
-
-        tableNode.performBatchUpdates(batchUpdates)
       }
+
+      let batchUpdates = { [self] in
+        tableNode.deleteRows(at: result.deletes, with: .automatic)
+        tableNode.insertRows(at: result.inserts, with: .automatic)
+        result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
+        oldTagCellModels = filteredTags.tagCellModels
+      }
+
+      tableNode.performBatchUpdates(batchUpdates)
     }
   }
 
   private func fetchTags() {
     Up.listTags { (result) in
-      DispatchQueue.main.async {
-        switch result {
-        case let .success(tags):
-          self.display(tags)
-        case let .failure(error):
-          self.display(error)
-        }
+      switch result {
+      case let .success(tags):
+        self.display(tags)
+      case let .failure(error):
+        self.display(error)
       }
     }
   }
@@ -318,9 +313,8 @@ extension AddTagTagsSelectionVC: ASTableDataSource {
 
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let tag = filteredTags[indexPath.row]
-    let node = TagCellNode(tag: tag, selection: false)
     return {
-      node
+      TagCellNode(tag: tag.tagCellModel, selection: false)
     }
   }
 

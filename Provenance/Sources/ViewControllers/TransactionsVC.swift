@@ -1,6 +1,6 @@
 import UIKit
-import IGListKit
 import AsyncDisplayKit
+import IGListKit
 import Alamofire
 
 final class TransactionsVC: ASViewController {
@@ -31,6 +31,20 @@ final class TransactionsVC: ASViewController {
   private var noTransactions: Bool = false
 
   private var transactionsError = String()
+
+  var sinceDate: Date? {
+    didSet {
+      fetchTransactions()
+      filterUpdates()
+    }
+  }
+
+  var untilDate: Date? {
+    didSet {
+      fetchTransactions()
+      filterUpdates()
+    }
+  }
 
   private lazy var transactionGrouping: TransactionGroupingEnum = Store.provenance.appTransactionGrouping {
     didSet {
@@ -88,7 +102,6 @@ final class TransactionsVC: ASViewController {
 
   deinit {
     removeObservers()
-    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -123,24 +136,30 @@ extension TransactionsVC {
                                            name: .willEnterForegroundNotification,
                                            object: nil)
     apiKeyObserver = Store.provenance.observe(\.apiKey, options: .new) { [weak self] (_, _) in
-      self?.fetchingTasks()
+      ASPerformBlockOnMainThread {
+        self?.fetchingTasks()
+      }
     }
     dateStyleObserver = Store.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
-      DispatchQueue.main.async {
+      ASPerformBlockOnMainThread {
         self?.adapter.performUpdates(animated: true, completion: nil)
       }
     }
     settledOnlyObserver = Store.provenance.observe(\.settledOnly, options: .new) { [weak self] (_, change) in
-      guard let value = change.newValue else { return }
-      self?.showSettledOnly = value
+      ASPerformBlockOnMainThread {
+        guard let value = change.newValue else { return }
+        self?.showSettledOnly = value
+      }
     }
     paginationCursorObserver = Store.provenance.observe(\.paginationCursor, options: .new) { [weak self] (_, change) in
       guard let value = change.newValue else { return }
       self?.cursor = value.isEmpty ? nil : value
     }
     transactionGroupingObserver = Store.provenance.observe(\.transactionGrouping, options: .new) { [weak self] (_, change) in
-      guard let value = change.newValue, let grouping = TransactionGroupingEnum(rawValue: value) else { return }
-      self?.transactionGrouping = grouping
+      ASPerformBlockOnMainThread {
+        guard let value = change.newValue, let grouping = TransactionGroupingEnum(rawValue: value) else { return }
+        self?.transactionGrouping = grouping
+      }
     }
   }
 
@@ -171,7 +190,9 @@ extension TransactionsVC {
 extension TransactionsVC {
   @objc
   private func appMovedToForeground() {
-    fetchingTasks()
+    ASPerformBlockOnMainThread {
+      self.fetchingTasks()
+    }
   }
 
   @objc
@@ -186,25 +207,26 @@ extension TransactionsVC {
 
   @objc
   private func refreshTransactions() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      self.fetchingTasks()
-    }
+    fetchingTasks()
+  }
+
+  private func openDatePicker() {
+    let viewController = NavigationController(rootViewController: DatePickerVC(self))
+    present(viewController, animated: true)
   }
 
   private func transactionsUpdates() {
     loading = false
     noTransactions = transactions.isEmpty
-    adapter.performUpdates(animated: true, completion: nil)
     collectionNode.view.refreshControl?.endRefreshing()
     searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
+    adapter.performUpdates(animated: true, completion: nil)
   }
 
   private func filterUpdates() {
-    DispatchQueue.main.async { [self] in
-      filterBarButtonItem.menu = filterMenu
-      searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
-      adapter.performUpdates(animated: true, completion: nil)
-    }
+    filterBarButtonItem.menu = filterMenu
+    searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
+    adapter.performUpdates(animated: true, completion: nil)
   }
 
   private func fetchingTasks() {
@@ -212,8 +234,9 @@ extension TransactionsVC {
   }
 
   private var filterMenu: UIMenu {
-    return .transactionsFilterMenu(
+    return .transactionsFilter(
       categoryFilter: categoryFilter,
+      datesFilter: (sinceDate != nil) || (untilDate != nil),
       groupingFilter: transactionGrouping,
       showSettledOnly: showSettledOnly,
       completion: { (type) in
@@ -224,33 +247,31 @@ extension TransactionsVC {
           self.transactionGrouping = grouping
         case let .settledOnly(settledOnly):
           self.showSettledOnly = settledOnly
+        case .dates:
+          self.openDatePicker()
         }
       }
     )
   }
 
-  private func fetchTransactions() {
-    Up.listTransactions { (result) in
-      DispatchQueue.main.async {
-        switch result {
-        case let .success(transactions):
-          self.display(transactions)
-        case let .failure(error):
-          self.display(error)
-        }
+  func fetchTransactions() {
+    Up.listTransactions(since: sinceDate, until: untilDate) { (result) in
+      switch result {
+      case let .success(transactions):
+        self.display(transactions)
+      case let .failure(error):
+        self.display(error)
       }
     }
   }
 
   private func fetchTransactionsWithCursor() {
-    Up.listTransactions(cursor: cursor) { (result) in
-      DispatchQueue.main.async {
-        switch result {
-        case let .success(transactions):
-          self.transactions.append(contentsOf: transactions)
-        case let .failure(error):
-          self.display(error)
-        }
+    Up.listTransactions(cursor: cursor, since: sinceDate, until: untilDate) { (result) in
+      switch result {
+      case let .success(transactions):
+        self.transactions.append(contentsOf: transactions)
+      case let .failure(error):
+        self.display(error)
       }
     }
   }
@@ -290,13 +311,13 @@ extension TransactionsVC: ListAdapterDataSource {
   func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
     switch transactionGrouping {
     case .all:
-      var objects = filteredTransactions.sortedTransactionModels.sortedMixedModel
+      var objects = filteredTransactions.sortedTransactionModels.diffablesObject
       if loading {
         objects.append(spinToken as ListDiffable)
       }
       return objects
     case .dates, .transactions:
-      var objects = filteredTransactions.sortedTransactionModels.sortedMixedModel.filter { type(of: $0) == transactionGrouping.valueType! }
+      var objects = filteredTransactions.sortedTransactionModels.diffablesObject.filter { type(of: $0) == transactionGrouping.valueType! }
       if loading {
         objects.append(spinToken as ListDiffable)
       }
@@ -308,10 +329,10 @@ extension TransactionsVC: ListAdapterDataSource {
     switch object {
     case spinToken as String:
       return SpinnerSC()
-    case is SortedSectionModel:
-      return SectionModelSC()
+    case is DateHeaderModel:
+      return DateHeaderModelSC()
     case is TransactionCellModel:
-      return ItemModelSC(self, self)
+      return TransactionModelSC(self, self)
     default:
       fatalError("Unknown object")
     }
@@ -340,13 +361,13 @@ extension TransactionsVC: SelectionDelegate {
   func didSelectItem(at indexPath: IndexPath) {
     switch transactionGrouping.valueType {
     case is TransactionCellModel.Type:
-      let transaction = filteredTransactions.sortedTransactionCoreModels.sortedMixedCoreModel.filter { type(of: $0) == TransactionResource.self }.transactionResources[indexPath.section]
+      let transaction = filteredTransactions.sortedTransactionModels.supplementaryObject.filter { type(of: $0) == TransactionResource.self }.transactionResources[indexPath.section]
       let viewController = TransactionDetailVC(transaction: transaction)
       navigationController?.pushViewController(viewController, animated: true)
-    case is SortedSectionModel.Type:
+    case is DateHeaderModel.Type:
       break
     case nil:
-      if let transaction = filteredTransactions.sortedTransactionCoreModels.sortedMixedCoreModel[indexPath.section] as? TransactionResource {
+      if let transaction = filteredTransactions.sortedTransactionModels.supplementaryObject[indexPath.section] as? TransactionResource {
         let viewController = TransactionDetailVC(transaction: transaction)
         navigationController?.pushViewController(viewController, animated: true)
       }
@@ -363,10 +384,7 @@ extension TransactionsVC: LoadingDelegate {
     if cursor != nil && !loading && !searchController.isActive && !searchController.searchBar.searchTextField.hasText {
       loading = true
       adapter.performUpdates(animated: true, completion: nil)
-      DispatchQueue.global(qos: .default).async {
-        sleep(2)
-        self.fetchTransactionsWithCursor()
-      }
+      fetchTransactionsWithCursor()
     }
   }
 }

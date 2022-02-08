@@ -1,5 +1,6 @@
 import Foundation
 import Alamofire
+import SwiftDate
 
 typealias Up = UpFacade
 
@@ -45,6 +46,8 @@ enum UpFacade {
   ///
   /// - Parameters:
   ///   - cursor: The pagination cursor to apply to the request.
+  ///   - since: The since date to apply to the request.
+  ///   - until: The until date to apply to the request.
   ///   - completion: Block to execute for handling the request response.
   ///
   /// Retrieve a list of all transactions across all accounts for the currently authenticated user.
@@ -54,6 +57,8 @@ enum UpFacade {
   /// Results are ordered newest first to oldest last.
 
   static func listTransactions(cursor: String? = nil,
+                               since: Date? = nil,
+                               until: Date? = nil,
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     var parameters: Parameters = [
       ParamKeys.pageSize: "20"
@@ -61,6 +66,14 @@ enum UpFacade {
 
     if let cursor = cursor {
       parameters.updateValue(cursor, forKey: ParamKeys.pageAfter)
+    }
+
+    if let since = since {
+      parameters.updateValue(since.toISO(), forKey: ParamKeys.filterSince)
+    }
+
+    if let until = until {
+      parameters.updateValue(until.toISO(), forKey: ParamKeys.filterUntil)
     }
 
     session.request("\(baseUrl)/transactions",

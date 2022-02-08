@@ -5,9 +5,9 @@ enum AppDateStyle: Int, CaseIterable {
   case relative
 }
 
-// MARK: -
+// MARK: - CustomStringConvertible
 
-extension AppDateStyle {
+extension AppDateStyle: CustomStringConvertible {
   var description: String {
     switch self {
     case .absolute:
@@ -16,7 +16,11 @@ extension AppDateStyle {
       return "Relative"
     }
   }
+}
 
+// MARK: -
+
+extension AppDateStyle {
   var dateStyle: DateStyleEnum {
     switch self {
     case .absolute:

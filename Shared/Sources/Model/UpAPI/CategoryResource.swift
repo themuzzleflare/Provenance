@@ -16,6 +16,14 @@ struct CategoryResource: Codable, Identifiable {
   var links: SelfLink?
 }
 
+// MARK: - CustomStringConvertible
+
+extension CategoryResource: CustomStringConvertible {
+  var description: String {
+    return attributes.name
+  }
+}
+
 // MARK: -
 
 extension CategoryResource {

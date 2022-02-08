@@ -8,10 +8,6 @@ final class StickerView: ASViewController {
     super.init(node: StickerImageNode(sticker: image))
   }
 
-  deinit {
-    print("\(#function) \(String(describing: type(of: self)))")
-  }
-
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }

@@ -5,9 +5,9 @@ enum CategoryTypeEnum: Int, CaseIterable {
   case child
 }
 
-// MARK: -
+// MARK: - CustomStringConvertible
 
-extension CategoryTypeEnum {
+extension CategoryTypeEnum: CustomStringConvertible {
   var description: String {
     switch self {
     case .parent:

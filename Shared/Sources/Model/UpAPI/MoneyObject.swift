@@ -15,6 +15,14 @@ struct MoneyObject: Codable {
   var valueInBaseUnits: Int64
 }
 
+// MARK: - CustomStringConvertible
+
+extension MoneyObject: CustomStringConvertible {
+  var description: String {
+    return valueShort
+  }
+}
+
 // MARK: -
 
 extension MoneyObject {

@@ -6,9 +6,9 @@ enum TransactionGroupingEnum: Int, CaseIterable {
   case transactions
 }
 
-// MARK: -
+// MARK: - CustomStringConvertible
 
-extension TransactionGroupingEnum {
+extension TransactionGroupingEnum: CustomStringConvertible {
   var description: String {
     switch self {
     case .all:

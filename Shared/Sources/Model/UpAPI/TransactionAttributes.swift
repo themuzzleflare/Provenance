@@ -7,7 +7,7 @@ struct TransactionAttributes: Codable {
 
   /// The original, unprocessed text of the transaction.
   /// This is often not a perfect indicator of the actual merchant, but it is useful for reconciliation purposes in some cases.
-  var rawText: String?
+  @Condensed var rawText: String?
 
   /// A short description for this transaction.
   /// Usually the merchant name for purchases.
@@ -50,16 +50,8 @@ struct TransactionAttributes: Codable {
 // MARK: -
 
 extension TransactionAttributes {
-  var createdAtDateComponents: DateComponents? {
-    return createdAt.toDate()?.dateComponents
-  }
-
-  var settledAtDateComponents: DateComponents? {
-    return settledAt?.toDate()?.dateComponents
-  }
-
   var sortingDate: Date {
-    return createdAt.toDate()?.dateAtStartOf(.day).date ?? Date()
+    return createdAt.toDate()!.dateAt(.startOfDay).date
   }
 
   var creationDate: String {

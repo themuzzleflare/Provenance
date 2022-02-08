@@ -21,12 +21,6 @@ extension Array where Element == TagResource {
     }
   }
 
-  var tagSectionModels: [TagSectionModel] {
-    return Dictionary(grouping: self, by: { String($0.id.lowercased().first!) }).sorted { $0.key < $1.key }.map { (section) in
-      return TagSectionModel(id: section.key, tags: section.value.tagCellModels)
-    }
-  }
-
   var tagSectionCoreModels: [TagSectionCoreModel] {
     return Dictionary(grouping: self, by: { String($0.id.lowercased().first!) }).sorted { $0.key < $1.key }.map { (section) in
       return TagSectionCoreModel(id: section.key, tags: section.value)

@@ -2,10 +2,6 @@ import Foundation
 import IGListKit
 
 final class TransactionCellModel: NSObject {
-  override var description: String {
-    return transactionDescription
-  }
-
   let id: String
   let transactionDescription: String
   let creationDate: String
@@ -20,12 +16,8 @@ final class TransactionCellModel: NSObject {
     self.colour = transaction.attributes.amount.transactionType.colour
   }
 
-  init(id: String, transactionDescription: String, creationDate: String, amount: String, colour: TransactionColourEnum) {
-    self.id = id
-    self.transactionDescription = transactionDescription
-    self.creationDate = creationDate
-    self.amount = amount
-    self.colour = colour
+  override var description: String {
+    return transactionDescription
   }
 }
 

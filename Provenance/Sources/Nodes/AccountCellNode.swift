@@ -5,11 +5,14 @@ final class AccountCellNode: ASCellNode {
   private let balanceTextNode = ASTextNode()
   private let displayNameTextNode = ASTextNode()
 
-  init(account: AccountResource) {
+  private var model: AccountCellModel
+
+  init(account: AccountCellModel) {
+    self.model = account
     super.init()
     automaticallyManagesSubnodes = true
-    balanceTextNode.attributedText = account.attributes.balance.valueShort.styled(with: .accountBalance)
-    displayNameTextNode.attributedText = account.attributes.displayName.styled(with: .accountDisplayName)
+    balanceTextNode.attributedText = account.balance.styled(with: .accountBalance)
+    displayNameTextNode.attributedText = account.displayName.styled(with: .accountDisplayName)
     displayNameTextNode.maximumNumberOfLines = 2
     cornerRadius = 12.5
     borderColor = .separator

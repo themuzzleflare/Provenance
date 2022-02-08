@@ -1,19 +1,19 @@
 import Foundation
 
-struct SortedTags: Identifiable {
+struct SortedTags {
   let id: String
   let tags: [String]
 }
 
-// MARK: -
+// MARK: - Hashable
 
 extension SortedTags: Hashable {
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
+  static func == (lhs: SortedTags, rhs: SortedTags) -> Bool {
+    return lhs.id == rhs.id
   }
 
-  static func == (lhs: SortedTags, rhs: SortedTags) -> Bool {
-    lhs.id == rhs.id
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
   }
 }
 

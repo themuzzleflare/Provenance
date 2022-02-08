@@ -4,24 +4,3 @@ struct TagSectionCoreModel {
   let id: String
   let tags: [TagResource]
 }
-
-// MARK: -
-
-extension TagSectionCoreModel {
-  var sortedTagSectionCoreModel: SortedTagSectionCoreModel {
-    return SortedTagSectionCoreModel(id: self.id)
-  }
-}
-
-// MARK: -
-
-extension Array where Element == TagSectionCoreModel {
-  var sortedMixedCoreModel: [Any] {
-    var data = [Any]()
-    self.forEach { (object) in
-      data.append(object.sortedTagSectionCoreModel)
-      data.append(contentsOf: object.tags)
-    }
-    return data
-  }
-}

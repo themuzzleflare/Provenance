@@ -7,6 +7,19 @@ enum TransactionStatusEnum: String, Codable {
   case settled = "SETTLED"
 }
 
+// MARK: - CustomStringConvertible
+
+extension TransactionStatusEnum: CustomStringConvertible {
+  var description: String {
+    switch self {
+    case .held:
+      return "Held"
+    case .settled:
+      return "Settled"
+    }
+  }
+}
+
 // MARK: -
 
 extension TransactionStatusEnum {
@@ -16,15 +29,6 @@ extension TransactionStatusEnum {
       return false
     case .settled:
       return true
-    }
-  }
-
-  var description: String {
-    switch self {
-    case .held:
-      return "Held"
-    case .settled:
-      return "Settled"
     }
   }
 

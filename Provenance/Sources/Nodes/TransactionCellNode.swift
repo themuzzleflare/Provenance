@@ -6,39 +6,21 @@ final class TransactionCellNode: ASCellNode {
   private let creationDateTextNode = ASTextNode()
   private let amountTextNode = ASTextNode()
 
+  private var model: TransactionCellModel
   private var usingContextMenu: Bool
   private var selection: Bool
-  private var transactionDescription: String
-  private var creationDate: String
-  private var amount: String
-  private var colour: TransactionColourEnum
 
-  init(transaction: TransactionResource, contextMenu: Bool = true, selection: Bool = true) {
+  init(transaction: TransactionCellModel, contextMenu: Bool = true, selection: Bool = true) {
+    self.model = transaction
     self.usingContextMenu = contextMenu
     self.selection = selection
-    self.transactionDescription = transaction.attributes.description
-    self.creationDate = transaction.attributes.creationDate
-    self.amount = transaction.attributes.amount.valueShort
-    self.colour = transaction.attributes.amount.transactionType.colour
     super.init()
     automaticallyManagesSubnodes = true
-    descriptionTextNode.attributedText = transactionDescription.styled(with: .transactionDescription)
-    creationDateTextNode.attributedText = creationDate.styled(with: .transactionCreationDate)
-    amountTextNode.attributedText = amount.styled(with: .transactionAmount, .color(colour.uiColour))
-  }
-
-  init(transaction: TransactionCellModel?, contextMenu: Bool = true, selection: Bool = true) {
-    self.usingContextMenu = contextMenu
-    self.selection = selection
-    self.transactionDescription = transaction?.transactionDescription ?? ""
-    self.creationDate = transaction?.creationDate ?? ""
-    self.amount = transaction?.amount ?? ""
-    self.colour = transaction?.colour ?? .unknown
-    super.init()
-    automaticallyManagesSubnodes = true
-    descriptionTextNode.attributedText = transactionDescription.styled(with: .transactionDescription)
-    creationDateTextNode.attributedText = creationDate.styled(with: .transactionCreationDate)
-    amountTextNode.attributedText = amount.styled(with: .transactionAmount, .color(colour.uiColour))
+    descriptionTextNode.attributedText = transaction.transactionDescription.styled(with: .transactionDescription)
+    descriptionTextNode.maximumNumberOfLines = 2
+    descriptionTextNode.truncationMode = .byTruncatingTail
+    creationDateTextNode.attributedText = transaction.creationDate.styled(with: .transactionCreationDate)
+    amountTextNode.attributedText = transaction.amount.styled(with: .transactionAmount, .color(transaction.colour.uiColour))
   }
 
   override func didLoad() {
@@ -61,24 +43,15 @@ final class TransactionCellNode: ASCellNode {
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    let verticalStack = ASStackLayoutSpec(
-      direction: .vertical,
-      spacing: 0,
-      justifyContent: .start,
-      alignItems: .start,
-      children: [
-        descriptionTextNode,
-        creationDateTextNode
-      ]
-    )
-
+    let verticalStack = ASStackLayoutSpec.vertical()
     verticalStack.style.flexShrink = 1.0
     verticalStack.style.flexGrow = 1.0
+    verticalStack.children = [descriptionTextNode, creationDateTextNode]
 
     let horizontalStack = ASStackLayoutSpec(
       direction: .horizontal,
-      spacing: 5,
-      justifyContent: .spaceBetween,
+      spacing: 40,
+      justifyContent: .start,
       alignItems: .center,
       children: [
         verticalStack,
@@ -95,9 +68,9 @@ final class TransactionCellNode: ASCellNode {
 extension TransactionCellNode: UIContextMenuInteractionDelegate {
   func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
     return UIContextMenuConfiguration(elements: [
-      .copyTransactionDescription(transaction: transactionDescription),
-      .copyTransactionCreationDate(transaction: creationDate),
-      .copyTransactionAmount(transaction: amount)
+      .copyTransactionDescription(transaction: model.transactionDescription),
+      .copyTransactionCreationDate(transaction: model.creationDate),
+      .copyTransactionAmount(transaction: model.amount)
     ])
   }
 }

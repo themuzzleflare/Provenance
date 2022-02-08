@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-struct DetailItem: Identifiable {
+struct DetailItem {
   let id: String
   let value: String
 }
@@ -9,12 +9,13 @@ struct DetailItem: Identifiable {
 // MARK: - Hashable
 
 extension DetailItem: Hashable {
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
+  static func == (lhs: DetailItem, rhs: DetailItem) -> Bool {
+    return lhs.id == rhs.id && lhs.value == rhs.value
   }
 
-  static func == (lhs: DetailItem, rhs: DetailItem) -> Bool {
-    lhs.id == rhs.id && lhs.value == rhs.value
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+    hasher.combine(value)
   }
 }
 

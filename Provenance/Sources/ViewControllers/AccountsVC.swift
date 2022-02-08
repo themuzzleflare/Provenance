@@ -15,10 +15,8 @@ final class AccountsVC: ASViewController {
       if Store.provenance.accountFilter != accountFilter.rawValue {
         Store.provenance.accountFilter = accountFilter.rawValue
       }
-      DispatchQueue.main.async { [self] in
-        if searchController.searchBar.selectedScopeButtonIndex != accountFilter.rawValue {
-          searchController.searchBar.selectedScopeButtonIndex = accountFilter.rawValue
-        }
+      if searchController.searchBar.selectedScopeButtonIndex != accountFilter.rawValue {
+        searchController.searchBar.selectedScopeButtonIndex = accountFilter.rawValue
       }
     }
   }
@@ -54,7 +52,6 @@ final class AccountsVC: ASViewController {
 
   deinit {
     removeObservers()
-    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -90,11 +87,15 @@ extension AccountsVC {
                                            name: .willEnterForegroundNotification,
                                            object: nil)
     apiKeyObserver = Store.provenance.observe(\.apiKey, options: .new) { [weak self] (_, _) in
-      self?.fetchAccounts()
+      ASPerformBlockOnMainThread {
+        self?.fetchAccounts()
+      }
     }
     accountFilterObserver = Store.provenance.observe(\.accountFilter, options: .new) { [weak self] (_, change) in
-      guard let value = change.newValue, let accountFilter = AccountTypeOptionEnum(rawValue: value) else { return }
-      self?.accountFilter = accountFilter
+      ASPerformBlockOnMainThread {
+        guard let value = change.newValue, let accountFilter = AccountTypeOptionEnum(rawValue: value) else { return }
+        self?.accountFilter = accountFilter
+      }
     }
   }
 
@@ -125,65 +126,61 @@ extension AccountsVC {
 extension AccountsVC {
   @objc
   private func appMovedToForeground() {
-    fetchAccounts()
-  }
-
-  @objc
-  private func refreshAccounts() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+    ASPerformBlockOnMainThread {
       self.fetchAccounts()
     }
   }
 
+  @objc
+  private func refreshAccounts() {
+    fetchAccounts()
+  }
+
   private func applySnapshot(override: Bool = false) {
-    DispatchQueue.main.async { [self] in
-      let result = ListDiffPaths(
-        fromSection: 0,
-        toSection: 0,
-        oldArray: oldAccountCellModels,
-        newArray: filteredAccounts.accountCellModels,
-        option: .equality
-      ).forBatchUpdates()
+    let result = ListDiffPaths(
+      fromSection: 0,
+      toSection: 0,
+      oldArray: oldAccountCellModels,
+      newArray: filteredAccounts.accountCellModels,
+      option: .equality
+    ).forBatchUpdates()
 
-      if result.hasChanges || override || !accountsError.isEmpty || noAccounts || searchController.searchBar.searchTextField.hasText {
-        if filteredAccounts.isEmpty && accountsError.isEmpty {
-          if accounts.isEmpty && !noAccounts {
-            collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds, contentType: .accounts)
-          } else {
-            collectionNode.view.backgroundView = .noContentView(frame: collectionNode.bounds, type: .accounts)
-          }
+    if result.hasChanges || override || !accountsError.isEmpty || noAccounts || searchController.searchBar.searchTextField.hasText {
+      if filteredAccounts.isEmpty && accountsError.isEmpty {
+        if accounts.isEmpty && !noAccounts {
+          collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds, contentType: .accounts)
         } else {
-          if !accountsError.isEmpty {
-            collectionNode.view.backgroundView = .errorView(frame: collectionNode.bounds, text: accountsError)
-          } else {
-            if collectionNode.view.backgroundView != nil {
-              collectionNode.view.backgroundView = nil
-            }
+          collectionNode.view.backgroundView = .noContentView(frame: collectionNode.bounds, type: .accounts)
+        }
+      } else {
+        if !accountsError.isEmpty {
+          collectionNode.view.backgroundView = .errorView(frame: collectionNode.bounds, text: accountsError)
+        } else {
+          if collectionNode.view.backgroundView != nil {
+            collectionNode.view.backgroundView = nil
           }
         }
-
-        let batchUpdates = {
-          collectionNode.deleteItems(at: result.deletes)
-          collectionNode.insertItems(at: result.inserts)
-          result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
-          collectionNode.reloadItems(at: result.updates)
-          oldAccountCellModels = filteredAccounts.accountCellModels
-        }
-
-        collectionNode.performBatchUpdates(batchUpdates)
       }
+
+      let batchUpdates = { [self] in
+        collectionNode.deleteItems(at: result.deletes)
+        collectionNode.insertItems(at: result.inserts)
+        result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
+        collectionNode.reloadItems(at: result.updates)
+        oldAccountCellModels = filteredAccounts.accountCellModels
+      }
+
+      collectionNode.performBatchUpdates(batchUpdates)
     }
   }
 
   private func fetchAccounts() {
     Up.listAccounts { (result) in
-      DispatchQueue.main.async {
-        switch result {
-        case let .success(accounts):
-          self.display(accounts)
-        case let .failure(error):
-          self.display(error)
-        }
+      switch result {
+      case let .success(accounts):
+        self.display(accounts)
+      case let .failure(error):
+        self.display(error)
       }
     }
   }
@@ -214,9 +211,8 @@ extension AccountsVC: ASCollectionDataSource {
 
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
     let account = filteredAccounts[indexPath.item]
-    let node = AccountCellNode(account: account)
     return {
-      node
+      AccountCellNode(account: account.accountCellModel)
     }
   }
 }

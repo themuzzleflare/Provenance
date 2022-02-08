@@ -29,7 +29,7 @@ final class AccountDetailVC: ViewController {
   private let tableView = UITableView(frame: .zero, style: .grouped)
 
   private var sections: [DetailSection] {
-    return .accountDetailSections(account: account, transaction: transaction).filtered
+    return .accountDetail(account: account, transaction: transaction).filtered
   }
 
   // MARK: - Life Cycle
@@ -42,7 +42,6 @@ final class AccountDetailVC: ViewController {
 
   deinit {
     removeObservers()
-    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -83,7 +82,9 @@ extension AccountDetailVC {
                                            name: .willEnterForegroundNotification,
                                            object: nil)
     dateStyleObserver = Store.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
-      self?.applySnapshot()
+      DispatchQueue.main.async {
+        self?.applySnapshot()
+      }
     }
   }
 
@@ -116,14 +117,14 @@ extension AccountDetailVC {
 extension AccountDetailVC {
   @objc
   private func appMovedToForeground() {
-    fetchingTasks()
+    DispatchQueue.main.async {
+      self.fetchingTasks()
+    }
   }
 
   @objc
   private func refreshData() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      self.fetchingTasks()
-    }
+    fetchingTasks()
   }
 
   @objc
@@ -152,36 +153,30 @@ extension AccountDetailVC {
   }
 
   private func applySnapshot(animate: Bool = true) {
-    DispatchQueue.main.async { [self] in
-      var snapshot = Snapshot()
-      snapshot.appendSections(sections)
-      sections.forEach { snapshot.appendItems($0.items, toSection: $0) }
-      dataSource.apply(snapshot, animatingDifferences: animate)
-    }
+    var snapshot = Snapshot()
+    snapshot.appendSections(self.sections)
+    self.sections.forEach { snapshot.appendItems($0.items, toSection: $0) }
+    self.dataSource.apply(snapshot, animatingDifferences: animate)
   }
 
   private func fetchAccount() {
     Up.retrieveAccount(for: account) { (result) in
-      DispatchQueue.main.async {
-        switch result {
-        case let .success(account):
-          self.account = account
-        case .failure:
-          break
-        }
+      switch result {
+      case let .success(account):
+        self.account = account
+      case .failure:
+        break
       }
     }
   }
 
   private func fetchTransaction() {
     Up.retrieveLatestTransaction(for: account) { (result) in
-      DispatchQueue.main.async {
-        switch result {
-        case let .success(transaction):
-          self.transaction = transaction
-        case .failure:
-          break
-        }
+      switch result {
+      case let .success(transaction):
+        self.transaction = transaction
+      case .failure:
+        break
       }
     }
   }

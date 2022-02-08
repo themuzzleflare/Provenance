@@ -31,12 +31,10 @@
 		7A14D5EA261AC37100C072E3 /* AccountsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A14D5E9261AC37100C072E3 /* AccountsVC.swift */; };
 		7A17C18C2657940E00E5EA23 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A17C18B2657940E00E5EA23 /* Intents.framework */; };
 		7A17C1932657940E00E5EA23 /* Provenance Intents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7A17C18A2657940E00E5EA23 /* Provenance Intents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		7A1B520E2702BD5400835111 /* SortedTransactionCoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B520D2702BD5400835111 /* SortedTransactionCoreModel.swift */; };
-		7A1B52102702BD9D00835111 /* SortedSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B520F2702BD9D00835111 /* SortedSectionModel.swift */; };
-		7A1B52122702C1A000835111 /* SectionModelSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B52112702C1A000835111 /* SectionModelSC.swift */; };
-		7A1B52142702C1A900835111 /* ItemModelSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B52132702C1A900835111 /* ItemModelSC.swift */; };
+		7A1B52102702BD9D00835111 /* DateHeaderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B520F2702BD9D00835111 /* DateHeaderModel.swift */; };
+		7A1B52122702C1A000835111 /* DateHeaderModelSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B52112702C1A000835111 /* DateHeaderModelSC.swift */; };
+		7A1B52142702C1A900835111 /* TransactionModelSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B52132702C1A900835111 /* TransactionModelSC.swift */; };
 		7A1B52162702C30100835111 /* TransactionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B52152702C30100835111 /* TransactionsVC.swift */; };
-		7A1B52182702C82300835111 /* SortedSectionCoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B52172702C82300835111 /* SortedSectionCoreModel.swift */; };
 		7A1BE9F426EDAD6D00A97F56 /* StickerImageNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1BE9F326EDAD6D00A97F56 /* StickerImageNode.swift */; };
 		7A20276127A8C3E2003F0E63 /* UpEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20276027A8C3E2003F0E63 /* UpEventMonitor.swift */; };
 		7A20276227A8C3E2003F0E63 /* UpEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20276027A8C3E2003F0E63 /* UpEventMonitor.swift */; };
@@ -46,10 +44,10 @@
 		7A20A7542791486700B7A878 /* AddCategoryTransactionSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20A7532791486700B7A878 /* AddCategoryTransactionSelectionVC.swift */; };
 		7A20A7572791499700B7A878 /* AddCategoryCategorySelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20A7562791499700B7A878 /* AddCategoryCategorySelectionVC.swift */; };
 		7A22713926817399001F63FF /* ShortcutType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A22713826817399001F63FF /* ShortcutType.swift */; };
-		7A2A0F1727AA3476007A54E3 /* Capitalised.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0F1627AA3476007A54E3 /* Capitalised.swift */; };
-		7A2A0F1827AA3476007A54E3 /* Capitalised.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0F1627AA3476007A54E3 /* Capitalised.swift */; };
-		7A2A0F1927AA3476007A54E3 /* Capitalised.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0F1627AA3476007A54E3 /* Capitalised.swift */; };
-		7A2A0F1A27AA3476007A54E3 /* Capitalised.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0F1627AA3476007A54E3 /* Capitalised.swift */; };
+		7A2A0F1727AA3476007A54E3 /* Condensed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0F1627AA3476007A54E3 /* Condensed.swift */; };
+		7A2A0F1827AA3476007A54E3 /* Condensed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0F1627AA3476007A54E3 /* Condensed.swift */; };
+		7A2A0F1927AA3476007A54E3 /* Condensed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0F1627AA3476007A54E3 /* Condensed.swift */; };
+		7A2A0F1A27AA3476007A54E3 /* Condensed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0F1627AA3476007A54E3 /* Condensed.swift */; };
 		7A2F18FE261D9CC80054A9B6 /* StickerSeven.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F18F6261D9CC60054A9B6 /* StickerSeven.gif */; };
 		7A2F1900261D9CC80054A9B6 /* StickerTwo.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F18F8261D9CC70054A9B6 /* StickerTwo.gif */; };
 		7A2F1901261D9CC80054A9B6 /* StickerSix.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F18F9261D9CC80054A9B6 /* StickerSix.gif */; };
@@ -60,7 +58,7 @@
 		7A3248312701A73300A9037D /* SeparatorCellNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3248302701A73300A9037D /* SeparatorCellNode.swift */; };
 		7A3248352701B95700A9037D /* SelectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3248342701B95700A9037D /* SelectionDelegate.swift */; };
 		7A3248372701C1A700A9037D /* SortedTransactionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3248362701C1A700A9037D /* SortedTransactionModel.swift */; };
-		7A3248392701C6EC00A9037D /* HeaderCellNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3248382701C6EC00A9037D /* HeaderCellNode.swift */; };
+		7A3248392701C6EC00A9037D /* DateHeaderCellNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3248382701C6EC00A9037D /* DateHeaderCellNode.swift */; };
 		7A340AEE26F9C0F500D43523 /* CircularStd-BookItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ADC818026A7F67F009D4E4E /* CircularStd-BookItalic.ttf */; };
 		7A340AEF26F9C0F500D43523 /* CircularStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7ADC817F26A7F67F009D4E4E /* CircularStd-Bold.otf */; };
 		7A340AF026F9C0F500D43523 /* CircularStd-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7ADC817D26A7F67F009D4E4E /* CircularStd-Medium.otf */; };
@@ -144,7 +142,7 @@
 		7A4ADBA92720F6DE009765A3 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4ADBA82720F6DE009765A3 /* ErrorView.swift */; };
 		7A4ADBAB2720F6EC009765A3 /* LatestTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4ADBAA2720F6EC009765A3 /* LatestTransactionView.swift */; };
 		7A4ADBAD2720F6F9009765A3 /* AccountBalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4ADBAC2720F6F9009765A3 /* AccountBalanceView.swift */; };
-		7A56101225D219770091396E /* TagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101125D219770091396E /* TagsVC.swift */; };
+		7A4FAC0227ACB05B00B04806 /* DatePickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4FAC0127ACB05A00B04806 /* DatePickerVC.swift */; };
 		7A56101625D21BFE0091396E /* TransactionsByTagVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101525D21BFE0091396E /* TransactionsByTagVC.swift */; };
 		7A56101A25D22AF10091396E /* AddTagTransactionSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101925D22AF10091396E /* AddTagTransactionSelectionVC.swift */; };
 		7A56101D25D25B600091396E /* TransactionsByCategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A56101C25D25B600091396E /* TransactionsByCategoryVC.swift */; };
@@ -158,11 +156,6 @@
 		7A5BDE762616B99B00B5A5F9 /* CategoriesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5BDE752616B99B00B5A5F9 /* CategoriesVC.swift */; };
 		7A615D7326FA9D6D001F1834 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A615D7226FA9D6D001F1834 /* UITextField+Extension.swift */; };
 		7A67980D25D3E15D002AA83A /* DiagnosticsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A67980C25D3E15D002AA83A /* DiagnosticsVC.swift */; };
-		7A69F25D2706A392008CA6CC /* TransactionBindingSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F25C2706A392008CA6CC /* TransactionBindingSC.swift */; };
-		7A69F2602706A736008CA6CC /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F25F2706A736008CA6CC /* TransactionCell.swift */; };
-		7A69F2622706A73F008CA6CC /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F2612706A73F008CA6CC /* HeaderCell.swift */; };
-		7A69F2662706AEDE008CA6CC /* TransactionsVCAlt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F2652706AEDE008CA6CC /* TransactionsVCAlt.swift */; };
-		7A69F2702706BEA8008CA6CC /* SpinnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A69F26F2706BEA8008CA6CC /* SpinnerCell.swift */; };
 		7A72D2F12672DEAF005FAC4F /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */; };
 		7A7CAB0526F1F161005CB30F /* FLAnimatedImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */; };
 		7A7F039D26FB0641003F1321 /* TransactionColourEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7F039C26FB0641003F1321 /* TransactionColourEnum+Extension.swift */; };
@@ -224,13 +217,8 @@
 		7A82FB4926F4869600C9C04E /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A82FB4826F4869600C9C04E /* TransactionTableViewCell.swift */; };
 		7A89EFC027224B3200C06A08 /* UIWindow+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89EFBF27224B3200C06A08 /* UIWindow+Extension.swift */; };
 		7A8C12B4271CEC7600F6A633 /* UICollectionViewCellDragState+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12B3271CEC7600F6A633 /* UICollectionViewCellDragState+Extension.swift */; };
-		7A8C12B6271CF7DA00F6A633 /* TagSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12B5271CF7D900F6A633 /* TagSectionModel.swift */; };
 		7A8C12B8271D002E00F6A633 /* TagSectionCoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12B7271D002E00F6A633 /* TagSectionCoreModel.swift */; };
-		7A8C12BA271D1CC600F6A633 /* TagSectionModelSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12B9271D1CC600F6A633 /* TagSectionModelSC.swift */; };
-		7A8C12BC271D1D2C00F6A633 /* TagCellModelSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12BB271D1D2C00F6A633 /* TagCellModelSC.swift */; };
-		7A8C12BE271D1E5000F6A633 /* SortedTagSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12BD271D1E5000F6A633 /* SortedTagSectionModel.swift */; };
-		7A8C12C0271D214400F6A633 /* SortedTagSectionCoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12BF271D214400F6A633 /* SortedTagSectionCoreModel.swift */; };
-		7A8C12C2271D280100F6A633 /* TagsVCAlt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12C1271D280100F6A633 /* TagsVCAlt.swift */; };
+		7A8C12C2271D280100F6A633 /* TagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12C1271D280100F6A633 /* TagsVC.swift */; };
 		7A8C12C4271D283000F6A633 /* SortedTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C12C3271D283000F6A633 /* SortedTags.swift */; };
 		7A8E41F126048320003D0E6A /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD1279A2604702600A39272 /* Widgets.swift */; };
 		7A90F52226F096D200384F53 /* AccountResource+CellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A90F52126F096D200384F53 /* AccountResource+CellModel.swift */; };
@@ -254,9 +242,6 @@
 		7AAADD5526F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5426F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift */; };
 		7AAADD5926F1812600C4A9D9 /* UIBarButtonItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5826F1812600C4A9D9 /* UIBarButtonItem+Extension.swift */; };
 		7AAADD5B26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAADD5A26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift */; };
-		7AAB8D652707CB3200A59D03 /* SortedTransactionModelAlt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAB8D642707CB3200A59D03 /* SortedTransactionModelAlt.swift */; };
-		7AAB8D682707D02500A59D03 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAB8D672707D02500A59D03 /* HeaderView.swift */; };
-		7AAB8D6A2707D10D00A59D03 /* ListSectionController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAB8D692707D10D00A59D03 /* ListSectionController+Extension.swift */; };
 		7AAB8D6C2707E26900A59D03 /* CALayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAB8D6B2707E26900A59D03 /* CALayer+Extension.swift */; };
 		7AB34D1E25C78230000A1E81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB34D1D25C78230000A1E81 /* AppDelegate.swift */; };
 		7AB34D2725C78232000A1E81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AB34D2625C78232000A1E81 /* Assets.xcassets */; };
@@ -309,10 +294,6 @@
 		7AD595C62705355700339BD1 /* MarqueeLabelNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD595C52705355700339BD1 /* MarqueeLabelNode.swift */; };
 		7AD6ED9A2604A9180051A235 /* Provenance Stickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7AD6ED932604A9150051A235 /* Provenance Stickers.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7AD739A22657C04D009FF994 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A17C18E2657940E00E5EA23 /* IntentHandler.swift */; };
-		7ADA6AC8279F9C370065D87A /* transactions.json in Resources */ = {isa = PBXBuildFile; fileRef = 7ADA6AC7279F9C370065D87A /* transactions.json */; };
-		7ADA6AC9279F9C370065D87A /* transactions.json in Resources */ = {isa = PBXBuildFile; fileRef = 7ADA6AC7279F9C370065D87A /* transactions.json */; };
-		7ADA6ACA279F9C370065D87A /* transactions.json in Resources */ = {isa = PBXBuildFile; fileRef = 7ADA6AC7279F9C370065D87A /* transactions.json */; };
-		7ADA6ACB279F9C370065D87A /* transactions.json in Resources */ = {isa = PBXBuildFile; fileRef = 7ADA6AC7279F9C370065D87A /* transactions.json */; };
 		7ADF0EC22702F9F5004FE0B1 /* TransactionGroupingEnum+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADF0EC12702F9F5004FE0B1 /* TransactionGroupingEnum+Extension.swift */; };
 		7AE53BF12685C2A20010862E /* up-logo-white-sunset-transparent-bg.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7AE53BF02685C2A20010862E /* up-logo-white-sunset-transparent-bg.gif */; };
 		7AE53BF32685C3B80010862E /* up-logo-draw-midnight-yellow-transparent-bg.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7AE53BF22685C3B80010862E /* up-logo-draw-midnight-yellow-transparent-bg.gif */; };
@@ -639,19 +620,17 @@
 		7A17C18E2657940E00E5EA23 /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
 		7A17C1902657940E00E5EA23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A17C1972657942000E5EA23 /* Intents.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Intents.entitlements; sourceTree = "<group>"; };
-		7A1B520D2702BD5400835111 /* SortedTransactionCoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedTransactionCoreModel.swift; sourceTree = "<group>"; };
-		7A1B520F2702BD9D00835111 /* SortedSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedSectionModel.swift; sourceTree = "<group>"; };
-		7A1B52112702C1A000835111 /* SectionModelSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionModelSC.swift; sourceTree = "<group>"; };
-		7A1B52132702C1A900835111 /* ItemModelSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemModelSC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		7A1B520F2702BD9D00835111 /* DateHeaderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHeaderModel.swift; sourceTree = "<group>"; };
+		7A1B52112702C1A000835111 /* DateHeaderModelSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHeaderModelSC.swift; sourceTree = "<group>"; };
+		7A1B52132702C1A900835111 /* TransactionModelSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionModelSC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7A1B52152702C30100835111 /* TransactionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsVC.swift; sourceTree = "<group>"; };
-		7A1B52172702C82300835111 /* SortedSectionCoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedSectionCoreModel.swift; sourceTree = "<group>"; };
 		7A1BE9F326EDAD6D00A97F56 /* StickerImageNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerImageNode.swift; sourceTree = "<group>"; };
 		7A20276027A8C3E2003F0E63 /* UpEventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpEventMonitor.swift; sourceTree = "<group>"; };
 		7A202B5C262908EC00D2450A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7A20A7532791486700B7A878 /* AddCategoryTransactionSelectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryTransactionSelectionVC.swift; sourceTree = "<group>"; };
 		7A20A7562791499700B7A878 /* AddCategoryCategorySelectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryCategorySelectionVC.swift; sourceTree = "<group>"; };
 		7A22713826817399001F63FF /* ShortcutType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutType.swift; sourceTree = "<group>"; };
-		7A2A0F1627AA3476007A54E3 /* Capitalised.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capitalised.swift; sourceTree = "<group>"; };
+		7A2A0F1627AA3476007A54E3 /* Condensed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Condensed.swift; sourceTree = "<group>"; };
 		7A2F18F6261D9CC60054A9B6 /* StickerSeven.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerSeven.gif; sourceTree = "<group>"; };
 		7A2F18F8261D9CC70054A9B6 /* StickerTwo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerTwo.gif; sourceTree = "<group>"; };
 		7A2F18F9261D9CC80054A9B6 /* StickerSix.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = StickerSix.gif; sourceTree = "<group>"; };
@@ -662,7 +641,7 @@
 		7A3248302701A73300A9037D /* SeparatorCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorCellNode.swift; sourceTree = "<group>"; };
 		7A3248342701B95700A9037D /* SelectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionDelegate.swift; sourceTree = "<group>"; };
 		7A3248362701C1A700A9037D /* SortedTransactionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedTransactionModel.swift; sourceTree = "<group>"; };
-		7A3248382701C6EC00A9037D /* HeaderCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCellNode.swift; sourceTree = "<group>"; };
+		7A3248382701C6EC00A9037D /* DateHeaderCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHeaderCellNode.swift; sourceTree = "<group>"; };
 		7A3568E4279F62BC0087B1D8 /* UpInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpInterceptor.swift; sourceTree = "<group>"; };
 		7A35ECA32657B88400568ECA /* LatestTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestTransaction.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7A367BA72791042600A37FFB /* SelfRelatedLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfRelatedLink.swift; sourceTree = "<group>"; };
@@ -674,7 +653,7 @@
 		7A4ADBA82720F6DE009765A3 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		7A4ADBAA2720F6EC009765A3 /* LatestTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestTransactionView.swift; sourceTree = "<group>"; };
 		7A4ADBAC2720F6F9009765A3 /* AccountBalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountBalanceView.swift; sourceTree = "<group>"; };
-		7A56101125D219770091396E /* TagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsVC.swift; sourceTree = "<group>"; };
+		7A4FAC0127ACB05A00B04806 /* DatePickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerVC.swift; sourceTree = "<group>"; };
 		7A56101525D21BFE0091396E /* TransactionsByTagVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByTagVC.swift; sourceTree = "<group>"; };
 		7A56101925D22AF10091396E /* AddTagTransactionSelectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagTransactionSelectionVC.swift; sourceTree = "<group>"; };
 		7A56101C25D25B600091396E /* TransactionsByCategoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsByCategoryVC.swift; sourceTree = "<group>"; };
@@ -690,11 +669,6 @@
 		7A61534F26F961F800382804 /* ListTransactionsIntentResponse+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListTransactionsIntentResponse+Extension.swift"; sourceTree = "<group>"; };
 		7A615D7226FA9D6D001F1834 /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		7A67980C25D3E15D002AA83A /* DiagnosticsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsVC.swift; sourceTree = "<group>"; };
-		7A69F25C2706A392008CA6CC /* TransactionBindingSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBindingSC.swift; sourceTree = "<group>"; };
-		7A69F25F2706A736008CA6CC /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
-		7A69F2612706A73F008CA6CC /* HeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
-		7A69F2652706AEDE008CA6CC /* TransactionsVCAlt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsVCAlt.swift; sourceTree = "<group>"; };
-		7A69F26F2706BEA8008CA6CC /* SpinnerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerCell.swift; sourceTree = "<group>"; };
 		7A72D2F02672DEAF005FAC4F /* TabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
 		7A7CAB0426F1F161005CB30F /* FLAnimatedImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FLAnimatedImage+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7A7F039C26FB0641003F1321 /* TransactionColourEnum+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionColourEnum+Extension.swift"; sourceTree = "<group>"; };
@@ -710,13 +684,8 @@
 		7A89EFBF27224B3200C06A08 /* UIWindow+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+Extension.swift"; sourceTree = "<group>"; };
 		7A8BC0C72681586100D6D8D3 /* UserDefaults+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extension.swift"; sourceTree = "<group>"; };
 		7A8C12B3271CEC7600F6A633 /* UICollectionViewCellDragState+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCellDragState+Extension.swift"; sourceTree = "<group>"; };
-		7A8C12B5271CF7D900F6A633 /* TagSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSectionModel.swift; sourceTree = "<group>"; };
 		7A8C12B7271D002E00F6A633 /* TagSectionCoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSectionCoreModel.swift; sourceTree = "<group>"; };
-		7A8C12B9271D1CC600F6A633 /* TagSectionModelSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSectionModelSC.swift; sourceTree = "<group>"; };
-		7A8C12BB271D1D2C00F6A633 /* TagCellModelSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCellModelSC.swift; sourceTree = "<group>"; };
-		7A8C12BD271D1E5000F6A633 /* SortedTagSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedTagSectionModel.swift; sourceTree = "<group>"; };
-		7A8C12BF271D214400F6A633 /* SortedTagSectionCoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedTagSectionCoreModel.swift; sourceTree = "<group>"; };
-		7A8C12C1271D280100F6A633 /* TagsVCAlt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsVCAlt.swift; sourceTree = "<group>"; };
+		7A8C12C1271D280100F6A633 /* TagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsVC.swift; sourceTree = "<group>"; };
 		7A8C12C3271D283000F6A633 /* SortedTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedTags.swift; sourceTree = "<group>"; };
 		7A90F51F26F08ECA00384F53 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7A90F52126F096D200384F53 /* AccountResource+CellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountResource+CellModel.swift"; sourceTree = "<group>"; };
@@ -747,9 +716,6 @@
 		7AAADD5626F17FF300C4A9D9 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		7AAADD5826F1812600C4A9D9 /* UIBarButtonItem+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Extension.swift"; sourceTree = "<group>"; };
 		7AAADD5A26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MarqueeLabel+Extension.swift"; sourceTree = "<group>"; };
-		7AAB8D642707CB3200A59D03 /* SortedTransactionModelAlt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedTransactionModelAlt.swift; sourceTree = "<group>"; };
-		7AAB8D672707D02500A59D03 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
-		7AAB8D692707D10D00A59D03 /* ListSectionController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListSectionController+Extension.swift"; sourceTree = "<group>"; };
 		7AAB8D6B2707E26900A59D03 /* CALayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Extension.swift"; sourceTree = "<group>"; };
 		7AB34D1A25C78230000A1E81 /* Provenance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Provenance.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AB34D1D25C78230000A1E81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -783,7 +749,6 @@
 		7AD595C52705355700339BD1 /* MarqueeLabelNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeLabelNode.swift; sourceTree = "<group>"; };
 		7AD6ED932604A9150051A235 /* Provenance Stickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Provenance Stickers.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AD6ED972604A9180051A235 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7ADA6AC7279F9C370065D87A /* transactions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = transactions.json; sourceTree = "<group>"; };
 		7ADC6EEF271FDB1E00A7E8AE /* Provenance.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Provenance.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 		7ADC6EF0271FDB2800A7E8AE /* Stickers.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Stickers.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 		7ADC6EF1271FDB3100A7E8AE /* Widgets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Widgets.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
@@ -967,7 +932,7 @@
 				7AF2156F26F07F93009F4F38 /* WidgetsNode.swift */,
 				7A31696926FC1667009695C8 /* StatusIconHelpNode.swift */,
 				7A3248302701A73300A9037D /* SeparatorCellNode.swift */,
-				7A3248382701C6EC00A9037D /* HeaderCellNode.swift */,
+				7A3248382701C6EC00A9037D /* DateHeaderCellNode.swift */,
 				7A3E428327041243007E3A08 /* SpinnerCellNode.swift */,
 			);
 			path = Nodes;
@@ -977,14 +942,13 @@
 			isa = PBXGroup;
 			children = (
 				7A1B52152702C30100835111 /* TransactionsVC.swift */,
-				7A69F2652706AEDE008CA6CC /* TransactionsVCAlt.swift */,
+				7A4FAC0127ACB05A00B04806 /* DatePickerVC.swift */,
 				7A09E4B42686E30600C9F299 /* TransactionDetailVC.swift */,
 				7A438782263AAC9B008C5714 /* StatusIconHelpView.swift */,
 				7A122EE5268AB37800BF90BB /* TransactionTagsVC.swift */,
 				7A14D5E9261AC37100C072E3 /* AccountsVC.swift */,
 				7AD295F325D358B200B8A765 /* TransactionsByAccountVC.swift */,
-				7A56101125D219770091396E /* TagsVC.swift */,
-				7A8C12C1271D280100F6A633 /* TagsVCAlt.swift */,
+				7A8C12C1271D280100F6A633 /* TagsVC.swift */,
 				7AD295F725D3599A00B8A765 /* AccountDetailVC.swift */,
 				7A56101925D22AF10091396E /* AddTagTransactionSelectionVC.swift */,
 				7AB609AF2603F0D80038B85B /* AddTagTagsSelectionVC.swift */,
@@ -1037,6 +1001,7 @@
 				7A8DDBD72703034400DDC098 /* ListDiffable */,
 				7AA1B2F8271D3DF800B1805A /* CoreModel */,
 				7AA1B2F7271D3DCD00B1805A /* Hashable */,
+				7A3248362701C1A700A9037D /* SortedTransactionModel.swift */,
 				7AF2151026EF4175009F4F38 /* ContentType.swift */,
 				7AF2155F26F057F1009F4F38 /* FilterMenuAction.swift */,
 				7AA8540527210C9E003289C5 /* AnimatedImage.swift */,
@@ -1060,12 +1025,9 @@
 		7A24CD5A2701752D00ED26FF /* SectionControllers */ = {
 			isa = PBXGroup;
 			children = (
-				7A1B52112702C1A000835111 /* SectionModelSC.swift */,
-				7A1B52132702C1A900835111 /* ItemModelSC.swift */,
+				7A1B52112702C1A000835111 /* DateHeaderModelSC.swift */,
+				7A1B52132702C1A900835111 /* TransactionModelSC.swift */,
 				7A3E4285270412FC007E3A08 /* SpinnerSC.swift */,
-				7A69F25C2706A392008CA6CC /* TransactionBindingSC.swift */,
-				7A8C12B9271D1CC600F6A633 /* TagSectionModelSC.swift */,
-				7A8C12BB271D1D2C00F6A633 /* TagCellModelSC.swift */,
 			);
 			path = SectionControllers;
 			sourceTree = "<group>";
@@ -1073,7 +1035,7 @@
 		7A2A0F1527AA3451007A54E3 /* PropertyWrappers */ = {
 			isa = PBXGroup;
 			children = (
-				7A2A0F1627AA3476007A54E3 /* Capitalised.swift */,
+				7A2A0F1627AA3476007A54E3 /* Condensed.swift */,
 			);
 			path = PropertyWrappers;
 			sourceTree = "<group>";
@@ -1156,19 +1118,8 @@
 			isa = PBXGroup;
 			children = (
 				7AC8AA8327059DD600E7BDDC /* IGListAdapterUpdateType+Extension.swift */,
-				7AAB8D692707D10D00A59D03 /* ListSectionController+Extension.swift */,
 			);
 			path = IGListKit;
-			sourceTree = "<group>";
-		};
-		7A69F25E2706A71F008CA6CC /* CollectionViewCells */ = {
-			isa = PBXGroup;
-			children = (
-				7A69F25F2706A736008CA6CC /* TransactionCell.swift */,
-				7A69F2612706A73F008CA6CC /* HeaderCell.swift */,
-				7A69F26F2706BEA8008CA6CC /* SpinnerCell.swift */,
-			);
-			path = CollectionViewCells;
 			sourceTree = "<group>";
 		};
 		7A6DF39E2706850D00E257B7 /* Other */ = {
@@ -1201,7 +1152,6 @@
 		7A75631626A7ED6B00963658 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				7ADA6AC6279F9C270065D87A /* JSON */,
 				7A31F47726F86A0B00606FDE /* AssetCatalogs */,
 				7ADC819126A7F68B009D4E4E /* Fonts */,
 				7A9082F826927B8D005CCB26 /* Intents */,
@@ -1272,11 +1222,7 @@
 				7A0BF09426FFDC05004A3E0C /* AccountCellModel.swift */,
 				7A0BF09626FFDC0D004A3E0C /* TagCellModel.swift */,
 				7A0BF09826FFDC17004A3E0C /* CategoryCellModel.swift */,
-				7A3248362701C1A700A9037D /* SortedTransactionModel.swift */,
-				7AAB8D642707CB3200A59D03 /* SortedTransactionModelAlt.swift */,
-				7A1B520F2702BD9D00835111 /* SortedSectionModel.swift */,
-				7A8C12B5271CF7D900F6A633 /* TagSectionModel.swift */,
-				7A8C12BD271D1E5000F6A633 /* SortedTagSectionModel.swift */,
+				7A1B520F2702BD9D00835111 /* DateHeaderModel.swift */,
 			);
 			path = ListDiffable;
 			sourceTree = "<group>";
@@ -1292,9 +1238,9 @@
 		7AA1B2F7271D3DCD00B1805A /* Hashable */ = {
 			isa = PBXGroup;
 			children = (
-				7A8C12C3271D283000F6A633 /* SortedTags.swift */,
 				7AA113C6261550B900386E2D /* DetailSection.swift */,
 				7AA113BE26154F3800386E2D /* DetailItem.swift */,
+				7A8C12C3271D283000F6A633 /* SortedTags.swift */,
 			);
 			path = Hashable;
 			sourceTree = "<group>";
@@ -1302,10 +1248,7 @@
 		7AA1B2F8271D3DF800B1805A /* CoreModel */ = {
 			isa = PBXGroup;
 			children = (
-				7A1B520D2702BD5400835111 /* SortedTransactionCoreModel.swift */,
-				7A1B52172702C82300835111 /* SortedSectionCoreModel.swift */,
 				7A8C12B7271D002E00F6A633 /* TagSectionCoreModel.swift */,
-				7A8C12BF271D214400F6A633 /* SortedTagSectionCoreModel.swift */,
 			);
 			path = CoreModel;
 			sourceTree = "<group>";
@@ -1326,14 +1269,6 @@
 				7A82FB4626F47F7B00C9C04E /* IntentsUI.entitlements */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		7AAB8D662707D01500A59D03 /* CollectionReusableViews */ = {
-			isa = PBXGroup;
-			children = (
-				7AAB8D672707D02500A59D03 /* HeaderView.swift */,
-			);
-			path = CollectionReusableViews;
 			sourceTree = "<group>";
 		};
 		7AB34D1125C78230000A1E81 = {
@@ -1433,14 +1368,6 @@
 			path = Stickers;
 			sourceTree = "<group>";
 		};
-		7ADA6AC6279F9C270065D87A /* JSON */ = {
-			isa = PBXGroup;
-			children = (
-				7ADA6AC7279F9C370065D87A /* transactions.json */,
-			);
-			path = JSON;
-			sourceTree = "<group>";
-		};
 		7ADC815F26A7EF70009D4E4E /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1449,8 +1376,6 @@
 				7AF2155026F04F62009F4F38 /* Extensions */,
 				7A22F7E625FFF8860014BDC8 /* Model */,
 				7A07979A25D79ACE0013EE82 /* TableViewCells */,
-				7A69F25E2706A71F008CA6CC /* CollectionViewCells */,
-				7AAB8D662707D01500A59D03 /* CollectionReusableViews */,
 				7A040C8026994EE4000CCFF3 /* Nodes */,
 				7A22F7E925FFF90E0014BDC8 /* BaseControllers */,
 				7A24CD5A2701752D00ED26FF /* SectionControllers */,
@@ -1548,6 +1473,7 @@
 		7AFC6EB02703E06A0056270B /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				7A89EFBF27224B3200C06A08 /* UIWindow+Extension.swift */,
 				7A3192E626FD88A400718A25 /* NSNotificationName+Extension.swift */,
 				7A90F56126F16FB200384F53 /* URL+Extensions.swift */,
 				7AAADD5426F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift */,
@@ -1568,7 +1494,6 @@
 				7AF9F11A27168A3000DD1E72 /* UITableViewDiffableDataSource+Extension.swift */,
 				7AF9F11C27168B0C00DD1E72 /* UICollectionViewDiffableDataSource+Extension.swift */,
 				7A8C12B3271CEC7600F6A633 /* UICollectionViewCellDragState+Extension.swift */,
-				7A89EFBF27224B3200C06A08 /* UIWindow+Extension.swift */,
 				7AC81B1B2723FC9900CFF8E6 /* NSDirectionalEdgeInsets+Extension.swift */,
 			);
 			path = UIKit;
@@ -1871,7 +1796,6 @@
 				7A340B0026F9C0FC00D43523 /* SF-Mono-Regular.otf in Resources */,
 				7A340AFD26F9C0FC00D43523 /* CircularStd-BookItalic.ttf in Resources */,
 				7A340AFE26F9C0FC00D43523 /* CircularStd-Bold.otf in Resources */,
-				7ADA6ACA279F9C370065D87A /* transactions.json in Resources */,
 				7A7F03A626FB0B10003F1321 /* Assets.xcassets in Resources */,
 				7A340AFF26F9C0FC00D43523 /* CircularStd-Medium.otf in Resources */,
 			);
@@ -1885,7 +1809,6 @@
 				7A340AFC26F9C0FB00D43523 /* CircularStd-Book.otf in Resources */,
 				7A340AF926F9C0FB00D43523 /* CircularStd-Bold.otf in Resources */,
 				7A340AFB26F9C0FB00D43523 /* SF-Mono-Regular.otf in Resources */,
-				7ADA6ACB279F9C370065D87A /* transactions.json in Resources */,
 				7A7F03A526FB0B01003F1321 /* Assets.xcassets in Resources */,
 				7A340AFA26F9C0FB00D43523 /* CircularStd-Medium.otf in Resources */,
 			);
@@ -1896,7 +1819,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7AE53BF32685C3B80010862E /* up-logo-draw-midnight-yellow-transparent-bg.gif in Resources */,
-				7ADA6AC8279F9C370065D87A /* transactions.json in Resources */,
 				7AB34D2A25C78232000A1E81 /* LaunchScreen.storyboard in Resources */,
 				7A2F1900261D9CC80054A9B6 /* StickerTwo.gif in Resources */,
 				7A340AF226F9C0F500D43523 /* CircularStd-Book.otf in Resources */,
@@ -1923,7 +1845,6 @@
 				7A340AF726F9C0F800D43523 /* CircularStd-Book.otf in Resources */,
 				7A340AF426F9C0F800D43523 /* CircularStd-Bold.otf in Resources */,
 				7A340AF626F9C0F800D43523 /* SF-Mono-Regular.otf in Resources */,
-				7ADA6AC9279F9C370065D87A /* transactions.json in Resources */,
 				7AD127FD260473A400A39272 /* Assets.xcassets in Resources */,
 				7A340AF526F9C0F800D43523 /* CircularStd-Medium.otf in Resources */,
 			);
@@ -2179,7 +2100,7 @@
 				E76E358FA0138A08EC90F85C /* TransactionStatusEnum.swift in Sources */,
 				E76E300E0E57DFCEA29B1E9A /* TransactionRelationships.swift in Sources */,
 				E76E3E283F1BDE67AECC55F1 /* RelationshipTransactions.swift in Sources */,
-				7A2A0F1927AA3476007A54E3 /* Capitalised.swift in Sources */,
+				7A2A0F1927AA3476007A54E3 /* Condensed.swift in Sources */,
 				E76E3D815F7A1B2EC8BFD851 /* CategoryRelationshipParent.swift in Sources */,
 				E76E3FEEE0DB14CBD7A2A6BD /* TagInputResourceIdentifier.swift in Sources */,
 				E76E347B42ED88747CB4B6F6 /* TransactionRelationshipTags.swift in Sources */,
@@ -2289,7 +2210,7 @@
 				E76E36CA5C67603AD38C952A /* AppWidgets.swift in Sources */,
 				E76E356102DA2A4564AD87F8 /* AppDateStyle.swift in Sources */,
 				E76E3364D264BD802BB648C2 /* ProvenanceUtils.swift in Sources */,
-				7A2A0F1A27AA3476007A54E3 /* Capitalised.swift in Sources */,
+				7A2A0F1A27AA3476007A54E3 /* Condensed.swift in Sources */,
 				E76E3B7295ED0B0ACD0BB22D /* CategoryTypeEnum.swift in Sources */,
 				E76E308F22F9AC603AA6B4E4 /* AccountBalanceModel.swift in Sources */,
 				E76E3D03B15E72F0DCE1F7E9 /* TransactionCategory.swift in Sources */,
@@ -2311,13 +2232,11 @@
 				7A340B0C26F9C11200D43523 /* Color+Extension.swift in Sources */,
 				7A3248352701B95700A9037D /* SelectionDelegate.swift in Sources */,
 				7A90F56026F1634200384F53 /* UIColor+Extension.swift in Sources */,
-				7A1B52122702C1A000835111 /* SectionModelSC.swift in Sources */,
+				7A1B52122702C1A000835111 /* DateHeaderModelSC.swift in Sources */,
 				7AF2150F26EF40C9009F4F38 /* UIView+Extension.swift in Sources */,
 				7AF2156426F05F74009F4F38 /* UIMenuElement+Extension.swift in Sources */,
 				7AAADD5926F1812600C4A9D9 /* UIBarButtonItem+Extension.swift in Sources */,
-				7AAB8D6A2707D10D00A59D03 /* ListSectionController+Extension.swift in Sources */,
 				7AF2155D26F05422009F4F38 /* UIMenu+Extension.swift in Sources */,
-				7A1B520E2702BD5400835111 /* SortedTransactionCoreModel.swift in Sources */,
 				7AF2150926EF32C5009F4F38 /* ASSizeRange+Extension.swift in Sources */,
 				7AF2150D26EF3A86009F4F38 /* UISearchController+Extension.swift in Sources */,
 				7A08A79126FC1BA50035DD2F /* StringStyle+Extension.swift in Sources */,
@@ -2333,8 +2252,6 @@
 				7A0BF09726FFDC0D004A3E0C /* TagCellModel.swift in Sources */,
 				7AD295F425D358B200B8A765 /* TransactionsByAccountVC.swift in Sources */,
 				7A340B1326F9C11200D43523 /* UIEdgeInsets+Extension.swift in Sources */,
-				7AAB8D682707D02500A59D03 /* HeaderView.swift in Sources */,
-				7A69F2622706A73F008CA6CC /* HeaderCell.swift in Sources */,
 				7AB609B32603F1130038B85B /* AddTagConfirmationVC.swift in Sources */,
 				7ACA1A4E26AA448C00DE1645 /* ProvenanceAppCheckProviderFactory.swift in Sources */,
 				7A22713926817399001F63FF /* ShortcutType.swift in Sources */,
@@ -2354,7 +2271,6 @@
 				7A8C12C4271D283000F6A633 /* SortedTags.swift in Sources */,
 				7AC81B1C2723FC9900CFF8E6 /* NSDirectionalEdgeInsets+Extension.swift in Sources */,
 				7A340B1526F9C11200D43523 /* UserDefaults+Extension.swift in Sources */,
-				7A8C12BE271D1E5000F6A633 /* SortedTagSectionModel.swift in Sources */,
 				7AF214FF26EF326C009F4F38 /* NSParagraphStyle+Extension.swift in Sources */,
 				7AF9F11D27168B0C00DD1E72 /* UICollectionViewDiffableDataSource+Extension.swift in Sources */,
 				7A09E4B52686E30600C9F299 /* TransactionDetailVC.swift in Sources */,
@@ -2367,7 +2283,6 @@
 				7AA113C7261550B900386E2D /* DetailSection.swift in Sources */,
 				7A040C8226994F09000CCFF3 /* TransactionCellNode.swift in Sources */,
 				7A31696A26FC1667009695C8 /* StatusIconHelpNode.swift in Sources */,
-				7A56101225D219770091396E /* TagsVC.swift in Sources */,
 				7A7CAB0526F1F161005CB30F /* FLAnimatedImage+Extension.swift in Sources */,
 				7A340B1026F9C11200D43523 /* NSUserActivity+Extension.swift in Sources */,
 				7A0A301E26B52C88009E52FB /* AboutTopCellNode.swift in Sources */,
@@ -2379,9 +2294,8 @@
 				7AB34D5D25C7CDCB000A1E81 /* SettingsVC.swift in Sources */,
 				7A0A302626B5422F009E52FB /* StickerCellNode.swift in Sources */,
 				7A3568E5279F62BC0087B1D8 /* UpInterceptor.swift in Sources */,
-				7A69F25D2706A392008CA6CC /* TransactionBindingSC.swift in Sources */,
 				7AF214F326EEE6F9009F4F38 /* TagCellNode.swift in Sources */,
-				7A3248392701C6EC00A9037D /* HeaderCellNode.swift in Sources */,
+				7A3248392701C6EC00A9037D /* DateHeaderCellNode.swift in Sources */,
 				7AA113882615181700386E2D /* AttributeCell.swift in Sources */,
 				7A5BDE762616B99B00B5A5F9 /* CategoriesVC.swift in Sources */,
 				7AAADD5B26F1825F00C4A9D9 /* MarqueeLabel+Extension.swift in Sources */,
@@ -2393,7 +2307,6 @@
 				7A3E428427041243007E3A08 /* SpinnerCellNode.swift in Sources */,
 				7A20A7572791499700B7A878 /* AddCategoryCategorySelectionVC.swift in Sources */,
 				7AAADD5526F174F400C4A9D9 /* UIActivityIndicatorView+Extension.swift in Sources */,
-				7A69F2662706AEDE008CA6CC /* TransactionsVCAlt.swift in Sources */,
 				7A367BA82791042600A37FFB /* SelfRelatedLink.swift in Sources */,
 				7A56101625D21BFE0091396E /* TransactionsByTagVC.swift in Sources */,
 				7ACD456C261D67A7000C8FD2 /* WidgetsVC.swift in Sources */,
@@ -2402,29 +2315,23 @@
 				7A90F53026F097BB00384F53 /* TagResource+CellModel.swift in Sources */,
 				7AF214FE26EF326C009F4F38 /* NSAttributedString+Extension.swift in Sources */,
 				7AA113BF26154F3800386E2D /* DetailItem.swift in Sources */,
-				7A8C12BA271D1CC600F6A633 /* TagSectionModelSC.swift in Sources */,
 				7A7F039D26FB0641003F1321 /* TransactionColourEnum+Extension.swift in Sources */,
 				7AF9F11B27168A3000DD1E72 /* UITableViewDiffableDataSource+Extension.swift in Sources */,
 				7A67980D25D3E15D002AA83A /* DiagnosticsVC.swift in Sources */,
-				7A8C12C0271D214400F6A633 /* SortedTagSectionCoreModel.swift in Sources */,
 				7AF2156626F05FE3009F4F38 /* UIContextMenuConfiguration+Extension.swift in Sources */,
 				7A3E428827041B44007E3A08 /* LoadingDelegate.swift in Sources */,
-				7A1B52142702C1A900835111 /* ItemModelSC.swift in Sources */,
+				7A1B52142702C1A900835111 /* TransactionModelSC.swift in Sources */,
 				7AF2150026EF326C009F4F38 /* CGFloat+Extension.swift in Sources */,
 				7AB609B02603F0D80038B85B /* AddTagTagsSelectionVC.swift in Sources */,
 				7A81279C27913D600097A10C /* CategoryInputResourceIdentifier.swift in Sources */,
-				7A69F2602706A736008CA6CC /* TransactionCell.swift in Sources */,
 				7A340B0726F9C11200D43523 /* Int+Extension.swift in Sources */,
-				7A8C12B6271CF7DA00F6A633 /* TagSectionModel.swift in Sources */,
 				7A1BE9F426EDAD6D00A97F56 /* StickerImageNode.swift in Sources */,
 				7A340B0626F9C11200D43523 /* TransactionType+Extension.swift in Sources */,
 				7A0A302C26B54E8B009E52FB /* APIKeyCellNode.swift in Sources */,
 				7A0A302426B5311C009E52FB /* SubtitleCellNode.swift in Sources */,
 				7A3248372701C1A700A9037D /* SortedTransactionModel.swift in Sources */,
 				7AF2155826F050B3009F4F38 /* ASViewController.swift in Sources */,
-				7AAB8D652707CB3200A59D03 /* SortedTransactionModelAlt.swift in Sources */,
 				7AD266D526FADA1E00EFF4A2 /* NumberFormatter+Extension.swift in Sources */,
-				7A69F2702706BEA8008CA6CC /* SpinnerCell.swift in Sources */,
 				7A340B1126F9C11200D43523 /* AddTagToTransactionIntentResponse+Extension.swift in Sources */,
 				7A08A79526FC399F0035DD2F /* UIViewController+Extension.swift in Sources */,
 				7A56101A25D22AF10091396E /* AddTagTransactionSelectionVC.swift in Sources */,
@@ -2440,7 +2347,6 @@
 				7AF2150126EF326C009F4F38 /* CGSize+Extension.swift in Sources */,
 				7A8C12B4271CEC7600F6A633 /* UICollectionViewCellDragState+Extension.swift in Sources */,
 				7A2F1978261DA6B20054A9B6 /* StickerView.swift in Sources */,
-				7A8C12BC271D1D2C00F6A633 /* TagCellModelSC.swift in Sources */,
 				7AF2151B26F046E9009F4F38 /* SegmentedControlNodeProtocol.swift in Sources */,
 				7A5A89EB26FBF0790010223B /* Image+Extension.swift in Sources */,
 				7A0A302A26B54C4A009E52FB /* DateStyleCellNode.swift in Sources */,
@@ -2454,13 +2360,12 @@
 				7AF3BFE8270AC41500B1B81B /* ErrorResponse.swift in Sources */,
 				7A438783263AAC9B008C5714 /* StatusIconHelpView.swift in Sources */,
 				7AC1F5D627A777740065F5DF /* UpError.swift in Sources */,
-				7A1B52102702BD9D00835111 /* SortedSectionModel.swift in Sources */,
+				7A1B52102702BD9D00835111 /* DateHeaderModel.swift in Sources */,
 				7A4043AF27263ED8002FE4F6 /* UIAlertAction+Extension.swift in Sources */,
 				7A81279727913D4F0097A10C /* ModifyCategories.swift in Sources */,
 				7A615D7326FA9D6D001F1834 /* UITextField+Extension.swift in Sources */,
-				7A1B52182702C82300835111 /* SortedSectionCoreModel.swift in Sources */,
 				7A20A7542791486700B7A878 /* AddCategoryTransactionSelectionVC.swift in Sources */,
-				7A2A0F1727AA3476007A54E3 /* Capitalised.swift in Sources */,
+				7A2A0F1727AA3476007A54E3 /* Condensed.swift in Sources */,
 				7A340B1626F9C11200D43523 /* ListTransactionsIntentResponse+Extension.swift in Sources */,
 				E76E3418E4D91529B9E04510 /* TagsResponse.swift in Sources */,
 				E76E3F86BE854C60B89FC8EA /* AccountsResponse.swift in Sources */,
@@ -2474,13 +2379,14 @@
 				E76E35F4FAEFAB491E359B6B /* TagResource.swift in Sources */,
 				E76E3804AD82394788F2E397 /* TransactionsResponse.swift in Sources */,
 				E76E3ED4BED6B2730769BC67 /* RoundUpObject.swift in Sources */,
+				7A4FAC0227ACB05B00B04806 /* DatePickerVC.swift in Sources */,
 				E76E3E68009F841CBE55648D /* AccountResponse.swift in Sources */,
 				7AA8540627210C9E003289C5 /* AnimatedImage.swift in Sources */,
 				E76E30F6CABE1D5736231864 /* CashbackObject.swift in Sources */,
 				E76E3A10413CC8DB21E4721B /* HoldInfoObject.swift in Sources */,
 				7AF3BFEC270AC42900B1B81B /* ErrorSource.swift in Sources */,
 				E76E307045482AEAE9A7C5D5 /* CategoryResponse.swift in Sources */,
-				7A8C12C2271D280100F6A633 /* TagsVCAlt.swift in Sources */,
+				7A8C12C2271D280100F6A633 /* TagsVC.swift in Sources */,
 				E76E3FD27191DFB37DC95315 /* AccountResource.swift in Sources */,
 				E76E3EF49FDFF793CE2D65D6 /* AccountTypeEnum.swift in Sources */,
 				E76E3BB17404B8FA86647780 /* TagRelationships.swift in Sources */,
@@ -2532,7 +2438,7 @@
 				7A8E41F126048320003D0E6A /* Widgets.swift in Sources */,
 				7A340B2826F9C11300D43523 /* ListTransactionsIntentResponse+Extension.swift in Sources */,
 				7AFBD91126F4018800460939 /* LatestTransactionProvider.swift in Sources */,
-				7A2A0F1827AA3476007A54E3 /* Capitalised.swift in Sources */,
+				7A2A0F1827AA3476007A54E3 /* Condensed.swift in Sources */,
 				7A367BAE2791076B00A37FFB /* OwnershipTypeEnum.swift in Sources */,
 				7A8022F426FC8489008600B0 /* NSAttributedString+Extension.swift in Sources */,
 				7AE54D082611671D005D38A5 /* AccountBalance.swift in Sources */,

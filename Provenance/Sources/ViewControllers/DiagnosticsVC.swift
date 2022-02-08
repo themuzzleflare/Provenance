@@ -12,14 +12,10 @@ final class DiagnosticsVC: ViewController {
   private let tableView = UITableView(frame: .zero, style: .grouped)
 
   private var sections: [DetailSection] {
-    return .diagnosticsSections
+    return .diagnostics
   }
 
   // MARK: - Life Cycle
-
-  deinit {
-    print("\(#function) \(String(describing: type(of: self)))")
-  }
 
   override func viewDidLoad() {
     super.viewDidLoad()

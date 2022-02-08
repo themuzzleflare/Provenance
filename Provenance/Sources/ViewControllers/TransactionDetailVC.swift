@@ -40,7 +40,7 @@ final class TransactionDetailVC: ViewController {
   private let tableView = UITableView(frame: .zero, style: .grouped)
 
   private var filteredSections: [DetailSection] {
-    return .transactionDetailSections(
+    return .transactionDetail(
       transaction: transaction,
       account: account,
       transferAccount: transferAccount,
@@ -82,7 +82,6 @@ final class TransactionDetailVC: ViewController {
 
   deinit {
     removeObservers()
-    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -96,7 +95,7 @@ final class TransactionDetailVC: ViewController {
     configureSelf()
     configureTableView()
     configureNavigation()
-    applySnapshot()
+    applySnapshot(animate: false)
   }
 
   override func viewDidLayoutSubviews() {
@@ -123,7 +122,9 @@ extension TransactionDetailVC {
                                            name: .willEnterForegroundNotification,
                                            object: nil)
     dateStyleObserver = Store.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
-      self?.applySnapshot()
+      DispatchQueue.main.async {
+        self?.applySnapshot()
+      }
     }
   }
 
@@ -156,7 +157,9 @@ extension TransactionDetailVC {
 extension TransactionDetailVC {
   @objc
   private func appMovedToForeground() {
-    fetchTransaction()
+    DispatchQueue.main.async {
+      self.fetchTransaction()
+    }
   }
 
   @objc
@@ -167,9 +170,7 @@ extension TransactionDetailVC {
 
   @objc
   private func refreshTransaction() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      self.fetchTransaction()
-    }
+    fetchTransaction()
   }
 
   func editCategory() {
@@ -179,38 +180,32 @@ extension TransactionDetailVC {
 
   private func fetchingTasks() {
     Up.retrieveAccount(for: transaction.relationships.account.data.id) { (result) in
-      DispatchQueue.main.async {
+      switch result {
+      case let .success(account):
+        self.account = account
+      case .failure:
+        break
+      }
+    }
+
+    if let transferAccount = transaction.relationships.transferAccount.data {
+      Up.retrieveAccount(for: transferAccount.id) { (result) in
         switch result {
         case let .success(account):
-          self.account = account
+          self.transferAccount = account
         case .failure:
           break
         }
       }
     }
 
-    if let transferAccount = transaction.relationships.transferAccount.data {
-      Up.retrieveAccount(for: transferAccount.id) { (result) in
-        DispatchQueue.main.async {
-          switch result {
-          case let .success(account):
-            self.transferAccount = account
-          case .failure:
-            break
-          }
-        }
-      }
-    }
-
     if let parentCategory = transaction.relationships.parentCategory.data {
       Up.retrieveCategory(for: parentCategory.id) { (result) in
-        DispatchQueue.main.async {
-          switch result {
-          case let .success(category):
-            self.parentCategory = category
-          case .failure:
-            break
-          }
+        switch result {
+        case let .success(category):
+          self.parentCategory = category
+        case .failure:
+          break
         }
       }
     } else {
@@ -219,23 +214,19 @@ extension TransactionDetailVC {
 
     if let category = transaction.relationships.category.data {
       Up.retrieveCategory(for: category.id) { (result) in
-        DispatchQueue.main.async {
-          switch result {
-          case let .success(category):
-            self.category = category
-          case .failure:
-            break
-          }
+        switch result {
+        case let .success(category):
+          self.category = category
+        case .failure:
+          break
         }
       }
     } else {
       self.category = nil
     }
 
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      self.tableView.refreshControl?.endRefreshing()
-      self.configureNavigation()
-    }
+    self.tableView.refreshControl?.endRefreshing()
+    self.configureNavigation()
   }
 
   private func makeDataSource() -> DataSource {
@@ -258,20 +249,18 @@ extension TransactionDetailVC {
 
   private func applySnapshot(animate: Bool = true) {
     var snapshot = Snapshot()
-    snapshot.appendSections(filteredSections)
-    filteredSections.forEach { snapshot.appendItems($0.items, toSection: $0) }
-    dataSource.apply(snapshot, animatingDifferences: animate)
+    snapshot.appendSections(self.filteredSections)
+    self.filteredSections.forEach { snapshot.appendItems($0.items, toSection: $0) }
+    self.dataSource.apply(snapshot, animatingDifferences: animate)
   }
 
   func fetchTransaction() {
     Up.retrieveTransaction(for: transaction) { (result) in
-      DispatchQueue.main.async {
-        switch result {
-        case let .success(transaction):
-          self.display(transaction)
-        case let .failure(error):
-          self.display(error)
-        }
+      switch result {
+      case let .success(transaction):
+        self.display(transaction)
+      case let .failure(error):
+        self.display(error)
       }
     }
   }

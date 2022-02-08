@@ -4,13 +4,13 @@ import AsyncDisplayKit
 final class CategoryCellNode: ASCellNode {
   private let categoryTextNode = ASTextNode()
 
-  private var category: CategoryResource
+  private var model: CategoryCellModel
 
-  init(category: CategoryResource) {
-    self.category = category
+  init(category: CategoryCellModel) {
+    self.model = category
     super.init()
     automaticallyManagesSubnodes = true
-    categoryTextNode.attributedText = category.attributes.name.styled(with: .categoryName)
+    categoryTextNode.attributedText = category.name.styled(with: .categoryName)
     cornerRadius = 12.5
     borderColor = .separator
     borderWidth = 1.0

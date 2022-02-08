@@ -1,6 +1,6 @@
 import UIKit
-import IGListKit
 import AsyncDisplayKit
+import IGListKit
 import Alamofire
 import MBProgressHUD
 import NotificationBannerSwift
@@ -50,7 +50,6 @@ final class AddCategoryTransactionSelectionVC: ASViewController {
 
   deinit {
     removeObservers()
-    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -86,7 +85,9 @@ extension AddCategoryTransactionSelectionVC {
                                            name: .willEnterForegroundNotification,
                                            object: nil)
     dateStyleObserver = Store.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
-      self?.applySnapshot()
+      ASPerformBlockOnMainThread {
+        self?.applySnapshot()
+      }
     }
   }
 
@@ -118,14 +119,14 @@ extension AddCategoryTransactionSelectionVC {
 extension AddCategoryTransactionSelectionVC {
   @objc
   private func appMovedToForeground() {
-    fetchTransactions()
+    ASPerformBlockOnMainThread {
+      self.fetchTransactions()
+    }
   }
 
   @objc
   private func refreshTransactions() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      self.fetchTransactions()
-    }
+    fetchTransactions()
   }
 
   @objc
@@ -134,51 +135,49 @@ extension AddCategoryTransactionSelectionVC {
   }
 
   private func applySnapshot(override: Bool = false) {
-    DispatchQueue.main.async { [self] in
-      let result = ListDiffPaths(
-        fromSection: 0,
-        toSection: 0,
-        oldArray: oldTransactionCellModels,
-        newArray: filteredTransactions.transactionCellModels,
-        option: .equality
-      ).forBatchUpdates()
+    let result = ListDiffPaths(
+      fromSection: 0,
+      toSection: 0,
+      oldArray: oldTransactionCellModels,
+      newArray: filteredTransactions.transactionCellModels,
+      option: .equality
+    ).forBatchUpdates()
 
-      if result.hasChanges || override || !transactionsError.isEmpty || noTransactions || searchController.searchBar.searchTextField.hasText {
-        if filteredTransactions.isEmpty && transactionsError.isEmpty {
-          if transactions.isEmpty && !noTransactions {
-            tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .transactions)
-          } else {
-            tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .transactions)
-          }
+    if result.hasChanges || override || !transactionsError.isEmpty || noTransactions || searchController.searchBar.searchTextField.hasText {
+      if filteredTransactions.isEmpty && transactionsError.isEmpty {
+        if transactions.isEmpty && !noTransactions {
+          tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .transactions)
         } else {
-          if !transactionsError.isEmpty {
-            tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: transactionsError)
-          } else {
-            if tableNode.view.backgroundView != nil { tableNode.view.backgroundView = nil }
+          tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .transactions)
+        }
+      } else {
+        if !transactionsError.isEmpty {
+          tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: transactionsError)
+        } else {
+          if tableNode.view.backgroundView != nil {
+            tableNode.view.backgroundView = nil
           }
         }
-
-        let batchUpdates = {
-          tableNode.deleteRows(at: result.deletes, with: .fade)
-          tableNode.insertRows(at: result.inserts, with: .fade)
-          result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-          oldTransactionCellModels = filteredTransactions.transactionCellModels
-        }
-
-        tableNode.performBatchUpdates(batchUpdates)
       }
+
+      let batchUpdates = { [self] in
+        tableNode.deleteRows(at: result.deletes, with: .fade)
+        tableNode.insertRows(at: result.inserts, with: .fade)
+        result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
+        oldTransactionCellModels = filteredTransactions.transactionCellModels
+      }
+
+      tableNode.performBatchUpdates(batchUpdates)
     }
   }
 
   private func fetchTransactions() {
     Up.listTransactions { (result) in
-      DispatchQueue.main.async {
-        switch result {
-        case let .success(transactions):
-          self.display(transactions)
-        case let .failure(error):
-          self.display(error)
-        }
+      switch result {
+      case let .success(transactions):
+        self.display(transactions)
+      case let .failure(error):
+        self.display(error)
       }
     }
   }
@@ -209,9 +208,8 @@ extension AddCategoryTransactionSelectionVC: ASTableDataSource {
 
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let transaction = filteredTransactions[indexPath.row]
-    let node = TransactionCellNode(transaction: transaction, selection: false)
     return {
-      node
+      TransactionCellNode(transaction: transaction.transactionCellModel, selection: false)
     }
   }
 }
@@ -228,25 +226,23 @@ extension AddCategoryTransactionSelectionVC: ASTableDelegate {
       view.addSubview(hud)
       hud.show(animated: true)
       Up.categorise(transaction: transaction, category: category) { (error) in
-        DispatchQueue.main.async {
-          if let error = error {
-            GrowingNotificationBanner(
-              title: "Failed",
-              subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
-              style: .danger,
-              duration: 2.0
-            ).show()
-          } else {
-            GrowingNotificationBanner(
-              title: "Success",
-              subtitle: "The category for \(transaction.attributes.description) was set to \(category.attributes.name).",
-              style: .success,
-              duration: 2.0
-            ).show()
-          }
-          hud.hide(animated: true)
-          self.closeWorkflow()
+        if let error = error {
+          GrowingNotificationBanner(
+            title: "Failed",
+            subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
+            style: .danger,
+            duration: 2.0
+          ).show()
+        } else {
+          GrowingNotificationBanner(
+            title: "Success",
+            subtitle: "The category for \(transaction.attributes.description) was set to \(category.attributes.name).",
+            style: .success,
+            duration: 2.0
+          ).show()
         }
+        hud.hide(animated: true)
+        self.closeWorkflow()
       }
     } else {
       let viewController = AddCategoryCategorySelectionVC(transaction: transaction)

@@ -13,7 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
              options connectionOptions: UIScene.ConnectionOptions) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
 
-    self.window = .provenance(windowScene: windowScene)
+    self.window = .provenance(windowScene)
 
     if let shortcutItem = connectionOptions.shortcutItem {
       self.windowScene(windowScene, performActionFor: shortcutItem) { (_) in }

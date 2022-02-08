@@ -13,10 +13,6 @@ final class StickersVC: ASViewController {
     super.init(node: collectionNode)
   }
 
-  deinit {
-    print("\(#function) \(String(describing: type(of: self)))")
-  }
-
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }

@@ -1,10 +1,11 @@
 import UIKit
 
 extension UIMenu {
-  static func transactionsFilterMenu(categoryFilter: TransactionCategory,
-                                     groupingFilter: TransactionGroupingEnum,
-                                     showSettledOnly: Bool,
-                                     completion: @escaping (FilterMenuAction) -> Void) -> UIMenu {
+  static func transactionsFilter(categoryFilter: TransactionCategory,
+                                 datesFilter: Bool,
+                                 groupingFilter: TransactionGroupingEnum,
+                                 showSettledOnly: Bool,
+                                 completion: @escaping (FilterMenuAction) -> Void) -> UIMenu {
     return UIMenu(children: [
       UIMenu(
         title: "Category",
@@ -17,6 +18,14 @@ extension UIMenu {
               completion(.category(category))
             }
           )
+        }
+      ),
+      UIAction(
+        title: "Dates",
+        image: datesFilter ? .calendarCircleFill : .calendarCircle,
+        state: datesFilter ? .on : .off,
+        handler: { (_) in
+          completion(.dates)
         }
       ),
       UIMenu(

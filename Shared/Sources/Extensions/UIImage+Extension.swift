@@ -48,6 +48,8 @@ extension UIImage {
 
   static let calendarCircle = UIImage(systemSymbol: .calendarCircle)
 
+  static let calendarCircleFill = UIImage(systemSymbol: .calendarCircleFill)
+
   static let calendarBadgeClock = UIImage(systemSymbol: .calendarBadgeClock)
 
   static let chevronLeftSlashChevronRight = UIImage(systemSymbol: .chevronLeftSlashChevronRight)

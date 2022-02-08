@@ -15,6 +15,14 @@ struct AccountResource: Codable, Identifiable {
   var links: SelfLink?
 }
 
+// MARK: - CustomStringConvertible
+
+extension AccountResource: CustomStringConvertible {
+  var description: String {
+    return attributes.displayName
+  }
+}
+
 // MARK: -
 
 extension AccountResource {

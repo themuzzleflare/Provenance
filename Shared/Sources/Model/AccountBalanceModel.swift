@@ -12,7 +12,7 @@ extension AccountBalanceModel {
   static var placeholder: AccountBalanceModel {
     return AccountBalanceModel(
       id: UUID().uuidString,
-      displayName: "Up Account",
+      displayName: "Spending",
       balance: "$123.95"
     )
   }

@@ -1,6 +1,6 @@
 import Foundation
 
-struct DetailSection: Identifiable {
+struct DetailSection {
   let id: Int
   let items: [DetailItem]
 }
@@ -8,23 +8,23 @@ struct DetailSection: Identifiable {
 // MARK: - Hashable
 
 extension DetailSection: Hashable {
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
+  static func == (lhs: DetailSection, rhs: DetailSection) -> Bool {
+    return lhs.id == rhs.id
   }
 
-  static func == (lhs: DetailSection, rhs: DetailSection) -> Bool {
-    lhs.id == rhs.id
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
   }
 }
 
 // MARK: -
 
 extension Array where Element == DetailSection {
-  static func transactionDetailSections(transaction: TransactionResource,
-                                        account: AccountResource?,
-                                        transferAccount: AccountResource?,
-                                        parentCategory: CategoryResource?,
-                                        category: CategoryResource?) -> [DetailSection] {
+  static func transactionDetail(transaction: TransactionResource,
+                                account: AccountResource?,
+                                transferAccount: AccountResource?,
+                                parentCategory: CategoryResource?,
+                                category: CategoryResource?) -> [DetailSection] {
     return [
       DetailSection(
         id: 1,
@@ -119,7 +119,7 @@ extension Array where Element == DetailSection {
     ]
   }
 
-  static func accountDetailSections(account: AccountResource, transaction: TransactionResource?) -> [DetailSection] {
+  static func accountDetail(account: AccountResource, transaction: TransactionResource?) -> [DetailSection] {
     return [
       DetailSection(
         id: 1,
@@ -158,7 +158,7 @@ extension Array where Element == DetailSection {
     ]
   }
 
-  static var diagnosticsSections: [DetailSection] {
+  static var diagnostics: [DetailSection] {
     return [
       DetailSection(
         id: 1,

@@ -6,7 +6,7 @@ extension TransactionGroupingEnum {
     case .all:
       return nil
     case .dates:
-      return SortedSectionModel.self
+      return DateHeaderModel.self
     case .transactions:
       return TransactionCellModel.self
     }

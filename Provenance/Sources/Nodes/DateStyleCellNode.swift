@@ -10,10 +10,8 @@ final class DateStyleCellNode: ASCellNode {
       if Store.provenance.dateStyle != styleSelection.rawValue {
         Store.provenance.dateStyle = styleSelection.rawValue
       }
-      DispatchQueue.main.async { [self] in
-        if segmentedControlNode.selectedSegmentIndex != styleSelection.rawValue {
-          segmentedControlNode.selectedSegmentIndex = styleSelection.rawValue
-        }
+      if segmentedControlNode.selectedSegmentIndex != styleSelection.rawValue {
+        segmentedControlNode.selectedSegmentIndex = styleSelection.rawValue
       }
     }
   }
@@ -63,8 +61,10 @@ final class DateStyleCellNode: ASCellNode {
 extension DateStyleCellNode {
   private func configureObserver() {
     dateStyleObserver = Store.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, change) in
-      guard let value = change.newValue, let dateStyle = AppDateStyle(rawValue: value) else { return }
-      self?.styleSelection = dateStyle
+      ASPerformBlockOnMainThread {
+        guard let value = change.newValue, let dateStyle = AppDateStyle(rawValue: value) else { return }
+        self?.styleSelection = dateStyle
+      }
     }
   }
 

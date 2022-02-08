@@ -6,9 +6,9 @@ enum TransactionAmountType: Int {
   case amount
 }
 
-// MARK: -
+// MARK: - CustomStringConvertible
 
-extension TransactionAmountType {
+extension TransactionAmountType: CustomStringConvertible {
   var description: String {
     switch self {
     case .debit:
@@ -19,7 +19,11 @@ extension TransactionAmountType {
       return "Amount"
     }
   }
+}
 
+// MARK: -
+
+extension TransactionAmountType {
   var colour: TransactionColourEnum {
     switch self {
     case .debit:

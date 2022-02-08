@@ -7,10 +7,6 @@ final class TagCellModel: NSObject {
   init(tag: TagResource) {
     self.id = tag.id
   }
-
-  init(id: String) {
-    self.id = id
-  }
 }
 
 // MARK: - ListDiffable

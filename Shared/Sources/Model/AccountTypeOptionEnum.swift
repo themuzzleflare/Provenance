@@ -5,9 +5,9 @@ enum AccountTypeOptionEnum: Int, CaseIterable {
   case saver
 }
 
-// MARK: -
+// MARK: - CustomStringConvertible
 
-extension AccountTypeOptionEnum {
+extension AccountTypeOptionEnum: CustomStringConvertible {
   var description: String {
     switch self {
     case .transactional:
@@ -16,7 +16,11 @@ extension AccountTypeOptionEnum {
       return "Saver"
     }
   }
+}
 
+// MARK: -
+
+extension AccountTypeOptionEnum {
   var accountTypeEnum: AccountTypeEnum {
     switch self {
     case .transactional:

@@ -29,7 +29,7 @@ extension TabBarItem {
     case .accounts:
       return NavigationController(rootViewController: AccountsVC())
     case .tags:
-      return NavigationController(rootViewController: TagsVCAlt())
+      return NavigationController(rootViewController: TagsVC())
     case .categories:
       return NavigationController(rootViewController: CategoriesVC())
     case .about:

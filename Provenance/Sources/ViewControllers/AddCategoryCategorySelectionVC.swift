@@ -1,7 +1,7 @@
 import UIKit
-import NotificationBannerSwift
-import IGListKit
 import AsyncDisplayKit
+import IGListKit
+import NotificationBannerSwift
 import Alamofire
 import MBProgressHUD
 
@@ -58,7 +58,6 @@ final class AddCategoryCategorySelectionVC: ASViewController {
 
   deinit {
     removeObserver()
-    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -123,14 +122,14 @@ extension AddCategoryCategorySelectionVC {
 extension AddCategoryCategorySelectionVC {
   @objc
   private func appMovedToForeground() {
-    fetchCategories()
+    ASPerformBlockOnMainThread {
+      self.fetchCategories()
+    }
   }
 
   @objc
   private func refreshCategories() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      self.fetchCategories()
-    }
+    fetchCategories()
   }
 
   @objc
@@ -143,76 +142,70 @@ extension AddCategoryCategorySelectionVC {
     collectionNode.allowsSelection = false
     navigationItem.setRightBarButton(.activityIndicator, animated: false)
     Up.categorise(transaction: transaction) { (error) in
-      DispatchQueue.main.async {
-        if let error = error {
-          GrowingNotificationBanner(
-            title: "Failed",
-            subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
-            style: .danger,
-            duration: 2.0
-          ).show()
-        } else {
-          GrowingNotificationBanner(
-            title: "Success",
-            subtitle: "The category for \(self.transaction.attributes.description) was removed.",
-            style: .success,
-            duration: 2.0
-          ).show()
-        }
-        self.navigationController?.popViewController(animated: true)
+      if let error = error {
+        GrowingNotificationBanner(
+          title: "Failed",
+          subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
+          style: .danger,
+          duration: 2.0
+        ).show()
+      } else {
+        GrowingNotificationBanner(
+          title: "Success",
+          subtitle: "The category for \(self.transaction.attributes.description) was removed.",
+          style: .success,
+          duration: 2.0
+        ).show()
       }
+      self.navigationController?.popViewController(animated: true)
     }
   }
 
   private func applySnapshot(override: Bool = false) {
-    DispatchQueue.main.async { [self] in
-      let result = ListDiffPaths(
-        fromSection: 0,
-        toSection: 0,
-        oldArray: oldCategoryCellModels,
-        newArray: filteredCategories.categoryCellModels,
-        option: .equality
-      ).forBatchUpdates()
+    let result = ListDiffPaths(
+      fromSection: 0,
+      toSection: 0,
+      oldArray: oldCategoryCellModels,
+      newArray: filteredCategories.categoryCellModels,
+      option: .equality
+    ).forBatchUpdates()
 
-      if result.hasChanges || override || !categoriesError.isEmpty || noCategories || searchController.searchBar.searchTextField.hasText {
-        if filteredCategories.isEmpty && categoriesError.isEmpty {
-          if categories.isEmpty && !noCategories {
-            collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds, contentType: .categories)
-          } else {
-            collectionNode.view.backgroundView = .noContentView(frame: collectionNode.bounds, type: .categories)
-          }
+    if result.hasChanges || override || !categoriesError.isEmpty || noCategories || searchController.searchBar.searchTextField.hasText {
+      if filteredCategories.isEmpty && categoriesError.isEmpty {
+        if categories.isEmpty && !noCategories {
+          collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds, contentType: .categories)
         } else {
-          if !categoriesError.isEmpty {
-            collectionNode.view.backgroundView = .errorView(frame: collectionNode.bounds, text: categoriesError)
-          } else {
-            if collectionNode.view.backgroundView != nil {
-              collectionNode.view.backgroundView = nil
-            }
+          collectionNode.view.backgroundView = .noContentView(frame: collectionNode.bounds, type: .categories)
+        }
+      } else {
+        if !categoriesError.isEmpty {
+          collectionNode.view.backgroundView = .errorView(frame: collectionNode.bounds, text: categoriesError)
+        } else {
+          if collectionNode.view.backgroundView != nil {
+            collectionNode.view.backgroundView = nil
           }
         }
-
-        let batchUpdates = {
-          collectionNode.deleteItems(at: result.deletes)
-          collectionNode.insertItems(at: result.inserts)
-          result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
-          collectionNode.reloadItems(at: result.updates)
-          oldCategoryCellModels = filteredCategories.categoryCellModels
-        }
-
-        collectionNode.performBatch(animated: true, updates: batchUpdates)
       }
+
+      let batchUpdates = { [self] in
+        collectionNode.deleteItems(at: result.deletes)
+        collectionNode.insertItems(at: result.inserts)
+        result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
+        collectionNode.reloadItems(at: result.updates)
+        oldCategoryCellModels = filteredCategories.categoryCellModels
+      }
+
+      collectionNode.performBatch(animated: true, updates: batchUpdates)
     }
   }
 
   private func fetchCategories() {
     Up.listCategories { (result) in
-      DispatchQueue.main.async {
-        switch result {
-        case let .success(categories):
-          self.display(categories)
-        case let .failure(error):
-          self.display(error)
-        }
+      switch result {
+      case let .success(categories):
+        self.display(categories)
+      case let .failure(error):
+        self.display(error)
       }
     }
   }
@@ -249,9 +242,8 @@ extension AddCategoryCategorySelectionVC: ASCollectionDataSource {
 
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
     let category = filteredCategories[indexPath.item]
-    let node = CategoryCellNode(category: category)
     return {
-      node
+      CategoryCellNode(category: category.categoryCellModel)
     }
   }
 }
@@ -267,28 +259,26 @@ extension AddCategoryCategorySelectionVC: ASCollectionDelegate {
     view.addSubview(hud)
     hud.show(animated: true)
     Up.categorise(transaction: transaction, category: category) { (error) in
-      DispatchQueue.main.async {
-        if let error = error {
-          GrowingNotificationBanner(
-            title: "Failed",
-            subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
-            style: .danger,
-            duration: 2.0
-          ).show()
-        } else {
-          GrowingNotificationBanner(
-            title: "Success",
-            subtitle: "The category for \(self.transaction.attributes.description) was set to \(category.attributes.name).",
-            style: .success,
-            duration: 2.0
-          ).show()
-        }
-        hud.hide(animated: true)
-        if self.fromTransactionDetail {
-          self.closeWorkflow()
-        } else {
-          self.navigationController?.popViewController(animated: true)
-        }
+      if let error = error {
+        GrowingNotificationBanner(
+          title: "Failed",
+          subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
+          style: .danger,
+          duration: 2.0
+        ).show()
+      } else {
+        GrowingNotificationBanner(
+          title: "Success",
+          subtitle: "The category for \(self.transaction.attributes.description) was set to \(category.attributes.name).",
+          style: .success,
+          duration: 2.0
+        ).show()
+      }
+      hud.hide(animated: true)
+      if self.fromTransactionDetail {
+        self.closeWorkflow()
+      } else {
+        self.navigationController?.popViewController(animated: true)
       }
     }
   }

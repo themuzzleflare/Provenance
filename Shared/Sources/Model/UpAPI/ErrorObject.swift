@@ -19,3 +19,11 @@ struct ErrorObject: Codable {
   /// This may be a parameter in the query string, or a an attribute in the request body.
   var source: ErrorSource?
 }
+
+// MARK: - CustomStringConvertible
+
+extension ErrorObject: CustomStringConvertible {
+  var description: String {
+    return "\(status) \(title): \(detail)"
+  }
+}

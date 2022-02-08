@@ -12,10 +12,6 @@ final class AboutVC: ASViewController {
     super.init(node: tableNode)
   }
 
-  deinit {
-    print("\(#function) \(String(describing: type(of: self)))")
-  }
-
   required init?(coder: NSCoder) {
     fatalError("Not implemented")
   }
@@ -55,13 +51,13 @@ extension AboutVC {
 extension AboutVC {
   @objc
   private func openSettings() {
-    let viewController = NavigationController(rootViewController: .settings)
+    let viewController = NavigationController(rootViewController: SettingsVC())
     present(viewController, animated: true)
   }
 
   @objc
   private func openDiagnostics() {
-    let viewController = NavigationController(rootViewController: .diagnostics)
+    let viewController = NavigationController(rootViewController: DiagnosticsVC())
     present(viewController, animated: true)
   }
 }
@@ -154,9 +150,9 @@ extension AboutVC: ASTableDelegate {
       tableNode.deselectRow(at: indexPath, animated: true)
       switch row {
       case 0:
-        navigationController?.pushViewController(.widgets, animated: true)
+        navigationController?.pushViewController(WidgetsVC(), animated: true)
       case 1:
-        navigationController?.pushViewController(.stickers, animated: true)
+        navigationController?.pushViewController(StickersVC(), animated: true)
       default:
         break
       }

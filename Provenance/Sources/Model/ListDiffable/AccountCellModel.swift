@@ -11,12 +11,6 @@ final class AccountCellModel {
     self.balance = account.attributes.balance.valueShort
     self.displayName = account.attributes.displayName
   }
-
-  init(id: String, balance: String, displayName: String) {
-    self.id = id
-    self.balance = balance
-    self.displayName = displayName
-  }
 }
 
 // MARK: - ListDiffable

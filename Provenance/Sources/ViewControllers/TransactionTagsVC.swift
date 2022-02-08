@@ -1,6 +1,6 @@
 import UIKit
-import IGListKit
 import AsyncDisplayKit
+import IGListKit
 
 final class TransactionTagsVC: ASViewController {
   // MARK: - Properties
@@ -61,7 +61,6 @@ final class TransactionTagsVC: ASViewController {
 
   deinit {
     removeObserver()
-    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   required init?(coder: NSCoder) {
@@ -145,7 +144,9 @@ extension TransactionTagsVC {
 extension TransactionTagsVC {
   @objc
   private func appMovedToForeground() {
-    fetchTransaction()
+    ASPerformBlockOnMainThread {
+      self.fetchTransaction()
+    }
   }
 
   @objc
@@ -156,9 +157,7 @@ extension TransactionTagsVC {
 
   @objc
   private func refreshTags() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      self.fetchTransaction()
-    }
+    fetchTransaction()
   }
 
   @objc
@@ -216,13 +215,11 @@ extension TransactionTagsVC {
 
   func fetchTransaction() {
     Up.retrieveTransaction(for: transaction) { (result) in
-      DispatchQueue.main.async {
-        switch result {
-        case let .success(transaction):
-          self.transaction = transaction
-        case .failure:
-          self.tableNode.view.refreshControl?.endRefreshing()
-        }
+      switch result {
+      case let .success(transaction):
+        self.transaction = transaction
+      case .failure:
+        self.tableNode.view.refreshControl?.endRefreshing()
       }
     }
   }
@@ -237,9 +234,8 @@ extension TransactionTagsVC: ASTableDataSource {
 
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let tag = tags[indexPath.row]
-    let node = TagCellNode(tag: tag, selection: false)
     return {
-      node
+      TagCellNode(tag: tag.tagCellModel, selection: false)
     }
   }
 

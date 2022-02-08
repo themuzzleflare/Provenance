@@ -5,9 +5,9 @@ enum OwnershipTypeEnum: String, Codable {
   case joint = "JOINT"
 }
 
-// MARK: -
+// MARK: - CustomStringConvertible
 
-extension OwnershipTypeEnum {
+extension OwnershipTypeEnum: CustomStringConvertible {
   var description: String {
     switch self {
     case .individual:

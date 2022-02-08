@@ -45,9 +45,9 @@ enum TransactionCategory: String, CaseIterable {
   case technology
 }
 
-// MARK: -
+// MARK: - CustomStringConvertible
 
-extension TransactionCategory {
+extension TransactionCategory: CustomStringConvertible {
   var description: String {
     switch self {
     case .gamesAndSoftware:
@@ -69,7 +69,10 @@ extension TransactionCategory {
     case .tvAndMusic:
       return "TV, Music & Streaming"
     default:
-      return self.rawValue.replacingOccurrences(of: "and", with: "&").replacingOccurrences(of: "-", with: " ").capitalized
+      return self.rawValue
+        .replacingOccurrences(of: "and", with: "&")
+        .replacingOccurrences(of: "-", with: " ")
+        .capitalized
     }
   }
 }
