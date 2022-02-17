@@ -2,7 +2,7 @@ import UIKit
 import MarqueeLabel
 import AsyncDisplayKit
 
-final class APIKeyCellNode: ASCellNode {
+final class APIKeyCellNode: CellNode {
   // MARK: - Properties
 
   private let marqueeLabelNode = MarqueeLabelNode()
@@ -16,10 +16,6 @@ final class APIKeyCellNode: ASCellNode {
   override init() {
     super.init()
     automaticallyManagesSubnodes = true
-  }
-
-  deinit {
-    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   override func didLoad() {

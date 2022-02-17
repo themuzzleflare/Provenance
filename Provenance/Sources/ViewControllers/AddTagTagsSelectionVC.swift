@@ -140,12 +140,12 @@ extension AddTagTagsSelectionVC {
   private func configureObserver() {
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(appMovedToForeground),
-                                           name: .willEnterForegroundNotification,
+                                           name: .willEnterForeground,
                                            object: nil)
   }
 
   private func removeObserver() {
-    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForeground, object: nil)
   }
 
   private func configureNavigation() {
@@ -237,20 +237,20 @@ extension AddTagTagsSelectionVC {
       fromSection: 0,
       toSection: 0,
       oldArray: oldTagCellModels,
-      newArray: filteredTags.tagCellModels,
+      newArray: filteredTags.cellModels,
       option: .equality
     ).forBatchUpdates()
 
     if result.hasChanges || override || !tagsError.isEmpty || noTags || searchController.searchBar.searchTextField.hasText {
       if filteredTags.isEmpty && tagsError.isEmpty {
         if tags.isEmpty && !noTags {
-          tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .tags)
+          tableNode.view.backgroundView = .loading(frame: tableNode.bounds, contentType: .tags)
         } else {
-          tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .tags)
+          tableNode.view.backgroundView = .noContent(frame: tableNode.bounds, type: .tags)
         }
       } else {
         if !tagsError.isEmpty {
-          tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: tagsError)
+          tableNode.view.backgroundView = .error(frame: tableNode.bounds, text: tagsError)
         } else {
           if tableNode.view.backgroundView != nil {
             tableNode.view.backgroundView = nil
@@ -262,7 +262,7 @@ extension AddTagTagsSelectionVC {
         tableNode.deleteRows(at: result.deletes, with: .automatic)
         tableNode.insertRows(at: result.inserts, with: .automatic)
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldTagCellModels = filteredTags.tagCellModels
+        oldTagCellModels = filteredTags.cellModels
       }
 
       tableNode.performBatchUpdates(batchUpdates)
@@ -314,7 +314,7 @@ extension AddTagTagsSelectionVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let tag = filteredTags[indexPath.row]
     return {
-      TagCellNode(tag: tag.tagCellModel, selection: false)
+      TagCellNode(model: tag.cellModel, selection: false)
     }
   }
 

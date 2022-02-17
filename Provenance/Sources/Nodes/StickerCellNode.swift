@@ -1,20 +1,18 @@
 import UIKit
 import AsyncDisplayKit
 
-final class StickerCellNode: ASCellNode {
+final class StickerCellNode: CellNode {
   private let stickerImageNode = ASImageNode()
 
-  init(sticker: ASAnimatedImageProtocol) {
+  private var sticker: AnimatedImage
+
+  init(sticker: AnimatedImage) {
+    self.sticker = sticker
     super.init()
     automaticallyManagesSubnodes = true
-    stickerImageNode.animatedImage = sticker
+    stickerImageNode.animatedImage = sticker.asAnimatedImage
     borderWidth = 0.5
     borderColor = .separator
-  }
-
-  override func didLoad() {
-    super.didLoad()
-    stickerImageNode.animatedImagePaused = false
   }
 
   override func asyncTraitCollectionDidChange(withPreviousTraitCollection previousTraitCollection: ASPrimitiveTraitCollection) {
@@ -24,6 +22,6 @@ final class StickerCellNode: ASCellNode {
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    return ASInsetLayoutSpec(insets: .zero, child: stickerImageNode)
+    return ASWrapperLayoutSpec(layoutElement: stickerImageNode)
   }
 }

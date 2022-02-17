@@ -82,7 +82,7 @@ extension AddCategoryTransactionSelectionVC {
   private func configureObservers() {
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(appMovedToForeground),
-                                           name: .willEnterForegroundNotification,
+                                           name: .willEnterForeground,
                                            object: nil)
     dateStyleObserver = Store.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       ASPerformBlockOnMainThread {
@@ -92,7 +92,7 @@ extension AddCategoryTransactionSelectionVC {
   }
 
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForeground, object: nil)
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil
   }
@@ -139,20 +139,20 @@ extension AddCategoryTransactionSelectionVC {
       fromSection: 0,
       toSection: 0,
       oldArray: oldTransactionCellModels,
-      newArray: filteredTransactions.transactionCellModels,
+      newArray: filteredTransactions.cellModels,
       option: .equality
     ).forBatchUpdates()
 
     if result.hasChanges || override || !transactionsError.isEmpty || noTransactions || searchController.searchBar.searchTextField.hasText {
       if filteredTransactions.isEmpty && transactionsError.isEmpty {
         if transactions.isEmpty && !noTransactions {
-          tableNode.view.backgroundView = .loadingView(frame: tableNode.bounds, contentType: .transactions)
+          tableNode.view.backgroundView = .loading(frame: tableNode.bounds, contentType: .transactions)
         } else {
-          tableNode.view.backgroundView = .noContentView(frame: tableNode.bounds, type: .transactions)
+          tableNode.view.backgroundView = .noContent(frame: tableNode.bounds, type: .transactions)
         }
       } else {
         if !transactionsError.isEmpty {
-          tableNode.view.backgroundView = .errorView(frame: tableNode.bounds, text: transactionsError)
+          tableNode.view.backgroundView = .error(frame: tableNode.bounds, text: transactionsError)
         } else {
           if tableNode.view.backgroundView != nil {
             tableNode.view.backgroundView = nil
@@ -164,7 +164,7 @@ extension AddCategoryTransactionSelectionVC {
         tableNode.deleteRows(at: result.deletes, with: .fade)
         tableNode.insertRows(at: result.inserts, with: .fade)
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldTransactionCellModels = filteredTransactions.transactionCellModels
+        oldTransactionCellModels = filteredTransactions.cellModels
       }
 
       tableNode.performBatchUpdates(batchUpdates)
@@ -209,7 +209,7 @@ extension AddCategoryTransactionSelectionVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let transaction = filteredTransactions[indexPath.row]
     return {
-      TransactionCellNode(transaction: transaction.transactionCellModel, selection: false)
+      TransactionCellNode(model: transaction.cellModel, selection: false)
     }
   }
 }

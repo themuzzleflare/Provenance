@@ -7,7 +7,7 @@ final class DateHeaderModel {
 
   init(id: Date) {
     self.id = id
-    self.displayString = Utils.formatDateHeaderText(for: id)
+    self.displayString = Utils.formatDateHeader(for: id)
   }
 }
 
@@ -19,7 +19,6 @@ extension DateHeaderModel: ListDiffable {
   }
 
   func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
-    if self === object { return true }
     guard let object = object as? DateHeaderModel else { return false }
     return self.displayString == object.displayString
   }

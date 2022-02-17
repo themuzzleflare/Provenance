@@ -1,7 +1,7 @@
 import UIKit
 import AsyncDisplayKit
 
-final class RightDetailCellNode: ASCellNode {
+final class RightDetailCellNode: CellNode {
   private let leftTextNode = ASTextNode()
   private let rightTextNode = ASTextNode()
 
@@ -16,16 +16,11 @@ final class RightDetailCellNode: ASCellNode {
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    let horizontalStack = ASStackLayoutSpec(
-      direction: .horizontal,
-      spacing: 5,
-      justifyContent: .spaceBetween,
-      alignItems: .center,
-      children: [
-        leftTextNode,
-        rightTextNode
-      ]
-    )
+    let horizontalStack = ASStackLayoutSpec(direction: .horizontal,
+                                            spacing: 5,
+                                            justifyContent: .spaceBetween,
+                                            alignItems: .center,
+                                            children: [leftTextNode, rightTextNode])
 
     return ASInsetLayoutSpec(insets: .cellNode, child: horizontalStack)
   }

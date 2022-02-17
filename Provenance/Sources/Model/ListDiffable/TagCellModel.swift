@@ -1,7 +1,7 @@
 import Foundation
 import IGListKit
 
-final class TagCellModel: NSObject {
+final class TagCellModel {
   let id: String
 
   init(tag: TagResource) {

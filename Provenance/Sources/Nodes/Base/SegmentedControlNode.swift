@@ -1,17 +1,14 @@
+import UIKit
 import AsyncDisplayKit
 
 class SegmentedControlNode: ASControlNode {
-  private let segmentedControlViewBlock: ASDisplayNodeViewBlock = {
-    return UISegmentedControl()
-  }
-
   private var segmentedControl: UISegmentedControl {
     return view as! UISegmentedControl
   }
 
   override init() {
     super.init()
-    setViewBlock(segmentedControlViewBlock)
+    setViewBlock({ UISegmentedControl() })
   }
 
   override func addTarget(_ target: Any?, action: Selector, forControlEvents controlEvents: ASControlNodeEvent) {

@@ -6,15 +6,26 @@ final class AccountDetailVC: ViewController {
 
   private var account: AccountResource {
     didSet {
-      applySnapshot()
-      tableView.refreshControl?.endRefreshing()
+      print("didSet account")
+      supplementaryState.append("1")
     }
   }
 
   private var transaction: TransactionResource? {
     didSet {
-      applySnapshot()
-      tableView.refreshControl?.endRefreshing()
+      print("didSet transaction")
+      supplementaryState.append("1")
+    }
+  }
+
+  private var supplementaryState: [String] = [] {
+    didSet {
+      if supplementaryState.count == 2 {
+        print("supplementaryState complete")
+        supplementaryState.removeAll()
+        self.tableView.refreshControl?.endRefreshing()
+        self.applySnapshot()
+      }
     }
   }
 
@@ -22,7 +33,18 @@ final class AccountDetailVC: ViewController {
 
   private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailItem>
 
-  private lazy var dataSource = makeDataSource()
+  private lazy var dataSource = DataSource(
+    tableView: tableView,
+    cellProvider: { (tableView, indexPath, attribute) in
+      guard let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as? AttributeCell else {
+        fatalError("Unable to dequeue reusable cell with identifier: \(AttributeCell.reuseIdentifier)")
+      }
+      cell.text = attribute.id
+      cell.detailFont = attribute.valueFont
+      cell.detailText = attribute.value
+      return cell
+    }
+  )
 
   private var dateStyleObserver: NSKeyValueObservation?
 
@@ -79,7 +101,7 @@ extension AccountDetailVC {
   private func configureObservers() {
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(appMovedToForeground),
-                                           name: .willEnterForegroundNotification,
+                                           name: .willEnterForeground,
                                            object: nil)
     dateStyleObserver = Store.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       DispatchQueue.main.async {
@@ -89,7 +111,7 @@ extension AccountDetailVC {
   }
 
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForeground, object: nil)
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil
   }
@@ -137,21 +159,6 @@ extension AccountDetailVC {
     fetchTransaction()
   }
 
-  private func makeDataSource() -> DataSource {
-    return DataSource(
-      tableView: tableView,
-      cellProvider: { (tableView, indexPath, attribute) in
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as? AttributeCell else {
-          fatalError("Unable to dequeue reusable cell with identifier: \(AttributeCell.reuseIdentifier)")
-        }
-        cell.text = attribute.id
-        cell.detailFont = attribute.valueFont
-        cell.detailText = attribute.value
-        return cell
-      }
-    )
-  }
-
   private func applySnapshot(animate: Bool = true) {
     var snapshot = Snapshot()
     snapshot.appendSections(self.sections)
@@ -176,7 +183,7 @@ extension AccountDetailVC {
       case let .success(transaction):
         self.transaction = transaction
       case .failure:
-        break
+        self.transaction = nil
       }
     }
   }

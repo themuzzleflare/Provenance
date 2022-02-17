@@ -1,7 +1,7 @@
 import UIKit
 import AsyncDisplayKit
 
-final class AboutTopCellNode: ASCellNode {
+final class AboutTopCellNode: CellNode {
   private let logoImageNode = ASImageNode()
   private let nameTextNode = ASTextNode()
   private let descriptionTextNode = ASTextNode()
@@ -20,17 +20,11 @@ final class AboutTopCellNode: ASCellNode {
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    let verticalStack = ASStackLayoutSpec(
-      direction: .vertical,
-      spacing: 0,
-      justifyContent: .center,
-      alignItems: .center,
-      children: [
-        logoImageNode,
-        nameTextNode,
-        descriptionTextNode
-      ]
-    )
+    let verticalStack = ASStackLayoutSpec(direction: .vertical,
+                                          spacing: 0,
+                                          justifyContent: .center,
+                                          alignItems: .center,
+                                          children: [logoImageNode, nameTextNode, descriptionTextNode])
 
     return ASInsetLayoutSpec(insets: .cellNode, child: verticalStack)
   }

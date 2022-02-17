@@ -2,5 +2,5 @@ import Foundation
 import UIKit
 
 extension NSNotification.Name {
-  static let willEnterForegroundNotification = UIApplication.willEnterForegroundNotification
+  static let willEnterForeground = UIApplication.willEnterForegroundNotification
 }

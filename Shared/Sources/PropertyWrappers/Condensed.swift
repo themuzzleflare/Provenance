@@ -20,11 +20,3 @@ struct Condensed: Codable {
     self.wrappedValue = try? container.decode(String.self)
   }
 }
-
-// MARK: - CustomStringConvertible
-
-extension Condensed: CustomStringConvertible {
-  var description: String {
-    return wrappedValue ?? ""
-  }
-}

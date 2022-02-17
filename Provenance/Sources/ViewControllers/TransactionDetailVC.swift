@@ -7,6 +7,7 @@ final class TransactionDetailVC: ViewController {
 
   private var transaction: TransactionResource {
     didSet {
+      print("didSet transaction")
       fetchingTasks()
     }
   }
@@ -35,7 +36,21 @@ final class TransactionDetailVC: ViewController {
 
   private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailItem>
 
-  private lazy var dataSource = makeDataSource()
+  private lazy var dataSource = DataSource(
+    transaction: transaction,
+    tableView: tableView,
+    cellProvider: { (tableView, indexPath, attribute) in
+      guard let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as? AttributeCell else {
+        fatalError("Unable to dequeue reusable cell with identifier: \(AttributeCell.reuseIdentifier)")
+      }
+      cell.selectionStyle = attribute.cellSelectionStyle
+      cell.accessoryType = attribute.cellAccessoryType
+      cell.text = attribute.id
+      cell.detailFont = attribute.valueFont
+      cell.detailText = attribute.value
+      return cell
+    }
+  )
 
   private let tableView = UITableView(frame: .zero, style: .grouped)
 
@@ -51,25 +66,40 @@ final class TransactionDetailVC: ViewController {
 
   private var account: AccountResource? {
     didSet {
-      applySnapshot()
+      print("didSet account")
+      supplementaryState.append("1")
     }
   }
 
   private var transferAccount: AccountResource? {
     didSet {
-      applySnapshot()
+      print("didSet transferAccount")
+      supplementaryState.append("1")
     }
   }
 
   private var parentCategory: CategoryResource? {
     didSet {
-      applySnapshot()
+      print("didSet parentCategory")
+      supplementaryState.append("1")
     }
   }
 
   private var category: CategoryResource? {
     didSet {
-      applySnapshot()
+      print("didSet category")
+      supplementaryState.append("1")
+    }
+  }
+
+  private var supplementaryState: [String] = [] {
+    didSet {
+      if supplementaryState.count == 4 {
+        print("supplementaryState complete")
+        supplementaryState.removeAll()
+        self.tableView.refreshControl?.endRefreshing()
+        self.applySnapshot()
+      }
     }
   }
 
@@ -119,7 +149,7 @@ extension TransactionDetailVC {
   private func configureObservers() {
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(appMovedToForeground),
-                                           name: .willEnterForegroundNotification,
+                                           name: .willEnterForeground,
                                            object: nil)
     dateStyleObserver = Store.provenance.observe(\.dateStyle, options: .new) { [weak self] (_, _) in
       DispatchQueue.main.async {
@@ -129,7 +159,7 @@ extension TransactionDetailVC {
   }
 
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForeground, object: nil)
     dateStyleObserver?.invalidate()
     dateStyleObserver = nil
   }
@@ -197,6 +227,8 @@ extension TransactionDetailVC {
           break
         }
       }
+    } else {
+      self.transferAccount = nil
     }
 
     if let parentCategory = transaction.relationships.parentCategory.data {
@@ -224,27 +256,6 @@ extension TransactionDetailVC {
     } else {
       self.category = nil
     }
-
-    self.tableView.refreshControl?.endRefreshing()
-    self.configureNavigation()
-  }
-
-  private func makeDataSource() -> DataSource {
-    return DataSource(
-      transaction: transaction,
-      tableView: tableView,
-      cellProvider: { (tableView, indexPath, attribute) in
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as? AttributeCell else {
-          fatalError("Unable to dequeue reusable cell with identifier: \(AttributeCell.reuseIdentifier)")
-        }
-        cell.selectionStyle = attribute.cellSelectionStyle
-        cell.accessoryType = attribute.cellAccessoryType
-        cell.text = attribute.id
-        cell.detailFont = attribute.valueFont
-        cell.detailText = attribute.value
-        return cell
-      }
-    )
   }
 
   private func applySnapshot(animate: Bool = true) {
@@ -267,6 +278,10 @@ extension TransactionDetailVC {
 
   private func display(_ transaction: TransactionResource) {
     self.transaction = transaction
+    if navigationItem.title != transaction.attributes.description {
+      navigationItem.title = transaction.attributes.description
+      navigationItem.titleView = MarqueeLabel(text: transaction.attributes.description)
+    }
   }
 
   private func display(_ error: AFError) {

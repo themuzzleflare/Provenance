@@ -1,18 +1,18 @@
 import UIKit
 import AsyncDisplayKit
 
-final class AccountCellNode: ASCellNode {
+final class AccountCellNode: CellNode {
   private let balanceTextNode = ASTextNode()
   private let displayNameTextNode = ASTextNode()
 
   private var model: AccountCellModel
 
-  init(account: AccountCellModel) {
-    self.model = account
+  init(model: AccountCellModel) {
+    self.model = model
     super.init()
     automaticallyManagesSubnodes = true
-    balanceTextNode.attributedText = account.balance.styled(with: .accountBalance)
-    displayNameTextNode.attributedText = account.displayName.styled(with: .accountDisplayName)
+    balanceTextNode.attributedText = model.balance.styled(with: .accountBalance)
+    displayNameTextNode.attributedText = model.displayName.styled(with: .accountDisplayName)
     displayNameTextNode.maximumNumberOfLines = 2
     cornerRadius = 12.5
     borderColor = .separator
@@ -39,16 +39,11 @@ final class AccountCellNode: ASCellNode {
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    let verticalStack = ASStackLayoutSpec(
-      direction: .vertical,
-      spacing: 0,
-      justifyContent: .center,
-      alignItems: .center,
-      children: [
-        balanceTextNode,
-        displayNameTextNode
-      ]
-    )
+    let verticalStack = ASStackLayoutSpec(direction: .vertical,
+                                          spacing: 0,
+                                          justifyContent: .center,
+                                          alignItems: .center,
+                                          children: [balanceTextNode, displayNameTextNode])
 
     return ASInsetLayoutSpec(insets: .cellNode, child: verticalStack)
   }

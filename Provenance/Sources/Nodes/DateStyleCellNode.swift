@@ -1,8 +1,7 @@
 import UIKit
 import AsyncDisplayKit
 
-final class DateStyleCellNode: ASCellNode {
-  private let dateStyleTextNode = ASTextNode()
+final class DateStyleCellNode: CellNode {
   private let segmentedControlNode = SegmentedControlNode()
 
   private lazy var styleSelection: AppDateStyle = Store.provenance.appDateStyle {
@@ -22,12 +21,10 @@ final class DateStyleCellNode: ASCellNode {
     super.init()
     automaticallyManagesSubnodes = true
     selectionStyle = .none
-    dateStyleTextNode.attributedText = "Date Style".styled(with: .leftText)
   }
 
   deinit {
     removeObserver()
-    print("\(#function) \(String(describing: type(of: self)))")
   }
 
   override func didLoad() {
@@ -38,23 +35,8 @@ final class DateStyleCellNode: ASCellNode {
     segmentedControlNode.addTarget(self, action: #selector(changedSelection), forControlEvents: .valueChanged)
   }
 
-  override func layout() {
-    super.layout()
-  }
-
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    let horizontalStack = ASStackLayoutSpec(
-      direction: .horizontal,
-      spacing: 0,
-      justifyContent: .spaceBetween,
-      alignItems: .center,
-      children: [
-        dateStyleTextNode,
-        segmentedControlNode
-      ]
-    )
-
-    return ASInsetLayoutSpec(insets: .cellNode, child: horizontalStack)
+    return ASInsetLayoutSpec(insets: .cellNode, child: segmentedControlNode)
   }
 }
 

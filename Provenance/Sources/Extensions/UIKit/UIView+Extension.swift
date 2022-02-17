@@ -3,7 +3,7 @@ import SnapKit
 import MBProgressHUD
 
 extension UIView {
-  static func loadingView(frame: CGRect, contentType: ContentType) -> UIView {
+  static func loading(frame: CGRect, contentType: ContentType) -> UIView {
     let view = UIView(frame: frame)
     let hud = MBProgressHUD(view: view, animationType: .zoomIn)
     hud.label.attributedText = contentType.loadingDescription.styled(with: .provenance)
@@ -12,7 +12,7 @@ extension UIView {
     return view
   }
 
-  static func noContentView(frame: CGRect, type: ContentType) -> UIView {
+  static func noContent(frame: CGRect, type: ContentType) -> UIView {
     let view = UIView(frame: frame)
     let icon = UIImageView(image: .xmarkDiamond)
     icon.snp.makeConstraints { (make) in
@@ -36,13 +36,12 @@ extension UIView {
     return view
   }
 
-  static func errorView(frame: CGRect, text: String) -> UIView {
+  static func error(frame: CGRect, text: String) -> UIView {
     let view = UIView(frame: frame)
     let label = UILabel()
     view.addSubview(label)
     label.snp.makeConstraints { (make) in
-      make.left.equalToSuperview().inset(16)
-      make.right.equalToSuperview().inset(16)
+      make.left.right.equalToSuperview().inset(16)
       make.center.equalToSuperview()
     }
     label.textAlignment = .center
@@ -53,15 +52,14 @@ extension UIView {
     return view
   }
 
-  static func accountTransactionsHeaderView(frame: CGRect, account: AccountResource) -> UIView {
+  static func accountTransactionsHeader(frame: CGRect, account: AccountResource) -> UIView {
     let view = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: 117))
     let balanceLabel = UILabel()
     let displayNameLabel = UILabel()
     let verticalStack = UIStackView(arrangedSubviews: [balanceLabel, displayNameLabel])
     view.addSubview(verticalStack)
     verticalStack.snp.makeConstraints { (make) in
-      make.left.equalToSuperview().inset(16)
-      make.right.equalToSuperview().inset(16)
+      make.left.right.equalToSuperview().inset(16)
       make.center.equalToSuperview()
     }
     verticalStack.axis = .vertical

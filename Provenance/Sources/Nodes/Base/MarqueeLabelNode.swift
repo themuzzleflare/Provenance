@@ -2,21 +2,17 @@ import MarqueeLabel
 import AsyncDisplayKit
 
 class MarqueeLabelNode: ASDisplayNode {
-  private let marqueeLabelViewBlock: ASDisplayNodeViewBlock = {
-    return MarqueeLabel()
-  }
-
   private var marqueeLabel: MarqueeLabel {
     return view as! MarqueeLabel
   }
 
   override init() {
     super.init()
-    setViewBlock(marqueeLabelViewBlock)
+    setViewBlock({ MarqueeLabel() })
   }
 
   override func calculateSizeThatFits(_ constrainedSize: CGSize) -> CGSize {
-    return .cellNode(height: 45)
+    return CGSize(width: 200, height: 30)
   }
 }
 

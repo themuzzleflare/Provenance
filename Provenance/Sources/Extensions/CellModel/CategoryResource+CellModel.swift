@@ -1,7 +1,7 @@
 import Foundation
 
 extension CategoryResource {
-  var categoryCellModel: CategoryCellModel {
+  var cellModel: CategoryCellModel {
     return CategoryCellModel(category: self)
   }
 }
@@ -9,9 +9,9 @@ extension CategoryResource {
 // MARK: -
 
 extension Array where Element == CategoryResource {
-  var categoryCellModels: [CategoryCellModel] {
+  var cellModels: [CategoryCellModel] {
     return self.map { (category) in
-      return category.categoryCellModel
+      return category.cellModel
     }
   }
 }

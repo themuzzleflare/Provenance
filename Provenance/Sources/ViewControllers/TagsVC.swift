@@ -40,7 +40,19 @@ final class TagsVC: ViewController {
 
   private typealias Snapshot = NSDiffableDataSourceSnapshot<SortedTags, String>
 
-  private lazy var dataSource = makeDataSource()
+  private lazy var dataSource = DataSource(
+    parent: self,
+    tableView: tableView,
+    cellProvider: { (tableView, indexPath, tag) in
+      let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath)
+      cell.textLabel?.font = .circularStdBook(size: .labelFontSize)
+      cell.textLabel?.textAlignment = .left
+      cell.textLabel?.numberOfLines = 0
+      cell.textLabel?.text = tag
+      return cell
+    },
+    defaultRowAnimation: .fade
+  )
 
   private var apiKeyObserver: NSKeyValueObservation?
 
@@ -65,16 +77,8 @@ final class TagsVC: ViewController {
 
   // MARK: - Life Cycle
 
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-  }
-
   deinit {
     removeObservers()
-  }
-
-  required init?(coder: NSCoder) {
-    fatalError("Not implemented")
   }
 
   override func viewDidLoad() {
@@ -109,7 +113,7 @@ extension TagsVC {
   private func configureObservers() {
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(appMovedToForeground),
-                                           name: .willEnterForegroundNotification,
+                                           name: .willEnterForeground,
                                            object: nil)
     apiKeyObserver = Store.provenance.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       DispatchQueue.main.async {
@@ -119,7 +123,7 @@ extension TagsVC {
   }
 
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForeground, object: nil)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
   }
@@ -158,23 +162,9 @@ extension TagsVC {
 
   @objc
   private func refreshTags() {
-    fetchTags()
-  }
-
-  private func makeDataSource() -> DataSource {
-    return DataSource(
-      parent: self,
-      tableView: tableView,
-      cellProvider: { (tableView, indexPath, tag) in
-        let cell = tableView.dequeueReusableCell(withIdentifier: "tagCell", for: indexPath)
-        cell.textLabel?.font = .circularStdBook(size: .labelFontSize)
-        cell.textLabel?.textAlignment = .left
-        cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.text = tag
-        return cell
-      },
-      defaultRowAnimation: .fade
-    )
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      self.fetchTags()
+    }
   }
 
   private func applySnapshot(animate: Bool = true) {
@@ -185,13 +175,13 @@ extension TagsVC {
 
     if filteredTags.isEmpty && tagsError.isEmpty {
       if tags.isEmpty && !noTags {
-        tableView.backgroundView = .loadingView(frame: tableView.bounds, contentType: .tags)
+        tableView.backgroundView = .loading(frame: tableView.bounds, contentType: .tags)
       } else {
-        tableView.backgroundView = .noContentView(frame: tableView.bounds, type: .tags)
+        tableView.backgroundView = .noContent(frame: tableView.bounds, type: .tags)
       }
     } else {
       if !tagsError.isEmpty {
-        tableView.backgroundView = .errorView(frame: tableView.bounds, text: tagsError)
+        tableView.backgroundView = .error(frame: tableView.bounds, text: tagsError)
       } else {
         if tableView.backgroundView != nil {
           tableView.backgroundView = nil
@@ -240,17 +230,17 @@ extension TagsVC {
 
 extension TagsVC: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let tag = filteredTags.tagSectionCoreModels[indexPath.section].tags[indexPath.row]
+    let tag = filteredTags.sortedTagsCoreModels[indexPath.section].tags[indexPath.row]
     let viewController = TransactionsByTagVC(tag: tag)
     tableView.deselectRow(at: indexPath, animated: true)
     navigationController?.pushViewController(viewController, animated: true)
   }
 
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-    let tag = filteredTags.tagSectionCoreModels[indexPath.section].tags[indexPath.row]
+    let tag = filteredTags.sortedTagsCoreModels[indexPath.section].tags[indexPath.row]
     return UIContextMenuConfiguration(
       previewProvider: {
-        return TransactionsByTagVC(tag: tag)
+        TransactionsByTagVC(tag: tag)
       },
       elements: [
         .copyTagName(tag: tag)

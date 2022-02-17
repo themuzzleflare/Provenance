@@ -129,7 +129,7 @@ extension AddTagConfirmationVC: ASTableDataSource {
       case 0:
         return ASTextCellNode(text: tag.id, selectionStyle: UITableViewCell.SelectionStyle.none)
       case 1:
-        return TransactionCellNode(transaction: self.transaction.transactionCellModel, contextMenu: false)
+        return TransactionCellNode(model: self.transaction.cellModel, contextMenu: false)
       case 2:
         return ASTextCellNode(text: "You are adding \(self.tags.joinedWithComma) to \(self.transaction.attributes.description), which was \(Store.provenance.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: UITableViewCell.SelectionStyle.none)
       default:

@@ -1,14 +1,16 @@
 import UIKit
 import AsyncDisplayKit
-import SwiftDate
 
-final class DateHeaderCellNode: ASCellNode {
+final class DateHeaderCellNode: CellNode {
   private let textNode = ASTextNode()
 
-  init(object: DateHeaderModel) {
+  private var model: DateHeaderModel
+
+  init(model: DateHeaderModel) {
+    self.model = model
     super.init()
     automaticallyManagesSubnodes = true
-    textNode.attributedText = object.displayString.styled(with: .provenance)
+    textNode.attributedText = model.displayString.styled(with: .provenance)
     backgroundColor = .secondarySystemBackground
   }
 

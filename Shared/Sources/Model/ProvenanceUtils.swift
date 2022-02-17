@@ -14,14 +14,14 @@ enum ProvenanceUtils {
     }
   }
 
-  static func formatDateHeaderText(for date: Date, dateStyle: AppDateStyle = Store.provenance.appDateStyle) -> String {
-    switch dateStyle {
+  static func formatDateHeader(for date: Date) -> String {
+    switch Store.provenance.appDateStyle {
     case .absolute:
       return date.toString(.date(.medium))
     case .relative:
       let currentDate = DateInRegion()
       let newDate = date.dateBySet(hour: currentDate.hour, min: currentDate.minute, secs: currentDate.second)
-      if let relativeDate = newDate?.toRelative() {
+      if let relativeDate = newDate?.toRelative().replacingOccurrences(of: "now", with: "today") {
         return "\(relativeDate) (\(date.toString(.date(.short))))"
       } else {
         return date.toString(.date(.medium))

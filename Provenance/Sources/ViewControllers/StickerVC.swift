@@ -1,11 +1,16 @@
 import UIKit
 import AsyncDisplayKit
 
-final class StickerView: ASViewController {
+final class StickerVC: ASViewController {
+  // MARK: - Properties
+
+  private var sticker: AnimatedImage
+
   // MARK: - Life Cycle
 
-  init(image: ASAnimatedImageProtocol) {
-    super.init(node: StickerImageNode(sticker: image))
+  init(sticker: AnimatedImage) {
+    self.sticker = sticker
+    super.init(node: StickerDisplayNode(sticker: sticker))
   }
 
   required init?(coder: NSCoder) {
@@ -21,7 +26,7 @@ final class StickerView: ASViewController {
 
 // MARK: - Configuration
 
-extension StickerView {
+extension StickerVC {
   private func configureSelf() {
     title = "Sticker View"
   }

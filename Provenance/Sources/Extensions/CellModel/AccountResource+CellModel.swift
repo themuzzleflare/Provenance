@@ -1,7 +1,7 @@
 import Foundation
 
 extension AccountResource {
-  var accountCellModel: AccountCellModel {
+  var cellModel: AccountCellModel {
     return AccountCellModel(account: self)
   }
 }
@@ -9,9 +9,9 @@ extension AccountResource {
 // MARK: -
 
 extension Array where Element == AccountResource {
-  var accountCellModels: [AccountCellModel] {
+  var cellModels: [AccountCellModel] {
     return self.map { (account) in
-      return account.accountCellModel
+      return account.cellModel
     }
   }
 }

@@ -93,12 +93,12 @@ extension AddCategoryCategorySelectionVC {
   private func configureObserver() {
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(appMovedToForeground),
-                                           name: .willEnterForegroundNotification,
+                                           name: .willEnterForeground,
                                            object: nil)
   }
 
   private func removeObserver() {
-    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForeground, object: nil)
   }
 
   private func configureNavigation() {
@@ -166,20 +166,20 @@ extension AddCategoryCategorySelectionVC {
       fromSection: 0,
       toSection: 0,
       oldArray: oldCategoryCellModels,
-      newArray: filteredCategories.categoryCellModels,
+      newArray: filteredCategories.cellModels,
       option: .equality
     ).forBatchUpdates()
 
     if result.hasChanges || override || !categoriesError.isEmpty || noCategories || searchController.searchBar.searchTextField.hasText {
       if filteredCategories.isEmpty && categoriesError.isEmpty {
         if categories.isEmpty && !noCategories {
-          collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds, contentType: .categories)
+          collectionNode.view.backgroundView = .loading(frame: collectionNode.bounds, contentType: .categories)
         } else {
-          collectionNode.view.backgroundView = .noContentView(frame: collectionNode.bounds, type: .categories)
+          collectionNode.view.backgroundView = .noContent(frame: collectionNode.bounds, type: .categories)
         }
       } else {
         if !categoriesError.isEmpty {
-          collectionNode.view.backgroundView = .errorView(frame: collectionNode.bounds, text: categoriesError)
+          collectionNode.view.backgroundView = .error(frame: collectionNode.bounds, text: categoriesError)
         } else {
           if collectionNode.view.backgroundView != nil {
             collectionNode.view.backgroundView = nil
@@ -192,10 +192,10 @@ extension AddCategoryCategorySelectionVC {
         collectionNode.insertItems(at: result.inserts)
         result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
         collectionNode.reloadItems(at: result.updates)
-        oldCategoryCellModels = filteredCategories.categoryCellModels
+        oldCategoryCellModels = filteredCategories.cellModels
       }
 
-      collectionNode.performBatch(animated: true, updates: batchUpdates)
+      collectionNode.performBatchUpdates(batchUpdates)
     }
   }
 
@@ -243,7 +243,7 @@ extension AddCategoryCategorySelectionVC: ASCollectionDataSource {
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
     let category = filteredCategories[indexPath.item]
     return {
-      CategoryCellNode(category: category.categoryCellModel)
+      CategoryCellNode(model: category.cellModel)
     }
   }
 }

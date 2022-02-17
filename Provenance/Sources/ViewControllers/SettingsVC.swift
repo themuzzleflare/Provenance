@@ -127,6 +127,8 @@ extension SettingsVC: ASTableDataSource {
     switch section {
     case 0:
       return "API Key"
+    case 1:
+      return "Date Style"
     default:
       return nil
     }
@@ -138,8 +140,6 @@ extension SettingsVC: ASTableDataSource {
       return "The personal access token used to communicate with the Up Banking Developer API."
     case 1:
       return "The styling of dates displayed thoughout the application."
-    case 2:
-      return "Open in the Settings application."
     default:
       return nil
     }

@@ -7,13 +7,19 @@ final class DiagnosticsVC: ViewController {
 
   private typealias Snapshot = NSDiffableDataSourceSnapshot<DetailSection, DetailItem>
 
-  private lazy var dataSource = makeDataSource()
+  private lazy var dataSource = DataSource(
+    tableView: tableView,
+    cellProvider: { (tableView, indexPath, attribute) in
+      guard let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as? AttributeCell else {
+        fatalError("Unable to dequeue reusable cell with identifier: \(AttributeCell.reuseIdentifier)")
+      }
+      cell.text = attribute.id
+      cell.detailText = attribute.value
+      return cell
+    }
+  )
 
   private let tableView = UITableView(frame: .zero, style: .grouped)
-
-  private var sections: [DetailSection] {
-    return .diagnostics
-  }
 
   // MARK: - Life Cycle
 
@@ -63,24 +69,10 @@ extension DiagnosticsVC {
     navigationController?.dismiss(animated: true)
   }
 
-  private func makeDataSource() -> DataSource {
-    return DataSource(
-      tableView: tableView,
-      cellProvider: { (tableView, indexPath, attribute) in
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.reuseIdentifier, for: indexPath) as? AttributeCell else {
-          fatalError("Unable to dequeue reusable cell with identifier: \(AttributeCell.reuseIdentifier)")
-        }
-        cell.text = attribute.id
-        cell.detailText = attribute.value
-        return cell
-      }
-    )
-  }
-
   private func applySnapshot(animate: Bool = false) {
     var snapshot = Snapshot()
-    snapshot.appendSections(sections)
-    sections.forEach { snapshot.appendItems($0.items, toSection: $0) }
+    snapshot.appendSections([DetailSection].diagnostics)
+    [DetailSection].diagnostics.forEach { snapshot.appendItems($0.items, toSection: $0) }
     dataSource.apply(snapshot, animatingDifferences: animate)
   }
 }

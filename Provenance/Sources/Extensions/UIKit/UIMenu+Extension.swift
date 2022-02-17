@@ -20,14 +20,6 @@ extension UIMenu {
           )
         }
       ),
-      UIAction(
-        title: "Dates",
-        image: datesFilter ? .calendarCircleFill : .calendarCircle,
-        state: datesFilter ? .on : .off,
-        handler: { (_) in
-          completion(.dates)
-        }
-      ),
       UIMenu(
         title: "Grouping",
         image: groupingFilter == .all ? .squareStack : .squareStackFill,
@@ -41,13 +33,26 @@ extension UIMenu {
           )
         }
       ),
-      UIAction(
-        title: "Settled Only",
-        image: showSettledOnly ? .checkmarkCircleFill : .checkmarkCircle,
-        state: showSettledOnly ? .on : .off,
-        handler: { (_) in
-          completion(.settledOnly(!showSettledOnly))
-        }
+      UIMenu(
+        options: .displayInline,
+        children: [
+          UIAction(
+            title: "Dates",
+            image: datesFilter ? .calendarCircleFill : .calendarCircle,
+            state: datesFilter ? .on : .off,
+            handler: { (_) in
+              completion(.dates)
+            }
+          ),
+          UIAction(
+            title: "Settled Only",
+            image: showSettledOnly ? .checkmarkCircleFill : .checkmarkCircle,
+            state: showSettledOnly ? .on : .off,
+            handler: { (_) in
+              completion(.settledOnly(!showSettledOnly))
+            }
+          )
+        ]
       )
     ])
   }

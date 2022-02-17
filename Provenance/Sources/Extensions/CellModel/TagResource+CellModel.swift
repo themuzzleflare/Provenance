@@ -1,7 +1,7 @@
 import Foundation
 
 extension TagResource {
-  var tagCellModel: TagCellModel {
+  var cellModel: TagCellModel {
     return TagCellModel(tag: self)
   }
 }
@@ -9,9 +9,9 @@ extension TagResource {
 // MARK: -
 
 extension Array where Element == TagResource {
-  var tagCellModels: [TagCellModel] {
+  var cellModels: [TagCellModel] {
     return self.map { (tag) in
-      return tag.tagCellModel
+      return tag.cellModel
     }
   }
 
@@ -21,9 +21,9 @@ extension Array where Element == TagResource {
     }
   }
 
-  var tagSectionCoreModels: [TagSectionCoreModel] {
+  var sortedTagsCoreModels: [SortedTagsCoreModel] {
     return Dictionary(grouping: self, by: { String($0.id.lowercased().first!) }).sorted { $0.key < $1.key }.map { (section) in
-      return TagSectionCoreModel(id: section.key, tags: section.value)
+      return SortedTagsCoreModel(id: section.key, tags: section.value)
     }
   }
 }

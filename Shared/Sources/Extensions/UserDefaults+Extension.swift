@@ -30,7 +30,7 @@ extension UserDefaults {
       setValue(newValue, forKey: Keys.dateStyle)
       WidgetCenter.shared.reloadTimelines(ofKind: Widgets.latestTransaction.kind)
       if let dateStyleEnum = AppDateStyle(rawValue: dateStyle) {
-        updateAnalyticsProperty(dateStyleEnum.description, forName: AnalyticsUserProperties.dateStyle)
+        updateAnalyticsProperty(dateStyleEnum.description, forName: .dateStyle)
       }
     }
   }
@@ -43,7 +43,7 @@ extension UserDefaults {
     set {
       setValue(newValue, forKey: Keys.accountFilter)
       if let filterEnum = AccountTypeOptionEnum(rawValue: accountFilter) {
-        updateAnalyticsProperty(filterEnum.description, forName: AnalyticsUserProperties.accountFilter)
+        updateAnalyticsProperty(filterEnum.description, forName: .accountFilter)
       }
     }
   }
@@ -56,7 +56,7 @@ extension UserDefaults {
     set {
       setValue(newValue, forKey: Keys.categoryFilter)
       if let filterEnum = CategoryTypeEnum(rawValue: categoryFilter) {
-        updateAnalyticsProperty(filterEnum.description, forName: AnalyticsUserProperties.categoryFilter)
+        updateAnalyticsProperty(filterEnum.description, forName: .categoryFilter)
       }
     }
   }
@@ -68,7 +68,7 @@ extension UserDefaults {
     }
     set {
       setValue(newValue, forKey: Keys.settledOnly)
-      updateAnalyticsProperty(settledOnly.description, forName: AnalyticsUserProperties.settledOnly)
+      updateAnalyticsProperty(settledOnly.description, forName: .settledOnly)
     }
   }
 
@@ -80,7 +80,7 @@ extension UserDefaults {
     set {
       setValue(newValue, forKey: Keys.transactionGrouping)
       if let groupingEnum = TransactionGroupingEnum(rawValue: transactionGrouping) {
-        updateAnalyticsProperty(groupingEnum.description, forName: AnalyticsUserProperties.transactionGrouping)
+        updateAnalyticsProperty(groupingEnum.description, forName: .transactionGrouping)
       }
     }
   }
@@ -172,9 +172,9 @@ extension UserDefaults {
     return string(forKey: Keys.appBuild) ?? "Unknown"
   }
 
-  private func updateAnalyticsProperty(_ value: String, forName name: String) {
+  private func updateAnalyticsProperty(_ value: String, forName name: AnalyticsUserProperty) {
 #if canImport(FirebaseAnalytics)
-    FirebaseAnalytics.Analytics.setUserProperty(value, forName: name)
+    FirebaseAnalytics.Analytics.setUserProperty(value, forName: name.rawValue)
 #endif
   }
 }
@@ -198,11 +198,17 @@ extension UserDefaults {
     static let all = [apiKey, dateStyle, accountFilter, categoryFilter, settledOnly, transactionGrouping, selectedAccount, selectedCategory, paginationCursor, appVersion, appBuild]
   }
 
-  private enum AnalyticsUserProperties {
-    static let dateStyle = "date_style"
-    static let accountFilter = "account_filter"
-    static let categoryFilter = "category_filter"
-    static let settledOnly = "settled_only"
-    static let transactionGrouping = "transaction_grouping"
+  private struct AnalyticsUserProperty: RawRepresentable, Equatable, Hashable {
+    static let dateStyle = AnalyticsUserProperty(rawValue: "date_style")
+    static let accountFilter = AnalyticsUserProperty(rawValue: "account_filter")
+    static let categoryFilter = AnalyticsUserProperty(rawValue: "category_filter")
+    static let settledOnly = AnalyticsUserProperty(rawValue: "settled_only")
+    static let transactionGrouping = AnalyticsUserProperty(rawValue: "transaction_grouping")
+
+    let rawValue: String
+
+    init(rawValue: String) {
+      self.rawValue = rawValue
+    }
   }
 }

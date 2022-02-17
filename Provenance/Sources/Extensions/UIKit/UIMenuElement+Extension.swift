@@ -49,34 +49,6 @@ extension UIMenuElement {
     })
   }
 
-  static func removeCategory(_ viewController: TransactionDetailVC, from transaction: TransactionResource) -> UIAction {
-    return UIAction(title: "Remove", image: .trash, attributes: .destructive) { (_) in
-      let alertController = UIAlertController.removeCategory(viewController, from: transaction)
-      viewController.present(alertController, animated: true)
-    }
-  }
-
-  static func removeCategory(_ viewController: TransactionsByCategoryVC, from transaction: TransactionResource) -> UIAction {
-    return UIAction(title: "Remove", image: .trash, attributes: .destructive) { (_) in
-      let alertController = UIAlertController.removeCategory(viewController, from: transaction)
-      viewController.present(alertController, animated: true)
-    }
-  }
-
-  static func removeTagFromTransaction(_ viewController: TransactionsByTagVC, removing tag: TagResource, from transaction: TransactionResource) -> UIAction {
-    return UIAction(title: "Remove", image: .trash, attributes: .destructive) { (_) in
-      let alertController = UIAlertController.removeTagFromTransaction(viewController, removing: tag, from: transaction)
-      viewController.present(alertController, animated: true)
-    }
-  }
-
-  static func removeTagFromTransaction(_ viewController: TransactionTagsVC, removing tag: TagResource, from transaction: TransactionResource) -> UIAction {
-    return UIAction(title: "Remove", image: .trash, attributes: .destructive) { (_) in
-      let alertController = UIAlertController.removeTagFromTransaction(viewController, removing: tag, from: transaction)
-      viewController.present(alertController, animated: true)
-    }
-  }
-
   static func copyAttribute(attribute: DetailItem) -> UIAction {
     return UIAction(title: "Copy \(attribute.id)", image: .docOnClipboard, handler: { (_) in
       UIPasteboard.general.string = attribute.value
@@ -105,5 +77,39 @@ extension UIMenuElement {
     return UIAction(title: "Copy Display Name", image: .textAlignright, handler: { (_) in
       UIPasteboard.general.string = account.attributes.displayName
     })
+  }
+
+  static func removeCategory(_ viewController: TransactionDetailVC,
+                             from transaction: TransactionResource) -> UIAction {
+    return UIAction(title: "Remove", image: .trash, attributes: .destructive) { (_) in
+      let alertController = UIAlertController.removeCategory(viewController, from: transaction)
+      viewController.present(alertController, animated: true)
+    }
+  }
+
+  static func removeCategory(_ viewController: TransactionsByCategoryVC,
+                             from transaction: TransactionResource) -> UIAction {
+    return UIAction(title: "Remove", image: .trash, attributes: .destructive) { (_) in
+      let alertController = UIAlertController.removeCategory(viewController, from: transaction)
+      viewController.present(alertController, animated: true)
+    }
+  }
+
+  static func removeTagFromTransaction(_ viewController: TransactionsByTagVC,
+                                       removing tag: TagResource,
+                                       from transaction: TransactionResource) -> UIAction {
+    return UIAction(title: "Remove", image: .trash, attributes: .destructive) { (_) in
+      let alertController = UIAlertController.removeTagFromTransaction(viewController, removing: tag, from: transaction)
+      viewController.present(alertController, animated: true)
+    }
+  }
+
+  static func removeTagFromTransaction(_ viewController: TransactionTagsVC,
+                                       removing tag: TagResource,
+                                       from transaction: TransactionResource) -> UIAction {
+    return UIAction(title: "Remove", image: .trash, attributes: .destructive) { (_) in
+      let alertController = UIAlertController.removeTagFromTransaction(viewController, removing: tag, from: transaction)
+      viewController.present(alertController, animated: true)
+    }
   }
 }

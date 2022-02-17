@@ -9,7 +9,7 @@ final class TransactionModelSC: ListSectionController {
   private weak var selectionDelegate: SelectionDelegate?
   private weak var loadingDelegate: LoadingDelegate?
 
-  init(_ selectionDelegate: SelectionDelegate? = nil, _ loadingDelegate: LoadingDelegate? = nil) {
+  init(selectionDelegate: SelectionDelegate? = nil, loadingDelegate: LoadingDelegate? = nil) {
     self.selectionDelegate = selectionDelegate
     self.loadingDelegate = loadingDelegate
     super.init()
@@ -53,7 +53,7 @@ final class TransactionModelSC: ListSectionController {
 extension TransactionModelSC: ASSectionController {
   func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
     return {
-      TransactionCellNode(transaction: self.object!)
+      TransactionCellNode(model: self.object!)
     }
   }
 

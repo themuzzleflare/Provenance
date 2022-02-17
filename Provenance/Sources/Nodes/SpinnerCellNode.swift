@@ -1,15 +1,11 @@
 import UIKit
 import AsyncDisplayKit
 
-final class SpinnerCellNode: ASCellNode {
-  private let activityIndicatorViewBlock: ASDisplayNodeViewBlock = {
-    return UIActivityIndicatorView.mediumAnimating
-  }
-
-  init(_ sectionController: SpinnerSC) {
+final class SpinnerCellNode: CellNode {
+  init(sectionController: SpinnerSC) {
     super.init()
     sectionController.spinnerDelegate = self
-    setViewBlock(activityIndicatorViewBlock)
+    setViewBlock({ UIActivityIndicatorView.mediumAnimating })
   }
 }
 

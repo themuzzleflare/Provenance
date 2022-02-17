@@ -1,7 +1,7 @@
 import Foundation
 
 extension TransactionResource {
-  var transactionCellModel: TransactionCellModel {
+  var cellModel: TransactionCellModel {
     return TransactionCellModel(transaction: self)
   }
 }
@@ -9,15 +9,15 @@ extension TransactionResource {
 // MARK: -
 
 extension Array where Element == TransactionResource {
-  var transactionCellModels: [TransactionCellModel] {
+  var cellModels: [TransactionCellModel] {
     return self.map { (transaction) in
-      return transaction.transactionCellModel
+      return transaction.cellModel
     }
   }
 
-  var sortedTransactionModels: [SortedTransactionModel] {
+  var sortedTransactionsModels: [SortedTransactionsModel] {
     return Dictionary(grouping: self, by: { $0.attributes.sortingDate }).sorted { $0.key > $1.key }.map { (section) in
-      return SortedTransactionModel(id: section.key, transactions: section.value)
+      return SortedTransactionsModel(id: section.key, transactions: section.value)
     }
   }
 }

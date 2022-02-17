@@ -1,14 +1,14 @@
 import Foundation
 import IGListKit
 
-struct SortedTransactionModel {
+struct SortedTransactionsModel {
   let id: Date
   let transactions: [TransactionResource]
 }
 
 // MARK: -
 
-extension SortedTransactionModel {
+extension SortedTransactionsModel {
   var dateHeaderModel: DateHeaderModel {
     return DateHeaderModel(id: self.id)
   }
@@ -16,12 +16,12 @@ extension SortedTransactionModel {
 
 // MARK: -
 
-extension Array where Element == SortedTransactionModel {
+extension Array where Element == SortedTransactionsModel {
   var diffablesObject: [ListDiffable] {
     var data = [ListDiffable]()
     self.forEach { (object) in
       data.append(object.dateHeaderModel)
-      data.append(contentsOf: object.transactions.transactionCellModels)
+      data.append(contentsOf: object.transactions.cellModels)
     }
     return data
   }

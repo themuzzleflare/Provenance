@@ -111,12 +111,12 @@ extension TransactionTagsVC {
   private func configureObserver() {
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(appMovedToForeground),
-                                           name: .willEnterForegroundNotification,
+                                           name: .willEnterForeground,
                                            object: nil)
   }
 
   private func removeObserver() {
-    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForeground, object: nil)
   }
 
   private func configureNavigation() {
@@ -197,7 +197,7 @@ extension TransactionTagsVC {
       fromSection: 0,
       toSection: 0,
       oldArray: oldTagCellModels,
-      newArray: tags.tagCellModels,
+      newArray: tags.cellModels,
       option: .equality
     ).forBatchUpdates()
 
@@ -206,7 +206,7 @@ extension TransactionTagsVC {
         tableNode.deleteRows(at: result.deletes, with: .automatic)
         tableNode.insertRows(at: result.inserts, with: .automatic)
         result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldTagCellModels = tags.tagCellModels
+        oldTagCellModels = tags.cellModels
       }
 
       tableNode.performBatchUpdates(batchUpdates)
@@ -235,7 +235,7 @@ extension TransactionTagsVC: ASTableDataSource {
   func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
     let tag = tags[indexPath.row]
     return {
-      TagCellNode(tag: tag.tagCellModel, selection: false)
+      TagCellNode(model: tag.cellModel, selection: false)
     }
   }
 

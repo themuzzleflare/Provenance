@@ -11,7 +11,9 @@ enum UpFacade {
   private static let eventMonitor = UpEventMonitor()
   private static let session = Session(delegate: delegate, interceptor: interceptor, eventMonitors: [eventMonitor])
   private static let validation: DataRequest.Validation = { (_, response, data) in
-    if let data = data, let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data), let firstError = errorResponse.errors.first {
+    if let data = data,
+       let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data),
+       let firstError = errorResponse.errors.first {
       let error = UpError(statusCode: response.statusCode, detail: firstError.detail)
       return .failure(error)
     }
@@ -120,11 +122,9 @@ enum UpFacade {
         switch response.result {
         case let .success(transactions):
           if let nextCursor = transactions.links.nextCursor {
-            listCompleteTransactions(
-              cursor: nextCursor,
-              inputTransactions: (inputTransactions + transactions.data),
-              completion: completion
-            )
+            listCompleteTransactions(cursor: nextCursor,
+                                     inputTransactions: (inputTransactions + transactions.data),
+                                     completion: completion)
           } else {
             completion(.success(inputTransactions + transactions.data))
           }

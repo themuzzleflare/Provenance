@@ -133,7 +133,7 @@ extension TransactionsVC {
   private func configureObservers() {
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(appMovedToForeground),
-                                           name: .willEnterForegroundNotification,
+                                           name: .willEnterForeground,
                                            object: nil)
     apiKeyObserver = Store.provenance.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       ASPerformBlockOnMainThread {
@@ -164,7 +164,7 @@ extension TransactionsVC {
   }
 
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForeground, object: nil)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
     dateStyleObserver?.invalidate()
@@ -207,7 +207,9 @@ extension TransactionsVC {
 
   @objc
   private func refreshTransactions() {
-    fetchingTasks()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      self.fetchingTasks()
+    }
   }
 
   private func openDatePicker() {
@@ -311,13 +313,13 @@ extension TransactionsVC: ListAdapterDataSource {
   func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
     switch transactionGrouping {
     case .all:
-      var objects = filteredTransactions.sortedTransactionModels.diffablesObject
+      var objects = filteredTransactions.sortedTransactionsModels.diffablesObject
       if loading {
         objects.append(spinToken as ListDiffable)
       }
       return objects
     case .dates, .transactions:
-      var objects = filteredTransactions.sortedTransactionModels.diffablesObject.filter { type(of: $0) == transactionGrouping.valueType! }
+      var objects = filteredTransactions.sortedTransactionsModels.diffablesObject.filter { type(of: $0) == transactionGrouping.valueType! }
       if loading {
         objects.append(spinToken as ListDiffable)
       }
@@ -332,7 +334,7 @@ extension TransactionsVC: ListAdapterDataSource {
     case is DateHeaderModel:
       return DateHeaderModelSC()
     case is TransactionCellModel:
-      return TransactionModelSC(self, self)
+      return TransactionModelSC(selectionDelegate: self, loadingDelegate: self)
     default:
       fatalError("Unknown object")
     }
@@ -341,13 +343,13 @@ extension TransactionsVC: ListAdapterDataSource {
   func emptyView(for listAdapter: ListAdapter) -> UIView? {
     if filteredTransactions.isEmpty && transactionsError.isEmpty {
       if transactions.isEmpty && !noTransactions {
-        return .loadingView(frame: collectionNode.bounds, contentType: .transactions)
+        return .loading(frame: collectionNode.bounds, contentType: .transactions)
       } else {
-        return .noContentView(frame: collectionNode.bounds, type: .transactions)
+        return .noContent(frame: collectionNode.bounds, type: .transactions)
       }
     } else {
       if !transactionsError.isEmpty {
-        return .errorView(frame: collectionNode.bounds, text: transactionsError)
+        return .error(frame: collectionNode.bounds, text: transactionsError)
       } else {
         return nil
       }
@@ -361,13 +363,13 @@ extension TransactionsVC: SelectionDelegate {
   func didSelectItem(at indexPath: IndexPath) {
     switch transactionGrouping.valueType {
     case is TransactionCellModel.Type:
-      let transaction = filteredTransactions.sortedTransactionModels.supplementaryObject.filter { type(of: $0) == TransactionResource.self }.transactionResources[indexPath.section]
+      let transaction = filteredTransactions.sortedTransactionsModels.supplementaryObject.filter { type(of: $0) == TransactionResource.self }.transactionResources[indexPath.section]
       let viewController = TransactionDetailVC(transaction: transaction)
       navigationController?.pushViewController(viewController, animated: true)
     case is DateHeaderModel.Type:
       break
     case nil:
-      if let transaction = filteredTransactions.sortedTransactionModels.supplementaryObject[indexPath.section] as? TransactionResource {
+      if let transaction = filteredTransactions.sortedTransactionsModels.supplementaryObject[indexPath.section] as? TransactionResource {
         let viewController = TransactionDetailVC(transaction: transaction)
         navigationController?.pushViewController(viewController, animated: true)
       }

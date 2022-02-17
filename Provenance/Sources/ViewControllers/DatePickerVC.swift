@@ -3,11 +3,11 @@ import SnapKit
 
 final class DatePickerVC: ViewController {
   private enum DateType: Int {
-    case since
-    case until
+    case since, until
   }
 
   private let datePicker = UIDatePicker()
+
   private weak var transactionsController: TransactionsVC?
 
   private lazy var dateType: DateType = .since {
@@ -20,6 +20,8 @@ final class DatePickerVC: ViewController {
 
   private lazy var segmentedControl: UISegmentedControl = {
     let control = UISegmentedControl(items: ["Since", "Until"])
+    control.setWidth(100, forSegmentAt: 0)
+    control.setWidth(100, forSegmentAt: 1)
     control.selectedSegmentIndex = 0
     control.addTarget(self, action: #selector(selectionChanged(_:)), for: .valueChanged)
     return control
@@ -43,10 +45,18 @@ final class DatePickerVC: ViewController {
 
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
+    guard previousTraitCollection?.verticalSizeClass != traitCollection.verticalSizeClass else { return }
     datePicker.preferredDatePickerStyle = traitCollection.verticalSizeClass == .compact ? .compact : .inline
+    datePicker.snp.remakeConstraints { (make) in
+      if traitCollection.verticalSizeClass == .regular {
+        make.edges.equalToSuperview()
+      }
+      make.center.equalToSuperview()
+    }
   }
 
   private func configureNavigation() {
+    navigationItem.title = "Date Filters"
     navigationItem.titleView = segmentedControl
     navigationItem.leftBarButtonItem = .close(self, action: #selector(closeWorkflow))
   }
@@ -57,6 +67,9 @@ final class DatePickerVC: ViewController {
     datePicker.maximumDate = Date()
     datePicker.addTarget(self, action: #selector(fetchTransactions), for: .valueChanged)
     datePicker.snp.makeConstraints { (make) in
+      if traitCollection.verticalSizeClass == .regular {
+        make.edges.equalToSuperview()
+      }
       make.center.equalToSuperview()
     }
   }

@@ -29,6 +29,8 @@ enum UpError: Error {
   }
 }
 
+// MARK: -
+
 extension UpError {
   var title: String {
     switch self {

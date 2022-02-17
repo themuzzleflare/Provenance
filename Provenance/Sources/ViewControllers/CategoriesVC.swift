@@ -84,7 +84,7 @@ extension CategoriesVC {
   private func configureObservers() {
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(appMovedToForeground),
-                                           name: .willEnterForegroundNotification,
+                                           name: .willEnterForeground,
                                            object: nil)
     apiKeyObserver = Store.provenance.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       ASPerformBlockOnMainThread {
@@ -100,7 +100,7 @@ extension CategoriesVC {
   }
 
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForeground, object: nil)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
     categoryFilterObserver?.invalidate()
@@ -133,7 +133,9 @@ extension CategoriesVC {
 
   @objc
   private func refreshCategories() {
-    fetchCategories()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      self.fetchCategories()
+    }
   }
 
   @objc
@@ -147,20 +149,20 @@ extension CategoriesVC {
       fromSection: 0,
       toSection: 0,
       oldArray: oldCategoryCellModels,
-      newArray: filteredCategories.categoryCellModels,
+      newArray: filteredCategories.cellModels,
       option: .equality
     ).forBatchUpdates()
 
     if result.hasChanges || override || !categoriesError.isEmpty || noCategories || searchController.searchBar.searchTextField.hasText {
       if filteredCategories.isEmpty && categoriesError.isEmpty {
         if categories.isEmpty && !noCategories {
-          collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds, contentType: .categories)
+          collectionNode.view.backgroundView = .loading(frame: collectionNode.bounds, contentType: .categories)
         } else {
-          collectionNode.view.backgroundView = .noContentView(frame: collectionNode.bounds, type: .categories)
+          collectionNode.view.backgroundView = .noContent(frame: collectionNode.bounds, type: .categories)
         }
       } else {
         if !categoriesError.isEmpty {
-          collectionNode.view.backgroundView = .errorView(frame: collectionNode.bounds, text: categoriesError)
+          collectionNode.view.backgroundView = .error(frame: collectionNode.bounds, text: categoriesError)
         } else {
           if collectionNode.view.backgroundView != nil {
             collectionNode.view.backgroundView = nil
@@ -173,10 +175,10 @@ extension CategoriesVC {
         collectionNode.insertItems(at: result.inserts)
         result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
         collectionNode.reloadItems(at: result.updates)
-        oldCategoryCellModels = filteredCategories.categoryCellModels
+        oldCategoryCellModels = filteredCategories.cellModels
       }
 
-      collectionNode.performBatch(animated: true, updates: batchUpdates)
+      collectionNode.performBatchUpdates(batchUpdates)
     }
   }
 
@@ -224,7 +226,7 @@ extension CategoriesVC: ASCollectionDataSource {
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
     let category = filteredCategories[indexPath.item]
     return {
-      CategoryCellNode(category: category.categoryCellModel)
+      CategoryCellNode(model: category.cellModel)
     }
   }
 }
@@ -243,7 +245,7 @@ extension CategoriesVC: ASCollectionDelegate {
     let category = filteredCategories[indexPath.item]
     return UIContextMenuConfiguration(
       previewProvider: {
-        return TransactionsByCategoryVC(category: category)
+        TransactionsByCategoryVC(category: category)
       },
       elements: [
         .copyCategoryName(category: category)

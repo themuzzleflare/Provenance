@@ -1,31 +1,31 @@
 import UIKit
 import AsyncDisplayKit
 
-final class TransactionCellNode: ASCellNode {
+final class TransactionCellNode: CellNode {
   private let descriptionTextNode = ASTextNode()
   private let creationDateTextNode = ASTextNode()
   private let amountTextNode = ASTextNode()
 
   private var model: TransactionCellModel
-  private var usingContextMenu: Bool
+  private var contextMenu: Bool
   private var selection: Bool
 
-  init(transaction: TransactionCellModel, contextMenu: Bool = true, selection: Bool = true) {
-    self.model = transaction
-    self.usingContextMenu = contextMenu
+  init(model: TransactionCellModel, contextMenu: Bool = true, selection: Bool = true) {
+    self.model = model
+    self.contextMenu = contextMenu
     self.selection = selection
     super.init()
     automaticallyManagesSubnodes = true
-    descriptionTextNode.attributedText = transaction.transactionDescription.styled(with: .transactionDescription)
+    descriptionTextNode.attributedText = model.transactionDescription.styled(with: .transactionDescription)
     descriptionTextNode.maximumNumberOfLines = 2
     descriptionTextNode.truncationMode = .byTruncatingTail
-    creationDateTextNode.attributedText = transaction.creationDate.styled(with: .transactionCreationDate)
-    amountTextNode.attributedText = transaction.amount.styled(with: .transactionAmount, .color(transaction.colour.uiColour))
+    creationDateTextNode.attributedText = model.creationDate.styled(with: .transactionCreationDate)
+    amountTextNode.attributedText = model.amount.styled(with: .transactionAmount, .color(model.colour.uiColour))
   }
 
   override func didLoad() {
     super.didLoad()
-    if usingContextMenu {
+    if contextMenu {
       view.addInteraction(UIContextMenuInteraction(delegate: self))
     }
   }
@@ -48,16 +48,11 @@ final class TransactionCellNode: ASCellNode {
     verticalStack.style.flexGrow = 1.0
     verticalStack.children = [descriptionTextNode, creationDateTextNode]
 
-    let horizontalStack = ASStackLayoutSpec(
-      direction: .horizontal,
-      spacing: 40,
-      justifyContent: .start,
-      alignItems: .center,
-      children: [
-        verticalStack,
-        amountTextNode
-      ]
-    )
+    let horizontalStack = ASStackLayoutSpec(direction: .horizontal,
+                                            spacing: 40,
+                                            justifyContent: .start,
+                                            alignItems: .center,
+                                            children: [verticalStack, amountTextNode])
 
     return ASInsetLayoutSpec(insets: .cellNode, child: horizontalStack)
   }

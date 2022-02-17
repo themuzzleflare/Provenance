@@ -5,7 +5,7 @@ final class StickersVC: ASViewController {
   // MARK: - Properties
 
   private let collectionNode = ASCollectionNode(collectionViewLayout: .grid)
-  private let stickerGifs: [AnimatedImage] = [.stickerTwo, .stickerThree, .stickerSix, .stickerSeven]
+  private let stickers: [AnimatedImage] = [.stickerTwo, .stickerThree, .stickerSix, .stickerSeven]
 
   // MARK: - Life Cycle
 
@@ -22,11 +22,6 @@ final class StickersVC: ASViewController {
     configureSelf()
     configureNavigation()
     configureCollectionNode()
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    collectionNode.reloadData()
   }
 }
 
@@ -52,13 +47,13 @@ extension StickersVC {
 
 extension StickersVC: ASCollectionDataSource {
   func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
-    return stickerGifs.count
+    return stickers.count
   }
 
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
-    let sticker = stickerGifs[indexPath.item]
+    let sticker = stickers[indexPath.item]
     return {
-      StickerCellNode(sticker: sticker.asAnimatedImage)
+      StickerCellNode(sticker: sticker)
     }
   }
 }
@@ -67,8 +62,8 @@ extension StickersVC: ASCollectionDataSource {
 
 extension StickersVC: ASCollectionDelegate {
   func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
-    let sticker = stickerGifs[indexPath.item]
-    let viewController = StickerView(image: sticker.asAnimatedImage)
+    let sticker = stickers[indexPath.item]
+    let viewController = StickerVC(sticker: sticker)
     navigationController?.pushViewController(viewController, animated: true)
   }
 }

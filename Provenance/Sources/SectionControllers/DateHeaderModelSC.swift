@@ -25,7 +25,7 @@ final class DateHeaderModelSC: ListSectionController {
 extension DateHeaderModelSC: ASSectionController {
   func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
     return {
-      DateHeaderCellNode(object: self.object!)
+      DateHeaderCellNode(model: self.object!)
     }
   }
 

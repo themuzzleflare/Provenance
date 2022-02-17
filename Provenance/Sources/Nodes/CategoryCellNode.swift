@@ -1,16 +1,16 @@
 import UIKit
 import AsyncDisplayKit
 
-final class CategoryCellNode: ASCellNode {
+final class CategoryCellNode: CellNode {
   private let categoryTextNode = ASTextNode()
 
   private var model: CategoryCellModel
 
-  init(category: CategoryCellModel) {
-    self.model = category
+  init(model: CategoryCellModel) {
+    self.model = model
     super.init()
     automaticallyManagesSubnodes = true
-    categoryTextNode.attributedText = category.name.styled(with: .categoryName)
+    categoryTextNode.attributedText = model.name.styled(with: .categoryName)
     cornerRadius = 12.5
     borderColor = .separator
     borderWidth = 1.0
@@ -36,7 +36,7 @@ final class CategoryCellNode: ASCellNode {
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    let textCentreSpec = ASCenterLayoutSpec(centeringOptions: .XY, sizingOptions: .minimumXY, child: categoryTextNode)
-    return ASInsetLayoutSpec(insets: .cellNode, child: textCentreSpec)
+    let spec = ASCenterLayoutSpec(centeringOptions: .XY, sizingOptions: .minimumXY, child: categoryTextNode)
+    return ASInsetLayoutSpec(insets: .cellNode, child: spec)
   }
 }

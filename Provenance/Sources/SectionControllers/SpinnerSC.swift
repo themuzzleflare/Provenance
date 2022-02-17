@@ -27,7 +27,7 @@ final class SpinnerSC: ListSectionController {
 extension SpinnerSC: ASSectionController {
   func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
     return {
-      SpinnerCellNode(self)
+      SpinnerCellNode(sectionController: self)
     }
   }
 

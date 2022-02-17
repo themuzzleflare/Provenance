@@ -84,7 +84,7 @@ extension AccountsVC {
   private func configureObservers() {
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(appMovedToForeground),
-                                           name: .willEnterForegroundNotification,
+                                           name: .willEnterForeground,
                                            object: nil)
     apiKeyObserver = Store.provenance.observe(\.apiKey, options: .new) { [weak self] (_, _) in
       ASPerformBlockOnMainThread {
@@ -100,7 +100,7 @@ extension AccountsVC {
   }
 
   private func removeObservers() {
-    NotificationCenter.default.removeObserver(self, name: .willEnterForegroundNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .willEnterForeground, object: nil)
     apiKeyObserver?.invalidate()
     apiKeyObserver = nil
     accountFilterObserver?.invalidate()
@@ -133,7 +133,9 @@ extension AccountsVC {
 
   @objc
   private func refreshAccounts() {
-    fetchAccounts()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      self.fetchAccounts()
+    }
   }
 
   private func applySnapshot(override: Bool = false) {
@@ -141,20 +143,20 @@ extension AccountsVC {
       fromSection: 0,
       toSection: 0,
       oldArray: oldAccountCellModels,
-      newArray: filteredAccounts.accountCellModels,
+      newArray: filteredAccounts.cellModels,
       option: .equality
     ).forBatchUpdates()
 
     if result.hasChanges || override || !accountsError.isEmpty || noAccounts || searchController.searchBar.searchTextField.hasText {
       if filteredAccounts.isEmpty && accountsError.isEmpty {
         if accounts.isEmpty && !noAccounts {
-          collectionNode.view.backgroundView = .loadingView(frame: collectionNode.bounds, contentType: .accounts)
+          collectionNode.view.backgroundView = .loading(frame: collectionNode.bounds, contentType: .accounts)
         } else {
-          collectionNode.view.backgroundView = .noContentView(frame: collectionNode.bounds, type: .accounts)
+          collectionNode.view.backgroundView = .noContent(frame: collectionNode.bounds, type: .accounts)
         }
       } else {
         if !accountsError.isEmpty {
-          collectionNode.view.backgroundView = .errorView(frame: collectionNode.bounds, text: accountsError)
+          collectionNode.view.backgroundView = .error(frame: collectionNode.bounds, text: accountsError)
         } else {
           if collectionNode.view.backgroundView != nil {
             collectionNode.view.backgroundView = nil
@@ -167,7 +169,7 @@ extension AccountsVC {
         collectionNode.insertItems(at: result.inserts)
         result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
         collectionNode.reloadItems(at: result.updates)
-        oldAccountCellModels = filteredAccounts.accountCellModels
+        oldAccountCellModels = filteredAccounts.cellModels
       }
 
       collectionNode.performBatchUpdates(batchUpdates)
@@ -212,7 +214,7 @@ extension AccountsVC: ASCollectionDataSource {
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
     let account = filteredAccounts[indexPath.item]
     return {
-      AccountCellNode(account: account.accountCellModel)
+      AccountCellNode(model: account.cellModel)
     }
   }
 }
@@ -231,7 +233,7 @@ extension AccountsVC: ASCollectionDelegate {
     let account = filteredAccounts[indexPath.item]
     return UIContextMenuConfiguration(
       previewProvider: {
-        return TransactionsByAccountVC(account: account)
+        TransactionsByAccountVC(account: account)
       },
       elements: [
         .copyAccountBalance(account: account),

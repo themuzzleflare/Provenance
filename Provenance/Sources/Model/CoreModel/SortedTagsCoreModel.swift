@@ -1,6 +1,6 @@
 import Foundation
 
-struct TagSectionCoreModel {
+struct SortedTagsCoreModel {
   let id: String
   let tags: [TagResource]
 }
