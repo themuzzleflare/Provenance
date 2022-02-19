@@ -27,20 +27,16 @@ extension AccountResource: CustomStringConvertible {
 
 extension AccountResource {
   var accountBalanceModel: AccountBalanceModel {
-    return AccountBalanceModel(
-      id: self.id,
-      displayName: self.attributes.displayName,
-      balance: self.attributes.balance.valueShort
-    )
+    return AccountBalanceModel(id: self.id,
+                               displayName: self.attributes.displayName,
+                               balance: self.attributes.balance.valueShort)
   }
 
   var accountType: AccountType {
-    return AccountType(
-      identifier: self.id,
-      display: self.attributes.displayName,
-      subtitle: self.attributes.balance.valueShort,
-      image: nil
-    )
+    return AccountType(identifier: self.id,
+                       display: self.attributes.displayName,
+                       subtitle: self.attributes.balance.valueShort,
+                       image: nil)
   }
 }
 

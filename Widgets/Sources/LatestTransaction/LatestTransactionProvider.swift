@@ -18,11 +18,11 @@ struct LatestTransactionProvider: IntentTimelineProvider {
       switch result {
       case let .success(transaction):
         let entry = Entry(date: Date(), transaction: transaction.latestTransactionModel(configuration: configuration), error: nil)
-        let timeline = Timeline(entries: .singleEntry(with: entry), policy: .atEnd)
+        let timeline = Timeline(entries: [entry], policy: .atEnd)
         completion(timeline)
       case let .failure(error):
         let entry = Entry(date: Date(), transaction: nil, error: error)
-        let timeline = Timeline(entries: .singleEntry(with: entry), policy: .atEnd)
+        let timeline = Timeline(entries: [entry], policy: .atEnd)
         completion(timeline)
       }
     }

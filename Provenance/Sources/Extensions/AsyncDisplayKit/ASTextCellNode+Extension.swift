@@ -2,7 +2,7 @@ import UIKit
 import AsyncDisplayKit
 
 extension ASTextCellNode {
-  convenience init(text: String? = nil, insets: UIEdgeInsets? = nil, font: UIFont? = nil, colour: UIColor? = nil, alignment: NSParagraphStyle? = nil, selectionStyle: UITableViewCell.SelectionStyle? = nil, accessoryType: UITableViewCell.AccessoryType? = nil) {
+  convenience init(text: String? = nil, insets: UIEdgeInsets? = nil, font: UIFont? = nil, colour: UIColor? = nil, alignment: NSParagraphStyle? = nil, selectionStyle: UITableViewCell.SelectionStyle = .default, accessoryType: UITableViewCell.AccessoryType = .none) {
     self.init(
       attributes: [
         NSAttributedString.Key.font: font ?? .circularStdBook(size: .labelFontSize),
@@ -12,7 +12,7 @@ extension ASTextCellNode {
       insets: insets ?? .cellNode
     )
     self.text = text ?? ""
-    self.selectionStyle = selectionStyle ?? .default
-    self.accessoryType = accessoryType ?? .none
+    self.selectionStyle = selectionStyle
+    self.accessoryType = accessoryType
   }
 }

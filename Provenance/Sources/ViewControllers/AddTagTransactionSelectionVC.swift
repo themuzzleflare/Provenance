@@ -3,8 +3,16 @@ import AsyncDisplayKit
 import IGListKit
 import Alamofire
 
-final class AddTagTransactionSelectionVC: ASViewController {
+final class AddTagTransactionSelectionVC: ASViewController, UIProtocol {
   // MARK: - Properties
+
+  var state: UIState = .initialLoad {
+    didSet {
+      if oldValue != state {
+        UIUpdates.updateUI(state: state, contentType: .transactions, collection: .tableNode(tableNode))
+      }
+    }
+  }
 
   private lazy var searchController = UISearchController(self)
 
@@ -17,15 +25,15 @@ final class AddTagTransactionSelectionVC: ASViewController {
   private var transactions = [TransactionResource]() {
     didSet {
       noTransactions = transactions.isEmpty
-      applySnapshot()
       tableNode.view.refreshControl?.endRefreshing()
+      applySnapshot()
       searchController.searchBar.placeholder = transactions.searchBarPlaceholder
     }
   }
 
   private var transactionsError = String()
 
-  private var oldTransactionCellModels = [TransactionCellModel]()
+  private var oldTransactionCellModels = [ListDiffable]()
 
   private var filteredTransactions: [TransactionResource] {
     return transactions.filtered(searchBar: searchController.searchBar)
@@ -123,38 +131,16 @@ extension AddTagTransactionSelectionVC {
   }
 
   private func applySnapshot(override: Bool = false) {
-    let result = ListDiffPaths(
-      fromSection: 0,
-      toSection: 0,
-      oldArray: oldTransactionCellModels,
-      newArray: filteredTransactions.cellModels,
-      option: .equality
-    ).forBatchUpdates()
-
-    if result.hasChanges || override || !transactionsError.isEmpty || noTransactions || searchController.searchBar.searchTextField.hasText {
-      if filteredTransactions.isEmpty && transactionsError.isEmpty {
-        if transactions.isEmpty && !noTransactions {
-          tableNode.view.backgroundView = .loading(frame: tableNode.bounds, contentType: .transactions)
-        } else {
-          tableNode.view.backgroundView = .noContent(frame: tableNode.bounds, type: .transactions)
-        }
-      } else {
-        if !transactionsError.isEmpty {
-          tableNode.view.backgroundView = .error(frame: tableNode.bounds, text: transactionsError)
-        } else {
-          if tableNode.view.backgroundView != nil { tableNode.view.backgroundView = nil }
-        }
-      }
-
-      let batchUpdates = { [self] in
-        tableNode.deleteRows(at: result.deletes, with: .fade)
-        tableNode.insertRows(at: result.inserts, with: .fade)
-        result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldTransactionCellModels = filteredTransactions.cellModels
-      }
-
-      tableNode.performBatchUpdates(batchUpdates)
-    }
+    UIUpdates.applySnapshot(oldArray: &oldTransactionCellModels,
+                            newArray: filteredTransactions.cellModels,
+                            override: override,
+                            state: &state,
+                            contents: transactions,
+                            filteredContents: filteredTransactions,
+                            noContent: noTransactions,
+                            error: transactionsError,
+                            contentType: .transactions,
+                            collection: .tableNode(tableNode))
   }
 
   private func fetchTransactions() {

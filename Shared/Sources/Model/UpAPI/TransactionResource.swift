@@ -27,13 +27,11 @@ extension TransactionResource: CustomStringConvertible {
 
 extension TransactionResource {
   func latestTransactionModel(configuration: DateStyleSelectionIntent) -> LatestTransactionModel {
-    return LatestTransactionModel(
-      id: self.id,
-      description: self.attributes.description,
-      creationDate: configuration.dateStyle.description(self),
-      amount: self.attributes.amount.valueShort,
-      colour: self.attributes.amount.transactionType.colour
-    )
+    return LatestTransactionModel(id: self.id,
+                                  description: self.attributes.description,
+                                  creationDate: configuration.dateStyle.description(self),
+                                  amount: self.attributes.amount.valueShort,
+                                  colour: self.attributes.amount.transactionType.colour)
   }
 
   var transactionType: TransactionType {

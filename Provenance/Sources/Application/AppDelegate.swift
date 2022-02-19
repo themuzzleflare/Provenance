@@ -45,7 +45,7 @@ extension AppDelegate {
 
 #if DEBUG
       Store.provenance.apiKey = ProvenanceKeys().upAPIToken
-      dump(Store.provenance.dictionaryWithValues(forKeys: UserDefaults.Keys.all))
+      dump(Store.provenance.dictionaryWithValues(forKeys: Store.StoreKey.allCases.map { $0.rawValue }))
 #endif
     } catch {
       fatalError(error.localizedDescription)

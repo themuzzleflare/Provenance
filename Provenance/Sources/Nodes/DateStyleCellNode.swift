@@ -4,6 +4,8 @@ import AsyncDisplayKit
 final class DateStyleCellNode: CellNode {
   private let segmentedControlNode = SegmentedControlNode()
 
+  private var dateStyleObserver: NSKeyValueObservation?
+
   private lazy var styleSelection: AppDateStyle = Store.provenance.appDateStyle {
     didSet {
       if Store.provenance.dateStyle != styleSelection.rawValue {
@@ -14,8 +16,6 @@ final class DateStyleCellNode: CellNode {
       }
     }
   }
-
-  private var dateStyleObserver: NSKeyValueObservation?
 
   override init() {
     super.init()
@@ -39,6 +39,8 @@ final class DateStyleCellNode: CellNode {
     return ASInsetLayoutSpec(insets: .cellNode, child: segmentedControlNode)
   }
 }
+
+// MARK: -
 
 extension DateStyleCellNode {
   private func configureObserver() {

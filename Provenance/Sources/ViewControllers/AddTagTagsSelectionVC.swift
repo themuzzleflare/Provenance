@@ -4,8 +4,16 @@ import IGListKit
 import NotificationBannerSwift
 import Alamofire
 
-final class AddTagTagsSelectionVC: ASViewController {
+final class AddTagTagsSelectionVC: ASViewController, UIProtocol {
   // MARK: - Properties
+
+  var state: UIState = .initialLoad {
+    didSet {
+      if oldValue != state {
+        UIUpdates.updateUI(state: state, contentType: .tags, collection: .tableNode(tableNode))
+      }
+    }
+  }
 
   private var transaction: TransactionResource
 
@@ -62,7 +70,7 @@ final class AddTagTagsSelectionVC: ASViewController {
 
   private var tagsError = String()
 
-  private var oldTagCellModels = [TagCellModel]()
+  private var oldTagCellModels = [ListDiffable]()
 
   private var filteredTags: [TagResource] {
     return tags.filtered(searchBar: searchController.searchBar)
@@ -233,40 +241,16 @@ extension AddTagTagsSelectionVC {
   }
 
   private func applySnapshot(override: Bool = false) {
-    let result = ListDiffPaths(
-      fromSection: 0,
-      toSection: 0,
-      oldArray: oldTagCellModels,
-      newArray: filteredTags.cellModels,
-      option: .equality
-    ).forBatchUpdates()
-
-    if result.hasChanges || override || !tagsError.isEmpty || noTags || searchController.searchBar.searchTextField.hasText {
-      if filteredTags.isEmpty && tagsError.isEmpty {
-        if tags.isEmpty && !noTags {
-          tableNode.view.backgroundView = .loading(frame: tableNode.bounds, contentType: .tags)
-        } else {
-          tableNode.view.backgroundView = .noContent(frame: tableNode.bounds, type: .tags)
-        }
-      } else {
-        if !tagsError.isEmpty {
-          tableNode.view.backgroundView = .error(frame: tableNode.bounds, text: tagsError)
-        } else {
-          if tableNode.view.backgroundView != nil {
-            tableNode.view.backgroundView = nil
-          }
-        }
-      }
-
-      let batchUpdates = { [self] in
-        tableNode.deleteRows(at: result.deletes, with: .automatic)
-        tableNode.insertRows(at: result.inserts, with: .automatic)
-        result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldTagCellModels = filteredTags.cellModels
-      }
-
-      tableNode.performBatchUpdates(batchUpdates)
-    }
+    UIUpdates.applySnapshot(oldArray: &oldTagCellModels,
+                            newArray: filteredTags.cellModels,
+                            override: override,
+                            state: &state,
+                            contents: tags,
+                            filteredContents: filteredTags,
+                            noContent: noTags,
+                            error: tagsError,
+                            contentType: .tags,
+                            collection: .tableNode(tableNode))
   }
 
   private func fetchTags() {

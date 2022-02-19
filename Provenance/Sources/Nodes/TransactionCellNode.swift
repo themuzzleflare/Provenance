@@ -20,7 +20,7 @@ final class TransactionCellNode: CellNode {
     descriptionTextNode.maximumNumberOfLines = 2
     descriptionTextNode.truncationMode = .byTruncatingTail
     creationDateTextNode.attributedText = model.creationDate.styled(with: .transactionCreationDate)
-    amountTextNode.attributedText = model.amount.styled(with: .transactionAmount, .color(model.colour.uiColour))
+    amountTextNode.attributedText = model.amount.styled(with: .transactionAmount)
   }
 
   override func didLoad() {

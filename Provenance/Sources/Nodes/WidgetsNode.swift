@@ -22,28 +22,17 @@ final class WidgetsNode: ASScrollNode {
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    let horizontalStack = ASStackLayoutSpec(
-      direction: .horizontal,
-      spacing: 20,
-      justifyContent: .center,
-      alignItems: .center,
-      children: [
-        accountBalanceImageNode,
-        latestTransactionImageNode
-      ]
-    )
+    let horizontalStack = ASStackLayoutSpec(direction: .horizontal,
+                                            spacing: 20,
+                                            justifyContent: .center,
+                                            alignItems: .center,
+                                            children: [accountBalanceImageNode, latestTransactionImageNode])
 
-    let verticalStack = ASStackLayoutSpec(
-      direction: .vertical,
-      spacing: 15,
-      justifyContent: .center,
-      alignItems: .center,
-      children: [
-        horizontalStack,
-        titleTextNode,
-        instructionsTextNode
-      ]
-    )
+    let verticalStack = ASStackLayoutSpec(direction: .vertical,
+                                          spacing: 15,
+                                          justifyContent: .center,
+                                          alignItems: .center,
+                                          children: [horizontalStack, titleTextNode, instructionsTextNode])
 
     return ASInsetLayoutSpec(insets: .cellNode, child: verticalStack)
   }

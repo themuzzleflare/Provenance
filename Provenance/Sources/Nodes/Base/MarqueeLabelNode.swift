@@ -1,5 +1,6 @@
-import MarqueeLabel
+import UIKit
 import AsyncDisplayKit
+import MarqueeLabel
 
 class MarqueeLabelNode: ASDisplayNode {
   private var marqueeLabel: MarqueeLabel {

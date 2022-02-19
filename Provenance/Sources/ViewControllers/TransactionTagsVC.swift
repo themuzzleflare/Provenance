@@ -193,23 +193,21 @@ extension TransactionTagsVC {
   }
 
   private func applySnapshot(override: Bool = false) {
-    let result = ListDiffPaths(
-      fromSection: 0,
-      toSection: 0,
-      oldArray: oldTagCellModels,
-      newArray: tags.cellModels,
-      option: .equality
-    ).forBatchUpdates()
+    let result = ListDiffPaths(fromSection: 0,
+                               toSection: 0,
+                               oldArray: oldTagCellModels,
+                               newArray: tags.cellModels,
+                               option: .equality).forBatchUpdates()
 
     if result.hasChanges || override {
-      let batchUpdates = { [self] in
-        tableNode.deleteRows(at: result.deletes, with: .automatic)
-        tableNode.insertRows(at: result.inserts, with: .automatic)
-        result.moves.forEach { tableNode.moveRow(at: $0.from, to: $0.to) }
-        oldTagCellModels = tags.cellModels
-      }
+      tableNode.performBatchUpdates {
+        tableNode.deleteRows(at: result.deletes, with: .fade)
+        tableNode.insertRows(at: result.inserts, with: .fade)
 
-      tableNode.performBatchUpdates(batchUpdates)
+        oldTagCellModels = tags.cellModels
+      } completion: { (bool) in
+        print("completion: \(bool.description)")
+      }
     }
   }
 

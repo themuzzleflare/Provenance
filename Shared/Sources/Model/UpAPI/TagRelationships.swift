@@ -4,8 +4,10 @@ struct TagRelationships: Codable {
   var transactions: RelationshipTransactions
 }
 
-// MARK: -
+// MARK: - ExpressibleByNilLiteral
 
-extension TagRelationships {
-  static let empty = TagRelationships(transactions: .empty)
+extension TagRelationships: ExpressibleByNilLiteral {
+  init(nilLiteral: ()) {
+    self.transactions = nil
+  }
 }

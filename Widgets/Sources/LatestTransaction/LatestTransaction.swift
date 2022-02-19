@@ -3,14 +3,10 @@ import WidgetKit
 
 struct LatestTransaction: Widget {
   var body: some WidgetConfiguration {
-    IntentConfiguration(
-      kind: Widgets.latestTransaction.kind,
-      intent: DateStyleSelectionIntent.self,
-      provider: LatestTransactionProvider(),
-      content: { (entry) in
-        LatestTransactionEntryView(entry: entry)
-      }
-    )
+    IntentConfiguration(kind: Widgets.latestTransaction.kind,
+                        intent: DateStyleSelectionIntent.self,
+                        provider: LatestTransactionProvider(),
+                        content: { LatestTransactionEntryView(entry: $0) })
       .configurationDisplayName(Widgets.latestTransaction.name)
       .description(Widgets.latestTransaction.description)
       .supportedFamilies([.systemSmall, .systemMedium])

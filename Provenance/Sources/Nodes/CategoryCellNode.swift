@@ -31,12 +31,12 @@ final class CategoryCellNode: CellNode {
 
   override func asyncTraitCollectionDidChange(withPreviousTraitCollection previousTraitCollection: ASPrimitiveTraitCollection) {
     super.asyncTraitCollectionDidChange(withPreviousTraitCollection: previousTraitCollection)
-    guard previousTraitCollection.userInterfaceStyle != primitiveTraitCollection().userInterfaceStyle else { return }
+    guard previousTraitCollection.userInterfaceStyle != asyncTraitCollection().userInterfaceStyle else { return }
     borderColor = .separator
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    let spec = ASCenterLayoutSpec(centeringOptions: .XY, sizingOptions: .minimumXY, child: categoryTextNode)
-    return ASInsetLayoutSpec(insets: .cellNode, child: spec)
+    let centerSpec = ASCenterLayoutSpec(centeringOptions: .XY, sizingOptions: .minimumXY, child: categoryTextNode)
+    return ASInsetLayoutSpec(insets: .cellNode, child: centerSpec)
   }
 }

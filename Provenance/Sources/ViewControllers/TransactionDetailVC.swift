@@ -194,7 +194,7 @@ extension TransactionDetailVC {
 
   @objc
   private func openStatusIconHelpView() {
-    let viewController = NavigationController(rootViewController: StatusIconHelpView())
+    let viewController = NavigationController(rootViewController: StatusIconHelpView(status: transaction.attributes.status))
     present(viewController, animated: true)
   }
 

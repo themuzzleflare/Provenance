@@ -5,12 +5,17 @@ import SwiftDate
 typealias Up = UpFacade
 
 enum UpFacade {
-  private static let baseUrl = "https://api.up.com.au/api/v1"
+  static let baseUrl = "https://api.up.com.au/api/v1"
+
   private static let delegate = UpDelegate()
+
   private static let interceptor = UpInterceptor()
+
   private static let eventMonitor = UpEventMonitor()
+
   private static let session = Session(delegate: delegate, interceptor: interceptor, eventMonitors: [eventMonitor])
-  private static let validation: DataRequest.Validation = { (_, response, data) in
+
+  static let validation: DataRequest.Validation = { (_, response, data) in
     if let data = data,
        let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data),
        let firstError = errorResponse.errors.first {
@@ -63,19 +68,19 @@ enum UpFacade {
                                until: Date? = nil,
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     var parameters: Parameters = [
-      ParamKeys.pageSize: "20"
+      ParamKey.pageSize: "20"
     ]
 
     if let cursor = cursor {
-      parameters.updateValue(cursor, forKey: ParamKeys.pageAfter)
+      parameters.updateValue(cursor, forKey: ParamKey.pageAfter)
     }
 
     if let since = since {
-      parameters.updateValue(since.toISO(), forKey: ParamKeys.filterSince)
+      parameters.updateValue(since.toISO(), forKey: ParamKey.filterSince)
     }
 
     if let until = until {
-      parameters.updateValue(until.toISO(), forKey: ParamKeys.filterUntil)
+      parameters.updateValue(until.toISO(), forKey: ParamKey.filterUntil)
     }
 
     session.request("\(baseUrl)/transactions",
@@ -108,11 +113,11 @@ enum UpFacade {
                                        inputTransactions: [TransactionResource] = [],
                                        completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     var parameters: Parameters = [
-      ParamKeys.pageSize: "100"
+      ParamKey.pageSize: "100"
     ]
 
     if let cursor = cursor {
-      parameters.updateValue(cursor, forKey: ParamKeys.pageAfter)
+      parameters.updateValue(cursor, forKey: ParamKey.pageAfter)
     }
 
     session.request("\(baseUrl)/transactions",
@@ -149,7 +154,7 @@ enum UpFacade {
   static func listTransactions(filterBy account: AccountResource,
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     let parameters: Parameters = [
-      ParamKeys.pageSize: "100"
+      ParamKey.pageSize: "20"
     ]
 
     session.request("\(baseUrl)/accounts/\(account.id)/transactions",
@@ -180,8 +185,8 @@ enum UpFacade {
   static func listTransactions(filterBy tag: TagResource,
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     let parameters: Parameters = [
-      ParamKeys.filterTag: tag.id,
-      ParamKeys.pageSize: "100"
+      ParamKey.filterTag: tag.id,
+      ParamKey.pageSize: "100"
     ]
 
     session.request("\(baseUrl)/transactions",
@@ -212,8 +217,8 @@ enum UpFacade {
   static func listTransactions(filterBy category: CategoryResource,
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     let parameters: Parameters = [
-      ParamKeys.filterCategory: category.id,
-      ParamKeys.pageSize: "100"
+      ParamKey.filterCategory: category.id,
+      ParamKey.pageSize: "20"
     ]
 
     session.request("\(baseUrl)/transactions",
@@ -237,7 +242,7 @@ enum UpFacade {
 
   static func retrieveLatestTransaction(completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
     let parameters: Parameters = [
-      ParamKeys.pageSize: "1"
+      ParamKey.pageSize: "1"
     ]
 
     session.request("\(baseUrl)/transactions",
@@ -268,7 +273,7 @@ enum UpFacade {
   static func retrieveLatestTransaction(for account: AccountResource,
                                         completion: @escaping (Result<TransactionResource, AFError>) -> Void) {
     let parameters: Parameters = [
-      ParamKeys.pageSize: "1"
+      ParamKey.pageSize: "1"
     ]
 
     session.request("\(baseUrl)/accounts/\(account.id)/transactions",
@@ -332,7 +337,7 @@ enum UpFacade {
 
   static func listAccounts(completion: @escaping (Result<[AccountResource], AFError>) -> Void) {
     let parameters: Parameters = [
-      ParamKeys.pageSize: "100"
+      ParamKey.pageSize: "100"
     ]
 
     session.request("\(baseUrl)/accounts",
@@ -394,7 +399,7 @@ enum UpFacade {
 
   static func listTags(completion: @escaping (Result<[TagResource], AFError>) -> Void) {
     let parameters: Parameters = [
-      ParamKeys.pageSize: "100"
+      ParamKey.pageSize: "100"
     ]
 
     session.request("\(baseUrl)/tags",
@@ -597,11 +602,11 @@ extension UpFacade {
 
   static func listTransactions(cursor: String? = nil) async throws -> [TransactionResource] {
     var parameters: Parameters = [
-      ParamKeys.pageSize: "20"
+      ParamKey.pageSize: "20"
     ]
 
     if let cursor = cursor {
-      parameters.updateValue(cursor, forKey: ParamKeys.pageAfter)
+      parameters.updateValue(cursor, forKey: ParamKey.pageAfter)
     }
 
     let response = try await session.request("\(baseUrl)/transactions",
@@ -620,7 +625,7 @@ extension UpFacade {
 // MARK: -
 
 extension UpFacade {
-  enum ParamKeys {
+  enum ParamKey {
     /// The number of records to return in each page.
     static let pageSize = "page[size]"
 

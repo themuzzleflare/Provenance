@@ -83,19 +83,15 @@ extension AddTagConfirmationVC {
     navigationItem.setRightBarButton(.activityIndicator, animated: false)
     Up.modifyTags(adding: tags, to: transaction) { (error) in
       if let error = error {
-        GrowingNotificationBanner(
-          title: "Failed",
-          subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
-          style: .danger,
-          duration: 2.0
-        ).show()
+        GrowingNotificationBanner(title: "Failed",
+                                  subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
+                                  style: .danger,
+                                  duration: 2.0).show()
       } else {
-        GrowingNotificationBanner(
-          title: "Success",
-          subtitle: "\(self.tags.joinedWithComma) \(self.tags.count == 1 ? "was" : "were") added to \(self.transaction.attributes.description).",
-          style: .success,
-          duration: 2.0
-        ).show()
+        GrowingNotificationBanner(title: "Success",
+                                  subtitle: "\(self.tags.joinedWithComma) \(self.tags.count == 1 ? "was" : "were") added to \(self.transaction.attributes.description).",
+                                  style: .success,
+                                  duration: 2.0).show()
       }
       self.navigationController?.popViewController(animated: true)
     }
@@ -127,11 +123,11 @@ extension AddTagConfirmationVC: ASTableDataSource {
     return {
       switch indexPath.section {
       case 0:
-        return ASTextCellNode(text: tag.id, selectionStyle: UITableViewCell.SelectionStyle.none)
+        return ASTextCellNode(text: tag.id, selectionStyle: .none)
       case 1:
         return TransactionCellNode(model: self.transaction.cellModel, contextMenu: false)
       case 2:
-        return ASTextCellNode(text: "You are adding \(self.tags.joinedWithComma) to \(self.transaction.attributes.description), which was \(Store.provenance.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: UITableViewCell.SelectionStyle.none)
+        return ASTextCellNode(text: "You are adding \(self.tags.joinedWithComma) to \(self.transaction.attributes.description), which was \(Store.provenance.appDateStyle == .absolute ? "created on" : "created") \(self.transaction.attributes.creationDate).", selectionStyle: .none)
       default:
         fatalError("Unknown section")
       }

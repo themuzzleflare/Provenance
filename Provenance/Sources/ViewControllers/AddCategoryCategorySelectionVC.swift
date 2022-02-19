@@ -5,8 +5,16 @@ import NotificationBannerSwift
 import Alamofire
 import MBProgressHUD
 
-final class AddCategoryCategorySelectionVC: ASViewController {
+final class AddCategoryCategorySelectionVC: ASViewController, UIProtocol {
   // MARK: - Properties
+
+  var state: UIState = .initialLoad {
+    didSet {
+      if oldValue != state {
+        UIUpdates.updateUI(state: state, contentType: .categories, collection: .collectionNode(collectionNode))
+      }
+    }
+  }
 
   private var transaction: TransactionResource
 
@@ -36,7 +44,7 @@ final class AddCategoryCategorySelectionVC: ASViewController {
 
   private var categoriesError = String()
 
-  private var oldCategoryCellModels = [CategoryCellModel]()
+  private var oldCategoryCellModels = [ListDiffable]()
 
   private var preFilteredCategories: [CategoryResource] {
     return categories.filter { (category) in
@@ -162,41 +170,16 @@ extension AddCategoryCategorySelectionVC {
   }
 
   private func applySnapshot(override: Bool = false) {
-    let result = ListDiffPaths(
-      fromSection: 0,
-      toSection: 0,
-      oldArray: oldCategoryCellModels,
-      newArray: filteredCategories.cellModels,
-      option: .equality
-    ).forBatchUpdates()
-
-    if result.hasChanges || override || !categoriesError.isEmpty || noCategories || searchController.searchBar.searchTextField.hasText {
-      if filteredCategories.isEmpty && categoriesError.isEmpty {
-        if categories.isEmpty && !noCategories {
-          collectionNode.view.backgroundView = .loading(frame: collectionNode.bounds, contentType: .categories)
-        } else {
-          collectionNode.view.backgroundView = .noContent(frame: collectionNode.bounds, type: .categories)
-        }
-      } else {
-        if !categoriesError.isEmpty {
-          collectionNode.view.backgroundView = .error(frame: collectionNode.bounds, text: categoriesError)
-        } else {
-          if collectionNode.view.backgroundView != nil {
-            collectionNode.view.backgroundView = nil
-          }
-        }
-      }
-
-      let batchUpdates = { [self] in
-        collectionNode.deleteItems(at: result.deletes)
-        collectionNode.insertItems(at: result.inserts)
-        result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
-        collectionNode.reloadItems(at: result.updates)
-        oldCategoryCellModels = filteredCategories.cellModels
-      }
-
-      collectionNode.performBatchUpdates(batchUpdates)
-    }
+    UIUpdates.applySnapshot(oldArray: &oldCategoryCellModels,
+                            newArray: filteredCategories.cellModels,
+                            override: override,
+                            state: &state,
+                            contents: categories,
+                            filteredContents: filteredCategories,
+                            noContent: noCategories,
+                            error: categoriesError,
+                            contentType: .categories,
+                            collection: .collectionNode(collectionNode))
   }
 
   private func fetchCategories() {

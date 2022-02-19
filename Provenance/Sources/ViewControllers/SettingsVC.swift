@@ -116,7 +116,7 @@ extension SettingsVC: ASTableDataSource {
       case 1:
         return DateStyleCellNode()
       case 2:
-        return ASTextCellNode(text: "Settings", selectionStyle: .default, accessoryType: .disclosureIndicator)
+        return ASTextCellNode(text: "Settings", accessoryType: .disclosureIndicator)
       default:
         fatalError("Unknown section")
       }

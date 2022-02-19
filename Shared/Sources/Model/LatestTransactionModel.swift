@@ -1,6 +1,6 @@
 import Foundation
 
-struct LatestTransactionModel: Identifiable {
+struct LatestTransactionModel {
   let id: String
   let description: String
   let creationDate: String
@@ -12,12 +12,10 @@ struct LatestTransactionModel: Identifiable {
 
 extension LatestTransactionModel {
   static var placeholder: LatestTransactionModel {
-    return LatestTransactionModel(
-      id: UUID().uuidString,
-      description: "Officeworks",
-      creationDate: "21 hours ago",
-      amount: "-$79.95",
-      colour: .primaryLabel
-    )
+    return LatestTransactionModel(id: UUID().uuidString,
+                                  description: "Officeworks",
+                                  creationDate: "21 hours ago",
+                                  amount: "-$79.95",
+                                  colour: .primaryLabel)
   }
 }

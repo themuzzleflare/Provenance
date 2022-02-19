@@ -12,7 +12,7 @@ struct TagResource: Codable, Identifiable {
 
   init(id: String) {
     self.id = id
-    self.relationships = .empty
+    self.relationships = nil
   }
 }
 
@@ -39,10 +39,6 @@ extension TagResource {
 // MARK: -
 
 extension Array where Element == TagResource {
-  static func singleTag(with tag: TagResource) -> [TagResource] {
-    return [tag]
-  }
-
   func filtered(searchBar: UISearchBar) -> [TagResource] {
     return self.filter { (tag) in
       return !searchBar.searchTextField.hasText || tag.id.localizedStandardContains(searchBar.text!)

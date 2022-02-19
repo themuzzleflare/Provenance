@@ -3,8 +3,16 @@ import IGListKit
 import AsyncDisplayKit
 import Alamofire
 
-final class AccountsVC: ASViewController {
+final class AccountsVC: ASViewController, UIProtocol {
   // MARK: - Properties
+
+  var state: UIState = .initialLoad {
+    didSet {
+      if oldValue != state {
+        UIUpdates.updateUI(state: state, contentType: .accounts, collection: .collectionNode(collectionNode))
+      }
+    }
+  }
 
   private lazy var searchController = UISearchController.accounts(self)
 
@@ -38,7 +46,7 @@ final class AccountsVC: ASViewController {
 
   private var accountsError = String()
 
-  private var oldAccountCellModels = [AccountCellModel]()
+  private var oldAccountCellModels = [ListDiffable]()
 
   private var filteredAccounts: [AccountResource] {
     return accounts.filtered(filter: accountFilter, searchBar: searchController.searchBar)
@@ -139,41 +147,16 @@ extension AccountsVC {
   }
 
   private func applySnapshot(override: Bool = false) {
-    let result = ListDiffPaths(
-      fromSection: 0,
-      toSection: 0,
-      oldArray: oldAccountCellModels,
-      newArray: filteredAccounts.cellModels,
-      option: .equality
-    ).forBatchUpdates()
-
-    if result.hasChanges || override || !accountsError.isEmpty || noAccounts || searchController.searchBar.searchTextField.hasText {
-      if filteredAccounts.isEmpty && accountsError.isEmpty {
-        if accounts.isEmpty && !noAccounts {
-          collectionNode.view.backgroundView = .loading(frame: collectionNode.bounds, contentType: .accounts)
-        } else {
-          collectionNode.view.backgroundView = .noContent(frame: collectionNode.bounds, type: .accounts)
-        }
-      } else {
-        if !accountsError.isEmpty {
-          collectionNode.view.backgroundView = .error(frame: collectionNode.bounds, text: accountsError)
-        } else {
-          if collectionNode.view.backgroundView != nil {
-            collectionNode.view.backgroundView = nil
-          }
-        }
-      }
-
-      let batchUpdates = { [self] in
-        collectionNode.deleteItems(at: result.deletes)
-        collectionNode.insertItems(at: result.inserts)
-        result.moves.forEach { collectionNode.moveItem(at: $0.from, to: $0.to) }
-        collectionNode.reloadItems(at: result.updates)
-        oldAccountCellModels = filteredAccounts.cellModels
-      }
-
-      collectionNode.performBatchUpdates(batchUpdates)
-    }
+    UIUpdates.applySnapshot(oldArray: &oldAccountCellModels,
+                            newArray: filteredAccounts.cellModels,
+                            override: override,
+                            state: &state,
+                            contents: accounts,
+                            filteredContents: filteredAccounts,
+                            noContent: noAccounts,
+                            error: accountsError,
+                            contentType: .accounts,
+                            collection: .collectionNode(collectionNode))
   }
 
   private func fetchAccounts() {

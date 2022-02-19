@@ -1,6 +1,6 @@
 import Foundation
 
-struct AccountBalanceModel: Identifiable {
+struct AccountBalanceModel {
   let id: String
   let displayName: String
   let balance: String
@@ -10,10 +10,8 @@ struct AccountBalanceModel: Identifiable {
 
 extension AccountBalanceModel {
   static var placeholder: AccountBalanceModel {
-    return AccountBalanceModel(
-      id: UUID().uuidString,
-      displayName: "Spending",
-      balance: "$123.95"
-    )
+    return AccountBalanceModel(id: UUID().uuidString,
+                               displayName: "Spending",
+                               balance: "$123.95")
   }
 }

@@ -8,7 +8,7 @@ final class DatePickerVC: ViewController {
 
   private let datePicker = UIDatePicker()
 
-  private weak var transactionsController: TransactionsVC?
+  private weak var controller: TransactionsVC?
 
   private lazy var dateType: DateType = .since {
     didSet {
@@ -22,13 +22,13 @@ final class DatePickerVC: ViewController {
     let control = UISegmentedControl(items: ["Since", "Until"])
     control.setWidth(100, forSegmentAt: 0)
     control.setWidth(100, forSegmentAt: 1)
-    control.selectedSegmentIndex = 0
+    control.selectedSegmentIndex = dateType.rawValue
     control.addTarget(self, action: #selector(selectionChanged(_:)), for: .valueChanged)
     return control
   }()
 
-  init(_ controller: TransactionsVC) {
-    self.transactionsController = controller
+  init(controller: TransactionsVC) {
+    self.controller = controller
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -59,13 +59,14 @@ final class DatePickerVC: ViewController {
     navigationItem.title = "Date Filters"
     navigationItem.titleView = segmentedControl
     navigationItem.leftBarButtonItem = .close(self, action: #selector(closeWorkflow))
+    navigationItem.largeTitleDisplayMode = .never
   }
 
   private func configureDatePicker() {
     updateDatePicker()
     datePicker.preferredDatePickerStyle = traitCollection.verticalSizeClass == .compact ? .compact : .inline
     datePicker.maximumDate = Date()
-    datePicker.addTarget(self, action: #selector(fetchTransactions), for: .valueChanged)
+    datePicker.addTarget(self, action: #selector(setDate), for: .valueChanged)
     datePicker.snp.makeConstraints { (make) in
       if traitCollection.verticalSizeClass == .regular {
         make.edges.equalToSuperview()
@@ -77,13 +78,13 @@ final class DatePickerVC: ViewController {
   private func updateDatePicker() {
     switch dateType {
     case .since:
-      if let date = transactionsController?.sinceDate {
+      if let date = controller?.sinceDate {
         datePicker.setDate(date, animated: true)
       } else {
         datePicker.setDate(Date(), animated: true)
       }
     case .until:
-      if let date = transactionsController?.untilDate {
+      if let date = controller?.untilDate {
         datePicker.setDate(date, animated: true)
       } else {
         datePicker.setDate(Date(), animated: true)
@@ -95,7 +96,7 @@ final class DatePickerVC: ViewController {
   private func updateNavigation() {
     switch dateType {
     case .since:
-      if transactionsController?.sinceDate != nil {
+      if controller?.sinceDate != nil {
         if navigationItem.rightBarButtonItem != clearBarButtonItem {
           navigationItem.setRightBarButton(clearBarButtonItem, animated: true)
         }
@@ -105,7 +106,7 @@ final class DatePickerVC: ViewController {
         }
       }
     case .until:
-      if transactionsController?.untilDate != nil {
+      if controller?.untilDate != nil {
         if navigationItem.rightBarButtonItem != clearBarButtonItem {
           navigationItem.setRightBarButton(clearBarButtonItem, animated: true)
         }
@@ -123,12 +124,12 @@ final class DatePickerVC: ViewController {
   }
 
   @objc
-  private func fetchTransactions() {
+  private func setDate() {
     switch dateType {
     case .since:
-      transactionsController?.sinceDate = datePicker.date
+      controller?.sinceDate = datePicker.date
     case .until:
-      transactionsController?.untilDate = datePicker.date
+      controller?.untilDate = datePicker.date
     }
     updateNavigation()
   }
@@ -144,9 +145,9 @@ final class DatePickerVC: ViewController {
   private func clear() {
     switch dateType {
     case .since:
-      transactionsController?.sinceDate = nil
+      controller?.sinceDate = nil
     case .until:
-      transactionsController?.untilDate = nil
+      controller?.untilDate = nil
     }
     updateDatePicker()
   }

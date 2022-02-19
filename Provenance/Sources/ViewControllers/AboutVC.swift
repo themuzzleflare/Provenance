@@ -35,7 +35,6 @@ extension AboutVC {
     navigationItem.title = "About"
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.backBarButtonItem = .infoCircle
-    navigationItem.leftBarButtonItem = .openDiagnostics(self, action: #selector(openDiagnostics))
     navigationItem.rightBarButtonItem = .openSettings(self, action: #selector(openSettings))
   }
 
@@ -52,12 +51,6 @@ extension AboutVC {
   @objc
   private func openSettings() {
     let viewController = NavigationController(rootViewController: SettingsVC())
-    present(viewController, animated: true)
-  }
-
-  @objc
-  private func openDiagnostics() {
-    let viewController = NavigationController(rootViewController: DiagnosticsVC())
     present(viewController, animated: true)
   }
 }

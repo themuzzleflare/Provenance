@@ -13,10 +13,10 @@ extension UserDefaults {
   /// The string of the "apiKey" key.
   @objc dynamic var apiKey: String {
     get {
-      return string(forKey: Keys.apiKey) ?? ""
+      return getString(forKey: .apiKey) ?? ""
     }
     set {
-      setValue(newValue, forKey: Keys.apiKey)
+      setStore(newValue, forKey: .apiKey)
       WidgetCenter.shared.reloadAllTimelines()
     }
   }
@@ -24,10 +24,10 @@ extension UserDefaults {
   /// The integer of the "dateStyle" key.
   @objc dynamic var dateStyle: Int {
     get {
-      return integer(forKey: Keys.dateStyle)
+      return getInteger(forKey: .dateStyle)
     }
     set {
-      setValue(newValue, forKey: Keys.dateStyle)
+      setStore(newValue, forKey: .dateStyle)
       WidgetCenter.shared.reloadTimelines(ofKind: Widgets.latestTransaction.kind)
       if let dateStyleEnum = AppDateStyle(rawValue: dateStyle) {
         updateAnalyticsProperty(dateStyleEnum.description, forName: .dateStyle)
@@ -38,10 +38,10 @@ extension UserDefaults {
   /// The integer of the "accountFilter" key.
   @objc dynamic var accountFilter: Int {
     get {
-      return integer(forKey: Keys.accountFilter)
+      return getInteger(forKey: .accountFilter)
     }
     set {
-      setValue(newValue, forKey: Keys.accountFilter)
+      setStore(newValue, forKey: .accountFilter)
       if let filterEnum = AccountTypeOptionEnum(rawValue: accountFilter) {
         updateAnalyticsProperty(filterEnum.description, forName: .accountFilter)
       }
@@ -51,10 +51,10 @@ extension UserDefaults {
   /// The integer of the "categoryFilter" key.
   @objc dynamic var categoryFilter: Int {
     get {
-      return integer(forKey: Keys.categoryFilter)
+      return getInteger(forKey: .categoryFilter)
     }
     set {
-      setValue(newValue, forKey: Keys.categoryFilter)
+      setStore(newValue, forKey: .categoryFilter)
       if let filterEnum = CategoryTypeEnum(rawValue: categoryFilter) {
         updateAnalyticsProperty(filterEnum.description, forName: .categoryFilter)
       }
@@ -64,10 +64,10 @@ extension UserDefaults {
   /// The boolean of the "settledOnly" key.
   @objc dynamic var settledOnly: Bool {
     get {
-      return bool(forKey: Keys.settledOnly)
+      return getBool(forKey: .settledOnly)
     }
     set {
-      setValue(newValue, forKey: Keys.settledOnly)
+      setStore(newValue, forKey: .settledOnly)
       updateAnalyticsProperty(settledOnly.description, forName: .settledOnly)
     }
   }
@@ -75,10 +75,10 @@ extension UserDefaults {
   /// The integer of the "transactionGrouping" key.
   @objc dynamic var transactionGrouping: Int {
     get {
-      return integer(forKey: Keys.transactionGrouping)
+      return getInteger(forKey: .transactionGrouping)
     }
     set {
-      setValue(newValue, forKey: Keys.transactionGrouping)
+      setStore(newValue, forKey: .transactionGrouping)
       if let groupingEnum = TransactionGroupingEnum(rawValue: transactionGrouping) {
         updateAnalyticsProperty(groupingEnum.description, forName: .transactionGrouping)
       }
@@ -87,29 +87,29 @@ extension UserDefaults {
 
   @objc dynamic var paginationCursor: String {
     get {
-      return string(forKey: Keys.paginationCursor) ?? ""
+      return getString(forKey: .paginationCursor) ?? ""
     }
     set {
-      setValue(newValue, forKey: Keys.paginationCursor)
+      setStore(newValue, forKey: .paginationCursor)
     }
   }
 
   /// The last selected account for the account balance widget.
   var selectedAccount: String? {
     get {
-      return string(forKey: Keys.selectedAccount)
+      return getString(forKey: .selectedAccount)
     }
     set {
-      setValue(newValue, forKey: Keys.selectedAccount)
+      setStore(newValue, forKey: .selectedAccount)
     }
   }
 
   var selectedCategory: String {
     get {
-      return string(forKey: Keys.selectedCategory) ?? TransactionCategory.all.rawValue
+      return getString(forKey: .selectedCategory) ?? TransactionCategory.all.rawValue
     }
     set {
-      setValue(newValue, forKey: Keys.selectedCategory)
+      setStore(newValue, forKey: .selectedCategory)
     }
   }
 
@@ -164,12 +164,32 @@ extension UserDefaults {
 
   /// The short version string of the application.
   var appVersion: String {
-    return string(forKey: Keys.appVersion) ?? "Unknown"
+    return getString(forKey: .appVersion) ?? "Unknown"
   }
 
   /// The build number of the application.
   var appBuild: String {
-    return string(forKey: Keys.appBuild) ?? "Unknown"
+    return getString(forKey: .appBuild) ?? "Unknown"
+  }
+}
+
+// MARK: -
+
+extension UserDefaults {
+  private func getString(forKey defaultName: StoreKey) -> String? {
+    return string(forKey: defaultName.rawValue)
+  }
+
+  private func getInteger(forKey defaultName: StoreKey) -> Int {
+    return integer(forKey: defaultName.rawValue)
+  }
+
+  private func getBool(forKey defaultName: StoreKey) -> Bool {
+    return bool(forKey: defaultName.rawValue)
+  }
+
+  private func setStore(_ value: Any?, forKey key: StoreKey) {
+    setValue(value, forKey: key.rawValue)
   }
 
   private func updateAnalyticsProperty(_ value: String, forName name: AnalyticsUserProperty) {
@@ -182,33 +202,25 @@ extension UserDefaults {
 // MARK: -
 
 extension UserDefaults {
-  enum Keys {
-    static let apiKey = "apiKey"
-    static let dateStyle = "dateStyle"
-    static let accountFilter = "accountFilter"
-    static let categoryFilter = "categoryFilter"
-    static let settledOnly = "settledOnly"
-    static let transactionGrouping = "transactionGrouping"
-    static let selectedAccount = "selectedAccount"
-    static let selectedCategory = "selectedCategory"
-    static let paginationCursor = "paginationCursor"
-    static let appVersion = "appVersion"
-    static let appBuild = "appBuild"
-
-    static let all = [apiKey, dateStyle, accountFilter, categoryFilter, settledOnly, transactionGrouping, selectedAccount, selectedCategory, paginationCursor, appVersion, appBuild]
+  enum StoreKey: String, CaseIterable {
+    case apiKey
+    case dateStyle
+    case accountFilter
+    case categoryFilter
+    case settledOnly
+    case transactionGrouping
+    case selectedAccount
+    case selectedCategory
+    case paginationCursor
+    case appVersion
+    case appBuild
   }
 
-  private struct AnalyticsUserProperty: RawRepresentable, Equatable, Hashable {
-    static let dateStyle = AnalyticsUserProperty(rawValue: "date_style")
-    static let accountFilter = AnalyticsUserProperty(rawValue: "account_filter")
-    static let categoryFilter = AnalyticsUserProperty(rawValue: "category_filter")
-    static let settledOnly = AnalyticsUserProperty(rawValue: "settled_only")
-    static let transactionGrouping = AnalyticsUserProperty(rawValue: "transaction_grouping")
-
-    let rawValue: String
-
-    init(rawValue: String) {
-      self.rawValue = rawValue
-    }
+  private enum AnalyticsUserProperty: String {
+    case dateStyle = "date_style"
+    case accountFilter = "account_filter"
+    case categoryFilter = "category_filter"
+    case settledOnly = "settled_only"
+    case transactionGrouping = "transaction_grouping"
   }
 }

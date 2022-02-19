@@ -15,11 +15,3 @@ extension LatestTransactionEntry {
     return LatestTransactionEntry(date: Date(), transaction: .placeholder, error: nil)
   }
 }
-
-// MARK: -
-
-extension Array where Element == LatestTransactionEntry {
-  static func singleEntry(with entry: LatestTransactionEntry) -> [LatestTransactionEntry] {
-    return [entry]
-  }
-}

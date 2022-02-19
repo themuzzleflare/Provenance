@@ -16,7 +16,7 @@ extension Pagination {
   var prevCursor: String? {
     guard let prev = prev,
           let url = URLComponents(string: prev),
-          let cursor = url.queryItems?.first(where: { $0.name == Up.ParamKeys.pageBefore })?.value
+          let cursor = url.queryItems?.first(where: { $0.name == Up.ParamKey.pageBefore })?.value
     else { return nil }
     return cursor
   }
@@ -24,7 +24,7 @@ extension Pagination {
   var nextCursor: String? {
     guard let next = next,
           let url = URLComponents(string: next),
-          let cursor = url.queryItems?.first(where: { $0.name == Up.ParamKeys.pageAfter })?.value
+          let cursor = url.queryItems?.first(where: { $0.name == Up.ParamKey.pageAfter })?.value
     else { return nil }
     return cursor
   }

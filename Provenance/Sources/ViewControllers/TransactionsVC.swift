@@ -3,8 +3,10 @@ import AsyncDisplayKit
 import IGListKit
 import Alamofire
 
-final class TransactionsVC: ASViewController {
+final class TransactionsVC: ASViewController, UIProtocol {
   // MARK: - Properties
+
+  var state: UIState = .initialLoad
 
   private lazy var filterBarButtonItem = UIBarButtonItem(image: .sliderHorizontal3, menu: filterMenu)
 
@@ -213,7 +215,7 @@ extension TransactionsVC {
   }
 
   private func openDatePicker() {
-    let viewController = NavigationController(rootViewController: DatePickerVC(self))
+    let viewController = NavigationController(rootViewController: DatePickerVC(controller: self))
     present(viewController, animated: true)
   }
 
@@ -222,13 +224,13 @@ extension TransactionsVC {
     noTransactions = transactions.isEmpty
     collectionNode.view.refreshControl?.endRefreshing()
     searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
-    adapter.performUpdates(animated: true, completion: nil)
+    performUpdates()
   }
 
   private func filterUpdates() {
     filterBarButtonItem.menu = filterMenu
     searchController.searchBar.placeholder = preFilteredTransactions.searchBarPlaceholder
-    adapter.performUpdates(animated: true, completion: nil)
+    performUpdates()
   }
 
   private func fetchingTasks() {
@@ -254,6 +256,17 @@ extension TransactionsVC {
         }
       }
     )
+  }
+
+  private func performUpdates() {
+    StateUpdates.updateState(state: &state,
+                             contents: transactions,
+                             filteredContents: filteredTransactions,
+                             noContent: noTransactions,
+                             error: transactionsError)
+    adapter.performUpdates(animated: true) { (bool) in
+      print("completion: \(bool.description)")
+    }
   }
 
   func fetchTransactions() {
@@ -341,19 +354,7 @@ extension TransactionsVC: ListAdapterDataSource {
   }
 
   func emptyView(for listAdapter: ListAdapter) -> UIView? {
-    if filteredTransactions.isEmpty && transactionsError.isEmpty {
-      if transactions.isEmpty && !noTransactions {
-        return .loading(frame: collectionNode.bounds, contentType: .transactions)
-      } else {
-        return .noContent(frame: collectionNode.bounds, type: .transactions)
-      }
-    } else {
-      if !transactionsError.isEmpty {
-        return .error(frame: collectionNode.bounds, text: transactionsError)
-      } else {
-        return nil
-      }
-    }
+    return UIUpdates.emptyView(state: state, contentType: .transactions, node: collectionNode)
   }
 }
 
@@ -395,13 +396,13 @@ extension TransactionsVC: LoadingDelegate {
 
 extension TransactionsVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    adapter.performUpdates(animated: true, completion: nil)
+    performUpdates()
   }
 
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     if searchBar.searchTextField.hasText {
       searchBar.clear()
-      adapter.performUpdates(animated: true, completion: nil)
+      performUpdates()
     }
   }
 }

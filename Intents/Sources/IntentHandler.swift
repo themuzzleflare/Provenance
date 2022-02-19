@@ -83,8 +83,8 @@ extension IntentHandler: ListTransactionsIntentHandling {
     var headers: HTTPHeaders = [
       .accept("application/json")
     ]
-    var params: Parameters = [
-      Up.ParamKeys.pageSize: "100"
+    var parameters: Parameters = [
+      Up.ParamKey.pageSize: "100"
     ]
     if let apiKey = intent.apiKey, !apiKey.isEmpty {
       headers.add(.authorization(bearerToken: apiKey))
@@ -92,9 +92,9 @@ extension IntentHandler: ListTransactionsIntentHandling {
       headers.add(.authorization(bearerToken: Store.provenance.apiKey))
     }
     if let account = intent.account?.identifier {
-      requestUrl = "https://api.up.com.au/api/v1/accounts/\(account)/transactions"
+      requestUrl = "\(Up.baseUrl)/accounts/\(account)/transactions"
     } else {
-      requestUrl = "https://api.up.com.au/api/v1/transactions"
+      requestUrl = "\(Up.baseUrl)/transactions"
     }
     var filterSince: String? {
       return intent.since?.date?.toISO()
@@ -103,22 +103,22 @@ extension IntentHandler: ListTransactionsIntentHandling {
       return intent.until?.date?.toISO()
     }
     if let status = intent.status.transactionStatusEnum?.rawValue {
-      params.updateValue(status, forKey: Up.ParamKeys.filterStatus)
+      parameters.updateValue(status, forKey: Up.ParamKey.filterStatus)
     }
     if let since = filterSince {
-      params.updateValue(since, forKey: Up.ParamKeys.filterSince)
+      parameters.updateValue(since, forKey: Up.ParamKey.filterSince)
     }
     if let until = filterUntil {
-      params.updateValue(until, forKey: Up.ParamKeys.filterUntil)
+      parameters.updateValue(until, forKey: Up.ParamKey.filterUntil)
     }
     if let category = intent.category?.identifier {
-      params.updateValue(category, forKey: Up.ParamKeys.filterCategory)
+      parameters.updateValue(category, forKey: Up.ParamKey.filterCategory)
     }
     if let tag = intent.tag {
-      params.updateValue(tag, forKey: Up.ParamKeys.filterTag)
+      parameters.updateValue(tag, forKey: Up.ParamKey.filterTag)
     }
-    AF.request(requestUrl, parameters: params, headers: headers)
-      .validate()
+    AF.request(requestUrl, parameters: parameters, headers: headers)
+      .validate(Up.validation)
       .responseDecodable(of: TransactionsResponse.self) { (response) in
         switch response.result {
         case let .success(transactions):

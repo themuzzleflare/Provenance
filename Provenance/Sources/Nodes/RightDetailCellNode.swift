@@ -5,7 +5,12 @@ final class RightDetailCellNode: CellNode {
   private let leftTextNode = ASTextNode()
   private let rightTextNode = ASTextNode()
 
+  private var text: String
+  private var detailText: String
+
   init(text: String, detailText: String) {
+    self.text = text
+    self.detailText = detailText
     super.init()
     automaticallyManagesSubnodes = true
     selectionStyle = .none

@@ -4,11 +4,12 @@ import AsyncDisplayKit
 final class StatusIconHelpView: ASViewController {
   // MARK: - Properties
 
-  private let statusIconHelpDisplayNode = StatusIconHelpNode()
+  private let statusIconHelpDisplayNode: StatusIconHelpNode
 
   // MARK: - Life Cycle
 
-  override init() {
+  init(status: TransactionStatusEnum) {
+    self.statusIconHelpDisplayNode = StatusIconHelpNode(status: status)
     super.init(node: statusIconHelpDisplayNode)
   }
 

@@ -2,8 +2,16 @@ import UIKit
 import IGListKit
 import Alamofire
 
-final class TagsVC: ViewController {
+final class TagsVC: ViewController, UIProtocol {
   // MARK: - Properties
+
+  var state: UIState = .initialLoad {
+    didSet {
+      if oldValue != state {
+        UIUpdates.updateUI(state: state, contentType: .tags, collection: .tableView(tableView))
+      }
+    }
+  }
 
   private lazy var searchController = UISearchController(self)
 
@@ -173,21 +181,11 @@ extension TagsVC {
     snapshot.appendSections(filteredTags.sortedTags)
     filteredTags.sortedTags.forEach { snapshot.appendItems($0.tags, toSection: $0) }
 
-    if filteredTags.isEmpty && tagsError.isEmpty {
-      if tags.isEmpty && !noTags {
-        tableView.backgroundView = .loading(frame: tableView.bounds, contentType: .tags)
-      } else {
-        tableView.backgroundView = .noContent(frame: tableView.bounds, type: .tags)
-      }
-    } else {
-      if !tagsError.isEmpty {
-        tableView.backgroundView = .error(frame: tableView.bounds, text: tagsError)
-      } else {
-        if tableView.backgroundView != nil {
-          tableView.backgroundView = nil
-        }
-      }
-    }
+    StateUpdates.updateState(state: &state,
+                             contents: tags,
+                             filteredContents: filteredTags,
+                             noContent: noTags,
+                             error: tagsError)
 
     dataSource.apply(snapshot, animatingDifferences: animate)
   }

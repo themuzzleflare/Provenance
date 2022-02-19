@@ -4,8 +4,10 @@ struct RelationshipTransactions: Codable {
   var links: RelatedLink?
 }
 
-// MARK: -
+// MARK: - ExpressibleByNilLiteral
 
-extension RelationshipTransactions {
-  static let empty = RelationshipTransactions(links: nil)
+extension RelationshipTransactions: ExpressibleByNilLiteral {
+  init(nilLiteral: ()) {
+    self.links = nil
+  }
 }
