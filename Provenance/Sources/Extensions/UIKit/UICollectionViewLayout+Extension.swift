@@ -22,7 +22,7 @@ extension UICollectionViewLayout {
       group.interItemSpacing = .fixed(10)
       let section = NSCollectionLayoutSection(group: group)
       section.interGroupSpacing = 10
-      section.contentInsets = NSDirectionalEdgeInsets(all: 10.0)
+      section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
       return section
     }
   }

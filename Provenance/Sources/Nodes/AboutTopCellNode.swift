@@ -1,5 +1,6 @@
 import UIKit
 import AsyncDisplayKit
+import BonMot
 
 final class AboutTopCellNode: CellNode {
   private let logoImageNode = ASImageNode()

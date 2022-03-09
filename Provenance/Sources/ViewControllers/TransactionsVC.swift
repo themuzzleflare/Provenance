@@ -52,8 +52,9 @@ final class TransactionsVC: ASViewController, UIProtocol {
     didSet {
       if Store.provenance.transactionGrouping != transactionGrouping.rawValue {
         Store.provenance.transactionGrouping = transactionGrouping.rawValue
+      } else {
+        filterUpdates()
       }
-      filterUpdates()
     }
   }
 
@@ -78,8 +79,9 @@ final class TransactionsVC: ASViewController, UIProtocol {
     didSet {
       if Store.provenance.selectedCategory != categoryFilter.rawValue {
         Store.provenance.selectedCategory = categoryFilter.rawValue
+      } else {
+        filterUpdates()
       }
-      filterUpdates()
     }
   }
 
@@ -87,8 +89,9 @@ final class TransactionsVC: ASViewController, UIProtocol {
     didSet {
       if Store.provenance.settledOnly != showSettledOnly {
         Store.provenance.settledOnly = showSettledOnly
+      } else {
+        filterUpdates()
       }
-      filterUpdates()
     }
   }
 
@@ -112,11 +115,17 @@ final class TransactionsVC: ASViewController, UIProtocol {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureObservers()
-    configureCollectionNode()
     configureSelf()
+    configureObservers()
     configureNavigation()
-    fetchingTasks()
+    configureCollectionNode()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    if state != .ready {
+      fetchingTasks()
+    }
   }
 }
 
@@ -332,7 +341,7 @@ extension TransactionsVC: ListAdapterDataSource {
       }
       return objects
     case .dates, .transactions:
-      var objects = filteredTransactions.sortedTransactionsModels.diffablesObject.filter { type(of: $0) == transactionGrouping.valueType! }
+      var objects = filteredTransactions.sortedTransactionsModels.diffablesObject.filter { type(of: $0) == transactionGrouping.valueType }
       if loading {
         objects.append(spinToken as ListDiffable)
       }
@@ -354,28 +363,17 @@ extension TransactionsVC: ListAdapterDataSource {
   }
 
   func emptyView(for listAdapter: ListAdapter) -> UIView? {
-    return UIUpdates.emptyView(state: state, contentType: .transactions, node: collectionNode)
+    return UIUpdates.emptyView(state: state, contentType: .transactions, collectionNode: collectionNode)
   }
 }
 
 // MARK: - SelectionDelegate
 
 extension TransactionsVC: SelectionDelegate {
-  func didSelectItem(at indexPath: IndexPath) {
-    switch transactionGrouping.valueType {
-    case is TransactionCellModel.Type:
-      let transaction = filteredTransactions.sortedTransactionsModels.supplementaryObject.filter { type(of: $0) == TransactionResource.self }.transactionResources[indexPath.section]
+  func didSelectItem(at indexPath: IndexPath, with id: String) {
+    if let transaction = filteredTransactions.first(where: { $0.id == id }) {
       let viewController = TransactionDetailVC(transaction: transaction)
       navigationController?.pushViewController(viewController, animated: true)
-    case is DateHeaderModel.Type:
-      break
-    case nil:
-      if let transaction = filteredTransactions.sortedTransactionsModels.supplementaryObject[indexPath.section] as? TransactionResource {
-        let viewController = TransactionDetailVC(transaction: transaction)
-        navigationController?.pushViewController(viewController, animated: true)
-      }
-    default:
-      fatalError("Unknown transaction grouping value type")
     }
   }
 }

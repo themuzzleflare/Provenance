@@ -22,9 +22,10 @@ final class CategoriesVC: ASViewController, UIProtocol {
     didSet {
       if Store.provenance.categoryFilter != categoryFilter.rawValue {
         Store.provenance.categoryFilter = categoryFilter.rawValue
-      }
-      if searchController.searchBar.selectedScopeButtonIndex != categoryFilter.rawValue {
-        searchController.searchBar.selectedScopeButtonIndex = categoryFilter.rawValue
+      } else {
+        if searchController.searchBar.selectedScopeButtonIndex != categoryFilter.rawValue {
+          searchController.searchBar.selectedScopeButtonIndex = categoryFilter.rawValue
+        }
       }
     }
   }
@@ -68,8 +69,8 @@ final class CategoriesVC: ASViewController, UIProtocol {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureObservers()
     configureSelf()
+    configureObservers()
     configureNavigation()
     configureCollectionNode()
     applySnapshot(override: true)

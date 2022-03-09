@@ -27,15 +27,15 @@ extension AccountResource: CustomStringConvertible {
 
 extension AccountResource {
   var accountBalanceModel: AccountBalanceModel {
-    return AccountBalanceModel(id: self.id,
-                               displayName: self.attributes.displayName,
-                               balance: self.attributes.balance.valueShort)
+    return AccountBalanceModel(id: id,
+                               displayName: attributes.displayName,
+                               balance: attributes.balance.valueShort)
   }
 
   var accountType: AccountType {
-    return AccountType(identifier: self.id,
-                       display: self.attributes.displayName,
-                       subtitle: self.attributes.balance.valueShort,
+    return AccountType(identifier: id,
+                       display: attributes.displayName,
+                       subtitle: attributes.balance.valueShort,
                        image: nil)
   }
 }
@@ -55,8 +55,6 @@ extension Array where Element == AccountResource {
   }
 
   var accountTypes: [AccountType] {
-    return self.map { (account) in
-      return account.accountType
-    }
+    return self.map { $0.accountType }
   }
 }

@@ -22,9 +22,10 @@ final class AccountsVC: ASViewController, UIProtocol {
     didSet {
       if Store.provenance.accountFilter != accountFilter.rawValue {
         Store.provenance.accountFilter = accountFilter.rawValue
-      }
-      if searchController.searchBar.selectedScopeButtonIndex != accountFilter.rawValue {
-        searchController.searchBar.selectedScopeButtonIndex = accountFilter.rawValue
+      } else {
+        if searchController.searchBar.selectedScopeButtonIndex != accountFilter.rawValue {
+          searchController.searchBar.selectedScopeButtonIndex = accountFilter.rawValue
+        }
       }
     }
   }
@@ -68,8 +69,8 @@ final class AccountsVC: ASViewController, UIProtocol {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureObservers()
     configureSelf()
+    configureObservers()
     configureNavigation()
     configureCollectionNode()
     applySnapshot(override: true)

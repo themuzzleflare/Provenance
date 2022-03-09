@@ -41,19 +41,15 @@ extension UIAlertAction {
     return UIAlertAction(title: "Remove", style: .destructive, handler: { (_) in
       Up.categorise(transaction: transaction) { (error) in
         if let error = error {
-          GrowingNotificationBanner(
-            title: "Failed",
-            subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
-            style: .danger,
-            duration: 2.0
-          ).show()
+          GrowingNotificationBanner(title: "Failed",
+                                    subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
+                                    style: .danger,
+                                    duration: 2.0).show()
         } else {
-          GrowingNotificationBanner(
-            title: "Success",
-            subtitle: "The category for \(transaction.attributes.description) was removed.",
-            style: .success,
-            duration: 2.0
-          ).show()
+          GrowingNotificationBanner(title: "Success",
+                                    subtitle: "The category for \(transaction.attributes.description) was removed.",
+                                    style: .success,
+                                    duration: 2.0).show()
         }
         viewController.fetchTransactions()
       }
@@ -66,19 +62,15 @@ extension UIAlertAction {
     return UIAlertAction(title: "Remove", style: .destructive, handler: { (_) in
       Up.modifyTags(removing: [tag], from: transaction) { (error) in
         if let error = error {
-          GrowingNotificationBanner(
-            title: "Failed",
-            subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
-            style: .danger,
-            duration: 2.0
-          ).show()
+          GrowingNotificationBanner(title: "Failed",
+                                    subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
+                                    style: .danger,
+                                    duration: 2.0).show()
         } else {
-          GrowingNotificationBanner(
-            title: "Success",
-            subtitle: "\(tag.id) was removed from \(transaction.attributes.description).",
-            style: .success,
-            duration: 2.0
-          ).show()
+          GrowingNotificationBanner(title: "Success",
+                                    subtitle: "\(tag.id) was removed from \(transaction.attributes.description).",
+                                    style: .success,
+                                    duration: 2.0).show()
           viewController.fetchTransactions()
         }
       }
@@ -91,19 +83,15 @@ extension UIAlertAction {
     return UIAlertAction(title: "Remove", style: .destructive, handler: { (_) in
       Up.modifyTags(removing: [tag], from: transaction) { (error) in
         if let error = error {
-          GrowingNotificationBanner(
-            title: "Failed",
-            subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
-            style: .danger,
-            duration: 2.0
-          ).show()
+          GrowingNotificationBanner(title: "Failed",
+                                    subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
+                                    style: .danger,
+                                    duration: 2.0).show()
         } else {
-          GrowingNotificationBanner(
-            title: "Success",
-            subtitle: "\(tag.id) was removed from \(transaction.attributes.description).",
-            style: .success,
-            duration: 2.0
-          ).show()
+          GrowingNotificationBanner(title: "Success",
+                                    subtitle: "\(tag.id) was removed from \(transaction.attributes.description).",
+                                    style: .success,
+                                    duration: 2.0).show()
           viewController.fetchTransaction()
         }
       }
@@ -116,19 +104,15 @@ extension UIAlertAction {
     return UIAlertAction(title: "Remove", style: .destructive, handler: { (_) in
       Up.modifyTags(removing: tags, from: transaction) { (error) in
         if let error = error {
-          GrowingNotificationBanner(
-            title: "Failed",
-            subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
-            style: .danger,
-            duration: 2.0
-          ).show()
+          GrowingNotificationBanner(title: "Failed",
+                                    subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
+                                    style: .danger,
+                                    duration: 2.0).show()
         } else {
-          GrowingNotificationBanner(
-            title: "Success",
-            subtitle: "\(tags.joinedWithComma) \(tags.count == 1 ? "was" : "were") removed from \(transaction.attributes.description).",
-            style: .success,
-            duration: 2.0
-          ).show()
+          GrowingNotificationBanner(title: "Success",
+                                    subtitle: "\(tags.joinedWithComma) \(tags.count == 1 ? "was" : "were") removed from \(transaction.attributes.description).",
+                                    style: .success,
+                                    duration: 2.0).show()
           viewController.fetchTransaction()
         }
       }
@@ -156,30 +140,24 @@ extension UIAlertAction {
         if textField.hasText && text != Store.provenance.apiKey {
           Up.ping(with: text) { (error) in
             if let error = error {
-              GrowingNotificationBanner(
-                title: "Failed",
-                subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
-                style: .danger,
-                duration: 2.0
-              ).show()
+              GrowingNotificationBanner(title: "Failed",
+                                        subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
+                                        style: .danger,
+                                        duration: 2.0).show()
             } else {
-              GrowingNotificationBanner(
-                title: "Success",
-                subtitle: "The API Key was verified and saved.",
-                style: .success,
-                duration: 2.0
-              ).show()
+              GrowingNotificationBanner(title: "Success",
+                                        subtitle: "The API Key was verified and saved.",
+                                        style: .success,
+                                        duration: 2.0).show()
               Store.provenance.apiKey = text
               viewController.tableNode.reloadData()
             }
           }
         } else {
-          GrowingNotificationBanner(
-            title: "Failed",
-            subtitle: "The provided API Key was the same as the current one.",
-            style: .danger,
-            duration: 2.0
-          ).show()
+          GrowingNotificationBanner(title: "Failed",
+                                    subtitle: "The provided API Key was the same as the current one.",
+                                    style: .danger,
+                                    duration: 2.0).show()
         }
       }
     })
@@ -195,33 +173,27 @@ extension UIAlertAction {
         if textField.hasText && text != Store.provenance.apiKey {
           Up.ping(with: text) { (error) in
             if let error = error {
-              let notificationBanner = GrowingNotificationBanner(
-                title: "Failed",
-                subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
-                style: .danger,
-                duration: 2.0
-              )
+              let notificationBanner = GrowingNotificationBanner(title: "Failed",
+                                                                 subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
+                                                                 style: .danger,
+                                                                 duration: 2.0)
               let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
               sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
             } else {
-              let notificationBanner = GrowingNotificationBanner(
-                title: "Success",
-                subtitle: "The API Key was verified and saved.",
-                style: .success,
-                duration: 2.0
-              )
+              let notificationBanner = GrowingNotificationBanner(title: "Success",
+                                                                 subtitle: "The API Key was verified and saved.",
+                                                                 style: .success,
+                                                                 duration: 2.0)
               let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
               Store.provenance.apiKey = text
               sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
             }
           }
         } else {
-          let notificationBanner = GrowingNotificationBanner(
-            title: "Failed",
-            subtitle: "The provided API Key was the same as the current one.",
-            style: .danger,
-            duration: 2.0
-          )
+          let notificationBanner = GrowingNotificationBanner(title: "Failed",
+                                                             subtitle: "The provided API Key was the same as the current one.",
+                                                             style: .danger,
+                                                             duration: 2.0)
           let viewController = NavigationController(rootViewController: SettingsVC(displayBanner: notificationBanner))
           sceneDelegate.window?.rootViewController?.present(.fullscreen(viewController), animated: true)
         }

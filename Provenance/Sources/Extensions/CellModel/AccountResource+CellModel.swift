@@ -10,8 +10,6 @@ extension AccountResource {
 
 extension Array where Element == AccountResource {
   var cellModels: [AccountCellModel] {
-    return self.map { (account) in
-      return account.cellModel
-    }
+    return self.map { $0.cellModel }
   }
 }

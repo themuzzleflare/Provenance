@@ -28,11 +28,11 @@ extension TagResource: CustomStringConvertible {
 
 extension TagResource {
   var relationshipData: RelationshipData {
-    return RelationshipData(type: self.type, id: self.id)
+    return RelationshipData(type: type, id: id)
   }
 
   var tagInputResourceIdentifier: TagInputResourceIdentifier {
-    return TagInputResourceIdentifier(id: self.id)
+    return TagInputResourceIdentifier(id: id)
   }
 }
 
@@ -50,15 +50,11 @@ extension Array where Element == TagResource {
   }
 
   var nsStringArray: [NSString] {
-    return self.map { (tag) in
-      return tag.id.nsString
-    }
+    return self.map { $0.id.nsString }
   }
 
   var stringArray: [String] {
-    return self.map { (tag) in
-      return tag.id
-    }
+    return self.map { $0.id }
   }
 
   var joinedWithComma: String {
@@ -66,14 +62,10 @@ extension Array where Element == TagResource {
   }
 
   var relationshipDatas: [RelationshipData] {
-    return self.map { (tag) in
-      return tag.relationshipData
-    }
+    return self.map { $0.relationshipData }
   }
 
   var tagInputResourceIdentifiers: [TagInputResourceIdentifier] {
-    return self.map { (tag) in
-      return tag.tagInputResourceIdentifier
-    }
+    return self.map { $0.tagInputResourceIdentifier }
   }
 }

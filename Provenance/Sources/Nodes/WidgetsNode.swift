@@ -1,5 +1,6 @@
 import UIKit
 import AsyncDisplayKit
+import BonMot
 
 final class WidgetsNode: ASScrollNode {
   private let accountBalanceImageNode = ASImageNode()

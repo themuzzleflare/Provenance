@@ -10,14 +10,20 @@ extension TransactionResource {
 
 extension Array where Element == TransactionResource {
   var cellModels: [TransactionCellModel] {
-    return self.map { (transaction) in
-      return transaction.cellModel
-    }
+    return self.map { $0.cellModel }
   }
 
   var sortedTransactionsModels: [SortedTransactionsModel] {
-    return Dictionary(grouping: self, by: { $0.attributes.sortingDate }).sorted { $0.key > $1.key }.map { (section) in
-      return SortedTransactionsModel(id: section.key, transactions: section.value)
-    }
+    return Dictionary(grouping: self, by: { $0.attributes.sortingDate })
+      .sorted { $0.key > $1.key }
+      .map { SortedTransactionsModel(id: $0.key, transactions: $0.value) }
+  }
+
+  var spendTotal: String {
+    let sum = self
+      .filter { $0.attributes.amount.transactionType == .debit && $0.attributes.amount.currencyCode == "AUD" }
+      .map { Double($0.attributes.amount.value)! }
+      .reduce(0.00, +)
+    return NumberFormatter.currency().string(from: NSNumber(value: sum))!
   }
 }

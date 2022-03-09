@@ -16,12 +16,13 @@ final class DatePickerVC: ViewController {
     }
   }
 
-  private lazy var clearBarButtonItem = UIBarButtonItem(title: "Clear", style: .plain, target: self, action: #selector(clear))
+  private lazy var clearBarButtonItem = UIBarButtonItem(title: "Clear",
+                                                        style: .plain,
+                                                        target: self,
+                                                        action: #selector(clear))
 
   private lazy var segmentedControl: UISegmentedControl = {
     let control = UISegmentedControl(items: ["Since", "Until"])
-    control.setWidth(100, forSegmentAt: 0)
-    control.setWidth(100, forSegmentAt: 1)
     control.selectedSegmentIndex = dateType.rawValue
     control.addTarget(self, action: #selector(selectionChanged(_:)), for: .valueChanged)
     return control

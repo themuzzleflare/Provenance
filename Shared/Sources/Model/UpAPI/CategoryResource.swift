@@ -28,7 +28,7 @@ extension CategoryResource: CustomStringConvertible {
 
 extension CategoryResource {
   var categoryInputResourceIdentifier: CategoryInputResourceIdentifier {
-    return CategoryInputResourceIdentifier(id: self.id)
+    return CategoryInputResourceIdentifier(id: id)
   }
 
   var categoryTypeEnum: CategoryTypeEnum {
@@ -36,10 +36,7 @@ extension CategoryResource {
   }
 
   var categoryType: CategoryType {
-    return CategoryType(
-      identifier: self.id,
-      display: self.attributes.name
-    )
+    return CategoryType(identifier: id, display: attributes.name)
   }
 }
 
@@ -64,8 +61,6 @@ extension Array where Element == CategoryResource {
   }
 
   var categoryTypes: [CategoryType] {
-    return self.map { (category) in
-      return category.categoryType
-    }
+    return self.map { $0.categoryType }
   }
 }

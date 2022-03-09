@@ -10,9 +10,9 @@ final class TransactionTagsVC: ASViewController {
       if transaction.relationships.tags.data.isEmpty {
         navigationController?.popViewController(animated: true)
       } else {
+        tableNode.view.refreshControl?.endRefreshing()
         applySnapshot()
         updateToolbarItems()
-        tableNode.view.refreshControl?.endRefreshing()
         addBarButtonItem.isEnabled = !isEditing && tags.count < 6
       }
     }
@@ -24,31 +24,23 @@ final class TransactionTagsVC: ASViewController {
     return transaction.relationships.tags.data.tagResources
   }
 
-  private lazy var addBarButtonItem = UIBarButtonItem(
-    barButtonSystemItem: .add,
-    target: self,
-    action: #selector(addTags)
-  )
+  private lazy var addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+                                                      target: self,
+                                                      action: #selector(addTags))
 
-  private lazy var selectionBarButtonItem = UIBarButtonItem(
-    title: "Select All",
-    style: .plain,
-    target: self,
-    action: #selector(selectionAction)
-  )
+  private lazy var selectionBarButtonItem = UIBarButtonItem(title: "Select All",
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(selectionAction))
 
-  private lazy var removeAllBarButtonItem = UIBarButtonItem(
-    title: "Remove All",
-    style: .plain,
-    target: self,
-    action: #selector(removeAllTags)
-  )
+  private lazy var removeAllBarButtonItem = UIBarButtonItem(title: "Remove All",
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(removeAllTags))
 
-  private lazy var removeBarButtonItem = UIBarButtonItem(
-    barButtonSystemItem: .trash,
-    target: self,
-    action: #selector(removeTags)
-  )
+  private lazy var removeBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash,
+                                                         target: self,
+                                                         action: #selector(removeTags))
 
   private let tableNode = ASTableNode(style: .plain)
 
@@ -69,12 +61,12 @@ final class TransactionTagsVC: ASViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureObserver()
     configureSelf()
+    configureObserver()
     configureNavigation()
     configureToolbar()
     configureTableNode()
-    applySnapshot(override: true)
+    applySnapshot()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -157,7 +149,9 @@ extension TransactionTagsVC {
 
   @objc
   private func refreshTags() {
-    fetchTransaction()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      self.fetchTransaction()
+    }
   }
 
   @objc
@@ -192,14 +186,14 @@ extension TransactionTagsVC {
     removeBarButtonItem.isEnabled = tableNode.indexPathsForSelectedRows != nil
   }
 
-  private func applySnapshot(override: Bool = false) {
+  private func applySnapshot() {
     let result = ListDiffPaths(fromSection: 0,
                                toSection: 0,
                                oldArray: oldTagCellModels,
                                newArray: tags.cellModels,
                                option: .equality).forBatchUpdates()
 
-    if result.hasChanges || override {
+    if result.hasChanges {
       tableNode.performBatchUpdates {
         tableNode.deleteRows(at: result.deletes, with: .fade)
         tableNode.insertRows(at: result.inserts, with: .fade)

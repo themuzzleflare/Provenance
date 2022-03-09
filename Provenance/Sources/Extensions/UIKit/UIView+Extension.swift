@@ -1,6 +1,7 @@
 import UIKit
 import SnapKit
 import MBProgressHUD
+import BonMot
 
 extension UIView {
   static func loading(frame: CGRect, contentType: ContentType) -> UIView {

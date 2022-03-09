@@ -12,7 +12,7 @@ struct RelationshipData: Codable, Identifiable {
 
 extension RelationshipData {
   var tagResource: TagResource {
-    return TagResource(id: self.id)
+    return TagResource(id: id)
   }
 }
 
@@ -20,8 +20,6 @@ extension RelationshipData {
 
 extension Array where Element == RelationshipData {
   var tagResources: [TagResource] {
-    return self.map { (tag) in
-      return tag.tagResource
-    }
+    return self.map { $0.tagResource }
   }
 }

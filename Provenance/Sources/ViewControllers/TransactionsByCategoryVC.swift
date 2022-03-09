@@ -63,8 +63,8 @@ final class TransactionsByCategoryVC: ASViewController, UIProtocol {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureObservers()
     configureSelf()
+    configureObservers()
     configureNavigation()
     configureTableNode()
     applySnapshot(override: true)

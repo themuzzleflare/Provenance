@@ -1,9 +1,10 @@
 import UIKit
 import AsyncDisplayKit
+import BonMot
 
 final class RightDetailCellNode: CellNode {
-  private let leftTextNode = ASTextNode()
-  private let rightTextNode = ASTextNode()
+  private let textNode = ASTextNode()
+  private let detailTextNode = ASTextNode()
 
   private var text: String
   private var detailText: String
@@ -14,10 +15,10 @@ final class RightDetailCellNode: CellNode {
     super.init()
     automaticallyManagesSubnodes = true
     selectionStyle = .none
-    leftTextNode.attributedText = text.styled(with: .leftText)
-    rightTextNode.attributedText = detailText.styled(with: .rightText)
-    rightTextNode.style.flexShrink = 1.0
-    rightTextNode.style.flexGrow = 1.0
+    textNode.attributedText = text.styled(with: .leftText)
+    detailTextNode.attributedText = detailText.styled(with: .rightText)
+    detailTextNode.style.flexShrink = 1.0
+    detailTextNode.style.flexGrow = 1.0
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
@@ -25,7 +26,7 @@ final class RightDetailCellNode: CellNode {
                                             spacing: 5,
                                             justifyContent: .spaceBetween,
                                             alignItems: .center,
-                                            children: [leftTextNode, rightTextNode])
+                                            children: [textNode, detailTextNode])
 
     return ASInsetLayoutSpec(insets: .cellNode, child: horizontalStack)
   }

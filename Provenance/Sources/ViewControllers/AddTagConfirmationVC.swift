@@ -35,8 +35,8 @@ final class AddTagConfirmationVC: ASViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureObserver()
     configureSelf()
+    configureObserver()
     configureNavigation()
     configureTableNode()
   }

@@ -3,11 +3,13 @@ import IGListKit
 
 final class DateHeaderModel {
   let id: Date
-  let displayString: String
+  let dateString: String
+  let spendTotal: String
 
-  init(id: Date) {
+  init(id: Date, dateString: String, spendTotal: String) {
     self.id = id
-    self.displayString = Utils.formatDateHeader(for: id)
+    self.dateString = dateString
+    self.spendTotal = spendTotal
   }
 }
 
@@ -20,6 +22,6 @@ extension DateHeaderModel: ListDiffable {
 
   func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
     guard let object = object as? DateHeaderModel else { return false }
-    return self.displayString == object.displayString
+    return self.dateString == object.dateString && self.spendTotal == object.spendTotal
   }
 }

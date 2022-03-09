@@ -10,7 +10,9 @@ struct SortedTransactionsModel {
 
 extension SortedTransactionsModel {
   var dateHeaderModel: DateHeaderModel {
-    return DateHeaderModel(id: self.id)
+    return DateHeaderModel(id: id,
+                           dateString: Utils.formatDateHeader(for: id),
+                           spendTotal: transactions.spendTotal)
   }
 }
 
@@ -24,24 +26,5 @@ extension Array where Element == SortedTransactionsModel {
       data.append(contentsOf: object.transactions.cellModels)
     }
     return data
-  }
-
-  var supplementaryObject: [Any] {
-    var data = [Any]()
-    self.forEach { (object) in
-      data.append(object.dateHeaderModel)
-      data.append(contentsOf: object.transactions)
-    }
-    return data
-  }
-}
-
-// MARK: -
-
-extension Array {
-  var transactionResources: [TransactionResource] {
-    return self.compactMap { (element) in
-      return element as? TransactionResource
-    }
   }
 }

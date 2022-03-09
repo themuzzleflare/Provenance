@@ -4,6 +4,7 @@ import IGListKit
 import Alamofire
 import MBProgressHUD
 import NotificationBannerSwift
+import BonMot
 
 final class AddCategoryTransactionSelectionVC: ASViewController, UIProtocol {
   // MARK: - Properties
@@ -66,8 +67,8 @@ final class AddCategoryTransactionSelectionVC: ASViewController, UIProtocol {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureObservers()
     configureSelf()
+    configureObservers()
     configureNavigation()
     configureTableNode()
     applySnapshot(override: true)
@@ -107,7 +108,6 @@ extension AddCategoryTransactionSelectionVC {
 
   private func configureNavigation() {
     navigationItem.title = "Loading"
-    navigationItem.prompt = "Only categorisable transactions are supported."
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.leftBarButtonItem = .close(self, action: #selector(closeWorkflow))
     navigationItem.searchController = searchController
@@ -134,7 +134,9 @@ extension AddCategoryTransactionSelectionVC {
 
   @objc
   private func refreshTransactions() {
-    fetchTransactions()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      self.fetchTransactions()
+    }
   }
 
   @objc
@@ -211,19 +213,15 @@ extension AddCategoryTransactionSelectionVC: ASTableDelegate {
       hud.show(animated: true)
       Up.categorise(transaction: transaction, category: category) { (error) in
         if let error = error {
-          GrowingNotificationBanner(
-            title: "Failed",
-            subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
-            style: .danger,
-            duration: 2.0
-          ).show()
+          GrowingNotificationBanner(title: "Failed",
+                                    subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
+                                    style: .danger,
+                                    duration: 2.0).show()
         } else {
-          GrowingNotificationBanner(
-            title: "Success",
-            subtitle: "The category for \(transaction.attributes.description) was set to \(category.attributes.name).",
-            style: .success,
-            duration: 2.0
-          ).show()
+          GrowingNotificationBanner(title: "Success",
+                                    subtitle: "The category for \(transaction.attributes.description) was set to \(category.attributes.name).",
+                                    style: .success,
+                                    duration: 2.0).show()
         }
         hud.hide(animated: true)
         self.closeWorkflow()

@@ -2,7 +2,7 @@ import Foundation
 
 enum FilterMenuAction {
   case category(TransactionCategory)
-  case dates
   case grouping(TransactionGroupingEnum)
+  case dates
   case settledOnly(Bool)
 }

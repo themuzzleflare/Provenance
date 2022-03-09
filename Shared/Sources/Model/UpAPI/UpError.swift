@@ -29,6 +29,29 @@ enum UpError: Error {
   }
 }
 
+// MARK: - LocalizedError
+
+extension UpError: LocalizedError {
+  var errorDescription: String? {
+    switch self {
+    case let .badRequest(detail):
+      return detail
+    case let .notAuthorised(detail):
+      return detail
+    case let .notFound(detail):
+      return detail
+    case let .invalidRequest(detail):
+      return detail
+    case let .tooManyRequests(detail):
+      return detail
+    case let .serverSideError(detail):
+      return detail
+    case let .other(detail):
+      return detail
+    }
+  }
+}
+
 // MARK: -
 
 extension UpError {
@@ -67,29 +90,6 @@ extension UpError {
       return "Try again later."
     case .other:
       return "Unknown error."
-    }
-  }
-}
-
-// MARK: - LocalizedError
-
-extension UpError: LocalizedError {
-  var errorDescription: String? {
-    switch self {
-    case let .badRequest(detail):
-      return detail
-    case let .notAuthorised(detail):
-      return detail
-    case let .notFound(detail):
-      return detail
-    case let .invalidRequest(detail):
-      return detail
-    case let .tooManyRequests(detail):
-      return detail
-    case let .serverSideError(detail):
-      return detail
-    case let .other(detail):
-      return detail
     }
   }
 }

@@ -47,20 +47,29 @@ enum UIUpdates {
     }
   }
 
-  static func emptyView(state: UIState, contentType: ContentType, node: ASCollectionNode) -> UIView? {
+  static func emptyView(state: UIState, contentType: ContentType, collectionNode: ASCollectionNode) -> UIView? {
     switch state {
     case .initialLoad:
-      return .loading(frame: node.bounds, contentType: contentType)
+      return .loading(frame: collectionNode.bounds, contentType: contentType)
     case let .error(error):
-      return .error(frame: node.bounds, text: error)
+      return .error(frame: collectionNode.bounds, text: error)
     case .noContent:
-      return .noContent(frame: node.bounds, type: contentType)
+      return .noContent(frame: collectionNode.bounds, type: contentType)
     case .ready:
       return nil
     }
   }
 
-  static func applySnapshot(oldArray: inout [ListDiffable], newArray: [ListDiffable], override: Bool = false, state: inout UIState, contents: [Any], filteredContents: [Any], noContent: Bool, error: String, contentType: ContentType, collection: CollectionRepresentable) {
+  static func applySnapshot(oldArray: inout [ListDiffable],
+                            newArray: [ListDiffable],
+                            override: Bool = false,
+                            state: inout UIState,
+                            contents: [Any],
+                            filteredContents: [Any],
+                            noContent: Bool,
+                            error: String,
+                            contentType: ContentType,
+                            collection: CollectionRepresentable) {
     let result = ListDiffPaths(fromSection: 0,
                                toSection: 0,
                                oldArray: oldArray,
@@ -80,10 +89,16 @@ enum UIUpdates {
                                error: error)
     }
 
-    batchUpdates(result: result, oldArray: &oldArray, newArray: newArray, collection: collection)
+    batchUpdates(result: result,
+                 oldArray: &oldArray,
+                 newArray: newArray,
+                 collection: collection)
   }
 
-  private static func batchUpdates(result: ListIndexPathResult, oldArray: inout [ListDiffable], newArray: [ListDiffable], collection: CollectionRepresentable) {
+  private static func batchUpdates(result: ListIndexPathResult,
+                                   oldArray: inout [ListDiffable],
+                                   newArray: [ListDiffable],
+                                   collection: CollectionRepresentable) {
     if result.hasChanges {
       switch collection {
       case let .tableNode(tableNode):

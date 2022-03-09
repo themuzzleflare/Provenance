@@ -1,5 +1,6 @@
 import UIKit
 import AsyncDisplayKit
+import BonMot
 
 final class TransactionCellNode: CellNode {
   private let descriptionTextNode = ASTextNode()
@@ -20,7 +21,7 @@ final class TransactionCellNode: CellNode {
     descriptionTextNode.maximumNumberOfLines = 2
     descriptionTextNode.truncationMode = .byTruncatingTail
     creationDateTextNode.attributedText = model.creationDate.styled(with: .transactionCreationDate)
-    amountTextNode.attributedText = model.amount.styled(with: .transactionAmount)
+    amountTextNode.attributedText = model.amount.styled(with: .transactionAmount, .color(model.colour))
   }
 
   override func didLoad() {

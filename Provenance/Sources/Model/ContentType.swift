@@ -37,29 +37,11 @@ extension ContentType {
   }
 
   var noContentDescription: String {
-    switch self {
-    case .transactions:
-      return "No Transactions"
-    case .accounts:
-      return "No Accounts"
-    case .tags:
-      return "No Tags"
-    case .categories:
-      return "No Categories"
-    }
+    return "No \(self.plural)"
   }
 
   var loadingDescription: String {
-    switch self {
-    case .transactions:
-      return "Loading Transactions"
-    case .accounts:
-      return "Loading Accounts"
-    case .tags:
-      return "Loading Tags"
-    case .categories:
-      return "Loading Categories"
-    }
+    return "Loading \(self.plural)"
   }
 
   func searchBarPlaceholder(count: Int) -> String {

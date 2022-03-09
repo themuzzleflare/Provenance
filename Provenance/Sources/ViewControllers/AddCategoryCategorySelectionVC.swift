@@ -4,6 +4,7 @@ import IGListKit
 import NotificationBannerSwift
 import Alamofire
 import MBProgressHUD
+import BonMot
 
 final class AddCategoryCategorySelectionVC: ASViewController, UIProtocol {
   // MARK: - Properties
@@ -22,12 +23,10 @@ final class AddCategoryCategorySelectionVC: ASViewController, UIProtocol {
 
   private lazy var searchController = UISearchController(self)
 
-  private lazy var removeBarButtonItem = UIBarButtonItem(
-    title: "Remove",
-    style: .plain,
-    target: self,
-    action: #selector(removeCategory)
-  )
+  private lazy var removeBarButtonItem = UIBarButtonItem(title: "Remove",
+                                                         style: .plain,
+                                                         target: self,
+                                                         action: #selector(removeCategory))
 
   private let collectionNode = ASCollectionNode(collectionViewLayout: .twoColumnGrid)
 
@@ -74,8 +73,8 @@ final class AddCategoryCategorySelectionVC: ASViewController, UIProtocol {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureObserver()
     configureSelf()
+    configureObserver()
     configureNavigation()
     configureCollectionNode()
     applySnapshot(override: true)
@@ -111,7 +110,6 @@ extension AddCategoryCategorySelectionVC {
 
   private func configureNavigation() {
     navigationItem.title = "Loading"
-    navigationItem.prompt = "Only child categories are supported."
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.backButtonDisplayMode = .minimal
     navigationItem.searchController = searchController
@@ -137,7 +135,9 @@ extension AddCategoryCategorySelectionVC {
 
   @objc
   private func refreshCategories() {
-    fetchCategories()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      self.fetchCategories()
+    }
   }
 
   @objc
@@ -151,19 +151,15 @@ extension AddCategoryCategorySelectionVC {
     navigationItem.setRightBarButton(.activityIndicator, animated: false)
     Up.categorise(transaction: transaction) { (error) in
       if let error = error {
-        GrowingNotificationBanner(
-          title: "Failed",
-          subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
-          style: .danger,
-          duration: 2.0
-        ).show()
+        GrowingNotificationBanner(title: "Failed",
+                                  subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
+                                  style: .danger,
+                                  duration: 2.0).show()
       } else {
-        GrowingNotificationBanner(
-          title: "Success",
-          subtitle: "The category for \(self.transaction.attributes.description) was removed.",
-          style: .success,
-          duration: 2.0
-        ).show()
+        GrowingNotificationBanner(title: "Success",
+                                  subtitle: "The category for \(self.transaction.attributes.description) was removed.",
+                                  style: .success,
+                                  duration: 2.0).show()
       }
       self.navigationController?.popViewController(animated: true)
     }
@@ -243,19 +239,15 @@ extension AddCategoryCategorySelectionVC: ASCollectionDelegate {
     hud.show(animated: true)
     Up.categorise(transaction: transaction, category: category) { (error) in
       if let error = error {
-        GrowingNotificationBanner(
-          title: "Failed",
-          subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
-          style: .danger,
-          duration: 2.0
-        ).show()
+        GrowingNotificationBanner(title: "Failed",
+                                  subtitle: error.underlyingError?.localizedDescription ?? error.localizedDescription,
+                                  style: .danger,
+                                  duration: 2.0).show()
       } else {
-        GrowingNotificationBanner(
-          title: "Success",
-          subtitle: "The category for \(self.transaction.attributes.description) was set to \(category.attributes.name).",
-          style: .success,
-          duration: 2.0
-        ).show()
+        GrowingNotificationBanner(title: "Success",
+                                  subtitle: "The category for \(self.transaction.attributes.description) was set to \(category.attributes.name).",
+                                  style: .success,
+                                  duration: 2.0).show()
       }
       hud.hide(animated: true)
       if self.fromTransactionDetail {

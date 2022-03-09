@@ -55,8 +55,8 @@ final class AddTagTransactionSelectionVC: ASViewController, UIProtocol {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureObservers()
     configureSelf()
+    configureObservers()
     configureNavigation()
     configureTableNode()
     applySnapshot(override: true)
@@ -122,7 +122,9 @@ extension AddTagTransactionSelectionVC {
 
   @objc
   private func refreshTransactions() {
-    fetchTransactions()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      self.fetchTransactions()
+    }
   }
 
   @objc

@@ -28,8 +28,8 @@ final class SettingsVC: ASViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureObserver()
     configureSelf()
+    configureObserver()
     configureNavigation()
     configureTableNode()
   }

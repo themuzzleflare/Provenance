@@ -1,9 +1,10 @@
 import UIKit
 import AsyncDisplayKit
+import BonMot
 
 final class SubtitleCellNode: CellNode {
-  private let topTextNode = ASTextNode()
-  private let bottomTextNode = ASTextNode()
+  private let textNode = ASTextNode()
+  private let detailTextNode = ASTextNode()
 
   private var text: String
   private var detailText: String
@@ -14,8 +15,8 @@ final class SubtitleCellNode: CellNode {
     super.init()
     automaticallyManagesSubnodes = true
     selectionStyle = .none
-    topTextNode.attributedText = text.styled(with: .provenance)
-    bottomTextNode.attributedText = detailText.styled(with: .bottomText)
+    textNode.attributedText = text.styled(with: .provenance)
+    detailTextNode.attributedText = detailText.styled(with: .bottomText)
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
@@ -23,7 +24,7 @@ final class SubtitleCellNode: CellNode {
                                           spacing: 0,
                                           justifyContent: .start,
                                           alignItems: .start,
-                                          children: detailText.isEmpty ? [topTextNode] : [topTextNode, bottomTextNode])
+                                          children: detailText.isEmpty ? [textNode] : [textNode, detailTextNode])
 
     return ASInsetLayoutSpec(insets: .cellNode, child: verticalStack)
   }

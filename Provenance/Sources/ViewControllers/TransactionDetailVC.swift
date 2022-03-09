@@ -55,13 +55,11 @@ final class TransactionDetailVC: ViewController {
   private let tableView = UITableView(frame: .zero, style: .grouped)
 
   private var filteredSections: [DetailSection] {
-    return .transactionDetail(
-      transaction: transaction,
-      account: account,
-      transferAccount: transferAccount,
-      parentCategory: parentCategory,
-      category: category
-    ).filtered
+    return .transactionDetail(transaction: transaction,
+                              account: account,
+                              transferAccount: transferAccount,
+                              parentCategory: parentCategory,
+                              category: category).filtered
   }
 
   private var account: AccountResource? {
@@ -97,8 +95,7 @@ final class TransactionDetailVC: ViewController {
       if supplementaryState.count == 4 {
         print("supplementaryState complete")
         supplementaryState.removeAll()
-        self.tableView.refreshControl?.endRefreshing()
-        self.applySnapshot()
+        applySnapshot()
       }
     }
   }
@@ -121,10 +118,10 @@ final class TransactionDetailVC: ViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(tableView)
-    configureObservers()
     configureSelf()
-    configureTableView()
+    configureObservers()
     configureNavigation()
+    configureTableView()
     applySnapshot(animate: false)
   }
 
@@ -200,7 +197,9 @@ extension TransactionDetailVC {
 
   @objc
   private func refreshTransaction() {
-    fetchTransaction()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      self.fetchTransaction()
+    }
   }
 
   func editCategory() {
@@ -260,9 +259,11 @@ extension TransactionDetailVC {
 
   private func applySnapshot(animate: Bool = true) {
     var snapshot = Snapshot()
-    snapshot.appendSections(self.filteredSections)
-    self.filteredSections.forEach { snapshot.appendItems($0.items, toSection: $0) }
-    self.dataSource.apply(snapshot, animatingDifferences: animate)
+    snapshot.appendSections(filteredSections)
+    filteredSections.forEach { snapshot.appendItems($0.items, toSection: $0) }
+    dataSource.apply(snapshot, animatingDifferences: animate) {
+      self.tableView.refreshControl?.endRefreshing()
+    }
   }
 
   func fetchTransaction() {

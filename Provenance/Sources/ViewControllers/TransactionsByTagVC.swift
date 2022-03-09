@@ -62,8 +62,8 @@ final class TransactionsByTagVC: ASViewController, UIProtocol {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureObservers()
     configureSelf()
+    configureObservers()
     configureNavigation()
     configureTableNode()
     applySnapshot(override: true)
@@ -133,7 +133,9 @@ extension TransactionsByTagVC {
 
   @objc
   private func refreshTransactions() {
-    fetchTransactions()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      self.fetchTransactions()
+    }
   }
 
   private func applySnapshot(override: Bool = false) {
@@ -167,7 +169,7 @@ extension TransactionsByTagVC {
       navigationItem.title = tag.id
     }
     if navigationItem.rightBarButtonItem == nil {
-      navigationItem.setRightBarButton(editButtonItem, animated: true)
+      navigationItem.setRightBarButton(editButtonItem, animated: false)
     }
   }
 

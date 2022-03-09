@@ -1,5 +1,6 @@
 import UIKit
 import AsyncDisplayKit
+import BonMot
 
 final class AccountCellNode: CellNode {
   private let balanceTextNode = ASTextNode()

@@ -1,5 +1,4 @@
 import UIKit
-import IGListKit
 import Alamofire
 
 final class TagsVC: ViewController, UIProtocol {
@@ -77,8 +76,6 @@ final class TagsVC: ViewController, UIProtocol {
 
   private var tagsError = String()
 
-  private var oldTagCellModels = [TagCellModel]()
-
   private var filteredTags: [TagResource] {
     return tags.filtered(searchBar: searchController.searchBar)
   }
@@ -92,11 +89,11 @@ final class TagsVC: ViewController, UIProtocol {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(tableView)
-    configureObservers()
-    configureTableView()
     configureSelf()
+    configureObservers()
     configureNavigation()
-    applySnapshot(animate: false)
+    configureTableView()
+    applySnapshot(override: true, animate: false)
   }
 
   override func viewDidLayoutSubviews() {
@@ -175,17 +172,21 @@ extension TagsVC {
     }
   }
 
-  private func applySnapshot(animate: Bool = true) {
+  private func applySnapshot(override: Bool = false, animate: Bool = true) {
     var snapshot = Snapshot()
 
     snapshot.appendSections(filteredTags.sortedTags)
     filteredTags.sortedTags.forEach { snapshot.appendItems($0.tags, toSection: $0) }
 
-    StateUpdates.updateState(state: &state,
-                             contents: tags,
-                             filteredContents: filteredTags,
-                             noContent: noTags,
-                             error: tagsError)
+    if override {
+      UIUpdates.updateUI(state: state, contentType: .tags, collection: .tableView(tableView))
+    } else {
+      StateUpdates.updateState(state: &state,
+                               contents: tags,
+                               filteredContents: filteredTags,
+                               noContent: noTags,
+                               error: tagsError)
+    }
 
     dataSource.apply(snapshot, animatingDifferences: animate)
   }

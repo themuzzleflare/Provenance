@@ -21,8 +21,6 @@ extension SortedTags: Hashable {
 
 extension Array where Element == SortedTags {
   var sectionIndexTitles: [String] {
-    return self.map { (section) in
-      return section.id.capitalized
-    }
+    return self.map { $0.id.capitalized }
   }
 }

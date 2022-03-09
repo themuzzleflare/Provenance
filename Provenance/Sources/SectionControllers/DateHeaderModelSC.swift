@@ -4,7 +4,13 @@ import IGListKit
 import AsyncDisplayKit
 
 final class DateHeaderModelSC: ListSectionController {
-  private var object: DateHeaderModel?
+  private var object: DateHeaderModel!
+
+  private weak var selectionDelegate: SelectionDelegate?
+
+  init(selectionDelegate: SelectionDelegate? = nil) {
+    self.selectionDelegate = selectionDelegate
+  }
 
   override func sizeForItem(at index: Int) -> CGSize {
     return ASIGListSectionControllerMethods.sizeForItem(at: index)
@@ -18,6 +24,22 @@ final class DateHeaderModelSC: ListSectionController {
     precondition(object is DateHeaderModel)
     self.object = object as? DateHeaderModel
   }
+
+  override func didSelectItem(at index: Int) {
+    selectionDelegate?.didSelectItem(at: IndexPath(item: index, section: section), with: object.id.description)
+  }
+
+  override func didDeselectItem(at index: Int) {
+    selectionDelegate?.didDeselectItem(at: IndexPath(item: index, section: section))
+  }
+
+  override func didHighlightItem(at index: Int) {
+    selectionDelegate?.didHighlightItem(at: IndexPath(item: index, section: section))
+  }
+
+  override func didUnhighlightItem(at index: Int) {
+    selectionDelegate?.didUnhighlightItem(at: IndexPath(item: index, section: section))
+  }
 }
 
 // MARK: - ASSectionController
@@ -25,7 +47,7 @@ final class DateHeaderModelSC: ListSectionController {
 extension DateHeaderModelSC: ASSectionController {
   func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
     return {
-      DateHeaderCellNode(model: self.object!)
+      DateHeaderCellNode(model: self.object)
     }
   }
 

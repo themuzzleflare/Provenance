@@ -17,7 +17,15 @@ final class TransactionsByAccountVC: ASViewController, UIProtocol {
 
   private var account: AccountResource {
     didSet {
-      setTableHeaderView()
+      accountBalance = account.attributes.balance.value
+    }
+  }
+
+  private var accountBalance = String() {
+    didSet {
+      if oldValue != accountBalance {
+        setTableHeaderView()
+      }
     }
   }
 
@@ -60,8 +68,8 @@ final class TransactionsByAccountVC: ASViewController, UIProtocol {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureObservers()
     configureSelf()
+    configureObservers()
     configureNavigation()
     configureTableNode()
     applySnapshot(override: true)

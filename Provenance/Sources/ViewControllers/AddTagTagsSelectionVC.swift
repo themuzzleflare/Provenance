@@ -19,36 +19,26 @@ final class AddTagTagsSelectionVC: ASViewController, UIProtocol {
 
   private var fromTransactionTags: Bool
 
-  private lazy var editingBarButtonItem = UIBarButtonItem(
-    title: isEditing ? "Cancel" : "Select",
-    style: isEditing ? .done : .plain,
-    target: self,
-    action: #selector(toggleEditing)
-  )
+  private lazy var editingBarButtonItem = UIBarButtonItem(title: isEditing ? "Cancel" : "Select",
+                                                          style: isEditing ? .done : .plain,
+                                                          target: self,
+                                                          action: #selector(toggleEditing))
 
-  private lazy var addBarButtonItem = UIBarButtonItem(
-    barButtonSystemItem: .add,
-    target: self,
-    action: #selector(openAddWorkflow)
-  )
+  private lazy var addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+                                                      target: self,
+                                                      action: #selector(openAddWorkflow))
 
-  private lazy var selectionBarButtonItem = UIBarButtonItem(
-    title: "Deselect All",
-    style: .plain,
-    target: self,
-    action: #selector(selectionAction)
-  )
+  private lazy var selectionBarButtonItem = UIBarButtonItem(title: "Deselect All",
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(selectionAction))
 
-  private lazy var selectionLabelBarButtonItem = UIBarButtonItem(
-    title: "\(tableNode.indexPathsForSelectedRows?.count.description ?? "0") of 6 selected"
-  )
+  private lazy var selectionLabelBarButtonItem = UIBarButtonItem(title: "\(tableNode.indexPathsForSelectedRows?.count.description ?? "0") of 6 selected")
 
-  private lazy var nextBarButtonItem = UIBarButtonItem(
-    title: "Next",
-    style: .plain,
-    target: self,
-    action: #selector(nextAction)
-  )
+  private lazy var nextBarButtonItem = UIBarButtonItem(title: "Next",
+                                                       style: .plain,
+                                                       target: self,
+                                                       action: #selector(nextAction))
 
   private lazy var searchController = UISearchController(self)
 
@@ -61,9 +51,9 @@ final class AddTagTagsSelectionVC: ASViewController, UIProtocol {
   private var tags = [TagResource]() {
     didSet {
       noTags = tags.isEmpty
+      tableNode.view.refreshControl?.endRefreshing()
       applySnapshot()
       updateToolbarItems()
-      tableNode.view.refreshControl?.endRefreshing()
       searchController.searchBar.placeholder = tags.searchBarPlaceholder
     }
   }
@@ -94,8 +84,8 @@ final class AddTagTagsSelectionVC: ASViewController, UIProtocol {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureObserver()
     configureSelf()
+    configureObserver()
     configureNavigation()
     configureToolbar()
     configureTableNode()
@@ -125,12 +115,10 @@ final class AddTagTagsSelectionVC: ASViewController, UIProtocol {
     tableNode.view.setEditing(editing, animated: animated)
     updateToolbarItems()
     addBarButtonItem.isEnabled = !editing
-    editingBarButtonItem = UIBarButtonItem(
-      title: editing ? "Cancel" : "Select",
-      style: editing ? .done : .plain,
-      target: self,
-      action: #selector(toggleEditing)
-    )
+    editingBarButtonItem = UIBarButtonItem(title: editing ? "Cancel" : "Select",
+                                           style: editing ? .done : .plain,
+                                           target: self,
+                                           action: #selector(toggleEditing))
     navigationItem.rightBarButtonItems = [addBarButtonItem, editingBarButtonItem]
     navigationItem.title = editing ? "Select Tags" : "Select Tag"
     navigationController?.setToolbarHidden(!editing, animated: true)
@@ -224,7 +212,9 @@ extension AddTagTagsSelectionVC {
 
   @objc
   private func refreshTags() {
-    fetchTags()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      self.fetchTags()
+    }
   }
 
   @objc
@@ -278,7 +268,7 @@ extension AddTagTagsSelectionVC {
   private func display(_ error: AFError) {
     tagsError = error.underlyingError?.localizedDescription ?? error.localizedDescription
     tags.removeAll()
-    setEditing(false, animated: false)
+//    setEditing(false, animated: false)
     if navigationItem.title != "Error" {
       navigationItem.title = "Error"
     }
@@ -313,19 +303,15 @@ extension AddTagTagsSelectionVC: ASTableDelegate {
   func tableNode(_ tableNode: ASTableNode, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
     guard let paths = tableNode.indexPathsForSelectedRows, paths.count == 6 else { return indexPath }
     if !showingBanner {
-      let notificationBanner = FloatingNotificationBanner(
-        title: "Forbidden",
-        subtitle: "You can only select a maximum of 6 tags.",
-        style: .danger
-      )
+      let notificationBanner = FloatingNotificationBanner(title: "Forbidden",
+                                                          subtitle: "You can only select a maximum of 6 tags.",
+                                                          style: .danger)
       notificationBanner.delegate = self
       notificationBanner.duration = 1.5
-      notificationBanner.show(
-        bannerPosition: .top,
-        cornerRadius: 10,
-        shadowBlurRadius: 5,
-        shadowCornerRadius: 20
-      )
+      notificationBanner.show(bannerPosition: .top,
+                              cornerRadius: 10,
+                              shadowBlurRadius: 5,
+                              shadowCornerRadius: 20)
     }
     return nil
   }

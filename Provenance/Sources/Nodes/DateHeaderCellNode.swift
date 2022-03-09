@@ -1,8 +1,10 @@
 import UIKit
 import AsyncDisplayKit
+import BonMot
 
 final class DateHeaderCellNode: CellNode {
-  private let textNode = ASTextNode()
+  private let dateTextNode = ASTextNode()
+  private let spendTotalTextNode = ASTextNode()
 
   private var model: DateHeaderModel
 
@@ -10,11 +12,18 @@ final class DateHeaderCellNode: CellNode {
     self.model = model
     super.init()
     automaticallyManagesSubnodes = true
-    textNode.attributedText = model.displayString.styled(with: .provenance)
+    dateTextNode.attributedText = model.dateString.styled(with: .provenance)
+    spendTotalTextNode.attributedText = model.spendTotal.styled(with: .provenance, .color(.secondaryLabel))
     backgroundColor = .secondarySystemBackground
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    return ASInsetLayoutSpec(insets: .sectionHeader, child: textNode)
+    let horizontalStack = ASStackLayoutSpec(direction: .horizontal,
+                                            spacing: 0,
+                                            justifyContent: .spaceBetween,
+                                            alignItems: .center,
+                                            children: [dateTextNode, spendTotalTextNode])
+
+    return ASInsetLayoutSpec(insets: .sectionHeader, child: horizontalStack)
   }
 }

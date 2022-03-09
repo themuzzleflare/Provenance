@@ -27,11 +27,11 @@ extension TransactionResource: CustomStringConvertible {
 
 extension TransactionResource {
   func latestTransactionModel(configuration: DateStyleSelectionIntent) -> LatestTransactionModel {
-    return LatestTransactionModel(id: self.id,
-                                  description: self.attributes.description,
+    return LatestTransactionModel(id: id,
+                                  description: attributes.description,
                                   creationDate: configuration.dateStyle.description(self),
-                                  amount: self.attributes.amount.valueShort,
-                                  colour: self.attributes.amount.transactionType.colour)
+                                  amount: attributes.amount.valueShort,
+                                  colour: attributes.amount.transactionType.colour)
   }
 
   var transactionType: TransactionType {
@@ -39,9 +39,7 @@ extension TransactionResource {
   }
 
   var tagsArray: [NSString] {
-    return self.relationships.tags.data.map { (tag) in
-      return tag.id.nsString
-    }
+    return self.relationships.tags.data.map { $0.id.nsString }
   }
 }
 
@@ -59,8 +57,6 @@ extension Array where Element == TransactionResource {
   }
 
   var transactionTypes: [TransactionType] {
-    return self.map { (transaction) in
-      return transaction.transactionType
-    }
+    return self.map { $0.transactionType }
   }
 }

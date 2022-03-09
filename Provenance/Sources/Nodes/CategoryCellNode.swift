@@ -1,8 +1,9 @@
 import UIKit
 import AsyncDisplayKit
+import BonMot
 
 final class CategoryCellNode: CellNode {
-  private let categoryTextNode = ASTextNode()
+  private let textNode = ASTextNode()
 
   private var model: CategoryCellModel
 
@@ -10,7 +11,7 @@ final class CategoryCellNode: CellNode {
     self.model = model
     super.init()
     automaticallyManagesSubnodes = true
-    categoryTextNode.attributedText = model.name.styled(with: .categoryName)
+    textNode.attributedText = model.name.styled(with: .categoryName)
     cornerRadius = 12.5
     borderColor = .separator
     borderWidth = 1.0
@@ -36,7 +37,7 @@ final class CategoryCellNode: CellNode {
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    let centerSpec = ASCenterLayoutSpec(centeringOptions: .XY, sizingOptions: .minimumXY, child: categoryTextNode)
+    let centerSpec = ASCenterLayoutSpec(centeringOptions: .XY, sizingOptions: .minimumXY, child: textNode)
     return ASInsetLayoutSpec(insets: .cellNode, child: centerSpec)
   }
 }

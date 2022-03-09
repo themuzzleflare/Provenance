@@ -10,8 +10,6 @@ extension CategoryResource {
 
 extension Array where Element == CategoryResource {
   var cellModels: [CategoryCellModel] {
-    return self.map { (category) in
-      return category.cellModel
-    }
+    return self.map { $0.cellModel }
   }
 }

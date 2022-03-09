@@ -2,7 +2,7 @@ import UIKit
 import AsyncDisplayKit
 
 final class StickerCellNode: CellNode {
-  private let stickerImageNode = ASImageNode()
+  private let imageNode = ASImageNode()
 
   private var sticker: AnimatedImage
 
@@ -10,7 +10,7 @@ final class StickerCellNode: CellNode {
     self.sticker = sticker
     super.init()
     automaticallyManagesSubnodes = true
-    stickerImageNode.animatedImage = sticker.asAnimatedImage
+    imageNode.animatedImage = sticker.asAnimatedImage
     borderWidth = 0.5
     borderColor = .separator
   }
@@ -22,6 +22,6 @@ final class StickerCellNode: CellNode {
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    return ASWrapperLayoutSpec(layoutElement: stickerImageNode)
+    return ASWrapperLayoutSpec(layoutElement: imageNode)
   }
 }

@@ -2,21 +2,21 @@ import Foundation
 import UIKit
 
 extension NSParagraphStyle {
-  static var leftAligned: NSParagraphStyle {
+  static let leftAligned: NSParagraphStyle = {
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.alignment = .left
     return paragraphStyle
-  }
+  }()
 
-  static var centreAligned: NSParagraphStyle {
+  static let centreAligned: NSParagraphStyle = {
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.alignment = .center
     return paragraphStyle
-  }
+  }()
 
-  static var rightAligned: NSParagraphStyle {
+  static let rightAligned: NSParagraphStyle = {
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.alignment = .right
     return paragraphStyle
-  }
+  }()
 }

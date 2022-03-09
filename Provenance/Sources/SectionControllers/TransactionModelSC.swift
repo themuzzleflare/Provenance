@@ -4,7 +4,7 @@ import IGListKit
 import AsyncDisplayKit
 
 final class TransactionModelSC: ListSectionController {
-  private var object: TransactionCellModel?
+  private var object: TransactionCellModel!
 
   private weak var selectionDelegate: SelectionDelegate?
   private weak var loadingDelegate: LoadingDelegate?
@@ -31,8 +31,8 @@ final class TransactionModelSC: ListSectionController {
   }
 
   override func didSelectItem(at index: Int) {
+    selectionDelegate?.didSelectItem(at: IndexPath(item: index, section: section), with: object.id)
     collectionContext?.deselectItem(at: index, sectionController: self, animated: true)
-    selectionDelegate?.didSelectItem(at: IndexPath(item: index, section: section))
   }
 
   override func didDeselectItem(at index: Int) {
@@ -53,7 +53,7 @@ final class TransactionModelSC: ListSectionController {
 extension TransactionModelSC: ASSectionController {
   func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
     return {
-      TransactionCellNode(model: self.object!)
+      TransactionCellNode(model: self.object)
     }
   }
 

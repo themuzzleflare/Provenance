@@ -23,8 +23,8 @@ final class AccountDetailVC: ViewController {
       if supplementaryState.count == 2 {
         print("supplementaryState complete")
         supplementaryState.removeAll()
-        self.tableView.refreshControl?.endRefreshing()
-        self.applySnapshot()
+        tableView.refreshControl?.endRefreshing()
+        applySnapshot()
       }
     }
   }
@@ -73,8 +73,8 @@ final class AccountDetailVC: ViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(tableView)
-    configureObservers()
     configureSelf()
+    configureObservers()
     configureNavigation()
     configureTableView()
     applySnapshot(animate: false)
@@ -146,7 +146,9 @@ extension AccountDetailVC {
 
   @objc
   private func refreshData() {
-    fetchingTasks()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      self.fetchingTasks()
+    }
   }
 
   @objc
@@ -161,9 +163,9 @@ extension AccountDetailVC {
 
   private func applySnapshot(animate: Bool = true) {
     var snapshot = Snapshot()
-    snapshot.appendSections(self.sections)
-    self.sections.forEach { snapshot.appendItems($0.items, toSection: $0) }
-    self.dataSource.apply(snapshot, animatingDifferences: animate)
+    snapshot.appendSections(sections)
+    sections.forEach { snapshot.appendItems($0.items, toSection: $0) }
+    dataSource.apply(snapshot, animatingDifferences: animate)
   }
 
   private func fetchAccount() {

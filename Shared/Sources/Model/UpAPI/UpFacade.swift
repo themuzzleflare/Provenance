@@ -5,8 +5,6 @@ import SwiftDate
 typealias Up = UpFacade
 
 enum UpFacade {
-  static let baseUrl = "https://api.up.com.au/api/v1"
-
   private static let delegate = UpDelegate()
 
   private static let interceptor = UpInterceptor()
@@ -14,6 +12,8 @@ enum UpFacade {
   private static let eventMonitor = UpEventMonitor()
 
   private static let session = Session(delegate: delegate, interceptor: interceptor, eventMonitors: [eventMonitor])
+
+  static let baseUrl = "https://api.up.com.au/api/v1"
 
   static let validation: DataRequest.Validation = { (_, response, data) in
     if let data = data,
@@ -186,7 +186,7 @@ enum UpFacade {
                                completion: @escaping (Result<[TransactionResource], AFError>) -> Void) {
     let parameters: Parameters = [
       ParamKey.filterTag: tag.id,
-      ParamKey.pageSize: "100"
+      ParamKey.pageSize: "20"
     ]
 
     session.request("\(baseUrl)/transactions",

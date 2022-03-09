@@ -1,30 +1,17 @@
 import UIKit
 
 extension UIBarButtonItem {
-  static var tag: UIBarButtonItem {
-    return UIBarButtonItem(image: .tag)
-  }
+  static let tag = UIBarButtonItem(image: .tag)
 
-  static var dollarsignCircle: UIBarButtonItem {
-    return UIBarButtonItem(image: .dollarsignCircle)
-  }
+  static let dollarsignCircle = UIBarButtonItem(image: .dollarsignCircle)
 
-  static var walletPass: UIBarButtonItem {
-    return UIBarButtonItem(image: .walletPass)
-  }
+  static let walletPass = UIBarButtonItem(image: .walletPass)
 
-  static var trayFull: UIBarButtonItem {
-    return UIBarButtonItem(image: .trayFull)
-  }
+  static let trayFull = UIBarButtonItem(image: .trayFull)
 
-  static var infoCircle: UIBarButtonItem {
-    return UIBarButtonItem(image: .infoCircle)
-  }
+  static let infoCircle = UIBarButtonItem(image: .infoCircle)
 
-  static var activityIndicator: UIBarButtonItem {
-    let activityIndicator = UIActivityIndicatorView.mediumAnimating
-    return UIBarButtonItem(customView: activityIndicator)
-  }
+  static let activityIndicator = UIBarButtonItem(customView: UIActivityIndicatorView.mediumAnimating)
 
   static func transactionStatusIcon(_ target: UIViewController, status: TransactionStatusEnum, action: Selector) -> UIBarButtonItem {
     let barButtonItem = UIBarButtonItem(image: status.uiImage, style: .plain, target: target, action: action)

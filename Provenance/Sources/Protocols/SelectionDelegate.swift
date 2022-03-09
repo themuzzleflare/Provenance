@@ -1,7 +1,7 @@
 import Foundation
 
 protocol SelectionDelegate: AnyObject {
-  func didSelectItem(at indexPath: IndexPath)
+  func didSelectItem(at indexPath: IndexPath, with id: String)
 
   func didDeselectItem(at indexPath: IndexPath)
 
@@ -11,7 +11,7 @@ protocol SelectionDelegate: AnyObject {
 }
 
 extension SelectionDelegate {
-  func didSelectItem(at indexPath: IndexPath) {}
+  func didSelectItem(at indexPath: IndexPath, with id: String) {}
 
   func didDeselectItem(at indexPath: IndexPath) {}
 

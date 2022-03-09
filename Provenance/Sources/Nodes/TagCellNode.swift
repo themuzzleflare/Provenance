@@ -1,8 +1,9 @@
 import UIKit
 import AsyncDisplayKit
+import BonMot
 
 final class TagCellNode: CellNode {
-  private let tagTextNode = ASTextNode()
+  private let textNode = ASTextNode()
 
   private var model: TagCellModel
   private var selection: Bool
@@ -13,7 +14,7 @@ final class TagCellNode: CellNode {
     super.init()
     automaticallyManagesSubnodes = true
     accessoryType = .disclosureIndicator
-    tagTextNode.attributedText = model.id.styled(with: .provenance)
+    textNode.attributedText = model.id.styled(with: .provenance)
   }
 
   override var isSelected: Bool {
@@ -29,6 +30,6 @@ final class TagCellNode: CellNode {
   }
 
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    return ASInsetLayoutSpec(insets: .cellNode, child: tagTextNode)
+    return ASInsetLayoutSpec(insets: .cellNode, child: textNode)
   }
 }

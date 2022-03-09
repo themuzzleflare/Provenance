@@ -3,15 +3,11 @@ import MarqueeLabel
 import AsyncDisplayKit
 
 final class APIKeyCellNode: CellNode {
-  // MARK: - Properties
-
   private let marqueeLabelNode = MarqueeLabelNode()
 
   private var apiKeyDisplay: String {
     return Store.provenance.apiKey.isEmpty ? "None" : Store.provenance.apiKey
   }
-
-  // MARK: - Life Cycle
 
   override init() {
     super.init()
